@@ -1,0 +1,11 @@
+prefix=@prefix@
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/libDwm
+
+Name: libDwm
+Description: Miscellaneous C++ classes
+Version: @TAGVERSION@
+Requires:
+Libs: @PTHREADLDFLAGS@ -L${libdir} -lDwm @BZ2LIB@ @BOOSTLIBS@ @ZLIB@ @KVMLIB@ @TERMCAPLIB@ @OSLIBS@
+Cflags: @PTHREADCXXFLAGS@ -I${includedir} @BOOSTINC@

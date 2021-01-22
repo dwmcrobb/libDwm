@@ -1,0 +1,17 @@
+name: "libDwm"
+version: "@TAGVERSION@"
+origin: "devel/libDwm"
+prefix: "@prefix@"
+www: "http://www.rfdm.com"
+maintainer: "dwmcrobb@me.com"
+comment: "miscellaneous C++ classes"
+desc: "Miscellaneous C++ classes and programs.\nDwm::IO is the main thrust of the package.  It also includes a simple \nunit testing framework, a replacement \nfor 'what' named \"dwmwhat\" and some networking classes."
+licenselogic: "single"
+licenses: ["BSD"]
+categories: ["devel"]
+files: {
+  "@prefix@/bin/mcping":{uname: root, gname: wheel, perm: 04555}
+}
+scripts: {
+  post-install: "#!/bin/sh\nldconfig @prefix@/lib\n"
+}
