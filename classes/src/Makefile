@@ -76,8 +76,6 @@ OBJFILESNP =	DwmASIO.o \
 		DwmXDRUtils.o \
 		DwmXmlAttribute.o \
 		DwmXmlElement.o
-#		DwmXmlElementParse.o
-#		DwmIO.o
 shlib_version = $(shell ../../getvers.sh -s)
 
 ifneq ("${TARGETVENDOR}", "apple")
@@ -129,14 +127,14 @@ DwmFreeBSDPkgManifestParse.cc: DwmFreeBSDPkgManifestParse.yy
 	bison -d -o$@ $<
 
 install::
-	../install-sh -c -m 444 ../lib/.libs/libDwm.a ${INSTALLPREFIX}/lib/libDwm.a
+	../../install-sh -c -m 444 ../lib/.libs/libDwm.a ${INSTALLPREFIX}/lib/libDwm.a
 
 uninstall: clean-install
 
 tarprep: ${TARDIR}/lib/libDwm.la
 
 ${TARDIR}/lib/libDwm.la: ../lib/libDwm.la
-	${LIBTOOL} --mode=install ../install-sh -s -c $< ${TARDIR}/lib/libDwm.la
+	${LIBTOOL} --mode=install ../../install-sh -s -c $< ${TARDIR}/lib/libDwm.la
 
 clean:: clean-tarprep
 	${LIBTOOL} --mode=clean rm -f ../lib/libDwm.la ${OBJFILES} DwmCgi.cc \

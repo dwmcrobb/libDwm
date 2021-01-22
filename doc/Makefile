@@ -30,3 +30,6 @@ clean-install::
 
 clean-tarprep::
 	rm -Rf ${TARDIR}/share/doc/libDwm
+
+distclean::
+	rm -f Doxyfile

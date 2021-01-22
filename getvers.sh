@@ -74,7 +74,8 @@ for i; do
     case "$i" in
 	-s)
 	    echo "${SHARED_LIB_VERSION}"
-	    exit 0;;
+	    exit 0
+	    break;;
 	-v)
 	    echo "${DWM_VERSION}"
 	    exit 0

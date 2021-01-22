@@ -630,7 +630,13 @@ MANDOC
 EGREP
 GREP
 CPP
-TAR_UPDATE_FLAGS
+DWM_NAME
+DWM_VERSION
+DWM_TAG
+SVN_VERSION
+SVN_TAG
+GIT_VERSION
+GIT_TAG
 TARDIR_RELATIVE
 TARDIR
 TAR
@@ -4541,7 +4547,6 @@ $as_echo_n "checking package variables... " >&6; }
   TAGNAME=`echo $TAGFULL | cut -d'-' -f1`
   TAGVERSION=`echo $TAGFULL | cut -d'-' -f2-`
   TARDIR_RELATIVE=${PKG_SUBDIR}
-  TAR_UPDATE_FLAGS="-Ppuvf"
   case $host_os in
     darwin*)
       OSNAME="darwin"
@@ -4584,25 +4589,10 @@ $as_echo_n "checking package variables... " >&6; }
           ;;
       esac
       ;;
-    solaris*)
-      OSNAME="solaris"
-      OSVERSION=`uname -r`
-      OSARCH=`uname -p`
-      case $OSVERSION in
-	5.*)
-	  OSVERSION=`echo $OSVERSION | sed 's/5/2/1'`
-	  ;;
-	*)
-	  ;;
-      esac
-      TAR="/usr/bin/tar"
-      TAR_UPDATE_FLAGS="-puvf"
-      ;;
     *)
       ;;
   esac
-  TARDIR=`pwd`/`dirname $0`/${TARDIR_RELATIVE}
-
+  TARDIR=`pwd`/${TARDIR_RELATIVE}
 
 
 
@@ -4624,8 +4614,7 @@ $as_echo_n "checking package variables... " >&6; }
     PKG_SUBDIR=\"${PKG_SUBDIR}\"
     TAR=\"${TAR}\"
     TARDIR=\"${TARDIR}\"
-    TARDIR_RELATIVE=\"${TARDIR_RELATIVE}\"
-    TAR_UPDATE_FLAGS=\"${TAR_UPDATE_FLAGS}\"" >&5
+    TARDIR_RELATIVE=\"${TARDIR_RELATIVE}\"" >&5
 $as_echo "
     OSNAME=\"${OSNAME}\"
     OSVERSION=\"${OSVERSION}\"
@@ -4636,8 +4625,57 @@ $as_echo "
     PKG_SUBDIR=\"${PKG_SUBDIR}\"
     TAR=\"${TAR}\"
     TARDIR=\"${TARDIR}\"
-    TARDIR_RELATIVE=\"${TARDIR_RELATIVE}\"
-    TAR_UPDATE_FLAGS=\"${TAR_UPDATE_FLAGS}\"" >&6; }
+    TARDIR_RELATIVE=\"${TARDIR_RELATIVE}\"" >&6; }
+
+
+
+  gittag=`git describe --tags --dirty 2>/dev/null`
+  dirty=`echo "${gittag}" | awk -F '-' '{ if (NF > 2) { print "dirty"; } }'`
+  if test -z "${dirty}"; then
+    GIT_TAG="${gittag}"
+    GIT_VERSION=`echo "${gittag}" | awk -F '-' '{print $NF}'`
+  else
+    fakevers=`date +%Y%m%d`
+    GIT_TAG="libDwm-0.0.${fakevers}"
+    GIT_VERSION="0.0.${fakevers}"
+  fi
+
+
+
+  if test -n "${GIT_TAG}" ; then
+    DWM_TAG="${GIT_TAG}"
+    DWM_VERSION="${GIT_VERSION}"
+  else
+
+  svntag=`svn info . 2>/dev/null | grep ^URL | grep 'tags/' | awk -F 'tags/' '{print $2}' | awk -F '/' '{print $1}'`
+  if test -n "${svntag}"; then
+    SVN_TAG="${svntag}"
+    SVN_VERSION=`echo ${svntag} | awk -F '-' '{print $NF}'`
+  else
+    svn_vers=`svnversion . | sed 's/[0-9]*://g'`
+    if test "${svn_vers}" = "Unversioned directory"; then
+      SVN_VERSION="0.0.0"
+    else
+      SVN_VERSION="0.0.${svn_vers}"
+    fi
+    SVN_TAG="libDwm-${SVN_VERSION}"
+  fi
+
+
+
+    if test -n "${SVN_TAG}" ; then
+      DWM_TAG="${SVN_TAG}"
+      DWM_VERSION="${SVN_VERSION}"
+    fi
+  fi
+  if test -z "${DWM_TAG}" ; then
+    DWM_TAG="libDwm-0.0.0"
+    DWM_VERSION="0.0.0"
+  fi
+  DWM_NAME=`echo "${DWM_TAG}" | sed s/\-${DWM_VERSION}//g`
+
+
+
 
 
 ac_ext=c

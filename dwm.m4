@@ -199,7 +199,6 @@ define(DWM_SET_PKGVARS,[
   TAGNAME=`echo $TAGFULL | cut -d'-' -f1`
   TAGVERSION=`echo $TAGFULL | cut -d'-' -f2-`
   TARDIR_RELATIVE=${PKG_SUBDIR}
-  TAR_UPDATE_FLAGS="-Ppuvf"
   case $host_os in
     darwin*)
       OSNAME="darwin"
@@ -242,24 +241,10 @@ define(DWM_SET_PKGVARS,[
           ;;
       esac
       ;;
-    solaris*)
-      OSNAME="solaris"
-      OSVERSION=`uname -r`
-      OSARCH=`uname -p`
-      case $OSVERSION in
-	5.*)
-	  OSVERSION=`echo $OSVERSION | sed 's/5/2/1'`
-	  ;;
-	*)
-	  ;;
-      esac
-      TAR="/usr/bin/tar"
-      TAR_UPDATE_FLAGS="-puvf"
-      ;;
     *)
       ;;
   esac
-  TARDIR=`pwd`/`dirname $[0]`/${TARDIR_RELATIVE}
+  TARDIR=`pwd`/${TARDIR_RELATIVE}
   AC_SUBST(EPM_ARCH)
   AC_SUBST(OSNAME)
   AC_SUBST(OSVERSION)
@@ -271,7 +256,6 @@ define(DWM_SET_PKGVARS,[
   AC_SUBST(TAR)
   AC_SUBST(TARDIR)
   AC_SUBST(TARDIR_RELATIVE)
-  AC_SUBST(TAR_UPDATE_FLAGS)
   AC_MSG_RESULT([
     OSNAME=\"${OSNAME}\"
     OSVERSION=\"${OSVERSION}\"
@@ -282,8 +266,7 @@ define(DWM_SET_PKGVARS,[
     PKG_SUBDIR=\"${PKG_SUBDIR}\"
     TAR=\"${TAR}\"
     TARDIR=\"${TARDIR}\"
-    TARDIR_RELATIVE=\"${TARDIR_RELATIVE}\"
-    TAR_UPDATE_FLAGS=\"${TAR_UPDATE_FLAGS}\"])
+    TARDIR_RELATIVE=\"${TARDIR_RELATIVE}\"])
 ])
 
 dnl #------------------------------------------------------------------------

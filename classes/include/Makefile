@@ -10,12 +10,12 @@ all::
 tarprep: ${TARPREPHEADERS}
 
 ${TARDIR}/include/libDwm/%.hh: %.hh
-	../install-sh -c -m 444 $< $@
+	../../install-sh -c -m 444 $< $@
 
 install: ${INSTALLHEADERS}
 
 ${INSTALLPREFIX}/include/libDwm/%.hh: %.hh
-	../install-sh -c -m 444 $< $@
+	../../install-sh -c -m 444 $< $@
 
 uninstall: clean-install
 
@@ -27,3 +27,5 @@ clean-install::
 clean-tarprep::
 	rm -f ${TARPREPHEADERS}
 
+distclean: clean
+	rm -f DwmPortability.hh

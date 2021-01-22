@@ -122,6 +122,7 @@ DWM_CHECK_STRTOF()
 DWM_PREREQ_PATH(htmlman,share/htmlman,[HTML manpage path])
 
 DWM_SET_PKGVARS(libDwm,[libDwm-0.0.0])
+DWM_GET_TAG([libDwm])
 
 dnl ------------------------------------------------------------------------
 dnl //  Check for CoreFoundation/CFByteOrder.h, an OS X thing.  We need

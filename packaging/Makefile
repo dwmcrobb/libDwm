@@ -16,3 +16,5 @@ tarprep: ${TARTARGS}
 ${TARDIR}/${PKGPCDIR}/libDwm.pc: libDwm.pc
 	../install-sh -c -m 444 $< $@
 
+distclean::
+	rm -f debcontrol fbsd_manifest libDwm.pc
