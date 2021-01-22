@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmBZ2IO.hh 11157 $
-// @(#) $Id: DwmBZ2IO.hh 11157 2020-09-08 04:21:00Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2004-2006, 2016, 2020
 //  All rights reserved.
@@ -37,7 +36,7 @@
 //---------------------------------------------------------------------------
 //!  \file DwmBZ2IO.hh
 //!  \author Daniel W. McRobb
-//!  \brief Dwm::BZ2IO class definition
+//!  \brief Dwm::BZ2IO class declaration
 //---------------------------------------------------------------------------
 
 #ifndef _DWMBZ2IO_HH_
