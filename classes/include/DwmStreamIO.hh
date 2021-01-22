@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmStreamIO.hh 11152 $
-// @(#) $Id: DwmStreamIO.hh 11152 2020-09-08 03:57:32Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2004-2007, 2016, 2017, 2020
 //  All rights reserved.
@@ -69,14 +68,14 @@ namespace Dwm {
   //!  This class contains a collection of static functions for reading and
   //!  writing simple types, in network byte order (MSB first).  It also
   //!  contains functions to read and write strings.  It also contains
-  //!  template functions to read and write deques, lists, vectors, maps, 
+  //!  function templates to read and write deques, lists, vectors, maps, 
   //!  multimaps, sets, multisets, unordered_maps, unordered_multimaps,
   //!  unordered_sets, unordered_multisets, tuples and variants.
   //!  We use our member functions to handle reading and writing simple
-  //!  types in the containers, and template functions to handle reading 
+  //!  types in the containers, and function templates to handle reading 
   //!  and writing other class types.  For a user-defined class, the class
   //!  must implement the StreamReadable and StreamWritable interfaces, since
-  //!  our template functions simply call out to them.  Since templates are
+  //!  our function templates simply call out to them.  Since templates are
   //!  static polymorphism, you don't need to inherit from StreamReadable and
   //!  StreamWritable, but you must implement the interfaces.
   //--------------------------------------------------------------------------
