@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmGZIO.hh 11158 $
-// @(#) $Id: DwmGZIO.hh 11158 2020-09-08 04:22:35Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2004, 2016, 2020
 //  All rights reserved.
@@ -73,13 +72,14 @@ namespace Dwm {
   //!  writing simple types in network byte order (MSB first) from/to gzip
   //!  files.  It also contains functions to read and write strings from/to
   //!  gzip files.  It also contains function templates to read and write 
-  //!  deques, lists, vectors, maps, multimaps, sets, multisets, unordered_maps,
-  //!  unordered_multimaps, unordered_sets, unordered_multisets, tuples and
-  //!  variants from/to gzip files.  We use our member functions to handle
-  //!  reading and writing simple types in these containers, and function
-  //!  templates to handle reading and writing other class types.  In the
-  //!  latter case, the class must implement the GZReadable and GZWritable
-  //!  interfaces, since our function templates simply call out to them.
+  //!  deques, lists, vectors, maps, multimaps, sets, multisets,
+  //!  unordered_maps, unordered_multimaps, unordered_sets,
+  //!  unordered_multisets, tuples and variants from/to gzip files.  We use
+  //!  our member functions to handle reading and writing simple types in
+  //!  these containers, and function templates to handle reading and writing
+  //!  other class types.  In the latter case, the class must implement the
+  //!  GZReadable and GZWritable interfaces, since our function templates
+  //!  simply call out to them.
   //--------------------------------------------------------------------------
   class GZIO
   {
