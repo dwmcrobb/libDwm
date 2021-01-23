@@ -54,9 +54,8 @@ extern "C" {
 #include <utility>  // for std::pair
 
 #include "DwmOptArgs.hh"
+#include "DwmPackageInfo.hh"
 #include "DwmSvnTag.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/apps/dwmwhat/dwmwhat.cc 8496 $");
 
 using namespace std;
 
@@ -174,7 +173,8 @@ int main(int argc, char *argv[])
   int  nextArg = optArgs.Parse(argc, argv);
 
   if (optArgs.Get<bool>('v')) {
-    cout << svntag.TagName() << '\n';
+    cout << Dwm::PackageInfo::Name() << '-'
+         << Dwm::PackageInfo::Version() << '\n';
     return 0;
   }
 
