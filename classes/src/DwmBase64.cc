@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmBase64.cc 11089 $
-// @(#) $Id: DwmBase64.cc 11089 2020-09-07 15:58:08Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2018, 2020
 //  All rights reserved.
@@ -355,3 +354,13 @@ namespace Dwm {
   }
   
 }  // namespace Dwm
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

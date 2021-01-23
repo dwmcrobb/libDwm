@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmSysLogger.cc 11139 $
-// @(#) $Id: DwmSysLogger.cc 11139 2020-09-07 23:48:21Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2007, 2016
 //  All rights reserved.
@@ -50,10 +49,7 @@ extern "C" {
 #include <mutex>
 #include <sstream>
 
-#include "DwmSvnTag.hh"
 #include "DwmSysLogger.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmSysLogger.cc 11139 $");
 
 using namespace std;
 
@@ -368,3 +364,13 @@ namespace Dwm {
   }
 
 }  // namespace Dwm
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

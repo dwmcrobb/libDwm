@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmIpv4Prefix.cc 11410 $
-// @(#) $Id: DwmIpv4Prefix.cc 11410 2020-12-11 08:20:53Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2005-2007
 //  All rights reserved.
@@ -625,4 +624,11 @@ namespace Dwm {
 }  // namespace Dwm
 
 
-    
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

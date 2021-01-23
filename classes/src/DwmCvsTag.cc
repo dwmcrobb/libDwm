@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $Name$
-// @(#) $Id: DwmCvsTag.cc 8387 2016-04-17 03:03:15Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2000-2007
 //  All rights reserved.
@@ -35,10 +34,7 @@
 //===========================================================================
 
 #include "DwmCvsTag.hh"
-#include "DwmSvnTag.hh"
 
-// static const Dwm::CvsTag cvstag("@(#) $Name:$ $Id: DwmCvsTag.cc 8387 2016-04-17 03:03:15Z dwm $");
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmCvsTag.cc 8387 $");
 using namespace std;
 
 namespace Dwm {
@@ -233,3 +229,13 @@ namespace Dwm {
   }
   
 }  // namespace Dwm
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

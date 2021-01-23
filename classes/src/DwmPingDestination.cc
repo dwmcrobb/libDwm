@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmPingDestination.cc 11125 $
-// @(#) $Id: DwmPingDestination.cc 11125 2020-09-07 23:21:39Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2008
 //  All rights reserved.
@@ -59,9 +58,6 @@ extern "C" {
 #include "DwmStringUtils.hh"
 #include "DwmTimeValue.hh"
 #include "DwmPingDestination.hh"
-#include "DwmSvnTag.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmPingDestination.cc 11125 $");
 
 using namespace std;
 
@@ -317,3 +313,13 @@ namespace Dwm {
   }
   
 }  // namespace Dwm
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

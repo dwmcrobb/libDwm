@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmUnitAssert.cc 11147 $
-// @(#) $Id: DwmUnitAssert.cc 11147 2020-09-07 23:56:02Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2006, 2007, 2009, 2015, 2020
 //  All rights reserved.
@@ -43,10 +42,7 @@
 #include <iomanip>
 #include <string>
 
-#include "DwmSvnTag.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmUnitAssert.cc 11147 $");
 
 namespace Dwm {
 
@@ -508,3 +504,13 @@ namespace Dwm {
   }
 
 }  // namespace Dwm
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

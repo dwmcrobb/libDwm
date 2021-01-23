@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmLocalInterfaces.cc 11118 $
-// @(#) $Id: DwmLocalInterfaces.cc 11118 2020-09-07 23:09:31Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2005-2007, 2020
 //  All rights reserved.
@@ -747,9 +746,11 @@ namespace Dwm {
 
 }  // namespace Dwm
 
+//---------------------------- emacs settings -----------------------------
 //  Local Variables:
-//  mode: c++
+//  mode: C++
 //  tab-width: 2
 //  indent-tabs-mode: nil
 //  c-basic-offset: 2
 //  End:
+//-------------------------------------------------------------------------

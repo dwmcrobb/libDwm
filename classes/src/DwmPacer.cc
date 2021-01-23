@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmPacer.cc 11121 $
-// @(#) $Id: DwmPacer.cc 11121 2020-09-07 23:15:23Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 1998-2007, 2020
 //  All rights reserved.
@@ -51,10 +50,7 @@ extern "C" {
 
 #include <iostream>
 
-#include "DwmSvnTag.hh"
 #include "DwmPacer.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmPacer.cc 11121 $");
 
 namespace Dwm {
 
@@ -188,9 +184,11 @@ namespace Dwm {
 
 }  // namespace Dwm
 
+//---------------------------- emacs settings -----------------------------
 //  Local Variables:
-//  mode: c++
+//  mode: C++
 //  tab-width: 2
 //  indent-tabs-mode: nil
 //  c-basic-offset: 2
 //  End:
+//-------------------------------------------------------------------------

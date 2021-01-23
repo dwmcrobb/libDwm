@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmSunriseSunset.cc 11137 $
-// @(#) $Id: DwmSunriseSunset.cc 11137 2020-09-07 23:47:17Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2016
 //  All rights reserved.
@@ -52,9 +51,6 @@
 #endif
 
 #include "DwmSunriseSunset.hh"
-#include "DwmSvnTag.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmSunriseSunset.cc 11137 $");
 
 namespace Dwm {
 
@@ -396,3 +392,13 @@ namespace Dwm {
   
   
 }  // namespace Dwm
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

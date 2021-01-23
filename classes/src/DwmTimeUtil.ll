@@ -1,7 +1,6 @@
 %{
   //===========================================================================
-  // @(#) $DwmPath: dwm/libDwm/trunk/src/DwmTimeUtil.ll 11143 $
-  // @(#) $Id: DwmTimeUtil.ll 11143 2020-09-07 23:52:10Z dwm $
+  // @(#) $DwmPath$
   //===========================================================================
   //  Copyright (c) Daniel W. McRobb 1999-2007
   //  All rights reserved.
@@ -55,11 +54,8 @@
   #include <iostream>
   #include <string>
 
-  #include "DwmSvnTag.hh"
   #include "DwmTimeUtil.hh"
 
-  static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmTimeUtil.ll 11143 $");
-    
   static char const * const g_monthNames[] = { "Jan","Feb","Mar","Apr","May","Jun",
                                                "Jul","Aug","Sep","Oct","Nov","Dec",
                                                NULL };
@@ -320,3 +316,13 @@ namespace Dwm {
   }
 
 }  // namespace Dwm
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

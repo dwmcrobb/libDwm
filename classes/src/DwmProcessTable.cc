@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmProcessTable.cc 11128 $
-// @(#) $Id: DwmProcessTable.cc 11128 2020-09-07 23:24:18Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2006-2007
 //  All rights reserved.
@@ -50,11 +49,7 @@ extern "C" {
   #endif
 }
 
-
-#include "DwmSvnTag.hh"
 #include "DwmProcessTable.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmProcessTable.cc 11128 $");
 
 namespace Dwm {
 
@@ -186,9 +181,12 @@ namespace Dwm {
 
 }  // namespace Dwm
 
+
+//---------------------------- emacs settings -----------------------------
 //  Local Variables:
-//  mode: c++
+//  mode: C++
 //  tab-width: 2
 //  indent-tabs-mode: nil
 //  c-basic-offset: 2
 //  End:
+//-------------------------------------------------------------------------

@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $Name$
-// @(#) $Id: DwmXmlAttribute.cc 8388 2016-04-17 03:23:45Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2008
 //  All rights reserved.
@@ -8,15 +7,12 @@
 
 //---------------------------------------------------------------------------
 //!  \file DwmXmlAttribute.cc
-//!  \brief NOT YET DOCUMENTED
+//!  \brief Dwm::Xml::Attribute class implementation
 //---------------------------------------------------------------------------
 
 #include <string>
 
 #include "DwmXmlAttribute.hh"
-#include "DwmSvnTag.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmXmlAttribute.cc 8388 $");
 
 using namespace std;
 
@@ -87,3 +83,12 @@ namespace Dwm {
 
 }  // namespace Dwm
 
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

@@ -1,7 +1,6 @@
 %{
   //===========================================================================
-  // @(#) $Name$
-  // @(#) $Id: DwmExecutor.ll 8477 2016-05-07 02:59:10Z dwm $
+  // @(#) $DwmPath$
   //===========================================================================
   //  Copyright (c) Daniel W. McRobb 2010
   //  All rights reserved.
@@ -55,7 +54,6 @@
 
   #include "DwmSignal.hh"
   #include "DwmExecutor.hh"
-  #include "DwmSvnTag.hh"
   
   std::string  g_cmdArg;
 %}
@@ -83,8 +81,6 @@
                               return Dwm::Executor::k_ARGUMENT; }
 <<EOF>>                     { BEGIN(INITIAL); return 0; }
 %%
-
-static Dwm::SvnTag  svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmExecutor.ll 8477 $");
 
 int  g_numProcs = 0;
 
@@ -252,3 +248,13 @@ int main(int argc, char *argv[])
 
 }
 #endif
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

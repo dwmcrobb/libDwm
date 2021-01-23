@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmIpv4IcmpSourceQuench.cc 11105 $
-// @(#) $Id: DwmIpv4IcmpSourceQuench.cc 11105 2020-09-07 22:23:24Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2007
 //  All rights reserved.
@@ -177,3 +176,12 @@ namespace Dwm {
 
 }  // namespace Dwm
 
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

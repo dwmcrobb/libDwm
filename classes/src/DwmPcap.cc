@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmPcap.cc 11124 $
-// @(#) $Id: DwmPcap.cc 11124 2020-09-07 23:20:48Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2005-2007, 2016, 2020
 //  All rights reserved.
@@ -57,9 +56,6 @@ extern "C" {
 #include "DwmLocalInterfaces.hh"
 #include "DwmSysLogger.hh"
 #include "DwmPcap.hh"
-#include "DwmSvnTag.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmPcap.cc 11124 $");
 
 using namespace std;
 
@@ -261,3 +257,13 @@ namespace Dwm {
   };
   
 }  // namespace Dwm
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

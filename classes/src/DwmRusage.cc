@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmRusage.cc 11132 $
-// @(#) $Id: DwmRusage.cc 11132 2020-09-07 23:34:09Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2006-2007, 2020
 //  All rights reserved.
@@ -44,7 +43,6 @@
 #include <cstring>
 #include <sstream>
 
-#include "DwmSvnTag.hh"
 #include "DwmEngFormat.hh"
 #include "DwmDescriptorIO.hh"
 #include "DwmGZIO.hh"
@@ -52,8 +50,6 @@
 #include "DwmStreamIO.hh"
 #include "DwmSysLogger.hh"
 #include "DwmRusage.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmRusage.cc 11132 $");
 
 using namespace std;
 
@@ -610,3 +606,13 @@ namespace Dwm {
   
   
 }  // namespace Dwm
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

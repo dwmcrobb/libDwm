@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmSocket.cc 11134 $
-// @(#) $Id: DwmSocket.cc 11134 2020-09-07 23:44:48Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 1998-2007, 2016
 //  All rights reserved.
@@ -54,9 +53,6 @@ extern "C" {
 #include "DwmIpv4PacketHeader.hh"
 #include "DwmSysLogger.hh"
 #include "DwmSocket.hh"
-#include "DwmSvnTag.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmSocket.cc 11134 $");
 
 namespace Dwm {
 
@@ -770,3 +766,13 @@ namespace Dwm {
 
   
 }  // namespace Dwm
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmTimeValue64.cc 11145 $
-// @(#) $Id: DwmTimeValue64.cc 11145 2020-09-07 23:54:21Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2005-2007, 2020
 //  All rights reserved.
@@ -42,15 +41,12 @@
 
 #include <cassert>
 
-#include "DwmSvnTag.hh"
 #include "DwmGZIO.hh"
 #include "DwmBZ2IO.hh"
 #include "DwmDescriptorIO.hh"
 #include "DwmFileIO.hh"
 #include "DwmStreamIO.hh"
 #include "DwmTimeValue64.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmTimeValue64.cc 11145 $");
 
 namespace Dwm {
 
@@ -472,3 +468,12 @@ Dwm::TimeValue64 operator - (const Dwm::TimeValue64 & tv1,
   return(rc);
 }
 
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

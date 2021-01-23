@@ -1,7 +1,6 @@
 %{
   //===========================================================================
-  // @(#) $Name$
-  // @(#) $Id: DwmRegistry.ll 8388 2016-04-17 03:23:45Z dwm $
+  // @(#) $DwmPath$
   //===========================================================================
   //  Copyright (c) Daniel W. McRobb 2005-2007
   //  All rights reserved.
@@ -39,11 +38,8 @@
   #include <iostream>
   #include <fstream>
 
-  #include "DwmSvnTag.hh"
   #include "DwmRegistry.hh"
 
-  static Dwm::SvnTag  svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmRegistry.ll 8388 $");
-  
   using namespace std;
 %}
 
@@ -221,3 +217,12 @@ namespace Dwm {
 
 }  // namespace Dwm
 
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $Name$
-// @(#) $Id: DwmXmlElement.cc 8388 2016-04-17 03:23:45Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2008
 //  All rights reserved.
@@ -14,9 +13,6 @@
 #include <string>
 
 #include "DwmXmlElement.hh"
-#include "DwmSvnTag.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmXmlElement.cc 8388 $");
 
 using namespace std;
 
@@ -152,3 +148,13 @@ namespace Dwm {
   }  // namespace Xml
 
 }  // namespace Dwm
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

@@ -1,21 +1,21 @@
 //===========================================================================
-// @(#) $Name:  $
-// @(#) $Id: DwmTerminalTricks.cc 11634 2021-01-03 05:21:01Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2005
+//  Copyright (c) Daniel W. McRobb 2005, 2020
 //  All rights reserved.
 //
-//  Permission to use, copy, modify and distribute any part of this
-//  software for educational, research and non-profit purposes,
-//  without fee, and without a written agreement is hereby granted,
-//  provided that the above copyright notice, this paragraph and the
-//  following paragraphs appear in all copies.
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
 //
-//  Those desiring to incorporate this into commercial products or use
-//  for commercial purposes should contact:
-//
-//    Daniel W. McRobb
-//    dwm@mcplex.net
+//  1. Redistributions of source code must retain the above copyright
+//     notice, this list of conditions and the following disclaimer.
+//  2. Redistributions in binary form must reproduce the above copyright
+//     notice, this list of conditions and the following disclaimer in the
+//     documentation and/or other materials provided with the distribution.
+//  3. The names of the authors and copyright holders may not be used to
+//     endorse or promote products derived from this software without
+//     specific prior written permission.
 //
 //  IN NO EVENT SHALL DANIEL W. MCROBB BE LIABLE TO ANY PARTY FOR
 //  DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
@@ -35,6 +35,7 @@
 
 //---------------------------------------------------------------------------
 //!  \file DwmTerminalTricks.cc
+//!  \author Daniel W. McRobb
 //!  \brief Dwm::TerminalTricks implementation
 //---------------------------------------------------------------------------
 
@@ -125,3 +126,13 @@ namespace Dwm {
   }
   
 }  // namespace Dwm
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

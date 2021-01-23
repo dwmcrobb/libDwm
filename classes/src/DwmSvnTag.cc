@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmSvnTag.cc 11138 $
-// @(#) $Id: DwmSvnTag.cc 11138 2020-09-07 23:47:43Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2016
 //  All rights reserved.
@@ -44,8 +43,6 @@
 #include <regex>
 
 #include "DwmSvnTag.hh"
-
-static const Dwm::SvnTag  svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmSvnTag.cc 11138 $");
 
 using namespace std;
 
@@ -156,3 +153,13 @@ namespace Dwm {
   }
   
 }  // namespace Dwm
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

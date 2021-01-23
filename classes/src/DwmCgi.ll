@@ -1,7 +1,6 @@
 %{
   //===========================================================================
-  // @(#) $DwmPath: dwm/libDwm/trunk/src/DwmCgi.ll 11090 $
-  // @(#) $Id: DwmCgi.ll 11090 2020-09-07 17:38:26Z dwm $
+  // @(#) $DwmPath$
   //===========================================================================
   //  Copyright (c) Daniel W. McRobb 1999, 2000, 2001
   //  All rights reserved.
@@ -42,7 +41,6 @@
     #include <string.h>
   }
 
-  #include "DwmSvnTag.hh"
   #include "DwmCgi.hh"
 
   using namespace std;
@@ -65,8 +63,6 @@
 <VALUE>[&]               { BEGIN(INITIAL); }
 
 %%
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmCgi.ll 11090 $");
 
 //----------------------------------------------------------------------------
 //!  
@@ -339,3 +335,13 @@ namespace Dwm {
   }
   
 }  // namespace Dwm
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

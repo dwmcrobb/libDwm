@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmStrptime.cc 11136 $
-// @(#) $Id: DwmStrptime.cc 11136 2020-09-07 23:46:30Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2006-2007
 //  All rights reserved.
@@ -40,10 +39,6 @@
 //!  \brief OpenBSD strptime() doesn't accept %Z in the format string; use
 //!  one mostly borrowed from FreeBSD.
 //---------------------------------------------------------------------------
-
-#include "DwmSvnTag.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmStrptime.cc 11136 $");
 
 #if (defined(__OpenBSD__))
 
@@ -540,5 +535,11 @@ namespace Dwm {
 
 #endif
 
-
-/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

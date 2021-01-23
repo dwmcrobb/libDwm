@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmPassword.cc 11122 $
-// @(#) $Id: DwmPassword.cc 11122 2020-09-07 23:16:38Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2006-2007, 2016
 //  All rights reserved.
@@ -40,10 +39,7 @@
 //!  \brief Password class implementation
 //---------------------------------------------------------------------------
 
-#include "DwmSvnTag.hh"
 #include "DwmPassword.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmPassword.cc 11122 $");
 
 namespace Dwm {
 
@@ -159,3 +155,13 @@ namespace Dwm {
   
 
 }  // namespace Dwm
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------
