@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmSvnTag.hh 11210 $
-// @(#) $Id: DwmSvnTag.hh 11210 2020-11-08 04:50:40Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2016
 //  All rights reserved.
@@ -95,3 +94,13 @@ namespace Dwm {
 }  // namespace Dwm
 
 #endif  // _DWMSVNTAG_HH_
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

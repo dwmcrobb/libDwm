@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmPcap.hh 9530 $
-// @(#) $Id: DwmPcap.hh 9530 2017-06-14 17:24:33Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2005-2007, 2016
 //  All rights reserved.
@@ -148,7 +147,7 @@ namespace Dwm {
 
 //---------------------------- emacs settings -----------------------------
 //  Local Variables:
-//  mode: C++/la
+//  mode: C++
 //  tab-width: 2
 //  indent-tabs-mode: nil
 //  c-basic-offset: 2

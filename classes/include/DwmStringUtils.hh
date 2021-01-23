@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmStringUtils.hh 10185 $
-// @(#) $Id: DwmStringUtils.hh 10185 2019-04-11 06:14:48Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2005-2007, 2016
 //  All rights reserved.
@@ -264,7 +263,7 @@ namespace Dwm {
 
 //---------------------------- emacs settings -----------------------------
 //  Local Variables:
-//  mode: C++/la
+//  mode: C++
 //  tab-width: 2
 //  indent-tabs-mode: nil
 //  c-basic-offset: 2

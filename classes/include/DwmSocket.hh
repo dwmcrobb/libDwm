@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmSocket.hh 9944 $
-// @(#) $Id: DwmSocket.hh 9944 2018-01-06 08:12:18Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 1998-2007
 //  All rights reserved.
@@ -419,7 +418,7 @@ namespace Dwm {
 
 //---------------------------- emacs settings -----------------------------
 //  Local Variables:
-//  mode: C++/la
+//  mode: C++
 //  tab-width: 2
 //  indent-tabs-mode: nil
 //  c-basic-offset: 2

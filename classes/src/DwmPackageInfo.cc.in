@@ -1,8 +1,7 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestPthreadMutex.cc 8389 $
-// @(#) $Id: TestPthreadMutex.cc 8389 2016-04-17 04:31:36Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2008
+//  Copyright (c) Daniel W. McRobb 2021
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -35,45 +34,24 @@
 //===========================================================================
 
 //---------------------------------------------------------------------------
-//!  \file TestPthreadMutex.cc
-//!  \brief Unit tests for Dwm::Pthread::Mutex
+//!  \file DwmPackageInfo.cc
+//!  \author Daniel W. McRobb
+//!  \brief Dwm::PackageInfo class implementation
 //---------------------------------------------------------------------------
 
-#include <cstdlib>
-#include <map>
-#include <string>
+#include "DwmPackageInfo.hh"
 
-#include "DwmMutex.hh"
-#include "DwmSvnTag.hh"
-#include "DwmUnitAssert.hh"
+namespace Dwm {
 
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestPthreadMutex.cc 8389 $");
-
-using namespace std;
-using namespace Dwm;
-
-int main(int argc, char *argv[])
-{
-  map<int,Pthread::Mutex>  mutexes;
-  for (int i = 0; i < 100; ++i) {
-    UnitAssert(mutexes[i].Lock());
-    UnitAssert(! mutexes[i].TryLock());
-    UnitAssert(mutexes[i].Unlock());
-  }
+  const std::string  PackageInfo::_name("@PACKAGE_NAME@");
+  const std::string  PackageInfo::_version("@DWM_VERSION@");
+  const std::string  PackageInfo::_bugReport("@PACKAGE_BUGREPORT@");
+  const std::string  PackageInfo::_url("@PACKAGE_URL@");
+  const std::string  PackageInfo::_id("@(#) @PACKAGE_NAME@-@DWM_VERSION@");
   
-  map<int,Pthread::Mutex>  mutexes2 = mutexes;
-  for (int i = 0; i < 100; ++i) {
-    UnitAssert(mutexes[i].Lock());
-    UnitAssert(! mutexes2[i].TryLock());
-    UnitAssert(mutexes2[i].Unlock());
-  }
-  
-  if (Dwm::Assertions::Total().Failed() > 0) {
-    Dwm::Assertions::Print(std::cerr, true);
-    exit(1);
-  }
-  else
-    std::cout << Dwm::Assertions::Total() << " passed" << std::endl;
+  const std::string & PackageInfo::Name()       { return _name; }
+  const std::string & PackageInfo::Version()    { return _version; }
+  const std::string & PackageInfo::BugReport()  { return _bugReport; }
+  const std::string & PackageInfo::URL()        { return _url; }
 
-  exit(0);
-}
+}  // namespace Dwm

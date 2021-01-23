@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $Name:  $
-// @(#) $Id: DwmTerminalTricks.hh 11633 2021-01-03 05:20:37Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2005
 //  All rights reserved.
@@ -151,3 +150,13 @@ namespace Dwm {
 }  // namespace Dwm
 
 #endif  // _DWMTERMINALTRICKS_HH_
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

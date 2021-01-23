@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmLoadBalancer.hh 10168 $
-// @(#) $Id: DwmLoadBalancer.hh 10168 2018-07-23 10:01:59Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2008, 2009, 2016, 2018
 //  All rights reserved.
@@ -398,3 +397,13 @@ namespace Dwm {
 
 
 #endif  // _DWMLOADBALANCER_HH_
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

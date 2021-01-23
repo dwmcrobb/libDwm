@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmDescriptorIO.hh 11152 $
-// @(#) $Id: DwmDescriptorIO.hh 11152 2020-09-08 03:57:32Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2004-2007, 2016, 2017, 2020
 //  All rights reserved.

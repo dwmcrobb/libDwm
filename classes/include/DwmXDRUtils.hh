@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmXDRUtils.hh 11084 $
-// @(#) $Id: DwmXDRUtils.hh 11084 2020-09-06 04:57:40Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2020
 //  All rights reserved.
@@ -37,7 +36,7 @@
 //---------------------------------------------------------------------------
 //!  \file DwmXDRUtils.hh
 //!  \author Daniel W. McRobb
-//!  \brief NOT YET DOCUMENTED
+//!  \brief Dwm::XDRUtils class declaration
 //---------------------------------------------------------------------------
 
 #ifndef _DWMXDRUTILS_HH_
@@ -49,22 +48,70 @@
 namespace Dwm {
 
   //--------------------------------------------------------------------------
-  //!  
+  //!  Wrapper for XDR encode/decode functions.
   //--------------------------------------------------------------------------
   class XDRUtils
   {
   public:
+    //------------------------------------------------------------------------
+    //!  Encode the given float @c val into the given buffer @c buf.
+    //!  Returns true on success, false on failure.
+    //------------------------------------------------------------------------
     static bool Encode(float val, std::array<char,4> & buf);
+    
+    //------------------------------------------------------------------------
+    //!  Decodes the given buffer @c buf into the given value @c val.
+    //!  Returns true on success, false on failure.
+    //------------------------------------------------------------------------
     static bool Decode(const std::array<char,4> & buf, float & val);
+    
+    //------------------------------------------------------------------------
+    //!  Encode the given double @c val into the given buffer @c buf.
+    //!  Returns true on success, false on failure.
+    //------------------------------------------------------------------------
     static bool Encode(double val, std::array<char,8> & buf);
+    
+    //------------------------------------------------------------------------
+    //!  Decodes the given buffer @c buf into the given double value @c val.
+    //!  Returns true on success, false on failure.
+    //------------------------------------------------------------------------
     static bool Decode(const std::array<char,8> & buf, double & val);
 
+    //------------------------------------------------------------------------
+    //!  Encodes the given float @c val into @c *buf.  If @c *buf is non-null
+    //!  on entry, it will be freed.  @c *buf will be allocated to hold the
+    //!  encoded value.  Returns the size of *buf.
+    //------------------------------------------------------------------------
     static uint32_t Encode(float val, char **buf);
+    
+    //------------------------------------------------------------------------
+    //!  Decodes the given @c buf into the given float value @c val.
+    //------------------------------------------------------------------------
     static void Decode(char *buf, float & val);
+    
+    //------------------------------------------------------------------------
+    //!  Encodes the given double @c val into @c *buf.  If @c *buf is non-null
+    //!  on entry, it will be freed.  @c *buf will be allocated to hold the
+    //!  encoded value.  Returns the size of *buf.
+    //------------------------------------------------------------------------
     static uint32_t Encode(double val, char **buf);
+    
+    //------------------------------------------------------------------------
+    //!  Decodes the given @c buf into the given double value @c val.
+    //------------------------------------------------------------------------
     static void Decode(char *buf, double & val);
   };
   
 }  // namespace Dwm
 
 #endif  // _DWMXDRUTILS_HH_
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

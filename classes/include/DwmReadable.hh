@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmReadable.hh 11178 $
-// @(#) $Id: DwmReadable.hh 11178 2020-09-09 01:22:50Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2004-2007
 //  All rights reserved.
@@ -69,7 +68,7 @@ namespace Dwm {
 
 //---------------------------- emacs settings -----------------------------
 //  Local Variables:
-//  mode: C++/la
+//  mode: C++
 //  tab-width: 2
 //  indent-tabs-mode: nil
 //  c-basic-offset: 2

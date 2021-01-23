@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmBZ2Writable.hh 8401 $
-// @(#) $Id: DwmBZ2Writable.hh 8401 2016-04-17 06:44:31Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2004, 2016
 //  All rights reserved.
@@ -69,3 +68,13 @@ namespace Dwm {
 }  // namespace Dwm
 
 #endif  // _DWMBZ2WRITABLE_HH_
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

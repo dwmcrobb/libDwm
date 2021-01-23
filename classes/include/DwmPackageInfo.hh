@@ -1,8 +1,7 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestLocker.cc 8389 $
-// @(#) $Id: TestLocker.cc 8389 2016-04-17 04:31:36Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2008
+//  Copyright (c) Daniel W. McRobb 2021
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -35,40 +34,37 @@
 //===========================================================================
 
 //---------------------------------------------------------------------------
-//!  \file TestLocker.cc
-//!  \brief Unit tests for Dwm::Pthread::Locker
+//!  \file DwmPackageInfo.hh
+//!  \author Daniel W. McRobb
+//!  \brief Dwm::PackageInfo class
 //---------------------------------------------------------------------------
 
-#include <cstdlib>
-#include <iostream>
+#ifndef _DWMPACKAGEINFO_HH_
+#define _DWMPACKAGEINFO_HH_
+
 #include <string>
 
-#include "DwmPthreadLocker.hh"
-#include "DwmSvnTag.hh"
-#include "DwmUnitAssert.hh"
+namespace Dwm {
 
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestLocker.cc 8389 $");
+  //------------------------------------------------------------------------
+  //!  Class with static members to get package name and version.
+  //------------------------------------------------------------------------
+  class PackageInfo
+  {
+  public:
+    static const std::string & Name();
+    static const std::string & Version();
+    static const std::string & BugReport();
+    static const std::string & URL();
+    
+  private:
+    static const std::string   _name;
+    static const std::string   _version;
+    static const std::string   _bugReport;
+    static const std::string   _url;
+    static const std::string   _id;
+  };
 
-using namespace std;
-using namespace Dwm;
+}  // namespace Dwm
 
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-int main(int argc, char *argv[])
-{
-  string  s;
-  Pthread::Locker<string>  locker(&s);
-
-  UnitAssert(locker.Lock());
-  UnitAssert(locker.Unlock());
-
-  if (Dwm::Assertions::Total().Failed() > 0) {
-    Dwm::Assertions::Print(std::cerr, true);
-    exit(1);
-  }
-  else
-    std::cout << Dwm::Assertions::Total() << " passed" << std::endl;
-
-  exit(0);
-}
+#endif  // _DWMPACKAGEINFO_HH_

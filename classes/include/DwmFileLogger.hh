@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmFileLogger.hh 10164 $
-// @(#) $Id: DwmFileLogger.hh 10164 2018-07-22 23:20:15Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2007, 2016
 //  All rights reserved.
@@ -298,9 +297,10 @@ namespace Dwm {
 
 //---------------------------- emacs settings -----------------------------
 //  Local Variables:
-//  mode: C++/la
+//  mode: C++
 //  tab-width: 2
 //  indent-tabs-mode: nil
 //  c-basic-offset: 2
 //  End:
 //-------------------------------------------------------------------------
+

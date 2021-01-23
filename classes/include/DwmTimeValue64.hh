@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmTimeValue64.hh 11087 $
-// @(#) $Id: DwmTimeValue64.hh 11087 2020-09-07 09:58:37Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2005-2007, 2016, 2017, 2020
 //  All rights reserved.
@@ -244,7 +243,7 @@ Dwm::TimeValue64 operator - (const Dwm::TimeValue64 & tv1,
 
 //---------------------------- emacs settings -----------------------------
 //  Local Variables:
-//  mode: C++/la
+//  mode: C++
 //  tab-width: 2
 //  indent-tabs-mode: nil
 //  c-basic-offset: 2

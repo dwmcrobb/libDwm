@@ -1,0 +1,92 @@
+.Dd April 10, 2017
+.Dt dwmwhat 1
+.Os mcplex.net
+.Sh NAME
+.Nm dwmwhat
+.Nd Find and display version control strings in object files
+.Sh SYNOPSIS
+.Nm
+.Op Fl c Ar custom_keyword
+.Op Fl s
+.Op Fl v
+.Cm file(s)
+.Sh DESCRIPTION
+.Nm
+searches one or more files for strings starting with \fI@(#)\fR and displays
+the strings on stdout, one per line.  It is similar to the old
+.Xr what 1 utility from SCCS, but provides special functionality for files
+built from source from a Subversion repository.
+.Pp
+While geared toward my own source which uses a custom Subversion keyword
+\fIDwmPath\fR that expands \fI%P%_%r\fR, it may be used on any file with
+strings that start with \fI@(#)\fR and can perform special processing based
+on your own custom keyword.
+.Pp
+Optional arguments:
+.Pp
+.Bl -tag -width indent
+.It Fl c Ar custom_keyword
+Specify a custom tag to enable special processing.  This keyword must
+be set to \fI%P%_%r\fR in the svn:keywords property of the file in the
+Subversion repository.
+.It Fl s 
+Shorten the file path shown.
+.It Fl v
+Print the version of
+.Xr dwmwhat 1 itself.
+.El
+.Sh EXAMPLES
+View the version information for the installed version of
+.Xr dwmwhat 1 .  Since this was built from what appears to be a tag
+directory,
+.Xr dwmwhat 1 will print what it believes is the tag name at the start
+of the line:
+.Bd -literal
+% dwmwhat `which dwmwhat`
+libDwm-0.6.9 dwm/libDwm/tags/libDwm-0.6.9/apps/dwmwhat/dwmwhat.cc
+libDwm-0.6.9 dwm/libDwm/tags/libDwm-0.6.9/src/DwmOptArgs.cc
+libDwm-0.6.9 dwm/libDwm/tags/libDwm-0.6.9/src/DwmStringUtils.cc
+libDwm-0.6.9 dwm/libDwm/tags/libDwm-0.6.9/src/DwmSvnTag.cc
+.Ed
+
+Repeat but don't display the path to the project.
+.Bd -literal
+% dwmwhat -s `which dwmwhat`
+libDwm-0.6.9 apps/dwmwhat/dwmwhat.cc
+libDwm-0.6.9 src/DwmOptArgs.cc
+libDwm-0.6.9 src/DwmStringUtils.cc
+libDwm-0.6.9 src/DwmSvnTag.cc
+.Ed
+
+View the version information for
+.Xr dwmwhat 1 in my working copy of the trunk of libDwm.  For what appear
+to be trunk or branch files,
+.Xr dwmwhat 1 will print 'trunk' or 'branch' at the start of the line
+and the revision number in parantheses.
+.Bd -literal
+% dwmwhat -s ./dwmwhat
+trunk (8496) apps/dwmwhat/dwmwhat.cc
+trunk (8388) src/DwmOptArgs.cc
+trunk (8388) src/DwmStringUtils.cc
+trunk (8402) src/DwmSvnTag.cc
+.Ed
+
+View the version information embedded in the vacation program:
+.Bd -literal
+% dwmwhat /usr/bin/vacation
+@(#)$Debug: sm_check_heap - check sm_malloc, sm_realloc, sm_free calls $
+@(#)$Debug: sm_heap_limit - max # of bytes permitted in heap $
+@(#)$Debug: sm_xtrap - raise exception at N'th xtrap point $
+@(#)$Debug: sm_xtrap_report - report xtrap count on exit $
+@(#)$Debug: sm_check_assert - check assertions $
+@(#)$Debug: sm_check_require - check function preconditions $
+@(#)$Debug: sm_check_ensure - check function postconditions $
+@(#)$Debug: sm_abort_stop - stop process on fatal error $
+.Ed
+.Sh SEE ALSO
+.Lk .. "Manpage Index"
+.Sh AUTHORS
+Copyright (c) 2016 Daniel W. McRobb
+.Mt dwm@mcplex.net
+.Pp
+

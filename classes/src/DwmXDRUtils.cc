@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmXDRUtils.cc 11084 $
-// @(#) $Id: DwmXDRUtils.cc 11084 2020-09-06 04:57:40Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2020
 //  All rights reserved.
@@ -48,10 +47,7 @@ extern "C" {
 #include <cassert>
 #include <cstdlib>
 
-#include "DwmSvnTag.hh"
 #include "DwmXDRUtils.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmXDRUtils.cc 11084 $");
 
 namespace Dwm {
 

@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmGetAddrInfo.hh 9936 $
-// @(#) $Id: DwmGetAddrInfo.hh 9936 2018-01-05 21:43:42Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2017
 //  All rights reserved.
@@ -67,3 +66,13 @@ namespace Dwm {
 }  // namespace Dwm
 
 #endif  // _DWMGETADDRINFO_HH_
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

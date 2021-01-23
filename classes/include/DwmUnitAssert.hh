@@ -1,8 +1,7 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmUnitAssert.hh 10191 $
-// @(#) $Id: DwmUnitAssert.hh 10191 2019-11-24 01:17:21Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2006-2007
+//  Copyright (c) Daniel W. McRobb 2006-2007, 2021
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -290,7 +289,7 @@ namespace Dwm {
 
 //---------------------------- emacs settings -----------------------------
 //  Local Variables:
-//  mode: C++/la
+//  mode: C++
 //  tab-width: 2
 //  indent-tabs-mode: nil
 //  c-basic-offset: 2

@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmThreadQueue.hh 11255 $
-// @(#) $Id: DwmThreadQueue.hh 11255 2020-11-15 22:51:17Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2000-2007, 2016
 //  All rights reserved.

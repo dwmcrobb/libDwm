@@ -14,7 +14,6 @@ OBJFILES = TestASIO.o \
 	   TestDwmIO.o \
 	   TestDwmLoadBalancer.o \
 	   TestDwmLocalInterfaces.o \
-	   TestDwmMutex.o \
 	   TestDwmOptArgs.o \
 	   TestDwmPacer.o \
 	   TestDwmPassword.o \
@@ -52,13 +51,10 @@ OBJFILES = TestASIO.o \
 	   TestIpv6Address.o \
 	   TestIpv6Prefix.o \
 	   TestLLCAT.o \
-	   TestLocker.o \
 	   TestMacAddress.o \
 	   TestMplsLabel.o \
 	   TestMplsLabelStack.o \
 	   TestPatricia.o \
-	   TestPthreadMutex.o \
-	   TestPthreadReadWriteLock.o \
 	   TestRegistry.o \
 	   TestStringConverter.o \
 	   TestStringUtils.o \

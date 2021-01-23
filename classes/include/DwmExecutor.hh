@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmExecutor.hh 8401 $
-// @(#) $Id: DwmExecutor.hh 8401 2016-04-17 06:44:31Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2010, 2016
 //  All rights reserved.
@@ -96,3 +95,11 @@ namespace Dwm {
 #define  ARGUMENT    261
 #define  WHITESPACE  262
 
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

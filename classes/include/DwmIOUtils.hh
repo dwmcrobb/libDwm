@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmIOUtils.hh 11179 $
-// @(#) $Id: DwmIOUtils.hh 11179 2020-09-15 00:33:00Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2004, 2006, 2007, 2016, 2020
 //  All rights reserved.
@@ -454,3 +453,13 @@ namespace Dwm {
 }  // namespace Dwm
 
 #endif  // _DWMIOUTILS_HH_
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

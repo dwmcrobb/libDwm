@@ -6,7 +6,6 @@ OBJFILESNP =	DwmASIO.o \
 		DwmBZ2IO.o \
 		DwmBase64.o \
 		DwmCgi.o \
-		DwmConditionVariable.o \
 		DwmCvsTag.o \
 		DwmDaemonUtils.o \
 		DwmDateTime.o \
@@ -46,14 +45,11 @@ OBJFILESNP =	DwmASIO.o \
 		DwmMacAddress.o \
 		DwmMplsLabel.o \
 		DwmMplsLabelStack.o \
-		DwmMutex.o \
 		DwmOptArgs.o \
 		DwmPacer.o \
+		DwmPackageInfo.o \
 		DwmPassword.o \
 		DwmPathUtils.o \
-		DwmPthreadLocker.o \
-		DwmPthreadReadWriteLock.o \
-		DwmPthreadSignal.o \
 		DwmRegistry.o \
 		DwmRusage.o \
 		DwmSignal.o \
@@ -138,11 +134,12 @@ ${TARDIR}/lib/libDwm.la: ../lib/libDwm.la
 
 clean:: clean-tarprep
 	${LIBTOOL} --mode=clean rm -f ../lib/libDwm.la ${OBJFILES} DwmCgi.cc \
-	 DwmRegistry.cc DwmFreeBSDPkgManifestLex.cc *Parse.cc *Parse.hh \
-	 DwmTimeUtil.cc ${SHARED_OBJFILES}
+	 DwmExecutor.cc DwmRegistry.cc DwmFreeBSDPkgManifestLex.cc *Parse.cc \
+	 *Parse.hh DwmTimeUtil.cc ${SHARED_OBJFILES}
 
 distclean:: clean
 	rm -f deps/*_deps
+	rm DwmPackageInfo.cc
 
 clean-install::
 	rm -f ${INSTALLPREFIX}/lib/libDwm.a

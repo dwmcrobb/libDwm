@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmBase64.hh 9942 $
-// @(#) $Id: DwmBase64.hh 9942 2018-01-06 07:40:26Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2018
 //  All rights reserved.
@@ -116,3 +115,13 @@ namespace Dwm {
 }  // namespace Dwm
 
 #endif  // _DWMBASE64_HH_
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

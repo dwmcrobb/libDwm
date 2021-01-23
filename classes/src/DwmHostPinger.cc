@@ -1,6 +1,5 @@
 //===========================================================================
 // @(#) $Name$
-// @(#) $Id: DwmHostPinger.cc 9487 2017-06-09 22:31:58Z dwm $
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2007, 2016
 //  All rights reserved.
@@ -52,7 +51,6 @@ extern "C" {
 #include <cstring>
 #include <sstream>
 
-#include "DwmSvnTag.hh"
 #include "DwmIpv4PacketHeader.hh"
 #include "DwmIpv4IcmpEchoReply.hh"
 #include "DwmIpv4IcmpEchoRequest.hh"
@@ -61,9 +59,6 @@ extern "C" {
 #include "DwmStringUtils.hh"
 #include "DwmHostPinger.hh"
 #include "DwmPacer.hh"
-#include "DwmPthreadSignal.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmHostPinger.cc 9487 $");
 
 using namespace std;
 
@@ -423,15 +418,6 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   void HostPinger::RunWatcher()
   {
-    Pthread::Signal  sigInt(SIGINT);
-    sigInt.BlockInThread();
-#ifdef __linux__
-    //  pcap_breakloop() nor timeouts work on linux (which makes it a crappy
-    //  operating system for pcap programs).  So set our cancellation type
-    //  to asynchronous.
-    int  oldType;
-    pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldType);
-#endif    
     _watcherReady.notify_all();
     while (_runWatcher) {
       if (_pcap.Dispatch(-1, HostPinger::PcapCallback, (uint8_t *)this) < 0) {
@@ -489,8 +475,6 @@ void HostPinger::GetTcpPacket(const PingDestination & destination,
   void HostPinger::RunSender()
   {
     _senderDone = false;
-    Pthread::Signal  sigInt(SIGINT);
-    sigInt.BlockInThread();
     
     Pacer  pacer(_packetRate);
     uint16_t  seqno = 0;

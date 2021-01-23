@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmSunriseSunset.hh 8652 $
-// @(#) $Id: DwmSunriseSunset.hh 8652 2016-06-12 04:22:22Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2016
 //  All rights reserved.
@@ -71,3 +70,13 @@ namespace Dwm {
 }  // namespace Dwm
 
 #endif  // _DWMSUNRISESUNSET_HH_
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

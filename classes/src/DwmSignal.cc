@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmSignal.cc 11133 $
-// @(#) $Id: DwmSignal.cc 11133 2020-09-07 23:37:35Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2000-2007, 2020
 //  All rights reserved.
@@ -43,12 +42,8 @@
 #include <cassert>
 #include <cstring>
 
-#include "DwmMutex.hh"
 #include "DwmSignal.hh"
 #include "DwmSysLogger.hh"
-#include "DwmSvnTag.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmSignal.cc 11133 $");
 
 namespace Dwm {
 

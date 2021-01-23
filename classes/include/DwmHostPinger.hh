@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmHostPinger.hh 9482 $
-// @(#) $Id: DwmHostPinger.hh 9482 2017-06-09 05:14:31Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2007, 2016
 //  All rights reserved.
@@ -190,3 +189,13 @@ namespace Dwm {
 }  // namespace Dwm
 
 #endif  // _DWMHOSTPINGER_HH_
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

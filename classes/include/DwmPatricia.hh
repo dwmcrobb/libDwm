@@ -1,7 +1,5 @@
-/* ex: set tabstop=2 expandtab: */
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmPatricia.hh 11087 $
-// @(#) $Id: DwmPatricia.hh 11087 2020-09-07 09:58:37Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2006-2007, 2020
 //  All rights reserved.
@@ -935,7 +933,7 @@ namespace Dwm {
 
 //---------------------------- emacs settings -----------------------------
 //  Local Variables:
-//  mode: C++/la
+//  mode: C++
 //  tab-width: 2
 //  indent-tabs-mode: nil
 //  c-basic-offset: 2

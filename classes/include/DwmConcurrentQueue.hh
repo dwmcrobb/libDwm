@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmConcurrentQueue.hh 9014 $
-// @(#) $Id: DwmConcurrentQueue.hh 9014 2017-04-11 09:53:02Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2016
 //  All rights reserved.

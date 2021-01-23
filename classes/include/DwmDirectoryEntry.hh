@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmDirectoryEntry.hh 9671 $
-// @(#) $Id: DwmDirectoryEntry.hh 9671 2017-06-28 07:35:24Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2011, 2016, 2017
 //  All rights reserved.
@@ -185,3 +184,13 @@ namespace Dwm {
 }  // namespace Dwm
 
 #endif  // _DWMDIRECTORYENTRY_HH_
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

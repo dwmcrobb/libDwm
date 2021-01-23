@@ -739,3 +739,13 @@ namespace Dwm {
 }  // namespace Dwm
 
 #endif  // _DWMASIO_HH_
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

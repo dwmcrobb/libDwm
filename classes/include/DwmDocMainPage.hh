@@ -20,10 +20,8 @@
  *  interfaces.
  *
  *  Since much of the software I've written in the last 20 years has
- *  been multithreaded, I have also made heavy use of the older classes
- *  in the Dwm::Pthread namespace.  Today I've replaced most of their
- *  use with std::mutex, std::thread and friends, and use instances of
- *  the Dwm::Thread::Queue class for inter-thread communication (usually
+ *  been multithreaded, I have also made heavy use of the
+ *  Dwm::Thread::Queue class for inter-thread communication (usually
  *  as 'work queues').
  *  
  *  \section history_sec History
@@ -31,7 +29,7 @@
  *  I started this library in 1998.  I continue to maintain it for my
  *  personal use.  While it has grown over the years, the most common
  *  use features have been stable for a long time.  To some extent they
- *  have to be stable; I have over 400,000 lines of code in my personal
+ *  have to be stable; I have over 500,000 lines of code in my personal
  *  software repository, and a decent amount of it is dependent on this
  *  library.  The good news is that those dependencies don't prevent me
  *  from refactoring, improving and growing libDwm as needed.
@@ -43,7 +41,7 @@
  *  FreeBSD is my operating system of choice for servers and macOS is my
  *  operating system of choice for desktops and laptops.  I have
  *  several Raspberry Pis I utilize for simple small tasks, and Ubuntu
- *  VMs and an old Ubuntu workstation.
+ *  VMs and Ubuntu workstations.
  *
  *  \tableofcontents
  *

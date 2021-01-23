@@ -172,5 +172,6 @@ AC_ARG_ENABLE([docs],[AS_HELP_STRING([--enable-docs],[build documentation])],
 AC_SUBST(BUILD_DOCS)
 
 AC_CONFIG_FILES([Makefile.vars packaging/libDwm.pc packaging/fbsd_manifest
-                 packaging/debcontrol doc/Doxyfile])
+                 packaging/debcontrol doc/Doxyfile
+		 classes/src/DwmPackageInfo.cc])
 AC_OUTPUT

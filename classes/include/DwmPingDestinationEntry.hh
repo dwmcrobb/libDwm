@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmPingDestinationEntry.hh 9482 $
-// @(#) $Id: DwmPingDestinationEntry.hh 9482 2017-06-09 05:14:31Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2008, 2016
 //  All rights reserved.
@@ -173,3 +172,13 @@ namespace Dwm {
 }  // namespace Dwm
 
 #endif  // _DWMPINGDESTINATIONENTRY_HH_
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmProcessInfo.cc 11127 $
-// @(#) $Id: DwmProcessInfo.cc 11127 2020-09-07 23:23:30Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2006-2007, 2020
 //  All rights reserved.
@@ -53,16 +52,12 @@ extern "C" {
 #include <cstdlib>
 #include <sstream>
 
-#include "DwmSvnTag.hh"
 #include "DwmGZIO.hh"
 #include "DwmIOUtils.hh"
 #include "DwmStreamIO.hh"
-#include "DwmMutex.hh"
 #include "DwmPassword.hh"
 #include "DwmProcessInfo.hh"
 #include "DwmProcessTable.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmProcessInfo.cc 11127 $");
 
 namespace Dwm {
 

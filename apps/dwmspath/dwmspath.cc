@@ -1,8 +1,7 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/src/DwmPthreadLocker.cc 11129 $
-// @(#) $Id: DwmPthreadLocker.cc 11129 2020-09-07 23:25:48Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2008
+//  Copyright (c) Daniel W. McRobb 2016, 2021
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -35,25 +34,48 @@
 //===========================================================================
 
 //---------------------------------------------------------------------------
-//!  \file DwmPthreadLocker.cc
-//!  \author Daniel W. McRobb
-//!  \brief Dwm::Pthread::Locker globals
+//!  \file dwmspath.cc
+//!  \brief Simple application to sanitize path(s) given on command line by
+//!  removing redundancy ('/./' and '//') and replacing '../'.  Will yield
+//!  an absolute path.  This is much like realpath.  One significant
+//!  difference: I don't require the path to exist.  A long time ago, this
+//!  program had my own string manipulation code; we didn't have
+//!  std::filesystem.  Now it just uses std::filesystem.
 //---------------------------------------------------------------------------
 
-#include <string>
+#include <filesystem>
+#include <iostream>
 
-#include "DwmPthreadLocker.hh"
-#include "DwmSvnTag.hh"
+#include "DwmOptArgs.hh"
 
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmPthreadLocker.cc 11129 $");
+using namespace std;
 
-namespace Dwm {
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+int main(int argc, char *argv[])
+{
+  namespace fs = std::filesystem;
+  
+  Dwm::OptArgs  optargs;
+  optargs.AddOptArg("r", "relative", false, "0",
+                    "Show relative path instead of absolute path");
+  optargs.AddNormalArg("path(s)", true);
+  int  nextArg = optargs.Parse(argc, argv);
 
-  namespace Pthread {
+  if (nextArg == argc) {
+    optargs.Usage(argv[0]);
+    return 1;
+  }
 
-    Mutex            g_LockerMutex;
-    LockerMutexMap   g_LockerMutexes;
-    
-  }  // namespace Pthread
-
-}  // namespace Dwm
+  for (int arg = nextArg; arg < argc; ++arg) {
+    if (optargs.Get<bool>('r')) {
+      cout << fs::relative(argv[arg]).string() << '\n';
+    }
+    else {
+      cout << fs::weakly_canonical(argv[arg]).string() << '\n';
+    }
+  }
+  
+  return 0;
+}

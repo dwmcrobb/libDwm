@@ -1,3 +1,5 @@
 DwmCgi.cc
+DwmExecutor.cc
+DwmPackageInfo.cc
 DwmRegistry.cc
 DwmTimeUtil.cc

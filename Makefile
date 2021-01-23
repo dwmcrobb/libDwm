@@ -1,12 +1,16 @@
 include Makefile.vars
 
-all:: classes/lib/libDwm.la
+all:: classes/lib/libDwm.la apps
 
 classes/lib/libDwm.la::
 	${MAKE} -C classes
 
-tarprep:: classes/lib/libDwm.la
+apps::
+	${MAKE} -C apps
+
+tarprep:: classes/lib/libDwm.la apps
 	${MAKE} -C classes $@
+	${MAKE} -C apps $@
 ifeq ("${BUILD_DOCS}", "yes")
 	${MAKE} -C doc $@
 endif
@@ -28,6 +32,7 @@ linux-pkg: tarprep
 	dpkg-name -o staging.deb
 
 clean::
+	${MAKE} -C apps $@
 	${MAKE} -C classes $@
 
 distclean:: clean

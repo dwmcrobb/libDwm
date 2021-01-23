@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmXmlAttribute.hh 8401 $
-// @(#) $Id: DwmXmlAttribute.hh 8401 2016-04-17 06:44:31Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2008
 //  All rights reserved.
@@ -36,7 +35,7 @@
 
 //---------------------------------------------------------------------------
 //!  \file DwmXmlAttribute.hh
-//!  \brief NOT YET DOCUMENTED
+//!  \brief Dwm::Xml::Attribute class declaration
 //---------------------------------------------------------------------------
 
 #ifndef _DWMXMLATTRIBUTE_HH_
@@ -76,3 +75,13 @@ namespace Dwm {
 }  // namespace Dwm
 
 #endif  // _DWMXMLATTRIBUTE_HH_
+
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $Name:$
-// @(#) $Id: DwmArgumentIO.hh 11636 2021-01-03 09:51:55Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2020
 //  All rights reserved.
@@ -254,8 +253,15 @@ namespace Dwm {
       return is;
     }
     
-    static const std::string  g_svnid("@(#) $DwmPath: dwm/libDwm/trunk/include/DwmArgumentIO.hh 11636 $");
-    
   }  // namespace ArgumentIO
 
 }  // namespace Dwm
+
+//---------------------------- emacs settings -----------------------------
+//  Local Variables:
+//  mode: C++
+//  tab-width: 2
+//  indent-tabs-mode: nil
+//  c-basic-offset: 2
+//  End:
+//-------------------------------------------------------------------------

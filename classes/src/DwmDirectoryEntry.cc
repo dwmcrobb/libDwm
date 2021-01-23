@@ -52,12 +52,8 @@ extern "C" {
 #include <cstring>
 #include <map>
 
-#include "DwmMutex.hh"
-#include "DwmSvnTag.hh"
 #include "DwmSysLogger.hh"
 #include "DwmDirectoryEntry.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmDirectoryEntry.cc 11085 $");
 
 using namespace std;
 
@@ -140,14 +136,13 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   std::string DirectoryEntry::DirName() const
   {
-    string                 rc;
-    static Pthread::Mutex  mtx;
+    string        rc;
+    static mutex  mtx;
     
     if (! _path.empty()) {
-      if (mtx.Lock()) {
-        rc = dirname((char *)_path.c_str());
-        mtx.Unlock();
-      }
+      mtx.lock();
+      rc = dirname((char *)_path.c_str());
+      mtx.unlock();
     }
     return rc;
   }
@@ -370,19 +365,18 @@ namespace Dwm {
     TypeEnum  rc = e_typeUnknown;
     
     static map<mode_t,TypeEnum>  typeMap;
-    static Pthread::Mutex        mtx;
-    if (mtx.Lock()) {
-      if (typeMap.empty()) {
-        typeMap[S_IFIFO]  = e_typeFifo;
-        typeMap[S_IFCHR]  = e_typeCharacterSpecial;
-        typeMap[S_IFDIR]  = e_typeDirectory;
-        typeMap[S_IFBLK]  = e_typeBlockSpecial;
-        typeMap[S_IFREG]  = e_typeRegular;
-        typeMap[S_IFLNK]  = e_typeSymbolicLink;
-        typeMap[S_IFSOCK] = e_typeSocket;
-      }
-      mtx.Unlock();
+    static mutex                 mtx;
+    mtx.lock();
+    if (typeMap.empty()) {
+      typeMap[S_IFIFO]  = e_typeFifo;
+      typeMap[S_IFCHR]  = e_typeCharacterSpecial;
+      typeMap[S_IFDIR]  = e_typeDirectory;
+      typeMap[S_IFBLK]  = e_typeBlockSpecial;
+      typeMap[S_IFREG]  = e_typeRegular;
+      typeMap[S_IFLNK]  = e_typeSymbolicLink;
+      typeMap[S_IFSOCK] = e_typeSocket;
     }
+    mtx.unlock();
     
     map<mode_t,TypeEnum>::const_iterator  i = 
       typeMap.find(statStruct.st_mode & S_IFMT);
@@ -402,19 +396,18 @@ namespace Dwm {
     TypeEnum  rc = e_typeUnknown;
     
     static map<uint8_t,TypeEnum>  typeMap;
-    static Pthread::Mutex         mtx;
-    if (mtx.Lock()) {
-      if (typeMap.empty()) {
-        typeMap[DT_FIFO] = e_typeFifo;
-        typeMap[DT_CHR]  = e_typeCharacterSpecial;
-        typeMap[DT_DIR]  = e_typeDirectory;
-        typeMap[DT_BLK]  = e_typeBlockSpecial;
-        typeMap[DT_REG]  = e_typeRegular;
-        typeMap[DT_LNK]  = e_typeSymbolicLink;
-        typeMap[DT_SOCK] = e_typeSocket;
-      }
-      mtx.Unlock();
+    static mutex                  mtx;
+    mtx.lock();
+    if (typeMap.empty()) {
+      typeMap[DT_FIFO] = e_typeFifo;
+      typeMap[DT_CHR]  = e_typeCharacterSpecial;
+      typeMap[DT_DIR]  = e_typeDirectory;
+      typeMap[DT_BLK]  = e_typeBlockSpecial;
+      typeMap[DT_REG]  = e_typeRegular;
+      typeMap[DT_LNK]  = e_typeSymbolicLink;
+      typeMap[DT_SOCK] = e_typeSocket;
     }
+    mtx.unlock();
     
     map<uint8_t,TypeEnum>::const_iterator  i = 
       typeMap.find(dirEntry.d_type);

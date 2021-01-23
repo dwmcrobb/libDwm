@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/include/DwmTypeName.hh 9017 $
-// @(#) $Id: DwmTypeName.hh 9017 2017-04-11 17:51:09Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2006-2007
 //  All rights reserved.
@@ -83,19 +82,17 @@ namespace Dwm {
   template <typename T>
   std::string TypeName(const T & x)
   {
-    static const std::string rcsid = "@(#) $DwmPath: dwm/libDwm/trunk/include/DwmTypeName.hh 9017 $";
-    
     std::string  rc;
     int        demangleStatus = -1;
     char       *demangledName = 
       abi::__cxa_demangle(typeid(x).name(), 0, 0, &demangleStatus);
     if (demangledName) {
-//    if (demangleStatus == 0) {
+      if (demangleStatus == 0) {
         rc = demangledName;
         if (rc == "unsigned") {
           rc += " int";
         }
-//    }
+      }
       free(demangledName);
     }
     else {
@@ -174,7 +171,7 @@ namespace Dwm {
 
 //---------------------------- emacs settings -----------------------------
 //  Local Variables:
-//  mode: C++/la
+//  mode: C++
 //  tab-width: 2
 //  indent-tabs-mode: nil
 //  c-basic-offset: 2
