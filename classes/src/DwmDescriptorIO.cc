@@ -47,13 +47,10 @@ extern "C" {
 #include <cstdlib>
 #include <cassert>
 
-#include "DwmSvnTag.hh"
 #include "DwmSysLogger.hh"
 #include "DwmDescriptorIO.hh"
 #include "DwmPortability.hh"
 #include "DwmXDRUtils.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmDescriptorIO.cc 11084 $");
 
 namespace Dwm {
 

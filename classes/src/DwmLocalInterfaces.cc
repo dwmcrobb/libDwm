@@ -73,10 +73,7 @@ extern "C" {
 #include <iomanip>
 #include <string>
 
-#include "DwmSvnTag.hh"
 #include "DwmLocalInterfaces.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmLocalInterfaces.cc 11118 $");
 
 using namespace std;
 

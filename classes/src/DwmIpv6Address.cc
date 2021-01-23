@@ -52,10 +52,7 @@ extern "C" {
 
 #include <cassert>
 
-#include "DwmSvnTag.hh"
 #include "DwmIpv6Address.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmIpv6Address.cc 11347 $");
 
 namespace Dwm {
 

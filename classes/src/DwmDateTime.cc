@@ -42,11 +42,8 @@
 #include <cstring>
 #include <iostream>
 
-#include "DwmSvnTag.hh"
 #include "DwmDateTime.hh"
 #include "DwmStrptime.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmDateTime.cc 11093 $");
 
 namespace Dwm {
 

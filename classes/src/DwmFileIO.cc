@@ -42,13 +42,10 @@
 #include <cstdlib>
 #include <cassert>
 
-#include "DwmSvnTag.hh"
 #include "DwmSysLogger.hh"
 #include "DwmFileIO.hh"
 #include "DwmPortability.hh"
 #include "DwmXDRUtils.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmFileIO.cc 11084 $");
 
 namespace Dwm {
 

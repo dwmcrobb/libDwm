@@ -49,10 +49,7 @@ extern "C" {
 #include <regex>
 #include <sstream>
 
-#include "DwmSvnTag.hh"
 #include "DwmIpv6Prefix.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmIpv6Prefix.cc 11407 $");
 
 namespace Dwm {
 

@@ -36,7 +36,7 @@
 //---------------------------------------------------------------------------
 //!  \file DwmIpAddress.cc
 //!  \author Daniel W. McRobb
-//!  \brief NOT YET DOCUMENTED
+//!  \brief Dwm::IpAddress class implementation
 //---------------------------------------------------------------------------
 
 extern "C" {
@@ -50,9 +50,6 @@ extern "C" {
 #include "DwmGZIO.hh"
 #include "DwmIOUtils.hh"
 #include "DwmStreamIO.hh"
-#include "DwmSvnTag.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmIpAddress.cc 11463 $");
 
 namespace Dwm {
 

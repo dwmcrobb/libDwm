@@ -42,10 +42,7 @@
 #include <cstdint>
 #include <iomanip>
 
-#include "DwmSvnTag.hh"
 #include "DwmBase64.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmBase64.cc 11089 $");
 
 using namespace std;
 

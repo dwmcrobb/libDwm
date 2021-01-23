@@ -51,11 +51,8 @@ extern "C" {
 #include <sstream>
 #include <string>
 
-#include "DwmSvnTag.hh"
 #include "DwmMacAddress.hh"
 #include "DwmSysLogger.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmMacAddress.cc 11087 $");
 
 using namespace std;
 

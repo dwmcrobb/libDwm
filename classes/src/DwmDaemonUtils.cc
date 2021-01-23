@@ -48,11 +48,8 @@ extern "C" {
     #include <unistd.h>
 }
 
-#include "DwmSvnTag.hh"
 #include "DwmDaemonUtils.hh"
 #include "DwmSysLogger.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmDaemonUtils.cc 11091 $");
 
 namespace Dwm {
 

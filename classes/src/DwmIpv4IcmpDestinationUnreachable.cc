@@ -48,11 +48,8 @@ extern "C" {
 #include <cstring>
 #include <sstream>
 
-#include "DwmSvnTag.hh"
 #include "DwmIpv4IcmpDestinationUnreachable.hh"
 #include "DwmIpv4Utils.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmIpv4IcmpDestinationUnreachable.cc 11100 $");
 
 using namespace std;
 

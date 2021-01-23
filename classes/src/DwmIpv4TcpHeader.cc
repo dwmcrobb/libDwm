@@ -51,12 +51,9 @@ extern "C" {
 #include <cstring>
 #include <iomanip>
 
-#include "DwmSvnTag.hh"
 #include "DwmIpv4TcpHeader.hh"
 #include "DwmIpv4Utils.hh"
 #include "DwmSysLogger.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmIpv4TcpHeader.cc 11109 $");
 
 using namespace std;
 

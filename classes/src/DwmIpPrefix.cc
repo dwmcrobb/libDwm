@@ -46,9 +46,6 @@
 #include "DwmIpPrefix.hh"
 #include "DwmIOUtils.hh"
 #include "DwmStreamIO.hh"
-#include "DwmSvnTag.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmIpPrefix.cc 11464 $");
 
 namespace Dwm {
 

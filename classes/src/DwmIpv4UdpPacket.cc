@@ -44,11 +44,8 @@ extern "C" {
   #include <sys/socket.h>
 }
 
-#include "DwmSvnTag.hh"
 #include "DwmIpv4UdpPacket.hh"
 #include "DwmSysLogger.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmIpv4UdpPacket.cc 11087 $");
 
 namespace Dwm {
 

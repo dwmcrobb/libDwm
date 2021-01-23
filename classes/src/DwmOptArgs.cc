@@ -42,9 +42,6 @@
 #include <string>
 
 #include "DwmOptArgs.hh"
-#include "DwmSvnTag.hh"
-
-static const Dwm::SvnTag  svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmOptArgs.cc 11120 $");
 
 using namespace std;
 

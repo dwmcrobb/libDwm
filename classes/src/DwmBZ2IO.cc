@@ -50,11 +50,8 @@ extern "C" {
 #include <cstdlib>
 
 #include "DwmBZ2IO.hh"
-#include "DwmSvnTag.hh"
 #include "DwmPortability.hh"
 #include "DwmXDRUtils.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmBZ2IO.cc 11088 $");
 
 namespace Dwm {
 

@@ -35,7 +35,7 @@
 
 //---------------------------------------------------------------------------
 //!  \file DwmFileLogger.cc
-//!  \brief NOT YET DOCUMENTED
+//!  \brief Dwm::FileLogger class implementation
 //---------------------------------------------------------------------------
 
 extern "C" {
@@ -49,11 +49,8 @@ extern "C" {
 #include <cstring>
 #include <sstream>
 
-#include "DwmSvnTag.hh"
 #include "DwmFileLogger.hh"
 #include "DwmPathUtils.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmFileLogger.cc 10180 $");
 
 using namespace std;
 

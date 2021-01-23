@@ -43,15 +43,12 @@
 #include <cstdlib>
 #include <sstream>
 
-#include "DwmSvnTag.hh"
 #include "DwmBZ2IO.hh"
 #include "DwmGZIO.hh"
 #include "DwmDescriptorIO.hh"
 #include "DwmFileIO.hh"
 #include "DwmStreamIO.hh"
 #include "DwmMplsLabel.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmMplsLabel.cc 11087 $");
 
 namespace Dwm {
 

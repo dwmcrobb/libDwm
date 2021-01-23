@@ -41,11 +41,8 @@
 
 #include <cassert>
 
-#include "DwmSvnTag.hh"
 #include "DwmMplsLabelStack.hh"
 #include "DwmSysLogger.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmMplsLabelStack.cc 11087 $");
 
 namespace Dwm {
 

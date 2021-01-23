@@ -37,10 +37,7 @@
 #include <sstream>
 #include <vector>
 
-#include "DwmSvnTag.hh"
 #include "DwmEngFormat.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmEngFormat.cc 8388 $");
 
 using namespace std;
 

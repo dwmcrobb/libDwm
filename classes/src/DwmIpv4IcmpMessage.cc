@@ -51,11 +51,8 @@ extern "C" {
 #include <cstdlib>
 #include <cstring>
 
-#include "DwmSvnTag.hh"
 #include "DwmIpv4IcmpMessage.hh"
 #include "DwmIpv4Utils.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmIpv4IcmpMessage.cc 11103 $");
 
 namespace Dwm {
 

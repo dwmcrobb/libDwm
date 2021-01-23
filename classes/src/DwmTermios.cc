@@ -50,9 +50,6 @@ extern "C" {
 
 #include "DwmTermios.hh"
 #include "DwmSysLogger.hh"
-#include "DwmSvnTag.hh"
-
-static const Dwm::SvnTag  svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmTermios.cc 11140 $");
 
 using namespace std;
 

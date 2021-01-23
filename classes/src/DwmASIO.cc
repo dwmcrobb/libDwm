@@ -40,12 +40,9 @@
 //---------------------------------------------------------------------------
 
 #include "DwmPortability.hh"
-#include "DwmSvnTag.hh"    
 #include "DwmSysLogger.hh"
 #include "DwmASIO.hh"
 #include "DwmXDRUtils.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmASIO.cc 10964 $");
 
 namespace Dwm {
 

@@ -48,11 +48,8 @@ extern "C" {
   #include <netinet/in.h>
 }
 
-#include "DwmSvnTag.hh"
 #include "DwmIpv4TcpPacket.hh"
 #include "DwmSysLogger.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmIpv4TcpPacket.cc 11110 $");
 
 namespace Dwm {
 

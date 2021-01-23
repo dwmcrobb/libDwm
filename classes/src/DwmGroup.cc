@@ -39,10 +39,7 @@
 //!  \brief Group class implementation
 //---------------------------------------------------------------------------
 
-#include "DwmSvnTag.hh"
 #include "DwmGroup.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmGroup.cc 11098 $");
 
 using namespace std;
 

@@ -48,12 +48,9 @@ extern "C" {
 #include <cassert>
 #include <cstring>
 
-#include "DwmSvnTag.hh"
 #include "DwmIpv4TcpPayload.hh"
 #include "DwmIpv4Utils.hh"
 #include "DwmSysLogger.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmIpv4TcpPayload.cc 11111 $");
 
 namespace Dwm {
 

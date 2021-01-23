@@ -35,7 +35,7 @@
 
 //---------------------------------------------------------------------------
 //!  \file DwmFileRoller.cc
-//!  \brief NOT YET DOCUMENTED
+//!  \brief Dwm::FileRoller class implementation
 //---------------------------------------------------------------------------
 
 extern "C" {
@@ -49,11 +49,8 @@ extern "C" {
 #include <sstream>
 
 #include "DwmBZ2IO.hh"
-#include "DwmSvnTag.hh"
 #include "DwmFileRoller.hh"
 #include "DwmGZIO.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmFileRoller.cc 8388 $");
 
 using namespace std;
 

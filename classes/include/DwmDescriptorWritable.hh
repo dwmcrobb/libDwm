@@ -40,6 +40,11 @@
 #ifndef _DWMDESCRIPTORWRITABLE_HH_
 #define _DWMDESCRIPTORWRITABLE_HH_
 
+extern "C" {
+  #include <sys/types.h>
+}
+
+#include <cstddef>
 #include <cstdint>
 
 namespace Dwm {

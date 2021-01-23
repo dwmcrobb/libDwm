@@ -42,6 +42,10 @@
 #ifndef _DWMDESCRIPTORREADABLE_HH_
 #define _DWMDESCRIPTORREADABLE_HH_
 
+extern "C" {
+  #include <sys/types.h>
+}
+
 #include <cstddef>
 
 namespace Dwm {

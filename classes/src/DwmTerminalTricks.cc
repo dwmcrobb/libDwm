@@ -53,8 +53,6 @@ extern "C" {
 
 using namespace std;
 
-static const string svnid("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmTerminalTricks.cc 11634 $");
-
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------

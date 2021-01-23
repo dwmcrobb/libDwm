@@ -48,14 +48,7 @@ extern "C" {
   #include <arpa/inet.h>
 }
 
-#include "DwmSvnTag.hh"
 #include "DwmIpv4Address.hh"
-
-#ifndef INADDR_NONE
-//  #define INADDR_NONE  0xffffffff
-#endif
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmIpv4Address.cc 11099 $");
 
 namespace Dwm {
 

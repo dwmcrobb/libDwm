@@ -44,10 +44,7 @@ extern "C" {
   #include <netinet/in.h>
 }
 
-#include "DwmSvnTag.hh"
 #include "DwmIpv4Utils.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmIpv4Utils.cc 11115 $");
 
 namespace Dwm {
 

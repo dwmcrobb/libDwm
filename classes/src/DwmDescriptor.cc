@@ -45,9 +45,6 @@ extern "C" {
 
 #include "DwmSysLogger.hh"
 #include "DwmDescriptor.hh"
-#include "DwmSvnTag.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmDescriptor.cc 11087 $");
 
 namespace Dwm {
 

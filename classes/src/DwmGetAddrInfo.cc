@@ -48,10 +48,7 @@ extern "C" {
 
 #include <cstring>
 
-#include "DwmSvnTag.hh"
 #include "DwmGetAddrInfo.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/src/DwmGetAddrInfo.cc 11097 $");
 
 namespace Dwm {
 
