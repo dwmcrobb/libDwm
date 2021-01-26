@@ -44,18 +44,19 @@ OBJFILES = TestASIO.o \
 	   TestIpv4PacketHeader.o \
 	   TestIpv4Prefix.o \
 	   TestIpv4Routes.o \
+	   TestIpv4Routes2.o \
 	   TestIpv4TcpHeader.o \
 	   TestIpv4TcpPacket.o \
 	   TestIpv4UdpHeader.o \
 	   TestIpv4UdpPacket.o \
 	   TestIpv6Address.o \
 	   TestIpv6Prefix.o \
-	   TestLLCAT.o \
+	   TestIpv6Routes.o \
+	   TestIpv6Routes2.o \
 	   TestMacAddress.o \
 	   TestMplsLabel.o \
 	   TestMplsLabelStack.o \
 	   TestPatricia.o \
-	   TestRegistry.o \
 	   TestStringConverter.o \
 	   TestStringUtils.o \
 	   TestSvnTag.o \
@@ -117,11 +118,8 @@ TestProcessTable: TestProcessTable.o ../lib/libDwm.la
 	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} -o $@ $^ ${ZLIB} ${BZLIB} ${BOOSTLIBS} ${TERMCAPLIB} ${OSLIBS} ${PTHREADLDFLAGS} ${KVMLIB} -lpcap
 endif
 
-TestRegistry: TestRegistry.o ../lib/libDwm.la
-	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} -o $@ $^ ${BOOSTLIBS} ${PTHREADLDFLAGS} ${TERMCAPLIB} ${OSLIBS} -lpcap
-
 %: %.o ../lib/libDwm.la
-	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} -o $@ $^ ${ZLIB} ${BZLIB} ${BOOSTLIBS} ${TERMCAPLIB} ${OSLIBS} ${PTHREADLDFLAGS} -lpcap
+	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} -o $@ $^ ${ZLIB} ${BZLIB} ${BOOSTLIBS} ${TERMCAPLIB} ${OSLIBS} ${PTHREADLDFLAGS} -lpcap -ltbb
 
 ../lib/libDwm.la::
 	${MAKE} -C ../src

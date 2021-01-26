@@ -97,7 +97,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Returns a dotted-decimal string representation.
     //------------------------------------------------------------------------
-    operator std::string () const;
+    explicit operator std::string () const;
     
     //------------------------------------------------------------------------
     //!  less-than operator.

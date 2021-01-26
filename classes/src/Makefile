@@ -50,7 +50,6 @@ OBJFILESNP =	DwmASIO.o \
 		DwmPackageInfo.o \
 		DwmPassword.o \
 		DwmPathUtils.o \
-		DwmRegistry.o \
 		DwmRusage.o \
 		DwmSignal.o \
 		DwmSocket.o \
@@ -134,8 +133,8 @@ ${TARDIR}/lib/libDwm.la: ../lib/libDwm.la
 
 clean:: clean-tarprep
 	${LIBTOOL} --mode=clean rm -f ../lib/libDwm.la ${OBJFILES} DwmCgi.cc \
-	 DwmExecutor.cc DwmRegistry.cc DwmFreeBSDPkgManifestLex.cc *Parse.cc \
-	 *Parse.hh DwmTimeUtil.cc ${SHARED_OBJFILES}
+	 DwmExecutor.cc DwmFreeBSDPkgManifestLex.cc *Parse.cc *Parse.hh \
+	 DwmTimeUtil.cc ${SHARED_OBJFILES}
 
 distclean:: clean
 	rm -f deps/*_deps

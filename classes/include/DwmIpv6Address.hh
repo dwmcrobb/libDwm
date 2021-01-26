@@ -138,6 +138,14 @@ namespace Dwm {
     {
       return (const uint8_t *)&_addr;
     }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    inline const in6_addr & In6Addr() const
+    {
+      return _addr;
+    }
     
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if we called
@@ -206,9 +214,9 @@ namespace Dwm {
     //------------------------------------------------------------------------
     friend std::ostream & operator << (std::ostream & os, 
                                        const Ipv6Address & addr);
-    
+
   private:
-    struct in6_addr  _addr;
+    alignas(8) struct in6_addr  _addr;
   };
 
 }  // namespace Dwm

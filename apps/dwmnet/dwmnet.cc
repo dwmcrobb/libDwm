@@ -45,9 +45,6 @@
 #include "DwmIpv4Prefix.hh"
 #include "DwmIpv4Routes.hh"
 #include "DwmOptArgs.hh"
-#include "DwmSvnTag.hh"
-
-Dwm::SvnTag  svntag("@(#) $DwmPath: dwm/libDwm/trunk/apps/dwmnet/dwmnet.cc 8954 $");
 
 using namespace std;
 using namespace Dwm;

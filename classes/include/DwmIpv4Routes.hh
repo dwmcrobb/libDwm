@@ -109,6 +109,21 @@ namespace Dwm {
   //!    and 1,489,081 lookups/sec with Ipv4Routes<string> when calling
   //!    FindLongest(const Ipv4Address &, std::pair<Ipv4Prefix,_valueT *> &)
   //!
+  //!    More current measurements in 2020 on a Threadripper 3960X: roughly
+  //!    5.3 million lookups/second for Ipv4Routes<string>.
+  //!
+  //!    Note: I don't consider this code fast for lookups; it's a tradeoff.
+  //!    You can get _much_ faster lookups with sorted instances of
+  //!    std::vector, but at the expense of poor average insertion and
+  //!    deletion (and linear in the size of each vector in the worst-case).
+  //!    On modern CPUs, cache-friendly containers like std::vector are
+  //!    a big advantage for lookups if you keep them sorted, but keeping
+  //!    them sorted is expensive.  A quick hack using sorted std::vector
+  //!    and std::lower_bound yield about a 10X improvement in lookups but
+  //!    a severe penaly for insertions.  This would be less true if the
+  //!    typical prefix length distribution was close to normal, but in
+  //!    the real world it's typically heavy-tailed with the peak between
+  //!    /22 and /24.
   //--------------------------------------------------------------------------
   template <typename _valueT>
   class Ipv4Routes
@@ -462,7 +477,7 @@ namespace Dwm {
     //!  prefixes can be represented by a prefix with a mask length one
     //!  bit wider), then removes specific prefixes that are covered by
     //!  a wider prefix with the same value.
-    //!  While we accpet a predicate used to compare the two values, it
+    //!  While we accept a predicate used to compare the two values, it
     //!  only makes sense to use std::equal_to<_valueT>() or an equivalent
     //!  since we make no guarantee of which of the two values we will
     //!  use in the combined entry.

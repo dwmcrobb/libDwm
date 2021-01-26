@@ -102,6 +102,11 @@ namespace Dwm {
     uint8_t MaskLength() const;
 
     //------------------------------------------------------------------------
+    //!  Sets and returns the netmask length.
+    //------------------------------------------------------------------------
+    uint8_t MaskLength(uint8_t maskLen);
+
+    //------------------------------------------------------------------------
     //!  Set the prefix using a network address and netmask length.  Returns
     //!  true on success, false on failure.
     //------------------------------------------------------------------------
@@ -201,14 +206,30 @@ namespace Dwm {
     //!  was written to a file descriptor or ostream.
     //------------------------------------------------------------------------
     uint32_t StreamedLength() const override;
-    
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    size_t Hash() const
+    {
+      size_t   rc = ((size_t *)(_addr.s6_addr))[0];
+      uint8_t  addrBytes = NumAddrBytes();
+      if (addrBytes > 8) {
+        static constexpr uint8_t fact[8] = { 1, 2, 3, 5, 7, 11, 13, 17 };
+        for (int i = 8; i < addrBytes; ++i) {
+          rc += _addr.s6_addr[i] * fact[i-8];
+        }
+      }
+      return rc;
+    }
+          
   private:
     struct in6_addr  _addr;
     uint8_t          _length;
 
     inline uint8_t NumAddrBytes() const
     {
-      return((_length + 7) / 8);
+      return((_length + 7) >> 3);
     }
     
   };
