@@ -49,8 +49,8 @@ extern "C" {
 }
 
 #include <algorithm>
+#include <cassert>
 #include <cstring>
-#include <execution>
 #include <fstream>
 #include <iostream>
 
@@ -104,18 +104,15 @@ static void SimpleTest()
   for (uint8_t i = 0; i < 7; ++i) {
     routes[Ipv4Prefix(prefixes[i].p)] = prefixes[i].h;
   }
-  auto  it = FindRoute(routes, Ipv4Address("24.251.251.251"));
+  
+  auto  it = FindRoute(routes, Ipv4Address("24.2.2.1"));
   if (UnitAssert(it != routes.end())) {
     UnitAssert(it->first == Ipv4Prefix("24/8"));
   }
   for (uint8_t i = 0; i < 7; ++i) {
-    auto  it = FindRoute(routes, prefixes[i].h);
+    auto  it = FindRoute(routes, Ipv4Address(prefixes[i].h));
     if (UnitAssert(it != routes.end())) {
       UnitAssert(it->first == Ipv4Prefix(prefixes[i].p));
-      if (it->first != Ipv4Prefix(prefixes[i].p)) {
-        cerr << "found " << it->first << " for " << Ipv4Address(prefixes[i].h)
-             << '\n';
-      }
       UnitAssert(it->second == prefixes[i].h);
     }
     else {
@@ -161,7 +158,7 @@ static void TestPerformance()
       uint64_t  found = 0;
       Dwm::Ipv4Address  a("235.235.235.235");
       // Dwm::Ipv4Address  a("1.0.160.241");
-#if 0
+#if 1
       for (const auto & entry : entries) {
         found += (FindRoute(routes, entry.second) != routes.end());
         // found += (FindRoute(routes, a) != routes.end());

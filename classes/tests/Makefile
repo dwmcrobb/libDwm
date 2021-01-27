@@ -119,7 +119,7 @@ TestProcessTable: TestProcessTable.o ../lib/libDwm.la
 endif
 
 %: %.o ../lib/libDwm.la
-	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} -o $@ $^ ${ZLIB} ${BZLIB} ${BOOSTLIBS} ${TERMCAPLIB} ${OSLIBS} ${PTHREADLDFLAGS} -lpcap -ltbb
+	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} -o $@ $^ ${ZLIB} ${BZLIB} ${BOOSTLIBS} ${TERMCAPLIB} ${OSLIBS} ${PTHREADLDFLAGS} -lpcap
 
 ../lib/libDwm.la::
 	${MAKE} -C ../src

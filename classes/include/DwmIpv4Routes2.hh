@@ -47,40 +47,29 @@
 
 #include "DwmIpv4Prefix.hh"
 
-bool operator == (const Dwm::Ipv4Prefix & p, const Dwm::Ipv4Address & a)
-{
-  std::cout << p << " == " << a << '\n';
-  return (Dwm::Ipv4Prefix(a, p.MaskLength()) == p);
-}
-
-bool operator == (const Dwm::Ipv4Address & a, const Dwm::Ipv4Prefix & p)
-{
-  std::cout << p << " == " << a << '\n';
-  return (Dwm::Ipv4Prefix(a, p.MaskLength()) == p);
-}
 
 namespace Dwm {
 
   struct Routes2KeyComp {
-    typedef void is_transparent;
+    using is_transparent = std::true_type;
     
     bool operator () (const Ipv4Prefix & p, const Ipv4Address & a) const
     {
-      std::cout << "Comparing pfx " << p << " < " << a
-                << " (i.e. " << p << " < " << Ipv4Prefix(a, p.MaskLength())
-                << ")\n";
+      // std::cout << "Comparing pfx " << p << " < " << a
+      //          << " (i.e. " << p << " < " << Ipv4Prefix(a, p.MaskLength())
+      //          << ")\n";
       return (p < Ipv4Prefix(a, p.MaskLength()));
       // return (p.Network() < a);
     }
     bool operator () (const Ipv4Prefix & p1, const Ipv4Prefix & p2) const
     {
-      std::cout << "comparing " << p1 << " < " << p2 << '\n';
+      // std::cout << "comparing " << p1 << " < " << p2 << '\n';
       return (p1 < p2);
     }
     bool operator () ( const Ipv4Address & a, const Ipv4Prefix & p) const
     {
-      std::cout << "comparing " << a << " < " << p << " (i.e. "
-                << Ipv4Prefix(a, p.MaskLength()) << " < " << p << ")\n";
+      // std::cout << "comparing " << a << " < " << p << " (i.e. "
+      //          << Ipv4Prefix(a, p.MaskLength()) << " < " << p << ")\n";
       return (Ipv4Prefix(a, p.MaskLength()) < p);
       // return (a < p.Network());
     }
@@ -130,6 +119,8 @@ namespace Dwm {
   typename Ipv4Routes2<T>::iterator
   FindRoute(Ipv4Routes2<T> & routes, const Ipv4Address & addr)
   {
+    return SearchRoute(routes, addr);
+    
     auto  eqr = routes.equal_range(addr);
     if (eqr.first != routes.end()) {
       std::cout << "eqr.first(" << addr << "): "
