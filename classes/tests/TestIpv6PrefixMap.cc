@@ -49,7 +49,7 @@ extern "C" {
 #include <vector>
 
 #include "DwmIpv6PrefixMap.hh"
-#include "DwmTimeValue.hh"
+#include "DwmTimeValue64.hh"
 #include "DwmUnitAssert.hh"
 
 using namespace std;
@@ -104,6 +104,33 @@ static void TestFind(const vector<Ipv6Prefix> & entries)
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void TestFindPerformance(const vector<Ipv6Prefix> & entries)
+{
+  Ipv6PrefixMap<uint32_t>  pfxMap;
+  uint32_t  i = 0;
+  for (const auto & entry : entries) {
+    pfxMap.Add(entry, i);
+    ++i;
+  }
+  uint32_t  val;
+  uint64_t  found = 0;
+  Dwm::TimeValue64  startTime(true);  
+  for (const auto & entry : entries) {
+    found += pfxMap.Find(entry, val);
+  }
+  Dwm::TimeValue64  endTime(true);
+  endTime -= startTime;
+  UnitAssert(found == entries.size());
+  uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
+  uint64_t  lookupsPerSec = (found * 1000000ULL * 10) / usecs;
+  cout << found << " addresses, " << lookupsPerSec
+       << " prefix lookups/sec\n";
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static void TestLongestMatch(const vector<Ipv6Prefix> & entries)
 {
   Ipv6PrefixMap<uint32_t>  pfxMap;
@@ -137,11 +164,11 @@ static void TestLongestMatchPerformance(const vector<Ipv6Prefix> & entries)
   }
   pair<Ipv6Prefix,uint32_t>  val;
   uint64_t  found = 0;
-  Dwm::TimeValue  startTime(true);
+  Dwm::TimeValue64  startTime(true);
   for (const auto & entry : entries) {
     found += pfxMap.FindLongest(entry.Network(), val);
   }
-  Dwm::TimeValue  endTime(true);
+  Dwm::TimeValue64  endTime(true);
   endTime -= startTime;
   UnitAssert(found == entries.size());
   uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
@@ -166,12 +193,15 @@ int main(int argc, char *argv[])
         break;
     }
   }
+
+  cout.imbue(std::locale(""));
   
   vector<Ipv6Prefix>  entries;
   if (UnitAssert(GetEntries(entries))) {
     TestFind(entries);
     TestLongestMatch(entries);
     if (g_testPerformance) {
+      TestFindPerformance(entries);
       TestLongestMatchPerformance(entries);
     }
   }
