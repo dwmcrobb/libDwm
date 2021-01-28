@@ -224,9 +224,10 @@ namespace Dwm {
   {
     bool  rc = false;
     if (_length == prefix._length) {
-      if (memcmp(_addr.s6_addr, prefix._addr.s6_addr,
-                 sizeof(_addr.s6_addr)) == 0) {
-        rc = true;
+      if (((uint64_t *)_addr.s6_addr)[0]
+          == ((uint64_t *)prefix._addr.s6_addr)[0]) {
+        rc = (((uint64_t *)_addr.s6_addr)[1]
+              == ((uint64_t *)prefix._addr.s6_addr)[1]);
       }
     }
     return(rc);
