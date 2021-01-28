@@ -209,6 +209,7 @@ namespace Dwm {
         if (0 == lit->second) {
           _lengthCounters.erase(lit);
         }
+        rc = true;
       }
       return rc;
     }
