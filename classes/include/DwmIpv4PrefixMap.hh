@@ -43,6 +43,7 @@
 #define _DWMIPV4PREFIXMAP_HH_
 
 #include <map>
+#include <vector>
 
 #include "DwmIpv4AddrMap.hh"
 #include "DwmIpv4Prefix.hh"
@@ -106,6 +107,25 @@ namespace Dwm {
       return rc;
     }
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool FindMatches(const Ipv4Address & addr,
+                     std::vector<std::pair<Ipv4Prefix,T>> & values) const
+    {
+      values.clear();
+      std::pair<Ipv4Prefix,T>  value;
+      std::lock_guard<std::mutex>  lck(_mtx);
+      for (auto it = _map.rbegin(); it != _map.rend(); ++it) {
+        Ipv4Prefix  pfx(addr, it->first);
+        if (it->second.Find(pfx.Network(), value.second)) {
+          value.first = pfx;
+          values.push_back(value);
+        }
+      }
+      return (! values.empty());
+    }
+    
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------

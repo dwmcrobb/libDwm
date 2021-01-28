@@ -35,6 +35,7 @@ OBJFILES = TestASIO.o \
 	   TestIOSet.o \
 	   TestIOVector.o \
 	   TestIpv4Address.o \
+	   TestIpv4AddrMap.o \
 	   TestIpv4IcmpDestinationUnreachable.o \
 	   TestIpv4IcmpEchoReply.o \
 	   TestIpv4IcmpEchoRequest.o \
@@ -43,14 +44,18 @@ OBJFILES = TestASIO.o \
 	   TestIpv4IcmpTimeExceeded.o \
 	   TestIpv4PacketHeader.o \
 	   TestIpv4Prefix.o \
+	   TestIpv4PrefixMap.o \
 	   TestIpv4Routes.o \
 	   TestIpv4Routes2.o \
 	   TestIpv4TcpHeader.o \
 	   TestIpv4TcpPacket.o \
+	   TestIpv4Tree.o \
 	   TestIpv4UdpHeader.o \
 	   TestIpv4UdpPacket.o \
 	   TestIpv6Address.o \
+	   TestIpv6AddrMap.o \
 	   TestIpv6Prefix.o \
+	   TestIpv6PrefixMap.o \
 	   TestIpv6Routes.o \
 	   TestIpv6Routes2.o \
 	   TestMacAddress.o \
@@ -81,6 +86,7 @@ TESTS	 = $(OBJFILES:%.o=%)
 CXXFLAGS += -g
 LDFLAGS  += -g
 ALLINC   = -I../include ${BZINC} ${BOOSTINC}
+OSLIBS   += -lxxhash
 
 all: ${TESTS}
 
