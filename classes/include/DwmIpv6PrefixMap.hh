@@ -77,12 +77,7 @@ namespace Dwm {
   {
     inline size_t operator () (const Dwm::Ipv6Prefix & pfx) const
     {
-      size_t  rc = ((const size_t *)(pfx.In6Addr().s6_addr))[0];
-      if (pfx.MaskLength() > 64) {
-        rc += (XXH64(&(pfx.In6Addr().s6_addr[8]),
-                     (pfx.MaskLength() + 7) >> 4, 0));
-      }
-      return rc;
+      return XXH64(pfx.In6Addr().s6_addr, (pfx.MaskLength() + 7) >> 3, 0);
     }
   };
 
