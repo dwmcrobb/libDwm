@@ -218,17 +218,17 @@ namespace Dwm {
     static size_t Write(FILE * f, const double & val);
     
     //------------------------------------------------------------------------
-    //!  Reads \c s from \c f.  Since we write strings with a 32-bit length
+    //!  Reads \c s from \c f.  Since we write strings with a 64-bit length
     //!  value preceding, and always write the terminating NULL, this
-    //!  function will always return a value of 5 or greater on success.
+    //!  function will always return a value of 9 or greater on success.
     //------------------------------------------------------------------------
     static size_t Read(FILE * f, std::string & s);
 
     //------------------------------------------------------------------------
     //!  Writes \c s to \c f.  Returns the number of bytes written.  Note
-    //!  that we first write a 32-bit length value, then the string itself
+    //!  that we first write a 64-bit length value, then the string itself
     //!  (with terminating NULL).  Hence a successful write will always
-    //!  return a value of 4 + \c s.length() + 1.
+    //!  return a value of 8 + \c s.length() + 1.
     //------------------------------------------------------------------------
     static size_t Write(FILE * f, const std::string & s);
     
@@ -644,9 +644,9 @@ namespace Dwm {
       if (! c.empty())
         c.clear();
       if (f) {
-        uint32_t  numEntries;
+        uint64_t  numEntries;
         if (Read(f, numEntries)) {
-          uint32_t  i = 0;
+          uint64_t  i = 0;
           for ( ; i < numEntries; ++i) {
             typename _containerT::value_type  val;
             if (Read(f, val) > 0)
@@ -670,7 +670,7 @@ namespace Dwm {
     {
       size_t  rc = 0;
       if (f) {
-        uint32_t  numEntries = c.size();
+        uint64_t  numEntries = c.size();
         if (Write(f, numEntries)) {
           if (numEntries) {
             rc = Write<typename _containerT::const_iterator>(f, 
@@ -696,9 +696,9 @@ namespace Dwm {
       if (! m.empty())
         m.clear();
       if (f) {
-        uint32_t  numEntries;
+        uint64_t  numEntries;
         if (Read(f, numEntries)) {
-          uint32_t i = 0;
+          uint64_t i = 0;
           for ( ; i < numEntries; ++i) {
             typename _containerT::key_type  key;
             if (Read(f, key) > 0) {

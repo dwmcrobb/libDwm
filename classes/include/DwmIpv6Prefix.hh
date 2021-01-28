@@ -46,11 +46,11 @@ extern "C" {
   #include <stdio.h>
 }
 
+#include "DwmASIOCapable.hh"
 #include "DwmIpv6Address.hh"
 #include "DwmDescriptorIOCapable.hh"
 #include "DwmFileIOCapable.hh"
 #include "DwmStreamIOCapable.hh"
-#include "DwmStreamedLengthCapable.hh"
 #include "DwmGZIOCapable.hh"
 #include "DwmBZ2IOCapable.hh"
 
@@ -61,7 +61,8 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   class Ipv6Prefix
     : public DescriptorIOCapable, public FileIOCapable, public StreamIOCapable,
-      public StreamedLengthCapable, public GZIOCapable, public BZ2IOCapable
+      public GZIOCapable, public BZ2IOCapable, public ASIOCapable,
+      public StreamedLengthCapable
   {
   public:
     //------------------------------------------------------------------------
@@ -197,6 +198,25 @@ namespace Dwm {
     int BZWrite(BZFILE *bzf) const override;
 
     //------------------------------------------------------------------------
+    //!  Reads the prefix from @c s.  Returns true on success, false on
+    //!  failure.
+    //------------------------------------------------------------------------
+    bool Read(boost::asio::ip::tcp::socket & s) override;
+    
+    //------------------------------------------------------------------------
+    //!  Writes the prefix to @c s.  Returns true on success, false on
+    //!  failure.
+    //------------------------------------------------------------------------
+    bool Write(boost::asio::ip::tcp::socket & s) const override;
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    uint64_t StreamedLength() const override
+    { return (sizeof(_length) + ((_length + 7) >> 3)); }
+      
+    
+    //------------------------------------------------------------------------
     //!  Prints a prefix to an ostream in the usual colon-delimited form.
     //------------------------------------------------------------------------
     friend std::ostream & operator << (std::ostream & os,
@@ -207,12 +227,6 @@ namespace Dwm {
     //!  for example "1234:5678::/32"
     //------------------------------------------------------------------------
     std::string ToString() const;
-
-    //------------------------------------------------------------------------
-    //!  Returns the number of bytes that would be written if the prefix
-    //!  was written to a file descriptor or ostream.
-    //------------------------------------------------------------------------
-    uint32_t StreamedLength() const override;
 
     //------------------------------------------------------------------------
     //!  

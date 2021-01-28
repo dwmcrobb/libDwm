@@ -62,7 +62,7 @@ namespace Dwm {
     //!  These members would be inherited from StreamWritable, FileWritable
     //!  or DescriptorWritable, respectively.
     //------------------------------------------------------------------------
-    virtual uint32_t StreamedLength() const = 0;
+    virtual uint64_t StreamedLength() const = 0;
   };
   
 }  // namespace Dwm

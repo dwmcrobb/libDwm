@@ -172,7 +172,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  uint32_t Ipv6Address::StreamedLength() const
+  uint64_t Ipv6Address::StreamedLength() const
   {
     return(sizeof(_addr));
   }

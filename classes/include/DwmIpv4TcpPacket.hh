@@ -200,7 +200,7 @@ namespace Dwm {
     //!  Returns the numbers of bytes that should be written if one
     //!  of the Write() members is called.
     //------------------------------------------------------------------------
-    uint32_t StreamedLength() const override;
+    uint64_t StreamedLength() const override;
 
     //------------------------------------------------------------------------
     //!  Sends the packet via the given descriptor @c fd.  Returns true

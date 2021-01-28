@@ -175,7 +175,7 @@ namespace Dwm {
     //!  Returns the number of bytes that should be written if we call one
     //!  of the Write() members.  Should always return 4.
     //------------------------------------------------------------------------
-    uint32_t StreamedLength() const override;
+    uint64_t StreamedLength() const override;
     
     //------------------------------------------------------------------------
     //!  Prints to an ostream in 'label:exp:s:ttl' format.

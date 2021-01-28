@@ -116,7 +116,7 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     template <typename T>
-    static uint32_t StreamedLength(const T & val)
+    static uint64_t StreamedLength(const T & val)
     {
       return IOUtils::StreamedLength(val);
     }

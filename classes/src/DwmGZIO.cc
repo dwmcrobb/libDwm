@@ -203,7 +203,7 @@ namespace Dwm {
     int  rc = -1;
     
     if (gzf) {
-      int32_t  len = s.length();
+      int64_t  len = s.length();
       if (Write(gzf,len) == sizeof(len)) {
         rc = sizeof(len);
         if (gzwrite(gzf,(void *)s.c_str(),len) == len)
@@ -376,7 +376,7 @@ namespace Dwm {
     s = "";
     
     if (gzf) {
-      int32_t  len;
+      int64_t  len;
       if (Read(gzf,len) == sizeof(len)) {
         rc = sizeof(len);
         if (len > 0) {

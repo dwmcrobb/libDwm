@@ -522,11 +522,6 @@ namespace Dwm {
     static bool Write(boost::asio::ip::tcp::socket & s,
                       const ASIOWritable & val);
     
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    static uint64_t StreamedLength(const ASIOWritable & val);
-
   private:
     //------------------------------------------------------------------------
     //!  
@@ -644,9 +639,9 @@ namespace Dwm {
     {
       bool  rc = false;
       c.clear();
-      uint32_t  numEntries;
+      uint64_t  numEntries;
       if (Read(s, numEntries)) {
-        uint32_t  i = 0;
+        uint64_t  i = 0;
         for ( ; i < numEntries; ++i) {
           typename _containerT::value_type  val;
           if (! Read(s, val)) {
@@ -668,7 +663,7 @@ namespace Dwm {
                                const _containerT & c)
     {
       bool  rc = false;
-      uint32_t  numEntries = c.size();
+      uint64_t  numEntries = c.size();
       if (Write(s, numEntries)) {
         if (numEntries) {
           rc = Write<typename _containerT::const_iterator>(s, 
@@ -707,9 +702,9 @@ namespace Dwm {
     {
       bool  rc = false;
       m.clear();
-      uint32_t  numEntries;
+      uint64_t  numEntries;
       if (Read(s, numEntries)) {
-        uint32_t i = 0;
+        uint64_t i = 0;
         for ( ; i < numEntries; ++i) {
           typename _containerT::key_type  key;
           if (Read(s, key)) {

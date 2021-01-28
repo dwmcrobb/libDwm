@@ -242,7 +242,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  uint32_t TimeValue::StreamedLength() const
+  uint64_t TimeValue::StreamedLength() const
   {
     return(8);
   }

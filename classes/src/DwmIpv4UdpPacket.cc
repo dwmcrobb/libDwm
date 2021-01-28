@@ -393,7 +393,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  uint32_t Ipv4UdpPacket::StreamedLength() const
+  uint64_t Ipv4UdpPacket::StreamedLength() const
   {
     return(_ipHeader.StreamedLength() +
            _udpHeader.StreamedLength() +

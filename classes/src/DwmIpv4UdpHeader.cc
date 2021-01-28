@@ -304,7 +304,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  uint32_t Ipv4UdpHeader::StreamedLength() const
+  uint64_t Ipv4UdpHeader::StreamedLength() const
   {
     return(sizeof(*_data));
   }

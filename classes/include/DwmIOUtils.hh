@@ -81,7 +81,7 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if we called
     //!  Write() for a char.  Should always be 1.
     //------------------------------------------------------------------------
-    static uint32_t StreamedLength(char c)
+    static uint64_t StreamedLength(char c)
     {
       return(sizeof(c));
     }
@@ -90,7 +90,7 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if we called
     //!  Write() for a uint8_t.  Should always be 1.
     //------------------------------------------------------------------------
-    static uint32_t StreamedLength(uint8_t c)
+    static uint64_t StreamedLength(uint8_t c)
     {
       return(sizeof(c));
     }
@@ -99,7 +99,7 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if we called
     //!  Write() member for a bool.
     //------------------------------------------------------------------------
-    static uint32_t StreamedLength(bool b)
+    static uint64_t StreamedLength(bool b)
     {
       return(1);
     }
@@ -108,7 +108,7 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if we called
     //!  Write() for an \c int16_t.
     //------------------------------------------------------------------------
-    static uint32_t StreamedLength(int16_t val)
+    static uint64_t StreamedLength(int16_t val)
     {
       return(sizeof(val));
     }
@@ -117,7 +117,7 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if we called
     //!  Write() for a \c uint16_t.
     //------------------------------------------------------------------------
-    static uint32_t StreamedLength(uint16_t val)
+    static uint64_t StreamedLength(uint16_t val)
     {
       return(sizeof(val));
     }
@@ -126,7 +126,7 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if we called
     //!  Write() for an \c int32_t.
     //------------------------------------------------------------------------
-    static uint32_t StreamedLength(int32_t val)
+    static uint64_t StreamedLength(int32_t val)
     {
       return(sizeof(val));
     }
@@ -135,7 +135,7 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if we called
     //!  Write() for a \c uint32_t.
     //------------------------------------------------------------------------
-    static uint32_t StreamedLength(uint32_t val)
+    static uint64_t StreamedLength(uint32_t val)
     {
       return(sizeof(val));
     }
@@ -144,7 +144,7 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if we called
     //!  Write() for an \c int64_t.
     //------------------------------------------------------------------------
-    static uint32_t StreamedLength(int64_t val)
+    static uint64_t StreamedLength(int64_t val)
     {
       return(sizeof(val));
     }
@@ -153,7 +153,7 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if we called
     //!  Write() for a \c uint64_t.
     //------------------------------------------------------------------------
-    static uint32_t StreamedLength(uint64_t val)
+    static uint64_t StreamedLength(uint64_t val)
     {
       return(sizeof(val));
     }
@@ -162,7 +162,7 @@ namespace Dwm {
     //!  Returns the number of bytes that should be written if we call Write()
     //!  for a float.
     //------------------------------------------------------------------------
-    static uint32_t StreamedLength(float val)
+    static uint64_t StreamedLength(float val)
     {
       return(4);
     }
@@ -171,7 +171,7 @@ namespace Dwm {
     //!  Returns the number of bytes that should be written if we call Write()
     //!  for a double.
     //------------------------------------------------------------------------
-    static uint32_t StreamedLength(double val)
+    static uint64_t StreamedLength(double val)
     {
       return(8);
     }
@@ -180,9 +180,9 @@ namespace Dwm {
     //!  Returns the number of bytes that should be written if we call Write()
     //!  for a string.
     //------------------------------------------------------------------------
-    static uint32_t StreamedLength(const std::string & s)
+    static uint64_t StreamedLength(const std::string & s)
     {
-      return(sizeof(uint32_t) + s.size());
+      return(sizeof(uint64_t) + s.size());
     }
 
     //------------------------------------------------------------------------
@@ -190,7 +190,7 @@ namespace Dwm {
     //!  for a pair<_firstT, _secondT>
     //------------------------------------------------------------------------
     template <typename _firstT, typename _secondT>
-    static uint32_t StreamedLength(const std::pair<_firstT, _secondT> & p)
+    static uint64_t StreamedLength(const std::pair<_firstT, _secondT> & p)
     {
       return(StreamedLength(p.first) + StreamedLength(p.second));
     }
@@ -201,7 +201,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <typename _keyT, typename _valueT, 
               typename _Compare, typename _Alloc>
-    static uint32_t
+    static uint64_t
     StreamedLength(const std::map<_keyT, _valueT, _Compare, _Alloc> & m)
     {
       return(ContainerStreamedLength<std::map<_keyT, _valueT, _Compare, _Alloc> >(m));
@@ -213,7 +213,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <typename _keyT, typename _valueT, 
               typename _Compare, typename _Alloc>
-    static uint32_t
+    static uint64_t
     StreamedLength(const std::multimap<_keyT,_valueT,_Compare,_Alloc> & m)
     {
       return(ContainerStreamedLength<std::multimap<_keyT,_valueT,_Compare,_Alloc> >(m));
@@ -224,7 +224,7 @@ namespace Dwm {
     //!  for a vector<_valueT>
     //------------------------------------------------------------------------
     template <typename _valueT, typename _Alloc>
-    static uint32_t StreamedLength(const std::vector<_valueT, _Alloc> & v)
+    static uint64_t StreamedLength(const std::vector<_valueT, _Alloc> & v)
     {
       return(ContainerStreamedLength<std::vector<_valueT, _Alloc> >(v));
     }
@@ -234,7 +234,7 @@ namespace Dwm {
     //!  for a deque<_valueT>
     //------------------------------------------------------------------------
     template <typename _valueT, typename _Alloc>
-    static uint32_t StreamedLength(const std::deque<_valueT, _Alloc> & d)
+    static uint64_t StreamedLength(const std::deque<_valueT, _Alloc> & d)
     {
       return(ContainerStreamedLength<std::deque<_valueT, _Alloc> >(d));
     }
@@ -244,7 +244,7 @@ namespace Dwm {
     //!  for a list<_valueT>
     //------------------------------------------------------------------------
     template <typename _valueT, typename _Alloc>
-    static uint32_t StreamedLength(const std::list<_valueT, _Alloc> & l)
+    static uint64_t StreamedLength(const std::list<_valueT, _Alloc> & l)
     {
       return(ContainerStreamedLength<std::list<_valueT, _Alloc> >(l));
     }
@@ -254,7 +254,7 @@ namespace Dwm {
     //!  for a set<_valueT>
     //------------------------------------------------------------------------
     template <typename _valueT, typename _Compare, typename _Alloc>
-    static uint32_t 
+    static uint64_t 
     StreamedLength(const std::set<_valueT, _Compare, _Alloc> & l)
     {
       return(ContainerStreamedLength<std::set<_valueT, _Compare, _Alloc> >(l));
@@ -265,7 +265,7 @@ namespace Dwm {
     //!  for a multiset<_valueT>
     //------------------------------------------------------------------------
     template <typename _valueT, typename _Compare, typename _Alloc>
-    static uint32_t
+    static uint64_t
     StreamedLength(const std::multiset<_valueT, _Compare, _Alloc> & l)
     {
       return(ContainerStreamedLength<std::multiset<_valueT, _Compare, _Alloc> >(l));
@@ -275,9 +275,9 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     template <typename T, typename... Args>
-    static uint32_t VarStreamedLength(const T & t, Args... args)
+    static uint64_t VarStreamedLength(const T & t, Args... args)
     {
-      uint32_t rc = StreamedLength(t);
+      uint64_t rc = StreamedLength(t);
       if (sizeof...(Args) > 0)
         rc += VarStreamedLength(args...);
       return(rc);
@@ -288,7 +288,7 @@ namespace Dwm {
     //!  for a tuple.
     //------------------------------------------------------------------------
     template <typename T, typename... Args>
-    static uint32_t StreamedLength(const std::tuple<T, Args...> & t)
+    static uint64_t StreamedLength(const std::tuple<T, Args...> & t)
     {
       return(TupleStreamedLength<std::tuple<T, Args...> >(t));
     }
@@ -297,7 +297,7 @@ namespace Dwm {
     //!  T must be a tuple.
     //------------------------------------------------------------------------
     template <typename T>
-    static uint32_t TupleStreamedLength(const T & t)
+    static uint64_t TupleStreamedLength(const T & t)
     {
       return(TupleIOHelper<T,std::tuple_size<T>::value-1>::StreamedLength(t));
     }
@@ -305,7 +305,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    static uint32_t StreamedLength(const std::monostate & sm)
+    static uint64_t StreamedLength(const std::monostate & sm)
     {
       return 0;
     }
@@ -314,9 +314,9 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     template <typename... Ts>
-    static uint32_t StreamedLength(const std::variant<Ts...> & v)
+    static uint64_t StreamedLength(const std::variant<Ts...> & v)
     {
-      uint32_t  rc = sizeof(uint64_t);
+      uint64_t  rc = sizeof(uint64_t);
       std::visit([&] (const auto & arg)
                    { rc += StreamedLength(arg); }, v);
       return rc;
@@ -327,7 +327,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <typename _keyT, typename _valueT, 
               typename _Hash, typename _Pred, typename _Alloc>
-    static uint32_t
+    static uint64_t
     StreamedLength(const std::unordered_map<_keyT, _valueT, _Hash, _Pred, _Alloc> & m)
     {
       using  myType = std::unordered_map<_keyT, _valueT, _Hash, _Pred, _Alloc>;
@@ -340,7 +340,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <typename _keyT, typename _valueT, 
               typename _Hash, typename _Pred, typename _Alloc>
-    static uint32_t
+    static uint64_t
     StreamedLength(const std::unordered_multimap<_keyT, _valueT, _Hash, _Pred, _Alloc> & m)
     {
       using  myType = std::unordered_multimap<_keyT,_valueT,_Hash,_Pred,_Alloc>;
@@ -352,7 +352,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <typename _valueT, typename _Hash, 
               typename _Pred, typename _Alloc>
-    static uint32_t
+    static uint64_t
     StreamedLength(const std::unordered_set<_valueT, _Hash, _Pred, _Alloc> & m)
     {
       using  myType = std::unordered_set<_valueT, _Hash, _Pred, _Alloc>;
@@ -364,7 +364,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <typename _valueT, typename _Hash, 
               typename _Pred, typename _Alloc>
-    static uint32_t
+    static uint64_t
     StreamedLength(const std::unordered_multiset<_valueT, _Hash, _Pred, _Alloc> & m)
     {
       using  myType = std::unordered_multiset<_valueT, _Hash, _Pred, _Alloc>;
@@ -374,7 +374,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    static uint32_t StreamedLength(const StreamedLengthCapable & sl)
+    static uint64_t StreamedLength(const StreamedLengthCapable & sl)
     {
       return sl.StreamedLength();
     }
@@ -384,9 +384,9 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     template <typename _inputIteratorT>
-    static uint32_t StreamedLength(_inputIteratorT f, _inputIteratorT l)
+    static uint64_t StreamedLength(_inputIteratorT f, _inputIteratorT l)
     {
-      uint32_t  rc = 0;
+      uint64_t  rc = 0;
       for ( ; f != l; ++f)
         rc += StreamedLength(*f);
       return(rc);
@@ -396,9 +396,9 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     template <typename _containerT>
-    static uint32_t ContainerStreamedLength(const _containerT & c)
+    static uint64_t ContainerStreamedLength(const _containerT & c)
     {
-      uint32_t  rc = sizeof(uint32_t);  // for size()
+      uint64_t  rc = sizeof(uint64_t);  // for size()
 
       rc += StreamedLength<typename _containerT::const_iterator>(c.begin(), 
                                                                  c.end());
@@ -423,7 +423,7 @@ namespace Dwm {
       //!  Return the number of bytes that will be written if we write the
       //!  tuple \c t.
       //----------------------------------------------------------------------
-      static uint32_t StreamedLength(const T & t)
+      static uint64_t StreamedLength(const T & t)
       {
         return(IOUtils::StreamedLength(std::get<0>(t)));
       }
@@ -440,9 +440,9 @@ namespace Dwm {
       //!  Return the number of bytes that will be written if we write the
       //!  tuple \c t.
       //----------------------------------------------------------------------
-      static uint32_t StreamedLength(const T & t)
+      static uint64_t StreamedLength(const T & t)
       {
-        uint32_t  rc = TupleIOHelper<T,elt-1>::StreamedLength(t);
+        uint64_t  rc = TupleIOHelper<T,elt-1>::StreamedLength(t);
         rc += IOUtils::StreamedLength(std::get<elt>(t));
         return(rc);
       }

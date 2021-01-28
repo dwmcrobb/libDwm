@@ -767,9 +767,9 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  uint32_t ProcessInfo::StreamedLength() const
+  uint64_t ProcessInfo::StreamedLength() const
   {
-    uint32_t  rc = 8 * sizeof(uint32_t);
+    uint64_t  rc = 8 * sizeof(uint32_t);
     rc += IOUtils::StreamedLength(_command);
     rc += IOUtils::StreamedLength(_startTime);
     rc += IOUtils::StreamedLength(_size);

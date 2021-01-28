@@ -226,7 +226,7 @@ namespace Dwm {
     int  rc = -1;
     
     if (bzf) {
-      int32_t  len = s.length();
+      int64_t  len = s.length();
       if (BZWrite(bzf,len) == sizeof(len)) {
         rc = sizeof(len);
         if (BZ2_bzwrite(bzf,(void *)s.c_str(),len) == len)
@@ -421,7 +421,7 @@ namespace Dwm {
   {
     int  rc = -1;
     if (bzf) {
-      int32_t  len;
+      int64_t  len;
       if (BZRead(bzf,len) == sizeof(len)) {
         rc = sizeof(len);
         char  *buf = (char *)calloc(1,len);

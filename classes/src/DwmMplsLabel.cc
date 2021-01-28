@@ -253,7 +253,7 @@ namespace Dwm {
   //------------------------------------------------------------------------
   //!  
   //------------------------------------------------------------------------
-  uint32_t MplsLabel::StreamedLength() const
+  uint64_t MplsLabel::StreamedLength() const
   {
     return(4);
   }

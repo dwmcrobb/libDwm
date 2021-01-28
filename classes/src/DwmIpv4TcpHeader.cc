@@ -572,7 +572,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  uint32_t Ipv4TcpHeader::StreamedLength() const
+  uint64_t Ipv4TcpHeader::StreamedLength() const
   {
     return(_data->dataOffset << 2);
   }

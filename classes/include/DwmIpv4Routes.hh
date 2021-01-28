@@ -46,6 +46,7 @@ extern "C" {
 }
 
 #include <algorithm>
+#include <future>
 #include <unordered_map>
 #include <vector>
 
@@ -230,7 +231,51 @@ namespace Dwm {
       }
       return(rc);
     }
-    
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    void FindInSubMap(const _RepSubType & subMap, Ipv4Address ipAddr,
+                      std::pair<bool,_valueT> & result) const
+    {
+      auto  iter = subMap.find(ipAddr);
+      if (iter != subMap.end()) {
+        result.first = true;
+        result.second = iter->second;
+      }
+      return;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool NewFindLongest(const Ipv4Address & ipAddr,
+                        std::pair<Ipv4Prefix,_valueT> & match) const
+    {
+      using std::map, std::pair, std::thread;
+      bool  rc = false;
+      map<uint8_t,pair<bool,_valueT>>  results;
+      std::map<uint8_t,thread>         threads;
+      for (int i = 32; i >= 0; --i) {
+        if (! _hashMaps[i].empty()) {
+          results[i] = {false,_valueT()};
+          Ipv4Prefix  pfx(ipAddr, i);
+          threads[i] = thread(&Ipv4Routes::FindInSubMap, this,
+                              std::ref(_hashMaps[i]), pfx.Network(),
+                              std::ref(results[i]));
+        }
+      }
+      for (auto it = threads.rbegin(); it != threads.rend(); ++it) {
+        it->second.join();
+        if (results[it->first].first) {
+          rc = true;
+          match.first = Ipv4Prefix(ipAddr, it->first);
+          match.second = results[it->first].second;
+        }
+      }
+      return rc;
+    }
+               
     //------------------------------------------------------------------------
     //!  Finds the longest match for \c ipAddr.  Places the result in
     //!  \c match and returns true on success.  Returns false if no
@@ -242,7 +287,6 @@ namespace Dwm {
       bool  rc = false;
 
       Ipv4Prefix   lp(ipAddr, 32);
-     
       typename _RepSubType::const_iterator  iter;
       for (int8_t i = 32; i >= 0; --i) {
         if (_hashMaps[i].empty())
@@ -379,7 +423,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    uint32_t StreamedLength() const override
+    uint64_t StreamedLength() const override
     {
       return(IOUtils::StreamedLength(_hashMaps));
     }

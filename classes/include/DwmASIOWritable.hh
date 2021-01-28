@@ -57,12 +57,6 @@ namespace Dwm {
     //!  success, false on failure.
     //------------------------------------------------------------------------
     virtual bool Write(boost::asio::ip::tcp::socket & s) const = 0;
-    
-    //------------------------------------------------------------------------
-    //!  Should return the number of bytes that will be written when the
-    //!  Write() member is called.
-    //------------------------------------------------------------------------
-    virtual uint64_t StreamedLength() const = 0;
   };
 
 }  // namespace Dwm

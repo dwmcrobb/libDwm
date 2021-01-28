@@ -150,7 +150,7 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if the prefix
     //!  was written to a file descriptor or ostream.
     //------------------------------------------------------------------------
-    uint32_t StreamedLength() const override;
+    uint64_t StreamedLength() const override;
 
   private:
     std::variant<Ipv6Prefix,Ipv4Prefix>  _prefix;

@@ -214,7 +214,7 @@ namespace Dwm {
   {
     size_t  rc = 0;
     if (f) {
-      uint32_t len = s.size();
+      uint64_t len = s.size();
       if (Write(f, len) == sizeof(len)) {
         rc = sizeof(len);
         if (len > 0) {
@@ -407,7 +407,7 @@ namespace Dwm {
     s.clear();
     size_t  rc = 0;
     if (f) {
-      uint32_t len;
+      uint64_t len;
       if (Read(f, len) == sizeof(len)) {
         rc = sizeof(len);
         if (len > 0) {

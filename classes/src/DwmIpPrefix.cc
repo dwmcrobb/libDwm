@@ -323,7 +323,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  uint32_t IpPrefix::StreamedLength() const
+  uint64_t IpPrefix::StreamedLength() const
   {
     return IOUtils::StreamedLength(_prefix);
   }

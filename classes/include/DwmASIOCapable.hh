@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2007, 2020
+//  Copyright (c) Daniel W. McRobb 2021
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -28,56 +28,33 @@
 //  UPDATES, ENHANCEMENTS, OR MODIFICATIONS. DANIEL W. MCROBB MAKES NO
 //  REPRESENTATIONS AND EXTENDS NO WARRANTIES OF ANY KIND, EITHER
 //  IMPLIED OR EXPRESS, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-//  WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
-//  PURPOSE, OR THAT THE USE OF THIS SOFTWARE WILL NOT INFRINGE ANY PATENT,
+//  WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE,
+//  OR THAT THE USE OF THIS SOFTWARE WILL NOT INFRINGE ANY PATENT,
 //  TRADEMARK OR OTHER RIGHTS.
 //===========================================================================
 
 //---------------------------------------------------------------------------
-//!  \file DwmDescriptorWritable.hh
-//!  \brief Dwm::DescriptorWritable pure virtual class declaration
+//!  \file DwmASIOCapable.hh
+//!  \author Daniel W. McRobb
+//!  \brief Dwm::ASIOCapable class declaration
 //---------------------------------------------------------------------------
-#ifndef _DWMDESCRIPTORWRITABLE_HH_
-#define _DWMDESCRIPTORWRITABLE_HH_
 
-extern "C" {
-  #include <sys/types.h>
-}
+#ifndef _DWMASIOCAPABLE_HH_
+#define _DWMASIOCAPABLE_HH_
 
-#include <cstddef>
-#include <cstdint>
+#include "DwmASIOReadable.hh"
+#include "DwmASIOWritable.hh"
 
 namespace Dwm {
 
   //--------------------------------------------------------------------------
-  //!  This class defines an interface for classes that can write their
-  //!  contents to a file descriptor.
+  //!  Interface for classes that can read/write their contents from/to
+  //!  a boost::asio::ip::tcp::socket.
   //--------------------------------------------------------------------------
-  class DescriptorWritable
-  {
-  public:
-    //------------------------------------------------------------------------
-    //!  Destructor
-    //------------------------------------------------------------------------
-    virtual ~DescriptorWritable() { }
-
-    //------------------------------------------------------------------------
-    //!  Write to a file descriptor.  Return the number of bytes written
-    //!  on success, -1 on failure.
-    //------------------------------------------------------------------------
-    virtual ssize_t Write(int fd) const = 0;
-  };
+  class ASIOCapable
+    : public ASIOReadable, public ASIOWritable
+  {};
   
-    
 }  // namespace Dwm
 
-#endif  // _DWMDESCRIPTORWRITABLE_HH_
-
-//---------------------------- emacs settings -----------------------------
-//  Local Variables:
-//  mode: C++
-//  tab-width: 2
-//  indent-tabs-mode: nil
-//  c-basic-offset: 2
-//  End:
-//-------------------------------------------------------------------------
+#endif  // _DWMASIOCAPABLE_HH_

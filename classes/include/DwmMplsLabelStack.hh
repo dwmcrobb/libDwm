@@ -133,7 +133,7 @@ namespace Dwm {
     //!  Returns the number of bytes that should be written if we call one
     //!  of the Write() members.
     //------------------------------------------------------------------------
-    uint32_t StreamedLength() const override;
+    uint64_t StreamedLength() const override;
 
     //------------------------------------------------------------------------
     //!  Prints the label stack to an ostream in human-readable form.

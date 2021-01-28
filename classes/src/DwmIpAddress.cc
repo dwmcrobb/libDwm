@@ -157,7 +157,7 @@ namespace Dwm {
   //------------------------------------------------------------------------
   //!  
   //------------------------------------------------------------------------
-  uint32_t IpAddress::StreamedLength() const
+  uint64_t IpAddress::StreamedLength() const
   {
     return IOUtils::StreamedLength(_addr);
   }

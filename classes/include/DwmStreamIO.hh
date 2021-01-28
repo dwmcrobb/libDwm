@@ -210,15 +210,15 @@ namespace Dwm {
 
     //------------------------------------------------------------------------
     //!  Reads string \c s from \c is.  Since we write strings with a 
-    //!  32-bit length value preceding, and always write the terminating
-    //!  NULL, this function will always read at least 5 bytes on success.
+    //!  64-bit length value preceding, and always write the terminating
+    //!  NULL, this function will always read at least 9 bytes on success.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, std::string & s);
 
     //------------------------------------------------------------------------
     //!  Writes \c s to \c os.  Note that the length of \c s is written
-    //!  first, as an unsigned 32-bit number in network byte order
-    //!  (MSB first).  Hence at least 5 bytes will always be written;
+    //!  first, as an unsigned 64-bit number in network byte order
+    //!  (MSB first).  Hence at least 9 bytes will always be written;
     //!  4 for the length and 1 for the terminating NULL character of
     //!  an empty string.
     //------------------------------------------------------------------------
@@ -642,9 +642,9 @@ namespace Dwm {
       if (! c.empty())
         c.clear();
       if (is) {
-        uint32_t  numEntries;
+        uint64_t  numEntries;
         if (Read(is, numEntries)) {
-          for (uint32_t i = 0; i < numEntries; ++i) {
+          for (uint64_t i = 0; i < numEntries; ++i) {
             typename _containerT::value_type  val;
             if (! Read(is, val))
               break;
@@ -664,7 +664,7 @@ namespace Dwm {
                                          const _containerT & c)
     {
       if (os) {
-        uint32_t  numEntries = c.size();
+        uint64_t  numEntries = c.size();
         if (Write(os, numEntries)) {
           if (numEntries) {
             Write<typename _containerT::const_iterator>(os, 
@@ -688,9 +688,9 @@ namespace Dwm {
       if (! m.empty())
         m.clear();
       if (is) {
-        uint32_t  numEntries;
+        uint64_t  numEntries;
         if (Read(is, numEntries)) {
-          for (uint32_t i = 0; i < numEntries; ++i) {
+          for (uint64_t i = 0; i < numEntries; ++i) {
             typename _containerT::key_type  key;
             if (Read(is, key)) {
               typename _containerT::mapped_type  val;

@@ -49,6 +49,7 @@ extern "C" {
 #include <regex>
 #include <sstream>
 
+#include "DwmASIO.hh"
 #include "DwmIpv6Prefix.hh"
 
 namespace Dwm {
@@ -438,6 +439,44 @@ namespace Dwm {
     }
     return(rc);
   }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool Ipv6Prefix::Read(boost::asio::ip::tcp::socket & s)
+  {
+    using boost::asio::read, boost::asio::buffer;
+    bool  rc = false;
+    boost::system::error_code  ec;
+    if ((read(s, buffer(&_length, sizeof(_length)), ec) == sizeof(_length))
+          && (! ec)) {
+      size_t  len = (_length + 7) >> 3;
+      if ((read(s, buffer(_addr.s6_addr, len), ec) == sizeof(_length))
+          && (! ec)) {
+        rc = true;
+      }
+    }
+    return rc;
+  }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool Ipv6Prefix::Write(boost::asio::ip::tcp::socket & s) const
+  {
+    using boost::asio::write, boost::asio::buffer;
+    bool  rc = false;
+    boost::system::error_code  ec;
+    if ((write(s, buffer(&_length, sizeof(_length)), ec) == sizeof(_length))
+        && (! ec)) {
+      size_t  len = (_length + 7) >> 3;
+      if ((write(s, buffer(_addr.s6_addr, len), ec) == sizeof(_addr.s6_addr))
+          && (! ec)) {
+        rc = true;
+      }
+    }
+    return rc;
+  }
   
   //--------------------------------------------------------------------------
   //!  
@@ -449,14 +488,6 @@ namespace Dwm {
     return(os.str());
   }
   
-  //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
-  uint32_t Ipv6Prefix::StreamedLength() const
-  {
-    return(sizeof(_length) + (_length + 7) / 8);
-  }
-
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------

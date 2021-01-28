@@ -46,10 +46,8 @@ OBJFILES = TestASIO.o \
 	   TestIpv4Prefix.o \
 	   TestIpv4PrefixMap.o \
 	   TestIpv4Routes.o \
-	   TestIpv4Routes2.o \
 	   TestIpv4TcpHeader.o \
 	   TestIpv4TcpPacket.o \
-	   TestIpv4Tree.o \
 	   TestIpv4UdpHeader.o \
 	   TestIpv4UdpPacket.o \
 	   TestIpv6Address.o \
@@ -57,7 +55,6 @@ OBJFILES = TestASIO.o \
 	   TestIpv6Prefix.o \
 	   TestIpv6PrefixMap.o \
 	   TestIpv6Routes.o \
-	   TestIpv6Routes2.o \
 	   TestMacAddress.o \
 	   TestMplsLabel.o \
 	   TestMplsLabelStack.o \

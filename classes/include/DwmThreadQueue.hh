@@ -41,6 +41,7 @@
 #ifndef _DWMTHREADQUEUE_HH_
 #define _DWMTHREADQUEUE_HH_
 
+#include <atomic>
 #include <deque>
 #include <iostream>
 #include <mutex>
@@ -70,7 +71,8 @@ namespace Dwm {
       //!  Constructor
       //----------------------------------------------------------------------
       Queue()
-          : _maxLength(0), _queue(), _mutex(), _lock(_mutex), _cv()
+          : _maxLength(0), _queue(), _mutex(), _signalled(false),
+            _lock(_mutex), _cv()
       {
         _lock.unlock();
       }
@@ -123,6 +125,7 @@ namespace Dwm {
         if ((! _maxLength) ||
             (_queue.size() < _maxLength)) {
           _queue.push_back(value);
+          _signalled = true;
           _cv.notify_all();
           rc = true;
         }
@@ -140,6 +143,7 @@ namespace Dwm {
         if ((! _maxLength) ||
             (_queue.size() < _maxLength)) {
           _queue.push_back(value);
+          _signalled = true;
           _cv.notify_all();
           rc = true;
         }
@@ -164,6 +168,7 @@ namespace Dwm {
             _queue.insert(_queue.end(), firstIter, lastIter);
             rc = _queue.size() - oldSize;
             if (rc) {
+              _signalled = true;
               _cv.notify_all();
             }
           }
@@ -182,6 +187,7 @@ namespace Dwm {
         if ((! _maxLength) ||
             (_queue.size() < _maxLength)) {
           _queue.push_front(value);
+          _signalled = true;
           _cv.notify_all();
           rc = true;
         }
@@ -203,6 +209,7 @@ namespace Dwm {
             _queue.insert(_queue.begin(), firstIter, lastIter);
             rc = _queue.size() - oldSize;
             if (rc) {
+              _signalled = true;
               _cv.notify_all();
             }
           }
@@ -215,6 +222,7 @@ namespace Dwm {
       //----------------------------------------------------------------------
       void ConditionSignal()
       {
+        _signalled = true;
         _cv.notify_one();
       }
      
@@ -224,7 +232,8 @@ namespace Dwm {
       bool ConditionWait()
       {
         Lock();
-        _cv.wait(_lock);
+        _cv.wait(_lock, [&] { return _signalled.load(); });
+        _signalled = false;
         Unlock();
         return true;
       }
@@ -239,7 +248,8 @@ namespace Dwm {
       {
         bool rc = false;
         Lock();
-        if (_cv.wait_for(_lock, timeToWait) == std::cv_status::no_timeout) {
+        if (_cv.wait_for(_lock, timeToWait,
+                         [&] { return _signalled.load(); })) {
           rc = true;
         }
         Unlock();
@@ -296,9 +306,7 @@ namespace Dwm {
       {
         bool  rc = false;
         Lock();
-        while (_queue.empty()) {
-          _cv.wait(_lock);
-        }
+        _cv.wait(_lock, [&] { return (! _queue.empty()); });
         rc = true;
         Unlock();
         return(rc);
@@ -386,6 +394,7 @@ namespace Dwm {
       uint32_t                      _maxLength;
       std::deque<_ValueType>        _queue;
       mutable std::mutex            _mutex;
+      std::atomic<bool>             _signalled;
       std::unique_lock<std::mutex>  _lock;
       std::condition_variable       _cv;
      

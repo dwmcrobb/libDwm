@@ -270,7 +270,7 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if one of the
     //!  Write() members were called.
     //------------------------------------------------------------------------
-    uint32_t StreamedLength() const override;
+    uint64_t StreamedLength() const override;
 
     //------------------------------------------------------------------------
     //!  operator ==

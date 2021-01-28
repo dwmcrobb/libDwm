@@ -270,7 +270,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  uint32_t MacAddress::StreamedLength() const
+  uint64_t MacAddress::StreamedLength() const
   {
     return(6);
   }

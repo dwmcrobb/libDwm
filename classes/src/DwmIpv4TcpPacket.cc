@@ -397,7 +397,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  uint32_t Ipv4TcpPacket::StreamedLength() const
+  uint64_t Ipv4TcpPacket::StreamedLength() const
   {
     return(_ipHeader.StreamedLength() +
            _tcpHeader.StreamedLength() +

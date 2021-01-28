@@ -227,18 +227,18 @@ namespace Dwm {
     
     //------------------------------------------------------------------------
     //!  Reads \c s from \c fd.  Returns the number of bytes read on success,
-    //!  -1 on failure.  Since we write strings with a 32-bit unsigned length
+    //!  -1 on failure.  Since we write strings with a 64-bit unsigned length
     //!  value preceding the actual string, and always have a terminating
-    //!  NULL, this always reads at least 5 bytes on success.
+    //!  NULL, this always reads at least 9 bytes on success.
     //------------------------------------------------------------------------
     static ssize_t Read(int fd, std::string & s);
     
     //------------------------------------------------------------------------
     //!  Writes \c s to \c fd.  Returns the number of bytes written on
-    //!  success, -1 on failure.  Note that a 32-bit value is written first,
+    //!  success, -1 on failure.  Note that a 64-bit value is written first,
     //!  holding the length of the string.  The terminating NULL is also
     //!  written.  Hence, on success this will always return a value of
-    //!  5 or greater.
+    //!  9 or greater.
     //------------------------------------------------------------------------
     static ssize_t Write(int fd, const std::string & s);
     
@@ -707,11 +707,11 @@ namespace Dwm {
         c.clear();
       ssize_t  rc = -1;
       if (fd >= 0) {
-        uint32_t  numEntries;
-        ssize_t  bytesRead = Read(fd, numEntries);
+        uint64_t  numEntries;
+        ssize_t   bytesRead = Read(fd, numEntries);
         if (bytesRead == sizeof(numEntries)) {
           rc = bytesRead;
-          for (uint32_t i = 0; i < numEntries; ++i) {
+          for (uint64_t i = 0; i < numEntries; ++i) {
             typename _containerT::value_type  val;
             bytesRead = Read(fd, val);
             if (bytesRead > 0) {
@@ -738,8 +738,8 @@ namespace Dwm {
     {
       ssize_t  rc = -1;
       if (fd >= 0) {
-        uint32_t  numEntries = c.size();
-        uint32_t  bytesWritten = Write(fd, numEntries);
+        uint64_t  numEntries = c.size();
+        uint64_t  bytesWritten = Write(fd, numEntries);
         if (bytesWritten == sizeof(numEntries)) {
           rc = bytesWritten;
           if (numEntries) {
@@ -769,11 +769,11 @@ namespace Dwm {
       if (! m.empty())
         m.clear();
       if (fd >= 0) {
-        uint32_t  numEntries;
-        ssize_t  bytesRead = Read(fd, numEntries);
+        uint64_t  numEntries;
+        ssize_t   bytesRead = Read(fd, numEntries);
         if (bytesRead == sizeof(numEntries)) {
           rc = bytesRead;
-          for (uint32_t i = 0; i < numEntries; ++i) {
+          for (uint64_t i = 0; i < numEntries; ++i) {
             typename _containerT::key_type  key;
             bytesRead = Read(fd, key);
             if (bytesRead > 0) {

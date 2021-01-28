@@ -1,4 +1,6 @@
 *.o
+.libs/**
+core
 TestASIO
 TestBase64
 TestConcurrentQueue
@@ -35,6 +37,7 @@ TestIOMultiSet
 TestIOSet
 TestIOVector
 TestIpv4Address
+TestIpv4AddrMap
 TestIpv4IcmpDestinationUnreachable
 TestIpv4IcmpEchoReply
 TestIpv4IcmpEchoRequest
@@ -43,13 +46,17 @@ TestIpv4IcmpSourceQuench
 TestIpv4IcmpTimeExceeded
 TestIpv4PacketHeader
 TestIpv4Prefix
+TestIpv4PrefixMap
 TestIpv4Routes
 TestIpv4TcpHeader
 TestIpv4TcpPacket
 TestIpv4UdpHeader
 TestIpv4UdpPacket
 TestIpv6Address
+TestIpv6AddrMap
 TestIpv6Prefix
+TestIpv6PrefixMap
+TestIpv6Routes
 TestLLCAT
 TestLocker
 TestMacAddress

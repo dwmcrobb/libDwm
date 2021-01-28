@@ -461,7 +461,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  uint32_t Ipv4PacketHeader::StreamedLength() const
+  uint64_t Ipv4PacketHeader::StreamedLength() const
   {
     return(sizeof(*_ip));
   }

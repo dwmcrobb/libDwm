@@ -150,7 +150,7 @@ namespace Dwm {
       Free();
 
       uint16_t  maxPayloadLen = 65535 - (20 + 8);
-      uint32_t payloadLen = IOUtils::StreamedLength(payload);
+      uint64_t  payloadLen = IOUtils::StreamedLength(payload);
       if (payloadLen <= maxPayloadLen) {
         std::ostringstream  os;
         if (StreamIO::Write(os, payload)) {
@@ -231,7 +231,7 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if we called one
     //!  of the Write() members.
     //------------------------------------------------------------------------
-    uint32_t StreamedLength() const override;
+    uint64_t StreamedLength() const override;
     
   private:
     std::pair<uint16_t, uint8_t *>  _payload;

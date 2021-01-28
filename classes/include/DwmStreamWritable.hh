@@ -60,12 +60,6 @@ namespace Dwm {
     //!  Write to an ostream.  Return the ostream.
     //------------------------------------------------------------------------
     virtual std::ostream & Write(std::ostream & os) const = 0;
-
-    //------------------------------------------------------------------------
-    //!  Returns the number of bytes that should be written if one of the
-    //!  Write() members is called.
-    //------------------------------------------------------------------------
-    virtual uint32_t StreamedLength() const = 0;
   };
   
     

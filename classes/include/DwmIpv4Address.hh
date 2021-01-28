@@ -268,63 +268,63 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if we called
     //!  one of the non-compressing Write() members.
     //------------------------------------------------------------------------
-    uint32_t StreamedLength() const;
+    uint64_t StreamedLength() const override;
     
     //------------------------------------------------------------------------
     //!  Reads from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    std::istream & Read(std::istream & is);
+    std::istream & Read(std::istream & is) override;
 
     //------------------------------------------------------------------------
     //!  Writes to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const;
+    std::ostream & Write(std::ostream & os) const override;
 
     //------------------------------------------------------------------------
     //!  Reads from a file descriptor.  Returns the number of bytes read
     //!  (4 on success).
     //------------------------------------------------------------------------
-    ssize_t Read(int fd);
+    ssize_t Read(int fd) override;
     
     //------------------------------------------------------------------------
     //!  Writes to a file descriptor.  Returns the number of bytes written
     //!  (4 on success).
     //------------------------------------------------------------------------
-    ssize_t Write(int fd) const;
+    ssize_t Write(int fd) const override;
 
     //------------------------------------------------------------------------
     //!  Reads from a FILE pointer.  Returns 1 on success, 0 on failure.
     //------------------------------------------------------------------------
-    size_t Read(FILE * f);
+    size_t Read(FILE * f) override;
     
     //------------------------------------------------------------------------
     //!  Writes to a FILE pointer.  Returns 1 on success, 0 on failure.
     //------------------------------------------------------------------------
-    size_t Write(FILE * f) const;
+    size_t Write(FILE * f) const override;
 
     //------------------------------------------------------------------------
     //!  Reads from a gzFile.  Returns the number of bytes read
     //!  (4 on success).
     //------------------------------------------------------------------------
-    int Read(gzFile gzf);
+    int Read(gzFile gzf) override;
     
     //------------------------------------------------------------------------
     //!  Writes to a gzFile.  Returns the number of bytes written
     //!  (4 on success).
     //------------------------------------------------------------------------
-    int Write(gzFile gzf) const;
+    int Write(gzFile gzf) const override;
     
     //------------------------------------------------------------------------
     //!  Reads from a BZFILE pointer.  Returns the number of bytes read
     //!  (4 on success).
     //------------------------------------------------------------------------
-    int BZRead(BZFILE *bzf);
+    int BZRead(BZFILE *bzf) override;
     
     //------------------------------------------------------------------------
     //!  Writes to a BZFILE pointer.  Returns the number of bytes written
     //!  (4 on success).
     //------------------------------------------------------------------------
-    int BZWrite(BZFILE *bzf) const;
+    int BZWrite(BZFILE *bzf) const override;
     
     //------------------------------------------------------------------------
     //!  Prints an Ipv4Address to an ostream in human-readable form.

@@ -557,9 +557,9 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  uint32_t Rusage::StreamedLength() const
+  uint64_t Rusage::StreamedLength() const
   {
-    uint32_t  rc = IOUtils::StreamedLength(_userTime);
+    uint64_t  rc = IOUtils::StreamedLength(_userTime);
     rc += IOUtils::StreamedLength(_systemTime);
     rc += IOUtils::StreamedLength(_maxResidentSetSize);
     rc += IOUtils::StreamedLength(_integralSharedTextMemorySize);

@@ -213,18 +213,18 @@ namespace Dwm {
     
     //------------------------------------------------------------------------
     //!  Reads \c s from \c bzf.  Returns the number of bytes read on success,
-    //!  -1 on failure.  Since we write strings with a 32-bit unsigned length
+    //!  -1 on failure.  Since we write strings with a 64-bit unsigned length
     //!  value preceding the actual string, and always have a terminating
-    //!  NULL, this always reads at least 5 bytes on success.
+    //!  NULL, this always reads at least 9 bytes on success.
     //------------------------------------------------------------------------
     static int BZRead(BZFILE *bzf, std::string & s);
     
     //------------------------------------------------------------------------
     //!  Writes \c s to \c bzf.  Returns the number of bytes written on
-    //!  success, -1 on failure.  Note that a 32-bit value is written first,
+    //!  success, -1 on failure.  Note that a 64-bit value is written first,
     //!  holding the length of the string.  The terminating NULL is also
     //!  written.  Hence, on success this will always return a value of
-    //!  5 or greater.
+    //!  9 or greater.
     //------------------------------------------------------------------------
     static int BZWrite(BZFILE *bzf, const std::string & s);
     
@@ -682,11 +682,11 @@ namespace Dwm {
         c.clear();
       int  rc = -1;
       if (bzf) {
-        uint32_t  numEntries;
+        uint64_t  numEntries;
         int  bytesRead = BZRead(bzf, numEntries);
         if (bytesRead == sizeof(numEntries)) {
           rc = bytesRead;
-          for (uint32_t i = 0; i < numEntries; ++i) {
+          for (uint64_t i = 0; i < numEntries; ++i) {
             typename _containerT::value_type  val;
             bytesRead = BZRead(bzf, val);
             if (bytesRead > 0) {
@@ -713,8 +713,8 @@ namespace Dwm {
     {
       int  rc = -1;
       if (bzf) {
-        uint32_t  numEntries = c.size();
-        uint32_t  bytesWritten = BZWrite(bzf, numEntries);
+        uint64_t  numEntries = c.size();
+        uint64_t  bytesWritten = BZWrite(bzf, numEntries);
         if (bytesWritten == sizeof(numEntries)) {
           rc = bytesWritten;
           if (numEntries) {
@@ -744,11 +744,11 @@ namespace Dwm {
       if (! m.empty())
         m.clear();
       if (bzf) {
-        uint32_t  numEntries;
+        uint64_t  numEntries;
         int  bytesRead = BZRead(bzf, numEntries);
         if (bytesRead == sizeof(numEntries)) {
           rc = bytesRead;
-          for (uint32_t i = 0; i < numEntries; ++i) {
+          for (uint64_t i = 0; i < numEntries; ++i) {
             typename _containerT::key_type  key;
             bytesRead = BZRead(bzf, key);
             if (bytesRead > 0) {

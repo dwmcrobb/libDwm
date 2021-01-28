@@ -84,7 +84,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  uint32_t Ipv4Address::StreamedLength() const
+  uint64_t Ipv4Address::StreamedLength() const
   {
     return(sizeof(_addr));
   }

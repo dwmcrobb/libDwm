@@ -167,7 +167,7 @@ namespace Dwm {
     //!  Returns the length of the time insterval, in bytes.  This is
     //!  used for some I/O functions.
     //------------------------------------------------------------------------
-    uint32_t StreamedLength() const override;
+    uint64_t StreamedLength() const override;
 
     //------------------------------------------------------------------------
     //!  Reads the time interval from an istream.  Returns the istream.

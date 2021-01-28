@@ -235,7 +235,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    uint32_t StreamedLength() const
+    uint64_t StreamedLength() const
     {
       return(IOUtils::StreamedLength(_key) + IOUtils::StreamedLength(_data));
     }
@@ -596,9 +596,9 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    uint32_t StreamedLength() const override
+    uint64_t StreamedLength() const override
     {
-      uint32_t  rc = IOUtils::StreamedLength(_size);
+      uint64_t  rc = IOUtils::StreamedLength(_size);
       RecursiveStreamedLength(_head, rc);
       return(rc);
     }
@@ -766,7 +766,7 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     void RecursiveStreamedLength(PatriciaNode<KeyType,ValueType> * root,
-                                 uint32_t & len) const
+                                 uint64_t & len) const
     {
       PatriciaNode<KeyType,ValueType> *l = root->_left;
       PatriciaNode<KeyType,ValueType> *r = root->_right;

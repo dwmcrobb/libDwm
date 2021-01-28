@@ -303,7 +303,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  uint32_t Ipv4IcmpMessage::StreamedLength() const
+  uint64_t Ipv4IcmpMessage::StreamedLength() const
   {
     return(_data.first);
   }

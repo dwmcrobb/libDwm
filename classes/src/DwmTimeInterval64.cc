@@ -112,7 +112,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  uint32_t TimeInterval64::StreamedLength() const
+  uint64_t TimeInterval64::StreamedLength() const
   {
     return(_data.first.StreamedLength() + _data.second.StreamedLength());
   }

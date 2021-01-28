@@ -62,12 +62,6 @@ namespace Dwm {
     //! (fwrite() semantics).
     //------------------------------------------------------------------------
     virtual size_t Write(FILE *f) const = 0;
-
-    //------------------------------------------------------------------------
-    //!  Returns the number of bytes that should be written if the Write()
-    //!  member is called.
-    //------------------------------------------------------------------------
-    virtual uint32_t StreamedLength() const = 0;
   };
   
     

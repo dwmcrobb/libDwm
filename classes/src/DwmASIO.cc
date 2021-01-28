@@ -425,7 +425,7 @@ namespace Dwm {
   {
     bool  rc = false;
     value.clear();
-    uint32_t  len;
+    uint64_t  len;
     if (_asio_read_network(s, len)) {
       try {
         value.resize(len);
@@ -456,7 +456,7 @@ namespace Dwm {
                    const std::string & value)
   {
     bool  rc = false;
-    uint32_t  len = value.size();
+    uint64_t  len = value.size();
     if (_asio_write_network(s, len)) {
       boost::system::error_code  ec;
       rc = (write(s, buffer(value.data(), value.size()), ec) == value.size());
@@ -469,7 +469,7 @@ namespace Dwm {
   //-------------------------------------------------------------------------
   uint64_t ASIO::StreamedLength(const std::string & s)
   {
-    return (sizeof(uint32_t) + s.size());
+    return (sizeof(uint64_t) + s.size());
   }
 
   //--------------------------------------------------------------------------
@@ -544,14 +544,6 @@ namespace Dwm {
     return val.Write(s);
   }
   
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  uint64_t ASIO::StreamedLength(const ASIOWritable & val)
-  {
-    return val.StreamedLength();
-  }
-
 }  // namespace Dwm
 
 

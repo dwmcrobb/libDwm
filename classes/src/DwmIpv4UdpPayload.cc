@@ -353,7 +353,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  uint32_t Ipv4UdpPayload::StreamedLength() const
+  uint64_t Ipv4UdpPayload::StreamedLength() const
   {
     return(_payload.first);
   }

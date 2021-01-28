@@ -314,9 +314,9 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  uint32_t MplsLabelStack::StreamedLength() const
+  uint64_t MplsLabelStack::StreamedLength() const
   {
-    uint32_t  rc = 0;
+    uint64_t  rc = 0;
     std::vector<MplsLabel>::const_iterator  i;
     for (i = _labels.begin(); i != _labels.end(); ++i) {
       rc += i->StreamedLength();
