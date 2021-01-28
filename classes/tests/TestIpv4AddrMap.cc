@@ -75,6 +75,8 @@ static bool GetEntries(vector<Ipv4Address> & entries)
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
+  cout.imbue(std::locale(""));
+  
   vector<Ipv4Address>  entries;
   if (UnitAssert(GetEntries(entries))) {
     Ipv4AddrMap<uint32_t>  addrMap;
