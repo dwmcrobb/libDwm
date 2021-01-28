@@ -39,6 +39,10 @@
 //!  \brief NOT YET DOCUMENTED
 //---------------------------------------------------------------------------
 
+extern "C" {
+  #include <unistd.h>
+}
+
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -50,6 +54,8 @@
 
 using namespace std;
 using namespace Dwm;
+
+bool  g_testPerformance = false;
 
 //----------------------------------------------------------------------------
 //!  
@@ -68,6 +74,54 @@ static bool GetEntries(vector<Ipv6Prefix> & entries)
     is.close();
   }
   return (! entries.empty());
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestFind(const vector<Ipv6Prefix> & entries)
+{
+  Ipv6PrefixMap<uint32_t>  pfxMap;
+  uint32_t  i = 0;
+  for (const auto & entry : entries) {
+    pfxMap.Add(entry, i);
+    ++i;
+  }
+  uint32_t  val;
+  uint64_t  found = 0;
+  i = 0;
+  for (const auto & entry : entries) {
+    if (UnitAssert(pfxMap.Find(entry, val))) {
+      UnitAssert(val == i);
+      ++found;
+    }
+    ++i;
+  }
+  UnitAssert(found == entries.size());
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestLongestMatch(const vector<Ipv6Prefix> & entries)
+{
+  Ipv6PrefixMap<uint32_t>  pfxMap;
+  uint32_t  i = 0;
+  for (const auto & entry : entries) {
+    pfxMap.Add(entry, i);
+    ++i;
+  }
+  pair<Ipv6Prefix,uint32_t>  val;
+  uint64_t  found = 0;
+  for (const auto & entry : entries) {
+    if (UnitAssert(pfxMap.FindLongest(entry.Network(), val))) {
+      UnitAssert(entry.Contains(val.first.Network()));
+      ++found;
+    }
+  }
+  UnitAssert(found == entries.size());
+  return;
 }
 
 //----------------------------------------------------------------------------
@@ -102,9 +156,24 @@ static void TestLongestMatchPerformance(const vector<Ipv6Prefix> & entries)
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
+  int  optChar;
+  while ((optChar = getopt(argc, argv, "p")) != -1) {
+    switch (optChar) {
+      case 'p':
+        g_testPerformance = true;
+        break;
+      default:
+        break;
+    }
+  }
+  
   vector<Ipv6Prefix>  entries;
   if (UnitAssert(GetEntries(entries))) {
-    TestLongestMatchPerformance(entries);
+    TestFind(entries);
+    TestLongestMatch(entries);
+    if (g_testPerformance) {
+      TestLongestMatchPerformance(entries);
+    }
   }
 
   if (Assertions::Total().Failed()) {
