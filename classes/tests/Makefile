@@ -54,7 +54,6 @@ OBJFILES = TestASIO.o \
 	   TestIpv6AddrMap.o \
 	   TestIpv6Prefix.o \
 	   TestIpv6PrefixMap.o \
-	   TestIpv6Routes.o \
 	   TestMacAddress.o \
 	   TestMplsLabel.o \
 	   TestMplsLabelStack.o \
