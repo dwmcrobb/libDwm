@@ -131,7 +131,6 @@ namespace Dwm {
   Ipv6Prefix::Ipv6Prefix(const Ipv6Address & network, uint8_t maskLength)
   {
     _addr = network;
-    assert(128 >= maskLength);
     _length = maskLength;
     MaskBits(_addr, _length);
   }
@@ -163,14 +162,6 @@ namespace Dwm {
     return(addr);
   }
   
-  //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
-  uint8_t Ipv6Prefix::MaskLength() const
-  {
-    return(_length);
-  }
-
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
