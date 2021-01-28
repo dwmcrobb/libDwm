@@ -228,25 +228,9 @@ namespace Dwm {
     //------------------------------------------------------------------------
     std::string ToString() const;
 
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    size_t Hash() const
-    {
-      size_t   rc = ((size_t *)(_addr.s6_addr))[0];
-      uint8_t  addrBytes = NumAddrBytes();
-      if (addrBytes > 8) {
-        static constexpr uint8_t fact[8] = { 1, 2, 3, 5, 7, 11, 13, 17 };
-        for (int i = 8; i < addrBytes; ++i) {
-          rc += _addr.s6_addr[i] * fact[i-8];
-        }
-      }
-      return rc;
-    }
-          
   private:
-    struct in6_addr  _addr;
-    uint8_t          _length;
+    alignas(8) struct in6_addr  _addr;
+    uint8_t                     _length;
 
     inline uint8_t NumAddrBytes() const
     {
