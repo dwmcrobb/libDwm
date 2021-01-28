@@ -36,8 +36,12 @@
 //---------------------------------------------------------------------------
 //!  \file TestIpv4AddrMap.hh
 //!  \author Daniel W. McRobb
-//!  \brief NOT YET DOCUMENTED
+//!  \brief Unit tests for Dwm::Ipv4AddrMap
 //---------------------------------------------------------------------------
+
+extern "C" {
+  #include <unistd.h>
+}
 
 #include <cstring>
 #include <fstream>
@@ -50,6 +54,8 @@
 
 using namespace std;
 using namespace Dwm;
+
+static bool  g_testPerformance = false;
 
 //----------------------------------------------------------------------------
 //!  
@@ -73,33 +79,78 @@ static bool GetEntries(vector<Ipv4Address> & entries)
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void Test(const vector<Ipv4Address> & entries)
+{
+  Ipv4AddrMap<uint32_t>  addrMap;
+  uint32_t  i = 0;
+  for (const auto & entry : entries) {
+    addrMap.Add(entry, i);
+    ++i;
+  }
+  
+  uint32_t  val;
+  uint64_t  found = 0;
+  i = 0;
+  for (const auto & entry : entries) {
+    found += addrMap.Find(entry, val);
+    UnitAssert(val == i);
+    ++i;
+  }
+  UnitAssert(found == entries.size());
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestPerformance(const vector<Ipv4Address> & entries)
+{
+  Ipv4AddrMap<uint32_t>  addrMap;
+  uint32_t  i = 0;
+  for (const auto & entry : entries) {
+    addrMap.Add(entry, i);
+    ++i;
+  }
+  
+  uint32_t  val;
+  uint64_t  found = 0;
+  Dwm::TimeValue  startTime(true);
+  for (const auto & entry : entries) {
+    found += addrMap.Find(entry, val);
+  }
+  Dwm::TimeValue  endTime(true);
+  endTime -= startTime;
+  uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
+  uint64_t  lookupsPerSec = (found * 1000000ULL * 10) / usecs;
+  cout << found << " addresses, " << lookupsPerSec
+       << " lookups/sec\n";
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
+  int  optChar;
+  while ((optChar = getopt(argc, argv, "p")) != -1) {
+    switch (optChar) {
+      case 'p':
+        g_testPerformance = true;
+        break;
+      default:
+        break;
+    }
+  }
+  
   cout.imbue(std::locale(""));
   
   vector<Ipv4Address>  entries;
   if (UnitAssert(GetEntries(entries))) {
-    Ipv4AddrMap<uint32_t>  addrMap;
-    uint32_t  i = 0;
-    for (const auto & entry : entries) {
-      addrMap.Add(entry, i);
-      ++i;
+    Test(entries);
+    if (g_testPerformance) {
+      TestPerformance(entries);
     }
-
-    uint32_t  val;
-    uint64_t  found = 0;
-    Dwm::TimeValue  startTime(true);
-    for (const auto & entry : entries) {
-      found += addrMap.Find(entry, val);
-    }
-    Dwm::TimeValue  endTime(true);
-    endTime -= startTime;
-    uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
-    uint64_t  lookupsPerSec = (found * 1000000ULL * 10) / usecs;
-    cout << found << " addresses, " << lookupsPerSec
-         << " lookups/sec\n";
-
-
   }
 
   if (Assertions::Total().Failed()) {
