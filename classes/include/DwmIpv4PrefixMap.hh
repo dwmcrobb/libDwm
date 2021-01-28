@@ -53,7 +53,18 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  template <typename T>
+  struct OurIpv4PrefixHash
+  {
+    inline size_t operator () (const Dwm::Ipv4Prefix & pfx) const
+    {
+      return pfx.NetworkRaw();
+    }
+  };
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  template <typename T, typename Hash = OurIpv4PrefixHash>
   class Ipv4PrefixMap
   {
   public:
@@ -61,8 +72,10 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     Ipv4PrefixMap()
-        : _mtx(), _map()
-    {}
+        : _mtx(), _map(), _lengthCounters()
+    {
+      _map.max_load_factor(.25);
+    }
     
     //------------------------------------------------------------------------
     //!  
@@ -70,7 +83,9 @@ namespace Dwm {
     void Add(const Ipv4Prefix & pfx, const T & value)
     {
       std::lock_guard<std::mutex>  lck(_mtx);
-      _map[pfx.MaskLength()].Add(pfx.Network(), value);
+      if (_map.insert_or_assign(pfx, value).second) {
+        _lengthCounters[pfx.MaskLength()]++;
+      }
       return;
     }
 
@@ -81,9 +96,10 @@ namespace Dwm {
     {
       bool  rc = false;
       std::lock_guard<std::mutex>  lck(_mtx);
-      auto  it = _map.find(pfx.MaskLength());
+      auto  it = _map.find(pfx);
       if (it != _map.end()) {
-        rc = it->second.Find(pfx.Network(), value);
+        value = it->second;
+        rc = true;
       }
       return rc;
     }
@@ -95,11 +111,15 @@ namespace Dwm {
                      std::pair<Ipv4Prefix,T> & value) const
     {
       bool  rc = false;
+      Ipv4Prefix  pfx(addr, 32);
       std::lock_guard<std::mutex>  lck(_mtx);
-      for (auto it = _map.rbegin(); it != _map.rend(); ++it) {
-        Ipv4Prefix  pfx(addr, it->first);
-        if (it->second.Find(pfx.Network(), value.second)) {
+      for (auto lit = _lengthCounters.rbegin();
+           lit != _lengthCounters.rend(); ++lit) {
+        pfx.MaskLength(lit->first);
+        auto  it = _map.find(pfx);
+        if (it != _map.end()) {
           value.first = pfx;
+          value.second = it->second;
           rc = true;
           break;
         }
@@ -116,10 +136,13 @@ namespace Dwm {
       values.clear();
       std::pair<Ipv4Prefix,T>  value;
       std::lock_guard<std::mutex>  lck(_mtx);
-      for (auto it = _map.rbegin(); it != _map.rend(); ++it) {
-        Ipv4Prefix  pfx(addr, it->first);
-        if (it->second.Find(pfx.Network(), value.second)) {
+      for (auto lit = _lengthCounters.rbegin();
+           lit != _lengthCounters.rend(); ++lit) {
+        Ipv4Prefix  pfx(addr, lit->first);
+        auto  it = _map.find(pfx);
+        if (it != _map.end()) {
           value.first = pfx;
+          value.second = it->second;
           values.push_back(value);
         }
       }
@@ -133,19 +156,23 @@ namespace Dwm {
     {
       bool  rc = false;
       std::lock_guard<std::mutex>  lck(_mtx);
-      auto  it = _map.find(pfx.MaskLength());
+      auto  it = _map.find(pfx);
       if (it != _map.end()) {
-        rc = it->second.Remove(pfx.Network());
-        if (it->second.Empty()) {
-          _map.erase(it);
+        _map.erase(it);
+        auto lit = _lengthCounters.find(pfx.MaskLength());
+        lit->second--;
+        if (0 == lit->second) {
+          _lengthCounters.erase(lit);
         }
+        rc = true;
       }
       return rc;
     }
     
   private:
-    mutable std::mutex                _mtx;
-    std::map<uint8_t,Ipv4AddrMap<T>>  _map;
+    mutable std::mutex                     _mtx;
+    std::unordered_map<Ipv4Prefix,T,Hash>  _map;
+    std::map<uint8_t,uint64_t>             _lengthCounters;
   };
   
 }  // namespace Dwm
