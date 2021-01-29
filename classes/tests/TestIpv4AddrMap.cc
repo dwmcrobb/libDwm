@@ -49,6 +49,7 @@ extern "C" {
 #include <vector>
 
 #include "DwmIpv4AddrMap.hh"
+#include "DwmStreamIO.hh"
 #include "DwmTimeValue.hh"
 #include "DwmUnitAssert.hh"
 
@@ -79,6 +80,58 @@ static bool GetEntries(vector<Ipv4Address> & entries)
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void TestStreamWrite(const Ipv4AddrMap<uint32_t> & addrMap)
+{
+  ofstream  os("./TestIpv4AddrMap_stream", ios::out|ios::binary);
+  if (UnitAssert(os)) {
+    auto  readRef = addrMap.ReadLockedRef();
+    UnitAssert(StreamIO::Write(os, readRef.Data()));
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestStreamRead(Ipv4AddrMap<uint32_t> & addrMap)
+{
+  ifstream  is("./TestIpv4AddrMap_stream", ios::in|ios::binary);
+  if (UnitAssert(is)) {
+    auto  writeRef = addrMap.WriteLockedRef();
+    UnitAssert(StreamIO::Read(is, writeRef.Data()));
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestStreamIO(Ipv4AddrMap<uint32_t> & addrMap)
+{
+  TestStreamWrite(addrMap);
+  Ipv4AddrMap<uint32_t>  addrMap2;
+  TestStreamRead(addrMap2);
+
+  auto  readRef = addrMap.ReadLockedRef();
+  auto  readRef2 = addrMap2.ReadLockedRef();
+  for (const auto & r : readRef.Data()) {
+    auto  rit2 = readRef2.Data().find(r.first);
+    if (UnitAssert(rit2 != readRef2.Data().end())) {
+      UnitAssert(rit2->second == r.second);
+    }
+  }
+  for (const auto & r2 : readRef2.Data()) {
+    auto  rit = readRef.Data().find(r2.first);
+    if (UnitAssert(rit != readRef.Data().end())) {
+      UnitAssert(rit->second == r2.second);
+    }
+  }
+  std::remove("./TestIpv4AddrMap_stream");
+}
+        
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static void Test(const vector<Ipv4Address> & entries)
 {
   Ipv4AddrMap<uint32_t>  addrMap;
@@ -97,6 +150,8 @@ static void Test(const vector<Ipv4Address> & entries)
     ++i;
   }
   UnitAssert(found == entries.size());
+  TestStreamIO(addrMap);
+  
   return;
 }
 
