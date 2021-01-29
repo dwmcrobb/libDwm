@@ -48,6 +48,9 @@ extern "C" {
 
 #include <string>
 
+#define XXH_INLINE_ALL
+#include <xxhash.h>
+
 #include "DwmDescriptorIOCapable.hh"
 #include "DwmFileIOCapable.hh"
 #include "DwmStreamIOCapable.hh"
@@ -215,6 +218,14 @@ namespace Dwm {
     friend std::ostream & operator << (std::ostream & os, 
                                        const Ipv6Address & addr);
 
+    //------------------------------------------------------------------------
+    //!  Returns a 64-bit hash value for the Ipv6Address.
+    //------------------------------------------------------------------------
+    inline uint64_t Hash() const
+    {
+      return XXH64(_addr.s6_addr, 16, 0);
+    }
+    
   private:
     alignas(8) struct in6_addr  _addr;
   };

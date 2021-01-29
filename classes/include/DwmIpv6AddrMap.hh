@@ -44,9 +44,8 @@
 
 #include <iostream>
 #include <mutex>
+#include <shared_mutex>
 #include <unordered_map>
-
-#include <xxhash.h>
 
 #include "DwmIpv6Address.hh"
 
@@ -59,12 +58,13 @@ namespace Dwm {
   {
     inline size_t operator () (const Dwm::Ipv6Address & addr) const
     {
-      return (XXH64(addr.In6Addr().s6_addr, 16, 0));
+      return addr.Hash();
     }
   };
 
   //--------------------------------------------------------------------------
-  //!  
+  //!  A thin wrapper around std::unordered_map<Ipv6Address,T,Hash>.  Mainly
+  //!  provides thread safety (shared and unique locks).
   //--------------------------------------------------------------------------
   template <typename T, typename Hash = OurIpv6AddressHash>
   class Ipv6AddrMap
@@ -84,7 +84,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     void Add(const Ipv6Address & addr, const T & value)
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::unique_lock  lck(_mtx);
       _map[addr] = value;
       return;
     }
@@ -94,7 +94,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     bool Find(const Ipv6Address & addr, T & value) const
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::shared_lock  lck(_mtx);
       auto iter = _map.find(addr);
       if (iter != _map.end()) {
         value = iter->second;
@@ -109,7 +109,7 @@ namespace Dwm {
     bool Remove(const Ipv6Address & addr)
     {
       bool  rc = false;
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::unique_lock  lck(_mtx);
       auto  it = _map.find(addr);
       if (it != _map.end()) {
         _map.erase(it);
@@ -123,12 +123,22 @@ namespace Dwm {
     //------------------------------------------------------------------------
     bool Empty() const
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::shared_lock  lck(_mtx);
       return _map.empty();
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    void Clear()
+    {
+      std::unique_lock  lck(_mtx);
+      _map.clear();
+      return;
     }
     
   private:
-    mutable std::mutex                      _mtx;
+    mutable std::shared_mutex               _mtx;
     std::unordered_map<Ipv6Address,T,Hash>  _map;
   };
   
