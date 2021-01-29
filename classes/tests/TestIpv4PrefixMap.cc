@@ -102,6 +102,30 @@ static void TestFind(const vector<Ipv4Prefix> & entries)
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void TestFindPerformanceReadRef(const vector<Ipv4Prefix> & entries,
+                                       const Ipv4PrefixMap<uint32_t> & addrMap)
+{
+  auto  readRef = addrMap.ReadLockedRef();
+  uint64_t  found = 0;
+  Dwm::TimeValue64  startTime(true);
+  for (const auto & entry : entries) {
+    if (readRef.Data().find(entry) != readRef.Data().end()) {
+      ++found;
+    }
+  }
+  Dwm::TimeValue64  endTime(true);
+  endTime -= startTime;
+  UnitAssert(found == entries.size());
+  uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
+  uint64_t  lookupsPerSec = (found * 1000000ULL * 10) / usecs;
+  cout << found << " addresses, " << lookupsPerSec
+       << " prefix lookups/sec (via read-locked ref)\n";
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static void TestFindPerformance(const vector<Ipv4Prefix> & entries)
 {
   Ipv4PrefixMap<uint32_t>  pfxMap;
@@ -123,6 +147,8 @@ static void TestFindPerformance(const vector<Ipv4Prefix> & entries)
   uint64_t  lookupsPerSec = (found * 1000000ULL * 10) / usecs;
   cout << found << " addresses, " << lookupsPerSec
        << " prefix lookups/sec\n";
+
+  TestFindPerformanceReadRef(entries, pfxMap);
   return;
 }
 
