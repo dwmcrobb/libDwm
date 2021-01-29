@@ -50,7 +50,7 @@ extern "C" {
 
 #include "DwmIpv4AddrMap.hh"
 #include "DwmStreamIO.hh"
-#include "DwmTimeValue.hh"
+#include "DwmTimeValue64.hh"
 #include "DwmUnitAssert.hh"
 
 using namespace std;
@@ -128,7 +128,7 @@ static void TestStreamIO(Ipv4AddrMap<uint32_t> & addrMap)
   }
   std::remove("./TestIpv4AddrMap_stream");
 }
-        
+
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
@@ -158,6 +158,30 @@ static void Test(const vector<Ipv4Address> & entries)
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void TestPerformanceReadRef(const vector<Ipv4Address> & entries,
+                                   const Ipv4AddrMap<uint32_t> & addrMap)
+{
+  auto  readRef = addrMap.ReadLockedRef();
+  uint64_t  found = 0;
+  Dwm::TimeValue64  startTime(true);
+  for (const auto & entry : entries) {
+    auto it = readRef.Data().find(entry.Raw());
+    if (it != readRef.Data().end()) {
+      ++found;
+    }
+  }
+  Dwm::TimeValue64  endTime(true);
+  endTime -= startTime;
+  uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
+  uint64_t  lookupsPerSec = (found * 1000000ULL * 10) / usecs;
+  cout << found << " addresses, " << lookupsPerSec
+       << " lookups/sec (via read-locked reference)\n";
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static void TestPerformance(const vector<Ipv4Address> & entries)
 {
   Ipv4AddrMap<uint32_t>  addrMap;
@@ -169,16 +193,18 @@ static void TestPerformance(const vector<Ipv4Address> & entries)
   
   uint32_t  val;
   uint64_t  found = 0;
-  Dwm::TimeValue  startTime(true);
+  Dwm::TimeValue64  startTime(true);
   for (const auto & entry : entries) {
     found += addrMap.Find(entry, val);
   }
-  Dwm::TimeValue  endTime(true);
+  Dwm::TimeValue64  endTime(true);
   endTime -= startTime;
   uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
   uint64_t  lookupsPerSec = (found * 1000000ULL * 10) / usecs;
   cout << found << " addresses, " << lookupsPerSec
        << " lookups/sec\n";
+
+  TestPerformanceReadRef(entries, addrMap);
   return;
 }
 
