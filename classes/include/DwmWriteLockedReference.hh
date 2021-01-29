@@ -86,13 +86,15 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  No assigment operator.
     //------------------------------------------------------------------------
-    WriteLockedReference & oiperator = (const WriteLockedReference &) = delete;
+    WriteLockedReference & operator = (const WriteLockedReference &) = delete;
 
     //------------------------------------------------------------------------
     //!  Returns a mutable reference to the write-locked data.
     //------------------------------------------------------------------------
     LockedType & Data()  { return _data; }
 
+    friend F;
+    
   private:
     std::unique_lock<std::shared_mutex>   _lock;
     LockedType                           &_data;
