@@ -47,7 +47,14 @@
 #include <shared_mutex>
 #include <unordered_map>
 
+#include "DwmASIO.hh"
+#include "DwmBZ2IO.hh"
+#include "DwmDescriptorIO.hh"
+#include "DwmFileIO.hh"
+#include "DwmGZIO.hh"
+#include "DwmIOUtils.hh"
 #include "DwmIpv6Address.hh"
+#include "DwmStreamIO.hh"
 
 namespace Dwm {
 
@@ -68,6 +75,10 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   template <typename T, typename Hash = OurIpv6AddressHash>
   class Ipv6AddrMap
+    : public StreamIOCapable, public FileIOCapable,
+      public DescriptorIOCapable, public StreamedLengthCapable,
+      public GZIOCapable, public BZ2IOCapable,
+      public ASIOReadable, public ASIOWritable
   {
   public:
     //------------------------------------------------------------------------
@@ -135,6 +146,143 @@ namespace Dwm {
       std::unique_lock  lck(_mtx);
       _map.clear();
       return;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads the Ipv6AddrMap from an istream.  Returns the istream.
+    //------------------------------------------------------------------------
+    std::istream & Read(std::istream & is) override
+    {
+      std::unique_lock  lck(_mtx);
+      return StreamIO::Read(is, _map);
+    }
+    
+    //------------------------------------------------------------------------
+    //!  Writes the Ipv6AddrMap to an ostream.  Returns the ostream.
+    //------------------------------------------------------------------------
+    std::ostream & Write(std::ostream & os) const override
+    {
+      std::shared_lock  lck(_mtx);
+      return StreamIO::Write(os, _map);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads the Ipv6AddrMap from @c f.  Returns 1 on success, 0 on
+    //!  failure.
+    //------------------------------------------------------------------------
+    size_t Read(FILE *f) override
+    {
+      std::unique_lock  lck(_mtx);
+      return FileIO::Read(f, _map);
+    }
+    
+    //------------------------------------------------------------------------
+    //!  Writes the Ipv6AddrMap to @c f.  Returns 1 on success, 0 on
+    //!  failure.
+    //------------------------------------------------------------------------
+    size_t Write(FILE *f) const override
+    {
+      std::shared_lock  lck(_mtx);
+      return FileIO::Write(f, _map);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads the Ipv6AddrMap from file descriptor @c fd.  Returns the
+    //!  number of bytes read on success, -1 on failure.
+    //------------------------------------------------------------------------
+    ssize_t Read(int fd) override
+    {
+      std::unique_lock  lck(_mtx);
+      return DescriptorIO::Read(fd, _map);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes the Ipv6AddrMap to file descriptor @c fd.  Returns the
+    //!  number of bytes written on success, -1 on failure.
+    //------------------------------------------------------------------------
+    ssize_t Write(int fd) const override
+    {
+      std::shared_lock  lck(_mtx);
+      return DescriptorIO::Write(fd, _map);
+    }
+    
+    //------------------------------------------------------------------------
+    //!  Reads the Ipv6AddrMap from @c gzf.  Returns the number of bytes
+    //!  read on success, -1 on failure.  Be wary; the integer return is
+    //!  risky (could overflow) but it's what zlib's gzread() returns and
+    //!  we trickled up the return type.
+    //------------------------------------------------------------------------
+    int Read(gzFile gzf) override
+    {
+      std::unique_lock  lck(_mtx);
+      return GZIO::Read(gzf, _map);
+    }
+    
+    //------------------------------------------------------------------------
+    //!  Writes the Ipv6AddrMap to @c gzf.  Returns the number of bytes
+    //!  written on success, -1 on failure.  Be wary; the integer return is
+    //!  risky (could overflow) but it's what zlib's gzwrite() returns and
+    //!  we trickled up the return type.
+    //------------------------------------------------------------------------
+    int Write(gzFile gzf) const override
+    {
+      std::shared_lock  lck(_mtx);
+      return GZIO::Write(gzf, _map);
+    }
+    
+    //------------------------------------------------------------------------
+    //!  Reads the Ipv6AddrMap from @c bzf.  Returns the number of
+    //!  bytes read on success, -1 on failure.  Be wary; the integer return is
+    //!  risky (could overflow) but it's what bzlib's BZ2_bzRead() returns
+    //!  and we trickled up the return type.
+    //------------------------------------------------------------------------
+    int BZRead(BZFILE *bzf) override
+    {
+      std::unique_lock  lck(_mtx);
+      return BZ2IO::BZRead(bzf, _map);
+    }
+    
+    //------------------------------------------------------------------------
+    //!  Writes the Ipv6AddrMap to @c bzf.  Returns the number of bytes
+    //!  written on success, -1 on failure.  Be wary; the integer return is
+    //!  risky (could overflow) but it's what bzlib's BZ2_bzWrite() returns
+    //!  and we trickled up the return type.
+    //------------------------------------------------------------------------
+    int BZWrite(BZFILE *bzf) const override
+    {
+      std::shared_lock  lck(_mtx);
+      return BZ2IO::BZWrite(bzf, _map);
+    }
+
+
+    //------------------------------------------------------------------------
+    //!  Returns the number of bytes that would be written if the
+    //!  Ipv6AddrMap was written to a FILE, file descriptor or ostream.
+    //------------------------------------------------------------------------
+    uint64_t StreamedLength() const override
+    {
+      std::shared_lock  lck(_mtx);
+      return IOUtils::StreamedLength(_map);
+    }
+    
+    //------------------------------------------------------------------------
+    //!  Reads the Ipv6AddrMap from @c s.  Returns true on success, false
+    //!  on failure.
+    //------------------------------------------------------------------------
+    bool Read(boost::asio::ip::tcp::socket & s) override
+    {
+      std::unique_lock  lck(_mtx);
+      return ASIO::Read(s, _map);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes the Ipv6AddrMap to @c s.  Returns true on success, false
+    //!  on failure.
+    //------------------------------------------------------------------------
+    bool Write(boost::asio::ip::tcp::socket & s) const override
+    {
+      std::shared_lock  lck(_mtx);
+      return ASIO::Write(s, _map);
     }
     
   private:
