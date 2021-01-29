@@ -47,6 +47,8 @@
 
 #include "DwmIpv4AddrMap.hh"
 #include "DwmIpv4Prefix.hh"
+#include "DwmReadLockedReference.hh"
+#include "DwmWriteLockedReference.hh"
 
 namespace Dwm {
 
@@ -71,6 +73,11 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
+    using MapType = std::unordered_map<Ipv4Prefix,T,Hash>;
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
     Ipv4PrefixMap()
         : _mtx(), _map(), _lengthCounters()
     {
@@ -82,7 +89,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     void Add(const Ipv4Prefix & pfx, const T & value)
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::unique_lock  lck(_mtx);
       if (_map.insert_or_assign(pfx, value).second) {
         _lengthCounters[pfx.MaskLength()]++;
       }
@@ -95,7 +102,7 @@ namespace Dwm {
     bool Find(const Ipv4Prefix & pfx, T & value) const
     {
       bool  rc = false;
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::shared_lock  lck(_mtx);
       auto  it = _map.find(pfx);
       if (it != _map.end()) {
         value = it->second;
@@ -112,7 +119,7 @@ namespace Dwm {
     {
       bool  rc = false;
       Ipv4Prefix  pfx(addr, 32);
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::shared_lock  lck(_mtx);
       for (auto lit = _lengthCounters.rbegin();
            lit != _lengthCounters.rend(); ++lit) {
         pfx.MaskLength(lit->first);
@@ -135,7 +142,7 @@ namespace Dwm {
     {
       values.clear();
       std::pair<Ipv4Prefix,T>  value;
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::shared_lock  lck(_mtx);
       for (auto lit = _lengthCounters.rbegin();
            lit != _lengthCounters.rend(); ++lit) {
         Ipv4Prefix  pfx(addr, lit->first);
@@ -155,7 +162,7 @@ namespace Dwm {
     bool Remove(const Ipv4Prefix & pfx)
     {
       bool  rc = false;
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::unique_lock  lck(_mtx);
       auto  it = _map.find(pfx);
       if (it != _map.end()) {
         _map.erase(it);
@@ -168,11 +175,28 @@ namespace Dwm {
       }
       return rc;
     }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    ReadLockedReference<Ipv4PrefixMap<T>,MapType> ReadLockedRef() const
+    {
+      return ReadLockedReference<Ipv4PrefixMap<T>,MapType>(_mtx, _map);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    WriteLockedReference<Ipv4PrefixMap<T>,MapType> WriteLockedRef()
+    {
+      return WriteLockedReference<Ipv4PrefixMap<T>,MapType>(_mtx, _map);
+    }
     
+
   private:
-    mutable std::mutex                     _mtx;
-    std::unordered_map<Ipv4Prefix,T,Hash>  _map;
-    std::map<uint8_t,uint64_t>             _lengthCounters;
+    mutable std::shared_mutex    _mtx;
+    MapType                      _map;
+    std::map<uint8_t,uint64_t>   _lengthCounters;
   };
   
 }  // namespace Dwm
