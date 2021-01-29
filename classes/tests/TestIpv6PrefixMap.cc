@@ -98,6 +98,9 @@ static void TestFind(const vector<Ipv6Prefix> & entries)
     ++i;
   }
   UnitAssert(found == entries.size());
+  pfxMap.Clear();
+  UnitAssert(pfxMap.Empty());
+  
   return;
 }
 
@@ -123,7 +126,7 @@ static void TestFindPerformance(const vector<Ipv6Prefix> & entries)
   UnitAssert(found == entries.size());
   uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
   uint64_t  lookupsPerSec = (found * 1000000ULL * 10) / usecs;
-  cout << found << " addresses, " << lookupsPerSec
+  cout << found << " prefixes, " << lookupsPerSec
        << " prefix lookups/sec\n";
   return;
 }
@@ -148,6 +151,8 @@ static void TestLongestMatch(const vector<Ipv6Prefix> & entries)
     }
   }
   UnitAssert(found == entries.size());
+  pfxMap.Clear();
+  UnitAssert(pfxMap.Empty());
   return;
 }
 
@@ -173,7 +178,7 @@ static void TestLongestMatchPerformance(const vector<Ipv6Prefix> & entries)
   UnitAssert(found == entries.size());
   uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
   uint64_t  lookupsPerSec = (found * 1000000ULL * 10) / usecs;
-  cout << found << " addresses, " << lookupsPerSec
+  cout << found << " prefixes, " << lookupsPerSec
        << " longest match lookups/sec\n";
   return;
 }
