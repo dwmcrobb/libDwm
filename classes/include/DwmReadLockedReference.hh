@@ -80,22 +80,22 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  No move constructor.
     //------------------------------------------------------------------------
-    ReadLockedReference(const ReadLockedReference &&) = delete;
+    ReadLockedReference(ReadLockedReference &&) = delete;
 
     //------------------------------------------------------------------------
     //!  No assignment.
     //------------------------------------------------------------------------
-    ReadLockedReference operator = (const ReadLockedReference &) = delete;
+    ReadLockedReference & operator = (const ReadLockedReference &) = delete;
     
     //------------------------------------------------------------------------
     //!  Returns the protected data.
     //------------------------------------------------------------------------
-    LockedType & Data()  { return _data; }
+    const LockedType & Data()  { return _data; }
     friend F;
 
   private:
     std::shared_lock<std::shared_mutex>   _lock;
-    LockedType                           &_data;
+    const LockedType                     &_data;
 
     //------------------------------------------------------------------------
     //!  Construct from a reference to a mutex @c mtx and the @c data
