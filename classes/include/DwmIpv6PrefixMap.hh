@@ -287,7 +287,10 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Reads the Ipv6PrefixMap from a gzFile.
+    //!  Reads the Ipv6PrefixMap from @c gzf.  Returns the number of bytes
+    //!  read on success, -1 on failure.  Be wary; the integer return is
+    //!  risky (could overflow) but it's what zlib's gzread() returns and
+    //!  we trickled up the return type.
     //------------------------------------------------------------------------
     int Read(gzFile gzf) override
     {
@@ -296,7 +299,10 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Writes the Ipv6PrefixMap to a gzFile.
+    //!  Writes the Ipv6PrefixMap to @c gzf.  Returns the number of bytes
+    //!  written on success, -1 on failure.  Be wary; the integer return is
+    //!  risky (could overflow) but it's what zlib's gzread() returns and
+    //!  we trickled up the return type.
     //------------------------------------------------------------------------
     int Write(gzFile gzf) const override
     {
@@ -305,7 +311,10 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Reads the Ipv6PrefixMap from @c bzf.
+    //!  Reads the Ipv6PrefixMap from @c bzf.  Returns the number of bytes
+    //!  read on success, -1 on failure.  Be wary; the integer return is
+    //!  risky (could overflow) but it's what bzlib's BZ2_bzRead() returns
+    //!  and we trickled up the return type.
     //------------------------------------------------------------------------
     int BZRead(BZFILE *bzf) override
     {
@@ -314,7 +323,10 @@ namespace Dwm {
     }
     
     //------------------------------------------------------------------------
-    //!  Writes the Ipv6PrefixMap to @c bzf.
+    //!  Writes the Ipv6PrefixMap to @c bzf.  Returns the number of bytes
+    //!  written on success, -1 on failure.  Be wary; the integer return is
+    //!  risky (could overflow) but it's what bzlib's BZ2_bzWrite() returns
+    //!  and we trickled up the return type.
     //------------------------------------------------------------------------
     int BZWrite(BZFILE *bzf) const override
     {
