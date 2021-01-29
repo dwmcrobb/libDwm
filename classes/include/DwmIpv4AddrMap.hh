@@ -36,7 +36,7 @@
 //---------------------------------------------------------------------------
 //!  \file DwmIpv4AddrMap.hh
 //!  \author Daniel W. McRobb
-//!  \brief NOT YET DOCUMENTED
+//!  \brief Dwm::Ipv4AddrMap class template declaration
 //---------------------------------------------------------------------------
 
 #ifndef _DWMIPV4ADDRMAP_HH_
@@ -44,9 +44,12 @@
 
 #include <iostream>
 #include <mutex>
+#include <shared_mutex>
 #include <unordered_map>
 
 #include "DwmIpv4Address.hh"
+#include "DwmReadLockedReference.hh"
+#include "DwmWriteLockedReference.hh"
 
 namespace Dwm {
 
@@ -57,6 +60,7 @@ namespace Dwm {
   class Ipv4AddrMap
   {
   public:
+    using MapType = std::unordered_map<ipv4addr_t,T>;
     
     //------------------------------------------------------------------------
     //!  
@@ -72,7 +76,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     void Add(const Ipv4Address & addr, const T & value)
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::unique_lock  lck(_mtx);
       _map[addr.Raw()] = value;
       return;
     }
@@ -82,7 +86,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     bool Find(const Ipv4Address & addr, T & value) const
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::shared_lock  lck(_mtx);
       auto iter = _map.find(addr.Raw());
       if (iter != _map.end()) {
         value = iter->second;
@@ -97,7 +101,7 @@ namespace Dwm {
     bool Remove(const Ipv4Address & addr)
     {
       bool  rc = false;
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::unique_lock  lck(_mtx);
       auto  it = _map.find(addr.Raw());
       if (it != _map.end()) {
         _map.erase(it);
@@ -111,13 +115,29 @@ namespace Dwm {
     //------------------------------------------------------------------------
     bool Empty() const
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::shared_lock  lck(_mtx);
       return _map.empty();
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    ReadLockedReference<Ipv4AddrMap<T>,MapType> ReadLockedRef() const
+    {
+      return ReadLockedReference<Ipv4AddrMap<T>,MapType>(_mtx, _map);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    WriteLockedReference<Ipv4AddrMap<T>,MapType> WriteLockedRef()
+    {
+      return WriteLockedReference<Ipv4AddrMap<T>,MapType>(_mtx, _map);
     }
     
   private:
-    mutable std::mutex                _mtx;
-    std::unordered_map<ipv4addr_t,T>  _map;
+    mutable std::shared_mutex  _mtx;
+    MapType                    _map;
   };
   
 }  // namespace Dwm
