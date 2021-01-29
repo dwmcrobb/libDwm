@@ -46,6 +46,9 @@ extern "C" {
   #include <stdio.h>
 }
 
+#define XXH_INLINE_ALL
+#include <xxhash.h>
+
 #include "DwmASIOCapable.hh"
 #include "DwmIpv6Address.hh"
 #include "DwmDescriptorIOCapable.hh"
@@ -228,6 +231,14 @@ namespace Dwm {
     //------------------------------------------------------------------------
     std::string ToString() const;
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    inline uint64_t Hash() const
+    {
+      return XXH64(_addr.s6_addr, (_length + 7) >> 3, 0);
+  }
+    
   private:
     alignas(8) struct in6_addr  _addr;
     uint8_t                     _length;
