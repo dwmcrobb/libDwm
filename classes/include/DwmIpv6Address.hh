@@ -51,6 +51,7 @@ extern "C" {
 #define XXH_INLINE_ALL
 #include <xxhash.h>
 
+#include "DwmASIOCapable.hh"
 #include "DwmDescriptorIOCapable.hh"
 #include "DwmFileIOCapable.hh"
 #include "DwmStreamIOCapable.hh"
@@ -64,8 +65,9 @@ namespace Dwm {
   //!  This class encapsulates an IPv6 address.
   //--------------------------------------------------------------------------
   class Ipv6Address
-    : public StreamIOCapable, public FileIOCapable, public DescriptorIOCapable,
-      public StreamedLengthCapable, public GZIOCapable, public BZ2IOCapable
+    : public ASIOCapable, public StreamIOCapable, public FileIOCapable,
+      public DescriptorIOCapable, public StreamedLengthCapable,
+      public GZIOCapable, public BZ2IOCapable
   {
   public:
     //------------------------------------------------------------------------
@@ -211,6 +213,18 @@ namespace Dwm {
     //!  (16 on success).
     //------------------------------------------------------------------------
     int BZWrite(BZFILE *bzf) const override;
+
+    //------------------------------------------------------------------------
+    //!  Reads the Ipv6Address from @c s.  Returns true on success, false on
+    //!  failure.
+    //------------------------------------------------------------------------
+    bool Read(boost::asio::ip::tcp::socket & s) override;
+
+    //------------------------------------------------------------------------
+    //!  Writes the Ipv6Address to @c s.  Returns true on success, false on
+    //!  failure.
+    //------------------------------------------------------------------------
+    bool Write(boost::asio::ip::tcp::socket & s) const override;
 
     //------------------------------------------------------------------------
     //!  Prints an Ipv6Address to an ostream in human-readable form.

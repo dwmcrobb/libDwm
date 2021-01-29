@@ -52,6 +52,7 @@ extern "C" {
 
 #include <cassert>
 
+#include "DwmASIO.hh"
 #include "DwmIpv6Address.hh"
 
 namespace Dwm {
@@ -293,6 +294,26 @@ namespace Dwm {
     return(rc);
   }
 
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool Ipv6Address::Read(boost::asio::ip::tcp::socket & s)
+  {
+    using boost::asio::read, boost::asio::buffer;
+    boost::system::error_code  ec;
+    return ((read(s, buffer(_addr.s6_addr, 16), ec) == 16) && (! ec));
+  }
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool Ipv6Address::Write(boost::asio::ip::tcp::socket & s) const
+  {
+    using boost::asio::write, boost::asio::buffer;
+    boost::system::error_code  ec;
+    return ((write(s, buffer(_addr.s6_addr, 16), ec) == 16) && (! ec));
+  }
+  
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
