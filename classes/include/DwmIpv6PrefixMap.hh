@@ -44,11 +44,9 @@
 
 #include <map>
 #include <mutex>
+#include <shared_mutex>
 #include <unordered_map>
 #include <vector>
-
-#define XXH_INLINE_ALL
-#include <xxhash.h>
 
 #include "DwmASIO.hh"
 #include "DwmBZ2IO.hh"
@@ -62,22 +60,24 @@
 namespace Dwm {
 
   //--------------------------------------------------------------------------
-  //!  Default hash for our unordered_map in Ipv6PrefixMap.  This is a hack;
-  //!  if the prefix mask length is 64 or less, we just use the first 64 bits
-  //!  of the address as the hash.  If it's longer, we add the xxh64 hash of
-  //!  the remaining bytes.  I haven't checked for collision frequency,
-  //!  because nearly all of the prefixes I work with are /64 or wider.
+  //!  Default hash for our unordered_map in Ipv6PrefixMap.
   //!
-  //!  On a Threadripper 3960X, this gets me a bit over 11 million
+  //!  On a Threadripper 3960X, this gets me a bit over 10 million
   //!  longest-match lookups per second with the IPV6_prefixes.202010122 file
   //!  in the tests directory.  IPV6_prefixes.202010122 comes from routeviews
   //!  via CAIDA.
+  //!
+  //!  The implementation uses xxhash.  I tried some other techniques,
+  //!  but they worked very poorly on some architectures (Xeon L5640,
+  //!  2018 Macbook Pro).  This is at least consistent.  On a Xeon L5640, I
+  //!  get about 5 million longest-match lookups/sec.  On a 2018 Macbook Pro,
+  //!  I get 9 to 10 million longest-match lookups/sec.
   //--------------------------------------------------------------------------
   struct OurIpv6PrefixHash
   {
     inline size_t operator () (const Dwm::Ipv6Prefix & pfx) const
     {
-      return XXH64(pfx.In6Addr().s6_addr, (pfx.MaskLength() + 7) >> 3, 0);
+      return pfx.Hash();
     }
   };
 
@@ -113,7 +113,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     void Add(const Ipv6Prefix & pfx, const T & value)
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::unique_lock  lck(_mtx);
       if (_map.insert_or_assign(pfx, value).second) {
         _lengthCounters[pfx.MaskLength()]++;
       }
@@ -128,7 +128,7 @@ namespace Dwm {
     bool Find(const Ipv6Prefix & pfx, T & value) const
     {
       bool  rc = false;
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::shared_lock  lck(_mtx);
       auto  it = _map.find(pfx);
       if (it != _map.end()) {
         value = it->second;
@@ -146,9 +146,9 @@ namespace Dwm {
     bool FindLongest(const Ipv6Address & addr,
                      std::pair<Ipv6Prefix,T> & value) const
     {
-      bool  rc = false;
-      Ipv6Prefix  pfx(addr, 128);
-      std::lock_guard<std::mutex>  lck(_mtx);
+      bool              rc = false;
+      Ipv6Prefix        pfx(addr, 128);
+      std::shared_lock  lck(_mtx);
       for (auto lit = _lengthCounters.rbegin();
            lit != _lengthCounters.rend(); ++lit) {
         pfx.MaskLength(lit->first);
@@ -173,8 +173,8 @@ namespace Dwm {
                      std::vector<std::pair<Ipv6Prefix,T>> & values) const
     {
       values.clear();
-      std::pair<Ipv6Prefix,T>      value;
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::pair<Ipv6Prefix,T>  value;
+      std::shared_lock         lck(_mtx);
       for (auto lit = _lengthCounters.rbegin();
            lit != _lengthCounters.rend(); ++lit) {
         Ipv6Prefix  pfx(addr, lit->first);
@@ -195,7 +195,7 @@ namespace Dwm {
     bool Remove(const Ipv6Prefix & pfx)
     {
       bool  rc = false;
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::unique_lock  lck(_mtx);
       auto  it = _map.find(pfx);
       if (it != _map.end()) {
         _map.erase(it);
@@ -214,7 +214,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     std::istream & Read(std::istream & is) override
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::unique_lock  lck(_mtx);
       return StreamIO::Read(is, _map);
     }
     
@@ -223,7 +223,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     std::ostream & Write(std::ostream & os) const override
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::shared_lock  lck(_mtx);
       return StreamIO::Write(os, _map);
     }
 
@@ -233,7 +233,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     size_t Read(FILE *f) override
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::unique_lock  lck(_mtx);
       return FileIO::Read(f, _map);
     }
     
@@ -243,7 +243,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     size_t Write(FILE *f) const override
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::shared_lock  lck(_mtx);
       return FileIO::Write(f, _map);
     }
 
@@ -253,7 +253,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     ssize_t Read(int fd) override
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::unique_lock  lck(_mtx);
       return DescriptorIO::Read(fd, _map);
     }
 
@@ -263,7 +263,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     ssize_t Write(int fd) const override
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::shared_lock  lck(_mtx);
       return DescriptorIO::Write(fd, _map);
     }
 
@@ -272,7 +272,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     int Read(gzFile gzf) override
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::unique_lock  lck(_mtx);
       return GZIO::Read(gzf, _map);
     }
 
@@ -281,7 +281,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     int Write(gzFile gzf) const override
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::shared_lock  lck(_mtx);
       return GZIO::Write(gzf, _map);
     }
 
@@ -290,7 +290,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     int BZRead(BZFILE *bzf) override
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::unique_lock  lck(_mtx);
       return BZ2IO::BZRead(bzf, _map);
     }
     
@@ -299,7 +299,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     int BZWrite(BZFILE *bzf) const override
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::shared_lock  lck(_mtx);
       return BZ2IO::BZWrite(bzf, _map);
     }
 
@@ -309,6 +309,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     uint64_t StreamedLength() const override
     {
+      std::shared_lock  lck(_mtx);
       return IOUtils::StreamedLength(_map);
     }
 
@@ -318,7 +319,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     bool Read(boost::asio::ip::tcp::socket & s) override
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::unique_lock  lck(_mtx);
       return ASIO::Read(s, _map);
     }
 
@@ -328,12 +329,12 @@ namespace Dwm {
     //------------------------------------------------------------------------
     bool Write(boost::asio::ip::tcp::socket & s) const override
     {
-      std::lock_guard<std::mutex>  lck(_mtx);
+      std::shared_lock  lck(_mtx);
       return ASIO::Write(s, _map);
     }
     
   private:
-    mutable std::mutex                     _mtx;
+    mutable std::shared_mutex              _mtx;
     std::unordered_map<Ipv6Prefix,T,Hash>  _map;
     std::map<uint8_t,uint64_t>             _lengthCounters;
   };
