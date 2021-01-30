@@ -42,14 +42,12 @@
 #ifndef _DWMIPV4ADDRMAP_HH_
 #define _DWMIPV4ADDRMAP_HH_
 
-#include <iostream>
+#include <cassert>
 #include <mutex>
 #include <shared_mutex>
 #include <unordered_map>
 
 #include "DwmIpv4Address.hh"
-#include "DwmReadLockedReference.hh"
-#include "DwmWriteLockedReference.hh"
 
 namespace Dwm {
 
@@ -60,6 +58,9 @@ namespace Dwm {
   class Ipv4AddrMap
   {
   public:
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
     using MapType = std::unordered_map<ipv4addr_t,T>;
     
     //------------------------------------------------------------------------
@@ -77,6 +78,16 @@ namespace Dwm {
     void Add(const Ipv4Address & addr, const T & value)
     {
       std::unique_lock  lck(_mtx);
+      return Add(lck, addr, value);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    void Add(std::unique_lock<std::shared_mutex> & lck,
+             const Ipv4Address & addr, const T & value)
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
       _map[addr.Raw()] = value;
       return;
     }
@@ -87,7 +98,17 @@ namespace Dwm {
     bool Find(const Ipv4Address & addr, T & value) const
     {
       std::shared_lock  lck(_mtx);
-      auto iter = _map.find(addr.Raw());
+      return Find(lck, addr, value);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool Find(std::shared_lock<std::shared_mutex> & lck,
+              const Ipv4Address & addr, T & value) const
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      auto  iter = _map.find(addr.Raw());
       if (iter != _map.end()) {
         value = iter->second;
         return true;
@@ -98,10 +119,35 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
+    bool Find(std::unique_lock<std::shared_mutex> & lck,
+              const Ipv4Address & addr, T & value)
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      auto  iter = _map.find(addr.Raw());
+      if (iter != _map.end()) {
+        value = iter->second;
+        return true;
+      }
+      return false;
+    }
+        
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
     bool Remove(const Ipv4Address & addr)
     {
-      bool  rc = false;
       std::unique_lock  lck(_mtx);
+      return Remove(lck, addr);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool Remove(std::unique_lock<std::shared_mutex> & lck,
+                const Ipv4Address & addr)
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      bool  rc = false;
       auto  it = _map.find(addr.Raw());
       if (it != _map.end()) {
         _map.erase(it);
@@ -109,32 +155,88 @@ namespace Dwm {
       }
       return rc;
     }
-
+        
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
     bool Empty() const
     {
       std::shared_lock  lck(_mtx);
+      return Empty(lck);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool Empty(std::shared_lock<std::shared_mutex> & lck) const
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
       return _map.empty();
     }
 
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    ReadLockedReference<Ipv4AddrMap<T>,MapType> ReadLockedRef() const
+    bool Empty(std::unique_lock<std::shared_mutex> & lck)
     {
-      return ReadLockedReference<Ipv4AddrMap<T>,MapType>(_mtx, _map);
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      return _map.empty();
+    }
+        
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    const MapType & Map(std::shared_lock<std::shared_mutex> & lck) const
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      return _map;
     }
 
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    WriteLockedReference<Ipv4AddrMap<T>,MapType> WriteLockedRef()
+    MapType & Map(std::unique_lock<std::shared_mutex> & lck)
     {
-      return WriteLockedReference<Ipv4AddrMap<T>,MapType>(_mtx, _map);
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      return _map;;
     }
     
+    //------------------------------------------------------------------------
+    //!  Removes all entries.
+    //------------------------------------------------------------------------
+    void Clear()
+    {
+      std::unique_lock  lck(_mtx);
+      _map.clear();
+      return;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    void Clear(std::unique_lock<std::shared_mutex> & lck)
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      _map.clear();
+      return;
+    }
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    std::shared_lock<std::shared_mutex> SharedLock() const
+    {
+      return std::shared_lock(_mtx);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    std::unique_lock<std::shared_mutex> UniqueLock() const
+    {
+      return std::unique_lock(_mtx);
+    }
+        
   private:
     mutable std::shared_mutex  _mtx;
     MapType                    _map;
