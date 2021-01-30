@@ -84,8 +84,9 @@ static void TestStreamWrite(const Ipv4AddrMap<uint32_t> & addrMap)
 {
   ofstream  os("./TestIpv4AddrMap_stream", ios::out|ios::binary);
   if (UnitAssert(os)) {
-    auto  readRef = addrMap.ReadLockedRef();
-    UnitAssert(StreamIO::Write(os, readRef.Data()));
+    auto  lck = addrMap.SharedLock();
+    auto  & m = addrMap.Map(lck);
+    UnitAssert(StreamIO::Write(os, m));
   }
   return;
 }
@@ -97,8 +98,9 @@ static void TestStreamRead(Ipv4AddrMap<uint32_t> & addrMap)
 {
   ifstream  is("./TestIpv4AddrMap_stream", ios::in|ios::binary);
   if (UnitAssert(is)) {
-    auto  writeRef = addrMap.WriteLockedRef();
-    UnitAssert(StreamIO::Read(is, writeRef.Data()));
+    auto  lck =	addrMap.UniqueLock();
+    auto  & m = addrMap.Map(lck);
+    UnitAssert(StreamIO::Read(is, m));
   }
   return;
 }
@@ -106,23 +108,26 @@ static void TestStreamRead(Ipv4AddrMap<uint32_t> & addrMap)
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
-static void TestStreamIO(Ipv4AddrMap<uint32_t> & addrMap)
+static void TestStreamIO(Ipv4AddrMap<uint32_t> & addrMap1)
 {
-  TestStreamWrite(addrMap);
+  TestStreamWrite(addrMap1);
   Ipv4AddrMap<uint32_t>  addrMap2;
   TestStreamRead(addrMap2);
 
-  auto  readRef = addrMap.ReadLockedRef();
-  auto  readRef2 = addrMap2.ReadLockedRef();
-  for (const auto & r : readRef.Data()) {
-    auto  rit2 = readRef2.Data().find(r.first);
-    if (UnitAssert(rit2 != readRef2.Data().end())) {
+  auto    lck1 = addrMap1.SharedLock();
+  auto  & m1 = addrMap1.Map(lck1);
+  auto    lck2 = addrMap2.SharedLock();
+  auto  & m2 = addrMap2.Map(lck2);
+  
+  for (const auto & r : m1) {
+    auto  rit2 = m2.find(r.first);
+    if (UnitAssert(rit2 != m2.end())) {
       UnitAssert(rit2->second == r.second);
     }
   }
-  for (const auto & r2 : readRef2.Data()) {
-    auto  rit = readRef.Data().find(r2.first);
-    if (UnitAssert(rit != readRef.Data().end())) {
+  for (const auto & r2 : m2) {
+    auto  rit = m1.find(r2.first);
+    if (UnitAssert(rit != m1.end())) {
       UnitAssert(rit->second == r2.second);
     }
   }
@@ -151,31 +156,62 @@ static void Test(const vector<Ipv4Address> & entries)
   }
   UnitAssert(found == entries.size());
   TestStreamIO(addrMap);
-  
   return;
 }
 
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
-static void TestPerformanceReadRef(const vector<Ipv4Address> & entries,
-                                   const Ipv4AddrMap<uint32_t> & addrMap)
+static void TestBulkPerformance(const vector<Ipv4Address> & entries)
 {
-  auto  readRef = addrMap.ReadLockedRef();
-  uint64_t  found = 0;
-  Dwm::TimeValue64  startTime(true);
-  for (const auto & entry : entries) {
-    auto it = readRef.Data().find(entry.Raw());
-    if (it != readRef.Data().end()) {
-      ++found;
+  Ipv4AddrMap<uint32_t>  addrMap;
+  {
+    uint32_t  i = 0;
+    Dwm::TimeValue64  startTime(true);
+    auto  ulck = addrMap.UniqueLock();
+    for (const auto & entry : entries) {
+      addrMap.Add(ulck, entry, i);
+      ++i;
     }
+    Dwm::TimeValue64  endTime(true);
+    endTime -= startTime;
+    uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
+    uint64_t  insertsPerSec = (i * 1000000ULL) / usecs;
+    cout << i << " addresses, " << insertsPerSec
+         << " inserts/sec (bulk lock)\n";
   }
-  Dwm::TimeValue64  endTime(true);
-  endTime -= startTime;
-  uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
-  uint64_t  lookupsPerSec = (found * 1000000ULL * 10) / usecs;
-  cout << found << " addresses, " << lookupsPerSec
-       << " lookups/sec (via read-locked reference)\n";
+
+  {
+    uint64_t  found = 0;
+    uint32_t  val;
+    Dwm::TimeValue64  startTime(true);
+    auto  lck = addrMap.SharedLock();
+    for (const auto & entry : entries) {
+      found += addrMap.Find(lck, entry, val);
+    }
+    Dwm::TimeValue64  endTime(true);
+    endTime -= startTime;
+    uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
+    uint64_t  lookupsPerSec = (found * 1000000ULL) / usecs;
+    cout << found << " addresses, " << lookupsPerSec
+         << " lookups/sec (bulk lock)\n";
+  }
+  
+  {
+    uint64_t  removed = 0;
+    Dwm::TimeValue64  startTime(true);
+    auto  lck = addrMap.UniqueLock();
+    for (const auto & entry : entries) {
+      removed += addrMap.Remove(lck, entry);
+    }
+    Dwm::TimeValue64  endTime(true);
+    endTime -= startTime;
+    uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
+    uint64_t  removalsPerSec = (removed * 1000000ULL) / usecs;
+    cout << removed << " addresses, " << removalsPerSec
+         << " removals/sec (bulk lock)\n";
+  }
+  
   return;
 }
 
@@ -186,25 +222,44 @@ static void TestPerformance(const vector<Ipv4Address> & entries)
 {
   Ipv4AddrMap<uint32_t>  addrMap;
   uint32_t  i = 0;
+  Dwm::TimeValue64  startTime(true);
   for (const auto & entry : entries) {
     addrMap.Add(entry, i);
     ++i;
   }
-  
-  uint32_t  val;
-  uint64_t  found = 0;
-  Dwm::TimeValue64  startTime(true);
-  for (const auto & entry : entries) {
-    found += addrMap.Find(entry, val);
-  }
   Dwm::TimeValue64  endTime(true);
   endTime -= startTime;
   uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
-  uint64_t  lookupsPerSec = (found * 1000000ULL * 10) / usecs;
+  uint64_t  insertsPerSec = (i * 1000000ULL) / usecs;
+  cout << i << " addresses, " << insertsPerSec
+       << " inserts/sec\n";
+
+  uint32_t  val;
+  uint64_t  found = 0;
+  startTime.SetNow();
+  for (const auto & entry : entries) {
+    found += addrMap.Find(entry, val);
+  }
+  endTime.SetNow();
+  endTime -= startTime;
+  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
+  uint64_t  lookupsPerSec = (found * 1000000ULL) / usecs;
   cout << found << " addresses, " << lookupsPerSec
        << " lookups/sec\n";
 
-  TestPerformanceReadRef(entries, addrMap);
+  uint64_t  removals = 0;
+  startTime.SetNow();
+  for (const auto & entry : entries) {
+    removals += addrMap.Remove(entry);
+  }
+  endTime.SetNow();
+  endTime -= startTime;
+  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
+  uint64_t  removalsPerSec = (removals * 1000000ULL) / usecs;
+  cout << removals << " addresses, " << removalsPerSec
+       << " removals/sec\n";
+
+  TestBulkPerformance(entries);
   return;
 }
 
@@ -228,10 +283,10 @@ int main(int argc, char *argv[])
   
   vector<Ipv4Address>  entries;
   if (UnitAssert(GetEntries(entries))) {
-    Test(entries);
     if (g_testPerformance) {
       TestPerformance(entries);
     }
+    Test(entries);
   }
 
   if (Assertions::Total().Failed()) {
