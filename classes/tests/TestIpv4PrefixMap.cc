@@ -102,24 +102,23 @@ static void TestFind(const vector<Ipv4Prefix> & entries)
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
-static void TestFindPerformanceReadRef(const vector<Ipv4Prefix> & entries,
-                                       const Ipv4PrefixMap<uint32_t> & addrMap)
+static void TestBulkFindPerformance(const vector<Ipv4Prefix> & entries,
+                                    const Ipv4PrefixMap<uint32_t> & addrMap)
 {
-  auto  readRef = addrMap.ReadLockedRef();
+  auto  lck = addrMap.SharedLock();
+  uint32_t  value;
   uint64_t  found = 0;
   Dwm::TimeValue64  startTime(true);
   for (const auto & entry : entries) {
-    if (readRef.Data().find(entry) != readRef.Data().end()) {
-      ++found;
-    }
+    found += addrMap.Find(lck, entry, value);
   }
   Dwm::TimeValue64  endTime(true);
   endTime -= startTime;
   UnitAssert(found == entries.size());
   uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
-  uint64_t  lookupsPerSec = (found * 1000000ULL * 10) / usecs;
+  uint64_t  lookupsPerSec = (found * 1000000ULL) / usecs;
   cout << found << " addresses, " << lookupsPerSec
-       << " prefix lookups/sec (via read-locked ref)\n";
+       << " prefix lookups/sec (bulk lock)\n";
   return;
 }
 
@@ -130,25 +129,33 @@ static void TestFindPerformance(const vector<Ipv4Prefix> & entries)
 {
   Ipv4PrefixMap<uint32_t>  pfxMap;
   uint32_t  i = 0;
+  Dwm::TimeValue64  startTime(true);
   for (const auto & entry : entries) {
     pfxMap.Add(entry, i);
     ++i;
   }
+  Dwm::TimeValue64  endTime(true);
+  endTime -= startTime;
+  uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
+  uint64_t  insertsPerSec = (i * 1000000ULL) / usecs;
+  cout << i << " prefixes, " << insertsPerSec
+       << " prefix inserts/sec\n";
+
   uint32_t  val;
   uint64_t  found = 0;
-  Dwm::TimeValue64  startTime(true);
+  startTime.SetNow();
   for (const auto & entry : entries) {
     found += pfxMap.Find(entry, val);
   }
-  Dwm::TimeValue64  endTime(true);
+  endTime.SetNow();
   endTime -= startTime;
   UnitAssert(found == entries.size());
-  uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
-  uint64_t  lookupsPerSec = (found * 1000000ULL * 10) / usecs;
+  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
+  uint64_t  lookupsPerSec = (found * 1000000ULL) / usecs;
   cout << found << " addresses, " << lookupsPerSec
        << " prefix lookups/sec\n";
 
-  TestFindPerformanceReadRef(entries, pfxMap);
+  TestBulkFindPerformance(entries, pfxMap);
   return;
 }
 
@@ -184,6 +191,8 @@ static void TestLongestMatchPerformance(const vector<Ipv4Prefix> & entries)
     pfxMap.Add(entry, i);
     ++i;
   }
+  pfxMap.Rehash(0);
+
   pair<Ipv4Prefix,uint32_t>  val;
   uint64_t  found = 0;
   Dwm::TimeValue64  startTime(true);
@@ -194,7 +203,7 @@ static void TestLongestMatchPerformance(const vector<Ipv4Prefix> & entries)
   endTime -= startTime;
   UnitAssert(found == entries.size());
   uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
-  uint64_t  lookupsPerSec = (found * 1000000ULL * 10) / usecs;
+  uint64_t  lookupsPerSec = (found * 1000000ULL) / usecs;
   cout << found << " addresses, " << lookupsPerSec
        << " longest match lookups/sec\n";
   return;
