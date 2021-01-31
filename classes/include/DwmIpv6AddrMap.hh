@@ -99,6 +99,17 @@ namespace Dwm {
       _map[addr] = value;
       return;
     }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    void Add(std::unique_lock<std::shared_mutex> & lck,
+             const Ipv6Address & addr, const T & value)
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      _map[addr] = value;
+      return;
+    }
     
     //------------------------------------------------------------------------
     //!  
@@ -106,21 +117,46 @@ namespace Dwm {
     bool Find(const Ipv6Address & addr, T & value) const
     {
       std::shared_lock  lck(_mtx);
-      auto iter = _map.find(addr);
-      if (iter != _map.end()) {
-        value = iter->second;
-        return true;
-      }
-      return false;
+      return Find(lck, addr, value);
     }
 
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
+    bool Find(std::shared_lock<std::shared_mutex> & lck,
+              const Ipv6Address & addr, T & value) const
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      return FindNoLock(addr, value);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool Find(std::unique_lock<std::shared_mutex> & lck,
+              const Ipv6Address & addr, T & value) const
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      return FindNoLock(addr, value);
+    }
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
     bool Remove(const Ipv6Address & addr)
     {
-      bool  rc = false;
       std::unique_lock  lck(_mtx);
+      return Remove(lck, addr);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool Remove(std::unique_lock<std::shared_mutex> & lck,
+                const Ipv6Address & addr)
+    {
+      bool  rc = false;
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
       auto  it = _map.find(addr);
       if (it != _map.end()) {
         _map.erase(it);
@@ -128,26 +164,53 @@ namespace Dwm {
       }
       return rc;
     }
-
+    
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
     bool Empty() const
     {
       std::shared_lock  lck(_mtx);
+      return Empty(lck);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool Empty(std::shared_lock<std::shared_mutex> & lck) const
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
       return _map.empty();
     }
 
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
+    bool Empty(std::unique_lock<std::shared_mutex> & lck) const
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      return _map.empty();
+    }
+               
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
     void Clear()
     {
       std::unique_lock  lck(_mtx);
+      return Clear(lck);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    void Clear(std::unique_lock<std::shared_mutex> & lck)
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
       _map.clear();
       return;
     }
-
+    
     //------------------------------------------------------------------------
     //!  Reads the Ipv6AddrMap from an istream.  Returns the istream.
     //------------------------------------------------------------------------
@@ -254,7 +317,6 @@ namespace Dwm {
       return BZ2IO::BZWrite(bzf, _map);
     }
 
-
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if the
     //!  Ipv6AddrMap was written to a FILE, file descriptor or ostream.
@@ -284,10 +346,40 @@ namespace Dwm {
       std::shared_lock  lck(_mtx);
       return ASIO::Write(s, _map);
     }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    std::shared_lock<std::shared_mutex> SharedLock() const
+    {
+      return std::shared_lock(_mtx);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    std::unique_lock<std::shared_mutex> UniqueLock()
+    {
+      return std::unique_lock(_mtx);
+    }
     
   private:
     mutable std::shared_mutex               _mtx;
     std::unordered_map<Ipv6Address,T,Hash>  _map;
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool FindNoLock(const Ipv6Address & addr, T & value) const
+    {
+      auto iter = _map.find(addr);
+      if (iter != _map.end()) {
+        value = iter->second;
+        return true;
+      }
+      return false;
+    }
+    
   };
   
 }  // namespace Dwm
