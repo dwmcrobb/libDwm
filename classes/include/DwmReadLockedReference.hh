@@ -63,7 +63,7 @@ namespace Dwm {
   //!  otherwise you're back to object lifetime potentially creating
   //!  deadlock.
   //--------------------------------------------------------------------------
-  template <typename F, typename LockedType>
+  template <typename F>
   class ReadLockedReference
   {
   public:
@@ -90,18 +90,22 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Returns the protected data.
     //------------------------------------------------------------------------
-    const LockedType & Data()  { return _data; }
+    const F & Data()  { return _data; }
+
+    //------------------------------------------------------------------------
+    //!  Allow F to call our private constructor.
+    //------------------------------------------------------------------------
     friend F;
 
   private:
     std::shared_lock<std::shared_mutex>   _lock;
-    const LockedType                     &_data;
+    const F                              &_data;
 
     //------------------------------------------------------------------------
     //!  Construct from a reference to a mutex @c mtx and the @c data
     //!  protected by the mutex.
     //------------------------------------------------------------------------
-    ReadLockedReference(std::shared_mutex & mtx, const LockedType & data)
+    ReadLockedReference(std::shared_mutex & mtx, const F & data)
         : _lock(mtx), _data(data)
     { }
   };
