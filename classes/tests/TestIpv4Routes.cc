@@ -76,8 +76,7 @@ void TestWithString()
 {
   Ipv4Routes<string>  r;
   vector<Ipv4Address>  ipVec;
-  // ifstream is("./IPV4_prefixes.20051007");
-  ifstream is("./IPV4_prefixes.20121221");
+  ifstream is("./IPV4_prefixes.20210123");
   if (is) {
     char  buf[512];
     memset(buf,0,512);
@@ -293,8 +292,7 @@ static void CheckDeletions(const vector<Ipv4Prefix> & pfxVec,
 static void TestInsertions(Ipv4Routes<uint32_t> & r, 
                            vector<Ipv4Prefix> & pfxVec)
 {
-  // ifstream is("./IPV4_prefixes.20051007");
-  ifstream is("./IPV4_prefixes.20121221");
+  ifstream is("./IPV4_prefixes.20210123");
   if (UnitAssert(is)) {
     string  s;
     while (getline(is, s, '\n')) {
