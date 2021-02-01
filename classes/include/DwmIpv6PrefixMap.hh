@@ -62,9 +62,9 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  Default hash for our unordered_map in Ipv6PrefixMap.
   //!
-  //!  On a Threadripper 3960X, this gets me a bit over 10 million
-  //!  longest-match lookups per second with the IPV6_prefixes.202010122 file
-  //!  in the tests directory.  IPV6_prefixes.202010122 comes from routeviews
+  //!  On a Threadripper 3960X, this gets me over 13 million longest-match
+  //!  lookups per second with the IPV6_prefixes.202010122 file in the tests
+  //!  directory.  The data in IPV6_prefixes.202010122 comes from routeviews
   //!  via CAIDA.
   //!
   //!  The implementation uses xxhash.  I tried some other techniques,
@@ -72,6 +72,17 @@ namespace Dwm {
   //!  2018 Macbook Pro).  This is at least consistent.  On a Xeon L5640, I
   //!  get about 5 million longest-match lookups/sec.  On a 2018 Macbook Pro,
   //!  I get 9 to 10 million longest-match lookups/sec.
+  //!
+  //!  Note that the interfaces are all single-threaded internally.  Hence
+  //!  the performance scales with CPU clock, memory bandwidth, on-die cache,
+  //!  etc. and NOT the number of CPU cores.  However, multiple threads can
+  //!  safely call any of the public members since we have shared/unique
+  //!  locks providing protection.  The overhead of the locks is
+  //!  insignificant for members like FindLongest(), but measurable for
+  //!  members like Find().  This is a tradeoff I'm willing to make in order
+  //!  to maintain enforcement of thread safety in my use.  I rarely write
+  //!  single-threaded C++ code these days, and built-in thread safety makes
+  //!  my life easier.
   //--------------------------------------------------------------------------
   struct OurIpv6PrefixHash
   {
@@ -99,12 +110,24 @@ namespace Dwm {
   {
   public:
     //------------------------------------------------------------------------
+    //!  The types of our encapsulated containers.
+    //------------------------------------------------------------------------
+    using MapType = std::unordered_map<Ipv6Prefix,T,Hash>;
+    using LengthMapType = std::map<uint8_t,uint64_t>;
+
+    //------------------------------------------------------------------------
+    //!  Internally we keep our maps in a pair.  This simplifies the I/O
+    //!  functions.
+    //------------------------------------------------------------------------
+    using MapPair = std::pair<MapType,LengthMapType>;
+    
+    //------------------------------------------------------------------------
     //!  Default constructor
     //------------------------------------------------------------------------
     Ipv6PrefixMap()
-        : _mtx(), _map(), _lengthCounters()
+        : _mtx(), _maps()
     {
-      _map.max_load_factor(.25);
+      _maps.first.max_load_factor(.25);
     }
     
     //------------------------------------------------------------------------
@@ -114,12 +137,24 @@ namespace Dwm {
     void Add(const Ipv6Prefix & pfx, const T & value)
     {
       std::unique_lock  lck(_mtx);
-      if (_map.insert_or_assign(pfx, value).second) {
-        _lengthCounters[pfx.MaskLength()]++;
+      return Add(lck, pfx, value);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Adds the given value to the map at key @c pfx.  If the entry
+    //!  already exists, it will be replaced.
+    //!  @c lck must be a lock created with UniqueLock() and must be locked.
+    //------------------------------------------------------------------------
+    void Add(std::unique_lock<std::shared_mutex> & lck,
+             const Ipv6Prefix & pfx, const T & value)
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      if (_maps.first.insert_or_assign(pfx, value).second) {
+        _maps.second[pfx.MaskLength()]++;
       }
       return;
     }
-
+    
     //------------------------------------------------------------------------
     //!  Find the entry with key @c pfx.  If found, sets @c value to the
     //!  value stored at @c pfx and returns true.  If not found, returns
@@ -127,16 +162,36 @@ namespace Dwm {
     //------------------------------------------------------------------------
     bool Find(const Ipv6Prefix & pfx, T & value) const
     {
-      bool  rc = false;
       std::shared_lock  lck(_mtx);
-      auto  it = _map.find(pfx);
-      if (it != _map.end()) {
-        value = it->second;
-        rc = true;
-      }
-      return rc;
+      return Find(lck, pfx, value);
     }
 
+    //------------------------------------------------------------------------
+    //!  Find the entry with key @c pfx.  If found, sets @c value to the
+    //!  value stored at @c pfx and returns true.  If not found, returns
+    //!  false.
+    //!  @c lck must be a lock created with SharedLock() and must be locked.
+    //------------------------------------------------------------------------
+    bool Find(std::shared_lock<std::shared_mutex> & lck,
+              const Ipv6Prefix & pfx, T & value) const
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      return FindNoLock(pfx, value);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Find the entry with key @c pfx.  If found, sets @c value to the
+    //!  value stored at @c pfx and returns true.  If not found, returns
+    //!  false.
+    //!  @c lck must be a lock created with UniqueLock() and must be locked.
+    //------------------------------------------------------------------------
+    bool Find(std::unique_lock<std::shared_mutex> & lck,
+              const Ipv6Prefix & pfx, T & value) const
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      return FindNoLock(pfx, value);
+    }
+    
     //------------------------------------------------------------------------
     //!  Find the longest match for the given IPv6 address @c addr.  If
     //!  a match is found, sets @c value.first to the matching prefix and
@@ -146,23 +201,40 @@ namespace Dwm {
     bool FindLongest(const Ipv6Address & addr,
                      std::pair<Ipv6Prefix,T> & value) const
     {
-      bool              rc = false;
-      Ipv6Prefix        pfx(addr, 128);
       std::shared_lock  lck(_mtx);
-      for (auto lit = _lengthCounters.rbegin();
-           lit != _lengthCounters.rend(); ++lit) {
-        pfx.MaskLength(lit->first);
-        auto  it = _map.find(pfx);
-        if (it != _map.end()) {
-          value.first = pfx;
-          value.second = it->second;
-          rc = true;
-          break;
-        }
-      }
-      return rc;
+      return FindLongest(lck, addr, value);
     }
 
+    //------------------------------------------------------------------------
+    //!  Find the longest match for the given IPv6 address @c addr.  If
+    //!  a match is found, sets @c value.first to the matching prefix and
+    //!  @c value.second to the value stored at the matching prefix and
+    //!  returns true.  If no match is found, returns false.
+    //!  @c lck must be a lock created with SharedLock() and must be locked.
+    //------------------------------------------------------------------------
+    bool FindLongest(std::shared_lock<std::shared_mutex> & lck,
+                     const Ipv6Address & addr,
+                     std::pair<Ipv6Prefix,T> & value) const
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      return FindLongestNoLock(addr, value);
+    }
+    
+    //------------------------------------------------------------------------
+    //!  Find the longest match for the given IPv6 address @c addr.  If
+    //!  a match is found, sets @c value.first to the matching prefix and
+    //!  @c value.second to the value stored at the matching prefix and
+    //!  returns true.  If no match is found, returns false.
+    //!  @c lck must be a lock created with UniqueLock() and must be locked.
+    //------------------------------------------------------------------------
+    bool FindLongest(std::unique_lock<std::shared_mutex> & lck,
+                     const Ipv6Address & addr,
+                     std::pair<Ipv6Prefix,T> & value) const
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      return FindLongestNoLock(addr, value);
+    }
+    
     //------------------------------------------------------------------------
     //!  Find all matches for the given IPv6 address @c addr.  If matches
     //!  are found, they are placed in @c values, in most-specific (longest
@@ -172,20 +244,38 @@ namespace Dwm {
     bool FindMatches(const Ipv6Address & addr,
                      std::vector<std::pair<Ipv6Prefix,T>> & values) const
     {
-      values.clear();
-      std::pair<Ipv6Prefix,T>  value;
-      std::shared_lock         lck(_mtx);
-      for (auto lit = _lengthCounters.rbegin();
-           lit != _lengthCounters.rend(); ++lit) {
-        Ipv6Prefix  pfx(addr, lit->first);
-        auto  it = _map.find(pfx);
-        if (it != _map.end()) {
-          value.first = pfx;
-          value.second = it->second;
-          values.push_back(value);
-        }
-      }
-      return (! values.empty());
+      std::shared_lock  lck(_mtx);
+      return FindMatches(lck, addr, values);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Find all matches for the given IPv6 address @c addr.  If matches
+    //!  are found, they are placed in @c values, in most-specific (longest
+    //!  prefix length) to least-specific (shortest prefix length) order
+    //!  and true is returned.  If no matches are found, returns false.
+    //!  @c lck must be a lock created with SharedLock() and must be locked.
+    //------------------------------------------------------------------------
+    bool FindMatches(std::shared_lock<std::shared_mutex> & lck,
+                     const Ipv6Address & addr,
+                     std::vector<std::pair<Ipv6Prefix,T>> & values) const
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      return FindMatchesNoLock(addr, values);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Find all matches for the given IPv6 address @c addr.  If matches
+    //!  are found, they are placed in @c values, in most-specific (longest
+    //!  prefix length) to least-specific (shortest prefix length) order
+    //!  and true is returned.  If no matches are found, returns false.
+    //!  @c lck must be a lock created with UniqueLock() and must be locked.
+    //------------------------------------------------------------------------
+    bool FindMatches(std::unique_lock<std::shared_mutex> & lck,
+                     const Ipv6Address & addr,
+                     std::vector<std::pair<Ipv6Prefix,T>> & values) const
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      return FindMatchesNoLock(addr, values);
     }
     
     //------------------------------------------------------------------------
@@ -194,38 +284,81 @@ namespace Dwm {
     //------------------------------------------------------------------------
     bool Remove(const Ipv6Prefix & pfx)
     {
-      bool  rc = false;
       std::unique_lock  lck(_mtx);
-      auto  it = _map.find(pfx);
-      if (it != _map.end()) {
-        _map.erase(it);
-        auto lit = _lengthCounters.find(pfx.MaskLength());
+      return Remove(lck, pfx);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Removes the entry for the given prefix @c pfx.  Returns true if
+    //!  an entry was removed, false if no entry was found for @c pfx.
+    //!  @c lck must be a lock created with UniqueLock() and must be locked.
+    //------------------------------------------------------------------------
+    bool Remove(std::unique_lock<std::shared_mutex> & lck,
+                const Ipv6Prefix & pfx)
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      bool  rc = false;
+      auto  it = _maps.first.find(pfx);
+      if (it != _maps.first.end()) {
+        _maps.first.erase(it);
+        auto lit = _maps.second.find(pfx.MaskLength());
         lit->second--;
         if (0 == lit->second) {
-          _lengthCounters.erase(lit);
+          _maps.second.erase(lit);
         }
         rc = true;
       }
       return rc;
     }
-
+    
     //------------------------------------------------------------------------
     //!  Clears the map.
     //------------------------------------------------------------------------
     void Clear()
     {
       std::unique_lock  lck(_mtx);
-      _map.clear();
-      return;
+      return Clear(lck);
     }
 
+    //------------------------------------------------------------------------
+    //!  Clears the map.
+    //!  @c lck must be a lock created with UniqueLock() and must be locked.
+    //------------------------------------------------------------------------
+    void Clear(std::unique_lock<std::shared_mutex> & lck)
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      _maps.first.clear();
+      _maps.second.clear();
+      return;
+    }
+    
     //------------------------------------------------------------------------
     //!  Returns true if the map is empty.
     //------------------------------------------------------------------------
     bool Empty() const
     {
       std::shared_lock  lck(_mtx);
-      return _map.empty();
+      return Empty(lck);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Returns true if the map is empty.
+    //!  @c lck must be a lock created with SharedLock() and must be locked.
+    //------------------------------------------------------------------------
+    bool Empty(std::shared_lock<std::shared_mutex> & lck) const
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      return _maps.first.empty();
+    }
+
+    //------------------------------------------------------------------------
+    //!  Returns true if the map is empty.
+    //!  @c lck must be a lock created with UniqueLock() and must be locked.
+    //------------------------------------------------------------------------
+    bool Empty(std::unique_lock<std::shared_mutex> & lck) const
+    {
+      assert((lck.mutex() == &_mtx) && lck.owns_lock());
+      return _maps.first.empty();
     }
     
     //------------------------------------------------------------------------
@@ -234,7 +367,7 @@ namespace Dwm {
     std::istream & Read(std::istream & is) override
     {
       std::unique_lock  lck(_mtx);
-      return StreamIO::Read(is, _map);
+      return StreamIO::Read(is, _maps);
     }
     
     //------------------------------------------------------------------------
@@ -243,7 +376,7 @@ namespace Dwm {
     std::ostream & Write(std::ostream & os) const override
     {
       std::shared_lock  lck(_mtx);
-      return StreamIO::Write(os, _map);
+      return StreamIO::Write(os, _maps);
     }
 
     //------------------------------------------------------------------------
@@ -253,7 +386,7 @@ namespace Dwm {
     size_t Read(FILE *f) override
     {
       std::unique_lock  lck(_mtx);
-      return FileIO::Read(f, _map);
+      return FileIO::Read(f, _maps);
     }
     
     //------------------------------------------------------------------------
@@ -263,7 +396,7 @@ namespace Dwm {
     size_t Write(FILE *f) const override
     {
       std::shared_lock  lck(_mtx);
-      return FileIO::Write(f, _map);
+      return FileIO::Write(f, _maps);
     }
 
     //------------------------------------------------------------------------
@@ -273,7 +406,7 @@ namespace Dwm {
     ssize_t Read(int fd) override
     {
       std::unique_lock  lck(_mtx);
-      return DescriptorIO::Read(fd, _map);
+      return DescriptorIO::Read(fd, _maps);
     }
 
     //------------------------------------------------------------------------
@@ -283,7 +416,7 @@ namespace Dwm {
     ssize_t Write(int fd) const override
     {
       std::shared_lock  lck(_mtx);
-      return DescriptorIO::Write(fd, _map);
+      return DescriptorIO::Write(fd, _maps);
     }
 
     //------------------------------------------------------------------------
@@ -295,7 +428,7 @@ namespace Dwm {
     int Read(gzFile gzf) override
     {
       std::unique_lock  lck(_mtx);
-      return GZIO::Read(gzf, _map);
+      return GZIO::Read(gzf, _maps);
     }
 
     //------------------------------------------------------------------------
@@ -307,7 +440,7 @@ namespace Dwm {
     int Write(gzFile gzf) const override
     {
       std::shared_lock  lck(_mtx);
-      return GZIO::Write(gzf, _map);
+      return GZIO::Write(gzf, _maps);
     }
 
     //------------------------------------------------------------------------
@@ -319,7 +452,7 @@ namespace Dwm {
     int BZRead(BZFILE *bzf) override
     {
       std::unique_lock  lck(_mtx);
-      return BZ2IO::BZRead(bzf, _map);
+      return BZ2IO::BZRead(bzf, _maps);
     }
     
     //------------------------------------------------------------------------
@@ -331,7 +464,7 @@ namespace Dwm {
     int BZWrite(BZFILE *bzf) const override
     {
       std::shared_lock  lck(_mtx);
-      return BZ2IO::BZWrite(bzf, _map);
+      return BZ2IO::BZWrite(bzf, _maps);
     }
 
     //------------------------------------------------------------------------
@@ -341,7 +474,7 @@ namespace Dwm {
     uint64_t StreamedLength() const override
     {
       std::shared_lock  lck(_mtx);
-      return IOUtils::StreamedLength(_map);
+      return IOUtils::StreamedLength(_maps);
     }
 
     //------------------------------------------------------------------------
@@ -351,7 +484,7 @@ namespace Dwm {
     bool Read(boost::asio::ip::tcp::socket & s) override
     {
       std::unique_lock  lck(_mtx);
-      return ASIO::Read(s, _map);
+      return ASIO::Read(s, _maps);
     }
 
     //------------------------------------------------------------------------
@@ -361,13 +494,104 @@ namespace Dwm {
     bool Write(boost::asio::ip::tcp::socket & s) const override
     {
       std::shared_lock  lck(_mtx);
-      return ASIO::Write(s, _map);
+      return ASIO::Write(s, _maps);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Returns a shared lock of the Ipv6PrefixMap, in the locked state.
+    //!  This should be used with care to avoid deadlock.  It is intended
+    //!  for scenarios where the caller needs to perform many read-only
+    //!  operations in quick succession and performance is paramount, since
+    //!  it allows one to call the members which accept a shared lock and
+    //!  hence do not lock and unlock on each call.  Note that the only
+    //!  read-only member with significant locking overhead is Find().
+    //!  FindLongest()'s locking overhead is dwarfed by the cycles it
+    //!  needs for other activities.
+    //------------------------------------------------------------------------
+    std::shared_lock<std::shared_mutex> SharedLock() const
+    {
+      return std::shared_lock(_mtx);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Returns a unique lock of the Ipv6PrefixMap, in the locked state.
+    //!  This (and the members that accept a unique lock as an argument)
+    //!  should be used with care to avoid deadlock.  It is intended for
+    //!  scenarios where the caller needs to perform many operations in
+    //!  quick succession and performance is paramount, since it allows one
+    //!  to call the members which accept a unique lock and hence do not
+    //!  lock and unlock on each call.  Note that the only read-only member
+    //!  with significant locking overhead is Find(); FindLongest()'s
+    //!  locking overhead is dwarfed by the cycles it needs for other
+    //!  activities.  Add() is a little bit faster for repetitive operations
+    //!  using the pre-locked version (about 5%).
+    //------------------------------------------------------------------------
+    std::unique_lock<std::shared_mutex> UniqueLock()
+    {
+      return std::unique_lock(_mtx);
     }
     
   private:
-    mutable std::shared_mutex              _mtx;
-    std::unordered_map<Ipv6Prefix,T,Hash>  _map;
-    std::map<uint8_t,uint64_t>             _lengthCounters;
+    mutable std::shared_mutex  _mtx;
+    MapPair                    _maps;
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool FindNoLock(const Ipv6Prefix & pfx, T & value) const
+    {
+      bool  rc = false;
+      auto  it = _maps.first.find(pfx);
+      if (it != _maps.first.end()) {
+        value = it->second;
+        rc = true;
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool FindLongestNoLock(const Ipv6Address & addr,
+                           std::pair<Ipv6Prefix,T> & value) const
+    {
+      bool              rc = false;
+      Ipv6Prefix        pfx(addr, 128);
+      for (auto lit = _maps.second.rbegin();
+           lit != _maps.second.rend(); ++lit) {
+        pfx.MaskLength(lit->first);
+        auto  it = _maps.first.find(pfx);
+        if (it != _maps.first.end()) {
+          value.first = pfx;
+          value.second = it->second;
+          rc = true;
+          break;
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool FindMatchesNoLock(const Ipv6Address & addr,
+                           std::vector<std::pair<Ipv6Prefix,T>> & values) const
+    {
+      values.clear();
+      std::pair<Ipv6Prefix,T>  value;
+      for (auto lit = _maps.second.rbegin();
+           lit != _maps.second.rend(); ++lit) {
+        Ipv6Prefix  pfx(addr, lit->first);
+        auto  it = _maps.first.find(pfx);
+        if (it != _maps.first.end()) {
+          value.first = pfx;
+          value.second = it->second;
+          values.push_back(value);
+        }
+      }
+      return (! values.empty());
+    }
+    
   };
   
 }  // namespace Dwm
