@@ -76,13 +76,18 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  static void
-  MaskBits(struct in6_addr & addr, uint8_t numBits)
+  static inline void MaskBits(struct in6_addr & addr, uint8_t numBits)
   {
-    struct in6_addr  tmpAddr;
-    SetBits(tmpAddr, numBits);
-    for (uint8_t byte = 0; byte < sizeof(addr.s6_addr); ++byte)
-      addr.s6_addr[byte] &= tmpAddr.s6_addr[byte];
+    if (numBits < 128) {
+      uint8_t  byte = numBits >> 3;
+      uint8_t  bits = numBits - (byte << 3);
+      if (bits) {
+        addr.s6_addr[byte] &= ~(0xFF >> bits);
+        ++byte;
+      }
+      memset(&(addr.s6_addr[byte]), 0, sizeof(addr.s6_addr) - byte);
+    }
+    return;
   }
   
   //--------------------------------------------------------------------------
@@ -222,15 +227,11 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   bool Ipv6Prefix::operator == (const Ipv6Prefix & prefix) const
   {
-    bool  rc = false;
     if (_length == prefix._length) {
-      if (((uint64_t *)_addr.s6_addr)[0]
-          == ((uint64_t *)prefix._addr.s6_addr)[0]) {
-        rc = (((uint64_t *)_addr.s6_addr)[1]
-              == ((uint64_t *)prefix._addr.s6_addr)[1]);
-      }
+      return (memcmp(_addr.s6_addr, prefix._addr.s6_addr,
+                     (_length + 7) >> 3) == 0);
     }
-    return(rc);
+    return false;
   }
 
   //--------------------------------------------------------------------------
