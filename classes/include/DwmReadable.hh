@@ -42,9 +42,9 @@
 #ifndef _DWMREADABLE_HH_
 #define _DWMREADABLE_HH_
 
-#include "DwmDescriptorReadable.hh"
-#include "DwmFileReadable.hh"
-#include "DwmStreamReadable.hh"
+#include "DwmDescriptorIOCapable.hh"
+#include "DwmFileIOCapable.hh"
+#include "DwmStreamIOCapable.hh"
 
 namespace Dwm {
 

@@ -41,9 +41,9 @@
 #ifndef _DWMWRITABLE_HH_
 #define _DWMWRITABLE_HH_
 
-#include "DwmDescriptorWritable.hh"
-#include "DwmFileWritable.hh"
-#include "DwmStreamWritable.hh"
+#include "DwmDescriptorIOCapable.hh"
+#include "DwmFileIOCapable.hh"
+#include "DwmStreamIOCapable.hh"
 
 namespace Dwm {
 
