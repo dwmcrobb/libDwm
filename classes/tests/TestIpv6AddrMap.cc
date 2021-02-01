@@ -49,7 +49,7 @@ extern "C" {
 #include <vector>
 
 #include "DwmIpv6AddrMap.hh"
-#include "DwmTimeValue.hh"
+#include "DwmTimeValue64.hh"
 #include "DwmUnitAssert.hh"
 
 using namespace std;
@@ -102,28 +102,97 @@ static void Test(const vector<Ipv6Address> & entries)
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void TestBulkPerformance(const vector<Ipv6Address> & entries)
+{
+  Ipv6AddrMap<uint32_t>  addrMap;
+  uint32_t  i = 0;
+  Dwm::TimeValue64  startTime(true);
+  auto  ulck(addrMap.UniqueLock());
+  for (const auto & entry : entries) {
+    addrMap.Add(ulck, entry, i);
+    ++i;
+  }
+  Dwm::TimeValue64  endTime(true);
+  endTime -= startTime;
+  uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
+  uint64_t  insertsPerSec = (i * 1000000ULL) / usecs;
+  cout << i << " addresses, " << insertsPerSec
+       << " inserts/sec (bulk lock)\n";
+
+  uint32_t  val;
+  uint64_t  found = 0;
+  startTime.SetNow();
+  for (const auto & entry : entries) {
+    found += addrMap.Find(ulck, entry, val);
+  }
+  endTime.SetNow();
+  endTime -= startTime;
+  UnitAssert(found == entries.size());
+  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
+  uint64_t  lookupsPerSec = (found * 1000000ULL) / usecs;
+  cout << found << " addresses, " << lookupsPerSec
+       << " lookups/sec (bulk lock)\n";
+
+  uint64_t  removals = 0;
+  startTime.SetNow();
+  for (const auto & entry : entries) {
+    removals += addrMap.Remove(ulck, entry);
+  }
+  endTime.SetNow();
+  endTime -= startTime;
+  UnitAssert(found == entries.size());
+  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
+  uint64_t  removalsPerSec = (removals * 1000000ULL) / usecs;
+  cout << removals << " addresses, " << removalsPerSec
+       << " removals/sec (bulk lock)\n";
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static void TestPerformance(const vector<Ipv6Address> & entries)
 {
   Ipv6AddrMap<uint32_t>  addrMap;
   uint32_t  i = 0;
+  Dwm::TimeValue64  startTime(true);
   for (const auto & entry : entries) {
     addrMap.Add(entry, i);
     ++i;
   }
-  
+  Dwm::TimeValue64  endTime(true);
+  endTime -= startTime;
+  uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
+  uint64_t  insertsPerSec = (i * 1000000ULL) / usecs;
+  cout << i << " addresses, " << insertsPerSec
+       << " inserts/sec\n";
+
   uint32_t  val;
   uint64_t  found = 0;
-  Dwm::TimeValue  startTime(true);
+  startTime.SetNow();
   for (const auto & entry : entries) {
     found += addrMap.Find(entry, val);
   }
-  Dwm::TimeValue  endTime(true);
+  endTime.SetNow();
   endTime -= startTime;
   UnitAssert(found == entries.size());
-  uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
-  uint64_t  lookupsPerSec = (found * 1000000ULL * 10) / usecs;
+  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
+  uint64_t  lookupsPerSec = (found * 1000000ULL) / usecs;
   cout << found << " addresses, " << lookupsPerSec
        << " lookups/sec\n";
+
+  uint64_t  removals = 0;
+  startTime.SetNow();
+  for (const auto & entry : entries) {
+    removals += addrMap.Remove(entry);
+  }
+  endTime.SetNow();
+  endTime -= startTime;
+  UnitAssert(found == entries.size());
+  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
+  uint64_t  removalsPerSec = (removals * 1000000ULL) / usecs;
+  cout << removals << " addresses, " << removalsPerSec
+       << " removals/sec\n";
   return;
 }
 
@@ -150,6 +219,7 @@ int main(int argc, char *argv[])
     Test(entries);
     if (g_testPerformance) {
       TestPerformance(entries);
+      TestBulkPerformance(entries);
     }
   }
 
