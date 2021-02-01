@@ -130,9 +130,12 @@ namespace Dwm {
       return(*(ipv4addr_t *)this->_data);
     }
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
     inline ipv4addr_t NetworkRaw() const
     {
-      return(*(ipv4addr_t *)this->_data);
+      return(((ipv4addr_t *)this->_data)[0]);
     }
     
     //------------------------------------------------------------------------
@@ -143,7 +146,8 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Returns the length of the netmask (number of significant bits).
     //------------------------------------------------------------------------
-    uint8_t MaskLength() const;
+    inline uint8_t MaskLength() const
+    { return this->_data[4]; }
     
     //------------------------------------------------------------------------
     //!  Changes the length of the netmask (number of significant bits).
@@ -356,7 +360,7 @@ namespace Dwm {
     }
 
   private:
-    uint8_t  _data[5];
+    alignas(4) uint8_t  _data[5];
   };
 
   //--------------------------------------------------------------------------
