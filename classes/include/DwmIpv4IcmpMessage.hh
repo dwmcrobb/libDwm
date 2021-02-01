@@ -47,11 +47,11 @@ extern "C" {
 
 #include <utility>
 
-#include "DwmBZ2Writable.hh"
-#include "DwmGZWritable.hh"
-#include "DwmDescriptorWritable.hh"
-#include "DwmFileWritable.hh"
-#include "DwmStreamWritable.hh"
+#include "DwmBZ2IOCapable.hh"
+#include "DwmGZIOCapable.hh"
+#include "DwmDescriptorIOCapable.hh"
+#include "DwmFileIOCapable.hh"
+#include "DwmStreamIOCapable.hh"
 #include "DwmStreamedLengthCapable.hh"
 
 namespace Dwm {

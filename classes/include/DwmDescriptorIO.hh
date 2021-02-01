@@ -58,8 +58,7 @@
 #include <vector>
 
 #include "DwmPortability.hh"
-#include "DwmDescriptorReadable.hh"
-#include "DwmDescriptorWritable.hh"
+#include "DwmDescriptorIOCapable.hh"
 #include "DwmVariantFromIndex.hh"
 
 namespace Dwm {

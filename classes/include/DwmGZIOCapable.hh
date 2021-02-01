@@ -36,17 +36,59 @@
 //---------------------------------------------------------------------------
 //!  \file DwmGZIOCapable.hh
 //!  \author Daniel W. McRobb
-//!  \brief Dwm::GZIOCapable pure virtual class declaration
+//!  \brief Dwm::GZReadable, Dwm::GZWritable and Dwm::GZIOCapable pure
+//!    virtual class declarations
 //---------------------------------------------------------------------------
 
 #ifndef _DWMGZIOCAPABLE_HH_
 #define _DWMGZIOCAPABLE_HH_
 
-#include "DwmGZReadable.hh"
-#include "DwmGZWritable.hh"
+extern "C" {
+  #include <sys/types.h>
+  #include <stdio.h>
+  #include <zlib.h>
+}
 
 namespace Dwm {
 
+  //--------------------------------------------------------------------------
+  //!  This class is a pure virtual class, defining an interface for
+  //!  classes that can read their contents from a gzFile.
+  //--------------------------------------------------------------------------
+  class GZReadable
+  {
+  public:
+    //------------------------------------------------------------------------
+    //!  destructor
+    //------------------------------------------------------------------------
+    virtual ~GZReadable() { }
+
+    //------------------------------------------------------------------------
+    //!  Read from a gzFile.  Should return the number of bytes read on
+    //!  success (-1 on failure?)
+    //------------------------------------------------------------------------
+    virtual int Read(gzFile gzf) = 0;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  This class is a pure virtual class, defining an interface for
+  //!  classes that can write their contents to a gzFile.
+  //--------------------------------------------------------------------------
+  class GZWritable
+  {
+  public:
+    //------------------------------------------------------------------------
+    //!  destructor
+    //------------------------------------------------------------------------
+    virtual ~GZWritable() { }
+
+    //------------------------------------------------------------------------
+    //!  Write to a gzFile.  Should return the number of bytes written on
+    //!  success (-1 on failure?)
+    //------------------------------------------------------------------------
+    virtual int Write(gzFile gzf) const = 0;
+  };
+  
   //--------------------------------------------------------------------------
   //!  Interface for classes with GZIO read and write capabilities.
   //--------------------------------------------------------------------------

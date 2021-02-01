@@ -52,10 +52,10 @@ extern "C" {
 #include <utility>
 
 #include "DwmIpv4TcpHeader.hh"
-#include "DwmBZ2Writable.hh"
-#include "DwmDescriptorWritable.hh"
-#include "DwmFileWritable.hh"
-#include "DwmGZWritable.hh"
+#include "DwmBZ2IOCapable.hh"
+#include "DwmDescriptorIOCapable.hh"
+#include "DwmFileIOCapable.hh"
+#include "DwmGZIOCapable.hh"
 #include "DwmIOUtils.hh"
 #include "DwmStreamedLengthCapable.hh"
 #include "DwmStreamIO.hh"

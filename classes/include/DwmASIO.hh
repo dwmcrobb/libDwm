@@ -53,10 +53,7 @@
 #include <variant>
 #include <vector>
 
-#include <boost/asio.hpp>
-
-#include "DwmASIOReadable.hh"
-#include "DwmASIOWritable.hh"
+#include "DwmASIOCapable.hh"
 #include "DwmVariantFromIndex.hh"
 
 namespace Dwm {

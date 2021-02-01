@@ -36,17 +36,43 @@
 //---------------------------------------------------------------------------
 //!  \file DwmASIOCapable.hh
 //!  \author Daniel W. McRobb
-//!  \brief Dwm::ASIOCapable class declaration
+//!  \brief Dwm::ASIOReadable, Dwm::ASIOWritable, Dwm::ASIOCapable interface
+//!    declarations
 //---------------------------------------------------------------------------
 
 #ifndef _DWMASIOCAPABLE_HH_
 #define _DWMASIOCAPABLE_HH_
 
-#include "DwmASIOReadable.hh"
-#include "DwmASIOWritable.hh"
+#include <boost/asio.hpp>
 
 namespace Dwm {
 
+  //--------------------------------------------------------------------------
+  //!  Interface for classes that wish to be readable via Dwm::ASIO.
+  //--------------------------------------------------------------------------
+  class ASIOReadable
+  {
+  public:
+    //------------------------------------------------------------------------
+    //!  Should read the class from the given socket @c s and return true
+    //!  on success, faluse on failure.
+    //------------------------------------------------------------------------
+    virtual bool Read(boost::asio::ip::tcp::socket & s) = 0;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  Interface for classes that wish to be writable via Dwm::ASIO.
+  //--------------------------------------------------------------------------
+  class ASIOWritable
+  {
+  public:
+    //------------------------------------------------------------------------
+    //!  Should write the class to the given socket @c s and return true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    virtual bool Write(boost::asio::ip::tcp::socket & s) const = 0;
+  };
+  
   //--------------------------------------------------------------------------
   //!  Interface for classes that can read/write their contents from/to
   //!  a boost::asio::ip::tcp::socket.

@@ -61,8 +61,7 @@ extern "C" {
 #include <vector>
 
 #include "DwmPortability.hh"
-#include "DwmGZReadable.hh"
-#include "DwmGZWritable.hh"
+#include "DwmGZIOCapable.hh"
 #include "DwmVariantFromIndex.hh"
 
 namespace Dwm {

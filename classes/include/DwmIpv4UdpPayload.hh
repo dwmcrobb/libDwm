@@ -53,12 +53,12 @@ extern "C" {
 #include <string>
 #include <utility>
 
-#include "DwmDescriptorWritable.hh"
-#include "DwmFileWritable.hh"
+#include "DwmDescriptorIOCapable.hh"
+#include "DwmFileIOCapable.hh"
 #include "DwmIOUtils.hh"
 #include "DwmStreamIO.hh"
-#include "DwmGZWritable.hh"
-#include "DwmBZ2Writable.hh"
+#include "DwmGZIOCapable.hh"
+#include "DwmBZ2IOCapable.hh"
 #include "DwmIpv4UdpHeader.hh"
 
 namespace Dwm {

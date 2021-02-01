@@ -36,17 +36,53 @@
 //---------------------------------------------------------------------------
 //!  \file DwmBZ2IOCapable.hh
 //!  \author Daniel W. McRobb
-//!  \brief Dwm::BZ2IOCapable pure virtual interface declaration
+//!  \brief Dwm::BZ2Readable, Dwm::BZ2Writable and Dwm::BZ2IOCapable
+//!    pure virtual interface declarations
 //---------------------------------------------------------------------------
 
 #ifndef _DWMBZ2IOCAPABLE_HH_
 #define _DWMBZ2IOCAPABLE_HH_
 
-#include "DwmBZ2Readable.hh"
-#include "DwmBZ2Writable.hh"
+extern "C" {
+  #include <sys/types.h>
+  #include <stdio.h>
+  #include <bzlib.h>
+}
 
 namespace Dwm {
 
+  //--------------------------------------------------------------------------
+  //!  This class is a pure virtual class, defining an interface for
+  //!  classes that can read their contents from a BZFILE pointer.
+  //--------------------------------------------------------------------------
+  class BZ2Readable
+  {
+  public:
+    virtual ~BZ2Readable() { }
+
+    //------------------------------------------------------------------------
+    //!  Read from a BZFILE pointer.  Should return the number of bytes read
+    //!  on success (-1 on failure?)
+    //------------------------------------------------------------------------
+    virtual int BZRead(BZFILE *bzf) = 0;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  This class is a pure virtual class, defining an interface for
+  //!  classes that can write their contents to a BZFILE pointer.
+  //--------------------------------------------------------------------------
+  class BZ2Writable
+  {
+  public:
+    virtual ~BZ2Writable() { }
+
+    //------------------------------------------------------------------------
+    //!  Write to a BZFILE pointer.  Should return the number of bytes 
+    //!  written on success (-1 on failure?)
+    //------------------------------------------------------------------------
+    virtual int BZWrite(BZFILE *bzf) const = 0;
+  };
+  
   //--------------------------------------------------------------------------
   //!  Interface for classes with BZ2IO read and write capabilities.
   //--------------------------------------------------------------------------

@@ -42,10 +42,47 @@
 #ifndef _DWMFILEIOCAPABLE_HH_
 #define _DWMFILEIOCAPABLE_HH_
 
-#include "DwmFileReadable.hh"
-#include "DwmFileWritable.hh"
+#include <cstdio>
 
 namespace Dwm {
+
+  //--------------------------------------------------------------------------
+  //!  This class defines an interface for classes that can read their
+  //!  contents from a FILE pointer.
+  //--------------------------------------------------------------------------
+  class FileReadable
+  {
+  public:
+    //------------------------------------------------------------------------
+    //!  destructor
+    //------------------------------------------------------------------------
+    virtual ~FileReadable() { }
+
+    //------------------------------------------------------------------------
+    //!  Read from a FILE pointer.  Returns 1 on success, 0 on failure
+    //!  (fread() semantics).
+    //------------------------------------------------------------------------
+    virtual size_t Read(FILE * f) = 0;
+  };
+  
+  //--------------------------------------------------------------------------
+  //!  This class defines an interface for classes that can write their
+  //!  contents to a FILE pointer.
+  //--------------------------------------------------------------------------
+  class FileWritable
+  {
+  public:
+    //------------------------------------------------------------------------
+    //!  Destructor
+    //------------------------------------------------------------------------
+    virtual ~FileWritable() { }
+
+    //------------------------------------------------------------------------
+    //!  Write to a FILE pointer.  Return 1 on success, 0 on failure
+    //! (fwrite() semantics).
+    //------------------------------------------------------------------------
+    virtual size_t Write(FILE *f) const = 0;
+  };
 
   //--------------------------------------------------------------------------
   //!  

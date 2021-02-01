@@ -36,19 +36,62 @@
 //---------------------------------------------------------------------------
 //!  \file DwmDescriptorIOCapable.hh
 //!  \author Daniel W. McRobb
-//!  \brief Dwm::DescriptorIOCapable pure virtual class declaration
+//!  \brief Dwm::DescriptorReadable, Dwm::DescriptorWritable and
+//!     Dwm::DescriptorIOCapable pure virtual class declarations
 //---------------------------------------------------------------------------
 
 #ifndef _DWMDESCRIPTORIOCAPABLE_HH_
 #define _DWMDESCRIPTORIOCAPABLE_HH_
 
-#include "DwmDescriptorReadable.hh"
-#include "DwmDescriptorWritable.hh"
+extern "C" {
+  #include <sys/types.h>
+}
+
+#include <cstddef>
 
 namespace Dwm {
 
   //--------------------------------------------------------------------------
-  //!  
+  //!  This class defines an interface for classes that can read their
+  //!  contents from a file descriptor.
+  //--------------------------------------------------------------------------
+  class DescriptorReadable
+  {
+  public:
+    //------------------------------------------------------------------------
+    //!  destructor
+    //------------------------------------------------------------------------
+    virtual ~DescriptorReadable() { }
+
+    //------------------------------------------------------------------------
+    //!  Read from a file descriptor.  Returns the number of bytes read on
+    //!  success, -1 on failure.
+    //------------------------------------------------------------------------
+    virtual ssize_t Read(int fd) = 0;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  This class defines an interface for classes that can write their
+  //!  contents to a file descriptor.
+  //--------------------------------------------------------------------------
+  class DescriptorWritable
+  {
+  public:
+    //------------------------------------------------------------------------
+    //!  Destructor
+    //------------------------------------------------------------------------
+    virtual ~DescriptorWritable() { }
+
+    //------------------------------------------------------------------------
+    //!  Write to a file descriptor.  Return the number of bytes written
+    //!  on success, -1 on failure.
+    //------------------------------------------------------------------------
+    virtual ssize_t Write(int fd) const = 0;
+  };
+  
+  //--------------------------------------------------------------------------
+  //!  This class defines an interface for classes that can write/read their
+  //!  contents to/from a file descriptor.
   //--------------------------------------------------------------------------
   class DescriptorIOCapable
     : public DescriptorReadable, public DescriptorWritable

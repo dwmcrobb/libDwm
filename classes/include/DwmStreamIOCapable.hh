@@ -36,17 +36,53 @@
 //---------------------------------------------------------------------------
 //!  \file DwmStreamIOCapable.hh
 //!  \author Daniel W. McRobb
-//!  \brief Dwm::StreamIOCapable pure virtual class declaration
+//!  \brief Dwm::StreamReadable, Dwm::StreamWritable and Dwm::StreamIOCapable
+//!    pure virtual class declarations
 //---------------------------------------------------------------------------
 
 #ifndef _DWMSTREAMIOCAPABLE_HH_
 #define _DWMSTREAMIOCAPABLE_HH_
 
-#include "DwmStreamReadable.hh"
-#include "DwmStreamWritable.hh"
+#include <iostream>
 
 namespace Dwm {
 
+  //--------------------------------------------------------------------------
+  //!  This class defines an interface for classes that can read their
+  //!  contents from an istream.
+  //--------------------------------------------------------------------------
+  class StreamReadable
+  {
+  public:
+    //------------------------------------------------------------------------
+    //!  destructor
+    //------------------------------------------------------------------------
+    virtual ~StreamReadable() { }
+
+    //------------------------------------------------------------------------
+    //!  Read from an istream.  Return the istream.
+    //------------------------------------------------------------------------
+    virtual std::istream & Read(std::istream & is) = 0;
+  }; 
+
+  //--------------------------------------------------------------------------
+  //!  This class defines an interface for classes that can write their
+  //!  contents to an ostream.
+  //--------------------------------------------------------------------------
+  class StreamWritable
+  {
+  public:
+    //------------------------------------------------------------------------
+    //!  Destructor
+    //------------------------------------------------------------------------
+    virtual ~StreamWritable() { }
+
+    //------------------------------------------------------------------------
+    //!  Write to an ostream.  Return the ostream.
+    //------------------------------------------------------------------------
+    virtual std::ostream & Write(std::ostream & os) const = 0;
+  };
+  
   //--------------------------------------------------------------------------
   //!  Interface for classes with iostream read and write capabilities.
   //--------------------------------------------------------------------------
