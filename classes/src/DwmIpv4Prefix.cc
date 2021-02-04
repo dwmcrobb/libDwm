@@ -284,10 +284,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   bool Ipv4Prefix::operator == (const Ipv4Prefix & prefix) const
   {
-    bool  rc = false;
-    if (memcmp(this->_data,prefix._data,sizeof(this->_data)) == 0)
-      rc = true;
-    return(rc);
+    return (memcmp(this->_data, prefix._data, sizeof(this->_data)) == 0);
   }
 
   //--------------------------------------------------------------------------
@@ -295,10 +292,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   bool Ipv4Prefix::operator != (const Ipv4Prefix & prefix) const
   {
-    bool  rc = true;
-    if (memcmp(this->_data,prefix._data,sizeof(this->_data)) == 0)
-      rc = false;
-    return(rc);
+    return (memcmp(this->_data, prefix._data, sizeof(this->_data)) != 0);
   }
 
   //--------------------------------------------------------------------------
