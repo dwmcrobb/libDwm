@@ -69,9 +69,8 @@ namespace Dwm {
   //!
   //!  The implementation uses xxhash.  I tried some other techniques,
   //!  but they worked very poorly on some architectures (Xeon L5640,
-  //!  2018 Macbook Pro).  This is at least consistent.  On a Xeon L5640, I
-  //!  get about 5 million longest-match lookups/sec.  On a 2018 Macbook Pro,
-  //!  I get 9 to 10 million longest-match lookups/sec.
+  //!  2018 Macbook Pro).  This is at least consistent.  On a Threadripper
+  //!  3960X, I get about 1.5 million longest-match lookups/sec.
   //!
   //!  Note that the interfaces are all single-threaded internally.  Hence
   //!  the performance scales with CPU clock, memory bandwidth, on-die cache,
@@ -591,7 +590,7 @@ namespace Dwm {
       }
       return (! values.empty());
     }
-    
+
   };
   
 }  // namespace Dwm
