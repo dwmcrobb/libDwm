@@ -232,11 +232,18 @@ namespace Dwm {
     std::string ToString() const;
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Given that the number of IPv6 addresses I typically deal with is
+    //!  nowhere near 4 billion, a 32-bit hash is sufficient if its
+    //!  distribution is effective.  And it's faster on small 32-bit
+    //!  platforms.  Hence I'm currently using XXH32(), and only on the
+    //!  non-zero bytes of the address.  Yes, that means I'll have collisions
+    //!  for some prefixes but it's a small (near 0) number in my usage.
+    //!  I'm looking for average speed here.
     //------------------------------------------------------------------------
     inline uint64_t Hash() const
     {
-      return XXH64(_addr.s6_addr, (_length + 7) >> 3, 0);
+      return XXH32(_addr.s6_addr, (_length + 7) >> 3, 0);
+      // return XXH3_64bits(_addr.s6_addr, 16);
   }
     
   private:
