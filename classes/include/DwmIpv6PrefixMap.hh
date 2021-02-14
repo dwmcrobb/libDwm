@@ -555,13 +555,12 @@ namespace Dwm {
                            std::pair<Ipv6Prefix,T> & value) const
     {
       bool              rc = false;
-      Ipv6Prefix        pfx(addr, 128);
+      value.first.Set(addr, 128);
       for (auto lit = _maps.second.rbegin();
            lit != _maps.second.rend(); ++lit) {
-        pfx.MaskLength(lit->first);
-        auto  it = _maps.first.find(pfx);
+        value.first.MaskLength(lit->first);
+        auto  it = _maps.first.find(value.first);
         if (it != _maps.first.end()) {
-          value.first = pfx;
           value.second = it->second;
           rc = true;
           break;
