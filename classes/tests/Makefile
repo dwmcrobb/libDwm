@@ -45,7 +45,6 @@ OBJFILES = TestASIO.o \
 	   TestIpv4PacketHeader.o \
 	   TestIpv4Prefix.o \
 	   TestIpv4PrefixMap.o \
-	   TestIpv4PrefixTree.o \
 	   TestIpv4Routes.o \
 	   TestIpv4TcpHeader.o \
 	   TestIpv4TcpPacket.o \
