@@ -1,0 +1,5348 @@
+2021-03-02  Daniel McRobb  <dwm@mcplex.net>
+
+	* New Ipv6PrefixMap class, new Ipv6AddrMap class, new Ipv4PrefixMap
+	class, new Ipv4AddrMap class.
+
+	* Consolidated some smaller header files.
+
+	* StreamedLength() stuff now returns uint64_t instead of uint32_t.
+
+	* migrated repository fro my svn server to my git server.
+
+2021-01-18  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.9.5
+
+	* mkfbsdmnfst and supporting classes moved to mkfbsdmnfst package
+	in my github repository.
+
+	* mkdebcontrol and supporting classes moved to mkdebcontrol package
+	in my github repository.
+
+2021-01-16  Daniel McRobb  <dwm@mcplex.net>
+
+	* apps/mkfbsdmnfst/mkfbsdmnfst.1: Fix typos.
+
+2021-01-12  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.9.4
+
+2021-01-10  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* configure, configure.in, Makefile.vars.in, packaging/libDwm.pc.in:
+	Add -ltermcap detection and put it in our library dependencies.
+
+	* include/DwmTerminalTricks.hh, src/DwmTerminalTricks.cc:
+	Simple terminal tricks (bold and underscore), from mcloc.
+
+2021-01-03  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* apps/mkfbsdmnfst/mkfbsdmnfst.cc: Switch to using Dwm::Arguments
+	instead of Dwm::OptArgs.
+
+	* include/DwmArgumentIO.hh, include/DwmArguments.hh,
+	include/DwmTupleHelpers.hh:
+	Command line argument parsing, copied from mcloc.
+
+2020-12-17  Daniel McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.9.3
+
+	* apps/mkdebcontrol/Makefile:
+	Build dependency makefiles.
+
+2020-12-17  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* apps/mkdebcontrol/mkdebcontrol.cc:
+	std::filesystem is still problematic in GNU libstdc++fs on
+	Raspbian 10 (and probably on other Linux platforms).  On Raspbian
+	10 on the Raspberry Pi 4, recursive_directory_iterator() stomps on
+	the stack and results in a useless core dump as a result.
+	valgrind isn't any help because it loses track and goes into the
+	weeds.  gcc/g++ on Raspbian 10 don't have stack protection
+	options.  So...
+
+	Resort to using fts_open(), fts_read() and fts_close().  They're C
+	interfaces, but they're old and work correctly on Linux.
+
+2020-12-16  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* apps/mkdebcontrol/mkdebcontrol.cc:
+	Catch exception when creating directory iterator.
+
+	* tagged as libDwm-0.9.2
+
+	* apps/mkfbsdmnfst/mkfbsdmnfst.cc:
+	Correct the version in manifest dependencies that were not
+	discovered dependencies (i.e. they were in the template but not in
+	the automatically discovered list).
+
+	* tagged as libDwm-0.9.1
+
+	* apps/mkfbsdmnfst/mkfbsdmnfst.cc, apps/mkfbsdmnfst/mkfbsdmnfst.1,
+	Makefile:
+	mkfbsdmnfst now takes the staging argument with a -s (required),
+	and can scan additional directories to search for dependencies.
+	This is particularly useful for static library packages, where one
+	might not find dependencies by just looking at the staging
+	directory.  In most of my own projects, scanning the unit tests
+	directory in addition to the sataging directory is sufficient to
+	capture shared library dependencies.
+
+2020-12-15  Daniel McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.9.0
+
+	* packaging/debcontrol.in:
+	Debian control file template for libDwm debian package.
+
+	* apps/mkdebcontrol:
+	New application to read a Debian control file and scan directories
+	for binaries to automatically build Depends and Pre-Depends lists.
+	It's now being used to create the Debian package of libDwm.
+
+	* tests/TestVersionString.cc:
+	Unit tests for VersionPart and VersionString.
+
+	* include/DwmVersionString.hh, src/DwmVersionString.cc:
+	New VersionPart and VersionString classes.
+
+	* include/DwmDebPkgDepend.hh, src/DwmDebPkgDepend.cc,
+	tests/TestDebPkgDepend.cc:
+	New DepPkgDepend class.
+
+	* include/DwmDebPkgVersion.hh, src/DwmDebPkgVersion.cc,
+	tests/TestDebPkgVersion.cc:
+	New DebPkgVersion class and unit tests.
+
+2020-12-13  Daniel McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.8.8
+
+	* include/DwmIpAddress.hh, src/DwmIpAddress.cc,
+	include/DwmIpPrefix.hh, src/DwmIpPrefix.cc:
+	Added std::ostream & operator <<
+
+2020-12-11  Daniel McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.8.7
+
+	* src/Ipv4Prefix.cc:
+	Use a more rigorous algorithm in Ipv4Prefix(const std::string &).
+	It's probably slower (uses regular expression), but more reliable.
+
+2020-12-10  Daniel McRobb  <dwm@mcplex.net>
+
+	* include/DwmIpPrefix.hh, src/DwmIpPrefix.cc:
+	New class IpPrefix.
+
+	* include/DwmIpv6Prefix.hh, src/DwmIpv6Prefix.cc:
+	Added 'bool operator != (const Ipv6Prefix &) const'
+
+	* tagged as libDwm-0.8.6
+
+	* configure.in, configure, dwm.m4, Makefile.vars.in,
+	packaging/libDwm.pc.in, src/Makefile, tests/Makefile:
+	Do a better job of finding boost libraries and using them in
+	build and 'pkg-config --libs libDwm'.
+
+2020-12-08  Daniel McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.8.5
+
+	* include/DwmIpv6Address.hh
+	Added bool operator != (const Ipv6Address &) const
+
+2020-12-07  Daniel McRobb  <dwm@mcplex.net>
+	* tagged as libDwm-0.8.4
+
+	* include/DwmIpAddress.hh, include/DwmIpv4Address.hh,
+	include/DwmIpv6Address.hh, src/DwmIpAddress.cc,
+	src/Makefile:
+	IpAddress is now a variant of Ipv4Address and Ipv6Address.
+
+2020-11-25  Daniel McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.8.3
+
+	* tests/TestIpv6Prefix.cc
+	Added tests for constructing from string.
+
+	* src/DwmIpv6Prefix.cc
+	Use regex in Ipv6Prefix(const string &) instead of string operations.
+	A little slower but less prone to error.
+
+2020-11-24  Daniel McRobb  <dwm@mcplex.net>
+
+	* src/DwmIpv6Prefix.cc
+	Added IsLinkLocal() and IsSiteLocal().  Note that site-local
+	IPv6 addresses were deprecated long ago (RFC 3879).
+
+	* src/DwmIpv6Prefix.cc
+	Fix potential buffer overflow in SetBits().
+
+2020-11-15  Daniel McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.8.2
+
+	* tests/TestThreadQueue.cc:
+	Added TestBulkPushFront()
+
+	* include/DwmThreadQueue.hh:
+	Added PushFront(InputIterator firstIter, InputIterator lastIter)
+
+2020-11-12  Daniel McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.8.1
+
+	* Makefile.vars.in:
+	Add @BOOSTLIBTAG@ as boost library suffix.  For example, on macOS,
+	when boost is built with multithreading enabled, each library file
+	has '-mt' on the end of its name.
+
+2020-09-18  dwm  <dwm@mcplex.net>
+
+	* include/DwmWritable.hh:
+	Fix typo in deprecated statement.
+
+2020-09-14  Daniel McRobb  <dwm@mcplex.net>
+
+	* include/DwmIOUtils.hh: Added comment.
+
+2020-09-08  Daniel McRobb  <dwm@mcplex.net>
+
+	* include/DwmWritable.hh:
+	Dwm::Writable now just groups DescriptorWritable, FileWritable
+	and StreamWritable (multiple inheritance).  It is deprecated
+	but refactoring it in this manner allows less urgency in updating
+	older applications that use the library.  Note that the
+	StreamedLength() interface from the old Dwm::Writable is gone.
+	If you need it, add Dwm::StreamedLengthCapable to your class(es).
+
+	* include/DwmReadable.hh:
+	Dwm::Readable now just groups DescriptorReadable, FileReadable
+	and StreamReadable (multiple inheritance).  It is deprecated
+	but refactoring it in this manner allows less urgency in updating
+	older applications that use the library.
+
+	* tagged as libDwm-0.8.0
+
+	* Dwm::IO is now obsolete; don't build DwmIO.cc.  However,
+	I have revived Dwm::IO as a container of function templates
+	to ease the conversion of code that used the old Dwm::IO
+	class that is now split into Dwm::StreamIO, Dwm::DescriptorIO
+	and Dwm::FileIO.
+
+2020-09-07  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* Massive refactoring to split apart Dwm::Readable,
+	Dwm::Writable, Dwm::IO into distinct classes for
+	stream I/O, descriptor I/O and FILE I/O.  We now
+	have StreamReadable, StreamWritable, StreamIOCapable,
+	DescriptorReadable, DescriptorWritable, DescriptorIOCapable,
+	FileReadable, FileWritable, FileIOCapable interface
+	classes.  StreamedLengthCapable is now separate, since
+	we don't always need the capability.  Dwm::IO is deprecated
+	and I'll soon remove it (before the next tag).  It has
+	been replace with Dwm::StreamIO, Dwm::DescriptorIO and
+	Dwm::FileIO.  This brings things in line with Dwm::GZIO,
+	Dwm::ASIO and Dwm::BZ2IO.
+
+	Most of this work was cosmetic in nature, but it makes
+	things a bit easier to maintain and doesn't force the user
+	to implement pure virtual members they don't need.  It
+	will also let me eventually port to systems that don't have
+	integer socket and file descriptors.  But it will have a
+	big trickle-down effect since a lot of my other code depends
+	on the I/O classes in this library.
+
+2020-09-05  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* include/DwmBZ2IO.hh, src/DwmBZ2IO.cc:
+	Added support for std::variant.  Added hack workaround for
+	platforms without XDR when reading/writing floats and
+	doubles, namely Windows.  I don't build on Windows, but
+	may start working on a Windows port.
+
+2020-08-26  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.7.2
+
+	* include/DwmIO.hh:
+	Fix bug in StreamedLength(const std::variant<Ts...> & v).
+	size_t is not a fixed width size, it can be 32 bits on 32-bit
+	OSes, but 64 bits on 64-bit OSes.  Use uint64_t which represents
+	what we actually use when reading and writing variants.
+
+	* tagged as libDwm-0.7.1
+
+	* include/DwmMacAddress.hh, src/DwmMacAddress.cc:
+	Added operator std::string ().
+	Added bool operator < (const MacAddress & mac) const.
+
+2020-08-24  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* dwm.m4, configure, Makefile.vars.in, Makefile:
+	Set and use EPM_ARCH, which we need when invoking epm on
+	Raspbian.
+
+	* packaging/fbsd_manifest.in:
+	Remove upgrade scripts, which were just examples and are no
+	longer valid.
+
+	* tagged as libDwm-0.7.0
+
+	* include/DwmPortability.hh.in: Update byte ordering macros
+	for macOS.
+
+	* Bring in boost::asio support from separate libDwmASIO library,
+	for reading from and writing to boost::asio::ip::tcp::socket.
+
+2020-08-14  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.6.20
+
+2020-08-13  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* include/DwmIO.hh
+	ssize_t Read(int fd, std::variant<Ts...> & v) must be static!
+
+2020-08-06  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.6.19
+
+2020-07-27  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* include/DwmIO.hh
+	Work around size_t oddities on macOS for std::variant I/O.
+
+	* src/DwmIO.cc
+	When reading strings, just resize the string and read into its
+	buffer instead of allocating a temporary buffer and assigning it
+	to the string.  If we catch an exception when resizing the
+	string, return failure.  If we're reading from an istream, set
+	failbit on the istream.
+
+2020-05-15  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.6.18
+
+	* src/DwmIpv4Address.cc
+	When converting to string, do NOT use inet_ntoa() since it is not
+	threadsafe.  Use inet_ntop().
+
+2020-05-05  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.6.17
+
+2020-05-03  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* src/DwmIO.cc
+	In Read(int, void *, size_t), treat EOF the same as an error since we
+	didn't get what we requested.
+
+2020-05-02  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.6.16
+
+	* src/DwmBase64.cc, src/DwmProcessInfo.cc, src/DwmRusage.cc,
+	  tests/TestDwmDirectoryEntry.cc
+	Clean up code to avoid warnings from clang++ 11.x.
+
+	* include/DwmIO.hh
+	Make Write(int, const void *, size_t) and
+	Read(int, void *, size_t) public.  They're useful and no more evil
+	than the operating system equivalents.
+
+	* include/DwmThreadQueue.hh
+	Fixed issue with expecting std::condition_variable::wait() to
+	return bool; it returns void.
+
+2020-04-10  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.6.15
+
+2019-11-22  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* src/DwmFreeBSDPkgManifestParse.yy
+	Replace	deprecated %name-prefix	with %define api.prefix.
+
+	* tagged as libDwm-0.6.14
+
+	* Updated for FreeBSD 13.0-CURRENT, mainly for use on Raspberry Pis.
+
+2019-04-11  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* include/DwmStringUtils.hh, src/DwmStringUtils.cc: Tweak
+	StringToVector() to allow control of empty substrings.
+
+2018-08-28  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* include/DwmTimeUtil.hh, src/DwmTimeUtil.cc: Added
+	time_t MidnightDaysLater(int daysLater).
+
+	* tests/TestTimeUtils.cc: Unit tests for TimeUtil.
+
+2018-07-22  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* include/DwmLoadBalancer.hh: Improve robustness and remove external
+	dependencies.  Use std::atomic where it makes sense, use
+	std::chrono::microseconds.
+
+	* include/DwmThreadQueue.hh: Don't include "DwmSysLogger.hh"; I
+	didn't use it here and now the code has no dependencies outside of
+	standard C++.
+
+	* include/DwmUnitAssert.hh: Use <cstdint> instead of C <inttypes.h>
+
+	* include/DwmFileLogger.hh, src/DwmFileLogger.cc: make _priorityTags,
+	_priorityNames and _mutex non-static.
+
+2018-07-15  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* tests/TestDwmFileLogger.cc: Added unit tests for FileLogger.
+
+	* include/DwmFileLogger.hh, src/DwmFileLogger.cc: Fixed a bug with
+	rolling over log files.
+
+2018-01-16  dwm  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.6.13
+
+2018-01-06  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* include/DwmGetAddrInfo.hh, src/DwmGetAddrInfo.cc,
+	tests/TestGetAddrInfo.cc: Wrapper function for getaddrinfo(),
+	and a trivial unit test.
+
+2018-01-05  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* include/DwmBase64.hh, src/DwmBase64.cc, tests/TestBase64.cc:
+	trivial base64 encoding/decoding functions (RFC 4648).
+
+2017-12-26  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* tests/TestDwmSocket.cc: Use atomics for thread status instead
+	of sleep(1), to avoid false failures and speed up the tests.
+
+	* include/DwmSocket.hh, src/DwmSocket.cc, tests/TestDwmSocket.cc:
+	Started adding IPv6 support.
+
+2017-12-19  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.6.12
+
+2017-12-18  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* configure, configure.in: Don't fail if we don't find libpcap.
+	We don't need it for iOS builds, and let the programs that need to
+	link and use pcap functionality take care of linking to libpcap.
+	Append to CXXFLAGS instead of just setting it, and AC_SUBST(CXXFLAGS).
+	This allows CXXFLAGS to be pulled in from the environment.
+
+	* Makefile: Only build tests and apps if ${PLATFORM} is empty.
+	For now, ${PLATFORM} is only non-empty when building for iOS.
+
+	* src/Makefile: Don't build DwmHostPinger.o, DwmPcap.o,
+	DwmPingDestination.o or DwmPingDestinationEntry.o when building
+	for iOS.
+	Use ${PCAPLIB} instead of -lpcap. pcap library doesn't exist for
+	iOS.
+
+2017-12-06  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* src/DwmIO.cc: Fixed memory leak in Read(int fd, std::string & s)
+
+2017-06-28  dwm  <dwmcrobb@me.com>
+
+	* tagged as libDwm-0.6.11
+
+	* include/DwmDirectoryEntry.hh, src/DwmDirectoryEntry.cc:
+	Work around deprecated readdir_r().  Replace with readdir()
+	and use a lock_guard.  Unfortunately this doesn't protect
+	us from external readdir() calls on another thread, but there
+	is no standard threadsafe means of reading a directory that
+	isn't deprecated since the current version of POSIX.1 makes
+	no guarantee of thread safety for readdir() while readdir_r()
+	has the problem of d_name being restricted to a length of
+	NAME_MAX.
+
+	* Added a README with skeletal build/install instructions.
+
+2017-06-27  dwm  <dwmcrobb@me.com>
+
+	* tagged as libDwm-0.6.10
+
+	* apps/mkfbsdmnfst/mkfbsdmnfst.cc: Use FreeBSD package database
+	instead of opening pipe to 'pkg which ...' when creating
+	dependendies.  Check shared libraries for dependencies too.
+
+	* Added manpage for mkfbsdmnfst.
+
+	* Use /usr/src/contrib/sqlite3 on FreeBSD for sqlite3 include
+	directory, since we're only using it for accessing the FreeBSD
+	package database (in fbsddeps and mkfbsdmnfst).  Use
+	-lprivatesqlite3 for the library.
+
+2017-06-24  dwm  <dwmcrobb@me.com>
+
+	* include/DwmFreeBSDPkgManifest.hh: Added some comments.
+
+	* Added manpages for dwmwhat, fbsddeps and mcping.
+
+2017-06-16  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.6.9
+
+2017-06-15  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* include/DwmIpv4Routes.hh: Added Coalesce().
+
+	* include/DwmIpv4Prefix.hh, src/DwmIpv4Prefix.cc: Added
+	pre-increment, post-increment, pre-decrement and post-decrement
+	operators.  Used by Ipv4Routes::Coalesce().
+
+2017-06-14  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.6.8
+
+	* include/DwmPcap.hh, src/DwmPcap.cc: Added SetDirection().
+
+2017-06-12  dwm  <dwmcrobb@me.com>
+
+	* src/DwmPcap.cc: Added DLT_PFLOG to _dataLinkOffsets.
+
+2017-06-09  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.6.7
+
+	* apps/mcping/mcping.cc, src/DwmHostPinger.cc: Try to fix
+	remaining issues on Linux, which is a sub-par platform for pcap
+	work; pcap timeouts don't work and pcap_breakloop() doesn't work.
+	Hence I need pthread_cancel() with PTHREAD_CANCEL_ASYNCHRONOUS as
+	a thread cancel type (hence we can't use purely standardized C++
+	threads on Linux).  Raw sockets are also a bit of trouble with
+	IP_HDRINCL on newer Debian and Ubuntu systems since nsswitch.conf
+	has 'files resolve [...] dns' and they drop an entry in /etc/hosts
+	for hostname -> 127.0.1.1 during installation.  Hence
+	getaddrinfo() on the results of gethostname() returns a useless
+	non-loopback address until you fix nsswitch.conf and/or
+	/etc/hosts.  Shouldn't be an issue on a production host, but it's
+	one more thing I have to remember to do when I spin up various
+	versions of Ubuntu and Debian VMs for compiling and testing.
+
+	* src/DwmSignal.cc, include/DwmSignal.hh: Use initializer list to
+	initialize _names.
+
+2017-06-08  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* src/DwmHostPinger.cc, apps/mcping/mcping.cc: Fix longstanding
+	issues with SIGINT handling and stopping the pinger.
+
+2017-06-05  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.6.6
+
+2017-06-02  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* Allow creation of package on macOS (10.12.5, Sierra).
+
+2017-05-22  Daniel W. McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.6.5
+
+2017-05-21  dwm  <dwm@mcplex.net>
+
+	* include/DwmThreadQueue.hh: Added PushBack(_ValueType &&).
+	Also use move semantics in PopFront() and PopBack() if
+	is_move_assignable<_ValueType>.
+
+	* include/DwmPcap.hh, src/DwmPcap.cc: Added BreakLoop().
+
+2017-05-17  dwm  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.6.4
+
+	* include/DwmIO.hh, include/DwmGZIO.hh, include/DwmBZ2IO.hh:
+	Use std::move in a few places where it's appropriate.
+
+2017-05-02  dwm  <dwm@mcplex.net>
+
+	* include/DwmTimeInterval64.hh: Allow construction from a
+	TimeInterval.
+
+	* include/DwmTimeValue64.hh, src/DwmTimeValue64.cc: Allow
+	construction from a TimeValue.
+
+	* include/DwmThreadQueue.hh: Remove extraneous 'using std::deque'.
+
+2017-04-29  dwm  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.6.3
+
+2017-04-28  dwm  <dwm@mcplex.net>
+
+	* tests/TestIpv4Prefix.cc: Added a few tests for new Set()
+	that accepts a pair of Ipv4Address objects: network and netmask.
+
+	* include/DwmIpv4Address.hh, src/DwmIpv4Address.cc:
+	Added constructor and Set() that accept a pair of IPv4Address
+	objects: network and netmask.
+
+2017-04-25  dwm  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.6.2
+
+	* include/DwmIO.hh, src/DwmIO.cc:
+	Added ssize_t Read(int fd, void *buf, size_t buflen)
+	and ssize_t Write(int fd, const void *buf, size_t buflen).
+	These are now used when reading/writing strings from/to
+	descriptors.  If fd is a socket, a read() or write() may return
+	less than the desired bytes, so the new Read() and Write() will
+	loop until an error occurs or the whole buffer is read or written.
+	I don't frequently read or write long strings from/to socket
+	descriptors, but some of my recent projects can send somewhat
+	large encrypted JSON over sockets and hence I needed this change.
+
+2017-04-14 23:17  dwm <dwm@mcplex.net>
+
+	* [r9116] tests/TestSvnTag.cc: Fix to match my tagging scheme.
+
+2017-04-14 22:53  dwm <dwm@mcplex.net>
+
+	* [r9113] tests, tests/Makefile, tests/TestDwmBZ2IO.cc: Added
+	  TestDwmBZ2IO
+
+2017-04-14 22:34  dwm <dwm@mcplex.net>
+
+	* [r9112] tests/TestDwmGZIO.cc: Added tests for null gzFile.
+
+2017-04-14 22:22  dwm <dwm@mcplex.net>
+
+	* [r9111] src/DwmBZ2IO.cc: Doh, bzf is a pointer, not an integer.
+	  Comparison (bzf < 0) must've been a pasto from descriptor code.
+
+2017-04-14 22:22  dwm <dwm@mcplex.net>
+
+	* [r9110] src/DwmGZIO.cc: Doh, gzf is a pointer, not an integer.
+	  Comparison (gzf < 0) must've been a pasto from descriptor code.
+
+2017-04-14 22:03  dwm <dwm@mcplex.net>
+
+	* [r9105] src/DwmFreeBSDPkgManifestParse.yy: Allow empty quoted
+	  strings.
+	  Allow empty file list.
+
+2017-04-14 20:46  dwm <dwm@mcplex.net>
+
+	* [r9103] Makefile: Remove extraneous tarprep target.
+
+2017-04-14 20:40  dwm <dwm@mcplex.net>
+
+	* [r9102] getvers.sh: Updated SHARED_LIB_VERSION
+
+2017-04-14 20:37  dwm <dwm@mcplex.net>
+
+	* [r9101] ., tests, tests/Makefile, tests/TestTimeInterval64.cc:
+	  Added unit tests for TimeInterval64
+
+2017-04-14 20:37  dwm <dwm@mcplex.net>
+
+	* [r9100] include/DwmTimeInterval64.hh, src/DwmTimeInterval64.cc,
+	  src/Makefile: Added TimeInterval64
+
+2017-04-14 20:36  dwm <dwm@mcplex.net>
+
+	* [r9099] src/DwmTimeValue64.cc: Corrected StreamedLength()
+
+2017-04-12 20:58  dwm <dwm@mcplex.net>
+
+	* [r9050] include/DwmDocMainPage.hh: Update regarding Linux.
+
+2017-04-12 19:14  dwm <dwm@mcplex.net>
+
+	* [r9046] configure, dwm.m4: Fix linux thread flags; should be
+	  -pthread for both CXXFLAGS and LDFLAGS, not -lpthread for LDFLAGS.
+
+2017-04-12 09:28  dwm <dwm@mcplex.net>
+
+	* [r9043] Makefile, packaging/Makefile, packaging/libDwm.pc.in: Add
+	  description to libDwm.pc, and put it in package.
+
+2017-04-12 04:56  dwm <dwm@mcplex.net>
+
+	* [r9030] include/Makefile: Simplified.
+
+2017-04-12 00:55  dwm <dwm@mcplex.net>
+
+	* [r9025] src/Makefile: Added -Wno-register to CXXFLAGS since old
+	  versions of flex still use register keyword. :-(
+
+2017-04-11 23:59  dwm <dwm@mcplex.net>
+
+	* [r9024] packaging/fbsd_manifest.in: Tweak the newlines in desc.
+
+2017-04-11 23:17  dwm <dwm@mcplex.net>
+
+	* [r9023] Makefile, getvers.sh: Working on linux packaging using
+	  epm.
+
+2017-04-11 21:22  dwm <dwm@mcplex.net>
+
+	* [r9022] configure, dwm.m4, include/DwmPortability.hh.in,
+	  src/DwmSysLogger.cc: Fall back to C++11 if we don't have a
+	  working shared_mutex.
+
+2017-04-11 20:39  dwm <dwm@mcplex.net>
+
+	* [r9021] configure, configure.in, dwm.m4: Check for c++1z instead
+	  of c++11.
+
+2017-04-11 20:28  dwm <dwm@mcplex.net>
+
+	* [r9020] tests/TestDwmLocalInterfaces.cc: Onlt test adding and
+	  removing aliases if run as root (uid 0).
+
+2017-04-11 20:27  dwm <dwm@mcplex.net>
+
+	* [r9019] tests/TestProcessTable.cc: Remove our test file after
+	  GZIO test.
+
+2017-04-11 20:05  dwm <dwm@mcplex.net>
+
+	* [r9018] configure, configure.in, include/DwmProcessInfo.hh,
+	  src/DwmProcessInfo.cc, src/DwmProcessTable.cc, tests/Makefile,
+	  tests/TestIpv4TcpPacket.cc, tests/TestIpv4UdpPacket.cc,
+	  tests/TestProcessTable.cc: Linux fixes.
+
+2017-04-11 17:51  dwm <dwm@mcplex.net>
+
+	* [r9017] include/DwmTypeName.hh: Fix for recent clang where the
+	  status isn't updated in calls to __cxa_demangle().
+
+2017-04-11 17:32  dwm <dwm@mcplex.net>
+
+	* [r9016] src/DwmBZ2IO.cc, src/DwmGZIO.cc: Match Dwm::IO with
+	  respect to string handling: don't save a trailing null.
+
+2017-04-11 16:50  dwm <dwm@mcplex.net>
+
+	* [r9015] tests/TestDwmSocket.cc, tests/TestGroup.cc: Tweaks.
+
+2017-04-11 09:53  dwm <dwm@mcplex.net>
+
+	* [r9014] configure, configure.in, include/DwmConcurrentQueue.hh,
+	  src/DwmSocket.cc, src/DwmSunriseSunset.cc,
+	  tests/TestDwmDescriptor.cc, tests/TestDwmLoadBalancer.cc,
+	  tests/TestDwmRusage.cc, tests/TestGroup.cc, tests/TestSvnTag.cc:
+	  Updates for linux.
+
+2017-04-11 09:27  dwm <dwm@mcplex.net>
+
+	* [r9013] src/DwmDateTime.cc, tests/TestDwmDateTime.cc: Workarounds
+	  for Linux silliness with timegm() and friends.
+
+2017-04-11 07:13  dwm <dwm@mcplex.net>
+
+	* [r9012] src/DwmDateTime.cc: Linux versus BSD workaround.
+
+2017-04-11 04:36  dwm <dwm@mcplex.net>
+
+	* [r9011] tests/TestIOMap.cc: Oops... I was incorrectly calling
+	  fclose(f) instead of gzclose(gzf),
+	  causing a double-free. Damn pastos...
+
+2017-04-11 04:28  dwm <dwm@mcplex.net>
+
+	* [r9010] tests/TestTupleIO.cc: Fixes for new string IO (dones't
+	  store a terminating null).
+
+2017-04-11 03:07  dwm <dwm@mcplex.net>
+
+	* [r9009] apps/mkfbsdmnfst/mkfbsdmnfst.cc: Added automatic
+	  dependency checking by checking shared libraries used by
+	  files that will be installed in a bin or sbin directory.
+
+2017-04-10 05:21  dwm <dwm@mcplex.net>
+
+	* [r8995] include/DwmIO.hh, src/DwmIO.cc: I no longer write a
+	  terminating null when writing strings; it's not necessary
+	  with modern C++ libraries.
+
+2017-04-02 08:21  dwm <dwm@mcplex.net>
+
+	* [r8955] include/DwmIpv4Routes.hh: Fixed AddressesCovered()
+
+2017-04-01 20:29  dwm <dwm@mcplex.net>
+
+	* [r8954] apps/dwmnet/dwmnet.cc: Use Ipv4Routes class template to
+	  get accurate count of IP addresses covered
+	  by a file containing a list of prefixes.
+
+2017-04-01 20:24  dwm <dwm@mcplex.net>
+
+	* [r8953] include/DwmIpv4Routes.hh: Added AddressesCovered()
+
+2017-04-01 05:19  dwm <dwm@mcplex.net>
+
+	* [r8951] include/DwmIpv4Prefix.hh, src/DwmIpv4Prefix.cc,
+	  tests/TestIpv4Prefix.cc: Added Adjacent() and Combine()
+
+2017-03-31 04:02  dwm <dwm@mcplex.net>
+
+	* [r8939] include/DwmIpv4Address.hh, tests/TestIpv4Address.cc:
+	  Added operator -= and operator +=
+
+2017-03-27 09:33  dwm <dwm@mcplex.net>
+
+	* [r8912] include/DwmIpv4Prefix.hh: #include <vector>
+
+2017-03-26 19:49  dwm <dwm@mcplex.net>
+
+	* [r8898] apps/dwmnet/dwmnet.cc: Use Ipv4RangePrefixes() from
+	  Ipv4Prefixes.hh to get list of prefixes to cover a range of
+	  IP addresses.
+
+2017-03-26 11:03  dwm <dwm@mcplex.net>
+
+	* [r8897] tests, tests/TestIpv4Prefix.cc: Added test for range ->
+	  prefixes
+
+2017-03-26 10:51  dwm <dwm@mcplex.net>
+
+	* [r8896] include/DwmIpv4Prefix.hh, src/DwmIpv4Prefix.cc: Added
+	  Ipv4RangePrefixes()
+
+2017-03-26 10:29  dwm <dwm@mcplex.net>
+
+	* [r8895] tests/Makefile: Added TestIpv4Address target
+
+2017-03-26 07:22  dwm <dwm@mcplex.net>
+
+	* [r8892] include/DwmIpv4Address.hh: Added increment and decrement
+	  operators (both postfix and prefix).
+
+2017-03-26 06:19  dwm <dwm@mcplex.net>
+
+	* [r8890] include/DwmIpv4Address.hh, include/DwmIpv4Routes.hh:
+	  Added <= and >= operators.
+
+2017-03-25 18:38  dwm <dwm@mcplex.net>
+
+	* [r8881] apps/dwmnet/dwmnet.cc: Add reverse query, i.e. 'a.b.c.d -
+	  e.f.g.h' to 'a.b.c.d/n' conversion.
+	  This isn't perfect yet, it doesn't correctly handle cases where
+	  the address range doesn't fall into a single CIDR range. I'll fix
+	  that later by printing more than one CIDR range when necessary.
+
+2017-03-24 03:49  dwm <dwm@mcplex.net>
+
+	* [r8853] src/Makefile: object files depend on their dependency
+	  file.
+
+2017-03-23 22:49  dwm <dwm@mcplex.net>
+
+	* [r8852] src/DwmSocket.cc: Utilize Descriptor copy constructor in
+	  socket copy constructor.
+
+2017-03-20 05:28  dwm <dwm@mcplex.net>
+
+	* [r8817] doc: Updated svn:ignore
+
+2017-03-20 05:19  dwm <dwm@mcplex.net>
+
+	* [r8816] .: Updated svn:ignore
+
+2017-03-20 05:19  dwm <dwm@mcplex.net>
+
+	* [r8815] packaging: Updated svn:ignore
+
+2017-03-20 05:18  dwm <dwm@mcplex.net>
+
+	* [r8814] packaging/libDwm.pc.in: Header files are now installed in
+	  libDwm subdirectory.
+	  Updated compiler flags and libraries.
+
+2017-03-20 05:16  dwm <dwm@mcplex.net>
+
+	* [r8813] include/Makefile: Install header files in libDwm
+	  subdirectory.
+
+2017-03-20 05:15  dwm <dwm@mcplex.net>
+
+	* [r8812] doc, tests: Updated svn:ignore
+
+2016-06-12 04:22  dwm <dwm@mcplex.net>
+
+	* [r8652] include/DwmSunriseSunset.hh, src/DwmSunriseSunset.cc,
+	  src/Makefile, tests/Makefile, tests/TestDwmSunriseSunset.cc:
+	  Added Sunrise, Sunset and IsDaylight utilities.
+
+2016-06-12 04:21  dwm <dwm@mcplex.net>
+
+	* [r8651] include/DwmDateTime.hh, src/DwmDateTime.cc: Added support
+	  for TimeValue64.
+
+2016-05-30 17:05  dwm <dwm@mcplex.net>
+
+	* [r8622] obj, src/Makefile: Put object files in obj directory
+	  during compilation.
+
+2016-05-30 08:08  dwm <dwm@mcplex.net>
+
+	* [r8621] tests/TestDwmDescriptor.cc: Don't open syslog for normal
+	  usage.
+
+2016-05-30 07:43  dwm <dwm@mcplex.net>
+
+	* [r8620] src/DwmSocket.cc: Tweaks to Getsockname() and
+	  Getpeername()
+
+2016-05-30 06:38  dwm <dwm@mcplex.net>
+
+	* [r8619] tests/TestDwmSocket.cc: Added multicast test.
+
+2016-05-30 04:12  dwm <dwm@mcplex.net>
+
+	* [r8618] include/DwmDescriptor.hh, include/DwmSocket.hh,
+	  src/DwmDescriptor.cc, src/DwmSocket.cc, tests/Makefile,
+	  tests/TestDwmDescriptor.cc, tests/TestDwmSocket.cc: Fixed up
+	  Descriptor and Socket classes a bit, and added unit tests for
+	  them.
+
+2016-05-30 01:17  dwm <dwm@mcplex.net>
+
+	* [r8617] src/DwmSocket.cc: Added convenient version of Accept(),
+	  Getpeername() and Getsockname().
+
+2016-05-29 22:18  dwm <dwm@mcplex.net>
+
+	* [r8616] include/DwmSocket.hh: Added more convenient methods to
+	  avoid sockaddr stuff in application code.
+
+2016-05-29 04:26  dwm <dwm@mcplex.net>
+
+	* [r8604] include/DwmSocket.hh, src/DwmSocket.cc: Added
+	  JoinMulticastGroup(). Added convenient versions
+	  of Connect(), Bind(), SendTo() and RecvFrom() so I don't
+	  have to so the usual rigamarole of setting sockaddr_in
+	  fields in applications.
+
+2016-05-14 17:37  dwm <dwm@mcplex.net>
+
+	* [r8536] include/DwmTimeValue64.hh, src/DwmTimeValue64.cc,
+	  src/Makefile: Added TimeValue64
+
+2016-05-14 17:36  dwm <dwm@mcplex.net>
+
+	* [r8535] packaging/fbsd_manifest.in: Added to desc
+
+2016-05-11 03:31  dwm <dwm@mcplex.net>
+
+	* [r8516] Jamfile, project-root.jam: Don't fool anyone by leaving
+	  ancient jam support files around.
+
+2016-05-11 03:30  dwm <dwm@mcplex.net>
+
+	* [r8515] Makefile: Don't build documentation unless BUILD_DOCS is
+	  'yes'
+
+2016-05-11 03:30  dwm <dwm@mcplex.net>
+
+	* [r8514] Makefile.vars.in: Added BUILD_DOCS
+
+2016-05-11 03:29  dwm <dwm@mcplex.net>
+
+	* [r8513] configure: Don't build documentation unless --enable-docs
+	  is specified.
+
+2016-05-11 03:29  dwm <dwm@mcplex.net>
+
+	* [r8512] configure.in: Don't build documentation unless
+	  --with-docs is specified.
+
+2016-05-11 03:28  dwm <dwm@mcplex.net>
+
+	* [r8511] dwm.m4: Use AS_HELP_STRING to format help strings in
+	  DWM_PREREQ_PATH.
+
+2016-05-09 01:15  dwm <dwm@mcplex.net>
+
+	* [r8506] include/DwmDocMainPage.hh: Fixed typo.
+
+2016-05-09 01:13  dwm <dwm@mcplex.net>
+
+	* [r8505] include/DwmConcurrentQueue.hh: Fixed typo in comment.
+
+2016-05-09 01:12  dwm <dwm@mcplex.net>
+
+	* [r8504] include/DwmConcurrentQueue.hh: Fixed typo in comment.
+
+2016-05-09 01:06  dwm <dwm@mcplex.net>
+
+	* [r8503] tests/TestHostPinger.cc: Delete TcpReceiver when done
+	  wiht it.
+
+2016-05-09 01:06  dwm <dwm@mcplex.net>
+
+	* [r8502] tests/TestHostPinger.cc: Converted callback to receiver
+	  object.
+
+2016-05-09 01:01  dwm <dwm@mcplex.net>
+
+	* [r8501] configure, configure.in: Generate doc/Doxyfile
+
+2016-05-09 01:00  dwm <dwm@mcplex.net>
+
+	* [r8500] doc/Doxyfile, doc/Doxyfile.in: Doxyfile is now generated
+	  from Doxyfile.in by configure.
+
+2016-05-09 00:59  dwm <dwm@mcplex.net>
+
+	* [r8499] apps/mcping/mcping.cc, include/DwmDocMainPage.hh,
+	  include/DwmHostPinger.hh, src/DwmHostPinger.cc,
+	  src/DwmPingDestinationEntry.cc: Change callback to function
+	  object.
+
+2016-05-08 04:55  dwm <dwm@mcplex.net>
+
+	* [r8496] apps/dwmwhat/dwmwhat.cc: '-s' command-line option now
+	  shows path relative to root instead of just last element of path.
+	  Added '-c customtagname' to allow searching for custom tags
+	  instead of just DwmPath.
+
+2016-05-07 23:48  dwm <dwm@mcplex.net>
+
+	* [r8493] install-sh: Update install-sh to something recent.
+
+2016-05-07 23:47  dwm <dwm@mcplex.net>
+
+	* [r8492] src/Makefile: Strip libraries during tarprep.
+
+2016-05-07 18:36  dwm <dwm@mcplex.net>
+
+	* [r8490] packaging/fbsd_manifest.in: Use @TAGVERSION@ for version.
+
+2016-05-07 15:26  dwm <dwm@mcplex.net>
+
+	* [r8482] apps/dwmnet/Makefile, apps/dwmspath/Makefile,
+	  apps/dwmwhat/Makefile, apps/mcping/Makefile,
+	  apps/mkfbsdmnfst/Makefile: Use -static in libtool invocation to
+	  link application.
+
+2016-05-07 04:25  dwm <dwm@mcplex.net>
+
+	* [r8481] src/Makefile: Don't use LD_SHARED_FLAGS when creaitng
+	  library with libtool.
+
+2016-05-07 04:04  dwm <dwm@mcplex.net>
+
+	* [r8480] Makefile.vars.in, apps/dwmnet/Makefile,
+	  apps/dwmspath/Makefile, apps/dwmwhat/Makefile,
+	  apps/mcping/Makefile, apps/mkfbsdmnfst/Makefile, configure,
+	  configure.in, dwm.m4, getvers.sh, src/Makefile, tests/Makefile:
+	  Fixups to use glibtool on OS X, and link apps to static version
+	  of library.
+
+2016-05-07 03:32  dwm <dwm@mcplex.net>
+
+	* [r8479] apps/dwmspath/dwmspath.cc: #include <unistd.h>
+
+2016-05-07 03:01  dwm <dwm@mcplex.net>
+
+	* [r8478] configure, configure.in, dwm.m4, tests/Makefile,
+	  tests/TestIOHashMap.cc, tests/TestIOHashSet.cc,
+	  tests/TestTupleIO.cc, tests/TestUnorderedMapIO.cc,
+	  tests/TestUnorderedMultimapIO.cc,
+	  tests/TestUnorderedMultisetIO.cc, tests/TestUnorderedSetIO.cc:
+	  Remove remnants of C++0x, I'm using C++11 these days.
+
+2016-05-07 02:59  dwm <dwm@mcplex.net>
+
+	* [r8477] src/DwmExecutor.ll: <sys/termios.h> is deprecated on
+	  FreeBSD. Use <termios.h>.
+
+2016-05-06 06:31  dwm <dwm@mcplex.net>
+
+	* [r8476] Makefile, Makefile.vars.in, apps/dwmnet/Makefile,
+	  apps/dwmspath/Makefile, apps/dwmwhat/Makefile,
+	  apps/mcping/Makefile, apps/mkfbsdmnfst/Makefile, getvers.sh,
+	  src/Makefile, tests/Makefile: Started using libtool to handle
+	  shared library.
+
+2016-05-05 06:04  dwm <dwm@mcplex.net>
+
+	* [r8475] Makefile, packaging/fbsd_manifest.in: More packaging
+	  tweaks.
+
+2016-05-05 05:59  dwm <dwm@mcplex.net>
+
+	* [r8474] apps/mkfbsdmnfst/mkfbsdmnfst.cc: Handle symlinks, mainly
+	  for shared library links.
+
+2016-05-05 04:52  dwm <dwm@mcplex.net>
+
+	* [r8473] Makefile: Correct the location of libDwm.pc on FreeBSD.
+
+2016-05-05 04:44  dwm <dwm@mcplex.net>
+
+	* [r8472] Makefile: include libDwm.pc in FreeBSD package.
+
+2016-05-05 04:43  dwm <dwm@mcplex.net>
+
+	* [r8471] packaging/libDwm.pc.in: Added file for pkgconf.
+
+2016-05-05 04:43  dwm <dwm@mcplex.net>
+
+	* [r8470] configure, configure.in: Added packaging/libDwm.pc
+	  target.
+
+2016-05-04 04:26  dwm <dwm@mcplex.net>
+
+	* [r8469] packaging/fbsd_manifest.in: Removed 'deps' section that
+	  was just for testing mkfbsdmnfst parser.
+
+2016-05-04 04:26  dwm <dwm@mcplex.net>
+
+	* [r8468] packaging, packaging/fbsd_manifest.in: Added packaging
+	  manifest template for FreeBSD.
+
+2016-05-04 04:24  dwm <dwm@mcplex.net>
+
+	* [r8466] Makefile: Staging directory is now 'staging' instead of
+	  'libDwm'.
+	  Deprecated epm on FreeBSD, will work on reviving it for other
+	  OSes later.
+
+2016-05-04 04:23  dwm <dwm@mcplex.net>
+
+	* [r8465] Makefile.vars.in: Added OSNAME.
+
+2016-05-04 04:10  dwm <dwm@mcplex.net>
+
+	* [r8464] configure, dwm.m4: Change staging directory from libDwm
+	  to 'staging'.
+
+2016-05-04 04:08  dwm <dwm@mcplex.net>
+
+	* [r8463] apps/Makefile: Added dwmspath to targets.
+
+2016-05-03 10:41  dwm <dwm@mcplex.net>
+
+	* [r8459] Makefile, Makefile.vars.in,
+	  apps/mkfbsdmnfst/mkfbsdmnfst.cc, configure, configure.in, dwm.m4,
+	  getvers.sh, src/DwmFreeBSDPkgManifestLex.ll,
+	  src/DwmFreeBSDPkgManifestParse.yy, src/Makefile: Continued work
+	  on packaging.
+
+2016-05-02 03:52  dwm <dwm@mcplex.net>
+
+	* [r8456] apps/dwmspath/dwmspath.cc: Added -r option to use
+	  realpath().
+
+2016-05-01 17:27  dwm <dwm@mcplex.net>
+
+	* [r8454] apps/dwmspath, apps/dwmspath/dwmspath.cc: Cleanup.
+
+2016-04-30 04:39  dwm <dwm@mcplex.net>
+
+	* [r8435] configure, configure.in, dwm.m4, getvers.sh: Tweaked to
+	  use getvers.sh
+
+2016-04-29 01:38  dwm <dwm@mcplex.net>
+
+	* [r8434] apps/mkfbsdmnfst/mkfbsdmnfst.cc,
+	  include/DwmFreeBSDPkgManifest.hh,
+	  src/DwmFreeBSDPkgManifestLex.ll,
+	  src/DwmFreeBSDPkgManifestParse.yy: Simple handling of 'scripts:'
+	  section of manifest.
+
+2016-04-27 04:47  dwm <dwm@mcplex.net>
+
+	* [r8432] apps/mkfbsdmnfst/mkfbsdmnfst.cc,
+	  include/DwmFreeBSDPkgManifest.hh,
+	  src/DwmFreeBSDPkgManifestLex.ll,
+	  src/DwmFreeBSDPkgManifestParse.yy: Added support for
+	  licenselogic, licenses and categories.
+	  Don't bother calculating and emitting SHA256 for files. pkg
+	  winds up doing it.
+
+2016-04-26 04:58  dwm <dwm@mcplex.net>
+
+	* [r8431] Makefile, apps/dwmnet/Makefile, apps/dwmwhat/Makefile,
+	  apps/mcping/Makefile, apps/mkfbsdmnfst/Makefile,
+	  apps/mkfbsdmnfst/mkfbsdmnfst.cc,
+	  include/DwmFreeBSDPkgManifest.hh,
+	  src/DwmFreeBSDPkgManifestLex.ll,
+	  src/DwmFreeBSDPkgManifestParse.yy: FreeBSD manifest parser and
+	  generator work pretty well now.
+
+2016-04-24 21:46  dwm <dwm@mcplex.net>
+
+	* [r8429] apps/mkfbsdmnfst/mkfbsdmnfst.cc: #include unistd.h for
+	  close() on OS X.
+
+2016-04-24 19:29  dwm <dwm@mcplex.net>
+
+	* [r8428] apps/mkfbsdmnfst/mkfbsdmnfst.cc,
+	  include/DwmFreeBSDPkgManifest.hh,
+	  src/DwmFreeBSDPkgManifestLex.ll,
+	  src/DwmFreeBSDPkgManifestParse.yy: Getting close to working
+	  functionality; parse and emit deps.
+
+2016-04-24 05:57  dwm <dwm@mcplex.net>
+
+	* [r8425] apps/mkfbsdmnfst/mkfbsdmnfst.cc,
+	  include/DwmFreeBSDPkgManifest.hh, include/Makefile, src,
+	  src/DwmFreeBSDPkgManifestLex.ll,
+	  src/DwmFreeBSDPkgManifestParse.yy, src/Makefile: Still working on
+	  FreeBSD packaging.
+
+2016-04-24 02:20  dwm <dwm@mcplex.net>
+
+	* [r8424] Makefile.vars.in, apps/Makefile, apps/dwmnet/Makefile,
+	  apps/dwmwhat/Makefile, apps/mcping/Makefile,
+	  apps/mkfbsdmnfst/Makefile, doc/Makefile: working on tarprep
+	  target.
+
+2016-04-21 04:55  dwm <dwm@mcplex.net>
+
+	* [r8421] include/DwmIpv4TcpHeader.hh: Data struct needs to be
+	  packed to work on Raspberry Pi.
+
+2016-04-21 04:55  dwm <dwm@mcplex.net>
+
+	* [r8420] tests/TestSvnTag.cc: Cleanup.
+
+2016-04-20 07:34  dwm <dwm@mcplex.net>
+
+	* [r8419] tests/TestDwmLoadBalancer.cc, tests/TestIpv4UdpPacket.cc:
+	  Fixed the raw socket issue on pre-11.0 FreeBSD in the library
+	  code, hence don't need it here.
+
+2016-04-20 07:32  dwm <dwm@mcplex.net>
+
+	* [r8418] src/DwmSocket.cc: FreeBSD 11 fixed the byte order of
+	  ip_len for raw sockets.
+
+2016-04-19 06:44  dwm <dwm@mcplex.net>
+
+	* [r8416] apps/dwmwhat/dwmwhat.cc: Properly handle bad combinations
+	  of SCCS characters.
+	  Stop adding to matching string when we encounter a newline. This
+	  allows matching source files, not just binaries.
+
+2016-04-19 06:35  dwm <dwm@mcplex.net>
+
+	* [r8415] apps/dwmwhat/dwmwhat.cc: Handle case where two adjacent
+	  @'s are found.
+
+2016-04-19 06:26  dwm <dwm@mcplex.net>
+
+	* [r8414] apps/mcping/DwmIcmpPinger.cc,
+	  apps/mcping/DwmIcmpPinger.hh, apps/mcping/DwmTcpPinger.cc,
+	  apps/mcping/DwmTcpPinger.hh, apps/mcping/Makefile,
+	  apps/mcping/mcping.cc: Use classes from library.
+
+2016-04-19 06:24  dwm <dwm@mcplex.net>
+
+	* [r8413] src/DwmHostPinger.cc, src/DwmPingDestination.cc: Slight
+	  refactorings for correctness.
+
+2016-04-18 01:59  dwm <dwm@mcplex.net>
+
+	* [r8408] apps/dwmwhat/dwmwhat.cc: Tweaks to work on OS X.
+
+2016-04-17 17:17  dwm <dwm@mcplex.net>
+
+	* [r8407] apps/dwmwhat/dwmwhat.cc: Use mmap(), it greatly speeds
+	  things up due to fewer system calls.
+
+2016-04-17 16:48  dwm <dwm@mcplex.net>
+
+	* [r8406] ., include: Added to svn:ignore property.
+
+2016-04-17 16:46  dwm <dwm@mcplex.net>
+
+	* [r8405] src: Added to svn:ignore property.
+
+2016-04-17 16:35  dwm <dwm@mcplex.net>
+
+	* [r8404] tests: Added ignore property containing all binaries
+	  generated.
+
+2016-04-17 16:30  dwm <dwm@mcplex.net>
+
+	* [r8403] apps/dwmwhat/dwmwhat.cc: Added '-s' command line option
+	  to remove directories from paths in output.
+
+2016-04-17 16:27  dwm <dwm@mcplex.net>
+
+	* [r8402] src/DwmSvnTag.cc: Added optimize flag to all regular
+	  expressions.
+
+2016-04-17 06:44  dwm <dwm@mcplex.net>
+
+	* [r8401] include/DwmBZ2IO.hh, include/DwmBZ2Readable.hh,
+	  include/DwmBZ2Writable.hh, include/DwmCgi.hh,
+	  include/DwmConcurrentQueue.hh, include/DwmConditionVariable.hh,
+	  include/DwmCvsTag.hh, include/DwmDaemonUtils.hh,
+	  include/DwmDataLog.hh, include/DwmDateTime.hh,
+	  include/DwmDescriptor.hh, include/DwmDirectoryEntry.hh,
+	  include/DwmDocMainPage.hh, include/DwmEngFormat.hh,
+	  include/DwmExecutor.hh, include/DwmFifo.hh,
+	  include/DwmFileLogger.hh, include/DwmFileRoller.hh,
+	  include/DwmGZIO.hh, include/DwmGZReadable.hh,
+	  include/DwmGZWritable.hh, include/DwmGroup.hh,
+	  include/DwmHostPinger.hh, include/DwmIO.hh,
+	  include/DwmIpAddress.hh, include/DwmIpv4Address.hh,
+	  include/DwmIpv4IcmpDestinationUnreachable.hh,
+	  include/DwmIpv4IcmpEchoReply.hh,
+	  include/DwmIpv4IcmpEchoRequest.hh, include/DwmIpv4IcmpMessage.hh,
+	  include/DwmIpv4IcmpRedirect.hh,
+	  include/DwmIpv4IcmpSourceQuench.hh,
+	  include/DwmIpv4IcmpTimeExceeded.hh,
+	  include/DwmIpv4PacketHeader.hh, include/DwmIpv4Prefix.hh,
+	  include/DwmIpv4Routes.hh, include/DwmIpv4TcpHeader.hh,
+	  include/DwmIpv4TcpPacket.hh, include/DwmIpv4TcpPayload.hh,
+	  include/DwmIpv4UdpHeader.hh, include/DwmIpv4UdpPacket.hh,
+	  include/DwmIpv4UdpPayload.hh, include/DwmIpv4Utils.hh,
+	  include/DwmIpv6Address.hh, include/DwmIpv6Prefix.hh,
+	  include/DwmLLCAT.hh, include/DwmLoadBalancer.hh,
+	  include/DwmLocalInterfaces.hh, include/DwmMacAddress.hh,
+	  include/DwmMplsLabel.hh, include/DwmMplsLabelStack.hh,
+	  include/DwmMutex.hh, include/DwmOperators.hh,
+	  include/DwmOptArgs.hh, include/DwmPacer.hh,
+	  include/DwmPassword.hh, include/DwmPathUtils.hh,
+	  include/DwmPatricia.hh, include/DwmPcap.hh,
+	  include/DwmPingDestination.hh,
+	  include/DwmPingDestinationEntry.hh, include/DwmProcessInfo.hh,
+	  include/DwmProcessTable.hh, include/DwmPthreadLocker.hh,
+	  include/DwmPthreadQueue.hh, include/DwmPthreadReadWriteLock.hh,
+	  include/DwmPthreadSignal.hh, include/DwmReadable.hh,
+	  include/DwmRegistry.hh, include/DwmRusage.hh,
+	  include/DwmSignal.hh, include/DwmSocket.hh,
+	  include/DwmStringConverter.hh, include/DwmStringUtils.hh,
+	  include/DwmStrptime.hh, include/DwmSvnTag.hh,
+	  include/DwmSysLogger.hh, include/DwmTermios.hh,
+	  include/DwmThreadQueue.hh, include/DwmTimeInterval.hh,
+	  include/DwmTimeUtil.hh, include/DwmTimeValue.hh,
+	  include/DwmUnitAssert.hh, include/DwmValueRange.hh,
+	  include/DwmWritable.hh, include/DwmXmlAttribute.hh,
+	  include/DwmXmlElement.hh: Use DwmPath keyword.
+
+2016-04-17 06:37  dwm <dwm@mcplex.net>
+
+	* [r8400] include/DwmTypeName.hh: Use DwmPath keyword.
+
+2016-04-17 06:29  dwm <dwm@mcplex.net>
+
+	* [r8399] include/DwmSvnTag.hh: Nomencalture changes, support for
+	  trimming off start of repository path, and added DwmPath keyword.
+
+2016-04-17 06:27  dwm <dwm@mcplex.net>
+
+	* [r8398] src/DwmSvnTag.cc: Nomenclature changes.
+
+2016-04-17 06:24  dwm <dwm@mcplex.net>
+
+	* [r8397] apps/dwmwhat/dwmwhat.cc: Tweak usage statement.
+
+2016-04-17 06:23  dwm <dwm@mcplex.net>
+
+	* [r8396] apps/dwmwhat/dwmwhat.cc: Add some argument handling.
+
+2016-04-17 06:13  dwm <dwm@mcplex.net>
+
+	* [r8395] apps/dwmwhat/dwmwhat.cc: Whoops... second argument to
+	  string::substr() is length, not end index.
+
+2016-04-17 05:43  dwm <dwm@mcplex.net>
+
+	* [r8394] apps/dwmwhat, apps/dwmwhat/deps: Added svn:ignore
+	  property.
+
+2016-04-17 04:43  dwm <dwm@mcplex.net>
+
+	* [r8390] apps/mcping/DwmIcmpPinger.cc,
+	  apps/mcping/DwmIcmpPinger.hh, apps/mcping/DwmTcpPinger.cc,
+	  apps/mcping/DwmTcpPinger.hh, apps/mcping/mcping.cc: Use SvnTag.
+
+2016-04-17 04:31  dwm <dwm@mcplex.net>
+
+	* [r8389] tests/TestConcurrentQueue.cc, tests/TestDwmDataLog.cc,
+	  tests/TestDwmDateTime.cc, tests/TestDwmDirectoryEntry.cc,
+	  tests/TestDwmGZIO.cc, tests/TestDwmIO.cc,
+	  tests/TestDwmLoadBalancer.cc, tests/TestDwmLocalInterfaces.cc,
+	  tests/TestDwmMutex.cc, tests/TestDwmOptArgs.cc,
+	  tests/TestDwmPacer.cc, tests/TestDwmPassword.cc,
+	  tests/TestDwmRusage.cc, tests/TestDwmSignal.cc,
+	  tests/TestDwmTermios.cc, tests/TestEngFormat.cc,
+	  tests/TestFileRoller.cc, tests/TestGroup.cc,
+	  tests/TestHostPinger.cc, tests/TestIODeque.cc,
+	  tests/TestIOHashMap.cc, tests/TestIOHashSet.cc,
+	  tests/TestIOList.cc, tests/TestIOMap.cc, tests/TestIOMultiMap.cc,
+	  tests/TestIOMultiSet.cc, tests/TestIOSet.cc,
+	  tests/TestIOVector.cc,
+	  tests/TestIpv4IcmpDestinationUnreachable.cc,
+	  tests/TestIpv4IcmpEchoReply.cc, tests/TestIpv4IcmpEchoRequest.cc,
+	  tests/TestIpv4IcmpRedirect.cc, tests/TestIpv4IcmpSourceQuench.cc,
+	  tests/TestIpv4IcmpTimeExceeded.cc, tests/TestIpv4PacketHeader.cc,
+	  tests/TestIpv4Prefix.cc, tests/TestIpv4Routes.cc,
+	  tests/TestIpv4TcpHeader.cc, tests/TestIpv4TcpPacket.cc,
+	  tests/TestIpv4UdpHeader.cc, tests/TestIpv4UdpPacket.cc,
+	  tests/TestIpv6Address.cc, tests/TestIpv6Prefix.cc,
+	  tests/TestLLCAT.cc, tests/TestLocker.cc, tests/TestMacAddress.cc,
+	  tests/TestMplsLabel.cc, tests/TestMplsLabelStack.cc,
+	  tests/TestPatricia.cc, tests/TestProcessTable.cc,
+	  tests/TestPthreadMutex.cc, tests/TestPthreadReadWriteLock.cc,
+	  tests/TestRegistry.cc, tests/TestStringConverter.cc,
+	  tests/TestStringUtils.cc, tests/TestSvnTag.cc,
+	  tests/TestThreadQueue.cc, tests/TestTupleIO.cc,
+	  tests/TestTypeName.cc, tests/TestUnitAssert.cc,
+	  tests/TestUnorderedMapIO.cc, tests/TestUnorderedMultimapIO.cc,
+	  tests/TestUnorderedMultisetIO.cc, tests/TestUnorderedSetIO.cc,
+	  tests/TestValueRange.cc: Use SvnTag.
+
+2016-04-17 03:23  dwm <dwm@mcplex.net>
+
+	* [r8388] src/DwmDaemonUtils.cc, src/DwmDateTime.cc,
+	  src/DwmDescriptor.cc, src/DwmDirectoryEntry.cc,
+	  src/DwmEngFormat.cc, src/DwmExecutor.ll, src/DwmFileLogger.cc,
+	  src/DwmFileRoller.cc, src/DwmGZIO.cc, src/DwmGroup.cc,
+	  src/DwmHostPinger.cc, src/DwmIO.cc, src/DwmIpv4Address.cc,
+	  src/DwmIpv4IcmpDestinationUnreachable.cc,
+	  src/DwmIpv4IcmpEchoReply.cc, src/DwmIpv4IcmpEchoRequest.cc,
+	  src/DwmIpv4IcmpMessage.cc, src/DwmIpv4IcmpRedirect.cc,
+	  src/DwmIpv4IcmpSourceQuench.cc, src/DwmIpv4IcmpTimeExceeded.cc,
+	  src/DwmIpv4PacketHeader.cc, src/DwmIpv4Prefix.cc,
+	  src/DwmIpv4TcpHeader.cc, src/DwmIpv4TcpPacket.cc,
+	  src/DwmIpv4TcpPayload.cc, src/DwmIpv4UdpHeader.cc,
+	  src/DwmIpv4UdpPacket.cc, src/DwmIpv4UdpPayload.cc,
+	  src/DwmIpv4Utils.cc, src/DwmIpv6Address.cc, src/DwmIpv6Prefix.cc,
+	  src/DwmLocalInterfaces.cc, src/DwmMacAddress.cc,
+	  src/DwmMplsLabel.cc, src/DwmMplsLabelStack.cc, src/DwmMutex.cc,
+	  src/DwmOptArgs.cc, src/DwmPacer.cc, src/DwmPassword.cc,
+	  src/DwmPathUtils.cc, src/DwmPcap.cc, src/DwmPingDestination.cc,
+	  src/DwmPingDestinationEntry.cc, src/DwmProcessInfo.cc,
+	  src/DwmProcessTable.cc, src/DwmPthreadLocker.cc,
+	  src/DwmPthreadReadWriteLock.cc, src/DwmPthreadSignal.cc,
+	  src/DwmRegistry.ll, src/DwmRusage.cc, src/DwmSignal.cc,
+	  src/DwmSocket.cc, src/DwmStringUtils.cc, src/DwmStrptime.cc,
+	  src/DwmSvnTag.cc, src/DwmSysLogger.cc, src/DwmTermios.cc,
+	  src/DwmTimeInterval.cc, src/DwmTimeUtil.ll, src/DwmTimeValue.cc,
+	  src/DwmTypeName.cc, src/DwmUnitAssert.cc, src/DwmXmlAttribute.cc,
+	  src/DwmXmlElement.cc: Use DwmPath keyword.
+
+2016-04-17 03:03  dwm <dwm@mcplex.net>
+
+	* [r8387] src/DwmCvsTag.cc: Replaced static CvsTag with SvnTag.
+
+2016-04-17 03:01  dwm <dwm@mcplex.net>
+
+	* [r8386] src/DwmConditionVariable.cc: Fixed typo in DwmPath
+	  keyword.
+
+2016-04-17 03:00  dwm <dwm@mcplex.net>
+
+	* [r8385] src/DwmConditionVariable.cc: Changed Header keyword to
+	  DwmPath.
+
+2016-04-17 02:58  dwm <dwm@mcplex.net>
+
+	* [r8384] src/DwmCgi.ll: Changed Header keyword to DwmPath.
+
+2016-04-17 02:56  dwm <dwm@mcplex.net>
+
+	* [r8383] src/DwmBZ2IO.cc: Changed Header keyword to DwmPath
+	  keyword.
+
+2016-04-17 02:29  dwm <dwm@mcplex.net>
+
+	* [r8382] tests/TestSvnTag.cc: Added DwmPath keyword.
+
+2016-04-17 02:05  dwm <dwm@mcplex.net>
+
+	* [r8381] include/DwmIO.hh: Added SvnTag.
+
+2016-04-17 01:07  dwm <dwm@mcplex.net>
+
+	* [r8379] src/DwmXmlElement.cc: Added SvnTag.
+
+2016-04-17 01:05  dwm <dwm@mcplex.net>
+
+	* [r8378] src/DwmXmlAttribute.cc: Added SvnTag.
+
+2016-04-17 01:03  dwm <dwm@mcplex.net>
+
+	* [r8377] src/DwmUnitAssert.cc: Added SvnTag.
+
+2016-04-17 01:01  dwm <dwm@mcplex.net>
+
+	* [r8376] src/DwmTypeName.cc: Added SvnTag.
+
+2016-04-17 01:00  dwm <dwm@mcplex.net>
+
+	* [r8375] src/DwmTimeValue.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 01:00  dwm <dwm@mcplex.net>
+
+	* [r8374] src/DwmTimeUtil.ll: Changed CvsTag to SvnTag.
+
+2016-04-17 00:59  dwm <dwm@mcplex.net>
+
+	* [r8373] src/DwmTimeInterval.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:58  dwm <dwm@mcplex.net>
+
+	* [r8372] src/DwmTermios.cc: Added SvnTag.
+
+2016-04-17 00:56  dwm <dwm@mcplex.net>
+
+	* [r8371] src/DwmSysLogger.cc: Added SvnTag.
+
+2016-04-17 00:55  dwm <dwm@mcplex.net>
+
+	* [r8370] src/DwmSvnTag.cc: Added SvnTag.
+
+2016-04-17 00:55  dwm <dwm@mcplex.net>
+
+	* [r8369] src/DwmStrptime.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:54  dwm <dwm@mcplex.net>
+
+	* [r8368] src/DwmStringUtils.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:53  dwm <dwm@mcplex.net>
+
+	* [r8367] src/DwmSocket.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:52  dwm <dwm@mcplex.net>
+
+	* [r8366] src/DwmSignal.cc: Chnged CvsTag to SvnTag.
+
+2016-04-17 00:52  dwm <dwm@mcplex.net>
+
+	* [r8365] src/DwmRusage.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:51  dwm <dwm@mcplex.net>
+
+	* [r8364] src/DwmRegistry.ll: Changed CvsTag to SvnTag.
+
+2016-04-17 00:50  dwm <dwm@mcplex.net>
+
+	* [r8363] src/DwmPthreadSignal.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:49  dwm <dwm@mcplex.net>
+
+	* [r8362] src/DwmPthreadReadWriteLock.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:48  dwm <dwm@mcplex.net>
+
+	* [r8361] src/DwmPthreadLocker.cc: Added SvnTag.
+
+2016-04-17 00:47  dwm <dwm@mcplex.net>
+
+	* [r8360] src/DwmPingDestinationEntry.cc: Added SvnTag.
+
+2016-04-17 00:45  dwm <dwm@mcplex.net>
+
+	* [r8359] src/DwmPingDestination.cc: Added SvnTag.
+
+2016-04-17 00:44  dwm <dwm@mcplex.net>
+
+	* [r8358] src/DwmPcap.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:43  dwm <dwm@mcplex.net>
+
+	* [r8357] src/DwmPathUtils.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:42  dwm <dwm@mcplex.net>
+
+	* [r8356] src/DwmPassword.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:42  dwm <dwm@mcplex.net>
+
+	* [r8355] src/DwmPacer.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:41  dwm <dwm@mcplex.net>
+
+	* [r8354] src/DwmOptArgs.cc: Added SvnTag.
+
+2016-04-17 00:40  dwm <dwm@mcplex.net>
+
+	* [r8353] src/DwmMutex.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:39  dwm <dwm@mcplex.net>
+
+	* [r8352] src/DwmMplsLabelStack.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:38  dwm <dwm@mcplex.net>
+
+	* [r8351] src/DwmMplsLabel.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:37  dwm <dwm@mcplex.net>
+
+	* [r8350] src/DwmMacAddress.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:37  dwm <dwm@mcplex.net>
+
+	* [r8349] src/DwmLocalInterfaces.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:36  dwm <dwm@mcplex.net>
+
+	* [r8348] src/DwmIpv6Prefix.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:35  dwm <dwm@mcplex.net>
+
+	* [r8347] src/DwmIpv6Address.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:34  dwm <dwm@mcplex.net>
+
+	* [r8346] src/DwmIpv4Utils.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:33  dwm <dwm@mcplex.net>
+
+	* [r8345] src/DwmIpv4UdpPayload.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:32  dwm <dwm@mcplex.net>
+
+	* [r8344] src/DwmIpv4UdpPacket.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:31  dwm <dwm@mcplex.net>
+
+	* [r8343] src/DwmIpv4UdpHeader.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:30  dwm <dwm@mcplex.net>
+
+	* [r8342] src/DwmIpv4TcpPayload.cc: Changed CvsTag ot SvnTag.
+
+2016-04-17 00:29  dwm <dwm@mcplex.net>
+
+	* [r8341] src/DwmIpv4TcpPacket.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:28  dwm <dwm@mcplex.net>
+
+	* [r8340] src/DwmIpv4TcpHeader.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:27  dwm <dwm@mcplex.net>
+
+	* [r8339] src/DwmIpv4Prefix.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:27  dwm <dwm@mcplex.net>
+
+	* [r8338] src/DwmIpv4PacketHeader.cc: Changed CvsTag ot SvnTag.
+
+2016-04-17 00:26  dwm <dwm@mcplex.net>
+
+	* [r8337] src/DwmIpv4IcmpTimeExceeded.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:24  dwm <dwm@mcplex.net>
+
+	* [r8336] src/DwmIpv4IcmpSourceQuench.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:24  dwm <dwm@mcplex.net>
+
+	* [r8335] src/DwmIpv4IcmpRedirect.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:22  dwm <dwm@mcplex.net>
+
+	* [r8334] src/DwmIpv4IcmpMessage.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:21  dwm <dwm@mcplex.net>
+
+	* [r8333] src/DwmIpv4IcmpEchoRequest.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:21  dwm <dwm@mcplex.net>
+
+	* [r8332] src/DwmIpv4IcmpEchoReply.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:20  dwm <dwm@mcplex.net>
+
+	* [r8331] src/DwmIpv4IcmpDestinationUnreachable.cc: Changed CvsTag
+	  to SvnTag.
+
+2016-04-17 00:19  dwm <dwm@mcplex.net>
+
+	* [r8330] src/DwmIpv4Address.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:18  dwm <dwm@mcplex.net>
+
+	* [r8329] src/DwmIO.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:17  dwm <dwm@mcplex.net>
+
+	* [r8328] src/DwmHostPinger.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:16  dwm <dwm@mcplex.net>
+
+	* [r8327] src/DwmGZIO.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:15  dwm <dwm@mcplex.net>
+
+	* [r8326] src/DwmFileRoller.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:14  dwm <dwm@mcplex.net>
+
+	* [r8325] src/DwmFileLogger.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:13  dwm <dwm@mcplex.net>
+
+	* [r8324] src/DwmExecutor.ll: Added SvnTag.
+
+2016-04-17 00:10  dwm <dwm@mcplex.net>
+
+	* [r8323] src/DwmEngFormat.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:09  dwm <dwm@mcplex.net>
+
+	* [r8322] src/DwmDescriptor.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:07  dwm <dwm@mcplex.net>
+
+	* [r8321] src/DwmDirectoryEntry.cc: Added SvnTag.
+
+2016-04-17 00:05  dwm <dwm@mcplex.net>
+
+	* [r8320] src/DwmDateTime.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:03  dwm <dwm@mcplex.net>
+
+	* [r8319] src/DwmDaemonUtils.cc: Changed CvsTag to SvnTag.
+
+2016-04-17 00:01  dwm <dwm@mcplex.net>
+
+	* [r8318] src/DwmConditionVariable.cc: Changed CvsTag to SvnTag.
+
+2016-04-16 23:59  dwm <dwm@mcplex.net>
+
+	* [r8317] src/DwmCgi.ll: Changed CvsTag to SvnTag.
+
+2016-04-16 23:24  dwm <dwm@mcplex.net>
+
+	* [r8314] src/DwmGroup.cc: Changed CvsTag to SvnTag.
+
+2016-04-16 23:22  dwm <dwm@mcplex.net>
+
+	* [r8313] src/DwmBZ2IO.cc: Changed SvnTag.
+
+2016-04-10 05:05  dwm <dwm@mcplex.net>
+
+	* [r813] tests/TestTypeName.cc: Added a few more basic type tests.
+	  #if 0'd out tests of functions since they don't behave the same
+	  across different platforms.
+
+2016-04-09 22:12  dwm <dwm@mcplex.net>
+
+	* [r812] tests/TestStringConverter.cc: Don't include DwmTypeName.hh
+
+2016-04-09 22:12  dwm <dwm@mcplex.net>
+
+	* [r811] tests/TestTypeName.cc: Fixed function tests (whitespace
+	  normalizaiton).
+
+2016-04-07 06:22  dwm <dwm@mcplex.net>
+
+	* [r809] include/DwmSvnTag.hh, src/DwmSvnTag.cc, src/Makefile,
+	  tests/Makefile, tests/TestSvnTag.cc: Added SvnTag class.
+
+2016-04-06 03:45  dwm <dwm@mcplex.net>
+
+	* [r807] doc/doxygenDocs.css: Tweak projectname style.
+
+2016-04-05 02:59  dwm <dwm@mcplex.net>
+
+	* [r806] tests/TestDwmDirectoryEntry.cc: Remove test that isn't
+	  correct for symbolic links.
+
+2016-04-04 06:32  dwm <dwm@mcplex.net>
+
+	* [r805] tests/TestIpv4UdpPacket.cc: Raw socket issue is a FreeBSD
+	  issue that is changing for FreeBSD 11.
+
+2016-04-04 05:55  dwm <dwm@mcplex.net>
+
+	* [r804] tests/TestIpv4UdpPacket.cc: My packet capture of UDP
+	  packets has wrong byte order for IP header total length and
+	  fragment offset on ARM. Correct them before transmitting
+	  in raw socket test.
+
+2016-04-04 05:54  dwm <dwm@mcplex.net>
+
+	* [r803] src/DwmIpv4UdpPacket.cc: Whoops. The byte order issue was
+	  with my packet capture file, not the transmit on raw sockets for
+	  FreeBSD.
+
+2016-04-04 05:31  dwm <dwm@mcplex.net>
+
+	* [r802] src/DwmIpv4UdpPacket.cc: FreeBSD has quirks with raw
+	  sockets; IP header total length field and fragment offset field
+	  need to be in host byte order when transmitting.
+
+2016-04-04 05:30  dwm <dwm@mcplex.net>
+
+	* [r801] tests/TestIpv4UdpPacket.cc: Test that socket Open()
+	  succeeds
+
+2016-04-04 05:29  dwm <dwm@mcplex.net>
+
+	* [r800] tests/TestDwmIO.cc: include <unistd.h> for open() and
+	  close()
+
+2016-04-04 03:24  dwm <dwm@mcplex.net>
+
+	* [r799] configure, dwm.m4: Added freebsd11.
+
+2016-04-04 02:46  dwm <dwm@mcplex.net>
+
+	* [r798] include/DwmConcurrentQueue.hh: Concurrent queue template.
+	  This is older code, I'm finally putting it in
+	  libDwm.
+
+2016-04-04 02:46  dwm <dwm@mcplex.net>
+
+	* [r797] tests/Makefile, tests/TestConcurrentQueue.cc: Added
+	  TestConcurrentQueue
+
+2016-04-04 01:44  dwm <dwm@mcplex.net>
+
+	* [r796] include/DwmLoadBalancer.hh: Added waitNotEmptyMicroseconds
+	  argument to Worker constructor.
+	  Added Workers() accessor to LoadBalancer.
+	  More refactoring and comments.
+
+2016-04-04 01:41  dwm <dwm@mcplex.net>
+
+	* [r795] tests/Makefile: Added TestDwmLoadBalancer target
+
+2016-04-04 01:38  dwm <dwm@mcplex.net>
+
+	* [r792] tests/TestThreadQueue.cc: Added more performance tests.
+
+2016-04-04 01:34  dwm <dwm@mcplex.net>
+
+	* [r791] tests/TestDwmLoadBalancer.cc: Don't need syslog.
+
+2016-04-04 00:31  dwm <dwm@mcplex.net>
+
+	* [r790] tests/TestDwmLoadBalancer.cc: Unit tests for
+	  Dwm::LoadBalancer class template
+
+2016-04-04 00:07  dwm <dwm@mcplex.net>
+
+	* [r789] include/DwmThreadQueue.hh: Renamed Move() to Swap().
+	  Refactored a bit. Added some comments.
+
+2016-03-27 03:38  dwm <dwm@mcplex.net>
+
+	* [r788] tests/TestTupleIO.cc: Replaced unlink() with
+	  std::remove().
+
+2016-03-27 03:37  dwm <dwm@mcplex.net>
+
+	* [r787] tests/TestIpv4Routes.cc: Populated \file and \brief,
+	  replaced unlink() with std::remove().
+
+2016-03-27 03:37  dwm <dwm@mcplex.net>
+
+	* [r786] tests/TestDwmDataLog.cc, tests/TestDwmGZIO.cc,
+	  tests/TestDwmIO.cc, tests/TestDwmRusage.cc,
+	  tests/TestFileRoller.cc, tests/TestIODeque.cc,
+	  tests/TestIOHashMap.cc, tests/TestIOList.cc, tests/TestIOMap.cc,
+	  tests/TestIOMultiMap.cc, tests/TestIOMultiSet.cc,
+	  tests/TestIOSet.cc, tests/TestIOVector.cc,
+	  tests/TestIpv4IcmpDestinationUnreachable.cc: Populated \brief,
+	  replaced unlink() with std::remove().
+
+2016-03-27 03:33  dwm <dwm@mcplex.net>
+
+	* [r785] tests/TestIOHashSet.cc: Populated \brief and \file
+
+2016-03-27 03:33  dwm <dwm@mcplex.net>
+
+	* [r784] tests/TestIOHashSet.cc: Replaced unlink() with
+	  std::remove().
+
+2016-03-27 03:23  dwm <dwm@mcplex.net>
+
+	* [r783] tests/TestThreadQueue.cc: Added simple performance test.
+
+2016-03-23 06:51  dwm <dwm@mcplex.net>
+
+	* [r781] include/DwmLoadBalancer.hh: Modernized a bit by using
+	  std::thread.
+
+2016-03-16 04:54  dwm <dwm@mcplex.net>
+
+	* [r778] tests/TestIpv4Prefix.cc: Replaced unlink() with
+	  std::remove()
+
+2016-03-16 04:52  dwm <dwm@mcplex.net>
+
+	* [r777] tests/TestIpv4IcmpEchoRequest.cc: Added tests for
+	  descriptor I/O and FILE I/O.
+	  Replaced unlink() with std::remove()
+
+2016-03-16 04:47  dwm <dwm@mcplex.net>
+
+	* [r776] tests/TestIpv4IcmpEchoReply.cc: Added tests for descriptor
+	  I/O and FILE I/O.
+	  Use std::remove() instead of unlink().
+
+2016-03-14 07:17  dwm <dwm@mcplex.net>
+
+	* [r775] include/DwmIO.hh: Clean up a handful of comments.
+
+2016-03-14 06:38  dwm <dwm@mcplex.net>
+
+	* [r774] include/DwmDocMainPage.hh, include/DwmIpv4Routes.hh,
+	  include/DwmOperators.hh: Remove code from TR1 and C++0x days. I
+	  don't need it anymore, we have C++11 and C++14.
+
+2016-03-14 06:26  dwm <dwm@mcplex.net>
+
+	* [r773] include/DwmBZ2IO.hh, include/DwmGZIO.hh: Ditch code from
+	  TR1 and C++0x days. I don't need it anymore, it's 2016
+	  and we have C++11, C++14 and soon C++17.
+
+2016-03-14 06:05  dwm <dwm@mcplex.net>
+
+	* [r772] include/DwmIO.hh: Ditch old code from TR1 and C++0x days.
+	  I don't need it anymore, it's 2016 and we have C++11 and C++14
+	  (and soon C++17).
+
+2016-03-14 04:38  dwm <dwm@mcplex.net>
+
+	* [r771] include/DwmSysLogger.hh: Added comment for Syslog(...)
+
+2016-03-13 20:20  dwm <dwm@mcplex.net>
+
+	* [r770] doc/Doxyfile, doc/Makefile, doc/footer.html,
+	  doc/header.html, doc/libDwm_logo.svg, doc/rfdm_orange_base.png,
+	  doc/rfdm_orange_base.svg, include/DwmBZ2IO.hh,
+	  include/DwmBZ2Readable.hh, include/DwmBZ2Writable.hh,
+	  include/DwmCgi.hh, include/DwmConditionVariable.hh,
+	  include/DwmCvsTag.hh, include/DwmDaemonUtils.hh,
+	  include/DwmDataLog.hh, include/DwmDateTime.hh,
+	  include/DwmDescriptor.hh, include/DwmDirectoryEntry.hh,
+	  include/DwmDocMainPage.hh, include/DwmEngFormat.hh,
+	  include/DwmExecutor.hh, include/DwmFifo.hh,
+	  include/DwmFileLogger.hh, include/DwmFileRoller.hh,
+	  include/DwmGZIO.hh, include/DwmGZReadable.hh,
+	  include/DwmGZWritable.hh, include/DwmGroup.hh,
+	  include/DwmHostPinger.hh, include/DwmIO.hh,
+	  include/DwmIpAddress.hh, include/DwmIpv4Address.hh,
+	  include/DwmIpv4IcmpDestinationUnreachable.hh,
+	  include/DwmIpv4IcmpEchoReply.hh,
+	  include/DwmIpv4IcmpEchoRequest.hh, include/DwmIpv4IcmpMessage.hh,
+	  include/DwmIpv4IcmpRedirect.hh,
+	  include/DwmIpv4IcmpSourceQuench.hh,
+	  include/DwmIpv4IcmpTimeExceeded.hh,
+	  include/DwmIpv4PacketHeader.hh, include/DwmIpv4Prefix.hh,
+	  include/DwmIpv4Routes.hh, include/DwmIpv4TcpHeader.hh,
+	  include/DwmIpv4TcpPacket.hh, include/DwmIpv4TcpPayload.hh,
+	  include/DwmIpv4UdpHeader.hh, include/DwmIpv4UdpPacket.hh,
+	  include/DwmIpv4UdpPayload.hh, include/DwmIpv4Utils.hh,
+	  include/DwmIpv6Address.hh, include/DwmIpv6Prefix.hh,
+	  include/DwmLocalInterfaces.hh, include/DwmMacAddress.hh,
+	  include/DwmMplsLabel.hh, include/DwmMplsLabelStack.hh,
+	  include/DwmMutex.hh, include/DwmOperators.hh,
+	  include/DwmOptArgs.hh, include/DwmPacer.hh,
+	  include/DwmPassword.hh, include/DwmPathUtils.hh,
+	  include/DwmPcap.hh, include/DwmPingDestination.hh,
+	  include/DwmPingDestinationEntry.hh, include/DwmProcessInfo.hh,
+	  include/DwmProcessTable.hh, include/DwmPthreadLocker.hh,
+	  include/DwmPthreadQueue.hh, include/DwmPthreadReadWriteLock.hh,
+	  include/DwmPthreadSignal.hh, include/DwmReadable.hh,
+	  include/DwmRegistry.hh, include/DwmRusage.hh,
+	  include/DwmSignal.hh, include/DwmSocket.hh,
+	  include/DwmStringConverter.hh, include/DwmStringUtils.hh,
+	  include/DwmStrptime.hh, include/DwmSysLogger.hh,
+	  include/DwmTermios.hh, include/DwmThreadQueue.hh,
+	  include/DwmTimeInterval.hh, include/DwmTimeUtil.hh,
+	  include/DwmTimeValue.hh, include/DwmUnitAssert.hh,
+	  include/DwmValueRange.hh, include/DwmWritable.hh,
+	  src/DwmIpv4UdpPacket.cc: Documentation updates.
+
+2016-03-13 08:56  dwm <dwm@mcplex.net>
+
+	* [r768] include/DwmStringUtils.hh: Cast to the type parameter
+	  instead of unsigned long long.
+
+2016-03-13 08:55  dwm <dwm@mcplex.net>
+
+	* [r767] include/DwmPassword.hh, src/DwmPassword.cc: Replaced
+	  Pthread::Mutex with std::mutex.
+
+2016-03-13 08:51  dwm <dwm@mcplex.net>
+
+	* [r766] src/DwmExecutor.ll: Added file-level doxygen comments.
+
+2016-03-13 08:50  dwm <dwm@mcplex.net>
+
+	* [r765] include/DwmExecutor.hh, src/DwmExecutor.ll: Replace
+	  Pthread::Mutex with std::mutex.
+	  Added comments to header file.
+
+2016-03-12 06:30  dwm <dwm@mcplex.net>
+
+	* [r764] src/DwmGroup.cc: Added Password().
+	  Use std::mutex instead of Pthread::Mutex.
+
+2016-03-12 06:29  dwm <dwm@mcplex.net>
+
+	* [r763] include/DwmGroup.hh: Use std::mutex instead of
+	  Pthread::Mutex.
+
+2016-03-12 06:28  dwm <dwm@mcplex.net>
+
+	* [r762] tests/Makefile, tests/TestGroup.cc: Added TestGroup.
+
+2016-03-12 06:28  dwm <dwm@mcplex.net>
+
+	* [r761] tests/TestHostPinger.cc: Use exit() instead of return.
+
+2016-03-12 06:02  dwm <dwm@mcplex.net>
+
+	* [r760] include/DwmHostPinger.hh: Updated copyright.
+
+2016-03-12 05:54  dwm <dwm@mcplex.net>
+
+	* [r759] include/DwmHostPinger.hh, src/DwmHostPinger.cc: Use
+	  std::thread in place of pthreads.
+
+2016-03-12 05:53  dwm <dwm@mcplex.net>
+
+	* [r758] tests/TestHostPinger.cc: Added '-d' command line option to
+	  print round-trip times.
+
+2016-03-12 05:13  dwm <dwm@mcplex.net>
+
+	* [r757] include/DwmHostPinger.hh, src/DwmHostPinger.cc,
+	  tests/Makefile, tests/TestHostPinger.cc: Added unit tests for
+	  HostPinger.
+
+2016-03-11 08:26  dwm <dwm@mcplex.net>
+
+	* [r756] include/DwmGroup.hh: Added \brief comment.
+
+2016-03-11 08:07  dwm <dwm@mcplex.net>
+
+	* [r755] configure, configure.in: For now, I'm using clang 3.4.1 on
+	  FreeBSD since that's what is in FreeBSD
+	  10.2.
+
+2016-03-11 07:42  dwm <dwm@mcplex.net>
+
+	* [r754] include/DwmSysLogger.hh: I don't need <atomic>
+
+2016-03-11 07:40  dwm <dwm@mcplex.net>
+
+	* [r753] configure, configure.in: Use c++14.
+
+2016-03-11 07:39  dwm <dwm@mcplex.net>
+
+	* [r752] doc/doxygenDocs.css: Latest stylesheet for doxygen
+	  documentation.
+
+2016-03-11 07:39  dwm <dwm@mcplex.net>
+
+	* [r751] tests/TestTypeName.cc: Don't test type names of
+	  std::string or std::ostream since they're based
+	  on templates.
+
+2016-03-11 07:38  dwm <dwm@mcplex.net>
+
+	* [r750] tests/TestDwmDateTime.cc: Replace putenv() with setenv().
+
+2016-03-11 07:37  dwm <dwm@mcplex.net>
+
+	* [r749] tests/TestThreadQueue.cc: #include <unistd.h>
+
+2016-03-11 07:36  dwm <dwm@mcplex.net>
+
+	* [r748] tests/TestIpv4UdpPacket.cc: Close pcap and g_socket before
+	  exiting.
+
+2016-03-11 07:36  dwm <dwm@mcplex.net>
+
+	* [r747] tests/TestIpv4TcpPacket.cc: Update copyright.
+
+2016-03-11 07:35  dwm <dwm@mcplex.net>
+
+	* [r746] tests/TestIpv4TcpPacket.cc: Fix test for fragmentation.
+	  Close pcap and g_socket before exiting.
+	  Test socket Open() and Setsockopt().
+
+2016-03-11 07:32  dwm <dwm@mcplex.net>
+
+	* [r745] tests/TestDwmPassword.cc: Tweak to work when run with
+	  'sudo' by using geteuid() and getpwuid().
+
+2016-03-11 07:31  dwm <dwm@mcplex.net>
+
+	* [r744] tests/Makefile: Comment out TestHello as a target.
+
+2016-03-11 07:30  dwm <dwm@mcplex.net>
+
+	* [r743] src/DwmSysLogger.cc: Replace Pthread::Mutex() with
+	  std::mutex.
+	  Eliminate locking for priorities by using static initialization
+	  and eliminating unused SetPriorities().
+
+2016-03-11 07:29  dwm <dwm@mcplex.net>
+
+	* [r742] src/DwmSocket.cc: Replace while () with if () in Open().
+
+2016-03-11 07:27  dwm <dwm@mcplex.net>
+
+	* [r741] include/DwmPcap.hh, src/DwmPcap.cc: Eliminate need to
+	  explicitly initialize DLC offsets; use static initialization
+	  of modern C++.
+
+2016-03-11 07:17  dwm <dwm@mcplex.net>
+
+	* [r740] src/DwmDescriptor.cc: Use if () instead of while () where
+	  while () was not needed.
+
+2016-03-11 07:16  dwm <dwm@mcplex.net>
+
+	* [r739] include/DwmTypeName.hh: #include <cxxabi.h>. This might be
+	  an OS X specific thing...
+
+2016-03-11 07:15  dwm <dwm@mcplex.net>
+
+	* [r738] include/DwmIpv4IcmpEchoRequest.hh: Don't count on
+	  non-standardized behavior of rdbuf()->pubsetbuf(); it
+	  doesn't work on OS X, for example, and its behaviour is not
+	  defined by the C++ standard. USe slower but portable means of
+	  reading/writing data in memory.
+
+2016-03-11 07:14  dwm <dwm@mcplex.net>
+
+	* [r737] include/DwmIpv4IcmpEchoReply.hh: Don't count on
+	  non-standardized behavior of rdbuf()->pubsetbuf(); it
+	  doesn't work on OS X, for example, and its behaviour is not
+	  defined by the C++ standard. USe slower but portable means of
+	  reading/writing data in memory.
+
+2016-03-11 07:10  dwm <dwm@mcplex.net>
+
+	* [r736] include/DwmSysLogger.hh: Use std::mutex instead of
+	  Pthread::Mutex. Eliminate SetPriorities(), since I never
+	  used it and it needed read/write locking of priorities
+	  to be safe.
+
+2016-03-11 07:07  dwm <dwm@mcplex.net>
+
+	* [r735] include/DwmDataLog.hh: Use std::mutex instead of
+	  Pthread::Mutex.
+
+2016-03-11 07:04  dwm <dwm@mcplex.net>
+
+	* [r734] src/DwmIpv4IcmpDestinationUnreachable.cc,
+	  src/DwmIpv4IcmpRedirect.cc, src/DwmIpv4IcmpSourceQuench.cc,
+	  src/DwmIpv4IcmpTimeExceeded.cc: Don't count on non-standardized
+	  behaviour of pubsetbuf(), since it doesn't work on OS X. Use
+	  slower but portable techniques.
+
+2016-03-11 04:50  dwm <dwm@mcplex.net>
+
+	* [r733] tests/tcp.pcap: Only include received packets, so they'll
+	  have valid TCP checksums. My machine has TCP checksums offloaded
+	  to the NIC, so transmitted packets always have a checksum of 0
+	  in pcap.
+
+2016-03-10 06:33  dwm <dwm@mcplex.net>
+
+	* [r732] doc/Doxyfile, doc/Makefile, doc/doxygenDocs.css,
+	  doc/dwm_orange_base.svg, doc/footer.html: Added my own style
+	  sheet and footer.
+
+2016-02-26 05:48  dwm <dwm@mcplex.net>
+
+	* [r730] include/DwmUnitAssert.hh, src/DwmUnitAssert.cc: Doh. I
+	  need a mutex to guard against multiple threads calling into
+	  the Assertions members.
+
+2016-02-26 05:24  dwm <dwm@mcplex.net>
+
+	* [r729] tests/deps: Duh... need pattern of files to ignore.
+
+2016-02-26 05:20  dwm <dwm@mcplex.net>
+
+	* [r728] include/DwmThreadQueue.hh: Similar to Pthread::Queue, but
+	  using standard C++ thread classes.
+
+2016-02-26 05:17  dwm <dwm@mcplex.net>
+
+	* [r727] tests/Makefile, tests/TestThreadQueue.cc: Added
+	  TestThreadQueue
+
+2015-08-19 05:03  dwm <dwm@mcplex.net>
+
+	* [r726] include/DwmIpv4Routes.hh: Make our contained _hashMaps
+	  protected instead of private so that derived
+	  classes have access.
+
+2015-08-17 05:16  dwm <dwm@mcplex.net>
+
+	* [r725] include/DwmIpv6Address.hh: Added RawPointer()
+
+2015-08-17 05:16  dwm <dwm@mcplex.net>
+
+	* [r724] include/DwmIpv4Routes.hh: Added SortByKey()
+
+2015-08-17 05:15  dwm <dwm@mcplex.net>
+
+	* [r723] include/DwmIpv4Prefix.hh, src/DwmIpv4Prefix.cc: Fixed
+	  formatting in std::ostream & operator << () to allow setw() and
+	  setiosflags() to be used by caller.
+	  Added ToShortString().
+
+2015-06-18 04:14  dwm <dwm@mcplex.net>
+
+	* [r722] configure, configure.in, dwm.m4: Updates for FreeBSD 10.
+
+2015-06-14 06:36  dwm <dwm@mcplex.net>
+
+	* [r721] include/DwmStringUtils.hh: Use static_cast<T>
+
+2015-06-14 06:29  dwm <dwm@mcplex.net>
+
+	* [r720] src/DwmFileLogger.cc,
+	  src/DwmIpv4IcmpDestinationUnreachable.cc, src/DwmUnitAssert.cc:
+	  Updated copyright.
+
+2015-06-14 06:28  dwm <dwm@mcplex.net>
+
+	* [r719] src/DwmFileLogger.cc: Use auto.
+
+2015-06-14 06:22  dwm <dwm@mcplex.net>
+
+	* [r718] include/DwmFileLogger.hh, src/DwmFileLogger.cc:
+	  Portability: use standard C++ mutex.
+
+2015-06-05 16:38  dwm <dwm@mcplex.net>
+
+	* [r717] src/DwmUnitAssert.cc: Updated copyright and \brief.
+
+2015-06-05 16:33  dwm <dwm@mcplex.net>
+
+	* [r716] src/DwmUnitAssert.cc: Modernize a bit by using auto and
+	  ':' syntax for looping over containers.
+
+2015-04-07 06:34  dwm <dwm@mcplex.net>
+
+	* [r715] include/DwmSysLogger.hh, src/DwmSysLogger.cc: Added new
+	  Open() member that takes a string as the log facility.
+
+2015-03-21 02:46  dwm <dwm@mcplex.net>
+
+	* [r714] src/Makefile: Added -Wno-deprecated-register to CXXFLAGS
+	  to avoid warnings from clang about use of register keyword in
+	  flex and bison generated files.
+
+2015-03-08 22:27  dwm <dwm@mcplex.net>
+
+	* [r713] include/DwmExecutor.hh, src/DwmExecutor.ll: Use a mutex to
+	  guard access to globals, so I can use this class from
+	  more than one thread. Also use a std::string instead of a (char
+	  *).
+
+2015-02-20 04:30  dwm <dwm@mcplex.net>
+
+	* [r712] src/DwmDirectoryEntry.cc: Use more parens.
+
+2015-01-27 05:23  dwm <dwm@mcplex.net>
+
+	* [r711] tests/TestIpv4TcpPacket.cc: Correct use of parentheses.
+
+2015-01-27 05:19  dwm <dwm@mcplex.net>
+
+	* [r710] include/DwmOperators.hh: Fixes for clang++
+
+2015-01-27 05:12  dwm <dwm@mcplex.net>
+
+	* [r709] configure, configure.in: Fixes for clang++
+
+2015-01-27 05:10  dwm <dwm@mcplex.net>
+
+	* [r708] include/DwmDataLog.hh, include/DwmIpv4IcmpEchoReply.hh,
+	  include/DwmIpv4IcmpEchoRequest.hh, src/DwmIpv4IcmpEchoReply.cc:
+	  Corrections for clang++
+
+2013-05-28 21:10  dwm <dwm@mcplex.net>
+
+	* [r707] include/DwmTimeValue.hh: Don't include <sys/timespec.h> on
+	  linux.
+
+2013-05-28 21:09  dwm <dwm@mcplex.net>
+
+	* [r706] src/DwmIO.cc: In IO::Read(int fd, float & val) and
+	  IO::Read(int fd, double & val), we were declaring 'rc' a second
+	  time within the main if() block, and hence our return value was
+	  not being set properly. Fixed.
+
+2013-05-28 21:06  dwm <dwm@mcplex.net>
+
+	* [r705] include/DwmIO.hh: In ContainerWrite(FILE *f, const
+	  _containerT & c), make sure we return 1 when we successfully
+	  write the container's number of entries and the container is
+	  empty (i.e. the container's number of entries is 0).
+
+2013-04-06 22:14  dwm <dwm@mcplex.net>
+
+	* [r704] src/DwmIpv4Prefix.cc: Fixed new constructor code, removed
+	  old code.
+
+2013-04-06 22:13  dwm <dwm@mcplex.net>
+
+	* [r703] apps/dwmnet/dwmnet.cc: Added ability to search for an
+	  address/prefix from the file given with -f command-line option.
+
+2013-04-06 18:29  dwm <dwm@mcplex.net>
+
+	* [r701] src/DwmIpv4Prefix.cc: Use StringToVector() in
+	  construct-from-string
+
+2013-04-06 18:29  dwm <dwm@mcplex.net>
+
+	* [r700] include/DwmStringUtils.hh, src/DwmStringUtils.cc: Added
+	  StringToVector()
+
+2012-12-24 08:20  dwm <dwm@mcplex.net>
+
+	* [r698] tests/TestIpv4Routes.cc: Use new prefix file input.
+
+2012-12-19 01:28  dwm <dwm@mcplex.net>
+
+	* [r696] apps/dwmnet/dwmnet.cc: Don't print 'blocked' when printing
+	  number of addresses covered by list of prefixes.
+
+2012-12-19 01:27  dwm <dwm@mcplex.net>
+
+	* [r695] apps/dwmnet/dwmnet.cc: Added ability to parse list of
+	  prefixes from a file and show the number of host addresses
+	  covered by all of the prefixes.
+
+2012-12-08 10:17  dwm <dwm@mcplex.net>
+
+	* [r694] src/DwmLocalInterfaces.cc: Fix handling of aliases on OS X
+	  and FreeBSD.  When printing interface on ostream, print "UP" if
+	  interface is up.
+
+2012-12-08 07:35  dwm <dwm@mcplex.net>
+
+	* [r693] src/DwmLocalInterfaces.cc: Fix GetLocalInterfaces() on
+	  FreeBSD. Noticed problems with FreeBSD 9.1.
+
+2012-12-05 09:12  dwm <dwm@mcplex.net>
+
+	* [r692] apps/dwmnet/dwmnet.cc: Added usage.
+
+2012-11-28 18:28  dwm <dwm@mcplex.net>
+
+	* [r691] src/DwmIpv4Prefix.cc: Simplified LAstAddress()
+
+2012-11-28 10:12  dwm <dwm@mcplex.net>
+
+	* [r690] src/DwmIpv4Prefix.cc: Removed unnecessary code in
+	  LastAddress().
+
+2012-11-28 10:12  dwm <dwm@mcplex.net>
+
+	* [r689] include/DwmIpv4Prefix.hh: Added comments for
+	  FirstAddress() and LastAddress().
+
+2012-11-28 09:42  dwm <dwm@mcplex.net>
+
+	* [r688] src/DwmIpv4Prefix.cc: Fixed LastAddress().
+
+2012-11-28 09:41  dwm <dwm@mcplex.net>
+
+	* [r687] apps/dwmnet, apps/dwmnet/Makefile, apps/dwmnet/deps,
+	  apps/dwmnet/dwmnet.cc: Given an IPv4 prefix in n.n.n.n/m form,
+	  emits the start and end addresses.
+
+2012-11-28 09:00  dwm <dwm@mcplex.net>
+
+	* [r686] include/DwmIpv4Prefix.hh, src/DwmIpv4Prefix.cc: Added
+	  FirstAddress() and LastAddress().
+
+2012-11-21 06:11  dwm <dwm@mcplex.net>
+
+	* [r685] configure, configure.in, dwm.m4, include/DwmOptArgs.hh,
+	  src/DwmOptArgs.cc: Tweaks to work with clang on FreeBSD 9.1.
+
+2012-09-29 08:42  dwm <dwm@mcplex.net>
+
+	* [r683] src/DwmIpv4IcmpMessage.cc: Include C headers for write()
+
+2012-09-29 08:42  dwm <dwm@mcplex.net>
+
+	* [r682] src/DwmIpv4TcpHeader.cc: Add C headers for write()
+
+2012-09-29 08:41  dwm <dwm@mcplex.net>
+
+	* [r681] src/DwmMacAddress.cc: Add C header inclusions for write()
+
+2012-07-15 09:02  dwm <dwm@mcplex.net>
+
+	* [r680] include/DwmTimeValue.hh: Don't #include <sys/timespec.h>
+	  if __APPLE__ is non-zero; OS X doesn't have it.
+
+2012-07-15 08:58  dwm <dwm@mcplex.net>
+
+	* [r679] src/DwmDirectoryEntry.cc: In DirName(), cast the argument
+	  of dirname() to (char *). This is safe on OS X, but possibly not
+	  on other operating systems. Sucks, since if a copy is needed,
+	  dirname() should do that on its own instead of forcing the caller
+	  to do it.
+
+2012-07-15 08:54  dwm <dwm@mcplex.net>
+
+	* [r678] include/DwmDateTime.hh, src/DwmDateTime.cc: Removed
+	  extraneous Dwm::
+
+2012-05-23 04:47  dwm <dwm@mcplex.net>
+
+	* [r676] include/DwmTimeInterval.hh: Added Duration()
+
+2012-04-27 05:18  dwm <dwm@mcplex.net>
+
+	* [r675] tests/TestTypeName.cc: Updated to work with gcc-4.6.
+
+2011-04-23 17:12  dwm <dwm@mcplex.net>
+
+	* [r673] include/DwmDirectoryEntry.hh: Change private to protected.
+
+2011-04-03 21:43  dwm <dwm@mcplex.net>
+
+	* [r672] include/DwmTimeInterval.hh: GZWritable should be public.
+
+2011-03-24 04:31  dwm <dwm@mcplex.net>
+
+	* [r671] include/DwmDateTime.hh, src/DwmDateTime.cc: Added function
+	  to convert to TimeValue.
+
+2011-02-28 09:37  dwm <dwm@mcplex.net>
+
+	* [r669] include/DwmDirectoryEntry.hh, src/DwmDirectoryEntry.cc:
+	  Added:
+	  bool GetChildren(std::vector<DirectoryEntry> & children,
+	  DirectoryEntryFunctor & dirEntryFunc) const;
+
+2011-02-28 05:14  dwm <dwm@mcplex.net>
+
+	* [r668] include/DwmDirectoryEntry.hh, src/DwmDirectoryEntry.cc,
+	  tests/TestDwmDirectoryEntry.cc: Added filtering to GetChildren().
+	  Added Recurse() functionality.
+
+2011-02-28 03:57  dwm <dwm@mcplex.net>
+
+	* [r667] include/DwmDirectoryEntry.hh, src/DwmDirectoryEntry.cc,
+	  src/Makefile, tests/Makefile, tests/TestDwmDirectoryEntry.cc:
+	  First pass at Dwm::DirectoryEntry class.
+
+2011-02-27 08:28  dwm <dwm@mcplex.net>
+
+	* [r666] src/DwmExecutor.ll: include <cstring> for strlen()
+
+2011-02-27 08:17  dwm <dwm@mcplex.net>
+
+	* [r665] include/DwmTimeValue.hh, src/DwmTimeValue.cc: Added new
+	  constructor 'TimeValue(const struct timespec &)'
+
+2011-02-27 08:16  dwm <dwm@mcplex.net>
+
+	* [r664] include/DwmStringUtils.hh: Changed order if includes.
+
+2011-01-09 10:03  dwm <dwm@mcplex.net>
+
+	* [r662] include/DwmExecutor.hh, src/DwmExecutor.ll: Added ExecVP()
+	  member so I can use common code from the Execute() functions.
+	  Also, in addition to forking, I disassociate from the process
+	  group, ignore terminal I/O signals, and disassociate from the
+	  control terminal.  Hence the parent process (caller of Execute())
+	  can exit while leaving the child running.
+
+2011-01-08 18:43  dwm <dwm@mcplex.net>
+
+	* [r661] ChangeLog, include/DwmExecutor.hh, src/DwmExecutor.ll,
+	  src/Makefile: Added Executor class to encapsulate
+	  fork()+execvp().
+
+2010-12-28 03:28  dwm <dwm@mcplex.net>
+
+	* [r659] configure, configure.in: Link statically on FreeBSD 8
+	  since I'm using the gcc46 port; I don't want to link to a shared
+	  library that's in a port-specific directory.
+
+2010-12-28 03:27  dwm <dwm@mcplex.net>
+
+	* [r658] dwm.m4: Handle FreeBSD 8 the same as 6 and 7.
+
+2010-12-28 03:26  dwm <dwm@mcplex.net>
+
+	* [r657] tests/TestUnorderedMultimapIO.cc: make_pair<>() is almost
+	  useless in C++0x; use pair constructors instead.
+
+2010-12-28 03:25  dwm <dwm@mcplex.net>
+
+	* [r656] include/DwmOperators.hh: Use HAVE_GPLUSPLUS_VERSION macro
+	  to conditionally include operators for
+	  the new containers. gcc 4.6 has them now as part of C++0x.
+
+2010-12-28 03:23  dwm <dwm@mcplex.net>
+
+	* [r655] include/DwmPortability.hh.in: Added HAVE_GPLUSPLUS_VERSION
+	  macro for checking gcc version.
+
+2009-04-17 04:49  dwm <dwm@mcplex.net>
+
+	* [r652] src/DwmSocket.cc: Tweak for OS X 10.5.6
+
+2009-04-16 04:59  dwm <dwm@mcplex.net>
+
+	* [r651] tests/TestUnitAssert.cc: Added XML output command line
+	  option.
+
+2009-04-16 04:54  dwm <dwm@mcplex.net>
+
+	* [r650] tests/TestLocker.cc: Remove Mutex tests.
+
+2009-04-16 04:49  dwm <dwm@mcplex.net>
+
+	* [r648] tests/TestLocker.cc: Toy code, not for Production.
+
+2009-04-16 04:37  dwm <dwm@mcplex.net>
+
+	* [r647] tests/TestDwmMutex.cc: Tweaks for OS X. Umm, this doesn't
+	  match FreeBSD?
+
+2009-04-16 04:36  dwm <dwm@mcplex.net>
+
+	* [r646] tests/Makefile: ProcessTable needs to be ported to OS X
+	  Leopard.
+
+2009-04-16 04:35  dwm <dwm@mcplex.net>
+
+	* [r645] src/Makefile: ProcessInfo and ProcessTable need to be
+	  ported to OS X Leopard.
+
+2009-04-16 04:35  dwm <dwm@mcplex.net>
+
+	* [r644] Makefile.vars.in: Added TARGETVENDOR
+
+2009-04-16 04:15  dwm <dwm@mcplex.net>
+
+	* [r643] include/DwmUnitAssert.hh: Started adding XML output.
+
+2009-04-16 04:15  dwm <dwm@mcplex.net>
+
+	* [r642] src/DwmUnitAssert.cc: Started adding XML Output.
+
+2009-04-16 04:13  dwm <dwm@mcplex.net>
+
+	* [r640] include/DwmPthreadLocker.hh, src/DwmPthreadLocker.cc: Toy
+	  code, not intended for production.
+
+2009-04-13 04:06  dwm <dwm@mcplex.net>
+
+	* [r639] include/DwmMutex.hh: Tweaks for OS X 10.5.6
+
+2008-12-31 05:50  dwm <dwm@mcplex.net>
+
+	* [r638] src/DwmPcap.cc: Assert that _pcap is not null in
+	  Dispatch()
+
+2008-11-21 17:36  dwm <dwm@mcplex.net>
+
+	* [r636] tests/TestDwmMutex.cc: Add tests for mutex copying.
+
+2008-11-21 16:11  dwm <dwm@mcplex.net>
+
+	* [r635] include/DwmHostPinger.hh, include/DwmPingDestination.hh,
+	  include/DwmPingDestinationEntry.hh, src/DwmHostPinger.cc,
+	  src/DwmPingDestination.cc, src/DwmPingDestinationEntry.cc:
+	  HostPinger and supporting classes.
+
+2008-11-21 16:07  dwm <dwm@mcplex.net>
+
+	* [r634] include/DwmMutex.hh, src/DwmConditionVariable.cc,
+	  src/DwmMutex.cc: Mutex is now copyable. I use a shared_ptr to
+	  point all copies to the
+	  underlying mutex. This allows me to put Mutex instances in STL
+	  containers.
+
+2008-09-21 23:41  dwm <dwm@mcplex.net>
+
+	* [r633] apps/mcping/mcping.cc: Print error and exit if
+	  hostPinger.Start() fails.
+
+2008-09-21 23:38  dwm <dwm@mcplex.net>
+
+	* [r632] apps/mcping/DwmTcpPinger.cc: Print _pcap.LastError() when
+	  _pcap.OpenLive() fails.
+
+2008-09-21 23:37  dwm <dwm@mcplex.net>
+
+	* [r631] apps/mcping/DwmIcmpPinger.cc: Print error and return when
+	  _pcap.OpenLive() fails.
+
+2008-09-21 23:36  dwm <dwm@mcplex.net>
+
+	* [r630] configure, configure.in: Tweak CXXFLAGS and LDFLAGS for
+	  FreeBSD 7.0
+
+2008-09-17 00:48  dwm <dwm@mcplex.net>
+
+	* [r629] configure, dwm.m4, include/DwmIpv4TcpPayload.hh,
+	  include/DwmIpv4UdpPayload.hh, src/DwmIpv4IcmpEchoRequest.cc,
+	  src/DwmMplsLabel.cc, tests/TestDwmDataLog.cc, tests/TestDwmIO.cc,
+	  tests/TestIpv4IcmpEchoReply.cc, tests/TestIpv4IcmpEchoRequest.cc:
+	  Tweaks for FreeBSD 7.0
+
+2008-08-28 04:52  dwm <dwm@mcplex.net>
+
+	* [r627] src/DwmXmlAttribute.cc, src/DwmXmlElement.cc,
+	  src/Makefile: Started sketchign simple classes for pseudo-XML.
+
+2008-08-28 04:21  dwm <dwm@mcplex.net>
+
+	* [r626] include/DwmXmlAttribute.hh: Added ostream & operator <<
+	  (ostream & os, const Attribute & attribute)
+
+2008-08-28 04:19  dwm <dwm@mcplex.net>
+
+	* [r625] include/DwmXmlAttribute.hh, include/DwmXmlElement.hh:
+	  Start of simple classes for pseudo-XML.
+
+2008-04-07 05:30  dwm <dwm@mcplex.net>
+
+	* [r624] src/DwmPacer.cc: OS X doesn't have a working
+	  clock_getres()
+
+2008-04-07 05:28  dwm <dwm@mcplex.net>
+
+	* [r623] tests/TestIODeque.cc, tests/TestIOList.cc,
+	  tests/TestIOMap.cc, tests/TestIOMultiMap.cc,
+	  tests/TestIOMultiSet.cc, tests/TestIOSet.cc,
+	  tests/TestIOVector.cc, tests/TestProcessTable.cc: include
+	  <stdlib.h> for exit()
+
+2008-03-23 09:03  dwm <dwm@mcplex.net>
+
+	* [r622] include/DwmDataLog.hh, include/Makefile, tests/Makefile,
+	  tests/TestDwmDataLog.cc: Added DataLog class.
+
+2007-12-19 17:07  dwm <dwm@mcplex.net>
+
+	* [r619] Makefile: autom4te.cache is a directory; use 'rm -Rf' when
+	  cleaning.
+
+2007-12-19 17:06  dwm <dwm@mcplex.net>
+
+	* [r618] src/Makefile: Don't build dependencies if target is
+	  'distclean'
+
+2007-12-12 11:55  dwm <dwm@mcplex.net>
+
+	* [r615] include/DwmPthreadQueue.hh: When calling _cv.Wait(),
+	  WaitForNotEmpty() needs to pass a reference to a Mutex, not
+	  a pointer to a Mutex.
+
+2007-11-13 09:22  dwm <dwm@mcplex.net>
+
+	* [r612] src/DwmCgi.ll: Added UrlEncode() and HtmlEncode() members.
+
+2007-11-13 09:20  dwm <dwm@mcplex.net>
+
+	* [r610] include/DwmCgi.hh: Added HtmlEncode() and UrlEncode()
+	  members.
+
+2007-11-12 06:59  dwm <dwm@mcplex.net>
+
+	* [r609] tests/TestUnorderedMultisetIO.cc: Fix \file comment.
+
+2007-11-12 06:58  dwm <dwm@mcplex.net>
+
+	* [r608] tests/TestUnorderedMultimapIO.cc: Fix \file comment, fill
+	  in \brief comment, add rcsid, removing 'using ...' statements
+	  for things we don't here.
+
+2007-11-12 06:57  dwm <dwm@mcplex.net>
+
+	* [r607] tests/TestUnorderedSetIO.cc: Fix the \file comment.
+
+2007-11-12 06:56  dwm <dwm@mcplex.net>
+
+	* [r606] tests/TestUnorderedMapIO.cc: Fill in \brief comment
+
+2007-11-08 07:51  dwm <dwm@mcplex.net>
+
+	* [r605] include/DwmCgi.hh, include/DwmConditionVariable.hh,
+	  include/DwmCvsTag.hh, include/DwmDaemonUtils.hh,
+	  include/DwmDateTime.hh, include/DwmDescriptor.hh,
+	  include/DwmEngFormat.hh, include/DwmFifo.hh,
+	  include/DwmFileLogger.hh, include/DwmFileRoller.hh,
+	  include/DwmGZReadable.hh, include/DwmGZWritable.hh,
+	  include/DwmGroup.hh, include/DwmIpAddress.hh,
+	  include/DwmIpv4Address.hh,
+	  include/DwmIpv4IcmpDestinationUnreachable.hh,
+	  include/DwmIpv4IcmpEchoReply.hh,
+	  include/DwmIpv4IcmpEchoRequest.hh, include/DwmIpv4IcmpMessage.hh,
+	  include/DwmIpv4IcmpRedirect.hh,
+	  include/DwmIpv4IcmpSourceQuench.hh,
+	  include/DwmIpv4IcmpTimeExceeded.hh,
+	  include/DwmIpv4PacketHeader.hh, include/DwmIpv4Prefix.hh,
+	  include/DwmIpv4Routes.hh, include/DwmIpv4TcpHeader.hh,
+	  include/DwmIpv4TcpPacket.hh, include/DwmIpv4TcpPayload.hh,
+	  include/DwmIpv4UdpHeader.hh, include/DwmIpv4UdpPacket.hh,
+	  include/DwmIpv4UdpPayload.hh, include/DwmIpv4Utils.hh,
+	  include/DwmIpv6Address.hh, include/DwmIpv6Prefix.hh,
+	  include/DwmLLCAT.hh, include/DwmLocalInterfaces.hh,
+	  include/DwmMacAddress.hh, include/DwmMplsLabel.hh,
+	  include/DwmMplsLabelStack.hh, include/DwmMutex.hh,
+	  include/DwmOperators.hh, include/DwmOptArgs.hh,
+	  include/DwmPacer.hh, include/DwmPassword.hh,
+	  include/DwmPathUtils.hh, include/DwmPatricia.hh,
+	  include/DwmPcap.hh, include/DwmProcessInfo.hh,
+	  include/DwmProcessTable.hh, include/DwmPthreadQueue.hh,
+	  include/DwmPthreadReadWriteLock.hh, include/DwmPthreadSignal.hh,
+	  include/DwmReadable.hh, include/DwmRegistry.hh,
+	  include/DwmRusage.hh, include/DwmSignal.hh, include/DwmSocket.hh,
+	  include/DwmStringConverter.hh, include/DwmStringUtils.hh,
+	  include/DwmStrptime.hh, include/DwmSysLogger.hh,
+	  include/DwmTermios.hh, include/DwmTimeInterval.hh,
+	  include/DwmTimeUtil.hh, include/DwmTimeValue.hh,
+	  include/DwmTypeName.hh, include/DwmUnitAssert.hh,
+	  include/DwmValueRange.hh, include/DwmWritable.hh: Add emacs
+	  settings.
+
+2007-11-08 06:07  dwm <dwm@mcplex.net>
+
+	* [r604] tests/TestTupleIO.cc: Fix copyright. Add rcsid.
+
+2007-11-08 05:55  dwm <dwm@mcplex.net>
+
+	* [r603] tests/TestTupleIO.cc: Modularized. Added tests for tuple
+	  sizes from 5 to 9 elements. Added test for vector of tuples.
+
+2007-11-08 05:02  dwm <dwm@mcplex.net>
+
+	* [r602] tests/TestTupleIO.cc: Use macros for filenames.
+
+2007-11-08 04:44  dwm <dwm@mcplex.net>
+
+	* [r601] include/DwmBZ2IO.hh, include/DwmGZIO.hh, include/DwmIO.hh:
+	  Change the order of I/O for tuples: go from first element to last
+	  element.
+
+2007-11-03 06:00  dwm <dwm@mcplex.net>
+
+	* [r599] include/DwmBZ2IO.hh, include/DwmGZIO.hh, include/DwmIO.hh:
+	  Use macros instead of duplicating code for std versus std::tr1
+	  namespaces.
+
+2007-11-03 05:57  dwm <dwm@mcplex.net>
+
+	* [r598] tests/Makefile: TestNewRoutes.cc isn't in the repository.
+
+2007-11-03 04:35  dwm <dwm@mcplex.net>
+
+	* [r597] include/DwmOperators.hh: Use macros instead of duplicating
+	  code for std:: versus std::tr1
+
+2007-11-03 04:16  dwm <dwm@mcplex.net>
+
+	* [r596] include/DwmBZ2IO.hh, include/DwmGZIO.hh, include/DwmIO.hh,
+	  include/DwmOperators.hh: Add support for unordered_multiset when
+	  HAVE_TR1 is defined.
+
+2007-11-03 04:16  dwm <dwm@mcplex.net>
+
+	* [r595] tests/TestUnorderedMultisetIO.cc: Tweak for when HAVE_TR1
+	  is defined.
+
+2007-11-03 04:06  dwm <dwm@mcplex.net>
+
+	* [r594] include/DwmBZ2IO.hh, include/DwmGZIO.hh, include/DwmIO.hh,
+	  include/DwmOperators.hh: Added support for unordered_multimap
+	  when HAVE_TR1 is defined.
+
+2007-11-03 04:04  dwm <dwm@mcplex.net>
+
+	* [r593] tests/TestUnorderedMultimapIO.cc: Tweak for HAVE_TR1
+
+2007-11-03 03:40  dwm <dwm@mcplex.net>
+
+	* [r591] tests/TestIpv4Routes.cc: Add test of uint32_t lookups by
+	  pointer
+
+2007-11-03 03:37  dwm <dwm@mcplex.net>
+
+	* [r590] include/DwmIpv4Routes.hh: Fix lookups; we weren't
+	  netmasking the passed-in IP address when searching
+	  the submaps.
+
+2007-11-03 03:30  dwm <dwm@mcplex.net>
+
+	* [r589] include/DwmIpv4Prefix.hh: Added MaskLength(uint8_t) to set
+	  netmask length.
+
+2007-11-03 03:27  dwm <dwm@mcplex.net>
+
+	* [r588] include/DwmOperators.hh: Added support for
+	  unordered_multimap and unordered_multiset when HAVE_CPP0X
+	  is defined. The operators here probably shouldn't be used, since
+	  they're terribly slow/expensive. I needed them for unit tests
+	  and that was the only motivation.
+
+2007-11-03 03:25  dwm <dwm@mcplex.net>
+
+	* [r587] include/DwmBZ2IO.hh, include/DwmGZIO.hh, include/DwmIO.hh:
+	  Added support for unordered_multiset when HAVE_CPP0X is defined.
+
+2007-11-03 03:22  dwm <dwm@mcplex.net>
+
+	* [r586] tests/Makefile, tests/TestUnorderedMultisetIO.cc: Added
+	  simple unit tests for unordered_set I/O.
+
+2007-11-03 03:00  dwm <dwm@mcplex.net>
+
+	* [r585] include/DwmBZ2IO.hh, include/DwmGZIO.hh, include/DwmIO.hh:
+	  Added support for unordered_multimap when HAVE_CPP0X is defined.
+
+2007-11-03 02:59  dwm <dwm@mcplex.net>
+
+	* [r584] tests/Makefile, tests/TestUnorderedMultimapIO.cc: Added
+	  test for unordered_multimap I/O.
+
+2007-11-01 04:23  dwm <dwm@mcplex.net>
+
+	* [r583] include/DwmIpv4Address.hh, src/DwmIpv4Address.cc: inline
+	  constructing from an ipv4addr_t
+
+2007-11-01 04:16  dwm <dwm@mcplex.net>
+
+	* [r582] include/DwmIpv4Routes.hh: Qualify const_iterator
+
+2007-11-01 04:14  dwm <dwm@mcplex.net>
+
+	* [r581] tests/TestIpv4Routes.cc: Fully qualify Dwm::TimeValue so
+	  as not to conflict with OS X TimeValue.
+
+2007-11-01 04:13  dwm <dwm@mcplex.net>
+
+	* [r580] tests/TestPatricia.cc: Fully qualify TimeValue so as not
+	  to conflict with OS X TimeValue.
+
+2007-10-31 19:59  dwm <dwm@mcplex.net>
+
+	* [r579] apps/mcping/DwmIcmpPinger.cc,
+	  apps/mcping/DwmIcmpPinger.hh, apps/mcping/DwmTcpPinger.cc,
+	  apps/mcping/DwmTcpPinger.hh, apps/mcping/mcping.cc: Added '-c
+	  count' command line option.
+
+2007-10-28 04:45  dwm <dwm@mcplex.net>
+
+	* [r576] include/Makefile: Update list of header files to package.
+
+2007-10-28 04:19  dwm <dwm@mcplex.net>
+
+	* [r575] include/DwmBZ2IO.hh, include/DwmGZIO.hh, include/DwmIO.hh:
+	  Support tuples with up to 10 elements with gcc-4.2.x (no variadic
+	  templates).
+
+2007-10-28 04:03  dwm <dwm@mcplex.net>
+
+	* [r574] include/DwmIO.hh: Added functions to handle tuples up to
+	  10 elements for use with gcc-4.2.x (no variadic templates).
+
+2007-10-28 04:02  dwm <dwm@mcplex.net>
+
+	* [r573] tests/TestTupleIO.cc: Added tests for 10-tuple.
+
+2007-10-27 22:25  dwm <dwm@mcplex.net>
+
+	* [r572] include/DwmIO.hh: Add unordered_set to class-level
+	  comment.
+
+2007-10-27 22:09  dwm <dwm@mcplex.net>
+
+	* [r569] include/DwmIO.hh: Added I/O for tuple on file descriptors
+	  and FILE pointers when HAVE_TR1 is defined.
+
+2007-10-27 21:49  dwm <dwm@mcplex.net>
+
+	* [r568] include/DwmIO.hh: Added I/O for tuple on file descriptors
+	  and FILE pointers when HAVE_CPP0X
+	  is defined.
+
+2007-10-27 21:47  dwm <dwm@mcplex.net>
+
+	* [r567] tests/TestTupleIO.cc: Added tests for I/O on file
+	  descriptors and FILE pointers.
+
+2007-10-27 20:17  dwm <dwm@mcplex.net>
+
+	* [r566] tests/Makefile, tests/TestIOUnorderedMap.cc,
+	  tests/TestUnorderedMapIO.cc: Moved TestIOUnorderedMap.cc to
+	  TestUnorderedMapIO.cc, then cleaned it up.
+	  Also made it test unordered_map<string,uint32_t> in addition to
+	  unordered_map<uint32_t,string>.
+
+2007-10-27 20:00  dwm <dwm@mcplex.net>
+
+	* [r565] tests/TestUnorderedSetIO.cc: Added rcsid
+
+2007-10-27 19:59  dwm <dwm@mcplex.net>
+
+	* [r564] tests/TestUnorderedSetIO.cc: Cleaned up, added tests for
+	  unordered_set<string>
+
+2007-10-27 18:56  dwm <dwm@mcplex.net>
+
+	* [r562] include/DwmBZ2IO.hh, include/DwmGZIO.hh, include/DwmIO.hh:
+	  Added support for unordered_set when HAVE_TR1 is defined.
+
+2007-10-27 17:58  dwm <dwm@mcplex.net>
+
+	* [r560] include/DwmBZ2IO.hh, include/DwmGZIO.hh, include/DwmIO.hh,
+	  include/DwmOperators.hh, tests/Makefile,
+	  tests/TestUnorderedSetIO.cc: Added support for unordered_set when
+	  HAVE_CPP0X is defined.
+
+2007-10-27 17:27  dwm <dwm@mcplex.net>
+
+	* [r559] apps/mcping/DwmTcpPinger.hh: Remove commented-out code.
+
+2007-10-27 06:35  dwm <dwm@mcplex.net>
+
+	* [r558] include/DwmIpv4Routes.hh: Make sure we still work when all
+	  we have is old __gnu_cxx::hash_map for a hashed container
+
+2007-10-27 06:35  dwm <dwm@mcplex.net>
+
+	* [r557] include/DwmOperators.hh: Don't emit an error when we don't
+	  have unordered_map
+
+2007-10-27 06:34  dwm <dwm@mcplex.net>
+
+	* [r556] configure, configure.in: Use AC_MSG_CHECKING and
+	  AC_MSG_RESULT when checking for C++0x and TR1 features.
+
+2007-10-27 06:33  dwm <dwm@mcplex.net>
+
+	* [r555] Makefile, src/Makefile: Added distclean target
+
+2007-10-27 06:11  dwm <dwm@mcplex.net>
+
+	* [r554] include/DwmOptArgs.hh, src/DwmOptArgs.cc: Add default
+	  constructor for OptArgs
+
+2007-10-27 06:11  dwm <dwm@mcplex.net>
+
+	* [r553] tests/TestIOUnorderedMap.cc: Allow compiling with gcc that
+	  doesn't have unordered_map
+
+2007-10-27 05:04  dwm <dwm@mcplex.net>
+
+	* [r552] src/DwmCgi.ll, src/DwmConditionVariable.cc,
+	  src/DwmCvsTag.cc, src/DwmEngFormat.cc, src/DwmFileLogger.cc:
+	  Clean up some warnings from -Weffc++
+
+2007-10-26 19:30  dwm <dwm@mcplex.net>
+
+	* [r551] include/DwmBZ2IO.hh, include/DwmGZIO.hh, include/DwmIO.hh:
+	  Fixes for HAVE_TR1. Needed a machine that didn't HAVE_CPP0X to
+	  get this right.
+
+2007-10-26 08:02  dwm <dwm@mcplex.net>
+
+	* [r550] include/DwmIO.hh: Tweaked comment to include unordered_map
+	  and tuple support.
+
+2007-10-26 07:52  dwm <dwm@mcplex.net>
+
+	* [r549] ChangeLog, configure, configure.in, include/DwmBZ2IO.hh,
+	  include/DwmCgi.hh, include/DwmCvsTag.hh,
+	  include/DwmFileRoller.hh, include/DwmGZIO.hh, include/DwmIO.hh,
+	  include/DwmIpv4Routes.hh, include/DwmIpv4TcpPayload.hh,
+	  include/DwmIpv4UdpPayload.hh, include/DwmOperators.hh,
+	  include/DwmOptArgs.hh, include/DwmPortability.hh.in,
+	  src/DwmCgi.ll, src/DwmCvsTag.cc, src/DwmEngFormat.cc,
+	  src/DwmFileLogger.cc, src/DwmFileRoller.cc,
+	  src/DwmIpv4IcmpEchoReply.cc, src/DwmIpv4Prefix.cc,
+	  src/DwmIpv4TcpPacket.cc, src/DwmIpv4TcpPayload.cc,
+	  src/DwmIpv4UdpPacket.cc, src/DwmIpv4UdpPayload.cc,
+	  src/DwmMplsLabel.cc, src/DwmMplsLabelStack.cc,
+	  src/DwmPathUtils.cc, src/DwmProcessInfo.cc, src/DwmSignal.cc,
+	  src/DwmStringUtils.cc, tests/Makefile, tests/TestDwmMutex.cc,
+	  tests/TestEngFormat.cc, tests/TestIOHashMap.cc,
+	  tests/TestIOHashSet.cc, tests/TestIOUnorderedMap.cc,
+	  tests/TestIpv4Routes.cc, tests/TestIpv4TcpHeader.cc,
+	  tests/TestIpv4TcpPacket.cc, tests/TestIpv4UdpPacket.cc,
+	  tests/TestTupleIO.cc: Checkpoint commit work from last weekend on
+	  tuple and unordered_map I/O.
+	  Also cleaned up some old use of 'using namespace std;' in a
+	  couple of header files, and fixed the fallout.
+
+2007-10-19 03:29  dwm <dwm@mcplex.net>
+
+	* [r548] include/DwmIO.hh: Fix typo (s/define/defined/)
+
+2007-10-18 19:05  dwm <dwm@mcplex.net>
+
+	* [r547] src/DwmIpv4IcmpMessage.cc, src/DwmIpv4TcpPayload.cc,
+	  src/DwmIpv4UdpPayload.cc: Clean up complaint from gcc-4.3
+
+2007-10-18 17:29  dwm <dwm@mcplex.net>
+
+	* [r546] tests/TestDwmDateTime.cc, tests/TestDwmPassword.cc,
+	  tests/TestIpv4IcmpDestinationUnreachable.cc,
+	  tests/TestIpv4IcmpRedirect.cc, tests/TestIpv4IcmpSourceQuench.cc,
+	  tests/TestIpv4IcmpTimeExceeded.cc, tests/TestIpv4Prefix.cc,
+	  tests/TestIpv4TcpHeader.cc, tests/TestIpv4UdpHeader.cc,
+	  tests/TestLLCAT.cc, tests/TestMacAddress.cc,
+	  tests/TestMplsLabel.cc, tests/TestMplsLabelStack.cc,
+	  tests/TestValueRange.cc: Deal with gcc-4.3 header file rigor.
+
+2007-10-18 17:28  dwm <dwm@mcplex.net>
+
+	* [r545] tests/TestTupleIO.cc: Deal with std::tr1::tuple versus
+	  std::tuple
+
+2007-10-18 14:31  dwm <dwm@mcplex.net>
+
+	* [r544] include/DwmIO.hh: First pass at adding variadic template
+	  support.
+
+2007-10-18 14:29  dwm <dwm@mcplex.net>
+
+	* [r542] include/DwmPortability.hh.in: define
+	  HAVE_USABLE_CPP0X_TUPLE if gcc version 4.3 or greater is being
+	  used.
+
+2007-10-18 14:28  dwm <dwm@mcplex.net>
+
+	* [r541] include/DwmTypeName.hh: Deal with gcc-4.3 header rigor:
+	  include <cstdlib>
+
+2007-10-18 14:27  dwm <dwm@mcplex.net>
+
+	* [r540] include/DwmIpv4Prefix.hh, include/DwmIpv4TcpPayload.hh,
+	  include/DwmIpv4UdpPayload.hh: Deal with gcc-4.3 header file
+	  rigor: include <cstring>
+
+2007-10-18 04:24  dwm <dwm@mcplex.net>
+
+	* [r539] src/DwmDaemonUtils.cc, src/DwmDateTime.cc,
+	  src/DwmFileLogger.cc, src/DwmIpv4IcmpDestinationUnreachable.cc,
+	  src/DwmIpv4IcmpEchoReply.cc, src/DwmIpv4IcmpEchoRequest.cc,
+	  src/DwmIpv4IcmpMessage.cc, src/DwmIpv4IcmpRedirect.cc,
+	  src/DwmIpv4IcmpSourceQuench.cc, src/DwmIpv4IcmpTimeExceeded.cc,
+	  src/DwmIpv4PacketHeader.cc, src/DwmIpv4Prefix.cc,
+	  src/DwmIpv4TcpHeader.cc, src/DwmIpv6Prefix.cc,
+	  src/DwmLocalInterfaces.cc, src/DwmMacAddress.cc, src/DwmPcap.cc,
+	  src/DwmPthreadSignal.cc, src/DwmSignal.cc, src/DwmSocket.cc,
+	  src/DwmTimeUtil.ll: Deal with gcc-4.3 rigor with respect to
+	  proper header file inclusion.
+
+2007-10-17 01:00  dwm <dwm@mcplex.net>
+
+	* [r538] configure: Updated for FreeBSD 6.2. Added check for
+	  <tr1/unordered_map>.
+
+2007-10-17 01:00  dwm <dwm@mcplex.net>
+
+	* [r537] configure.in: Add check for <tr1/unordered_map>
+
+2007-10-17 00:59  dwm <dwm@mcplex.net>
+
+	* [r536] dwm.m4: Update for FreeBSD 6.2
+
+2007-10-17 00:58  dwm <dwm@mcplex.net>
+
+	* [r535] src/DwmTimeUtil.ll: Replace deprecated usage: don't point
+	  char pointers at static strings.
+	  Use const char pointers instead.
+
+2007-10-16 20:32  dwm <dwm@mcplex.net>
+
+	* [r534] tests/TestTupleIO.cc: Fix typo.
+
+2007-10-16 19:30  dwm <dwm@mcplex.net>
+
+	* [r533] src/DwmFileLogger.cc, src/DwmIpv4Prefix.cc: Use
+	  snprintf(), not sprintf()
+
+2007-10-14 16:53  dwm <dwm@mcplex.net>
+
+	* [r532] tests/Makefile, tests/TestTupleIO.cc: Added simple test
+	  for tuple I/O.
+
+2007-10-14 16:52  dwm <dwm@mcplex.net>
+
+	* [r531] dwm.m4: Add '-pthread' to PTHREADS_OS on OpenBSD 4.x
+
+2007-10-14 16:51  dwm <dwm@mcplex.net>
+
+	* [r530] include/DwmIO.hh: Added experimental code for <tr1/tuple>.
+	  Since gcc doesn't have support for variadic templates yet (will
+	  be in 4.3), this isn't pretty.  It's also worth noting that the
+	  helper class template uses template recursion, hence tuples are
+	  read and written in reverse order (last element first).
+
+2007-10-14 06:04  dwm <dwm@mcplex.net>
+
+	* [r529] include/DwmPortability.hh.in: define HAVE_USABLE_TR1_TUPLE
+	  if we have gcc 4.2 or greater and we found the <tr1/tuple> header
+	  file.
+
+2007-10-14 05:40  dwm <dwm@mcplex.net>
+
+	* [r528] configure, configure.in: Added check for <tr1/tuple>
+	  header file.
+
+2007-10-02 06:12  dwm <dwm@mcplex.net>
+
+	* [r525] ChangeLog, include/DwmOptArgs.hh, src/DwmOptArgs.cc,
+	  tests/TestDwmOptArgs.cc, tests/TestEngFormat.cc: Bring up to
+	  speed for gcc-4.2.1: ditch use of deprecated conversion from
+	  string constant to 'char *'
+
+2007-09-27 16:10  dwm <dwm@mcplex.net>
+
+	* [r522] src/DwmIpv6Address.cc: If addr is empty in
+	  construct-from-string or operator = (string), set
+	  address to all zeros.
+
+2007-09-27 16:03  dwm <dwm@mcplex.net>
+
+	* [r521] src/DwmIpv6Address.cc: Don't use abort() in operator =
+	  (const std::string &), assert() is sufficient.
+
+2007-09-12 17:53  dwm <dwm@mcplex.net>
+
+	* [r519] src/DwmPcap.cc: '#include <cstring>' instead of 'extern
+	  "C" { #include <string.h> }'
+
+2007-09-12 17:44  dwm <dwm@mcplex.net>
+
+	* [r518] configure, dwm.m4: Handle OpenBSD 4.x pthreads the same
+	  way we handle them for OpenBSD 3.6
+
+2007-09-07 18:02  dwm <dwm@mcplex.net>
+
+	* [r516] src/DwmIpv4Address.cc: Ipv4Address(const string & dottedAddr):
+	  Set address to 0.0.0.0 if dottedAddr is empty.
+
+2007-08-06 18:32  dwm <dwm@mcplex.net>
+
+	* [r513] include/DwmSignal.hh, src/DwmSignal.cc: Ditch Dwm::Signals
+
+2007-08-01 20:24  dwm <dwm@mcplex.net>
+
+	* [r512] tests/TestIpv4IcmpDestinationUnreachable.cc: #include
+	  <cassert>
+
+2007-07-30 23:20  dwm <dwm@mcplex.net>
+
+	* [r511] include/DwmMplsLabel.hh: Add header guard.
+
+2007-07-30 18:51  dwm <dwm@mcplex.net>
+
+	* [r510] include/DwmMplsLabelStack.hh: Qualify ostream with std::
+
+2007-07-28 04:37  dwm <dwm@mcplex.net>
+
+	* [r508] include/DwmStringUtils.hh, src/DwmStringUtils.cc: Allow
+	  specification of numerical base in StringToIntegral() and all
+	  StringTo() functions that use it.
+
+2007-07-27 17:20  dwm <dwm@mcplex.net>
+
+	* [r506] include/DwmValueRange.hh: Simple ValueRange class, not
+	  finished yet.
+
+2007-07-27 16:45  dwm <dwm@mcplex.net>
+
+	* [r505] tests/TestValueRange.cc: Unit test for ValueRange.
+
+2007-07-27 16:34  dwm <dwm@mcplex.net>
+
+	* [r503] apps/mcping/DwmIcmpPinger.cc,
+	  apps/mcping/DwmIcmpPinger.hh: Handle multiple destinations.
+
+2007-07-27 16:33  dwm <dwm@mcplex.net>
+
+	* [r502] include/DwmIpv4IcmpEchoReply.hh: Added class-level
+	  comment.
+
+2007-07-26 15:47  dwm <dwm@mcplex.net>
+
+	* [r500] include/DwmTypeName.hh: Added TypeNameNoNamespace()
+
+2007-07-25 20:35  dwm <dwm@mcplex.net>
+
+	* [r499] src/Makefile: Add DwmDaemonUtils.o to list of targets.
+
+2007-07-25 20:34  dwm <dwm@mcplex.net>
+
+	* [r498] include/DwmDaemonUtils.hh, src/DwmDaemonUtils.cc: Bring in
+	  my ancient Daemonize() function (circa 1998).
+
+2007-07-19 07:04  dwm <dwm@mcplex.net>
+
+	* [r496] apps/mcping/DwmTcpPinger.cc, apps/mcping/DwmTcpPinger.hh,
+	  apps/mcping/mcping.cc: Allow port to be specified for TCP
+	  destinations.
+
+2007-07-17 17:44  dwm <dwm@mcplex.net>
+
+	* [r495] apps/mcping/Makefile: Use ${PTHREADCXXFLAGS} and ${OSLIBS}
+
+2007-07-17 17:37  dwm <dwm@mcplex.net>
+
+	* [r494] include/DwmIpv4TcpHeader.hh: Add std:: qualifier to
+	  ostream.
+
+2007-07-17 08:21  dwm <dwm@mcplex.net>
+
+	* [r493] apps/mcping/DwmIcmpPinger.cc, apps/mcping/DwmTcpPinger.cc:
+	  Use pcap.Dispatch() instead of pcap.Loop() so I don't get stuck
+	  when trying to stop on OS X.
+
+2007-07-17 08:18  dwm <dwm@mcplex.net>
+
+	* [r492] apps/mcping/mcping.cc: Stop the pinger before printing
+	  statistics.
+
+2007-07-17 07:13  dwm <dwm@mcplex.net>
+
+	* [r491] apps/mcping/DwmTcpPinger.cc: Tweaks for linux, and more
+	  error checking.
+
+2007-07-17 06:38  dwm <dwm@mcplex.net>
+
+	* [r490] apps/mcping/DwmIcmpPinger.cc,
+	  apps/mcping/DwmIcmpPinger.hh, apps/mcping/DwmTcpPinger.cc,
+	  apps/mcping/DwmTcpPinger.hh, apps/mcping/Makefile,
+	  apps/mcping/mcping.cc: Checkpoint. TCP pinging now works,
+	  including against hosts with pf or ipfw rules that don't
+	  respond to TCP unless they've created a PCB.  We make them
+	  create a PCB by sending a priming SYN.
+
+2007-07-17 00:15  dwm <dwm@mcplex.net>
+
+	* [r489] src/DwmIpv4IcmpEchoRequest.cc: sin_len doesn't exist in
+	  struct sockaddr_in on Linux.
+
+2007-07-16 20:45  dwm <dwm@mcplex.net>
+
+	* [r488] src/DwmSocket.cc: optval is a void pointer, pointing to an
+	  int. Compare the int, not the
+	  void pointer.
+
+2007-07-16 20:43  dwm <dwm@mcplex.net>
+
+	* [r487] src/DwmIpv4IcmpMessage.cc: Fix setting of checksum
+
+2007-07-16 20:42  dwm <dwm@mcplex.net>
+
+	* [r486] include/DwmIpv4IcmpEchoRequest.hh,
+	  src/DwmIpv4IcmpEchoRequest.cc: Added SendTo()
+
+2007-07-16 20:41  dwm <dwm@mcplex.net>
+
+	* [r485] include/DwmIpv4IcmpEchoReply.hh,
+	  src/DwmIpv4IcmpEchoReply.cc: Added RecvFrom()
+
+2007-07-16 20:35  dwm <dwm@mcplex.net>
+
+	* [r483] src/DwmIpv4IcmpDestinationUnreachable.cc,
+	  src/DwmIpv4IcmpEchoReply.cc, src/DwmIpv4IcmpEchoRequest.cc,
+	  src/DwmIpv4IcmpMessage.cc, src/DwmIpv4IcmpRedirect.cc,
+	  src/DwmIpv4IcmpSourceQuench.cc, src/DwmIpv4IcmpTimeExceeded.cc:
+	  #include <sys/types.h>
+
+2007-07-16 08:08  dwm <dwm@mcplex.net>
+
+	* [r482] apps/mcping/DwmIcmpPinger.cc,
+	  apps/mcping/DwmIcmpPinger.hh, apps/mcping/mcping.cc: Can now ping
+	  more than one destination.
+
+2007-07-16 07:21  dwm <dwm@mcplex.net>
+
+	* [r481] apps/mcping, apps/mcping/DwmIcmpPinger.cc,
+	  apps/mcping/DwmIcmpPinger.hh, apps/mcping/deps,
+	  apps/mcping/mcping.cc: Toy 'ping' application. Uses pcap to get
+	  kernel timestamping, which works fine on BSD systems.
+
+2007-07-16 06:18  dwm <dwm@mcplex.net>
+
+	* [r480] src/DwmOptArgs.cc: Print a space before printing a normal
+	  argument in Usage()
+
+2007-07-15 19:20  dwm <dwm@mcplex.net>
+
+	* [r479] ChangeLog, TODO,
+	  include/DwmIpv4IcmpDestinationUnreachable.hh,
+	  include/DwmIpv4IcmpEchoReply.hh,
+	  include/DwmIpv4IcmpEchoRequest.hh,
+	  include/DwmIpv4IcmpRedirect.hh,
+	  include/DwmIpv4IcmpSourceQuench.hh,
+	  include/DwmIpv4IcmpTimeExceeded.hh,
+	  src/DwmIpv4IcmpDestinationUnreachable.cc,
+	  src/DwmIpv4IcmpEchoReply.cc, src/DwmIpv4IcmpEchoRequest.cc,
+	  src/DwmIpv4IcmpRedirect.cc, src/DwmIpv4IcmpSourceQuench.cc,
+	  src/DwmIpv4IcmpTimeExceeded.cc, tests/Makefile,
+	  tests/TestIpv4IcmpDestinationUnreachable.cc,
+	  tests/TestIpv4IcmpEchoReply.cc, tests/TestIpv4IcmpEchoRequest.cc:
+	  Checkpoint of ICMP work.
+
+2007-07-15 18:56  dwm <dwm@mcplex.net>
+
+	* [r478] include/DwmIpv4IcmpMessage.hh, src/DwmIpv4IcmpMessage.cc:
+	  Added default constructor. Added Reallocate(). Added ability to
+	  read and write from/to gzFile and BZFILE.
+
+2007-07-15 06:48  dwm <dwm@mcplex.net>
+
+	* [r477] tests/TestIpv4IcmpDestinationUnreachable.cc: Added I/O
+	  tests.
+
+2007-07-15 06:06  dwm <dwm@mcplex.net>
+
+	* [r475] src/Makefile: Add new ICMP targets.
+
+2007-07-15 06:06  dwm <dwm@mcplex.net>
+
+	* [r474] include/DwmIpv4IcmpDestinationUnreachable.hh: Fix the
+	  header guard.
+
+2007-07-15 06:05  dwm <dwm@mcplex.net>
+
+	* [r473] src/DwmIpv4IcmpDestinationUnreachable.cc: Use Allocate().
+	  Optimize iostream read/write via rdbuf()->pubsetbuf().
+	  Be less anal about data trailing the encapsulated IP header; we
+	  don't care if it's less than 8 bytes. Peek into the buffer for
+	  the IP header length.
+
+2007-07-15 06:02  dwm <dwm@mcplex.net>
+
+	* [r472] tests/Makefile, tests/TestIpv4IcmpRedirect.cc,
+	  tests/TestIpv4IcmpSourceQuench.cc,
+	  tests/TestIpv4IcmpTimeExceeded.cc: Add new ICMP unit tests.
+
+2007-07-15 06:02  dwm <dwm@mcplex.net>
+
+	* [r471] include/DwmIpv4IcmpTimeExceeded.hh,
+	  src/DwmIpv4IcmpTimeExceeded.cc: Start of ICMP time exceeded
+	  class.
+
+2007-07-15 06:01  dwm <dwm@mcplex.net>
+
+	* [r470] include/DwmIpv4IcmpSourceQuench.hh,
+	  src/DwmIpv4IcmpSourceQuench.cc: Start of ICMP source quench
+	  class.
+
+2007-07-15 06:00  dwm <dwm@mcplex.net>
+
+	* [r469] include/DwmIpv4IcmpRedirect.hh,
+	  src/DwmIpv4IcmpRedirect.cc: Start of ICMP redirect class.
+
+2007-07-15 06:00  dwm <dwm@mcplex.net>
+
+	* [r468] src/DwmIpv4IcmpMessage.cc: Added I/O functions. Added
+	  SetChecksum(). Added operator ==
+
+2007-07-15 05:59  dwm <dwm@mcplex.net>
+
+	* [r467] include/DwmIpv4IcmpMessage.hh: Added comments. Added I/O
+	  functions. Added SetChecksum(). Added operator ==
+
+2007-07-15 04:54  dwm <dwm@mcplex.net>
+
+	* [r466] tests/TestIpv4IcmpDestinationUnreachable.cc: Use a UDP
+	  header for data.
+
+2007-07-14 17:06  dwm <dwm@mcplex.net>
+
+	* [r465] ChangeLog, include/DwmIpv4IcmpDestinationUnreachable.hh,
+	  include/DwmIpv4IcmpEchoReply.hh,
+	  include/DwmIpv4IcmpEchoRequest.hh, include/DwmIpv4IcmpMessage.hh,
+	  src/DwmIpv4IcmpDestinationUnreachable.cc,
+	  src/DwmIpv4IcmpEchoReply.cc, src/DwmIpv4IcmpEchoRequest.cc,
+	  src/DwmIpv4IcmpMessage.cc, src/Makefile, tests/Makefile,
+	  tests/TestIpv4IcmpDestinationUnreachable.cc,
+	  tests/TestIpv4IcmpEchoReply.cc, tests/TestIpv4IcmpEchoRequest.cc:
+	  Start of ICMP work.
+
+2007-07-14 17:05  dwm <dwm@mcplex.net>
+
+	* [r464] src/DwmIpv4PacketHeader.cc: Fix operator ==
+
+2007-07-13 09:15  dwm <dwm@mcplex.net>
+
+	* [r462] src/DwmSignal.cc: Wrap a mutex around map operations in
+	  FillNames()
+
+2007-07-13 09:14  dwm <dwm@mcplex.net>
+
+	* [r461] include/DwmPthreadSignal.hh, src/DwmPthreadSignal.cc:
+	  Ditch the Signals class, since I never use it.
+
+2007-07-12 15:16  dwm <dwm@mcplex.net>
+
+	* [r458] include/DwmIpv4TcpHeader.hh, include/DwmIpv4UdpPayload.hh,
+	  src/DwmIpv4TcpPacket.cc, src/DwmIpv4UdpPacket.cc,
+	  tests/TestMacAddress.cc, tests/TestMplsLabel.cc,
+	  tests/TestMplsLabelStack.cc: Tweaks for Linux.
+
+2007-07-12 14:54  dwm <dwm@mcplex.net>
+
+	* [r456] include/DwmMplsLabel.hh, src/DwmMplsLabel.cc,
+	  tests/TestMplsLabel.cc: Added:
+	  std::istream & operator >> (std::istream & is, MplsLabel & label);
+	  Also added constructor for MplsLabel that constructs from a
+	  string of the form 'label:exp:s:ttl'.
+
+2007-07-12 06:33  dwm <dwm@mcplex.net>
+
+	* [r455] include/DwmMacAddress.hh, src/DwmMacAddress.cc,
+	  tests/TestMacAddress.cc: Added:
+	  std::istream & operator >> (std::istream & is, MacAddress & addr);
+
+2007-07-12 04:37  dwm <dwm@mcplex.net>
+
+	* [r454] include/DwmIpv4TcpPacket.hh, include/DwmIpv4TcpPayload.hh,
+	  include/DwmMacAddress.hh, include/DwmMplsLabel.hh,
+	  include/DwmMplsLabelStack.hh, src/DwmIpv4PacketHeader.cc,
+	  src/DwmIpv4TcpHeader.cc, src/DwmIpv4TcpPacket.cc,
+	  src/DwmIpv4TcpPayload.cc, src/DwmMacAddress.cc,
+	  src/DwmMplsLabel.cc, src/DwmMplsLabelStack.cc, src/Makefile,
+	  tests/TestIpv4TcpPacket.cc, tests/TestMacAddress.cc,
+	  tests/TestMplsLabel.cc, tests/TestMplsLabelStack.cc: Wrap up
+	  BZ2Readable, BZ2Writable, GZReadable and GZWritable work.
+
+2007-07-12 04:35  dwm <dwm@mcplex.net>
+
+	* [r453] tests/TestIpv4UdpPacket.cc: Set minimum syslog priority to
+	  LOG_INFO, not LOG_DEBUG.
+
+2007-07-11 21:36  dwm <dwm@mcplex.net>
+
+	* [r451] include/DwmIpv4UdpPacket.hh, include/DwmIpv4UdpPayload.hh,
+	  src/DwmIpv4UdpPacket.cc, src/DwmIpv4UdpPayload.cc,
+	  tests/TestIpv4UdpPacket.cc: Wrap up I/O functions.
+
+2007-07-11 07:45  dwm <dwm@mcplex.net>
+
+	* [r449] tests/TestIpv4TcpHeader.cc: Added I/O tests.
+
+2007-07-11 07:45  dwm <dwm@mcplex.net>
+
+	* [r448] include/DwmIpv4TcpHeader.hh: Inherit publically from
+	  BZ2Writable, not privately.
+
+2007-07-11 07:44  dwm <dwm@mcplex.net>
+
+	* [r447] include/DwmIpv4TcpHeader.hh, src/DwmIpv4TcpHeader.cc:
+	  Ipv4TcpHeader now inherits from GZReadable, GZWritable,
+	  BZ2Readable and BZ2Writable.
+
+2007-07-10 14:24  dwm <dwm@mcplex.net>
+
+	* [r444] tests/TestLLCAT.cc: Use UnitAssert(), not assert()
+
+2007-07-10 08:28  dwm <dwm@mcplex.net>
+
+	* [r443] include/DwmMplsLabelStack.hh: Added comments.
+
+2007-07-10 08:24  dwm <dwm@mcplex.net>
+
+	* [r442] include/DwmMplsLabel.hh: Added some comments.
+
+2007-07-10 08:21  dwm <dwm@mcplex.net>
+
+	* [r441] include/DwmMplsLabel.hh, include/DwmMplsLabelStack.hh,
+	  src/DwmMplsLabel.cc, src/DwmMplsLabelStack.cc, src/Makefile,
+	  tests/Makefile, tests/TestMplsLabel.cc,
+	  tests/TestMplsLabelStack.cc: Added MplsLabel and MplsLabelStack
+	  classes.
+
+2007-07-10 08:20  dwm <dwm@mcplex.net>
+
+	* [r440] tests/TestMacAddress.cc: Output filename should start with
+	  'TestMacAddress', not 'TestIpv4Prefix'
+
+2007-07-10 08:20  dwm <dwm@mcplex.net>
+
+	* [r439] include/DwmMacAddress.hh: Don't need Dwm:: namespace
+	  qualification on Readable and Writable.
+
+2007-07-10 06:44  dwm <dwm@mcplex.net>
+
+	* [r438] src/DwmMacAddress.cc: Implemented MacAddress(const
+	  std::string &)
+
+2007-07-10 06:41  dwm <dwm@mcplex.net>
+
+	* [r437] tests/Makefile, tests/TestMacAddress.cc: Added simple unit
+	  test app for MacAddress.
+
+2007-07-10 06:38  dwm <dwm@mcplex.net>
+
+	* [r436] include/DwmMacAddress.hh: Added comments.
+
+2007-07-09 22:08  dwm <dwm@mcplex.net>
+
+	* [r435] include/DwmMacAddress.hh, src/DwmMacAddress.cc,
+	  src/Makefile: Added sketch of MacAddress class.
+
+2007-07-03 18:24  dwm <dwm@mcplex.net>
+
+	* [r433] include/DwmSysLogger.hh, src/DwmSysLogger.cc: Pass a
+	  'const char *ident' instead of 'const std::string & ident' to
+	  Open(), since openlog() typically just keeps the pointer and
+	  doesn't copy the string. The result means that when global
+	  static destructors are called, it's possible that the string
+	  gets destroyed before other objects that might Syslog() in
+	  their destructor.
+
+2007-07-03 18:19  dwm <dwm@mcplex.net>
+
+	* [r432] tests/TestIpv4TcpPacket.cc: Don't syslog anything below
+	  LOG_INFO priority.
+
+2007-07-03 08:29  dwm <dwm@mcplex.net>
+
+	* [r431] ChangeLog, include/DwmSysLogger.hh, src/DwmSysLogger.cc:
+	  Fix a deadlock due to recursive locking of _mutex: use a separate
+	  read/write lock to protect priority maps.
+
+2007-07-02 17:36  dwm <dwm@mcplex.net>
+
+	* [r430] src/DwmIpv4TcpHeader.cc, src/DwmIpv4Utils.cc: Minor tweaks
+	  to make things work on OS X.
+
+2007-07-02 16:47  dwm <dwm@mcplex.net>
+
+	* [r429] src/DwmPacer.cc: On OS X, use sysctl() to get kernel clock
+	  rate for setting the minimum sleep time.
+
+2007-07-02 07:02  dwm <dwm@mcplex.net>
+
+	* [r428] include/DwmIpv4TcpHeader.hh: Added comments.
+
+2007-07-02 06:48  dwm <dwm@mcplex.net>
+
+	* [r427] ChangeLog, include/DwmIpv4TcpHeader.hh,
+	  include/DwmIpv4TcpPacket.hh, include/DwmIpv4TcpPayload.hh,
+	  src/DwmIpv4TcpHeader.cc, src/DwmIpv4TcpPacket.cc,
+	  src/DwmIpv4TcpPayload.cc, src/Makefile, tests/Makefile,
+	  tests/TestIpv4TcpHeader.cc, tests/TestIpv4TcpPacket.cc,
+	  tests/tcp.pcap: First pass at TCP header and packet work.
+
+2007-07-01 08:14  dwm <dwm@mcplex.net>
+
+	* [r424] include/DwmIpv4PacketHeader.hh,
+	  include/DwmIpv4UdpHeader.hh, include/DwmIpv4UdpPacket.hh,
+	  src/DwmIpv4PacketHeader.cc, src/DwmIpv4UdpHeader.cc,
+	  src/DwmIpv4UdpPacket.cc, src/Makefile: Various changes to make
+	  UDP packet stuff work as desired.
+
+2007-07-01 07:46  dwm <dwm@mcplex.net>
+
+	* [r419] include/DwmSocket.hh, src/DwmSocket.cc: Added tracking of
+	  socket type and whether or not IP_HDRINCL is on, since FreeBSD
+	  wants ip_off and ip_len to be in host byte order.  Hence we need
+	  to twiddle them if we're using a raw socket and IP_HDRINCL is on.
+
+2007-06-30 16:23  dwm <dwm@mcplex.net>
+
+	* [r418] include/DwmIpv4Address.hh, src/DwmIpv4Address.cc: Added
+	  IpSum() member.
+
+2007-06-30 00:54  dwm <dwm@mcplex.net>
+
+	* [r417] tests/Makefile: Added TestIpv4PacketHeader and
+	  TestUdpHeader targets.
+
+2007-06-30 00:54  dwm <dwm@mcplex.net>
+
+	* [r416] tests/TestIpv4PacketHeader.cc, tests/TestUdpHeader.cc:
+	  Header tests.
+
+2007-06-30 00:53  dwm <dwm@mcplex.net>
+
+	* [r415] tests/ip.pcap: pcap of IP headers for TestIpv4PacketHeader
+
+2007-06-30 00:52  dwm <dwm@mcplex.net>
+
+	* [r414] tests/udp.pcap: pcap of UDP packets for TestUdpHeader
+
+2007-06-26 12:45  dwm <dwm@mcplex.net>
+
+	* [r413] include/DwmStringUtils.hh: In StringToIntegral(), check
+	  the value of endptr after calling strtoull() and strtoll().
+
+2007-06-18 05:16  dwm <dwm@mcplex.net>
+
+	* [r412] ChangeLog, include/DwmIpv4UdpHeader.hh,
+	  src/DwmIpv4UdpHeader.cc: Make Ipv4UdpHeader inherit from
+	  GZReadable, GZWritable, BZ2Readable and BZ2Writable.
+
+2007-06-18 05:08  dwm <dwm@mcplex.net>
+
+	* [r411] include/DwmIpv4PacketHeader.hh,
+	  src/DwmIpv4PacketHeader.cc: Make Ipv4PacketHeader GZReadable,
+	  GZWritable, BZ2Readable and BZ2Writable
+
+2007-06-16 17:15  dwm <dwm@mcplex.net>
+
+	* [r409] src/DwmOptArgs.cc: In Parse(), print usage if we get an
+	  option we don't know about.
+
+2007-06-16 17:14  dwm <dwm@mcplex.net>
+
+	* [r408] tests/TestDwmLocalInterfaces.cc, tests/TestDwmPacer.cc,
+	  tests/TestDwmRusage.cc, tests/TestIpv4Routes.cc,
+	  tests/TestPatricia.cc: Use OptArgs insteaf of getopt()
+
+2007-06-16 01:39  dwm <dwm@mcplex.net>
+
+	* [r407] include/DwmOptArgs.hh, src/DwmOptArgs.cc,
+	  tests/TestDwmOptArgs.cc: Add ability to add normal argument, just
+	  for Usage()
+
+2007-06-16 01:24  dwm <dwm@mcplex.net>
+
+	* [r406] include/DwmOptArgs.hh, src/DwmOptArgs.cc: Added arguments
+	  to OptArg constructor.
+
+2007-06-16 01:22  dwm <dwm@mcplex.net>
+
+	* [r405] tests/TestDwmOptArgs.cc: Add help string.
+
+2007-06-15 23:26  dwm <dwm@mcplex.net>
+
+	* [r404] include/DwmOptArgs.hh: Added some comments.
+
+2007-06-15 04:31  dwm <dwm@mcplex.net>
+
+	* [r403] include/DwmOptArgs.hh, src/DwmOptArgs.cc,
+	  tests/TestDwmOptArgs.cc: Added help functionality. Tweaked
+	  handling of long options.
+
+2007-06-14 18:16  dwm <dwm@mcplex.net>
+
+	* [r401] src/DwmOptArgs.cc: Added rcsid
+
+2007-06-14 18:14  dwm <dwm@mcplex.net>
+
+	* [r400] include/DwmOptArgs.hh, src/DwmOptArgs.cc, src/Makefile,
+	  tests/Makefile, tests/TestDwmOptArgs.cc: Start of OptArgs stuff.
+
+2007-06-11 09:47  dwm <dwm@mcplex.net>
+
+	* [r396] tests/Makefile, tests/TestDwmSignal.cc: Added simple unit
+	  test for Dwm::Signal.
+
+2007-06-11 09:46  dwm <dwm@mcplex.net>
+
+	* [r395] tests/TestDwmPacer.cc: Add '-v' command-line option to
+	  show accuracy.
+	  Only permit 2% error.
+	  Add test for 100,000 actions/sec
+
+2007-06-11 09:41  dwm <dwm@mcplex.net>
+
+	* [r394] src/DwmPacer.cc: In Pace(), fix avoidance of
+	  race-to-catch-up when caller doesn't call us
+	  for a while.
+
+2007-06-09 17:05  dwm <dwm@mcplex.net>
+
+	* [r391] src/DwmLocalInterfaces.cc: sockfd check should be >= 0,
+	  not > 0 (serves me right for coding at 4AM).
+
+2007-05-22 20:40  dwm <dwm@mcplex.net>
+
+	* [r389] src/DwmLocalInterfaces.cc,
+	  tests/TestDwmLocalInterfaces.cc: Interface aliases don't work on
+	  Linux; they do the funky 'eth1:1' stuff for aliases and I don't
+	  see the API for it. I'll need to dig through ifconfig source on
+	  Linux.
+
+2007-05-22 19:56  dwm <dwm@mcplex.net>
+
+	* [r388] ChangeLog, include/DwmLocalInterfaces.hh,
+	  src/DwmLocalInterfaces.cc, src/DwmPcap.cc,
+	  tests/TestDwmLocalInterfaces.cc: Added interface alias support.
+
+2007-02-22 22:05  dwm <dwm@mcplex.net>
+
+	* [r386] configure, configure.in: Fix setting of LDFLAGS when
+	  checking on libpcap for --with-pcapsrc
+
+2007-02-21 22:11  dwm <dwm@mcplex.net>
+
+	* [r383] tests/TestIODeque.cc, tests/TestIOHashMap.cc,
+	  tests/TestIOHashSet.cc, tests/TestIOList.cc, tests/TestIOMap.cc,
+	  tests/TestIOMultiMap.cc, tests/TestIOMultiSet.cc,
+	  tests/TestIOSet.cc, tests/TestIOVector.cc: #include <unistd.h>
+
+2007-02-21 22:07  dwm <dwm@mcplex.net>
+
+	* [r382] ChangeLog, include/DwmTermios.hh, src/DwmFileLogger.cc,
+	  src/DwmFileRoller.cc, src/DwmIpv4PacketHeader.cc,
+	  src/DwmIpv4Prefix.cc, src/DwmIpv4UdpHeader.cc,
+	  src/DwmIpv6Prefix.cc, tests/TestDwmLocalInterfaces.cc,
+	  tests/TestDwmTermios.cc, tests/TestFileRoller.cc,
+	  tests/TestIODeque.cc: #include <unistd.h>
+
+2007-02-21 22:03  dwm <dwm@mcplex.net>
+
+	* [r381] ChangeLog, Makefile.vars.in, configure, configure.in,
+	  src/Makefile: Added --with-pcapsrc option to configure, for
+	  Arbor.
+
+2007-02-21 19:07  dwm <dwm@mcplex.net>
+
+	* [r380] ChangeLog, include/DwmPortability.hh.in: Fix be64toh
+	  definition for OpenBSD.
+
+2007-02-14 18:19  dwm <dwm@mcplex.net>
+
+	* [r379] ChangeLog, configure, configure.in: Don't link statically
+	  on Linux.
+
+2007-02-14 10:43  dwm <dwm@mcplex.net>
+
+	* [r378] include/DwmLLCAT.hh, include/DwmPatricia.hh,
+	  tests/TestDwmTermios.cc, tests/TestFileRoller.cc,
+	  tests/TestIpv4Routes.cc, tests/TestPatricia.cc,
+	  tests/TestUnitAssert.cc: More cleanups from gcc-4.1.1 -Wall
+
+2007-02-14 10:22  dwm <dwm@mcplex.net>
+
+	* [r377] include/DwmFileRoller.hh: _maxSize should be off_t, not
+	  size_t
+
+2007-02-14 10:19  dwm <dwm@mcplex.net>
+
+	* [r376] ChangeLog, include/DwmBZ2Readable.hh,
+	  include/DwmBZ2Writable.hh, include/DwmGZReadable.hh,
+	  include/DwmGZWritable.hh, include/DwmReadable.hh,
+	  include/DwmTermios.hh, include/DwmWritable.hh, src/DwmCgi.ll,
+	  src/DwmRegistry.ll, src/DwmStringUtils.cc, src/DwmStrptime.cc,
+	  src/DwmTimeUtil.ll: Cleaned up some warnings from gcc-4.1.1 -Wall
+
+2007-02-05 23:46  dwm <dwm@mcplex.net>
+
+	* [r374] src/DwmBZ2IO.cc, src/DwmFileRoller.cc, src/DwmGZIO.cc,
+	  src/DwmIO.cc, src/DwmIpv4Prefix.cc, src/DwmIpv6Prefix.cc,
+	  src/DwmRegistry.ll, src/DwmRusage.cc, src/DwmSignal.cc,
+	  src/DwmTimeValue.cc, tests/TestFileRoller.cc: #include <cassert>
+
+2007-02-05 23:46  dwm <dwm@mcplex.net>
+
+	* [r373] include/DwmPathUtils.hh: Fix the Basename() declaration.
+
+2007-01-19 21:06  dwm <dwm@mcplex.net>
+
+	* [r370] tests/Makefile: Don't forget ${BZINC} to handle the case
+	  where the --with-bz2src=<path> was given to configure.
+
+2007-01-19 20:50  dwm <dwm@mcplex.net>
+
+	* [r369] src/DwmProcessTable.cc, tests/TestDwmDateTime.cc: Patch up
+	  for FreeBSD after Linux tweaks.
+
+2007-01-19 20:33  dwm <dwm@mcplex.net>
+
+	* [r368] Makefile.vars.in, configure, configure.in, dwm.m4,
+	  include/DwmIpv4UdpHeader.hh, include/DwmPortability.hh.in,
+	  include/DwmProcessInfo.hh, src/DwmLocalInterfaces.cc,
+	  src/DwmPacer.cc, src/DwmProcessTable.cc, src/DwmTermios.cc,
+	  tests/Makefile, tests/TestDwmDateTime.cc, tests/TestDwmPacer.cc,
+	  tests/TestDwmTermios.cc: Tweaks for Linux.
+
+2007-01-18 06:41  dwm <dwm@mcplex.net>
+
+	* [r365] include/DwmLogger.hh, src/DwmLogger.cc: Deprecated.
+
+2007-01-12 19:17  dwm <dwm@mcplex.net>
+
+	* [r362] include/DwmFileLogger.hh, include/DwmPathUtils.hh,
+	  include/Makefile, src/DwmFileLogger.cc, src/DwmPathUtils.cc,
+	  src/DwmPthreadSignal.cc, src/Jamfile, src/Makefile: Moving toward
+	  deprecating DwmLogger.[hh|cc]
+
+2007-01-12 08:12  dwm <dwm@mcplex.net>
+
+	* [r361] include/DwmPthreadQueue.hh: Use DwmSysLogger.hh
+
+2007-01-12 08:11  dwm <dwm@mcplex.net>
+
+	* [r360] src/DwmSysLogger.cc: Don't forget to unlock the mutex in
+	  SetPriorities()
+
+2007-01-11 22:38  dwm <dwm@mcplex.net>
+
+	* [r359] include/DwmLogger.hh: Remove Syslog() macro
+
+2007-01-11 22:11  dwm <dwm@mcplex.net>
+
+	* [r358] Makefile.vars.in, configure, configure.in, dwm.m4,
+	  src/Makefile: Tweaks for lack of bzip lib and headers in /usr:
+	  let the user specify the location of bzip2 source with
+	  --with-bz2src=...
+
+2007-01-11 22:01  dwm <dwm@mcplex.net>
+
+	* [r357] include/DwmPthreadQueue.hh, src/DwmDescriptor.cc,
+	  src/DwmPcap.cc, src/DwmRusage.cc, src/DwmSignal.cc,
+	  src/DwmSocket.cc, src/DwmTermios.cc: Switch to using SysLogger.
+
+2007-01-11 21:43  dwm <dwm@mcplex.net>
+
+	* [r356] include/DwmSysLogger.hh: #include <errno.h> and <syslog.h>
+
+2007-01-11 21:36  dwm <dwm@mcplex.net>
+
+	* [r355] include/DwmSysLogger.hh, src/DwmSysLogger.cc: Added
+	  MinimumPriority(const string &)
+
+2007-01-11 20:49  dwm <dwm@mcplex.net>
+
+	* [r354] include/DwmSysLogger.hh, include/Makefile,
+	  src/DwmSysLogger.cc, src/Makefile: Started cleanup of logging
+	  classes: new SysLogger class, all static.
+
+2007-01-11 07:19  dwm <dwm@mcplex.net>
+
+	* [r353] include/DwmLogger.hh, src/DwmLogger.cc: Added
+	  SetPriorities() to override default priority tags and names.
+
+2007-01-05 08:54  dwm <dwm@mcplex.net>
+
+	* [r351] Makefile: Don't include docs in 'install'
+
+2007-01-05 08:43  dwm <dwm@mcplex.net>
+
+	* [r350] Makefile, doc/Makefile, include/Makefile, src/Makefile:
+	  Add 'uninstall' target, clean up the 'clean' target.
+
+2007-01-05 08:35  dwm <dwm@mcplex.net>
+
+	* [r349] Makefile, doc/Makefile, include/Makefile, src/Makefile:
+	  Add 'install' target stuff.
+
+2007-01-04 19:16  dwm <dwm@mcplex.net>
+
+	* [r348] tests/TestDwmMutex.cc: Added one more test.
+
+2007-01-04 19:14  dwm <dwm@mcplex.net>
+
+	* [r347] ChangeLog, tests/Jamfile, tests/Makefile,
+	  tests/TestDwmMutex.cc: Added unit test for Pthread::Mutex
+
+2007-01-04 18:31  dwm <dwm@mcplex.net>
+
+	* [r346] tests/TestPthreadReadWriteLock.cc: <errno.h> is now
+	  included by DwmPthreadReadWriteLock.hh
+
+2007-01-04 18:29  dwm <dwm@mcplex.net>
+
+	* [r345] include/DwmPthreadReadWriteLock.hh: #include <errno.h>
+
+2007-01-04 18:18  dwm <dwm@mcplex.net>
+
+	* [r343] configure, dwm.m4: Use -pthread instead of -lc_r on
+	  FreeBSD 5.3
+
+2007-01-04 18:17  dwm <dwm@mcplex.net>
+
+	* [r342] tests/Makefile, tests/TestPthreadReadWriteLock.cc: Added
+	  test for Pthread::ReadWriteLock
+
+2007-01-04 17:41  dwm <dwm@mcplex.net>
+
+	* [r339] include/DwmPthreadReadWriteLock.hh, include/Makefile,
+	  src/DwmPthreadReadWriteLock.cc, src/Jamfile, src/Makefile: Added
+	  Pthread::ReadWriteLock pulled from 1998 backups (yikes!).
+
+2007-01-04 16:45  dwm <dwm@mcplex.net>
+
+	* [r337] include/DwmTypeName.hh: Don't call sizeof(), a function
+	  may have been passed in.
+
+2007-01-04 16:39  dwm <dwm@mcplex.net>
+
+	* [r336] include/DwmTypeName.hh: Deal with gcc 3.3 silliness with
+	  __cxa_demangle() for "unsigned int".
+	  I needed this for OS X on my personal powerbook (OS X 10.3.9).
+
+2007-01-04 06:39  dwm <dwm@mcplex.net>
+
+	* [r335] include/DwmProcessInfo.hh, src/DwmProcessInfo.cc,
+	  src/DwmProcessTable.cc, tests/TestDwmRusage.cc,
+	  tests/TestTypeName.cc: Tweaks for old OS X with gcc 3.3
+
+2007-01-03 22:10  dwm <dwm@mcplex.net>
+
+	* [r333] Makefile, Makefile.vars.in, doc/Makefile: Doc packaging
+	  tweaks.
+
+2007-01-03 21:43  dwm <dwm@mcplex.net>
+
+	* [r332] apps/psg/psgr.cc, tests/TestDwmDateTime.cc,
+	  tests/TestDwmGZIO.cc, tests/TestDwmIO.cc,
+	  tests/TestDwmLocalInterfaces.cc, tests/TestDwmPacer.cc,
+	  tests/TestDwmPassword.cc, tests/TestDwmRusage.cc,
+	  tests/TestDwmTermios.cc, tests/TestEngFormat.cc,
+	  tests/TestFileRoller.cc, tests/TestIODeque.cc,
+	  tests/TestIOHashMap.cc, tests/TestIOHashSet.cc,
+	  tests/TestIOList.cc, tests/TestIOMap.cc, tests/TestIOMultiMap.cc,
+	  tests/TestIOMultiSet.cc, tests/TestIOSet.cc,
+	  tests/TestIOVector.cc, tests/TestIpv4Prefix.cc,
+	  tests/TestIpv4Routes.cc, tests/TestIpv4UdpPacket.cc,
+	  tests/TestIpv6Address.cc, tests/TestIpv6Prefix.cc,
+	  tests/TestLLCAT.cc, tests/TestPatricia.cc,
+	  tests/TestProcessTable.cc, tests/TestRegistry.cc,
+	  tests/TestStringConverter.cc, tests/TestStringUtils.cc,
+	  tests/TestTypeName.cc, tests/TestUnitAssert.cc: Copyright
+	  updates.
+
+2007-01-03 21:42  dwm <dwm@mcplex.net>
+
+	* [r331] LICENSEES: No need for this.
+
+2007-01-03 21:26  dwm <dwm@mcplex.net>
+
+	* [r330] src/DwmBZ2IO.cc, src/DwmCgi.ll,
+	  src/DwmConditionVariable.cc, src/DwmCvsTag.cc,
+	  src/DwmDateTime.cc, src/DwmDescriptor.cc, src/DwmEngFormat.cc,
+	  src/DwmFileRoller.cc, src/DwmGZIO.cc, src/DwmGroup.cc,
+	  src/DwmIO.cc, src/DwmIpv4Address.cc, src/DwmIpv4PacketHeader.cc,
+	  src/DwmIpv4Prefix.cc, src/DwmIpv4UdpHeader.cc,
+	  src/DwmIpv4UdpPacket.cc, src/DwmIpv6Address.cc,
+	  src/DwmIpv6Prefix.cc, src/DwmLocalInterfaces.cc,
+	  src/DwmLogger.cc, src/DwmMutex.cc, src/DwmPacer.cc,
+	  src/DwmPassword.cc, src/DwmPathUtils.cc, src/DwmPcap.cc,
+	  src/DwmProcessInfo.cc, src/DwmProcessTable.cc,
+	  src/DwmPthreadSignal.cc, src/DwmRegistry.ll, src/DwmRusage.cc,
+	  src/DwmSignal.cc, src/DwmSocket.cc, src/DwmStringUtils.cc,
+	  src/DwmStrptime.cc, src/DwmTermios.cc, src/DwmTimeInterval.cc,
+	  src/DwmTimeUtil.ll, src/DwmTimeValue.cc, src/DwmTypeName.cc,
+	  src/DwmUnitAssert.cc: Copyright updates.
+
+2007-01-03 21:04  dwm <dwm@mcplex.net>
+
+	* [r329] include/DwmBZ2IO.hh, include/DwmBZ2Readable.hh,
+	  include/DwmBZ2Writable.hh, include/DwmCgi.hh,
+	  include/DwmConditionVariable.hh, include/DwmCvsTag.hh,
+	  include/DwmDateTime.hh, include/DwmDescriptor.hh,
+	  include/DwmEngFormat.hh, include/DwmFifo.hh,
+	  include/DwmFileRoller.hh, include/DwmGZIO.hh,
+	  include/DwmGZReadable.hh, include/DwmGZWritable.hh,
+	  include/DwmGroup.hh, include/DwmIO.hh, include/DwmIpAddress.hh,
+	  include/DwmIpv4Address.hh, include/DwmIpv4PacketHeader.hh,
+	  include/DwmIpv4Prefix.hh, include/DwmIpv4Routes.hh,
+	  include/DwmIpv4UdpHeader.hh, include/DwmIpv4UdpPacket.hh,
+	  include/DwmIpv6Address.hh, include/DwmIpv6Prefix.hh,
+	  include/DwmLLCAT.hh, include/DwmLocalInterfaces.hh,
+	  include/DwmLogger.hh, include/DwmMutex.hh, include/DwmPacer.hh,
+	  include/DwmPassword.hh, include/DwmPathUtils.hh,
+	  include/DwmPatricia.hh, include/DwmPcap.hh,
+	  include/DwmPortability.hh.in, include/DwmProcessInfo.hh,
+	  include/DwmProcessTable.hh, include/DwmPthreadQueue.hh,
+	  include/DwmPthreadSignal.hh, include/DwmReadable.hh,
+	  include/DwmRegistry.hh, include/DwmRusage.hh,
+	  include/DwmSignal.hh, include/DwmSocket.hh,
+	  include/DwmStringConverter.hh, include/DwmStringUtils.hh,
+	  include/DwmStrptime.hh, include/DwmTermios.hh,
+	  include/DwmTimeInterval.hh, include/DwmTimeUtil.hh,
+	  include/DwmTimeValue.hh, include/DwmTypeName.hh,
+	  include/DwmUnitAssert.hh, include/DwmWritable.hh: Update license.
+
+2007-01-03 21:04  dwm <dwm@mcplex.net>
+
+	* [r328] include/Ipv4LongestMatch.hh: Remove cruft.
+
+2007-01-03 20:05  dwm <dwm@mcplex.net>
+
+	* [r327] tests/Makefile, tests/TestDwmTermios.cc,
+	  tests/TestIOHashMap.cc, tests/TestIOHashSet.cc,
+	  tests/TestIOList.cc, tests/TestIOMap.cc, tests/TestIOMultiMap.cc,
+	  tests/TestIOMultiSet.cc, tests/TestIOSet.cc,
+	  tests/TestIOVector.cc, tests/TestIpv6Address.cc,
+	  tests/TestIpv6Prefix.cc, tests/TestStringUtils.cc: Use our
+	  UnitAssert.
+	  In TestDwmTermios, don't try unit testing on stdin if it's not a
+	  terminal (like when running from 'make runtests').
+
+2007-01-03 19:26  dwm <dwm@mcplex.net>
+
+	* [r326] tests/TestDwmTermios.cc, tests/TestIODeque.cc: Use
+	  UnitAssert
+
+2007-01-03 18:16  dwm <dwm@mcplex.net>
+
+	* [r325] src/DwmBZ2IO.cc, src/DwmCgi.ll,
+	  src/DwmConditionVariable.cc, src/DwmCvsTag.cc,
+	  src/DwmDateTime.cc, src/DwmDescriptor.cc, src/DwmEngFormat.cc,
+	  src/DwmFileRoller.cc, src/DwmGZIO.cc, src/DwmGroup.cc,
+	  src/DwmIO.cc, src/DwmIpv4Address.cc, src/DwmIpv4PacketHeader.cc,
+	  src/DwmIpv4Prefix.cc, src/DwmIpv4UdpHeader.cc,
+	  src/DwmIpv4UdpPacket.cc, src/DwmIpv6Address.cc,
+	  src/DwmIpv6Prefix.cc, src/DwmLocalInterfaces.cc,
+	  src/DwmLogger.cc, src/DwmMutex.cc, src/DwmPacer.cc,
+	  src/DwmPassword.cc, src/DwmPathUtils.cc, src/DwmPcap.cc,
+	  src/DwmProcessInfo.cc, src/DwmProcessTable.cc,
+	  src/DwmPthreadSignal.cc, src/DwmRegistry.ll, src/DwmRusage.cc,
+	  src/DwmSignal.cc, src/DwmSocket.cc, src/DwmStringUtils.cc,
+	  src/DwmStrptime.cc, src/DwmTermios.cc, src/DwmTimeInterval.cc,
+	  src/DwmTimeUtil.ll, src/DwmTimeValue.cc, src/DwmTypeName.cc,
+	  src/DwmUnitAssert.cc: Clarify license.
+
+2007-01-03 18:07  dwm <dwm@mcplex.net>
+
+	* [r324] include/DwmBZ2IO.hh, include/DwmBZ2Readable.hh,
+	  include/DwmBZ2Writable.hh, include/DwmCgi.hh,
+	  include/DwmConditionVariable.hh, include/DwmCvsTag.hh,
+	  include/DwmDateTime.hh, include/DwmDescriptor.hh,
+	  include/DwmEngFormat.hh, include/DwmFifo.hh,
+	  include/DwmFileRoller.hh, include/DwmGZIO.hh,
+	  include/DwmGZReadable.hh, include/DwmGZWritable.hh,
+	  include/DwmGroup.hh, include/DwmIO.hh, include/DwmIpAddress.hh,
+	  include/DwmIpv4Address.hh, include/DwmIpv4PacketHeader.hh,
+	  include/DwmIpv4Prefix.hh, include/DwmIpv4Routes.hh,
+	  include/DwmIpv4UdpHeader.hh, include/DwmIpv4UdpPacket.hh,
+	  include/DwmIpv6Address.hh, include/DwmIpv6Prefix.hh,
+	  include/DwmLLCAT.hh, include/DwmLocalInterfaces.hh,
+	  include/DwmLogger.hh, include/DwmMutex.hh, include/DwmPacer.hh,
+	  include/DwmPassword.hh, include/DwmPathUtils.hh,
+	  include/DwmPatricia.hh, include/DwmPcap.hh,
+	  include/DwmPortability.hh.in, include/DwmProcessInfo.hh,
+	  include/DwmProcessTable.hh, include/DwmPthreadQueue.hh,
+	  include/DwmPthreadSignal.hh, include/DwmReadable.hh,
+	  include/DwmRegistry.hh, include/DwmRusage.hh,
+	  include/DwmSignal.hh, include/DwmSocket.hh,
+	  include/DwmStringConverter.hh, include/DwmStringUtils.hh,
+	  include/DwmStrptime.hh, include/DwmTermios.hh,
+	  include/DwmTimeInterval.hh, include/DwmTimeUtil.hh,
+	  include/DwmTimeValue.hh, include/DwmTypeName.hh,
+	  include/DwmUnitAssert.hh, include/DwmWritable.hh: Clarify
+	  license.
+
+2007-01-03 17:45  dwm <dwm@mcplex.net>
+
+	* [r323] doc/Doxyfile: Tweak to use pdflatex
+
+2007-01-03 17:44  dwm <dwm@mcplex.net>
+
+	* [r322] doc/Makefile: Add docs to tarprep targeet.
+
+2007-01-03 17:44  dwm <dwm@mcplex.net>
+
+	* [r321] Makefile, Makefile.vars.in: Set and use INSTALLPREFIX
+
+2007-01-03 17:43  dwm <dwm@mcplex.net>
+
+	* [r320] tests/Jamfile: Switch to Boost.Build
+
+2007-01-03 17:41  dwm <dwm@mcplex.net>
+
+	* [r319] tests/TestDwmPacer.cc: Permit 10% error instead of 5%.
+
+2007-01-03 17:41  dwm <dwm@mcplex.net>
+
+	* [r318] include/Makefile: Update with recent stuff.
+
+2007-01-03 17:40  dwm <dwm@mcplex.net>
+
+	* [r317] include/DwmPatricia.hh: Minor cleanups. THIS CODE ISN'T
+	  DONE.
+
+2007-01-03 17:39  dwm <dwm@mcplex.net>
+
+	* [r316] tests/TestPatricia.cc: More cleanups.
+
+2007-01-03 17:21  dwm <dwm@mcplex.net>
+
+	* [r315] tests/TestPatricia.cc: Separate performance tests from
+	  functional tests.
+
+2007-01-03 16:14  dwm <dwm@mcplex.net>
+
+	* [r314] tests/TestPatricia.cc: Minor cleanups.
+
+2007-01-03 04:42  dwm <dwm@mcplex.net>
+
+	* [r313] tests/TestIpv4Routes.cc: More cleanup, and test operator []
+
+2007-01-03 04:41  dwm <dwm@mcplex.net>
+
+	* [r312] include/DwmIpv4Routes.hh: Added:
+	  bool Find(const Ipv4Prefix & prefix, _valueT & match) const
+
+2007-01-02 22:06  dwm <dwm@mcplex.net>
+
+	* [r311] Jamfile: Added libkvm for ProcessTable stuff.
+
+2007-01-02 22:04  dwm <dwm@mcplex.net>
+
+	* [r310] src/Jamfile: Add DwmStrptime.cc
+
+2007-01-02 19:39  dwm <dwm@mcplex.net>
+
+	* [r309] tests/TestIpv4Routes.cc: Some cleanups, and don't run
+	  performance tests unless requested.
+
+2007-01-02 19:22  dwm <dwm@mcplex.net>
+
+	* [r308] src/DwmIpv4Prefix.cc: Removed extra space (no code
+	  change).
+
+2007-01-02 18:43  dwm <dwm@mcplex.net>
+
+	* [r307] include/DwmUnitAssert.hh, src/DwmUnitAssert.cc: Return
+	  false from Assertions::Failed() and true from Assertions::Passed(),
+	  so callers of UnitAssert() can use the return value.
+
+2007-01-02 15:40  dwm <dwm@mcplex.net>
+
+	* [r306] tests/TestDwmGZIO.cc, tests/TestDwmIO.cc: Use CvsTag
+
+2006-12-29 21:50  dwm <dwm@mcplex.net>
+
+	* [r304] tests/TestStringConverter.cc: Use our UnitAssert stuff.
+
+2006-12-29 21:41  dwm <dwm@mcplex.net>
+
+	* [r303] tests/TestFileRoller.cc: Use our UnitAssert stuff.
+
+2006-12-29 21:26  dwm <dwm@mcplex.net>
+
+	* [r302] include/DwmStrptime.hh, src/DwmStrptime.cc: Comments.
+
+2006-12-29 21:18  dwm <dwm@mcplex.net>
+
+	* [r301] include/DwmStrptime.hh, src/DwmDateTime.cc,
+	  src/DwmStrptime.cc, src/Makefile: Deal with the fact that
+	  OpenBSD's strptime() doesn't accept %Z in the format
+	  string: use our own Strptime() mostly borrowed from FreeBSD.
+
+2006-12-29 18:27  dwm <dwm@mcplex.net>
+
+	* [r300] src/DwmStringUtils.cc: Hack workaround for lack of
+	  strtof()
+
+2006-12-29 18:20  dwm <dwm@mcplex.net>
+
+	* [r299] src/DwmProcessInfo.cc, src/DwmProcessTable.cc: Fix for
+	  OpenBSD.
+
+2006-12-29 17:48  dwm <dwm@mcplex.net>
+
+	* [r298] src/DwmLocalInterfaces.cc: Tweaks for OpenBSD.
+
+2006-12-29 17:19  dwm <dwm@mcplex.net>
+
+	* [r297] src/DwmPacer.cc: #include <sys/param.h>
+
+2006-12-29 17:12  dwm <dwm@mcplex.net>
+
+	* [r296] configure, configure.in, dwm.m4: Sanitize DWM_CHECK_STRTOF
+
+2006-12-29 16:49  dwm <dwm@mcplex.net>
+
+	* [r295] dwm.m4, include/DwmPortability.hh.in: Porting to
+	  OpenBSD... check for strtof()
+
+2006-12-29 06:00  dwm <dwm@mcplex.net>
+
+	* [r294] Jamrules.in, LICENSEES, configure, configure.in: Mo more
+	  regular jam crud.
+
+2006-12-29 05:57  dwm <dwm@mcplex.net>
+
+	* [r293] Jamfile, include/DwmIpv4PacketHeader.hh,
+	  include/DwmIpv4Prefix.hh, include/DwmProcessInfo.hh,
+	  include/DwmPthreadQueue.hh, include/DwmStringUtils.hh,
+	  project-root.jam, src/DwmBZ2IO.cc, src/DwmCgi.lex, src/DwmCgi.ll,
+	  src/DwmFileRoller.cc, src/DwmGZIO.cc, src/DwmIO.cc,
+	  src/DwmIpv4PacketHeader.cc, src/DwmIpv6Address.cc,
+	  src/DwmPacer.cc, src/DwmProcessInfo.cc, src/DwmRegistry.lex,
+	  src/DwmRegistry.ll, src/DwmRusage.cc, src/DwmTimeUtil.lex,
+	  src/DwmTimeUtil.ll, src/Jamfile, src/Makefile: Some cleanup, and
+	  move from regular jam to Boost.Build.
+
+2006-12-29 05:00  dwm <dwm@mcplex.net>
+
+	* [r292] src/DwmPcap.cc: In OpenLive(), search for the first up and
+	  running interface if we're given an empty interface name.
+
+2006-12-18 03:51  dwm <dwm@mcplex.net>
+
+	* [r291] src/Jamfile: Added DwmFileRoller.cc
+	  Renamed DwmProcess.cc to DwmProcessInfo.cc
+
+2006-12-18 03:50  dwm <dwm@mcplex.net>
+
+	* [r290] tests/TestProcessTable.cc: Added test for GZIO.
+
+2006-12-18 03:48  dwm <dwm@mcplex.net>
+
+	* [r289] tests/Makefile, tests/TestFileRoller.cc: Added FileRoller
+	  stuff. Took not-done-yet stuff out of Makefile.
+
+2006-12-18 03:47  dwm <dwm@mcplex.net>
+
+	* [r288] src/DwmPacer.cc: clockInfoLen should be size_t. thx Matt.
+
+2006-12-13 09:23  dwm <dwm@mcplex.net>
+
+	* [r287] include/DwmRusage.hh, src/DwmRusage.cc: Implemented
+	  read/write for file descriptors.
+
+2006-12-13 09:10  dwm <dwm@mcplex.net>
+
+	* [r286] include/DwmFileRoller.hh, src/DwmFileRoller.cc: Permit
+	  setting max file size and number of files after construction.
+
+2006-12-13 09:01  dwm <dwm@mcplex.net>
+
+	* [r285] include/DwmFileRoller.hh: Fix comment typos.
+
+2006-12-13 09:00  dwm <dwm@mcplex.net>
+
+	* [r284] src/DwmGZIO.cc: Fix reading of strings; don't triy to
+	  assign to the string unless the length is greater than 0.
+
+2006-12-13 08:53  dwm <dwm@mcplex.net>
+
+	* [r283] src/DwmRusage.cc: Clean up reading from and writing to
+	  gzip files by using new MyGZIOWrite() and MyGZIORead() template
+	  functions.
+
+2006-12-13 08:51  dwm <dwm@mcplex.net>
+
+	* [r282] tests/TestDwmRusage.cc: Added GZIO test.
+
+2006-12-11 04:37  dwm <dwm@mcplex.net>
+
+	* [r281] include/DwmFileRoller.hh, src/DwmFileRoller.cc,
+	  src/Makefile: Added FileRoller
+
+2006-12-10 10:02  dwm <dwm@mcplex.net>
+
+	* [r280] include/DwmIpv4PacketHeader.hh,
+	  include/DwmIpv4UdpHeader.hh, src/DwmIpv4PacketHeader.cc,
+	  src/DwmIpv4UdpHeader.cc: Implemented Readable and Writable
+	  interfaces.
+
+2006-12-10 09:35  dwm <dwm@mcplex.net>
+
+	* [r279] include/DwmProcessInfo.hh, include/DwmRusage.hh,
+	  src/DwmProcessInfo.cc, src/DwmRusage.cc: Added GZIO
+	  functionality.
+
+2006-12-10 07:33  dwm <dwm@mcplex.net>
+
+	* [r278] apps, apps/psg, apps/psg/Makefile, apps/psg/deps,
+	  apps/psg/psgr.cc: Just a test app at the moment.
+
+2006-12-10 06:48  dwm <dwm@mcplex.net>
+
+	* [r277] tests/TestProcessTable.cc: Added a comment.
+
+2006-12-10 06:47  dwm <dwm@mcplex.net>
+
+	* [r276] src/DwmProcess.cc: DwmProcess.cc -> DwmProcessInfo.cc
+
+2006-12-10 06:36  dwm <dwm@mcplex.net>
+
+	* [r275] include/DwmProcess.hh, include/DwmProcessInfo.hh,
+	  include/DwmProcessTable.hh, src/DwmProcessInfo.cc,
+	  src/DwmProcessTable.cc, src/Makefile: Process -> ProcessInfo
+
+2006-12-04 05:34  dwm <dwm@mcplex.net>
+
+	* [r274] tests/TestDwmRusage.cc: Start of test for Rusage.
+
+2006-12-04 05:32  dwm <dwm@mcplex.net>
+
+	* [r273] tests/Jamfile, tests/Makefile,
+	  tests/TestDwmLocalInterfaces.cc: Only print interface information
+	  if '-d' command line argument is used.
+
+2006-12-04 04:43  dwm <dwm@mcplex.net>
+
+	* [r272] tests/TestDwmLocalInterfaces.cc: Added UnitAssert calls.
+
+2006-12-04 04:42  dwm <dwm@mcplex.net>
+
+	* [r271] src/DwmLocalInterfaces.cc: We don't need a FreeBSD/OpenBSD
+	  specific LocalInterface::IsRunning()
+
+2006-12-04 04:27  dwm <dwm@mcplex.net>
+
+	* [r270] src/DwmLocalInterfaces.cc: GetLocalInterfaces():
+	  Use almost the same code for FreeBSD as we do for OS X.
+
+2006-12-04 02:15  dwm <dwm@mcplex.net>
+
+	* [r269] include/DwmLocalInterfaces.hh, src/DwmLocalInterfaces.cc,
+	  tests/TestDwmLocalInterfaces.cc: OS X:
+	  Added IsRunning()
+	  Fixed IsUp()
+
+2006-12-04 01:44  dwm <dwm@mcplex.net>
+
+	* [r268] include/DwmLocalInterfaces.hh, src/DwmLocalInterfaces.cc,
+	  tests/TestDwmLocalInterfaces.cc: Finally fixed OS X stuff, and
+	  added MTU fetching for it. Note this is fall-through, and
+	  probably doesn't work on Linux.
+
+2006-12-04 00:52  dwm <dwm@mcplex.net>
+
+	* [r267] tests/Makefile, tests/TestDwmLocalInterfaces.cc: Added
+	  TestDwmLocalInterfaces
+
+2006-12-04 00:52  dwm <dwm@mcplex.net>
+
+	* [r266] src/DwmLocalInterfaces.cc: More OS X tweaks. Still broken
+	  though, sigh.
+
+2006-12-04 00:41  dwm <dwm@mcplex.net>
+
+	* [r265] src/DwmLocalInterfaces.cc: Tweaks for OS X.
+
+2006-12-04 00:40  dwm <dwm@mcplex.net>
+
+	* [r264] src/DwmLocalInterfaces.cc: More tweaking for OS X.
+
+2006-12-04 00:28  dwm <dwm@mcplex.net>
+
+	* [r263] src/DwmLocalInterfaces.cc: Trying to fix netmask stuff.
+
+2006-12-04 00:14  dwm <dwm@mcplex.net>
+
+	* [r262] src/DwmLocalInterfaces.cc: Hmm, no one but FreeBSD has
+	  ifa_netmask?
+
+2006-12-04 00:01  dwm <dwm@mcplex.net>
+
+	* [r260] include/DwmProcess.hh: s/define/defined/ in check for
+	  __OpenBSD__
+
+2006-12-03 23:57  dwm <dwm@mcplex.net>
+
+	* [r259] src/DwmCgi.lex, src/DwmConditionVariable.cc, src/DwmIO.cc,
+	  src/DwmIpv4Address.cc, src/DwmLogger.cc, src/DwmMutex.cc,
+	  src/DwmTimeUtil.lex: Use our CvsTag class.
+
+2006-12-03 23:57  dwm <dwm@mcplex.net>
+
+	* [r258] src/Jamfile: Add some targets.
+
+2006-12-03 23:48  dwm <dwm@mcplex.net>
+
+	* [r257] src/DwmGZIO.cc: Use our CvsTag class.
+
+2006-12-03 23:47  dwm <dwm@mcplex.net>
+
+	* [r256] tests/TestDwmDateTime.cc: Use our UnitAssert stuff.
+
+2006-12-03 22:21  dwm <dwm@mcplex.net>
+
+	* [r255] include/DwmDateTime.hh, src/DwmDateTime.cc: Added Parse()
+	  Added operator ==
+
+2006-12-03 22:20  dwm <dwm@mcplex.net>
+
+	* [r254] include/Makefile: Added more header files.
+
+2006-12-03 21:07  dwm <dwm@mcplex.net>
+
+	* [r253] include/DwmProcess.hh, src/DwmProcess.cc,
+	  tests/TestProcessTable.cc: Added I/O capability for iostreams.
+
+2006-12-03 20:57  dwm <dwm@mcplex.net>
+
+	* [r252] include/DwmRusage.hh, src/DwmRusage.cc: Refactored so we
+	  can have iostream IO.
+
+2006-12-03 19:08  dwm <dwm@mcplex.net>
+
+	* [r251] include/DwmProcessTable.hh: Added comments.
+
+2006-12-03 19:00  dwm <dwm@mcplex.net>
+
+	* [r250] src/Makefile: Added new targets.
+
+2006-12-03 19:00  dwm <dwm@mcplex.net>
+
+	* [r249] include/DwmRusage.hh, src/DwmRusage.cc: Simple wrapper
+	  around struct rusage.
+
+2006-12-03 18:59  dwm <dwm@mcplex.net>
+
+	* [r248] tests/Makefile: Added more test targets.
+
+2006-12-03 18:57  dwm <dwm@mcplex.net>
+
+	* [r247] tests/TestEngFormat.cc: Use our UnitAssert stuff.
+
+2006-12-03 05:36  dwm <dwm@mcplex.net>
+
+	* [r246] src/DwmIpv4UdpHeader.cc: Fix pasto: DestinationPort()
+	  should set uh_dport, not uh_sport
+
+2006-12-03 05:35  dwm <dwm@mcplex.net>
+
+	* [r245] src/DwmPacer.cc: Added comments.
+
+2006-12-03 05:31  dwm <dwm@mcplex.net>
+
+	* [r244] include/DwmPacer.hh: Fixed typo on comment.
+
+2006-12-03 05:30  dwm <dwm@mcplex.net>
+
+	* [r243] src/DwmIpv4UdpPacket.cc: Start of UDP packet class
+	  implementation.
+
+2006-12-03 05:30  dwm <dwm@mcplex.net>
+
+	* [r242] include/DwmLocalInterfaces.hh, src/DwmLocalInterfaces.cc:
+	  Added netmask.
+
+2006-12-03 05:29  dwm <dwm@mcplex.net>
+
+	* [r241] include/DwmIpv4PacketHeader.hh,
+	  src/DwmIpv4PacketHeader.cc: Added default constructor.
+
+2006-12-03 05:27  dwm <dwm@mcplex.net>
+
+	* [r240] tests/TestIpv4UdpPacket.cc: Start of unit test for
+	  Ipv4UdpPacket.
+
+2006-12-03 05:26  dwm <dwm@mcplex.net>
+
+	* [r239] tests/TestDwmPacer.cc: Added Accurate() function.
+
+2006-12-03 01:06  dwm <dwm@mcplex.net>
+
+	* [r238] tests/TestDwmPassword.cc: Start of unit test for Password
+	  class.
+
+2006-12-03 01:05  dwm <dwm@mcplex.net>
+
+	* [r237] tests/TestProcessTable.cc: Start of unit test for
+	  ProcessTable
+
+2006-12-02 22:31  dwm <dwm@mcplex.net>
+
+	* [r236] include/DwmTimeValue.hh, src/DwmTimeValue.cc: Added
+	  operator double ()
+
+2006-12-02 22:00  dwm <dwm@mcplex.net>
+
+	* [r235] src/DwmSocket.cc: Fix our cvstag.
+
+2006-12-02 21:59  dwm <dwm@mcplex.net>
+
+	* [r234] include/DwmSocket.hh, src/DwmSocket.cc: Simple class to
+	  encapsulate a UNIX socket.
+
+2006-12-02 21:57  dwm <dwm@mcplex.net>
+
+	* [r233] include/DwmDescriptor.hh, src/DwmDescriptor.cc: Simple
+	  class to encapsulate a UNIX file descriptor.
+
+2006-12-02 21:56  dwm <dwm@mcplex.net>
+
+	* [r232] include/DwmIpv4UdpHeader.hh, src/DwmIpv4UdpHeader.cc:
+	  Simple class to encapsulates an IPv4 UDP header.
+
+2006-12-02 21:53  dwm <dwm@mcplex.net>
+
+	* [r231] include/DwmIpv4PacketHeader.hh,
+	  src/DwmIpv4PacketHeader.cc: Simple class to encapsulates an IPv4
+	  packet header.
+
+2006-12-02 21:50  dwm <dwm@mcplex.net>
+
+	* [r230] include/DwmProcessTable.hh, src/DwmProcessTable.cc: Simple
+	  class to encapsulate the process table.
+
+2006-12-02 21:49  dwm <dwm@mcplex.net>
+
+	* [r229] include/DwmProcess.hh, src/DwmProcess.cc: Simple class to
+	  encapsulate information about a process.
+
+2006-12-02 21:36  dwm <dwm@mcplex.net>
+
+	* [r228] include/DwmGroup.hh, include/DwmPassword.hh,
+	  src/DwmGroup.cc, src/DwmPassword.cc: Simple classes to
+	  encapsulate /etc/passwd and /etc/group entries.
+
+2006-12-02 21:35  dwm <dwm@mcplex.net>
+
+	* [r227] include/DwmUnitAssert.hh: Fully qualify
+	  Dwm::Assertions::Passed and Dwm::Assertions::Failed.
+
+2006-11-20 01:44  dwm <dwm@mcplex.net>
+
+	* [r226] include/DwmPacer.hh, src/DwmPacer.cc: Correct the
+	  copyright date, since I wrote the original code in 1998.
+
+2006-11-19 08:31  dwm <dwm@mcplex.net>
+
+	* [r225] tests/TestDwmPacer.cc: Simple test for Dwm::Pacer class.
+
+2006-11-16 09:52  dwm <dwm@mcplex.net>
+
+	* [r223] tests/TestIpv4Routes.cc: Use my simple unit test stuff.
+
+2006-11-16 09:51  dwm <dwm@mcplex.net>
+
+	* [r222] include/DwmPathUtils.hh: Guard with _DWMPATHUTILS_HH_
+
+2006-11-16 09:44  dwm <dwm@mcplex.net>
+
+	* [r221] tests/TestDwmGZIO.cc: Use my simple unit test stuff.
+
+2006-11-16 09:42  dwm <dwm@mcplex.net>
+
+	* [r220] include/DwmUnitAssert.hh: Added comments.
+
+2006-11-16 09:41  dwm <dwm@mcplex.net>
+
+	* [r219] include/DwmStringConverter.hh: LEt the compiler pick the
+	  correct StringTo() function to be called.
+
+2006-11-16 09:40  dwm <dwm@mcplex.net>
+
+	* [r218] include/DwmIO.hh: Fix some comment typos.
+
+2006-11-16 09:40  dwm <dwm@mcplex.net>
+
+	* [r217] include/DwmStringUtils.hh, src/DwmStringUtils.cc: Don't
+	  use template specialization; we don't need it.
+
+2006-11-11 00:29  dwm <dwm@mcplex.net>
+
+	* [r216] include/DwmLogger.hh, src/DwmLogger.cc: Add ability to
+	  show function name when logging.
+
+2006-11-07 07:25  dwm <dwm@mcplex.net>
+
+	* [r215] include/DwmUnitAssert.hh, src/DwmUnitAssert.cc: Fix
+	  Failed() and Passed() signatures to all match, and all use a
+	  const std::string reference instead of (char *).
+
+2006-11-07 07:24  dwm <dwm@mcplex.net>
+
+	* [r214] tests/TestIpv4Prefix.cc: Use UnitAssert()
+
+2006-11-07 04:29  dwm <dwm@mcplex.net>
+
+	* [r213] tests/TestDwmIO.cc, tests/TestTypeName.cc: Convert to
+	  using UnitAssert()
+
+2006-11-07 04:29  dwm <dwm@mcplex.net>
+
+	* [r212] tests/Makefile, tests/TestUnitAssert.cc: Added simple test
+	  for UnitAssert.
+
+2006-11-07 04:18  dwm <dwm@mcplex.net>
+
+	* [r211] include/DwmUnitAssert.hh, src/DwmUnitAssert.cc,
+	  src/Makefile: Simple assertion stuff to make unit test results
+	  easy to view and a little less cumbersome than using assert().
+
+2006-11-06 07:41  dwm <dwm@mcplex.net>
+
+	* [r210] include/DwmStringUtils.hh, tests/TestStringUtils.cc: Use
+	  template speciailizations.
+
+2006-11-06 07:40  dwm <dwm@mcplex.net>
+
+	* [r209] include/DwmStringConverter.hh: Wrapper around
+	  StringUtils::ToString() functions.
+
+2006-11-06 07:40  dwm <dwm@mcplex.net>
+
+	* [r208] tests/Makefile, tests/TestStringConverter.cc: Added test
+	  for StringConverter.
+
+2006-11-06 00:21  dwm <dwm@mcplex.net>
+
+	* [r207] include/DwmStringUtils.hh, include/DwmTypeName.hh,
+	  src/DwmTypeName.cc, src/Makefile, tests/Makefile,
+	  tests/TestStringUtils.cc, tests/TestTypeName.cc: Added TypeName
+	  stuff which is useful for debugging in templates.
+	  The StringTo() stuff is now using C library functions. It may not
+	  stay this way, but it was the easiest way to make things work for
+	  cases where we want to convert from a string to a char as an
+	  integer type.
+
+2006-11-04 19:16  dwm <dwm@mcplex.net>
+
+	* [r206] include/DwmStringUtils.hh, src/DwmStringUtils.cc,
+	  tests/Makefile, tests/TestStringUtils.cc: Added StringTo()
+	  function templates, and change StringUtils from a class
+	  to a namespace.
+
+2006-10-22 04:27  dwm <dwm@mcplex.net>
+
+	* [r205] include/DwmTermios.hh, src/DwmTermios.cc,
+	  tests/TestDwmTermios.cc: Cleanup:
+	  - trickle some things up into the TermioFlags class
+	  - drop class friendship when we don't need it, and let us use our
+	  TermioFlags descendants work on plain old 'struct termios'
+	  Additions:
+	  - add support for setting/getting control characters by name
+	  - flesh out some simple printing so I can debug SerialPort issues
+	  in OBD software
+
+2006-10-21 19:52  dwm <dwm@mcplex.net>
+
+	* [r204] tests/Makefile, tests/TestDwmTermios.cc: Added
+	  TestDwmTermios
+
+2006-10-21 19:51  dwm <dwm@mcplex.net>
+
+	* [r203] include/DwmTermios.hh, src/DwmTermios.cc: Fix up some
+	  stupidity with static members.
+
+2006-10-21 19:24  dwm <dwm@mcplex.net>
+
+	* [r202] src/Makefile: Added DwmTermios.o target.
+
+2006-10-21 19:20  dwm <dwm@mcplex.net>
+
+	* [r201] include/DwmTermios.hh, src/DwmTermios.cc: More fleshing. I
+	  have not yet compiled these classes anywhere but
+	  FreeBSD.
+
+2006-10-21 11:35  dwm <dwm@mcplex.net>
+
+	* [r200] include/DwmTermios.hh, src/DwmTermios.cc: Sketchy start of
+	  classes to encapsulate termios stuff to make my life
+	  easier when debugging termios settings.
+
+2006-10-20 03:31  smart
+
+	* [r199] tests/TestIpv4Prefix.cc: Fix prefix test. /64 is obviously
+	  a bad, typo'ed mask length.
+	  - Ipv4Prefix prefix1("192.168.168.0/64");
+	  + Ipv4Prefix prefix1("192.168.168.0/24");
+
+2006-10-18 07:00  dwm <dwm@mcplex.net>
+
+	* [r198] src/Makefile: Don't use -g explicitly.
+
+2006-10-18 07:00  dwm <dwm@mcplex.net>
+
+	* [r197] src/DwmLocalInterfaces.cc: Hackery for OS X. No idea if it
+	  works, I need a unit test.
+
+2006-10-18 06:45  dwm <dwm@mcplex.net>
+
+	* [r196] src/DwmIpv4Prefix.cc, src/DwmIpv6Prefix.cc: Make gzwrite()
+	  happy on OS X (10.3)
+
+2006-10-18 06:33  dwm <dwm@mcplex.net>
+
+	* [r195] src/DwmIpv6Address.cc: Make gzwrite() happy on OS X (10.3)
+
+2006-10-18 06:32  dwm <dwm@mcplex.net>
+
+	* [r194] src/DwmIO.cc: #include "DwmPortability.hh"
+
+2006-10-18 06:31  dwm <dwm@mcplex.net>
+
+	* [r193] src/DwmBZ2IO.cc, src/DwmGZIO.cc: include
+	  "DwmPortability.hh"
+
+2006-10-18 06:30  dwm <dwm@mcplex.net>
+
+	* [r192] include/DwmTimeValue.hh, src/DwmTimeValue.cc: Fix
+	  StreamedLength() return type.
+
+2006-10-18 06:13  dwm <dwm@mcplex.net>
+
+	* [r191] configure, configure.in: Added DwmPortability.hh as a
+	  conifg header file. Check for
+	  CoreFoundation/CFByteOrder.h so we can define be64toh() and
+	  htobe64() to use CFSwapInt64BigToHost() and CFSwapInt64HostToBig()
+	  respectively on OS X.
+
+2006-10-18 05:57  dwm <dwm@mcplex.net>
+
+	* [r190] include/DwmPortability.hh.in: Added for OS X port, since
+	  it doesn't have htobe64() and be64toh()
+
+2006-10-18 05:27  dwm <dwm@mcplex.net>
+
+	* [r189] config.guess, config.sub: More recent version that will
+	  work on OS X (at least 10.3).
+
+2006-10-12 19:48  dwm <dwm@mcplex.net>
+
+	* [r183] Makefile, configure, dwm.m4, src/DwmPcap.cc: Deal with
+	  OpenBSD 3.6
+
+2006-10-12 19:20  dwm <dwm@mcplex.net>
+
+	* [r180] tests/Jamfile: Added TestLLCAT
+
+2006-10-12 19:19  dwm <dwm@mcplex.net>
+
+	* [r179] tests/Makefile: Added TestPatricia and TestLLCAT targets.
+
+2006-10-12 19:16  dwm <dwm@mcplex.net>
+
+	* [r178] src/DwmIpv4Prefix.cc: Added:
+	  Ipv4Prefix(const Ipv4Address & addr)
+	  bool Ipv4Prefix::operator != (const Ipv4Prefix & prefix) const
+	  
+	  Empty constructor now sets addr and masklength to 0.
+
+2006-10-12 19:15  dwm <dwm@mcplex.net>
+
+	* [r177] src/DwmIpv4Address.cc: Added:
+	  Ipv4Address operator & (const Ipv4Address & addr,
+	  const Ipv4Address & mask)
+
+2006-10-12 19:14  dwm <dwm@mcplex.net>
+
+	* [r176] include/DwmLLCAT.hh: Sketchy start of LLCAT template.
+
+2006-10-12 08:33  dwm <dwm@mcplex.net>
+
+	* [r175] include/DwmIO.hh, src/DwmIO.cc: Added code to read/write
+	  bool values.
+
+2006-10-11 06:13  dwm <dwm@mcplex.net>
+
+	* [r174] include/DwmIpv4Prefix.hh: Added
+	  construct-from-Ipv4Address. Added 'operator ='. Added 'operator
+	  !='
+
+2006-10-11 06:02  dwm <dwm@mcplex.net>
+
+	* [r173] include/DwmIpv4Address.hh: Removed operator &
+
+2006-05-22 03:30  dwm <dwm@mcplex.net>
+
+	* [r171] TODO: Added LLCAT and Patricia to-dos.
+
+2006-05-20 21:16  dwm <dwm@mcplex.net>
+
+	* [r169] include/DwmPatricia.hh: Tweaks.
+
+2006-05-20 17:01  dwm <dwm@mcplex.net>
+
+	* [r168] include/DwmPatricia.hh: Seems to be working now for keys
+	  of interest.
+
+2006-05-13 23:17  dwm <dwm@mcplex.net>
+
+	* [r167] include/DwmPatricia.hh: Working code fpr Patricia with key
+	  type of string. Need to make more generic so other key types can
+	  be used.
+
+2006-05-13 18:16  dwm <dwm@mcplex.net>
+
+	* [r166] Jamrules, Jamrules.in, configure, configure.in,
+	  src/Jamfile, tests/Jamfile: Tweaks for jam
+
+2006-05-13 18:15  dwm <dwm@mcplex.net>
+
+	* [r165] include/DwmPthreadQueue.hh: Added RandomShuffle() and
+	  Copy()
+
+2006-03-27 00:06  dwm <dwm@mcplex.net>
+
+	* [r163] include/DwmPthreadQueue.hh: Added PushFront() and
+	  PopBack(). Also added PushFront() that takes a pair of iterators.
+
+2005-11-06 07:37  dwm <dwm@mcplex.net>
+
+	* [r161] include/DwmTimeInterval.hh, src/DwmTimeInterval.cc: Added:
+	  Contains(const TimeInterval &) const
+
+2005-11-05 17:52  dwm <dwm@mcplex.net>
+
+	* [r160] include/DwmSignal.hh, src/DwmSignal.cc: Added Wait()
+
+2005-10-29 12:07  dwm <dwm@mcplex.net>
+
+	* [r158] src/DwmRegistry.lex: Added cvstag.
+
+2005-10-29 12:05  dwm <dwm@mcplex.net>
+
+	* [r157] src/DwmDateTime.cc, src/DwmIpv4Prefix.cc,
+	  src/DwmSignal.cc, src/DwmTimeValue.cc: Tweaked cvstag.
+
+2005-10-24 05:01  dwm <dwm@mcplex.net>
+
+	* [r156] ChangeLog, include/DwmIO.hh: Added a slew of
+	  StreamedLength() members. I still need to document them.
+
+2005-10-24 05:00  dwm <dwm@mcplex.net>
+
+	* [r155] include/DwmIpv4Routes.hh: Added the StreamedLength()
+	  member.
+
+2005-10-24 05:00  dwm <dwm@mcplex.net>
+
+	* [r154] include/DwmWritable.hh: Added the StreamedLength() pure
+	  virtual member.
+
+2005-10-24 04:59  dwm <dwm@mcplex.net>
+
+	* [r153] include/DwmIpv4Address.hh, include/DwmIpv4Prefix.hh,
+	  include/DwmIpv6Address.hh, include/DwmIpv6Prefix.hh,
+	  include/DwmTimeInterval.hh, src/DwmIpv4Address.cc,
+	  src/DwmIpv4Prefix.cc, src/DwmIpv6Address.cc,
+	  src/DwmIpv6Prefix.cc, src/DwmTimeInterval.cc: Changed return type
+	  of StreamedLength() to uint32_t since this member
+	  is now part of the Writable class.
+
+2005-10-23 10:39  dwm <dwm@mcplex.net>
+
+	* [r152] src/DwmBZ2IO.cc: Changed rcsid string to a CvsTag.
+
+2005-10-23 10:10  dwm <dwm@mcplex.net>
+
+	* [r151] include/DwmTimeInterval.hh, src/DwmTimeInterval.cc: Added
+	  operator ==
+
+2005-10-23 09:53  dwm <dwm@mcplex.net>
+
+	* [r150] doc/Doxyfile, include/DwmReadable.hh,
+	  include/DwmWritable.hh: Documentation tweaks.
+
+2005-10-23 09:36  dwm <dwm@mcplex.net>
+
+	* [r148] ChangeLog, include/DwmTimeInterval.hh,
+	  src/DwmTimeInterval.cc, src/Makefile: Added the TimeInterval
+	  class.
+
+2005-10-23 09:05  dwm <dwm@mcplex.net>
+
+	* [r147] include/DwmIpv4Address.hh, include/DwmIpv6Address.hh,
+	  include/DwmTimeValue.hh, src/DwmIpv4Address.cc,
+	  src/DwmIpv6Address.cc, src/DwmTimeValue.cc: Added
+	  StreamedLength()
+
+2005-10-21 05:20  dwm <dwm@mcplex.net>
+
+	* [r145] include/DwmMutex.hh: Fixed typo in comment.
+
+2005-10-20 07:12  dwm <dwm@mcplex.net>
+
+	* [r143] tests/TestIpv4Routes.cc: unlink .gz and .bz2 files after
+	  tests.
+
+2005-10-20 06:57  dwm <dwm@mcplex.net>
+
+	* [r142] include/DwmBZ2IO.hh, include/DwmGZIO.hh: Fixed comments.
+
+2005-10-20 06:50  dwm <dwm@mcplex.net>
+
+	* [r141] ChangeLog, Makefile.vars.in, include/DwmBZ2IO.hh,
+	  include/DwmBZ2Readable.hh, include/DwmBZ2Writable.hh,
+	  include/DwmIpAddress.hh, include/DwmIpv4Address.hh,
+	  include/DwmIpv4Prefix.hh, include/DwmIpv4Routes.hh,
+	  include/DwmIpv6Address.hh, include/DwmIpv6Prefix.hh,
+	  include/DwmTimeValue.hh, src/DwmBZ2IO.cc, src/DwmIpv4Address.cc,
+	  src/DwmIpv4Prefix.cc, src/DwmIpv6Address.cc,
+	  src/DwmIpv6Prefix.cc, src/DwmTimeValue.cc, tests/Makefile,
+	  tests/TestIpv4Routes.cc: bzip2 I/O added.
+
+2005-10-20 04:25  dwm <dwm@mcplex.net>
+
+	* [r137] tests/Makefile: Redirect stdout of test runs to /dev/null
+
+2005-10-20 04:17  dwm <dwm@mcplex.net>
+
+	* [r136] Makefile.vars.in: Added ZLIB (hardcoded for now, not from
+	  configure).
+
+2005-10-20 04:14  dwm <dwm@mcplex.net>
+
+	* [r135] tests/Makefile, tests/TestDwmGZIO.cc: Added TestDwmGZIO
+
+2005-10-20 04:14  dwm <dwm@mcplex.net>
+
+	* [r134] tests/TestIpv4Routes.cc: Added GZIO test, made IO test
+	  more intensive.
+
+2005-10-20 04:11  dwm <dwm@mcplex.net>
+
+	* [r133] tests/TestIpv4Prefix.cc: Remove some useless printing to
+	  cerr.
+
+2005-10-20 03:57  dwm <dwm@mcplex.net>
+
+	* [r132] tests/TestIOMap.cc: Added simple GZIO testing.
+
+2005-10-20 03:05  dwm <dwm@mcplex.net>
+
+	* [r131] tests/TestIODeque.cc: Added GZIO testing.
+
+2005-10-20 03:04  dwm <dwm@mcplex.net>
+
+	* [r130] include/DwmGZIO.hh, include/DwmIpAddress.hh,
+	  include/DwmIpv4Address.hh, include/DwmIpv4Routes.hh,
+	  include/DwmIpv6Address.hh, include/DwmIpv6Prefix.hh,
+	  include/DwmTimeValue.hh, src/DwmGZIO.cc, src/DwmIpv4Address.cc,
+	  src/DwmIpv6Address.cc, src/DwmIpv6Prefix.cc, src/DwmTimeValue.cc:
+	  Added gzip I/O functionality.
+
+2005-10-20 03:04  dwm <dwm@mcplex.net>
+
+	* [r129] src/Makefile: Added DwmGZIO.o target.
+
+2005-10-20 03:03  dwm <dwm@mcplex.net>
+
+	* [r128] include/DwmIpv4Prefix.hh, src/DwmIpv4Prefix.cc: Added
+	  GZReadable and GZWritable interfaces.
+	  Fixed an out-of-bounds error in Contains(const Ipv4Prefix &)
+
+2005-10-18 02:10  dwm <dwm@mcplex.net>
+
+	* [r126] include/DwmIpv6Prefix.hh: Documented ToString()
+
+2005-10-18 01:18  dwm <dwm@mcplex.net>
+
+	* [r125] include/DwmIpv4Routes.hh, tests/TestIpv4Routes.cc: Added
+	  SortByValue()
+
+2005-10-18 01:17  dwm <dwm@mcplex.net>
+
+	* [r124] include/DwmIpv4Prefix.hh: Fixed typo in comment.
+
+2005-10-17 11:20  dwm <dwm@mcplex.net>
+
+	* [r123] include/DwmIpv4Address.hh, include/DwmIpv4Prefix.hh,
+	  include/DwmIpv6Address.hh, include/DwmIpv6Prefix.hh: Added some
+	  hooks to add class to TrafficMapKeys documentation group
+	  in doxygen. This is for McFlow, which uses this class.
+
+2005-10-17 03:17  dwm <dwm@mcplex.net>
+
+	* [r122] src/DwmIpv6Prefix.cc: Changed cvstag
+
+2005-10-17 03:16  dwm <dwm@mcplex.net>
+
+	* [r121] src/DwmIpv6Address.cc: Changed cvstag.
+
+2005-10-16 18:12  dwm <dwm@mcplex.net>
+
+	* [r120] include/DwmStringUtils.hh, src/DwmPathUtils.cc,
+	  src/DwmStringUtils.cc, src/Makefile: Added StringUtils class.
+
+2005-10-16 17:56  dwm <dwm@mcplex.net>
+
+	* [r119] include/DwmPathUtils.hh, src/DwmPathUtils.cc,
+	  src/Makefile: Added PathUtils class.
+
+2005-10-16 17:55  dwm <dwm@mcplex.net>
+
+	* [r118] include/DwmIO.hh: Renamed ReadPair() to just Read()
+
+2005-10-15 06:48  dwm <dwm@mcplex.net>
+
+	* [r116] include/DwmIpv4Routes.hh: No longer using IOHashMap
+	  template class
+
+2005-10-15 06:43  dwm <dwm@mcplex.net>
+
+	* [r115] include/DwmIO.hh, include/DwmIODeque.hh,
+	  include/DwmIOHashMap.hh, include/DwmIOHashSet.hh,
+	  include/DwmIOList.hh, include/DwmIOMap.hh,
+	  include/DwmIOMultiMap.hh, include/DwmIOMultiSet.hh,
+	  include/DwmIOPair.hh, include/DwmIOSet.hh,
+	  include/DwmIOVector.hh, include/Makefile: Removed bogus template
+	  classes.
+
+2005-10-15 06:39  dwm <dwm@mcplex.net>
+
+	* [r114] tests/TestIOVector.cc: No longer using IOVector class
+
+2005-10-15 06:37  dwm <dwm@mcplex.net>
+
+	* [r113] tests/TestIOSet.cc: No longer using IOSet class
+
+2005-10-15 06:34  dwm <dwm@mcplex.net>
+
+	* [r112] tests/TestIOMultiSet.cc: No longer using IOMultiSet class,
+	  since it is bogus (don't inherit from a template instantiation!)
+
+2005-10-15 06:31  dwm <dwm@mcplex.net>
+
+	* [r111] tests/TestIOMultiMap.cc: No longer using IOMultiMap class,
+	  since it is bogus (don't inherit from a template instantiation!)
+
+2005-10-15 06:26  dwm <dwm@mcplex.net>
+
+	* [r110] tests/TestIOList.cc: No longer using IOList class, since
+	  it is bogus (don't inherit from a template instantiation!)
+
+2005-10-15 06:25  dwm <dwm@mcplex.net>
+
+	* [r109] tests/TestIOHashSet.cc: No longer using IOHashSet class,
+	  since it's bogus (don't inherit from template instantiation!)
+
+2005-10-15 06:21  dwm <dwm@mcplex.net>
+
+	* [r108] tests/TestIOHashMap.cc: No longer using IOHashMap class,
+	  since it was bogus (don't inherit from a template instantiation!).
+
+2005-10-15 06:17  dwm <dwm@mcplex.net>
+
+	* [r107] tests/TestIODeque.cc: No longer using IODeque class, since
+	  it's bogus.
+
+2005-10-15 06:13  dwm <dwm@mcplex.net>
+
+	* [r106] tests/TestIOMap.cc: No longer using IOMap template class,
+	  since it was bogus.
+
+2005-10-11 08:56  dwm <dwm@mcplex.net>
+
+	* [r103] include/DwmIpv4Routes.hh, tests/TestIpv4Routes.cc: Tweaks.
+
+2005-10-10 07:07  dwm <dwm@mcplex.net>
+
+	* [r102] include/DwmIpv4Address.hh, include/DwmIpv4Prefix.hh,
+	  include/DwmIpv4Routes.hh, src/DwmIpv4Address.cc,
+	  src/DwmIpv4Prefix.cc, tests/IPV4_prefixes.20051007,
+	  tests/Makefile, tests/TestIpv4Routes.cc: Tweaks for Ipv4Routes
+	  performance.
+
+2005-10-07 06:49  dwm <dwm@mcplex.net>
+
+	* [r101] include/DwmIpv4Routes.hh, tests/Makefile,
+	  tests/TestIpv4Routes.cc: Added Ipv4Routes class.
+
+2005-10-07 03:02  dwm <dwm@mcplex.net>
+
+	* [r100] include/DwmIOPair.hh, include/Makefile: Added IOPair
+	  class.
+
+2005-10-06 19:51  dwm <dwm@mcplex.net>
+
+	* [r99] include/DwmPcap.hh, src/DwmPcap.cc: Added Loop() and
+	  SetFilter().
+
+2005-10-06 07:39  dwm <dwm@mcplex.net>
+
+	* [r98] include/DwmPcap.hh, include/Makefile, src/DwmPcap.cc,
+	  src/Makefile: Added Pcap class.
+
+2005-10-05 10:07  dwm <dwm@mcplex.net>
+
+	* [r96] tests/TestIOList.cc, tests/TestIOMap.cc: unlink() our data
+	  file at end of program.
+
+2005-10-05 10:04  dwm <dwm@mcplex.net>
+
+	* [r95] tests/TestIODeque.cc, tests/TestIOHashMap.cc: unlink() our
+	  test data file at end of program.
+
+2005-10-05 10:01  dwm <dwm@mcplex.net>
+
+	* [r94] tests/TestIOMap.cc: Make things a little more complex by
+	  storing IOVector<std::string> in each IOMap value.
+
+2005-10-05 09:54  dwm <dwm@mcplex.net>
+
+	* [r93] include/DwmIO.hh: Added more to comments.
+
+2005-10-05 09:36  dwm <dwm@mcplex.net>
+
+	* [r92] include/DwmIO.hh: Fixed typo in comment.
+
+2005-10-05 09:33  dwm <dwm@mcplex.net>
+
+	* [r90] include/DwmIO.hh, include/DwmIOHashMap.hh,
+	  include/DwmIOHashSet.hh, include/DwmIOMultiSet.hh: Added first
+	  pass at multiset, hash_map and hash_set.
+
+2005-10-05 05:52  dwm <dwm@mcplex.net>
+
+	* [r88] include/DwmReadable.hh, include/DwmWritable.hh: Fixed
+	  comment for FILE I/O.
+
+2005-10-05 05:49  dwm <dwm@mcplex.net>
+
+	* [r87] include/DwmSignal.hh: Added comments.
+
+2005-10-05 05:46  dwm <dwm@mcplex.net>
+
+	* [r86] include/DwmIpv6Address.hh: Fixed more comments.
+
+2005-10-05 05:45  dwm <dwm@mcplex.net>
+
+	* [r85] include/DwmIpv6Address.hh: Fixed comments.
+
+2005-10-05 05:45  dwm <dwm@mcplex.net>
+
+	* [r84] src/DwmIpv6Address.cc: Changed Read(FILE *) and
+	  Write(FILE *) to return 1 on success, to emulate
+	  fread()/fwrite() semantics.
+
+2005-10-05 05:29  dwm <dwm@mcplex.net>
+
+	* [r82] doc/Doxyfile: Change file pattern to Dwm*.hh
+
+2005-10-05 05:28  dwm <dwm@mcplex.net>
+
+	* [r81] tests/Makefile, tests/TestIODeque.cc, tests/TestIOList.cc,
+	  tests/TestIOMap.cc, tests/TestIOSet.cc, tests/TestIOVector.cc:
+	  Added more simple tests.
+
+2005-10-03 04:08  dwm <dwm@mcplex.net>
+
+	* [r78] include/DwmRegistry.hh, src/DwmRegistry.lex: Added Reload()
+	  member.
+
+2005-10-03 03:50  dwm <dwm@mcplex.net>
+
+	* [r75] include/DwmDateTime.hh, include/Makefile,
+	  src/DwmDateTime.cc, src/Makefile, tests/Makefile,
+	  tests/TestDwmDateTime.cc: Added simple-stupid DateTime class.
+
+2005-10-03 02:39  dwm <dwm@mcplex.net>
+
+	* [r74] include/DwmTimeValue.hh, src/DwmTimeValue.cc: Added
+	  LocalTime() function.
+
+2005-10-03 02:21  dwm <dwm@mcplex.net>
+
+	* [r73] include/DwmTimeValue.hh, include/Makefile,
+	  src/DwmTimeValue.cc, src/Jamfile, src/Makefile: Added the
+	  TimeValue class.
+
+2005-10-03 01:19  dwm <dwm@mcplex.net>
+
+	* [r72] Jamfile: Added tests subdir.
+
+2005-10-03 01:19  dwm <dwm@mcplex.net>
+
+	* [r71] Makefile: Fixed copyright typo.
+
+2005-10-03 01:18  dwm <dwm@mcplex.net>
+
+	* [r70] src/DwmIpv6Address.cc, src/DwmIpv6Prefix.cc, src/Jamfile:
+	  Added CVS tags.
+
+2005-10-03 01:13  dwm <dwm@mcplex.net>
+
+	* [r69] include/Makefile: Added new header files to list.
+
+2005-10-03 00:57  dwm <dwm@mcplex.net>
+
+	* [r67] tests/TestDwmIO.cc: Added VectorFileTest()
+
+2005-10-03 00:56  dwm <dwm@mcplex.net>
+
+	* [r66] include/DwmIO.hh: Added remaining pair read/write members.
+
+2005-10-03 00:35  dwm <dwm@mcplex.net>
+
+	* [r65] include/DwmIO.hh, tests/TestDwmIO.cc: A bunch of
+	  tweaks/additions for container I/O.
+
+2005-10-02 18:24  dwm <dwm@mcplex.net>
+
+	* [r64] include/DwmIO.hh, include/DwmIpv4Address.hh,
+	  include/DwmIpv4Prefix.hh, src/DwmIpv4Address.cc,
+	  src/DwmIpv4Prefix.cc, tests/TestDwmIO.cc,
+	  tests/TestIpv4Prefix.cc: Various fixes. Added container I/O to
+	  DWm::IO class.
+
+2005-10-02 06:46  dwm <dwm@mcplex.net>
+
+	* [r63] include/DwmIO.hh, tests/TestDwmIO.cc: Added map read/write
+	  for iostreams.
+
+2005-10-02 06:03  dwm <dwm@mcplex.net>
+
+	* [r62] Makefile: Added tests to build.
+
+2005-10-02 06:01  dwm <dwm@mcplex.net>
+
+	* [r61] src/Makefile, src/TestDwmIO.cc, tests/Makefile,
+	  tests/TestDwmIO.cc, tests/TestIpv4Prefix.cc,
+	  tests/TestRegistry.cc, tests/registry.txt: Moved test code to
+	  tests subdirectory.
+
+2005-10-02 05:54  dwm <dwm@mcplex.net>
+
+	* [r60] include/DwmIpv4Prefix.hh, src/DwmIpv4Prefix.cc: Added
+	  Contains() members. Added construct-from-string constructor.
+
+2005-10-02 05:40  dwm <dwm@mcplex.net>
+
+	* [r59] include/DwmIpv4Address.hh, src/DwmIpv4Address.cc: Operator
+	  additions and tweaks.
+
+2005-10-02 05:39  dwm <dwm@mcplex.net>
+
+	* [r58] tests, tests/Makefile, tests/TestIpv4Prefix.cc,
+	  tests/TestIpv6Address.cc, tests/TestIpv6Prefix.cc, tests/deps:
+	  Simple test programs.
+
+2005-10-01 18:35  dwm <dwm@mcplex.net>
+
+	* [r57] include/DwmIpv6Address.hh, include/DwmIpv6Prefix.hh,
+	  src/DwmIpv6Address.cc, src/DwmIpv6Prefix.cc, src/Makefile: More
+	  conveniences.
+
+2005-10-01 07:05  dwm <dwm@mcplex.net>
+
+	* [r56] include/DwmIpv6Prefix.hh, src/DwmIpv6Prefix.cc: Fixed
+	  read/write functions to read and write the correct number of
+	  bytes.
+
+2005-10-01 06:29  dwm <dwm@mcplex.net>
+
+	* [r55] include/DwmIpv6Address.hh, include/DwmIpv6Prefix.hh:
+	  Comments.
+
+2005-09-30 15:52  dwm <dwm@mcplex.net>
+
+	* [r54] include/DwmIpv4Prefix.hh, src/DwmIpv4Prefix.cc: Added
+	  greater-than operator.
+
+2005-09-30 04:47  dwm <dwm@mcplex.net>
+
+	* [r53] include/DwmIpv6Prefix.hh, src/DwmIpv6Prefix.cc: Added
+	  equal-to operator.
+
+2005-09-30 04:43  dwm <dwm@mcplex.net>
+
+	* [r52] include/DwmIpv6Prefix.hh, src/DwmIpv6Prefix.cc: Added
+	  greater-than operator.
+
+2005-09-29 06:01  dwm <dwm@mcplex.net>
+
+	* [r51] include/DwmIpv6Prefix.hh, src/DwmIpv6Prefix.cc: Fixes for
+	  netmasking (SetBits()).
+
+2005-09-29 05:36  dwm <dwm@mcplex.net>
+
+	* [r50] include/DwmIpv6Prefix.hh, src/DwmIpv6Address.cc,
+	  src/DwmIpv6Prefix.cc, src/Makefile: Ipv6 fixes.
+
+2005-09-29 05:04  dwm <dwm@mcplex.net>
+
+	* [r49] include/DwmIpv6Address.hh, include/DwmIpv6Prefix.hh,
+	  src/DwmIpv6Address.cc, src/DwmIpv6Prefix.cc, src/Makefile: Added
+	  IPv6 prefix support. Not tested yet.
+
+2005-09-29 03:57  dwm <dwm@mcplex.net>
+
+	* [r48] include/DwmIpv4Prefix.hh: Added comments for Write(ostream
+	  &) and Read(istream &)
+
+2005-09-29 03:57  dwm <dwm@mcplex.net>
+
+	* [r47] src/DwmIpv4Prefix.cc: Qualify istream and ostream with std
+	  namespace.
+
+2005-09-20 16:54  dwm <dwm@mcplex.net>
+
+	* [r46] include/DwmIpv4Address.hh, include/DwmIpv6Address.hh,
+	  src/DwmIpv6Address.cc, src/Jamfile, src/Makefile: More tweaks for
+	  IPv6 and IPv4 addresses.
+
+2005-09-16 07:19  dwm <dwm@mcplex.net>
+
+	* [r45] include/DwmIpv6Address.hh, src/DwmIpv6Address.cc: First
+	  pass.
+
+2005-06-01 15:36  dwm <dwm@mcplex.net>
+
+	* [r41] include/DwmLogger.hh, include/DwmPthreadSignal.hh,
+	  include/DwmSignal.hh, include/Makefile, src/DwmPthreadSignal.cc,
+	  src/DwmSignal.cc, src/Makefile: Added Signal classes.
+
+2005-06-01 15:13  dwm <dwm@mcplex.net>
+
+	* [r40] src/DwmTimeUtil.lex, src/Makefile: Added TimeUtil stuff.
+
+2005-06-01 07:48  dwm <dwm@mcplex.net>
+
+	* [r38] include/DwmRegistry.hh: Added comments.
+
+2005-06-01 07:39  dwm <dwm@mcplex.net>
+
+	* [r37] include/DwmRegistry.hh, src/DwmRegistry.lex, src/Makefile:
+	  Added simple Registry class.
+
+2005-03-19 04:24  dwm <dwm@mcplex.net>
+
+	* [r33] src/DwmCgi.lex: include DwmCgi.hh, not Cgi.hh
+
+2005-03-19 04:23  dwm <dwm@mcplex.net>
+
+	* [r32] src/Cgi.lex, src/DwmCgi.lex, src/Makefile: Moved Cgi.lex to
+	  DwmCgi.lex
+
+2005-03-19 04:21  dwm <dwm@mcplex.net>
+
+	* [r31] include/Cgi.hh, include/DwmCgi.hh: Moved Cgi.hh to
+	  DwmCgi.hh
+
+2005-03-19 04:05  dwm <dwm@mcplex.net>
+
+	* [r29] src/Cgi.lex, src/Makefile: Added Cgi.lex
+
+2005-01-23 10:54  dwm <dwm@mcplex.net>
+
+	* [r28] include/DwmIO.hh: Added members to read and write floats
+	  and doubles.
+
+2004-02-25 23:08  dwm <dwm@mcplex.net>
+
+	* [r26] include/DwmConditionVariable.hh, include/DwmFifo.hh,
+	  include/DwmIO.hh, include/DwmIpv4Address.hh, include/DwmMutex.hh,
+	  include/DwmReadable.hh, include/DwmWritable.hh: Disclaimer blurb
+	  added.
+
+2004-02-25 19:46  dwm <dwm@mcplex.net>
+
+	* [r14] include/DwmMutex.hh, src/DwmMutex.cc, src/Makefile: Added
+	  my very old Mutex class.
+
+2004-02-24 18:42  dwm <dwm@mcplex.net>
+
+	* [r11] include/DwmIO.hh: Added comments for functions that operate
+	  on FILE pointers.
+
+2004-02-24 16:54  dwm <dwm@mcplex.net>
+
+	* [r10] include/DwmIO.hh: Added comments for iostream and file
+	  descriptor functions.
+
+2004-02-24 07:32  dwm <dwm@mcplex.net>
+
+	* [r2] .: Standard project directories initialized by cvs2svn.
+
