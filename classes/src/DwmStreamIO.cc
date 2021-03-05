@@ -187,7 +187,7 @@ namespace Dwm {
   std::ostream & StreamIO::Write(std::ostream & os, const std::string & s)
   {
     if (os) {
-      uint32_t  len = s.size();
+      uint64_t  len = s.size();
       if (Write(os, len)) {
         if (len > 0) {
           os.write(s.c_str(), len);
@@ -350,7 +350,7 @@ namespace Dwm {
   {
     s.clear();
     if (is) {
-      uint32_t  len;
+      uint64_t  len;
       if (StreamIO::Read(is, len)) {
         if (len > 0) {
           try {
