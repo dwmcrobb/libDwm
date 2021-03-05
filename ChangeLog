@@ -1,3 +1,11 @@
+2021-03-04  Daniel McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.9.6
+
+	* Removed obsoleted classes/src/DwmIO.cc
+
+	* Fixed StreamIO string read and write (need 64-bit lengths).
+
 2021-03-02  Daniel McRobb  <dwm@mcplex.net>
 
 	* New Ipv6PrefixMap class, new Ipv6AddrMap class, new Ipv4PrefixMap
