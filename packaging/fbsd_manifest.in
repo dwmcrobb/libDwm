@@ -10,7 +10,6 @@ licenselogic: "single"
 licenses: ["BSD"]
 categories: ["devel"]
 files: {
-  "@prefix@/bin/mcping":{uname: root, gname: wheel, perm: 04555}
 }
 scripts: {
   post-install: "#!/bin/sh\nldconfig @prefix@/lib\n"
