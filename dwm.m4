@@ -650,7 +650,7 @@ define(DWM_CHECK_NEED_LIBATOMIC,[
   AC_MSG_CHECKING([if we need libatomic])
   AC_LANG_PUSH(C++)
   prev_OSLIBS="$OSLIBS"
-  prev_LDFLAGS="$LDFLAGS"
+  prev_LIBS="$LIBS"
   AC_LINK_IFELSE(
     [AC_LANG_SOURCE([[
      #include <atomic>
@@ -660,14 +660,21 @@ define(DWM_CHECK_NEED_LIBATOMIC,[
          while (foo.exchange(true)) {
 	   count += 1;
 	 }
-       bool  bar = false;
+       bool  bar = foo.load();
+       foo.store(bar);
        foo = bar;
+       std::atomic<uint64_t> ulfoo;
+       ulfoo.store(count);
+       --ulfoo;
+       ulfoo -= 5;
+       uint64_t  ulbar = ulfoo.load();
+       std::atomic<int *>  aip;
      }
     ]])],
     [AC_MSG_RESULT(no)],
     [
      OSLIBS="$OSLIBS -latomic"
-     LDFLAGS="$LDFLAGS $OSLIBS"
+     LIBS="$LIBS -latomic"
      AC_LINK_IFELSE(
        [AC_LANG_SOURCE([[
         #include <atomic>
@@ -677,8 +684,15 @@ define(DWM_CHECK_NEED_LIBATOMIC,[
           while (foo.exchange(true)) {
  	    count += 1;
  	  }
-          bool  bar = false;
+          bool  bar = foo.load();
+	  foo.store(bar);
 	  foo = bar;
+          std::atomic<uint64_t> ulfoo;
+          ulfoo.store(count);
+	  --ulfoo;
+          ulfoo -= 5;
+	  uint64_t  ulbar = ulfoo.load();
+          std::atomic<int *>  aip;
         }
        ]])],
        [AC_MSG_RESULT(yes)],
@@ -687,7 +701,7 @@ define(DWM_CHECK_NEED_LIBATOMIC,[
      )
     ]
   )
-  LDFLAGS="$prev_LDFLAGS"
+  LIBS="$prev_LIBS"
   AC_LANG_POP()
 ])
     
@@ -731,9 +745,9 @@ define(DWM_CHECK_NEED_LIBRT,[
   AC_MSG_CHECKING([if we need librt])
   AC_LANG_PUSH(C++)
   NEED_LIBRT=0
-  prev_LDFLAGS="$LDFLAGS"
+  prev_LIBS="$LIBS"
   prev_OSLIBS="$OSLIBS"
-  LDFLAGS="$LDFLAGS $OSLIBS"
+  LIBS="$LIBS $OSLIBS"
   AC_LINK_IFELSE(
     [AC_LANG_SOURCE([[
      extern "C" {
@@ -748,11 +762,11 @@ define(DWM_CHECK_NEED_LIBRT,[
      }
     ]])],
     [AC_MSG_RESULT(no)
-     LDFLAGS="$prev_LDFLAGS"
+     LIBS="$prev_LIBS"
      OSLIBS="$prev_OSLIBS"],
     [
      OSLIBS="$OSLIBS -lrt"
-     LDFLAGS="$prev_LDFLAGS $OSLIBS"
+     LIBS="$LIBS -lrt"
      AC_LINK_IFELSE(
        [AC_LANG_SOURCE([[
         extern "C" {
@@ -768,12 +782,12 @@ define(DWM_CHECK_NEED_LIBRT,[
        ]])],
        [AC_MSG_RESULT(yes)],
        [AC_MSG_RESULT(no)
-        LDFLAGS="$prev_LDFLAGS"
+        LIBS="$prev_LIBS"
 	OSLIBS="$prev_OSLIBS"]
      )
     ]
   )
-  LDFLAGS="$prev_LDFLAGS"
+  LIBS="$prev_LIBS"
   AC_LANG_POP()
 ])
 
