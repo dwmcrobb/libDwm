@@ -1,3 +1,10 @@
+2022-04-16  Daniel McRobb  <dwm@mcplex.net>
+
+	* Added Dwm::GitVersion class.  This is primitive but suits my
+	personal needs for now.
+
+	* 'dwmwhat' will now remove the '@(#) ' found in SCCS style strings.
+
 2021-03-04  Daniel McRobb  <dwm@mcplex.net>
 
 	* tagged as libDwm-0.9.6
