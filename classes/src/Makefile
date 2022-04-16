@@ -18,6 +18,7 @@ OBJFILESNP =	DwmASIO.o \
 		DwmFileLogger.o \
 		DwmFileRoller.o \
 		DwmGetAddrInfo.o \
+                DwmGitVersion.o \
 		DwmGZIO.o \
 		DwmGroup.o \
 		DwmIpAddress.o \

@@ -27,6 +27,7 @@ TestDwmTermios
 TestEngFormat
 TestFileRoller
 TestGetAddrInfo
+TestGitVersion
 TestGroup
 TestHostPinger
 TestIODeque

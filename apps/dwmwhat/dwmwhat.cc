@@ -106,7 +106,10 @@ static void LineMatch(const string & line, const string & tagName)
       }
     }
     else {
-      cout << lookMatch[0] << '\n';
+      string  s(regex_replace(lookMatch[0].str(),regex("^\\@\\(#\\) *"), ""));
+      if (! s.empty()) {
+        cout << s << '\n';
+      }
     }
   }
   return;

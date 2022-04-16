@@ -25,6 +25,7 @@ OBJFILES = TestASIO.o \
 	   TestEngFormat.o \
 	   TestFileRoller.o \
 	   TestGetAddrInfo.o \
+	   TestGitVersion.o \
 	   TestGroup.o \
 	   TestHostPinger.o \
 	   TestIODeque.o \
