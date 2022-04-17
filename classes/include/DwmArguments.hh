@@ -748,12 +748,21 @@ namespace Dwm {
     {
       namespace Tuples = Dwm::TupleHelpers;
       bool  rc = true;
+      bool  foundConflict = false;
       Tuples::ForEach(_args,
                       [&rc, this] (auto e)
                       { if (e.Required()
                             && (_gotArgs.find(e.OptChar())
                                 == _gotArgs.end())) {
-                          rc = false;
+                          for (auto c : e.Conflicts()) {
+                            if (_gotArgs.find(c) != _gotArgs.end()) {
+                              foundConflict = true;
+                              break;
+                            }
+                          }
+                          if (! foundConflict) {
+                            rc = false;
+                          }
                         }
                       });
       return rc;
