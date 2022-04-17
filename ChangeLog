@@ -1,5 +1,9 @@
 2022-04-16  Daniel McRobb  <dwm@mcplex.net>
 
+	* classes/include/DwmArguments.hh:
+	Allow required arguments check to pass if we have a conflicting
+	argument.  This allows conflicting required arguments.
+
 	* classes/include/DwmTupleHelpers.hh: Removed g_svnid string.
 
 	* tagged as libDwm-0.9.9
