@@ -1,5 +1,7 @@
 2022-04-16  Daniel McRobb  <dwm@mcplex.net>
 
+	* tagged as libDwm-0.9.10
+
 	* classes/include/DwmArguments.hh:
 	Allow required arguments check to pass if we have a conflicting
 	argument.  This allows conflicting required arguments.
