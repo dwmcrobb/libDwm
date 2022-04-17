@@ -750,7 +750,7 @@ namespace Dwm {
       bool  rc = true;
       bool  foundConflict = false;
       Tuples::ForEach(_args,
-                      [&rc, this] (auto e)
+                      [&rc, &foundConflict, this] (auto e)
                       { if (e.Required()
                             && (_gotArgs.find(e.OptChar())
                                 == _gotArgs.end())) {
