@@ -105,8 +105,6 @@ namespace Dwm {
               });
     }
 
-    static const std::string  g_svnid("@(#) $DwmPath: dwm/libDwm/trunk/include/DwmTupleHelpers.hh 11636 $");
-    
   }  // namespace TupleHelpers
 
 }  // namespace Dwm
