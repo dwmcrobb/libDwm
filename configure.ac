@@ -21,13 +21,9 @@ KVMLIB="-lkvm"
 LIBTOOL="libtool"
 
 case $host_os in
-  freebsd[[89]]*)
-    CXXFLAGS="-O2"
-    LDFLAGS="-static"
-    ;;
   freebsd1[[0123]]*)
     CXXFLAGS="-O2"
-    LDFLAGS="-static"
+    LDFLAGS=""
     ;;
   linux*)
     CXXFLAGS="-O2"
