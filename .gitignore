@@ -3,5 +3,6 @@ Makefile.vars
 autom4te.cache/**
 config.log
 config.status
+libDwm-*.pkg
 libDwm_*.deb
 staging/**
