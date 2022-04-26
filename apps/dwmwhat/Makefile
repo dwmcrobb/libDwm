@@ -17,7 +17,7 @@ dwmwhat: ${OBJFILES} ../../classes/lib/libDwm.la
 tarprep: ${TARTARGETS}
 
 ${TARDIR}/bin/dwmwhat: dwmwhat
-	../../install-sh -s -c -m 555 $< $@
+	${LIBTOOL} --mode=install ../../install-sh -s -c -m 555 $< $@
 
 ${TARDIR}/man/man1/dwmwhat.1: dwmwhat.1
 	../../install-sh -c -m 644 $< $@
@@ -50,4 +50,4 @@ clean:: clean-tarprep
 	${LIBTOOL} --mode=clean rm -f dwmwhat ${OBJFILES}
 
 clean-tarprep::
-	rm -f ${TARDIR}/bin/dwmwhat
+	${LIBTOOL} --mode=uninstall rm -f ${TARDIR}/bin/dwmwhat
