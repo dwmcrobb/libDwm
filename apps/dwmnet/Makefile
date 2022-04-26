@@ -5,12 +5,12 @@ OBJFILES	= dwmnet.o
 OBJDEPS		= $(OBJFILES:%.o=deps/%_deps)
 
 dwmnet: ${OBJFILES} ../../classes/lib/libDwm.la
-	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} ${PTHREADLDFLAGS} -o $@ $^ ${ZLIB} ${BZLIB} -static
+	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} ${PTHREADLDFLAGS} -o $@ $^ -rpath ${INSTALLPREFIX}/lib ${ZLIB} ${BZLIB}
 
 tarprep: ${TARDIR}/bin/dwmnet
 
 ${TARDIR}/bin/dwmnet: dwmnet
-	../../install-sh -s -c -m 555 $< $@
+	${LIBTOOL} --mode=install ../../install-sh -s -c -m 555 $< $@
 
 #  dependency rule
 deps/%_deps: %.cc
@@ -32,8 +32,8 @@ dwmnet.o: dwmnet.cc
 	${MAKE} -C ../../classes/src
 
 clean:: clean-tarprep
-	rm -f dwmnet ${OBJFILES}
+	${LIBTOOL} --mode=clean rm -f dwmnet ${OBJFILES}
 
 clean-tarprep::
-	rm -f ${TARDIR}/bin/dwmnet
+	${LIBTOOL} --mode=uninstall rm -f ${TARDIR}/bin/dwmnet
 
