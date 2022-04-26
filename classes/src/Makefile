@@ -88,10 +88,7 @@ OBJDEPS         = $(OBJFILESNP:%.o=deps/%_deps)
 all:: ../lib/libDwm.la
 
 ../lib/libDwm.la: ${SHARED_OBJFILES}
-	${LIBTOOL} --tag=CXX --mode=link ${CXX} -o $@ $^ -rpath ${INSTALLPREFIX}/lib ${ZLIB} ${BZLIB} ${PCAPLIB} ${KVMLIB} -version-info ${shlib_version} ${LDFLAGS}
-
-../lib/libDwm${SHARED_LIB_EXT}: ${OBJFILES}
-	${CXX} ${LD_SHARED_FLAGS} -o $@ $^
+	${LIBTOOL} --tag=CXX --mode=link ${CXX} -no-suppress -o $@ $^ -rpath ${INSTALLPREFIX}/lib ${ZLIB} ${BZLIB} ${TERMCAPLIB} ${PCAPLIB} ${KVMLIB} -version-info ${shlib_version} ${LDFLAGS}
 
 #  dependency rule
 deps/%_deps: %.cc
@@ -108,24 +105,11 @@ ifneq ($(MAKECMDGOALS),distclean)
 endif
 endif
 
-../obj/%.lo ../obj/%.o: %.cc deps/%_deps
-	${LIBTOOL} --mode=compile --tag=CXX ${CXX} ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC} -c $< -o $@
+../obj/%.o ../obj/%.lo: %.cc deps/%_deps
+	${LIBTOOL} --mode=compile --tag=CXX ${CXX} -no-suppress ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC} -c $< -o $@
 
 %.cc: %.ll
 	flex -o$@ $<
-
-DwmXmlElementParse.cc DwmXmlElementParse.hh: DwmXmlElementParse.bb
-	bison -d -o$@ $<
-
-DwmFreeBSDPkgManifestParse.hh: DwmFreeBSDPkgManifestParse.cc
-
-DwmFreeBSDPkgManifestParse.cc: DwmFreeBSDPkgManifestParse.yy
-	bison -d -o$@ $<
-
-install::
-	../../install-sh -c -m 444 ../lib/.libs/libDwm.a ${INSTALLPREFIX}/lib/libDwm.a
-
-uninstall: clean-install
 
 tarprep: ${TARDIR}/lib/libDwm.la
 
@@ -134,15 +118,11 @@ ${TARDIR}/lib/libDwm.la: ../lib/libDwm.la
 
 clean:: clean-tarprep
 	${LIBTOOL} --mode=clean rm -f ../lib/libDwm.la ${OBJFILES} DwmCgi.cc \
-	 DwmExecutor.cc DwmFreeBSDPkgManifestLex.cc *Parse.cc *Parse.hh \
-	 DwmTimeUtil.cc ${SHARED_OBJFILES}
+	 DwmExecutor.cc DwmTimeUtil.cc ${SHARED_OBJFILES}
 
 distclean:: clean
 	rm -f deps/*_deps
 	rm DwmPackageInfo.cc
-
-clean-install::
-	rm -f ${INSTALLPREFIX}/lib/libDwm.a
 
 clean-tarprep::
 	${LIBTOOL} --mode=clean rm -f ${TARDIR}/lib/libDwm.la
