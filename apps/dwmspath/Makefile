@@ -11,7 +11,7 @@ dwmspath: ${OBJFILES} ../../classes/lib/libDwm.la
 tarprep: ${TARDIR}/bin/dwmspath
 
 ${TARDIR}/bin/dwmspath: dwmspath
-	../../install-sh -s -c -m 555 $< $@
+	${LIBTOOL} --mode=install ../../install-sh -s -c -m 555 $< $@
 
 #  dependency rule
 deps/%_deps: %.cc
@@ -36,4 +36,4 @@ clean:: clean-tarprep
 	${LIBTOOL} --mode=clean rm -f dwmspath ${OBJFILES}
 
 clean-tarprep::
-	rm -f ${TARDIR}/bin/dwmspath
+	${LIBTOOL} --mode=uninstall rm -f ${TARDIR}/bin/dwmspath
