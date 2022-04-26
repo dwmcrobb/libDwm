@@ -346,6 +346,10 @@ define(DWM_SET_CXX_SHARED_FLAGS,[
       LD_SHARED_FLAGS="-dynamiclib"
       SHARED_LIB_EXT=".dylib"
       ;;
+    linux*)
+      CXX_SHARED_FLAGS="-fPIC"
+      LD_SHARED_FLAGS="-shared"
+      ;;
     *)
       ;;
   esac
