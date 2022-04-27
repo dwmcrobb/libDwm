@@ -51,7 +51,10 @@ using namespace Dwm;
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  int  prevDay = 0;
+  time_t     now = time((time_t *)0);
+  struct tm  now_tm;
+  localtime_r(&now, &now_tm);
+  int  prevDay = now_tm.tm_mday;
   for (int i = 1; i <= 1000; ++i) {
     time_t     then = TimeUtil::MidnightDaysLater(i);
     struct tm  then_tm;
