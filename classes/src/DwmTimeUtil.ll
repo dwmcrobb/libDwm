@@ -292,22 +292,29 @@ namespace Dwm {
   time_t TimeUtil::MidnightDaysLater(int daysLater)
   { 
     time_t     rc = 0;
-    time_t     then = time((time_t *)0) + (daysLater * 24 * 60 * 60);
+    time_t     now = time((time_t *)0);
+    struct tm  now_tm;
+    time_t     then = now + (daysLater * 24 * 60 * 60);
     struct tm  then_tm;
     if (localtime_r(&then, &then_tm) == &then_tm) {
       struct tm  midnight_tm = then_tm;
       midnight_tm.tm_hour = 0;
       midnight_tm.tm_min = 0;
       midnight_tm.tm_sec = 0;
+      midnight_tm.tm_isdst = -1;
       time_t  midnight = mktime(&midnight_tm);
       //  Adjust for case where midnight time is not same as 'then' time
       //  with respect to daylight savings time.
       if (localtime_r(&midnight, &midnight_tm) == &midnight_tm) {
         rc = mktime(&midnight_tm);
-        if (midnight_tm.tm_isdst && (! then_tm.tm_isdst)) {
+        if (midnight_tm.tm_isdst
+            && now_tm.tm_isdst
+            && (! then_tm.tm_isdst)) {
           rc -= 3600;
         }
-        else if ((! midnight_tm.tm_isdst) && then_tm.tm_isdst) {
+        else if ((! midnight_tm.tm_isdst)
+                 && (! now_tm.tm_isdst)
+                 && then_tm.tm_isdst) {
           rc += 3600;
         }
       }
