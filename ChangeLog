@@ -1,7 +1,18 @@
+2022-04-27  Daniel McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.9.12
+	
+	* classes/tests/TestTimeUtils.cc: Set start day to current day.
+
+	* classes/src/DwmTimeUtil.ll: Fix TimeUtil::MidnightDaysLater();
+	it was off by one when current time zone was in daylight savings
+	time and the days later fell on the day of change to standard time.
+	Aside: I really want C++20 calendar and time zones...
+
 2022-04-26  Daniel W. McRobb  <dwm@mcplex.net>
 
 	* tagged as libDwm-0.9.11
-	
+
 	* Build shared library again (missing for many versions).
 
 2022-04-16  Daniel McRobb  <dwm@mcplex.net>
