@@ -1,7 +1,9 @@
 2022-04-27  Daniel McRobb  <dwm@mcplex.net>
 
+	* apps/dwmnet/Makefile: add ${OSLIBS} when linking.
+
 	* tagged as libDwm-0.9.12
-	
+
 	* classes/tests/TestTimeUtils.cc: Set start day to current day.
 
 	* classes/src/DwmTimeUtil.ll: Fix TimeUtil::MidnightDaysLater();
