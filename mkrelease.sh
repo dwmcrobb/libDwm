@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if test "$#" -ne 1; then
+    echo "usage: $0 tagname"
+    exit 1
+fi
+
 TAGNAME=$1
 
 echo "${TAGNAME}" > latest_release
