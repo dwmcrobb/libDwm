@@ -289,6 +289,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
+#if 0
   time_t TimeUtil::MidnightDaysLater(int daysLater)
   { 
     time_t     rc = 0;
@@ -321,6 +322,36 @@ namespace Dwm {
     }
     return rc;
   }
+#else
+  time_t TimeUtil::MidnightDaysLater(int daysLater)
+  { 
+    time_t     rc = 0;
+    time_t     now = time((time_t *)0);
+    struct tm  now_tm;
+    if (localtime_r(&now, &now_tm) == &now_tm) {
+      now_tm.tm_hour = 0;
+      now_tm.tm_min = 0;
+      now_tm.tm_sec = 0;
+      now_tm.tm_isdst = -1;
+      time_t  midnightToday = mktime(&now_tm);
+      time_t  then = midnightToday + ((int64_t)daysLater * 24 * 60 * 60);
+      struct tm  then_tm;
+      if (localtime_r(&then, &then_tm) == &then_tm) {
+        rc = then;
+        if (now_tm.tm_isdst != then_tm.tm_isdst) {
+          if (now_tm.tm_isdst) {
+            rc += 3600;
+          }
+          else {
+            rc -= 3600;
+          }
+        }
+      }
+    }
+    return rc;
+  }
+
+#endif
 
 }  // namespace Dwm
 
