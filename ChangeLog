@@ -1,7 +1,12 @@
+2022-04-28  Daniel McRobb  <dwm@mcplex.net>
+
+	* Added mkarchive.sh convenience script to create a source archive
+	after I tag a release.
+
 2022-04-27  Daniel McRobb  <dwm@mcplex.net>
 
 	* tagged as libDwm-0.9.14
-	
+
 	* mkrelease.sh, getvers.sh: Simplify creating a tagged release.
 
 	* tagged as libDwm-0.9.13
