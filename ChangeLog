@@ -1,5 +1,7 @@
 2022-04-27  Daniel McRobb  <dwm@mcplex.net>
 
+	* tagged as libDwm-0.9.13
+
 	* classes/src/DwmTimeUtil.ll: Fix TimeUtil::MidnightDaysLater()
 	again; it was off by an hour on days that were not in same daylight
 	savings state as current date on FreeBSD.
