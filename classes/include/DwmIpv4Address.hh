@@ -332,6 +332,10 @@ namespace Dwm {
     friend std::ostream & operator << (std::ostream & os, 
                                        const Ipv4Address & addr);
 
+    //------------------------------------------------------------------------
+    //!  Apply a @c mask (bitwise AND) to the given @c addr and return
+    //!  the result.
+    //------------------------------------------------------------------------
     friend Ipv4Address operator & (const Ipv4Address & addr,
                                    const Ipv4Address & mask);
 
