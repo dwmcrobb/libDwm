@@ -1,5 +1,7 @@
-2022-05-09  dwm  <dwmcrobb@me.com>
+2022-05-08  dwm  <dwmcrobb@me.com>
 
+	* tagged as libDwm-0.9.15
+	
 	* mkrelease.sh: prompt before creating release.
 
 2022-04-27  Daniel McRobb  <dwm@mcplex.net>
