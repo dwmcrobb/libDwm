@@ -252,6 +252,7 @@ namespace Dwm {
                          [&] { return _signalled.load(); })) {
           rc = true;
         }
+        _signalled = false;
         Unlock();
         return(rc);
       }
@@ -319,17 +320,19 @@ namespace Dwm {
       template <class Rep, class Period>
       bool TimedWaitForNotEmpty(const std::chrono::duration<Rep, Period> & timeToWait)
       {
-        bool  rc = false;
-        if (_queue.empty()) {
-          if (ConditionTimedWait(timeToWait)) {
-            if (! _queue.empty()) {
-              rc = true;
-            }
-          }
-        }
-        else {
+        bool rc = false;
+        Lock();
+        if (! _queue.empty()) {
           rc = true;
         }
+        else {
+          if (_cv.wait_for(_lock, timeToWait,
+                           [&] { return _signalled.load(); })) {
+            rc = (! _queue.empty());
+          }
+        }
+        _signalled = false;
+        Unlock();
         return(rc);
       }
      
