@@ -1,3 +1,11 @@
+2022-12-10  Daniel McRobb  <dwm@mcplex.net>
+
+	* classes/include/DwmBZ2IO.hh: Finally got around to adding bz2
+	I/O for	std::array.
+
+	* classes/include/DwmStreamIO.hh, classes/tests/TestDwmIO.cc:
+	Finally got around to adding iostream I/O for std::array.
+
 2022-12-09  dwm  <dwmcrobb@me.com>
 
 	* classes/include/DwmFileIO.hh, classes/tests/TestDwmIO.cc:
