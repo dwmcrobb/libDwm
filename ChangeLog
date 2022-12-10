@@ -1,3 +1,8 @@
+2022-12-09  dwm  <dwmcrobb@me.com>
+
+	* classes/include/DwmDescriptorIO.hh, classes/tests/TestDwmIO.hh:
+	Finally got around to adding descriptor I/O for std::array.
+
 2022-11-19  Daniel McRobb  <dwm@mcplex.net>
 
 	* tagged as libDwm-0.9.16

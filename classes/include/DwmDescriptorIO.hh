@@ -42,6 +42,7 @@
 #ifndef _DWMDESCRIPTORIO_HH_
 #define _DWMDESCRIPTORIO_HH_
 
+#include <array>
 #include <cassert>
 #include <cstdint>
 #include <cstdio>
@@ -67,8 +68,8 @@ namespace Dwm {
   //!  This class contains a collection of static functions for reading and
   //!  writing simple types, in network byte order (MSB first).  It also
   //!  contains functions to read and write strings.  It also contains
-  //!  function templates to read and write STL deques, lists, vectors, maps, 
-  //!  multimaps, sets, multisets, unordered_maps, unordered_multimaps,
+  //!  function templates to read and write arrays, deques, lists, vectors,
+  //!  maps, multimaps, sets, multisets, unordered_maps, unordered_multimaps,
   //!  unordered_sets, unordered_multisets, tuples and variants.
   //!  We use our member functions to handle reading and writing simple
   //!  types in the containers, and function templates to handle reading 
@@ -350,6 +351,48 @@ namespace Dwm {
     Write(int fd, const std::multimap<_keyT,_valueT, _Compare, _Alloc> & m)
     {
       return(ContainerWrite<std::multimap<_keyT,_valueT,_Compare,_Alloc> >(fd, m));
+    }
+
+    //------------------------------------------------------------------------
+    //!  Read an array<_valueT,N> from a file descriptor.  Returns the
+    //!  number of bytes read on success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename _valueT, std::size_t N>
+    static ssize_t Read(int fd, std::array<_valueT, N> & a)
+    {
+      ssize_t  rc = 0;
+      for (std::size_t i = 0; i < N; ++i) {
+        ssize_t  bytesRead = Read(fd, a[i]);
+        if (bytesRead > 0) {
+          rc += bytesRead;
+        }
+        else {
+          rc = -1;
+          break;
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes an array<_valueT,N> to a file descriptor.  Returns the number
+    //!  of bytes written on success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename _valueT, std::size_t N>
+    static ssize_t Write(int fd, const std::array<_valueT, N> & a)
+    {
+      ssize_t  rc = 0;
+      for (std::size_t i = 0; i < N; ++i) {
+        ssize_t  bytesWritten = Write(fd, a[i]);
+        if (bytesWritten > 0) {
+          rc += bytesWritten;
+        }
+        else {
+          rc = -1;
+          break;
+        }
+      }
+      return rc;
     }
     
     //------------------------------------------------------------------------

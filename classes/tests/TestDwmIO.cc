@@ -865,6 +865,46 @@ static bool VectorDescriptorTest()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static bool ArrayDescriptorTest()
+{
+  bool  rc = false;
+  string  fn("/tmp/DWMArrayDescriptorTest");
+  array<Ipv4Prefix,2>
+    a1({Ipv4Prefix("192.168.168/24"),
+        Ipv4Prefix("10/8")});
+  int fd = open(fn.c_str(), O_WRONLY|O_CREAT, 0644);
+  if (fd >= 0) {
+    IO::Write(fd, a1);
+    close(fd);
+
+    fd = open(fn.c_str(), O_RDONLY);
+    if (fd >= 0) {
+      array<Ipv4Prefix,2>  a2;
+      if (IO::Read(fd, a2) > 0) {
+        if (a1 == a2) {
+          rc = true;
+        }
+      }
+      close(fd);
+    }
+    else {
+      cerr << "Failed to open '" << fn.c_str() << "' for reading: "
+           << strerror(errno) << endl;
+    }
+    std::remove(fn.c_str());
+  }
+  else {
+    cerr << "Failed to open '" << fn.c_str() << "' for writing: "
+         << strerror(errno) << endl;
+  }
+
+  UnitAssert(rc == true);
+  return(rc);
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static bool DequeStreamTest()
 {
   bool  rc = false;
@@ -1138,6 +1178,8 @@ int main(int argc, char *argv[])
   if (! VectorFileTest())
     goto testFailed;
   if (! VectorDescriptorTest())
+    goto testFailed;
+  if (! ArrayDescriptorTest())
     goto testFailed;
   if (! DequeStreamTest())
     goto testFailed;
