@@ -115,7 +115,7 @@ static bool WriteTestBlob(gzFile gzf)
       }
     }
   }
-
+      
   UnitAssert(rc);
   return(rc);
 }
@@ -224,9 +224,7 @@ static bool GZIOTest()
              << strerror(errno) << endl;
       }
     }
-    else {
-      gzclose(gzf);
-    }
+    gzclose(gzf);
     std::remove("/tmp/DWMGZIOTest.gz");
   }
   else {
@@ -279,6 +277,46 @@ static bool MapGZIOTest()
          << endl;
   }
   
+  UnitAssert(rc);
+  return(rc);
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static bool ArrayGZIOTest()
+{
+  bool  rc = false;
+  string  fn("/tmp/DWMArrayGZIOTest.gz");
+  array<Ipv4Prefix,2>
+    a1({Ipv4Prefix("192.168.168/24"),
+        Ipv4Prefix("10/8")});
+  
+  gzFile  gzf = gzopen(fn.c_str(), "wb");
+  if (gzf) {
+    GZIO::Write(gzf, a1);
+    gzclose(gzf);
+
+    gzf = gzopen(fn.c_str(), "rb");
+    if (gzf) {
+      array<Ipv4Prefix,2>  a2;
+      if (GZIO::Read(gzf, a2) > 0) {
+        if (a1 == a2) {
+          rc = true;
+        }
+      }
+      gzclose(gzf);
+    }
+    else {
+      cerr << "Failed to gzopen '" << fn.c_str() << "' for reading: "
+           << strerror(errno) << endl;
+    }
+    std::remove(fn.c_str());
+  }
+  else {
+    cerr << "Failed to gzopen '" << fn.c_str() << "' for writing: "
+         << strerror(errno) << endl;
+  }
   UnitAssert(rc);
   return(rc);
 }
@@ -473,8 +511,8 @@ void TestNullGzfile()
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  
   GZIOTest();
+  ArrayGZIOTest();
   MapGZIOTest();
   VectorGZIOTest();
   DequeGZIOTest();
