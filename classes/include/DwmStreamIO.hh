@@ -42,6 +42,7 @@
 #ifndef _DWMSTREAMIO_HH_
 #define _DWMSTREAMIO_HH_
 
+#include <array>
 #include <cassert>
 #include <cstdint>
 #include <cstdio>
@@ -67,8 +68,8 @@ namespace Dwm {
   //!  This class contains a collection of static functions for reading and
   //!  writing simple types, in network byte order (MSB first).  It also
   //!  contains functions to read and write strings.  It also contains
-  //!  function templates to read and write deques, lists, vectors, maps, 
-  //!  multimaps, sets, multisets, unordered_maps, unordered_multimaps,
+  //!  function templates to read and write arrays, deques, lists, vectors,
+  //!  maps, multimaps, sets, multisets, unordered_maps, unordered_multimaps,
   //!  unordered_sets, unordered_multisets, tuples and variants.
   //!  We use our member functions to handle reading and writing simple
   //!  types in the containers, and function templates to handle reading 
@@ -314,6 +315,40 @@ namespace Dwm {
       return(ContainerWrite<std::multimap<_keyT,_valueT,_Compare,_Alloc> >(os, m));
     }
 
+    //------------------------------------------------------------------------
+    //!  Reads an array<_valueT,N> from an istream.  Returns the istream.
+    //------------------------------------------------------------------------
+    template <typename _valueT, size_t N>
+    static std::istream & Read(std::istream & is,
+                               std::array<_valueT, N> & a)
+    {
+      if (is) {
+        for (size_t i = 0; i < N; ++i) {
+          if (! Read(is, a[i])) {
+            break;
+          }
+        }
+      }
+      return is;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes an array<_valueT,N> to an ostream.  Returns the ostream.
+    //------------------------------------------------------------------------
+    template <typename _valueT, size_t N>
+    static std::ostream & Write(std::ostream & os,
+                                const std::array<_valueT, N> & a)
+    {
+      if (os) {
+        for (size_t i = 0; i < N; ++i) {
+          if (! Write(os, a[i])) {
+            break;
+          }
+        }
+      }
+      return os;
+    }
+    
     //------------------------------------------------------------------------
     //!  Reads a vector<_valueT> from an istream.  Returns the istream.
     //------------------------------------------------------------------------
