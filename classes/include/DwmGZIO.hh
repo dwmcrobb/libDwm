@@ -47,6 +47,7 @@ extern "C" {
   #include <sys/types.h>
 }
 
+#include <array>
 #include <cstdio>
 #include <deque>
 #include <iostream>
@@ -71,7 +72,7 @@ namespace Dwm {
   //!  writing simple types in network byte order (MSB first) from/to gzip
   //!  files.  It also contains functions to read and write strings from/to
   //!  gzip files.  It also contains function templates to read and write 
-  //!  deques, lists, vectors, maps, multimaps, sets, multisets,
+  //!  arrays, deques, lists, vectors, maps, multimaps, sets, multisets,
   //!  unordered_maps, unordered_multimaps, unordered_sets,
   //!  unordered_multisets, tuples and variants from/to gzip files.  We use
   //!  our member functions to handle reading and writing simple types in
@@ -338,7 +339,49 @@ namespace Dwm {
     {
       return(ContainerWrite<std::multimap<_keyT,_valueT,_Compare,_Alloc> >(gzf, m));
     }
-    
+
+    //------------------------------------------------------------------------
+    //!  Reads an array<_valueT,N> from a gzFile.  Returns the number
+    //!  of bytes read on success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename _valueT, size_t N>
+    static int Read(gzFile gzf, std::array<_valueT, N> & a)
+    {
+      int  rc = 0;
+      for (size_t i = 0; i < N; ++i) {
+        int  bytesRead = Read(gzf, a[i]);
+        if (bytesRead > 0) {
+          rc += bytesRead;
+        }
+        else {
+          rc = -1;
+          break;
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes an array<_valueT,N> to a gzFile.  Returns the number
+    //!  of bytes written on success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename _valueT, size_t N>
+    static int Write(gzFile gzf, const std::array<_valueT, N> & a)
+    {
+      int  rc = 0;
+      for (size_t i = 0; i < N; ++i) {
+        int  bytesWritten = Write(gzf, a[i]);
+        if (bytesWritten > 0) {
+          rc += bytesWritten;
+        }
+        else {
+          rc = -1;
+          break;
+        }
+      }
+      return rc;
+    }
+
     //------------------------------------------------------------------------
     //!  Reads a vector<_valueT> from a gzFile.  Returns the number
     //!  of bytes read on success, -1 on failure.
@@ -723,10 +766,12 @@ namespace Dwm {
               Write<typename _containerT::const_iterator>(gzf,
                                                           c.begin(), 
                                                           c.end());
-            if (bytesWritten > 0)
+            if (bytesWritten > 0) {
               rc += bytesWritten;
-            else
+            }
+            else {
               rc = -1;
+            }
           }
         }
       }
