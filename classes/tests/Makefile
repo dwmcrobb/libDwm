@@ -81,7 +81,9 @@ endif
 OBJDEPS	 = $(OBJFILES:%.o=deps/%_deps)
 TESTS	 = $(OBJFILES:%.o=%)
 CXXFLAGS += -g
+# CXXFLAGS += -fsanitize=address
 LDFLAGS  += -g
+# LDFLAGS += -fsanitize=address
 ALLINC   = -I../include ${BZINC} ${BOOSTINC}
 OSLIBS   += -lxxhash
 
