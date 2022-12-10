@@ -1,6 +1,9 @@
 2022-12-09  dwm  <dwmcrobb@me.com>
 
-	* classes/include/DwmDescriptorIO.hh, classes/tests/TestDwmIO.hh:
+	* classes/include/DwmFileIO.hh, classes/tests/TestDwmIO.cc:
+	Finally got around to adding FILE I/O for std::array.
+
+	* classes/include/DwmDescriptorIO.hh, classes/tests/TestDwmIO.cc:
 	Finally got around to adding descriptor I/O for std::array.
 
 2022-11-19  Daniel McRobb  <dwm@mcplex.net>

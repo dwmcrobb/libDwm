@@ -865,6 +865,48 @@ static bool VectorDescriptorTest()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static bool ArrayFileTest()
+{
+  bool  rc = false;
+  string  fn("/tmp/DWMArrayFileTest");
+  
+  array<Ipv4Prefix,2>
+    a1({Ipv4Prefix("192.168.168/24"),
+        Ipv4Prefix("10/8")});
+  
+  FILE  *f = fopen(fn.c_str(), "w");
+  if (f) {
+    IO::Write(f, a1);
+    fclose(f);
+
+    f = fopen(fn.c_str(), "r");
+    if (f) {
+      array<Ipv4Prefix,2>  a2;
+      if (IO::Read(f, a2)) {
+        if (a1 == a2) {
+          rc = true;
+        }
+      }
+      fclose(f);
+    }
+    else {
+      cerr << "Failed to open '" << fn.c_str() << "' for reading: "
+           << strerror(errno) << endl;
+    }
+    std::remove(fn.c_str());
+  }
+  else {
+    cerr << "Failed to open '" << fn.c_str() << "' for writing: "
+         << strerror(errno) << endl;
+  }
+  
+  UnitAssert(rc == true);
+  return(rc);
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static bool ArrayDescriptorTest()
 {
   bool  rc = false;
@@ -1178,6 +1220,8 @@ int main(int argc, char *argv[])
   if (! VectorFileTest())
     goto testFailed;
   if (! VectorDescriptorTest())
+    goto testFailed;
+  if (! ArrayFileTest())
     goto testFailed;
   if (! ArrayDescriptorTest())
     goto testFailed;

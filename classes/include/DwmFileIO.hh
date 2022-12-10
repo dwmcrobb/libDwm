@@ -41,6 +41,7 @@
 #ifndef _DWMFILEIO_HH_
 #define _DWMFILEIO_HH_
 
+#include <array>
 #include <cassert>
 #include <cstdint>
 #include <cstdio>
@@ -324,6 +325,40 @@ namespace Dwm {
       return(ContainerWrite<std::multimap<_keyT,_valueT,_Compare,_Alloc> >(f, m));
     }
 
+    //------------------------------------------------------------------------
+    //!  Reads an array<_valueT,N> from a FILE.  Returns 1 on success,
+    //!  0 on failure.
+    //------------------------------------------------------------------------
+    template <typename _valueT, size_t N>
+    static size_t Read(FILE *f, std::array<_valueT, N> & a)
+    {
+      size_t  rc = 1;
+      for (size_t i = 0; i < N; ++i) {
+        if (! Read(f, a[i])) {
+          rc = 0;
+          break;
+        }
+      }
+      return rc;
+    }
+    
+    //------------------------------------------------------------------------
+    //!  Writes an array<_valueT,N> to a FILE.  Returns 1 on success,
+    //!  0 on failure.
+    //------------------------------------------------------------------------
+    template <typename _valueT, size_t N>
+    static size_t Write(FILE *f, const std::array<_valueT, N> & a)
+    {
+      size_t  rc = 1;
+      for (size_t i = 0; i < N; ++i) {
+        if (! Write(f, a[i])) {
+          rc = 0;
+          break;
+        }
+      }
+      return rc;
+    }
+    
     //------------------------------------------------------------------------
     //!  Reads a vector<_valueT> from a FILE.  Returns 1 on success,
     //!  0 on failure.
