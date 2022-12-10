@@ -60,8 +60,9 @@ namespace Dwm {
   int GZIO::Write(gzFile gzf, char c)
   {
     int  rc = -1;
-    if (gzf)
+    if (gzf) { 
       rc = gzwrite(gzf,(void *)&c,sizeof(c));
+    }
     return(rc);
   }
   
@@ -71,8 +72,9 @@ namespace Dwm {
   int GZIO::Write(gzFile gzf, uint8_t c)
   {
     int  rc = -1;
-    if (gzf)
+    if (gzf) {
       rc = gzwrite(gzf,(void *)&c,sizeof(c));
+    }
     return(rc);
   }
   
