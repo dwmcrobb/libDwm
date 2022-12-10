@@ -42,6 +42,7 @@
 #ifndef _DWMIOUTILS_HH_
 #define _DWMIOUTILS_HH_
 
+#include <array>
 #include <cassert>
 #include <cstdint>
 #include <cstdio>
@@ -219,6 +220,20 @@ namespace Dwm {
       return(ContainerStreamedLength<std::multimap<_keyT,_valueT,_Compare,_Alloc> >(m));
     }
 
+    //------------------------------------------------------------------------
+    //!  Returns the number of bytes that should be written if we call Write()
+    //!  for an array<_valueT,N>
+    //------------------------------------------------------------------------
+    template <typename _valueT, size_t N>
+    static uint64_t StreamedLength(const std::array<_valueT, N> & a)
+    {
+      uint64_t  rc = 0;
+      for (size_t i = 0; i < N; ++i) {
+        rc += StreamedLength(a[i]);
+      }
+      return rc;
+    }
+    
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that should be written if we call Write()
     //!  for a vector<_valueT>
