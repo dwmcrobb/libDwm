@@ -169,8 +169,23 @@ static bool ReadTestBlob(gzFile gzf)
                         if (GZIO::Read(gzf,df) && (df == k_doubleVal)) {
                           rc = true;
                         }
+                        else { std::cerr << "fail " << __FILE__ << ':'
+                                         << __LINE__ << '\n';
+                        }
+                      }
+                      else {
+                        std::cerr << "fail " << __FILE__ << ':'
+                                  << __LINE__ << '\n';
                       }
                     }
+                    else {
+                        std::cerr << "fail " << __FILE__ << ':'
+                                  << __LINE__ << '\n';
+                    }
+                  }
+                  else {
+                    std::cerr << "fail " << __FILE__ << ':'
+                              << __LINE__ << '\n';
                   }
                 }
               }
@@ -211,20 +226,21 @@ static bool GZIOTest()
   if (gzf) {
     if (WriteTestBlobs(gzf,3)) {
       gzclose(gzf);
-      
-      gzf = gzopen("/tmp/DWMGZIOTest.gz","rb");
-      if (gzf) {
-        if (ReadTestBlobs(gzf,3)) {
+      gzFile  gzf2 = gzopen("/tmp/DWMGZIOTest.gz","rb");
+      if (gzf2) {
+        if (ReadTestBlobs(gzf2,3)) {
           rc = true;
         }
-        gzclose(gzf);
+        gzclose(gzf2);
       }
       else {
         cerr << "gzopen(\"/tmp/DWMGZIOTest.gz\",\"rb\") failed: "
              << strerror(errno) << endl;
       }
     }
-    gzclose(gzf);
+    else {
+      gzclose(gzf);
+    }
     std::remove("/tmp/DWMGZIOTest.gz");
   }
   else {
