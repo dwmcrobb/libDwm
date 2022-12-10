@@ -42,6 +42,7 @@
 #ifndef _DWMASIO_HH_
 #define _DWMASIO_HH_
 
+#include <array>
 #include <deque>
 #include <list>
 #include <map>
@@ -297,6 +298,40 @@ namespace Dwm {
       return rc;
     }
 
+    //------------------------------------------------------------------------
+    //!  Reads an array<_valueT,N> \c v from \c s.  Returns \c true on
+    //!  success, \c false on failure.
+    //------------------------------------------------------------------------
+    template <typename _valueT, size_t N>
+    static bool Read(boost::asio::ip::tcp::socket & s,
+                     std::array<_valueT, N> & a)
+    {
+      size_t  i = 0;
+      for ( ; i < N; ++i) {
+        if (! Read(s, a[i])) {
+          break;
+        }
+      }
+      return (N == i);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes an array<_valueT.N> @c v to @c s.  Returns @c true on success,
+    //!  @c false on failure.
+    //------------------------------------------------------------------------
+    template <typename _valueT, size_t N>
+    static bool Write(boost::asio::ip::tcp::socket & s,
+                      const std::array<_valueT, N> & a)
+    {
+      size_t  i = 0;
+      for ( ; i < N; ++i) {
+        if (! Write(s, a[i])) {
+          break;
+        }
+      }
+      return (N == i);
+    }
+    
     //------------------------------------------------------------------------
     //!  Reads a vector<_valueT> \c v from \c s.  Returns \c true on success,
     //!  \c false on failure.

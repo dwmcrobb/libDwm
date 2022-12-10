@@ -43,6 +43,7 @@
 #include <iomanip>
 #include <iostream>
 #include <thread>
+#include <type_traits>
 
 #include "DwmUnitAssert.hh"
 #include "DwmASIO.hh"
@@ -86,6 +87,31 @@ template <typename ContainerT>
 static void ServerContainerReader(ContainerT & c, std::atomic<bool> & ready)
 {
   c.clear();
+  boost::asio::io_context  ioContext;
+  ip::tcp::acceptor        acc(ioContext,
+                               ip::tcp::endpoint(ip::address::from_string("127.0.0.1"), 7117),
+                               true);
+  boost::asio::socket_base::reuse_address option(true);
+  acc.set_option(option);
+  ip::tcp::socket            sck(ioContext);
+  ip::tcp::endpoint          endPoint;
+  boost::system::error_code  ec;
+  ready = true;
+  acc.accept(sck, endPoint, ec);
+  if (UnitAssert(! ec)) {
+    sck.non_blocking(false);
+    Dwm::ASIO::Read(sck, c);
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+template <typename valueT, size_t N>
+static void ServerArrayReader(std::array<valueT,N> & c,
+                              std::atomic<bool> & ready)
+{
   boost::asio::io_context  ioContext;
   ip::tcp::acceptor        acc(ioContext,
                                ip::tcp::endpoint(ip::address::from_string("127.0.0.1"), 7117),
@@ -167,6 +193,52 @@ static void TestContainer(const ContainerT & ct)
   serverthread.join();
   UnitAssert(ct == outct);
     
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+template <typename valueT, size_t N>
+static void TestArray(const std::array<valueT,N> & ct)
+{
+  std::array<valueT,N>  outct;
+  std::atomic<bool>  serverReady = false;
+  std::thread  serverthread = std::thread(ServerArrayReader<valueT,N>,
+                                          std::ref(outct),
+                                          std::ref(serverReady));
+  while (! serverReady) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+  }
+  
+  boost::asio::io_context    ioContext;
+  ip::tcp::endpoint          endPoint(ip::address::from_string("127.0.0.1"),
+                                      7117);
+  ip::tcp::socket            sck(ioContext);
+  boost::system::error_code  ec;
+  sck.connect(endPoint, ec);
+  if (UnitAssert((! ec))) {
+    sck.non_blocking(false);
+    UnitAssert(Dwm::ASIO::Write(sck, ct));
+    sck.close();
+  }
+  serverthread.join();
+  UnitAssert(ct == outct);
+    
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+template <typename T, size_t N>
+static void TestAsArray(const vector<T> & invec)
+{
+  array<T,N>  inarr;
+  for (size_t i = 0; i < N; ++i) {
+    inarr[i] = invec[i];
+  }
+  TestArray(inarr);
   return;
 }
 
@@ -285,6 +357,7 @@ static void TestStrings()
                         "seven", "eight", "nine", "ten", "eleven", "twelve",
                         "thirteen", "fourteen", "fifteen", "sixteen",
                         "seventeen", "eighteen", "nineteen", "twenty"});
+  TestAsArray<string,20>(vs1);
   TestVectorOf(vs1);
   TestAsVector(vs1);
   TestAsDeque(vs1);
@@ -308,6 +381,7 @@ static void TestInts()
       2, 20, 200, 2000, 20000, 200000,
       3, 30, 300, 3000, 30000, 300000
     });
+  TestAsArray<int,18>(vs1);
   TestVectorOf(vs1);
   TestAsVector(vs1);
   TestAsDeque(vs1);
@@ -331,6 +405,7 @@ static void TestFloats()
       2.7, 20.8, 200.9, 2000.11, 20000.12, 200000.13,
       3.14, 30.15, 300.16, 3000.17, 30000.18, 300000.19
     });
+  TestAsArray<float,18>(vs1);
   TestVectorOf(vs1);
   TestAsVector(vs1);
   TestAsDeque(vs1);
@@ -354,6 +429,7 @@ static void TestDoubles()
       2.7, 20.8, 200.9, 2000.11, 20000.12, 200000.13,
       3.14, 30.15, 300.16, 3000.17, 30000.18, 300000.19
     });
+  TestAsArray<double,18>(vs1);
   TestVectorOf(vs1);
   TestAsVector(vs1);
   TestAsDeque(vs1);
@@ -377,6 +453,7 @@ static void TestPairs()
     { 5, "five" }, { 6, "six" }, { 7, "seven" }, { 8, "eight" },
     { 9, "nine" }, { 10, "ten" }, { 11, "eleven" }, { 12, "twelve" }
   };
+  TestAsArray<pair<int,string>,12>(v1);
   TestVectorOf(v1);
   TestAsVector(v1);
   TestAsDeque(v1);
@@ -399,6 +476,7 @@ static void TestTuples()
     { 7, "seven", 7.7 },  { 8, "eight", 8.8 },     { 9, "nine", 9.9 },
     { 10, "ten", 10.01 }, { 11, "eleven", 11.11 }, { 12, "twelve", 12.12 }
   };
+  TestAsArray<tuple<int,string,double>,12>(v1);
   TestVectorOf(v1);
   TestAsVector(v1);
   TestAsDeque(v1);
@@ -420,6 +498,7 @@ static void TestVariants()
     { (int)4 }, { "five"  }, { 6.6 },
     { (int)7 }, { "eight" }, { 9.9 }
   };
+  TestAsArray<variant<int,string,double>,9>(v1);
   TestVectorOf(v1);
   TestAsVector(v1);
   TestAsDeque(v1);
