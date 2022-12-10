@@ -1,5 +1,8 @@
 2022-12-10  Daniel McRobb  <dwm@mcplex.net>
 
+	* classes/include/DwmASIO.hh, classes/tests/TestASIO.cc:
+	Added asio for std::array.
+	
 	* classes/src/DwmLocalInterfaces.cc: Deal with nulled interface
 	names in IsRunning().
 
