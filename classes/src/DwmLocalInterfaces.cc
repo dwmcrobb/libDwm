@@ -343,23 +343,25 @@ namespace Dwm {
       struct ifconf  ifc;
       struct ifreq  *ifr;
       ifc.ifc_buf = 0;
-      int    numreqs = 30;
+      int    numreqs = 64;
       for (;;) {
         ifc.ifc_len = sizeof(struct ifreq) * numreqs;
-        ifc.ifc_buf = (char *)realloc(ifc.ifc_buf, ifc.ifc_len);
-        memset(ifc.ifc_buf, 0, ifc.ifc_len);
+        ifc.ifc_buf = (char *)calloc(1, ifc.ifc_len);
         if (ioctl(sockfd, SIOCGIFCONF, &ifc) < 0)
           break;
         if ((uint32_t)ifc.ifc_len == sizeof(struct ifreq) * numreqs) {
           //  assume it overflowed and try again
           numreqs += 10;
+          free(ifc.ifc_buf);
+          ifc.ifc_buf = 0;
           continue;
         }
         break;
       }
       ifr = ifc.ifc_req;
       for (int n = 0; n < ifc.ifc_len; n += sizeof(struct ifreq)) {
-        if (_name == std::string(ifr->ifr_name)) {
+        if ((ifr->ifr_name[0] != '\0')
+            && (_name == std::string(ifr->ifr_name))) {
           if (ioctl(sockfd, SIOCGIFFLAGS, ifr) >= 0) {
             if (ifr->ifr_flags & IFF_RUNNING) {
               rc = true;
@@ -370,7 +372,7 @@ namespace Dwm {
 #ifdef _SIZEOF_ADDR_IFREQ
         ifr = (struct ifreq *)((char *)ifr + _SIZEOF_ADDR_IFREQ(*ifr));
 #else
-		++ifr;
+        ++ifr;
 #endif
       }
       if (ifc.ifc_buf)
