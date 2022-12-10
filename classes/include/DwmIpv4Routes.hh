@@ -48,7 +48,6 @@ extern "C" {
 #include <algorithm>
 #include <future>
 #include <unordered_map>
-#include <vector>
 
 #include "DwmPortability.hh"
 #include "DwmBZ2IO.hh"
@@ -140,7 +139,7 @@ namespace Dwm {
     //!  Constructor
     //------------------------------------------------------------------------
     Ipv4Routes<_valueT>()
-    : _hashMaps(33)
+    : _hashMaps()
     {
       for (uint8_t i = 0; i < 33; ++i) {
         _hashMaps[i].max_load_factor(.08);
@@ -591,13 +590,11 @@ namespace Dwm {
         target.clear();
       if (! this->_hashMaps.empty()) {
         target.resize(this->Size());
-        typename std::vector<_RepSubType>::const_iterator  iter = 
-          this->_hashMaps.begin();
+        auto  iter = this->_hashMaps.begin();
         uint32_t  pfx = 0;
         for (uint8_t hashNum = 0; hashNum < 33; ++hashNum) {
           if (! this->_hashMaps[hashNum].empty()) {
-            typename _RepSubType::const_iterator  hiter = 
-              this->_hashMaps[hashNum].begin();
+            auto  hiter = this->_hashMaps[hashNum].begin();
             for ( ; hiter != iter->end(); ++hiter) {
               target[pfx].first = Ipv4Prefix(hiter->first, hashNum);
               target[pfx].second = hiter->second;
@@ -631,13 +628,11 @@ namespace Dwm {
         target.clear();
       if (! this->_hashMaps.empty()) {
         target.resize(this->Size());
-        typename std::vector<_RepSubType>::const_iterator  iter = 
-          this->_hashMaps.begin();
+        auto iter = this->_hashMaps.begin();
         uint32_t  pfx = 0;
         for (uint8_t hashNum = 0; hashNum < 33; ++hashNum) {
           if (! this->_hashMaps[hashNum].empty()) {
-            typename _RepSubType::const_iterator  hiter = 
-              this->_hashMaps[hashNum].begin();
+            auto hiter = this->_hashMaps[hashNum].begin();
             for ( ; hiter != iter->end(); ++hiter) {
               target[pfx].first = Ipv4Prefix(hiter->first, hashNum);
               target[pfx].second = hiter->second;
@@ -646,7 +641,9 @@ namespace Dwm {
           }
         }
         if (! target.empty())
-          std::sort(target.begin(), target.end(), ValueGreater());
+          std::sort(target.begin(), target.end(),
+                    [] (const auto & e1, const auto & e2)
+                    { return (e1.second > e2.second); });
       }
      
       return;
@@ -700,7 +697,8 @@ namespace Dwm {
         return(e1.first < e2.first);
       }
     };
-    
+
+#if 0
     struct ValueGreater
     {
     public:
@@ -710,10 +708,10 @@ namespace Dwm {
         return(e1.second > e2.second);
       }
     };
-    
+#endif
     
   protected:
-    std::vector<_RepSubType>   _hashMaps;
+    std::array<_RepSubType,33>   _hashMaps;
 
     template <typename BinaryPredicate>
     bool HaveWiderMatch(const Ipv4Address & addr, uint8_t maskLen,
