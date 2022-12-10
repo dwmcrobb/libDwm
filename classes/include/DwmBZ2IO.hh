@@ -42,6 +42,7 @@
 #ifndef _DWMBZ2IO_HH_
 #define _DWMBZ2IO_HH_
 
+#include <array>
 #include <cassert>
 #include <cstdint>
 #include <cstdio>
@@ -68,7 +69,7 @@ namespace Dwm {
   //!  writing simple types in network byte order (MSB first) from/to bzip2
   //!  files.  It also contains functions to read and write strings from/to
   //!  bzip2 files.  It also contains function templates to read and write 
-  //!  deques, lists, vectors, maps, multimaps, sets, multisets,
+  //!  arrays, deques, lists, vectors, maps, multimaps, sets, multisets,
   //!  unordered_maps, unordered_multimaps, unordered_sets,
   //!  unordered_multisets, tuples and variants from/to bzip2 files.  We use
   //!  our member functions to handle reading and writing simple types in
@@ -335,7 +336,49 @@ namespace Dwm {
     {
       return(ContainerBZWrite<std::multimap<_keyT,_valueT,_Compare,_Alloc> >(bzf, m));
     }
-    
+
+    //------------------------------------------------------------------------
+    //!  Reads an array<_valueT,N> from a BZFILE pointer.  Returns the number
+    //!  of bytes read on success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename _valueT, size_t N>
+    static int BZRead(BZFILE *bzf, std::array<_valueT, N> & a)
+    {
+      int  rc = 0;
+      for (size_t i = 0; i < N; ++i) {
+        int  bytesRead = BZRead(bzf, a[i]);
+        if (bytesRead > 0) {
+          rc += bytesRead;
+        }
+        else {
+          rc = -1;
+          break;
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes an array<_valueT,N> to a BZFILE pointer.  Returns the number
+    //!  of bytes written on success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename _valueT, size_t N>
+    static int BZWrite(BZFILE *bzf, const std::array<_valueT, N> & a)
+    {
+      int  rc = 0;
+      for (size_t i = 0; i < N; ++i) {
+        int  bytesWritten = BZWrite(bzf, a[i]);
+        if (bytesWritten > 0) {
+          rc += bytesWritten;
+        }
+        else {
+          rc = -1;
+          break;
+        }
+      }
+      return rc;
+    }
+
     //------------------------------------------------------------------------
     //!  Reads a vector<_valueT> from a BZFILE pointer.  Returns the number
     //!  of bytes read on success, -1 on failure.
