@@ -1,5 +1,16 @@
 2022-12-10  Daniel McRobb  <dwm@mcplex.net>
 
+	* classes/src/DwmLocalInterfaces.cc: Deal with nulled interface
+	names in IsRunning().
+
+	* include/DwmIpv4Routes.hh: _hashMaps is now a std::array
+	instead of std::vector.
+
+	* classes/include/DwmIOUtils.hh: Add StreamedLength() for
+	std::array.
+
+	* classes/include/DwmGZIO.hh: Add gz I/O for std::array.
+
 	* classes/include/DwmBZ2IO.hh: Finally got around to adding bz2
 	I/O for	std::array.
 
