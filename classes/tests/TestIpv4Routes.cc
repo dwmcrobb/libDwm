@@ -170,7 +170,7 @@ void TestBasicIO(Ipv4Routes<uint32_t> & r)
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
-static void TestGZIO(Ipv4Routes<uint32_t> & r)
+static void TestGZIO(const Ipv4Routes<uint32_t> & r)
 {
   string  fileName(STOREFILE);
   fileName += ".gz";
