@@ -1,8 +1,19 @@
 2022-12-10  Daniel McRobb  <dwm@mcplex.net>
 
+	* tagged as libDwm-0.9.17
+
+	* Note that currently, GZIO is failing on MacOS Ventura 13.0.1
+	on Apple silicon (and probably on Intel too).  Macports has
+	zlib 1.2.13 and that's what I have installed.  I get a double-free
+	exception in gzclose().  When I get a moment I'll try to reproduce
+	it with a minimal example.  From my initial triage, it doesn't
+	appear to be an issue in zlib nor my code.  Hence it looks like
+	it might be the way Apple is tracking heap allocations.  But I
+	don't have enough data yet to name the cause.
+
 	* classes/include/DwmASIO.hh, classes/tests/TestASIO.cc:
 	Added asio for std::array.
-	
+
 	* classes/src/DwmLocalInterfaces.cc: Deal with nulled interface
 	names in IsRunning().
 
