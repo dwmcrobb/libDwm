@@ -7,5 +7,5 @@ Name: libDwm
 Description: Miscellaneous C++ classes
 Version: @TAGVERSION@
 Requires:
-Libs: @PTHREADLDFLAGS@ -L${libdir} -lDwm @BZ2LIB@ @BOOSTLIBS@ @ZLIB@ @KVMLIB@ @TERMCAPLIB@ @OSLIBS@
-Cflags: @PTHREADCXXFLAGS@ -I${includedir} @BOOSTINC@
+Libs: @PTHREADLDFLAGS@ -L${libdir} -lDwm @BZ2LIB@ @BOOSTLIBS@ @ZLIB@ @KVMLIB@ @TERMCAPLIB@ @TIRPCLIB@ @OSLIBS@
+Cflags: @PTHREADCXXFLAGS@ -I${includedir} @BOOSTINC@ @TIRPCINC@
