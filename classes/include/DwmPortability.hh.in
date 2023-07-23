@@ -107,6 +107,9 @@
 #undef HAVE_TR1
 #undef HAVE_CPP11
 #undef HAVE_CPP1Z
+#undef HAVE_CPP17
+#undef HAVE_CPP20
+#undef HAVE_CPP23
 
 #define HAVE_GPLUSPLUS_VERSION(MAJOR, MINOR) \
   (__GNUC__ > (MAJOR) || (__GNUC__ == (MAJOR) && __GNUC_MINOR__ >= (MINOR)))
