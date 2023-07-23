@@ -84,8 +84,8 @@ CXXFLAGS += -g
 # CXXFLAGS += -fsanitize=address
 LDFLAGS  += -g
 # LDFLAGS += -fsanitize=address
-ALLINC   = -I../include ${BZINC} ${BOOSTINC}
-OSLIBS   += -lxxhash
+ALLINC   = -I../include ${BZINC} ${BOOSTINC} ${TIRPCINC}
+OSLIBS   += -lxxhash ${TIRPCLIB}
 
 all: ${TESTS}
 

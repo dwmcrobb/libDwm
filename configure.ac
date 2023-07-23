@@ -90,6 +90,17 @@ AC_SUBST(BZ2INC)
 AC_SUBST(BZ2LIB)
 
 dnl ------------------------------------------------------------------------
+dnl //  Check for libtirpc
+dnl ------------------------------------------------------------------------
+TIRPCINC=`pkg-config --cflags-only-I libtirpc 2>/dev/null`
+TIRPCLIB=`pkg-config --libs libtirpc 2>/dev/null`
+if [[ $? -eq 0 ]]; then
+  TIRPCPKG=libtirpc
+fi
+AC_SUBST(TIRPCINC)
+AC_SUBST(TIRPCLIB)
+
+dnl ------------------------------------------------------------------------
 dnl //  Check for libpcap
 dnl ------------------------------------------------------------------------
 DWM_PREREQ_PATH(pcapsrc, [], [pcap source path])

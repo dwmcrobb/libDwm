@@ -435,24 +435,21 @@ define(DWM_CHECK_GETHOSTBYNAME_R,[
   AC_MSG_CHECKING([for gethostbyname_r])
   OLDCPPFLAGS="$CPPFLAGS"
   CPPFLAGS="$OLDCPPFLAGS -D_REENTRANT"
-  AC_TRY_COMPILE([
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
       #include <sys/types.h>
       #include <sys/socket.h>
       #include <netinet/in.h>
       #include <arpa/inet.h>
-      #include <netdb.h>],
-    [
+      #include <netdb.h>]], [[
       struct hostent  *hp;
       struct hostent   result;
       char            *name = "caimis.com";
       char             buf[4096];
 
       hp = gethostbyname_r(name,&result,buf,4096,NULL);
-    ],
-    [AC_DEFINE(HAVE_GETHOSTBYNAME_R)
-      AC_MSG_RESULT(yes)],
-    [AC_MSG_RESULT(no)]
-  )
+    ]])],[AC_DEFINE(HAVE_GETHOSTBYNAME_R)
+      AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)
+  ])
   AC_SUBST(HAVE_GETHOSTBYNAME_R)
   CPPFLAGS="$OLDCPPFLAGS"
   ]
@@ -462,13 +459,12 @@ define(DWM_CHECK_GETHOSTBYADDR_R,[
   AC_MSG_CHECKING([for gethostbyaddr_r])
   OLDCPPFLAGS="$CPPFLAGS"
   CPPFLAGS="$OLDCPPFLAGS -D_REENTRANT"
-  AC_TRY_COMPILE([
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
       #include <sys/types.h>
       #include <sys/socket.h>
       #include <netinet/in.h>
       #include <arpa/inet.h>
-      #include <netdb.h>],
-    [
+      #include <netdb.h>]], [[
       struct hostent  *hp;
       struct hostent   result;
       unsigned int     ipAddr = inet_addr("127.0.0.1");
@@ -476,11 +472,9 @@ define(DWM_CHECK_GETHOSTBYADDR_R,[
 	
       hp = gethostbyaddr_r(&ipAddr,sizeof(ipAddr),AF_INET,&result,
 			   buf,4096,NULL);
-    ],
-    [AC_DEFINE(HAVE_GETHOSTBYADDR_R)
-      AC_MSG_RESULT(yes)],
-    [AC_MSG_RESULT(no)]
-  )
+    ]])],[AC_DEFINE(HAVE_GETHOSTBYADDR_R)
+      AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)
+  ])
   AC_SUBST(HAVE_GETHOSTBYADDR_R)
   CPPFLAGS="$OLDCPPFLAGS"
   ]
@@ -534,14 +528,11 @@ define(DWM_CHECK_CPLUSPLUS_0x,[
   	prev_CPPFLAGS="$CXXFLAGS"
 	CXXFLAGS="$CXXFLAGS -std=c++11"
 	AC_MSG_CHECKING([for C++0x features])
-	AC_TRY_COMPILE([#include <tuple>],
-		       [std::tuple<int,int> t;],
-		       [AC_MSG_RESULT(yes)
-		        AC_DEFINE(HAVE_CPP0X)],
-		       [AC_MSG_RESULT(no)
+	AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <tuple>]], [[std::tuple<int,int> t;]])],[AC_MSG_RESULT(yes)
+		        AC_DEFINE(HAVE_CPP0X)],[AC_MSG_RESULT(no)
 	                AC_MSG_CHECKING([for C++ TR1 features])
 	        	CXXFLAGS="$prev_CPPFLAGS"
-	        	AC_TRY_COMPILE([#include <tr1/tuple>],
+	        	_au_m4_changequote([,])AC_TRY_COMPILE([#include <tr1/tuple>],
 			       	       [std::tr1::tuple<int,int> t;],
 			       	       [AC_MSG_RESULT(yes)
 			                AC_DEFINE(HAVE_TR1)],
@@ -551,14 +542,11 @@ define(DWM_CHECK_CPLUSPLUS_0x,[
 	prev_CPPFLAGS="$CXXFLAGS"
 	CXXFLAGS="$CXXFLAGS -std=gnu++0x"
 	AC_MSG_CHECKING([for C++0x features])
-	AC_TRY_COMPILE([#include <tuple>],
-	       	       [std::tuple<int,int> t;],
-	       	       [AC_MSG_RESULT(yes)
-	                AC_DEFINE(HAVE_CPP0X)],
-	       	       [AC_MSG_RESULT(no)
+	AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <tuple>]], [[std::tuple<int,int> t;]])],[AC_MSG_RESULT(yes)
+	                AC_DEFINE(HAVE_CPP0X)],[AC_MSG_RESULT(no)
 	                AC_MSG_CHECKING([for C++ TR1 features])
 	        	CXXFLAGS="$prev_CPPFLAGS"
-	        	AC_TRY_COMPILE([#include <tr1/tuple>],
+	        	_au_m4_changequote([,])AC_TRY_COMPILE([#include <tr1/tuple>],
 			               [std::tr1::tuple<int,int> t;],
 			       	       [AC_MSG_RESULT(yes)
 			                AC_DEFINE(HAVE_TR1)],
@@ -578,14 +566,11 @@ define(DWM_CHECK_CPLUSPLUS_11,[
   AC_LANG_PUSH(C++)
   prev_CPPFLAGS="$CXXFLAGS"
   CXXFLAGS="$CXXFLAGS -std=c++11"
-  AC_TRY_COMPILE([
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
     #include <iostream>
-    #include <vector>],
-    [std::vector<int> vi = { 1, 2, 3, 4 };
-     for (auto i : vi) { std::cout << i << '\n'; }],
-    [AC_MSG_RESULT(yes)
-     AC_DEFINE(HAVE_CPP11)],
-    [AC_MSG_RESULT(no)
+    #include <vector>]], [[std::vector<int> vi = { 1, 2, 3, 4 };
+     for (auto i : vi) { std::cout << i << '\n'; }]])],[AC_MSG_RESULT(yes)
+     AC_DEFINE(HAVE_CPP11)],[AC_MSG_RESULT(no)
      echo C++11 is required\!\!
      exit 1])
   AC_LANG_POP()
@@ -597,14 +582,11 @@ define(DWM_CHECK_CPLUSPLUS_1Z,[
   AC_LANG_PUSH(C++)
   prev_CPPFLAGS="$CXXFLAGS"
   CXXFLAGS="$CXXFLAGS -std=c++1z"
-  AC_TRY_COMPILE([
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
     #include <shared_mutex>
-    #include <vector>],
-    [std::shared_mutex  mtx;
-     std::shared_lock<std::shared_mutex>  lock(mtx);],
-    [AC_MSG_RESULT(yes)
-     AC_DEFINE(HAVE_CPP1Z)],
-    [AC_MSG_RESULT(no)
+    #include <vector>]], [[std::shared_mutex  mtx;
+     std::shared_lock<std::shared_mutex>  lock(mtx);]])],[AC_MSG_RESULT(yes)
+     AC_DEFINE(HAVE_CPP1Z)],[AC_MSG_RESULT(no)
      CXXFLAGS="$prev_CPPFLAGS"
      DWM_CHECK_CPLUSPLUS_11])
   AC_LANG_POP()
@@ -616,15 +598,12 @@ define(DWM_CHECK_CPLUSPLUS_17,[
   AC_LANG_PUSH(C++)
   prev_CPPFLAGS="$CXXFLAGS"
   CXXFLAGS="$CXXFLAGS -std=c++17"
-  AC_TRY_COMPILE([
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
     #include <shared_mutex>
-    #include <vector>],
-    [std::shared_mutex  mtx;
-     std::shared_lock<std::shared_mutex>  lock(mtx);],
-    [AC_MSG_RESULT(yes)
+    #include <vector>]], [[std::shared_mutex  mtx;
+     std::shared_lock<std::shared_mutex>  lock(mtx);]])],[AC_MSG_RESULT(yes)
      AC_DEFINE(HAVE_CPP17)
-     LDFLAGS="$LDFLAGS -std=c++17"],
-    [AC_MSG_RESULT(no)
+     LDFLAGS="$LDFLAGS -std=c++17"],[AC_MSG_RESULT(no)
      CXXFLAGS="$prev_CPPFLAGS"
      DWM_CHECK_CPLUSPLUS_1Z()])
   AC_LANG_POP()
@@ -636,13 +615,10 @@ define(DWM_CHECK_SQLITE3,[
   AC_LANG_PUSH(C++)
   prev_CPPFLAGS="$CXXFLAGS"
   CXXFLAGS="$CXXFLAGS -I/usr/src/contrib/sqlite3"
-  AC_TRY_COMPILE([
-    #include <sqlite3.h>],
-    [sqlite3  *ppdb;],
-    [AC_MSG_RESULT(yes)
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+    #include <sqlite3.h>]], [[sqlite3  *ppdb;]])],[AC_MSG_RESULT(yes)
      AC_DEFINE(HAVE_SQLITE3)
-     SQLITEDIR=/usr/src/contrib/sqlite3],
-    [AC_MSG_RESULT(no)
+     SQLITEDIR=/usr/src/contrib/sqlite3],[AC_MSG_RESULT(no)
      echo '/usr/src/contrib/sqlite3 is required (FreeBSD src)'
      exit 1])
   CXXFLAGS="$prev_CPPFLAGS"
@@ -807,66 +783,60 @@ define(DWM_CHECK_LIBSTDCPPFS,[
   prev_LIBS="${LIBS}"
   CXXFLAGS="$CXXFLAGS -std=c++17"
   LIBS="${LIBS} -lstdc++fs"
-  AC_TRY_LINK([#include <filesystem>],
-              [std::filesystem::remove("foo");],
-              [AC_MSG_RESULT(yes)
-               AC_SUBST(LIBSTDCPPFS,[-lstdc++fs])],
-              [AC_MSG_RESULT(no)
+  AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <filesystem>]], [[std::filesystem::remove("foo");]])],[AC_MSG_RESULT(yes)
+               AC_SUBST(LIBSTDCPPFS,[-lstdc++fs])],[AC_MSG_RESULT(no)
                LIBS="$prev_LIBS"])
   CXXFLAGS="$prev_CPPFLAGS"
   AC_LANG_POP()
 ])
 
 dnl #------------------------------------------------------------------------
-define(DWM_CHECK_BOOSTASIO,[
-  AC_MSG_CHECKING([for Boost asio])
+define(DWM_COMPILE_BOOSTASIO,[
   AC_LANG_PUSH(C++)
   prev_CPPFLAGS="$CXXFLAGS"
-  AC_TRY_COMPILE([
-    #include <boost/asio.hpp>
-    ],
-    [boost::asio::ip::tcp::iostream  tcpStream;],
-    [AC_MSG_RESULT(found)
-     AC_DEFINE(HAVE_BOOSTASIO)
-     BOOSTDIR=""
-     BOOSTINC=""
-     BOOSTLIBS="-lboost_iostreams -lboost_system"],
-    [CXXFLAGS="$CXXFLAGS -I/usr/local/include"
-     AC_TRY_COMPILE([
-       #include <boost/asio.hpp>
-       ],
-       [boost::asio::ip::tcp::iostream  tcpStream;],
-       [AC_MSG_RESULT(/usr/local)
-        AC_DEFINE(HAVE_BOOSTASIO)
-        BOOSTDIR=/usr/local
-	BOOSTINC=-I/usr/local/include
-	BOOSTLIBS="-L/usr/local/lib -lboost_iostreams -lboost_system"],
-       [CXXFLAGS="$prev_CPPFLAGS"
-        CXXFLAGS="$CXXFLAGS -I/opt/local/include"
-        AC_TRY_COMPILE([
-          #include <boost/asio.hpp>
-          ],
-          [boost::asio::ip::tcp::iostream tcpStream;],
-          [AC_MSG_RESULT(/opt/local)
-           AC_DEFINE(HAVE_BOOSTASIO)
-	   BOOSTDIR=/opt/local
-	   BOOSTINC=-I/opt/local/include
-	   BOOSTLIBS="-L/opt/local/lib -lboost_iostreams -lboost_system"],
-          [AC_MSG_RESULT(no)
-            echo Boost asio is required\!\!
-            exit 1])
-       ])
-    ]
-  )
-  CXXFLAGS="$prev_CPPFLAGS"
-  AC_LANG_POP()
-  if [[ -f ${BOOSTDIR}/lib/libboost_system-mt.dylib ]]; then
-    BOOSTLIBS="-L${BOOSTDIR}/lib -lboost_iostreams-mt -lboost_system-mt"
+  if [[ -n "$1" ]]; then
+    CXXFLAGS="$CXXFLAGS -I[$1]/include"
   fi
-  AC_SUBST(BOOSTDIR)
-  AC_SUBST(BOOSTINC)
-  AC_SUBST(BOOSTLIBS)
-  AC_SUBST(BOOSTLIBTAG)
+  AC_COMPILE_IFELSE(
+    [AC_LANG_PROGRAM(
+      [[#include <boost/asio.hpp>]],
+      [[boost::asio::ip::tcp::iostream  tcpStream;]])
+    ],
+    [BOOSTDIR="$1"],
+    [BOOSTDIR="none"
+     CXXFLAGS="$prev_CPPFLAGS"]
+  )
+  AC_LANG_POP()
+])
+
+dnl #------------------------------------------------------------------------
+define(DWM_CHECK_BOOSTASIO,[
+  AC_MSG_CHECKING([for Boost asio])
+  for boost_dir in "" "/usr/local" "/opt/local"; do
+    DWM_COMPILE_BOOSTASIO([${boost_dir}])
+    if [[ "${BOOSTDIR}" != "none" ]]; then
+      break
+    fi
+  done
+  if [[ "${BOOSTDIR}" != "none" ]]; then
+    AC_MSG_RESULT([found ${BOOSTDIR}])
+    AC_DEFINE(HAVE_BOOSTASIO)
+    if [[ -n "${BOOSTDIR}" ]]; then
+      BOOSTINC=-I${BOOSTDIR}/include
+      BOOSTLIBS="-L${BOOSTDIR}/lib"
+    fi
+    if [[ -f ${BOOSTDIR}/lib/libboost_system-mt.dylib ]]; then
+      BOOSTLIBS="${BOOSTLIBS} -lboost_iostreams-mt -lboost_system-mt"
+    else
+      BOOSTLIBS="${BOOSTLIBS} -lboost_iostreams -lboost_system"
+    fi
+    AC_SUBST(BOOSTDIR)
+    AC_SUBST(BOOSTINC)
+    AC_SUBST(BOOSTLIBS)
+  else
+    echo Boost asio is required\!\!
+    exit 1
+  fi
 ])
 
 dnl #-------------------------------------------------------------------------

@@ -1,3 +1,9 @@
+2023-07-22  Daniel McRobb  <dwm@mcplex.net>
+
+	* Eliminate a use of AC_TRY_COMPILE in configure.
+
+	* Deal with XDR routines requiring libtirpc on Linux distros.
+
 2022-12-10  Daniel McRobb  <dwm@mcplex.net>
 
 	* tagged as libDwm-0.9.17
