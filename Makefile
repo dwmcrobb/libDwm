@@ -1,12 +1,12 @@
 include Makefile.vars
 
-all:: classes/lib/libDwm.la apps
+all:: apps
+
+apps: classes/lib/libDwm.la
+	${MAKE} -C apps
 
 classes/lib/libDwm.la::
 	${MAKE} -C classes
-
-apps::
-	${MAKE} -C apps
 
 tarprep:: classes/lib/libDwm.la apps
 	${MAKE} -C classes $@
