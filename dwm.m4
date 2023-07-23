@@ -606,6 +606,7 @@ define(DWM_CHECK_CPLUSPLUS_17,[
     #include <vector>]], [[std::shared_mutex  mtx;
      std::shared_lock<std::shared_mutex>  lock(mtx);]])],[AC_MSG_RESULT(yes)
      AC_DEFINE(HAVE_CPP17)
+     AC_DEFINE(HAVE_CPP11)
      LDFLAGS="$LDFLAGS -std=c++17"],[AC_MSG_RESULT(no)
      CXXFLAGS="$prev_CPPFLAGS"
      DWM_CHECK_CPLUSPLUS_1Z()])
@@ -618,6 +619,8 @@ define(DWM_CHECK_CPLUSPLUS_20,[
   AC_LANG_PUSH(C++)
   AX_CHECK_COMPILE_FLAG([-std=c++20], [
     AC_DEFINE(HAVE_CPP20)
+    AC_DEFINE(HAVE_CPP17)
+    AC_DEFINE(HAVE_CPP11)
     CXXFLAGS="$CXXFLAGS -std=c++20"
     LDFLAGS="$LDFLAGS -std=c++20"
   ], [
