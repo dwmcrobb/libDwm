@@ -221,11 +221,14 @@ define(DWM_SET_PKGVARS,[
       ;;
     linux*)
       OSNAME="linux"
-      OSVERSION=`kernelversion`
+      OSVERSION=`uname -r | cut -d- -f1`
       OSARCH=`uname -m`
       case $OSARCH in
 	i[[3456]]86)
 	  OSARCH=intel
+	  ;;
+	x86_64)
+	  OSARCH=amd64
 	  ;;
 	*)
 	  ;;
@@ -606,6 +609,34 @@ define(DWM_CHECK_CPLUSPLUS_17,[
      LDFLAGS="$LDFLAGS -std=c++17"],[AC_MSG_RESULT(no)
      CXXFLAGS="$prev_CPPFLAGS"
      DWM_CHECK_CPLUSPLUS_1Z()])
+  AC_LANG_POP()
+])
+
+dnl #-------------------------------------------------------------------------
+define(DWM_CHECK_CPLUSPLUS_20,[
+  AC_MSG_CHECKING([for C++20])
+  AC_LANG_PUSH(C++)
+  AX_CHECK_COMPILE_FLAG([-std=c++20], [
+    AC_DEFINE(HAVE_CPP20)
+    CXXFLAGS="$CXXFLAGS -std=c++20"
+    LDFLAGS="$LDFLAGS -std=c++20"
+  ], [
+    DWM_CHECK_CPLUSPLUS_17()
+  ])
+  AC_LANG_POP()
+])
+
+dnl #-------------------------------------------------------------------------
+define(DWM_CHECK_CPLUSPLUS_23,[
+  AC_MSG_CHECKING([for C++23])
+  AC_LANG_PUSH(C++)
+  AX_CHECK_COMPILE_FLAG([-std=c++23], [
+    AC_DEFINE(HAVE_CPP23)
+    CXXFLAGS="$CXXFLAGS -std=c++23"
+    LDFLAGS="$LDFLAGS -std=c++23"
+  ], [
+    DWM_CHECK_CPLUSPLUS_20()
+  ])
   AC_LANG_POP()
 ])
 
