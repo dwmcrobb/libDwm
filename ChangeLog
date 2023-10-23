@@ -4,6 +4,10 @@
 	Accomodate, which included adding include and library paths for
 	xxhash.
 
+2023-08-12  Daniel McRobb  <dwm@mcplex.net>
+
+	* tagged as libDwm-0.9.18
+
 2023-07-22  Daniel McRobb  <dwm@mcplex.net>
 
 	* Eliminate a use of AC_TRY_COMPILE in configure.
