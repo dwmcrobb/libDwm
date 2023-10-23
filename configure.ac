@@ -37,17 +37,17 @@ case $host_os in
   darwin*)
     CC="clang++"
     CXX="clang++"
-    CXXFLAGS="${CXXFLAGS} -O2 -stdlib=libc++"
+    CXXFLAGS="${CXXFLAGS} -stdlib=libc++"
     KVMLIB=""
-    LDFLAGS="${LDFLAGS} -O2 -stdlib=libc++ -std=c++14"
+    LDFLAGS="${LDFLAGS} -g -O2 -stdlib=libc++"
     LIBTOOL="glibtool"
     ;;
 esac
 
 echo "host_os ${host_os}"
 
-dnl  Check for C++23
-DWM_CHECK_CPLUSPLUS_23
+dnl  Check for C++17
+DWM_CHECK_CPLUSPLUS_17
 
 DWM_CHECK_NEED_LIBATOMIC
 DWM_CHECK_NEED_LIBRT
@@ -100,6 +100,11 @@ if [[ $? -eq 0 ]]; then
 fi
 AC_SUBST(TIRPCINC)
 AC_SUBST(TIRPCLIB)
+
+XXHASHINC=`pkg-config --cflags-only-I libxxhash`
+XXHASHLIB=`pkg-config --libs libxxhash`
+AC_SUBST(XXHASHINC)
+AC_SUBST(XXHASHLIB)
 
 dnl ------------------------------------------------------------------------
 dnl //  Check for libpcap

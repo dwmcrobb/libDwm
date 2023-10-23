@@ -32,3 +32,8 @@ BZLIB		 = @BZ2LIB@
 INSTALLPREFIX	 = @prefix@
 DOCINSTALLDIR	 = ${INSTALLPREFIX}/share/doc/libDwm
 TARGETVENDOR     = @target_vendor@
+XXHASHINC        = @XXHASHINC@
+XXHASHLIB        = @XXHASHLIB@
+
+CXXFLAGS         += @XXHASHINC@
+LDFLAGS          += @XXHASHLIB@
