@@ -1,6 +1,6 @@
 include ../Makefile.vars
 
-APPS = dwmnet dwmspath dwmwhat
+APPS = dwmcflags dwmnet dwmspath dwmwhat
 APPSCLEAN = $(APPS:%=%-clean)
 TARPREP   = $(APPS:%=%-tarprep)
 

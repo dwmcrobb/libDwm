@@ -1,5 +1,9 @@
 2023-10-23  Daniel McRobb  <dwm@mcplex.net>
 
+	* apps/dwmcflags is a new trivial utility to echo its command line
+	arguments with duplicate include paths, library paths and libraries
+	removed.
+
 	* MacPorts moved boost to /opt/local/libexec/boost/1.81 directory.
 	Accomodate, which included adding include and library paths for
 	xxhash.
