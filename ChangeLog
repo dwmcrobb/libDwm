@@ -1,5 +1,7 @@
 2023-10-23  Daniel McRobb  <dwm@mcplex.net>
 
+	* tagged as libDwm-0.9.19
+
 	* apps/dwmcflags is a new trivial utility to echo its command line
 	arguments with duplicate include paths, library paths and libraries
 	removed.
