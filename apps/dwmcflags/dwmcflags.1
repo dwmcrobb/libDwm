@@ -1,0 +1,27 @@
+.Dd April 10, 2017
+.Dt dwmcflags 1
+.Os mcplex.net
+.Sh NAME
+.Nm dwmcflags
+.Nd Remove duplicate include paths, library paths and libraries from command line
+.Sh SYNOPSIS
+.Nm
+.Ar arguments
+.Sh DESCRIPTION
+.Nm
+echoes its command line arguments with duplicate include paths,
+library paths and libraries removed.  I occasionally need this just to
+sanitize CFLAGS, CXXFLAGS or LDFLAGS in build infrastructure
+(Makefiles, for example).
+.Sh EXAMPLES
+.Bd -literal
+% ./dwmcflags -I/usr/include -I/usr/local/include -I/opt/local/include -I/usr/include -L/usr/lib -L/opt/local/lib -L/usr/lib -lrt -lc -lrt
+-I/usr/include -I/usr/local/include -I/opt/local/include -L/usr/lib -L/opt/local/lib -lrt -lc
+.Ed
+.Sh SEE ALSO
+.Lk .. "Manpage Index"
+.Sh AUTHORS
+Copyright (c) 2016 Daniel W. McRobb
+.Mt dwm@mcplex.net
+.Pp
+
