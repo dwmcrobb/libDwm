@@ -62,7 +62,7 @@ namespace Dwm {
     
     if (childPid > 0) {
       //  parent process; exit
-      exit(0);
+      _exit(0);
     }
     
     if (childPid < 0) {
@@ -77,7 +77,7 @@ namespace Dwm {
 #ifdef SIGTTOU
     //  ignore terminal I/O signals
     signal(SIGTTOU, SIG_IGN);
-    #endif
+#endif
 
     //  disassociate from control terminal
     int  fd = open("/dev/tty", O_RDWR);

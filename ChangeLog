@@ -1,3 +1,8 @@
+2023-11-05  dwm  <dwm@nomnom.mcplex.net>
+
+	* classes/src/DwmDaemonUtils.cc: use _exit() instead of exit()
+	after fork().
+
 2023-10-27  Daniel McRobb  <dwm@spark.mcplex.net>
 
 	* tagged as libDwm-0.9.20
