@@ -25,6 +25,7 @@ TestDwmSocket
 TestDwmSunriseSunset
 TestDwmTermios
 TestEngFormat
+TestFFIVar
 TestFileRoller
 TestGetAddrInfo
 TestGitVersion

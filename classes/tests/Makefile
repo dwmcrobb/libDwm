@@ -23,6 +23,7 @@ OBJFILES = TestASIO.o \
 	   TestDwmSunriseSunset.o \
 	   TestDwmTermios.o \
 	   TestEngFormat.o \
+	   TestFFIVar.o \
 	   TestFileRoller.o \
 	   TestGetAddrInfo.o \
 	   TestGitVersion.o \
