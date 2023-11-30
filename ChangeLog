@@ -1,3 +1,14 @@
+2023-11-29  Daniel McRobb  <dwm@spark.mcplex.net>
+
+	* dwm.m4: Tweak DWM_CHECK_CPLUSPLUS_23 to define HAVE_CPP20,
+	HAVE_CPP17 and HAVE_CPP11.  Not used yet.
+
+	* classes/include/DwmFFIVar.hh, classes/tests/TestFFIVar.cc,
+	classes/tests/Makefile: Bring in FFIVar class templates
+	from an old project.
+
+	* configure, configure.ac: Use C++20.
+
 2023-11-05  Daniel W. McRobb  <dwm@kiva.mcplex.net>
 
 	* tagged as libDwm-0.9.21
