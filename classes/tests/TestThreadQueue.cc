@@ -316,23 +316,20 @@ void TestSimplePerformance()
   const uint64_t  numThreads = 4;
   thread  push_threads[numThreads];
   thread  pop_threads[numThreads];
-  Thread::Queue<uint64_t>  *queues[numThreads];
+  std::unique_ptr<Thread::Queue<uint64_t>>  queues[numThreads];
 
   TimeValue  startTime(true);
   for (int i = 0; i < numThreads; ++i) {
-    queues[i] = new Thread::Queue<uint64_t>();
+    queues[i] = make_unique<Thread::Queue<uint64_t>>();
     queues[i]->MaxLength(10000);
-    pop_threads[i] = thread(SimplePopFn, queues[i],
+    pop_threads[i] = thread(SimplePopFn, queues[i].get(),
                             string("popthr" + to_string(i)));
-    push_threads[i] = thread(SimplePushFn, queues[i],
+    push_threads[i] = thread(SimplePushFn, queues[i].get(),
                              string("pushthr" + to_string(i)));
   }
   for (int i = 0; i < numThreads; ++i) {
     pop_threads[i].join();
     push_threads[i].join();
-  }
-  for (int i = 0; i < numThreads; ++i) {
-    delete queues[i];
   }
   TimeValue runTime(true);
 
@@ -351,23 +348,20 @@ void TestBulkPerformance()
   const uint64_t  numThreads = 4;
   thread  push_threads[numThreads];
   thread  pop_threads[numThreads];
-  Thread::Queue<uint64_t>  *queues[numThreads];
+  std::unique_ptr<Thread::Queue<uint64_t>>  queues[numThreads];
 
   TimeValue  startTime(true);
   for (int i = 0; i < numThreads; ++i) {
-    queues[i] = new Thread::Queue<uint64_t>();
+    queues[i] = make_unique<Thread::Queue<uint64_t>>();
     queues[i]->MaxLength(10000);
-    pop_threads[i] = thread(SimplePopFn, queues[i],
+    pop_threads[i] = thread(SimplePopFn, queues[i].get(),
                             string("popthr" + to_string(i)));
-    push_threads[i] = thread(SimplePushFn, queues[i],
+    push_threads[i] = thread(SimplePushFn, queues[i].get(),
                              string("pushthr" + to_string(i)));
   }
   for (int i = 0; i < numThreads; ++i) {
     pop_threads[i].join();
     push_threads[i].join();
-  }
-  for (int i = 0; i < numThreads; ++i) {
-    delete queues[i];
   }
   TimeValue runTime(true);
 
