@@ -193,7 +193,8 @@ bool TestPointerSingle(unsigned int numWorkers, bool printPerformance)
 
   //  Create the workers and add them to the load balancer.
   for (unsigned int i = 0; i < numWorkers; ++i) {
-    MyPointerWorker  *worker = new MyPointerWorker("lw" + std::to_string(i+1));
+    MyPointerWorker  *worker =
+      new MyPointerWorker("lw" + std::to_string(i+1));
     ptrLoadBalancer.AddWorker(worker);
   }
 
