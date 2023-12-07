@@ -161,33 +161,21 @@ static void TestExists()
 //----------------------------------------------------------------------------
 static void TestDirNames()
 {
-  DirectoryEntry  *de = new DirectoryEntry("/tmp");
+  unique_ptr<DirectoryEntry> de = make_unique<DirectoryEntry>("/tmp");
   UnitAssert(de->DirName() == "/");
-  delete de;
-  
-  de = new DirectoryEntry("tmp/");
+  de = make_unique<DirectoryEntry>("tmp/");
   UnitAssert(de->DirName() == ".");
-  delete de;
-  
-  de = new DirectoryEntry("/tmp/");
+  de = make_unique<DirectoryEntry>("/tmp/");
   UnitAssert(de->DirName() == "/");
-  delete de;
-
-  de = new DirectoryEntry("/");
+  de = make_unique<DirectoryEntry>("/");
   UnitAssert(de->DirName() == "/");
-  delete de;
 
-  de = new DirectoryEntry("../");
+  de = make_unique<DirectoryEntry>("../");
   UnitAssert(de->DirName() == ".");
-  delete de;
-
-  de = new DirectoryEntry(".");
+  de = make_unique<DirectoryEntry>(".");
   UnitAssert(de->DirName() == ".");
-  delete de;
-
-  de = new DirectoryEntry("../tmp");
+  de = make_unique<DirectoryEntry>("../tmp");
   UnitAssert(de->DirName() == "..");
-  delete de;
 
   return;
 }
@@ -197,17 +185,13 @@ static void TestDirNames()
 //----------------------------------------------------------------------------
 static void TestIsDirectory()
 {
-  DirectoryEntry  *de = new DirectoryEntry("/");
+  unique_ptr<DirectoryEntry>  de = make_unique<DirectoryEntry>("/");
   UnitAssert(de->IsDirectory());
-  delete de;
-
-  de = new DirectoryEntry(".");
+  de = make_unique<DirectoryEntry>(".");
   UnitAssert(de->IsDirectory());
-  delete de;
   
-  de = new DirectoryEntry("TestDwmDirectoryEntry");
+  de = make_unique<DirectoryEntry>("TestDwmDirectoryEntry");
   UnitAssert(! de->IsDirectory());
-  delete de;
 
   return;
 }
@@ -217,13 +201,13 @@ static void TestIsDirectory()
 //----------------------------------------------------------------------------
 static void TestGetChildren()
 {
-  DirectoryEntry  *de = new DirectoryEntry(".");
+  unique_ptr<DirectoryEntry>  de = make_unique<DirectoryEntry>(".");
   vector<DirectoryEntry>  dirEntries;
   UnitAssert(de->GetChildren(dirEntries));
   vector<DirectoryEntry>::const_iterator  i = dirEntries.begin();
   for ( ; i != dirEntries.end(); ++i) {
 
-    UnitAssert(i->Parent() == de);
+    UnitAssert(i->Parent() == de.get());
     UnitAssert(i->Parent()->BaseName() == ".");
 
     if (i->Type() != DirectoryEntry::e_typeSymbolicLink) {
@@ -236,13 +220,13 @@ static void TestGetChildren()
     
 
     if (i->IsDirectory()) {
-      DirectoryEntry  subdir(i->Path(), de);
+      DirectoryEntry  subdir(i->Path(), de.get());
       vector<DirectoryEntry>  subdirEntries;
       if (subdir.GetChildren(subdirEntries)) {
         vector<DirectoryEntry>::const_iterator  si = subdirEntries.begin();
         for ( ; si != subdirEntries.end(); ++si) {
           UnitAssert(si->Parent() == &subdir);
-          UnitAssert(si->Parent()->Parent() == de);
+          UnitAssert(si->Parent()->Parent() == de.get());
 
           UnitAssert(si->RealPath().find(si->Parent()->RealPath())
                      != string::npos);
@@ -267,8 +251,6 @@ static void TestGetChildren()
 
   }  //  END 'for ( ; i != dirEntries.end(); ++i)'
 
-  delete de;
-  
   return;
 }
 
@@ -277,19 +259,17 @@ static void TestGetChildren()
 //----------------------------------------------------------------------------
 static void TestGetSubdirs()
 {
-  DirectoryEntry  *de = new DirectoryEntry("..");
+  unique_ptr<DirectoryEntry>  de = make_unique<DirectoryEntry>("..");
   vector<DirectoryEntry>  dirEntries;
   UnitAssert(de->GetChildren(dirEntries, DirectoryEntry::e_typeDirectory));
   vector<DirectoryEntry>::const_iterator  i = dirEntries.begin();
   for ( ; i != dirEntries.end(); ++i) {
-    UnitAssert(i->Parent() == de);
+    UnitAssert(i->Parent() == de.get());
     UnitAssert(i->Parent()->BaseName() == "..");
     UnitAssert(i->Type() == DirectoryEntry::e_typeDirectory);
     UnitAssert(i->Parent()->Type() == DirectoryEntry::e_typeDirectory);
   }
 
-  delete de;
-  
   return;
 }
 
@@ -298,19 +278,17 @@ static void TestGetSubdirs()
 //----------------------------------------------------------------------------
 static void TestGetRegularFiles()
 {
-  DirectoryEntry  *de = new DirectoryEntry(".");
+  unique_ptr<DirectoryEntry>  de = make_unique<DirectoryEntry>(".");
   vector<DirectoryEntry>  dirEntries;
   UnitAssert(de->GetChildren(dirEntries, DirectoryEntry::e_typeRegular));
   vector<DirectoryEntry>::const_iterator  i = dirEntries.begin();
   for ( ; i != dirEntries.end(); ++i) {
-    UnitAssert(i->Parent() == de);
+    UnitAssert(i->Parent() == de.get());
     UnitAssert(i->Parent()->BaseName() == ".");
     UnitAssert(i->Type() == DirectoryEntry::e_typeRegular);
     UnitAssert(i->Parent()->Type() == DirectoryEntry::e_typeDirectory);
   }
 
-  delete de;
-  
   return;
 }
 
@@ -319,7 +297,7 @@ static void TestGetRegularFiles()
 //----------------------------------------------------------------------------
 static void TestRecurse()
 {
-  DirectoryEntry  *de = new DirectoryEntry("..");
+  unique_ptr<DirectoryEntry>  de = make_unique<DirectoryEntry>("..");
   DirectoryEntryTestFunc  detf(de->Path());
   de->Recurse(detf, true);
   UnitAssert(detf.FoundSelf());
@@ -329,7 +307,6 @@ static void TestRecurse()
   
   UnitAssert(de->Recurse(detf, true) == de->Recurse(detf, false));
   
-  delete de;
   return;
 }
 
@@ -338,7 +315,7 @@ static void TestRecurse()
 //----------------------------------------------------------------------------
 static void TestRecurseDepth()
 {
-  DirectoryEntry  *de = new DirectoryEntry("..");
+  unique_ptr<DirectoryEntry>  de = make_unique<DirectoryEntry>("..");
   DirectoryEntryTestFunc  detf(de->Path());
 
   UnitAssert(de->Recurse(detf, true, 0) == 1);
@@ -354,7 +331,6 @@ static void TestRecurseDepth()
   
   UnitAssert(de->Recurse(detf, true, 2) > de->Recurse(detf, true, 1));
 
-  delete de;
   return;
 }
 
