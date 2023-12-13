@@ -1,0 +1,7 @@
+I'm adding the ability to stream to/from
+boost::asio::local::stream_protocol::socket objects.  I've done the
+integral and floating point types, std::string and std::pair so far.
+Still a long way to go.  This is a bit of a design mismatch; ASIO
+sockets are template instantations, but my ASIOCapable base class
+(pure virtual) is used via inheritance.  i.e. the Read() and Write()
+members there are pure virtual functions, not function templates.
