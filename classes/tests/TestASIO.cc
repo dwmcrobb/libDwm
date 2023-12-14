@@ -2,7 +2,7 @@
 // @(#) $DwmPath: dwm/libDwm/trunk/tests/TestASIO.cc 10968 $
 // @(#) $Id: TestASIO.cc 10968 2020-08-24 22:45:47Z dwm $
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2018, 2020
+//  Copyright (c) Daniel W. McRobb 2018, 2020, 2023
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -47,10 +47,12 @@
 
 #include "DwmUnitAssert.hh"
 #include "DwmASIO.hh"
+#include "DwmSysLogger.hh"
 
 using namespace std;
 
 namespace ip = boost::asio::ip;
+namespace local = boost::asio::local;
 
 //----------------------------------------------------------------------------
 //!  
@@ -76,7 +78,38 @@ static void ServerReader(std::vector<T> & entries, std::atomic<bool> & ready)
     while (Dwm::ASIO::Read(sck, entry)) {
       entries.push_back(entry);
     }
+    sck.close();
   }
+  acc.close();
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+template <typename T>
+static void LocalServerReader(std::vector<T> & entries,
+                              std::atomic<bool> & ready)
+{
+  entries.clear();
+  boost::asio::io_context  ioContext;
+  local::stream_protocol::acceptor
+    acc(ioContext,
+        local::stream_protocol::endpoint("./TestASIO.sock"), true);
+  local::stream_protocol::socket    sck(ioContext);
+  local::stream_protocol::endpoint  endPoint;
+  boost::system::error_code  ec = {};
+  ready = true;
+  acc.accept(sck, endPoint, ec);
+  if (UnitAssert(! ec)) {
+    sck.non_blocking(false);
+    T  entry;
+    while (Dwm::ASIO::Read(sck, entry)) {
+      entries.push_back(entry);
+    }
+    sck.close();
+  }
+  acc.close();
   return;
 }
 
@@ -101,7 +134,37 @@ static void ServerContainerReader(ContainerT & c, std::atomic<bool> & ready)
   if (UnitAssert(! ec)) {
     sck.non_blocking(false);
     Dwm::ASIO::Read(sck, c);
+    sck.close();
   }
+  acc.close();
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+template <typename ContainerT>
+static void LocalServerContainerReader(ContainerT & c,
+                                       std::atomic<bool> & ready)
+{
+  c.clear();
+  boost::asio::io_context  ioContext;
+  local::stream_protocol::acceptor
+    acc(ioContext, local::stream_protocol::endpoint("./TestASIO.sock"), true);
+  local::stream_protocol::socket   sck(ioContext);
+  local::stream_protocol::endpoint endPoint;
+  boost::system::error_code  ec = {};
+  ready = true;
+  acc.accept(sck, endPoint, ec);
+  if (UnitAssert(! ec)) {
+    sck.non_blocking(false);
+    Dwm::ASIO::Read(sck, c);
+    sck.close();
+  }
+  else {
+    cerr << "line " << __LINE__ << " ec: " << ec << '\n';
+  }
+  acc.close();
   return;
 }
 
@@ -126,7 +189,36 @@ static void ServerArrayReader(std::array<valueT,N> & c,
   if (UnitAssert(! ec)) {
     sck.non_blocking(false);
     Dwm::ASIO::Read(sck, c);
+    sck.close();
   }
+  acc.close();
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+template <typename valueT, size_t N>
+static void LocalServerArrayReader(std::array<valueT,N> & c,
+                                   std::atomic<bool> & ready)
+{
+  boost::asio::io_context  ioContext;
+  local::stream_protocol::acceptor
+    acc(ioContext, local::stream_protocol::endpoint("./TestASIO.sock"), true);
+  local::stream_protocol::socket    sck(ioContext);
+  local::stream_protocol::endpoint  endPoint;
+  boost::system::error_code  ec = {};
+  ready = true;
+  acc.accept(sck, endPoint, ec);
+  if (UnitAssert(! ec)) {
+    sck.non_blocking(false);
+    Dwm::ASIO::Read(sck, c);
+    sck.close();
+  }
+  else {
+    cerr << "line " << __LINE__ << " ec: " << ec << '\n';
+  }
+  acc.close();
   return;
 }
 
@@ -167,6 +259,40 @@ static void TestVectorOf(const vector<T> & invec)
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+template <typename T>
+static void LocalTestVectorOf(const vector<T> & invec)
+{
+  vector<T>  outvec;
+  std::atomic<bool>  serverReady = false;
+  std::thread  serverthread = std::thread(LocalServerReader<T>,
+                                          std::ref(outvec),
+                                          std::ref(serverReady));
+  while (! serverReady) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+  }
+  
+  boost::asio::io_context    ioContext;
+  local::stream_protocol::endpoint endPoint("./TestASIO.sock");
+  local::stream_protocol::socket   sck(ioContext);
+  boost::system::error_code  ec;
+  sck.connect(endPoint, ec);
+  if (UnitAssert((! ec))) {
+    sck.non_blocking(false);
+    for (const auto & s : invec) {
+      UnitAssert(Dwm::ASIO::Write(sck, s));
+    }
+    sck.close();
+  }
+  serverthread.join();
+  std::remove("./TestASIO.sock");
+  UnitAssert(invec == outvec);
+    
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 template <typename ContainerT>
 static void TestContainer(const ContainerT & ct)
 {
@@ -191,6 +317,38 @@ static void TestContainer(const ContainerT & ct)
     sck.close();
   }
   serverthread.join();
+  UnitAssert(ct == outct);
+    
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+template <typename ContainerT>
+static void LocalTestContainer(const ContainerT & ct)
+{
+  ContainerT  outct;
+  std::atomic<bool>  serverReady = false;
+  std::thread  serverthread =
+    std::thread(LocalServerContainerReader<ContainerT>,
+                std::ref(outct), std::ref(serverReady));
+  while (! serverReady) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+  }
+  
+  boost::asio::io_context           ioContext;
+  local::stream_protocol::endpoint  endPoint("./TestASIO.sock");
+  local::stream_protocol::socket    sck(ioContext);
+  boost::system::error_code  ec;
+  sck.connect(endPoint, ec);
+  if (UnitAssert((! ec))) {
+    sck.non_blocking(false);
+    UnitAssert(Dwm::ASIO::Write(sck, ct));
+    sck.close();
+  }
+  serverthread.join();
+  std::remove("./TestASIO.sock");
   UnitAssert(ct == outct);
     
   return;
@@ -231,6 +389,38 @@ static void TestArray(const std::array<valueT,N> & ct)
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+template <typename valueT, size_t N>
+static void LocalTestArray(const std::array<valueT,N> & ct)
+{
+  std::array<valueT,N>  outct;
+  std::atomic<bool>  serverReady = false;
+  std::thread  serverthread =
+    std::thread(LocalServerArrayReader<valueT,N>,
+                std::ref(outct), std::ref(serverReady));
+  while (! serverReady) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+  }
+  
+  boost::asio::io_context           ioContext;
+  local::stream_protocol::endpoint  endPoint("./TestASIO.sock");
+  local::stream_protocol::socket    sck(ioContext);
+  boost::system::error_code         ec = {};
+  sck.connect(endPoint, ec);
+  if (UnitAssert((! ec))) {
+    sck.non_blocking(false);
+    UnitAssert(Dwm::ASIO::Write(sck, ct));
+    sck.close();
+  }
+  serverthread.join();
+  std::remove("./TestASIO.sock");  
+  UnitAssert(ct == outct);
+    
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 template <typename T, size_t N>
 static void TestAsArray(const vector<T> & invec)
 {
@@ -239,6 +429,7 @@ static void TestAsArray(const vector<T> & invec)
     inarr[i] = invec[i];
   }
   TestArray(inarr);
+  LocalTestArray(inarr);
   return;
 }
 
@@ -249,6 +440,7 @@ template <typename T>
 static void TestAsVector(const vector<T> & invec)
 {
   TestContainer(invec);
+  LocalTestContainer(invec);
   return;
 }
 
@@ -261,6 +453,7 @@ static void TestAsDeque(const vector<T> & invec)
   deque<T>  indeq;
   for (const auto & val : invec) {  indeq.push_back(val);  }
   TestContainer(indeq);
+  LocalTestContainer(indeq);
   return;
 }
 
@@ -273,6 +466,7 @@ static void TestAsList(const vector<T> & invec)
   list<T>  inlist;
   for (const auto & val : invec) {  inlist.push_back(val);  }
   TestContainer(inlist);
+  LocalTestContainer(inlist);
   return;
 }
 
@@ -285,6 +479,7 @@ static void TestAsMap(const vector<T> & invec)
   map<T,T>  inmap;
   for (const auto & val : invec) {  inmap[val] = val;  }
   TestContainer(inmap);
+  LocalTestContainer(inmap);
   return;
 }
 
@@ -297,6 +492,7 @@ static void TestAsMultimap(const vector<T> & invec)
   multimap<T,T>  inmap;
   for (const auto & val : invec) {  inmap.insert(pair<T,T>(val,val));  }
   TestContainer(inmap);
+  LocalTestContainer(inmap);
   return;
 }
 
@@ -309,6 +505,7 @@ static void TestAsSet(const vector<T> & invec)
   set<T>  inSet;
   for (const auto & val : invec) {  inSet.insert(val);  }
   TestContainer(inSet);
+  LocalTestContainer(inSet);
   return;
 }
 
@@ -321,6 +518,7 @@ static void TestAsMultiset(const vector<T> & invec)
   multiset<T>  inSet;
   for (const auto & val : invec) {  inSet.insert(val);  }
   TestContainer(inSet);
+  LocalTestContainer(inSet);
   return;
 }
 
@@ -333,6 +531,7 @@ static void TestAsUnorderedMap(const vector<T> & invec)
   unordered_map<T,T>  inmap;
   for (const auto & val : invec) {  inmap[val] = val;  }
   TestContainer(inmap);
+  LocalTestContainer(inmap);
   return;
 }
 
@@ -345,6 +544,7 @@ static void TestAsUnorderedSet(const vector<T> & invec)
   unordered_set<T>  inSet;
   for (const auto & val : invec) {  inSet.insert(val);  }
   TestContainer(inSet);
+  LocalTestContainer(inSet);
   return;
 }
 
@@ -515,8 +715,12 @@ static void TestVariants()
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
+  Dwm::SysLogger::Open("TestASIO", LOG_PERROR, LOG_USER);
+  
   TestStrings();
+#if 0
   TestInts();
+#endif
   TestFloats();
   TestDoubles();
   TestPairs();

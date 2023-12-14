@@ -53,6 +53,7 @@ namespace Dwm {
   //!  
   //-------------------------------------------------------------------------
   template <typename S, typename T>
+  requires IsSupportedASIOSocket<S>
   bool _asioread(S & s, T & value)
   {
     bool  rc = false;
@@ -77,6 +78,7 @@ namespace Dwm {
   //!  
   //-------------------------------------------------------------------------
   template <typename S>
+  requires IsSupportedASIOSocket<S>
   bool _asioread(S & s, char *buf, uint64_t len)
   {
     bool  rc = false;
@@ -159,6 +161,7 @@ namespace Dwm {
   //!  
   //-------------------------------------------------------------------------
   template <typename S, typename T>
+  requires IsSupportedASIOSocket<S>
   bool _asio_read_network(S & s, T & value)
   {
     bool  rc = _asioread(s, value);
@@ -561,11 +564,13 @@ namespace Dwm {
   {
     return _asio_write_network(s, value);
   }
-  
+
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::ip::tcp::socket & s, std::string & value)
+  template <typename S>
+  requires IsSupportedASIOSocket<S>
+  bool ASIO_Read(S & s, std::string & value)
   {
     bool  rc = false;
     value.clear();
@@ -592,12 +597,13 @@ namespace Dwm {
     }
     return rc;
   }
-  
-  //-------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
   //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Write(boost::asio::ip::tcp::socket & s,
-                   const std::string & value)
+  //--------------------------------------------------------------------------
+  template <typename S>
+  requires IsSupportedASIOSocket<S>
+  bool ASIO_Write(S & s, const std::string & value)
   {
     bool  rc = false;
     uint64_t  len = value.size();
@@ -607,7 +613,34 @@ namespace Dwm {
     }
     return rc;
   }
-    
+  
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::ip::tcp::socket & s, std::string & value)
+  { return ASIO_Read(s, value); }
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::ip::tcp::socket & s,
+                   const std::string & value)
+  { return ASIO_Write(s, value); }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
+                  std::string & value)
+  { return ASIO_Read(s, value); }
+  
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
+                   const std::string & value)
+  { return ASIO_Write(s, value); }
+
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
@@ -620,8 +653,7 @@ namespace Dwm {
   //!  
   //--------------------------------------------------------------------------
   template <typename S>
-  requires std::is_same_v<S,boost::asio::ip::tcp::socket>
-  || std::is_same_v<S,boost::asio::local::stream_protocol::socket>
+  requires IsSupportedASIOSocket<S>
   bool ASIO_Read(S & s, float & val)
   {
     bool  rc = false;
@@ -637,8 +669,7 @@ namespace Dwm {
   //!  
   //--------------------------------------------------------------------------
   template <typename S>
-  requires std::is_same_v<S,boost::asio::ip::tcp::socket>
-  || std::is_same_v<S,boost::asio::local::stream_protocol::socket>
+  requires IsSupportedASIOSocket<S>
   bool ASIO_Write(S & s, float val)
   {
     bool  rc = false;
@@ -680,8 +711,7 @@ namespace Dwm {
   //!  
   //--------------------------------------------------------------------------
   template <typename S>
-  requires std::is_same_v<S,boost::asio::ip::tcp::socket>
-  || std::is_same_v<S,boost::asio::local::stream_protocol::socket>
+  requires IsSupportedASIOSocket<S>
   bool ASIO_Read(S & s, double & val)
   {
     bool  rc = false;
@@ -710,8 +740,7 @@ namespace Dwm {
   //!  
   //--------------------------------------------------------------------------
   template <typename S>
-  requires std::is_same_v<S,boost::asio::ip::tcp::socket>
-  || std::is_same_v<S,boost::asio::local::stream_protocol::socket>
+  requires IsSupportedASIOSocket<S>
   bool ASIO_Write(S & s, double val)
   {
     bool  rc = false;
