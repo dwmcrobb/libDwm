@@ -2,7 +2,7 @@
 // @(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmDirectoryEntry.cc 10621 $
 // @(#) $Id: TestDwmDirectoryEntry.cc 10621 2020-05-02 21:51:49Z dwm $
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2011
+//  Copyright (c) Daniel W. McRobb 2011, 2023
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -40,6 +40,7 @@
 //---------------------------------------------------------------------------
 
 #include <cstdlib>
+#include <memory>
 #include <string>
 
 #include "DwmSvnTag.hh"
