@@ -40,6 +40,10 @@
 //!  \brief  Dwm::ASIO unit tests
 //---------------------------------------------------------------------------
 
+extern "C" {
+  #include <sys/stat.h>
+}
+
 #include <iomanip>
 #include <iostream>
 #include <thread>
@@ -92,15 +96,24 @@ static void LocalServerReader(std::vector<T> & entries,
                               std::atomic<bool> & ready)
 {
   entries.clear();
+  unlink("./TestASIO.sock");
+#if defined(__APPLE__)
+  struct stat  udsStat;
+  while (stat("./TestASIO.sock", &udsStat) == 0) {
+    cerr << "Waiting for TestASIO.sock to be removed\n";
+  }
+#endif
   boost::asio::io_context  ioContext;
-  local::stream_protocol::acceptor
-    acc(ioContext,
-        local::stream_protocol::endpoint("./TestASIO.sock"), true);
+  local::stream_protocol::acceptor acc(ioContext);
+  acc.open();
+  acc.non_blocking(false);
+  acc.bind(local::stream_protocol::endpoint("./TestASIO.sock"));
+  acc.listen();
   local::stream_protocol::socket    sck(ioContext);
   local::stream_protocol::endpoint  endPoint;
   boost::system::error_code  ec = {};
   ready = true;
-  acc.accept(sck, endPoint, ec);
+  acc.accept(sck, ec);
   if (UnitAssert(! ec)) {
     sck.non_blocking(false);
     T  entry;
@@ -148,14 +161,18 @@ static void LocalServerContainerReader(ContainerT & c,
                                        std::atomic<bool> & ready)
 {
   c.clear();
+  unlink("./TestASIO.sock");
   boost::asio::io_context  ioContext;
-  local::stream_protocol::acceptor
-    acc(ioContext, local::stream_protocol::endpoint("./TestASIO.sock"), true);
+  local::stream_protocol::acceptor  acc(ioContext);
+  acc.open();
+  acc.non_blocking(false);
+  acc.bind(local::stream_protocol::endpoint("./TestASIO.sock"));
+  acc.listen();
   local::stream_protocol::socket   sck(ioContext);
   local::stream_protocol::endpoint endPoint;
   boost::system::error_code  ec = {};
   ready = true;
-  acc.accept(sck, endPoint, ec);
+  acc.accept(sck, ec);
   if (UnitAssert(! ec)) {
     sck.non_blocking(false);
     Dwm::ASIO::Read(sck, c);
@@ -202,14 +219,18 @@ template <typename valueT, size_t N>
 static void LocalServerArrayReader(std::array<valueT,N> & c,
                                    std::atomic<bool> & ready)
 {
+  unlink("./TestASIO.sock");
   boost::asio::io_context  ioContext;
-  local::stream_protocol::acceptor
-    acc(ioContext, local::stream_protocol::endpoint("./TestASIO.sock"), true);
+  local::stream_protocol::acceptor  acc(ioContext);
+  acc.open();
+  acc.non_blocking(false);
+  acc.bind(local::stream_protocol::endpoint("./TestASIO.sock"));
+  acc.listen();
   local::stream_protocol::socket    sck(ioContext);
   local::stream_protocol::endpoint  endPoint;
   boost::system::error_code  ec = {};
   ready = true;
-  acc.accept(sck, endPoint, ec);
+  acc.accept(sck, ec);
   if (UnitAssert(! ec)) {
     sck.non_blocking(false);
     Dwm::ASIO::Read(sck, c);
@@ -284,7 +305,13 @@ static void LocalTestVectorOf(const vector<T> & invec)
     sck.close();
   }
   serverthread.join();
-  std::remove("./TestASIO.sock");
+  unlink("./TestASIO.sock");
+#if defined(__APPLE__)
+  struct stat  udsStat;
+  while (stat("./TestASIO.sock", &udsStat) == 0) {
+    cerr << "Waiting for TestASIO.sock to be removed\n";
+  }
+#endif
   UnitAssert(invec == outvec);
     
   return;
@@ -348,7 +375,13 @@ static void LocalTestContainer(const ContainerT & ct)
     sck.close();
   }
   serverthread.join();
-  std::remove("./TestASIO.sock");
+  unlink("./TestASIO.sock");
+#if defined(__APPLE__)
+  struct stat  udsStat;
+  while (stat("./TestASIO.sock", &udsStat) == 0) {
+    cerr << "Waiting for TestASIO.sock to be removed\n";
+  }
+#endif
   UnitAssert(ct == outct);
     
   return;
@@ -412,7 +445,13 @@ static void LocalTestArray(const std::array<valueT,N> & ct)
     sck.close();
   }
   serverthread.join();
-  std::remove("./TestASIO.sock");  
+  unlink("./TestASIO.sock");
+#if defined(__APPLE__)
+  struct stat  udsStat;
+  while (stat("./TestASIO.sock", &udsStat) == 0) {
+    cerr << "Waiting for TestASIO.sock to be removed\n";
+  }
+#endif
   UnitAssert(ct == outct);
     
   return;
@@ -718,9 +757,7 @@ int main(int argc, char *argv[])
   Dwm::SysLogger::Open("TestASIO", LOG_PERROR, LOG_USER);
   
   TestStrings();
-#if 0
   TestInts();
-#endif
   TestFloats();
   TestDoubles();
   TestPairs();
