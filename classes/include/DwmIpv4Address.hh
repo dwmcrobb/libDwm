@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2006, 2016
+//  Copyright (c) Daniel W. McRobb 2004-2006, 2016, 2023
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -49,6 +49,7 @@ extern "C" {
 
 #include <string>
 
+#include "DwmASIOCapable.hh"
 #include "DwmDescriptorIOCapable.hh"
 #include "DwmFileIOCapable.hh"
 #include "DwmStreamIOCapable.hh"
@@ -64,8 +65,9 @@ namespace Dwm {
   //!  This class encapsulates an IPv4 address.
   //--------------------------------------------------------------------------
   class Ipv4Address
-    : public StreamIOCapable, public FileIOCapable, public DescriptorIOCapable,
-      public StreamedLengthCapable, public GZIOCapable, public BZ2IOCapable
+    : public ASIOCapable, public StreamIOCapable, public FileIOCapable,
+      public DescriptorIOCapable, public StreamedLengthCapable,
+      public GZIOCapable, public BZ2IOCapable
   {
   public:
     //------------------------------------------------------------------------
@@ -325,7 +327,15 @@ namespace Dwm {
     //!  (4 on success).
     //------------------------------------------------------------------------
     int BZWrite(BZFILE *bzf) const override;
+
+    bool Read(boost::asio::ip::tcp::socket & s) override;
+
+    bool Write(boost::asio::ip::tcp::socket & s) const override;
     
+    bool Read(boost::asio::local::stream_protocol::socket & s) override;
+
+    bool Write(boost::asio::local::stream_protocol::socket & s) const override;
+
     //------------------------------------------------------------------------
     //!  Prints an Ipv4Address to an ostream in human-readable form.
     //------------------------------------------------------------------------

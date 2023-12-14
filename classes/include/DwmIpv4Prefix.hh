@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2006
+//  Copyright (c) Daniel W. McRobb 2004-2006, 2023
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -53,6 +53,7 @@ extern "C" {
 #include <vector>
 
 #include "DwmIpv4Address.hh"
+#include "DwmASIO.hh"
 #include "DwmStreamIOCapable.hh"
 #include "DwmFileIOCapable.hh"
 #include "DwmDescriptorIOCapable.hh"
@@ -66,8 +67,9 @@ namespace Dwm {
   //!  This class encapsulates an IPv4 address and netmask.
   //--------------------------------------------------------------------------
   class Ipv4Prefix
-    : public StreamIOCapable, public FileIOCapable, public DescriptorIOCapable,
-      public StreamedLengthCapable, public GZIOCapable, public BZ2IOCapable
+    : public ASIOCapable, public StreamIOCapable, public FileIOCapable,
+      public DescriptorIOCapable, public StreamedLengthCapable,
+      public GZIOCapable, public BZ2IOCapable
   {
   public:
     //------------------------------------------------------------------------
@@ -323,6 +325,30 @@ namespace Dwm {
     int BZWrite(BZFILE *bzf) const override;
 
     //------------------------------------------------------------------------
+    //!  Reads the prefix from @c s.  Returns true on success, false on
+    //!  failure.
+    //------------------------------------------------------------------------
+    bool Read(boost::asio::ip::tcp::socket & s) override;
+    
+    //------------------------------------------------------------------------
+    //!  Writes the prefix to @c s.  Returns true on success, false on
+    //!  failure.
+    //------------------------------------------------------------------------
+    bool Write(boost::asio::ip::tcp::socket & s) const override;
+    
+    //------------------------------------------------------------------------
+    //!  Reads the prefix from @c s.  Returns true on success, false on
+    //!  failure.
+    //------------------------------------------------------------------------
+    bool Read(boost::asio::local::stream_protocol::socket & s) override;
+
+    //------------------------------------------------------------------------
+    //!  Writes the prefix to @c s.  Returns true on success, false on
+    //!  failure.
+    //------------------------------------------------------------------------
+    bool Write(boost::asio::local::stream_protocol::socket & s) const override;
+
+    //------------------------------------------------------------------------
     //!  Prints an Ipv4Prefix to an ostream in 'a.b.c.d/n' form.  Returns
     //!  the ostream.
     //------------------------------------------------------------------------
@@ -361,6 +387,33 @@ namespace Dwm {
 
   private:
     alignas(4) uint8_t  _data[5];
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename S>
+    requires IsSupportedASIOSocket<S>
+    bool ASIO_Read(S & s)
+    {
+      using boost::asio::read, boost::asio::buffer;
+      boost::system::error_code  ec;
+      return ((read(s, buffer(_data, sizeof(_data)), ec) == sizeof(_data))
+              && (! ec));
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename S>
+    requires IsSupportedASIOSocket<S>
+    bool ASIO_Write(S & s) const
+    {
+      using boost::asio::write, boost::asio::buffer;
+      boost::system::error_code  ec;
+      return ((write(s, buffer(_data, sizeof(_data)), ec) == sizeof(_data))
+              && (! ec));
+    }
+    
   };
 
   //--------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2018, 2020
+//  Copyright (c) Daniel W. McRobb 2018, 2020, 2023
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -60,6 +60,16 @@
 namespace Dwm {
 
   //--------------------------------------------------------------------------
+  //!  Concept for the types of ASIO sockets we can utilize.  Originally I
+  //!  only used ASIO for TCP sockets, but later I had use cases for
+  //!  UNIX domain sockets.
+  //--------------------------------------------------------------------------
+  template <typename S>
+  concept IsSupportedASIOSocket =
+  std::is_same_v<S,boost::asio::ip::tcp::socket>
+    || std::is_same_v<S,boost::asio::local::stream_protocol::socket>;
+
+  //--------------------------------------------------------------------------
   //!  A collection of functions for reading from and writing to
   //!  boost::asio::ip::tcp::socket.
   //--------------------------------------------------------------------------
@@ -77,6 +87,20 @@ namespace Dwm {
     //!  success, false on failure.
     //------------------------------------------------------------------------
     static bool Write(boost::asio::ip::tcp::socket & s, uint8_t value);
+
+    //------------------------------------------------------------------------
+    //!  Reads @c value from the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Read(boost::asio::local::stream_protocol::socket & s,
+                     uint8_t & value);
+
+    //------------------------------------------------------------------------
+    //!  Write @c value to the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::local::stream_protocol::socket & s,
+                      uint8_t value);
     
     //------------------------------------------------------------------------
     //!  Reads @c value from the given socket @c s.  Returns true on
@@ -89,7 +113,21 @@ namespace Dwm {
     //!  success, false on failure.
     //------------------------------------------------------------------------
     static bool Write(boost::asio::ip::tcp::socket & s, uint16_t value);
-        
+
+    //------------------------------------------------------------------------
+    //!  Reads @c value from the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Read(boost::asio::local::stream_protocol::socket & s,
+                     uint16_t & value);
+
+    //------------------------------------------------------------------------
+    //!  Write @c value to the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::local::stream_protocol::socket & s,
+                      uint16_t value);
+    
     //------------------------------------------------------------------------
     //!  Reads @c value from the given socket @c s.  Returns true on
     //!  success, false on failure.
@@ -106,6 +144,20 @@ namespace Dwm {
     //!  Reads @c value from the given socket @c s.  Returns true on
     //!  success, false on failure.
     //------------------------------------------------------------------------
+    static bool Read(boost::asio::local::stream_protocol::socket & s,
+                     uint32_t & value);
+
+    //------------------------------------------------------------------------
+    //!  Write @c value to the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::local::stream_protocol::socket & s,
+                      uint32_t value);
+        
+    //------------------------------------------------------------------------
+    //!  Reads @c value from the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
     static bool Read(boost::asio::ip::tcp::socket & s, uint64_t & value);
 
     //------------------------------------------------------------------------
@@ -113,7 +165,21 @@ namespace Dwm {
     //!  success, false on failure.
     //------------------------------------------------------------------------
     static bool Write(boost::asio::ip::tcp::socket & s, uint64_t value);
-        
+
+    //------------------------------------------------------------------------
+    //!  Reads @c value from the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Read(boost::asio::local::stream_protocol::socket & s,
+                     uint64_t & value);
+
+    //------------------------------------------------------------------------
+    //!  Write @c value to the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::local::stream_protocol::socket & s,
+                      uint64_t value);
+    
     //------------------------------------------------------------------------
     //!  Reads @c value from the given socket @c s.  Returns true on
     //!  success, false on failure.
@@ -125,7 +191,21 @@ namespace Dwm {
     //!  success, false on failure.
     //------------------------------------------------------------------------
     static bool Write(boost::asio::ip::tcp::socket & s, int8_t value);
-        
+
+    //------------------------------------------------------------------------
+    //!  Reads @c value from the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Read(boost::asio::local::stream_protocol::socket & s,
+                     int8_t & value);
+
+    //------------------------------------------------------------------------
+    //!  Write @c value to the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::local::stream_protocol::socket & s,
+                      int8_t value);
+    
     //------------------------------------------------------------------------
     //!  Reads @c value from the given socket @c s.  Returns true on
     //!  success, false on failure.
@@ -137,6 +217,20 @@ namespace Dwm {
     //!  success, false on failure.
     //------------------------------------------------------------------------
     static bool Write(boost::asio::ip::tcp::socket & s, int16_t value);
+
+    //------------------------------------------------------------------------
+    //!  Reads @c value from the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Read(boost::asio::local::stream_protocol::socket & s,
+                     int16_t & value);
+    
+    //------------------------------------------------------------------------
+    //!  Write @c value to the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::local::stream_protocol::socket & s,
+                      int16_t value);
     
     //------------------------------------------------------------------------
     //!  Reads @c value from the given socket @c s.  Returns true on
@@ -149,6 +243,20 @@ namespace Dwm {
     //!  success, false on failure.
     //------------------------------------------------------------------------
     static bool Write(boost::asio::ip::tcp::socket & s, int32_t value);
+
+    //------------------------------------------------------------------------
+    //!  Reads @c value from the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Read(boost::asio::local::stream_protocol::socket & s,
+                     int32_t & value);
+    
+    //------------------------------------------------------------------------
+    //!  Write @c value to the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::local::stream_protocol::socket & s,
+                      int32_t value);
     
     //------------------------------------------------------------------------
     //!  Reads @c value from the given socket @c s.  Returns true on
@@ -161,6 +269,20 @@ namespace Dwm {
     //!  success, false on failure.
     //------------------------------------------------------------------------
     static bool Write(boost::asio::ip::tcp::socket & s, int64_t value);
+
+    //------------------------------------------------------------------------
+    //!  Reads @c value from the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Read(boost::asio::local::stream_protocol::socket & s,
+                     int64_t & value);
+    
+    //------------------------------------------------------------------------
+    //!  Write @c value to the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::local::stream_protocol::socket & s,
+                      int64_t value);
     
     //------------------------------------------------------------------------
     //!  Reads @c value from the given socket @c s.  Returns true on
@@ -175,6 +297,20 @@ namespace Dwm {
     static bool Write(boost::asio::ip::tcp::socket & s,
                       const std::string & value);
 
+    //------------------------------------------------------------------------
+    //!  Reads @c value from the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Read(boost::asio::local::stream_protocol::socket & s,
+                     std::string & value);
+    
+    //------------------------------------------------------------------------
+    //!  Write @c value to the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::local::stream_protocol::socket & s,
+                      const std::string & value);
+    
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that should be written if we call the
     //!  Write() member for a string.
@@ -200,6 +336,22 @@ namespace Dwm {
     //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
     //!  \c false on failure.
     //------------------------------------------------------------------------
+    static bool Read(boost::asio::local::stream_protocol::socket & s,
+                     float & val);
+
+    //------------------------------------------------------------------------
+    //!  Writes \c val to \c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
+    //!  \c false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::local::stream_protocol::socket & s,
+                      float val);
+    
+    //------------------------------------------------------------------------
+    //!  Reads \c val from \c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
+    //!  \c false on failure.
+    //------------------------------------------------------------------------
     static bool Read(boost::asio::ip::tcp::socket & s, double & val);
 
     //------------------------------------------------------------------------
@@ -210,12 +362,28 @@ namespace Dwm {
     static bool Write(boost::asio::ip::tcp::socket & s, double val);
 
     //------------------------------------------------------------------------
+    //!  Reads \c val from \c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
+    //!  \c false on failure.
+    //------------------------------------------------------------------------
+    static bool Read(boost::asio::local::stream_protocol::socket & s,
+                     double & val);
+
+    //------------------------------------------------------------------------
+    //!  Writes \c val to \c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
+    //!  \c false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::local::stream_protocol::socket & s,
+                      double val);
+    
+    //------------------------------------------------------------------------
     //!  Reads a pair<_firstT,_secondT> from \c s.  Returns \c true on
     //!  success, \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _firstT, typename _secondT>
-    static bool Read(boost::asio::ip::tcp::socket & s,
-                     std::pair<_firstT, _secondT> & p)
+    template <typename S, typename _firstT, typename _secondT>
+    requires IsSupportedASIOSocket<S>
+    static bool Read(S & s, std::pair<_firstT, _secondT> & p)
     {
       bool  rc = false;
       if (Read(s, p.first)) {
@@ -228,9 +396,9 @@ namespace Dwm {
     //!  Writes a pair<_firstT,_secondT> to \c s.  Returns \c true on success,
     //!  \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _firstT, typename _secondT>
-    static bool Write(boost::asio::ip::tcp::socket & s,
-                      const std::pair<_firstT,_secondT> & p)
+    template <typename S, typename _firstT, typename _secondT>
+    requires IsSupportedASIOSocket<S>
+    static bool Write(S & s, const std::pair<_firstT,_secondT> & p)
     {
       bool  rc = false;
       if (Write(s, p.first)) {
@@ -243,31 +411,31 @@ namespace Dwm {
     //!  Reads a tuple from \c s.  Returns \c true on success, \c false on
     //!  failure.
     //------------------------------------------------------------------------
-    template <typename T, typename... Args>
-    static bool Read(boost::asio::ip::tcp::socket & s,
-                     std::tuple<T, Args...> & t)
+    template <typename S, typename T, typename... Args>
+    requires IsSupportedASIOSocket<S>
+    static bool Read(S & s, std::tuple<T, Args...> & t)
     {
-      return ReadTuple<std::tuple<T, Args...> >(s, t);
+      return ReadTuple<S,std::tuple<T, Args...> >(s, t);
     }
 
     //------------------------------------------------------------------------
     //!  Writes a tuple to \c s.  Returns \c true on success, \c false on
     //!  failure.
     //------------------------------------------------------------------------
-    template <typename T, typename... Args>
-    static bool Write(boost::asio::ip::tcp::socket & s,
-                      const std::tuple<T, Args...> & t)
+    template <typename S, typename T, typename... Args>
+    requires IsSupportedASIOSocket<S>
+    static bool Write(S & s, const std::tuple<T, Args...> & t)
     {
-      return WriteTuple<std::tuple<T, Args...> >(s, t);
+      return WriteTuple<S,std::tuple<T, Args...> >(s, t);
     }
 
     //------------------------------------------------------------------------
     //!  Reads a variant \C V from \c s.  Returns \c true on success, \c false
     //!  on failure.
     //------------------------------------------------------------------------
-    template <typename... Ts>
-    static bool Read(boost::asio::ip::tcp::socket & s,
-                     std::variant<Ts...> & v)
+    template <typename S, typename... Ts>
+    requires IsSupportedASIOSocket<S>
+    static bool Read(S & s, std::variant<Ts...> & v)
     {
       bool  rc = false;
       uint64_t  index = 0;
@@ -285,9 +453,9 @@ namespace Dwm {
     //!  Writes a variant \c v to \c s.  Returns \c true on sucess, \c false
     //!  on failure.
     //------------------------------------------------------------------------
-    template <typename... Ts>
-    static bool Write(boost::asio::ip::tcp::socket & s,
-                      const std::variant<Ts...> & v)
+    template <typename S, typename... Ts>
+    requires IsSupportedASIOSocket<S>
+    static bool Write(S & s, const std::variant<Ts...> & v)
     {
       bool  rc = false;
       uint64_t  index = v.index();
@@ -302,9 +470,9 @@ namespace Dwm {
     //!  Reads an array<_valueT,N> \c v from \c s.  Returns \c true on
     //!  success, \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _valueT, size_t N>
-    static bool Read(boost::asio::ip::tcp::socket & s,
-                     std::array<_valueT, N> & a)
+    template <typename S, typename _valueT, size_t N>
+    requires IsSupportedASIOSocket<S>
+    static bool Read(S & s, std::array<_valueT, N> & a)
     {
       size_t  i = 0;
       for ( ; i < N; ++i) {
@@ -319,9 +487,9 @@ namespace Dwm {
     //!  Writes an array<_valueT.N> @c v to @c s.  Returns @c true on success,
     //!  @c false on failure.
     //------------------------------------------------------------------------
-    template <typename _valueT, size_t N>
-    static bool Write(boost::asio::ip::tcp::socket & s,
-                      const std::array<_valueT, N> & a)
+    template <typename S, typename _valueT, size_t N>
+    requires IsSupportedASIOSocket<S>
+    static bool Write(S & s, const std::array<_valueT, N> & a)
     {
       size_t  i = 0;
       for ( ; i < N; ++i) {
@@ -336,230 +504,241 @@ namespace Dwm {
     //!  Reads a vector<_valueT> \c v from \c s.  Returns \c true on success,
     //!  \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _valueT, typename _Alloc>
-    static bool Read(boost::asio::ip::tcp::socket & s,
-                     std::vector<_valueT, _Alloc> & v)
+    template <typename S, typename _valueT, typename _Alloc>
+    requires IsSupportedASIOSocket<S>
+    static bool Read(S & s, std::vector<_valueT, _Alloc> & v)
     {
-      return ContainerRead<std::vector<_valueT, _Alloc> >(s, v);
+      return ContainerRead<S,std::vector<_valueT, _Alloc> >(s, v);
     }
 
     //------------------------------------------------------------------------
     //!  Writes a vector<_valueT> \c v to \c s.  Returns \c true on success,
     //!  \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _valueT, typename _Alloc>
-    static bool Write(boost::asio::ip::tcp::socket & s,
-                      const std::vector<_valueT, _Alloc> & v)
+    template <typename S, typename _valueT, typename _Alloc>
+    requires IsSupportedASIOSocket<S>
+    static bool Write(S & s, const std::vector<_valueT, _Alloc> & v)
     {
-      return ContainerWrite<std::vector<_valueT, _Alloc> >(s, v);
+      return ContainerWrite<S,std::vector<_valueT, _Alloc> >(s, v);
     }
 
     //------------------------------------------------------------------------
     //!  Reads a deque<_valueT> \c d from \c s.  Returns \c true on success,
     //!  \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _valueT, typename _Alloc>
-    static bool Read(boost::asio::ip::tcp::socket & s,
-                     std::deque<_valueT, _Alloc> & d)
+    template <typename S, typename _valueT, typename _Alloc>
+    requires IsSupportedASIOSocket<S>
+    static bool Read(S & s, std::deque<_valueT, _Alloc> & d)
     {
-      return ContainerRead<std::deque<_valueT, _Alloc> >(s, d);
+      return ContainerRead<S,std::deque<_valueT, _Alloc> >(s, d);
     }
 
     //------------------------------------------------------------------------
     //!  Writes a deque<_valueT> \c d to \c s.  Returns \c true on success,
     //!  \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _valueT, typename _Alloc>
-    static bool Write(boost::asio::ip::tcp::socket & s,
-                      const std::deque<_valueT, _Alloc> & d)
+    template <typename S, typename _valueT, typename _Alloc>
+    requires IsSupportedASIOSocket<S>
+    static bool Write(S & s, const std::deque<_valueT, _Alloc> & d)
     {
-      return ContainerWrite<std::deque<_valueT, _Alloc> >(s, d);
+      return ContainerWrite<S,std::deque<_valueT, _Alloc> >(s, d);
     }
     
     //------------------------------------------------------------------------
     //!  Reads a list<_valueT> \c l from \c s.  Returns \c true on success,
     //!  \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _valueT, typename _Alloc>
-    static bool Read(boost::asio::ip::tcp::socket & s,
-                     std::list<_valueT, _Alloc> & l)
+    template <typename S, typename _valueT, typename _Alloc>
+    requires IsSupportedASIOSocket<S>
+    static bool Read(S & s, std::list<_valueT, _Alloc> & l)
     {
-      return ContainerRead<std::list<_valueT, _Alloc> >(s, l);
+      return ContainerRead<S,std::list<_valueT, _Alloc> >(s, l);
     }
 
     //------------------------------------------------------------------------
     //!  Writes a list<_valueT> \c l to \c s.  Returns \c true on success,
     //!  \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _valueT, typename _Alloc>
-    static bool Write(boost::asio::ip::tcp::socket & s,
-                      const std::list<_valueT, _Alloc> & l)
+    template <typename S, typename _valueT, typename _Alloc>
+    requires IsSupportedASIOSocket<S>
+    static bool Write(S & s, const std::list<_valueT, _Alloc> & l)
     {
-      return ContainerWrite<std::list<_valueT, _Alloc> >(s, l);
+      return ContainerWrite<S,std::list<_valueT, _Alloc> >(s, l);
     }
 
     //------------------------------------------------------------------------
     //!  Reads a map<_keyT,_valueT> \c m from \c s.  Returns \c true on
     //!  success, \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _keyT, typename _valueT, 
+    template <typename S, typename _keyT, typename _valueT, 
               typename _Compare, typename _Alloc>
-    static bool Read(boost::asio::ip::tcp::socket & s,
-                     std::map<_keyT, _valueT, _Compare, _Alloc> & m)
+    requires IsSupportedASIOSocket<S>
+    static bool Read(S & s, std::map<_keyT, _valueT, _Compare, _Alloc> & m)
     {
-      return(PairAssocContRead<std::map<_keyT, _valueT, _Compare, _Alloc> >(s, m));
+      return(PairAssocContRead<S,std::map<_keyT, _valueT, _Compare, _Alloc> >(s, m));
     }
 
     //------------------------------------------------------------------------
     //!  Writes a map<_keyT,_valueT> \c m to \c s.  Returns \c true on
     //!  success, \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _keyT, typename _valueT, 
+    template <typename S, typename _keyT, typename _valueT, 
               typename _Compare, typename _Alloc>
-    static bool Write(boost::asio::ip::tcp::socket & s,
+    requires IsSupportedASIOSocket<S>
+    static bool Write(S & s,
                       const std::map<_keyT,_valueT, _Compare, _Alloc> & m)
     {
-      return(ContainerWrite<std::map<_keyT,_valueT,_Compare,_Alloc> >(s, m));
+      return(ContainerWrite<S,std::map<_keyT,_valueT,_Compare,_Alloc> >(s, m));
     }
 
     //------------------------------------------------------------------------
     //!  Reads a multimap<_keyT,_valueT> \c m from \c s.  Returns true on
     //!  success, false on failure.
     //------------------------------------------------------------------------
-    template <typename _keyT, typename _valueT, 
+    template <typename S, typename _keyT, typename _valueT, 
               typename _Compare, typename _Alloc>
-    static bool
-    Read(boost::asio::ip::tcp::socket & s,
-         std::multimap<_keyT,_valueT,_Compare,_Alloc> & m)
+    requires IsSupportedASIOSocket<S>
+    static bool Read(S & s, std::multimap<_keyT,_valueT,_Compare,_Alloc> & m)
     {
-      return(PairAssocContRead<std::multimap<_keyT,_valueT,_Compare,_Alloc>>(s, m));
+      return(PairAssocContRead<S,std::multimap<_keyT,_valueT,_Compare,_Alloc>>(s, m));
     }
 
     //------------------------------------------------------------------------
     //!  Writes a multimap<_keyT,_valueT> \c m to \c s.  Returns \c true on
     //!  success, \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _keyT, typename _valueT, 
+    template <typename S, typename _keyT, typename _valueT, 
               typename _Compare, typename _Alloc>
+    requires IsSupportedASIOSocket<S>
     static bool
-    Write(boost::asio::ip::tcp::socket & s,
+    Write(S & s,
           const std::multimap<_keyT,_valueT, _Compare, _Alloc> & m)
     {
-      return(ContainerWrite<std::multimap<_keyT,_valueT,_Compare,_Alloc>>(s, m));
+      return(ContainerWrite<S,std::multimap<_keyT,_valueT,_Compare,_Alloc>>(s, m));
     }
 
     //------------------------------------------------------------------------
     //!  Reads an unordered_map<_keyT,_valueT> \c m from \c s.  Returns 
     //!  \c true on success, \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _keyT, typename _valueT, 
+    template <typename S, typename _keyT, typename _valueT, 
               typename _Hash, typename _Pred, typename _Alloc>
+    requires IsSupportedASIOSocket<S>
     static bool
-    Read(boost::asio::ip::tcp::socket & s,
-         std::unordered_map<_keyT, _valueT, _Hash, _Pred, _Alloc> & m)
+    Read(S & s, std::unordered_map<_keyT, _valueT, _Hash, _Pred, _Alloc> & m)
     {
-      return(PairAssocContRead<std::unordered_map<_keyT, _valueT, _Hash, _Pred, _Alloc> >(s, m));
+      return(PairAssocContRead<S,std::unordered_map<_keyT, _valueT, _Hash, _Pred, _Alloc> >(s, m));
     }
 
     //------------------------------------------------------------------------
     //!  Writes a unordered_map<_keyT,_valueT> \c m to \c s.  Returns \c true
     //!  on success, \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _keyT, typename _valueT, 
+    template <typename S, typename _keyT, typename _valueT, 
               typename _Hash, typename _Pred, typename _Alloc>
+    requires IsSupportedASIOSocket<S>
     static bool
-    Write(boost::asio::ip::tcp::socket & s,
+    Write(S & s,
           const std::unordered_map<_keyT, _valueT, _Hash, _Pred, _Alloc> & m)
     {
-      return(ContainerWrite<std::unordered_map<_keyT,_valueT,_Hash,_Pred,_Alloc> >(s, m));
+      return(ContainerWrite<S,std::unordered_map<_keyT,_valueT,_Hash,_Pred,_Alloc> >(s, m));
     }
 
     //------------------------------------------------------------------------
     //!  Reads a set<_valueT> \c m from \c s.  Returns \c true on success,
     //!  \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _valueT, typename _Compare, typename _Alloc>
-    static bool Read(boost::asio::ip::tcp::socket & s,
+    template <typename S, typename _valueT, typename _Compare, typename _Alloc>
+    requires IsSupportedASIOSocket<S>
+    static bool Read(S & s,
                      std::set<_valueT,_Compare,_Alloc> & m)
     {
-      return(ContainerRead<std::set<_valueT,_Compare,_Alloc>>(s, m));
+      return(ContainerRead<S,std::set<_valueT,_Compare,_Alloc>>(s, m));
     }
 
     //------------------------------------------------------------------------
     //!  Writes a set<_valueT> \c m to \c s.  Returns \c true on success,
     //!  \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _valueT, typename _Compare, typename _Alloc>
-    static bool Write(boost::asio::ip::tcp::socket & s,
-                      const std::set<_valueT,_Compare,_Alloc> & m)
+    template <typename S, typename _valueT, typename _Compare, typename _Alloc>
+    requires IsSupportedASIOSocket<S>
+    static bool Write(S & s, const std::set<_valueT,_Compare,_Alloc> & m)
     {
-      return(ContainerWrite<std::set<_valueT,_Compare,_Alloc>>(s, m));
+      return(ContainerWrite<S,std::set<_valueT,_Compare,_Alloc>>(s, m));
     }
 
     //------------------------------------------------------------------------
     //!  Reads a multiset<_valueT> \c m from \c s.  Returns \c true on
     //!  success, \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _valueT, typename _Compare, typename _Alloc>
-    static bool Read(boost::asio::ip::tcp::socket & s,
-                     std::multiset<_valueT,_Compare,_Alloc> & m)
+    template <typename S, typename _valueT, typename _Compare, typename _Alloc>
+    requires IsSupportedASIOSocket<S>
+    static bool Read(S & s, std::multiset<_valueT,_Compare,_Alloc> & m)
     {
-      return(ContainerRead<std::multiset<_valueT,_Compare,_Alloc>>(s, m));
+      return(ContainerRead<S,std::multiset<_valueT,_Compare,_Alloc>>(s, m));
     }
 
     //------------------------------------------------------------------------
     //!  Writes a multiset<_valueT> \c m to \c s.  Returns \c true on success,
     //!  \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _valueT, typename _Compare, typename _Alloc>
-    static bool Write(boost::asio::ip::tcp::socket & s,
+    template <typename S, typename _valueT, typename _Compare, typename _Alloc>
+    requires IsSupportedASIOSocket<S>
+    static bool Write(S & s,
                       const std::multiset<_valueT,_Compare,_Alloc> & m)
     {
-      return(ContainerWrite<std::multiset<_valueT,_Compare,_Alloc>>(s, m));
+      return(ContainerWrite<S,std::multiset<_valueT,_Compare,_Alloc>>(s, m));
     }
 
     //------------------------------------------------------------------------
     //!  Reads an unordered_set<_valueT> \c m from \c s.  Returns \c true on
     //!  success, \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _valueT, typename _Hash, 
+    template <typename S, typename _valueT, typename _Hash, 
               typename _Pred, typename _Alloc>
-    static bool Read(boost::asio::ip::tcp::socket & s,
-         std::unordered_set<_valueT, _Hash, _Pred, _Alloc> & m)
+    requires IsSupportedASIOSocket<S>
+    static bool
+    Read(S & s, std::unordered_set<_valueT, _Hash, _Pred, _Alloc> & m)
     {
-      return(ContainerRead<std::unordered_set<_valueT,_Hash,_Pred,_Alloc>>(s, m));
+      return(ContainerRead<S,std::unordered_set<_valueT,_Hash,_Pred,_Alloc>>(s, m));
     }
 
     //------------------------------------------------------------------------
     //!  Writes a unordered_set<_valueT> \c m to \c s.  Returns \c true on
     //!  success, \c false on failure.
     //------------------------------------------------------------------------
-    template <typename _valueT, typename _Hash,
+    template <typename S, typename _valueT, typename _Hash,
               typename _Pred, typename _Alloc>
+    requires IsSupportedASIOSocket<S>
     static bool
-    Write(boost::asio::ip::tcp::socket & s,
-          const std::unordered_set<_valueT, _Hash, _Pred, _Alloc> & m)
+    Write(S & s, const std::unordered_set<_valueT, _Hash, _Pred, _Alloc> & m)
     {
-      return(ContainerWrite<std::unordered_set<_valueT,_Hash,_Pred,_Alloc>>(s, m));
+      return(ContainerWrite<S,std::unordered_set<_valueT,_Hash,_Pred,_Alloc>>(s, m));
     }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename S>
+    requires IsSupportedASIOSocket<S>
+    static bool Read(S & s, ASIOReadable & val)
+    { return val.Read(s); }
     
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    static bool Read(boost::asio::ip::tcp::socket & s, ASIOReadable & val);
-    
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    static bool Write(boost::asio::ip::tcp::socket & s,
-                      const ASIOWritable & val);
+    template <typename S>
+    requires IsSupportedASIOSocket<S>
+    static bool Write(S & s, const ASIOWritable & val)
+    { return val.Write(s); }
     
   private:
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    template <typename T>
-    static bool ReadTuple(boost::asio::ip::tcp::socket & s, T & t)
+    template <typename S, typename T>
+    requires IsSupportedASIOSocket<S>
+    static bool ReadTuple(S & s, T & t)
     {
       return TupleIOHelper<T,std::tuple_size<T>::value-1>::Read(s, t);
     }
@@ -567,8 +746,9 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    template <typename T>
-    static bool WriteTuple(boost::asio::ip::tcp::socket & s, const T & t)
+    template <typename S, typename T>
+    requires IsSupportedASIOSocket<S>
+    static bool WriteTuple(S & s, const T & t)
     {
       return TupleIOHelper<T,std::tuple_size<T>::value-1>::Write(s, t);
     }
@@ -591,7 +771,9 @@ namespace Dwm {
       //!  Read a tuple \c t from \c s.  Returns \c true on success, \c false
       //!  on failure.
       //----------------------------------------------------------------------
-      static bool Read(boost::asio::ip::tcp::socket & s, T & t)
+      template <typename S>
+      requires IsSupportedASIOSocket<S>
+      static bool Read(S & s, T & t)
       {
         return(ASIO::Read(s, std::get<0>(t)));
       }
@@ -600,7 +782,9 @@ namespace Dwm {
       //!  Write a tuple \c t to \c s.  Returns \c true on success, \c false
       //!  on failure.
       //----------------------------------------------------------------------
-      static bool Write(boost::asio::ip::tcp::socket & s, const T & t)
+      template <typename S>
+      requires IsSupportedASIOSocket<S>
+      static bool Write(S & s, const T & t)
       {
         return(ASIO::Write(s, std::get<0>(t)));
       }
@@ -617,7 +801,9 @@ namespace Dwm {
       //!  Read a tuple \c t from \c s.  Returns true on success, \c false on
       //!  failure.
       //----------------------------------------------------------------------
-      static bool Read(boost::asio::ip::tcp::socket & s, T & t)
+      template <typename S>
+      requires IsSupportedASIOSocket<S>      
+      static bool Read(S & s, T & t)
       {
         bool  rc = false;
         if (TupleIOHelper<T,elt-1>::Read(s, t)) {
@@ -629,7 +815,9 @@ namespace Dwm {
       //----------------------------------------------------------------------
       //!  Write a tuple \c t to an ostream \c os.
       //----------------------------------------------------------------------
-      static bool Write(boost::asio::ip::tcp::socket & s, const T & t)
+      template <typename S>
+      requires IsSupportedASIOSocket<S>      
+      static bool Write(S & s, const T & t)
       {
         bool  rc = false;
         if (TupleIOHelper<T,elt-1>::Write(s, t)) {
@@ -644,7 +832,9 @@ namespace Dwm {
     //!  a std::monostate.  This should only be called from our Read() for
     //!  std::variant (via std::visit()), and does nothing.  Returns true.
     //------------------------------------------------------------------------
-    static bool Read(boost::asio::ip::tcp::socket & s, std::monostate & sm)
+    template <typename S>
+    requires IsSupportedASIOSocket<S>      
+    static bool Read(S & s, std::monostate & sm)
     {
       return true;
     }
@@ -654,8 +844,9 @@ namespace Dwm {
     //!  a std::monostate.  This should only be called from our Write() for
     //!  std::variant (via std::visit()), and does nothing.  Returns true.
     //------------------------------------------------------------------------
-    static bool Write(boost::asio::ip::tcp::socket & s,
-                      const std::monostate & sm)
+    template <typename S>
+    requires IsSupportedASIOSocket<S>      
+    static bool Write(S & s, const std::monostate & sm)
     {
       return true;
     }
@@ -665,9 +856,9 @@ namespace Dwm {
     //!  on failure.  We use this for deques, lists, vectors, sets and
     //!  multisets.
     //------------------------------------------------------------------------
-    template <typename _containerT>
-    static bool ContainerRead(boost::asio::ip::tcp::socket & s,
-                              _containerT & c)
+    template <typename S, typename _containerT>
+    requires IsSupportedASIOSocket<S>
+    static bool ContainerRead(S & s, _containerT & c)
     {
       bool  rc = false;
       c.clear();
@@ -690,17 +881,17 @@ namespace Dwm {
     //!  Writes a container \c c to \c s.  Returns true on success, false on
     //!  failure.  We use this for all containers.
     //------------------------------------------------------------------------
-    template <typename _containerT>
-    static bool ContainerWrite(boost::asio::ip::tcp::socket & s,
-                               const _containerT & c)
+    template <typename S, typename _containerT>
+    requires IsSupportedASIOSocket<S>
+    static bool ContainerWrite(S & s, const _containerT & c)
     {
       bool  rc = false;
       uint64_t  numEntries = c.size();
       if (Write(s, numEntries)) {
         if (numEntries) {
-          rc = Write<typename _containerT::const_iterator>(s, 
-                                                           c.begin(), 
-                                                           c.end());
+          rc = Write<S,typename _containerT::const_iterator>(s, 
+                                                             c.begin(), 
+                                                             c.end());
         }
         else {
           rc = true;
@@ -712,9 +903,9 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    template <typename _inputIteratorT>
-    static bool Write(boost::asio::ip::tcp::socket & s,
-                      _inputIteratorT f, _inputIteratorT l)
+    template <typename S, typename _inputIteratorT>
+    requires IsSupportedASIOSocket<S>
+    static bool Write(S & s, _inputIteratorT f, _inputIteratorT l)
     {
       for ( ; f != l; ++f) {
         if (! Write(s, *f)) {
@@ -728,9 +919,9 @@ namespace Dwm {
     //!  istream.
     //!  We use this for map, multimap and hash_map.
     //------------------------------------------------------------------------
-    template <typename _containerT>
-    static bool PairAssocContRead(boost::asio::ip::tcp::socket & s,
-                                  _containerT & m)
+    template <typename S, typename _containerT>
+    requires IsSupportedASIOSocket<S>
+    static bool PairAssocContRead(S & s, _containerT & m)
     {
       bool  rc = false;
       m.clear();
@@ -758,8 +949,6 @@ namespace Dwm {
       }
       return rc;
     }
-
-
     
   };
 

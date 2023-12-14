@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2021
+//  Copyright (c) Daniel W. McRobb 2021, 2023
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -58,6 +58,12 @@ namespace Dwm {
     //!  on success, faluse on failure.
     //------------------------------------------------------------------------
     virtual bool Read(boost::asio::ip::tcp::socket & s) = 0;
+
+    //------------------------------------------------------------------------
+    //!  Should read the class from the given socket @c s and return true
+    //!  on success, faluse on failure.
+    //------------------------------------------------------------------------
+    virtual bool Read(boost::asio::local::stream_protocol::socket & s) = 0;
   };
 
   //--------------------------------------------------------------------------
@@ -71,6 +77,13 @@ namespace Dwm {
     //!  success, false on failure.
     //------------------------------------------------------------------------
     virtual bool Write(boost::asio::ip::tcp::socket & s) const = 0;
+
+    //------------------------------------------------------------------------
+    //!  Should write the class to the given socket @c s and return true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    virtual bool
+    Write(boost::asio::local::stream_protocol::socket & s) const = 0;
   };
   
   //--------------------------------------------------------------------------

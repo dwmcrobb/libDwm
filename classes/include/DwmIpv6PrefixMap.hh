@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2021
+//  Copyright (c) Daniel W. McRobb 2021, 2023
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -105,7 +105,7 @@ namespace Dwm {
     : public StreamIOCapable, public FileIOCapable,
       public DescriptorIOCapable, public StreamedLengthCapable,
       public GZIOCapable, public BZ2IOCapable,
-      public ASIOReadable, public ASIOWritable
+      public ASIOCapable
   {
   public:
     //------------------------------------------------------------------------
@@ -487,6 +487,16 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
+    //!  Reads the Ipv6PrefixMap from @c s.  Returns true on success, false
+    //!  on failure.
+    //------------------------------------------------------------------------
+    bool Read(boost::asio::local::stream_protocol::socket & s) override
+    {
+      std::unique_lock  lck(_mtx);
+      return ASIO::Read(s, _maps);
+    }
+    
+    //------------------------------------------------------------------------
     //!  Writes the Ipv6PrefixMap to @c s.  Returns true on success, false
     //!  on failure.
     //------------------------------------------------------------------------
@@ -496,6 +506,16 @@ namespace Dwm {
       return ASIO::Write(s, _maps);
     }
 
+    //------------------------------------------------------------------------
+    //!  Writes the Ipv6PrefixMap to @c s.  Returns true on success, false
+    //!  on failure.
+    //------------------------------------------------------------------------
+    bool Write(boost::asio::local::stream_protocol::socket & s) const override
+    {
+      std::shared_lock  lck(_mtx);
+      return ASIO::Write(s, _maps);
+    }
+    
     //------------------------------------------------------------------------
     //!  Returns a shared lock of the Ipv6PrefixMap, in the locked state.
     //!  This should be used with care to avoid deadlock.  It is intended

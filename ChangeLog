@@ -1,3 +1,15 @@
+2023-12-13  Daniel McRobb  <dwm@spark.mcplex.net>
+
+	* include/DwmASIO.hh, include/DwmASIOCapable.hh,
+	include/DwmIpv4Address.hh, include/DwmIpv4Prefix.hh,
+	include/DwmIpv6AddrMap.hh, include/DwmIpv6Address.hh,
+	include/DwmIpv6Prefix.hh, include/DwmIpv6PrefixMap.hh,
+	src/DwmASIO.cc, src/DwmIpv4Address.cc, src/DwmIpv4Prefix.cc,
+	src/DwmIpv6Address.cc, src/DwmIpv6Prefix.cc:
+
+	Start working on adding support for
+	boost::asio::local::stream_protocol::socket.
+
 2023-11-29  Daniel McRobb  <dwm@spark.mcplex.net>
 
 	* dwm.m4: Tweak DWM_CHECK_CPLUSPLUS_23 to define HAVE_CPP20,

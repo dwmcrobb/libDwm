@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2018, 2020
+//  Copyright (c) Daniel W. McRobb 2018, 2020, 2023
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -52,8 +52,8 @@ namespace Dwm {
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
-  template <typename T>
-  bool _asioread(boost::asio::ip::tcp::socket & s, T & value)
+  template <typename S, typename T>
+  bool _asioread(S & s, T & value)
   {
     bool  rc = false;
     if (s.is_open()) {
@@ -76,7 +76,8 @@ namespace Dwm {
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
-  bool _asioread(boost::asio::ip::tcp::socket & s, char *buf, uint64_t len)
+  template <typename S>
+  bool _asioread(S & s, char *buf, uint64_t len)
   {
     bool  rc = false;
     if (s.is_open()) {
@@ -157,8 +158,8 @@ namespace Dwm {
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
-  template <typename T>
-  bool _asio_read_network(boost::asio::ip::tcp::socket & s, T & value)
+  template <typename S, typename T>
+  bool _asio_read_network(S & s, T & value)
   {
     bool  rc = _asioread(s, value);
     if (rc) {
@@ -230,8 +231,8 @@ namespace Dwm {
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
-  template <typename T>
-  bool _asiowrite(boost::asio::ip::tcp::socket & s, const T & value)
+  template <typename S, typename T>
+  bool _asiowrite(S & s, const T & value)
   {
     bool  rc = false;
     if (s.is_open()) {
@@ -254,8 +255,8 @@ namespace Dwm {
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
-  bool _asiowrite(boost::asio::ip::tcp::socket & s, const char *buf,
-                  uint64_t len)
+  template <typename S>
+  bool _asiowrite(S & s, const char *buf, uint64_t len)
   {
     bool  rc = false;
     if (s.is_open()) {
@@ -281,9 +282,8 @@ namespace Dwm {
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
-  template <typename T>
-  bool _asio_write_network(boost::asio::ip::tcp::socket & s,
-                           const T & value)
+  template <typename S, typename T>
+  bool _asio_write_network(S & s, const T & value)
   {
     T  wvalue = value;
     _to_net_byte_order(wvalue);
@@ -305,6 +305,24 @@ namespace Dwm {
   {
     return _asiowrite(s, value);
   }
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
+                  uint8_t & value)
+  {
+    return _asioread(s, value);
+  }
+    
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
+                   uint8_t value)
+  {
+    return _asiowrite(s, value);
+  }
   
   //-------------------------------------------------------------------------
   //!  
@@ -321,7 +339,25 @@ namespace Dwm {
   {
     return _asio_write_network(s, value);
   }
-    
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
+                  uint16_t & value)
+  {
+    return _asio_read_network(s, value);
+  }
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
+                   uint16_t value)
+  {
+    return _asio_write_network(s, value);
+  }
+  
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
@@ -337,7 +373,25 @@ namespace Dwm {
   {
     return _asio_write_network(s, value);
   }
-    
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
+                  uint32_t & value)
+  {
+    return _asio_read_network(s, value);
+  }
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
+                   uint32_t value)
+  {
+    return _asio_write_network(s, value);
+  }
+  
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
@@ -353,7 +407,25 @@ namespace Dwm {
   {
     return _asio_write_network(s, value);
   }
-    
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
+                  uint64_t & value)
+  {
+    return _asio_read_network(s, value);
+  }
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
+                   uint64_t value)
+  {
+    return _asio_write_network(s, value);
+  }
+  
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
@@ -366,6 +438,24 @@ namespace Dwm {
   //!  
   //-------------------------------------------------------------------------
   bool ASIO::Write(boost::asio::ip::tcp::socket & s, int8_t value)
+  {
+    return _asiowrite(s, value);
+  }
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
+                  int8_t & value)
+  {
+    return _asio_read_network(s, value);
+  }
+  
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
+                   int8_t value)
   {
     return _asiowrite(s, value);
   }
@@ -385,6 +475,24 @@ namespace Dwm {
   {
     return _asio_write_network(s, value);
   }
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
+                  int16_t & value)
+  {
+    return _asio_read_network(s, value);
+  }
+    
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
+                   int16_t value)
+  {
+    return _asio_write_network(s, value);
+  }
   
   //-------------------------------------------------------------------------
   //!  
@@ -401,6 +509,24 @@ namespace Dwm {
   {
     return _asio_write_network(s, value);
   }
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
+                  int32_t & value)
+  {
+    return _asio_read_network(s, value);
+  }
+  
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
+                   int32_t value)
+  {
+    return _asio_write_network(s, value);
+  }
   
   //-------------------------------------------------------------------------
   //!  
@@ -414,6 +540,24 @@ namespace Dwm {
   //!  
   //-------------------------------------------------------------------------
   bool ASIO::Write(boost::asio::ip::tcp::socket & s, int64_t value)
+  {
+    return _asio_write_network(s, value);
+  }
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
+                  int64_t & value)
+  {
+    return _asio_read_network(s, value);
+  }
+      
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
+                   int64_t value)
   {
     return _asio_write_network(s, value);
   }
@@ -475,7 +619,10 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::ip::tcp::socket & s, float & val)
+  template <typename S>
+  requires std::is_same_v<S,boost::asio::ip::tcp::socket>
+  || std::is_same_v<S,boost::asio::local::stream_protocol::socket>
+  bool ASIO_Read(S & s, float & val)
   {
     bool  rc = false;
     std::array<char,4>  buf;
@@ -485,11 +632,14 @@ namespace Dwm {
     }
     return rc;
   }
-  
+
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  bool ASIO::Write(boost::asio::ip::tcp::socket & s, float val)
+  template <typename S>
+  requires std::is_same_v<S,boost::asio::ip::tcp::socket>
+  || std::is_same_v<S,boost::asio::local::stream_protocol::socket>
+  bool ASIO_Write(S & s, float val)
   {
     bool  rc = false;
     std::array<char,4>  buf;
@@ -503,7 +653,36 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::ip::tcp::socket & s, double & val)
+  bool ASIO::Read(boost::asio::ip::tcp::socket & s, float & val)
+  { return ASIO_Read(s, val); }
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::ip::tcp::socket & s, float val)
+  { return ASIO_Write(s, val); }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
+                  float & val)
+  { return ASIO_Read(s, val); }
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
+                   float val)
+  { return ASIO_Write(s, val); }
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  template <typename S>
+  requires std::is_same_v<S,boost::asio::ip::tcp::socket>
+  || std::is_same_v<S,boost::asio::local::stream_protocol::socket>
+  bool ASIO_Read(S & s, double & val)
   {
     bool  rc = false;
     std::array<char,8>  buf;
@@ -513,11 +692,27 @@ namespace Dwm {
     }
     return rc;
   }
-  
+
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  bool ASIO::Write(boost::asio::ip::tcp::socket & s, double val)
+  bool ASIO::Read(boost::asio::ip::tcp::socket & s, double & val)
+  { return ASIO_Read(s, val); }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
+                  double & val)
+  { return ASIO_Read(s, val); }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  template <typename S>
+  requires std::is_same_v<S,boost::asio::ip::tcp::socket>
+  || std::is_same_v<S,boost::asio::local::stream_protocol::socket>
+  bool ASIO_Write(S & s, double val)
   {
     bool  rc = false;
     std::array<char,8>  buf;
@@ -528,21 +723,18 @@ namespace Dwm {
     return rc;
   }
   
-  //-------------------------------------------------------------------------
+  //--------------------------------------------------------------------------
   //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::ip::tcp::socket & s, ASIOReadable & val)
-  {
-    return val.Read(s);
-  }
-  
-  //-------------------------------------------------------------------------
+  //--------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::ip::tcp::socket & s, double val)
+  { return ASIO_Write(s, val); }
+
+  //--------------------------------------------------------------------------
   //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Write(boost::asio::ip::tcp::socket & s, const ASIOWritable & val)
-  {
-    return val.Write(s);
-  }
+  //--------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
+                   double val)
+  { return ASIO_Write(s, val); }
   
 }  // namespace Dwm
 

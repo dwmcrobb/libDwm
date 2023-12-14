@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2006, 2016, 2020
+//  Copyright (c) Daniel W. McRobb 2004-2006, 2016, 2020, 2023
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,7 @@ extern "C" {
 #define XXH_INLINE_ALL
 #include <xxhash.h>
 
-#include "DwmASIOCapable.hh"
+#include "DwmASIO.hh"
 #include "DwmDescriptorIOCapable.hh"
 #include "DwmFileIOCapable.hh"
 #include "DwmStreamIOCapable.hh"
@@ -215,17 +215,57 @@ namespace Dwm {
     int BZWrite(BZFILE *bzf) const override;
 
     //------------------------------------------------------------------------
+    //!  Function template intended for boost::asio stream sockets.
+    //------------------------------------------------------------------------
+    template <typename ST>
+    requires IsSupportedASIOSocket<ST>
+    bool ASIO_Read(ST & s)
+    {
+      using boost::asio::read, boost::asio::buffer;
+      boost::system::error_code  ec;
+      return ((read(s, buffer(_addr.s6_addr, 16), ec) == 16) && (! ec));
+    }
+
+    //------------------------------------------------------------------------
+    //!  Function template intended for boost::asio stream sockets.
+    //------------------------------------------------------------------------
+    template <typename ST>
+    requires IsSupportedASIOSocket<ST>
+    bool ASIO_Write(ST & s) const
+    {
+      using boost::asio::write, boost::asio::buffer;
+      boost::system::error_code  ec;
+      return ((write(s, buffer(_addr.s6_addr, 16), ec) == 16) && (! ec));
+    }
+
+    //------------------------------------------------------------------------
     //!  Reads the Ipv6Address from @c s.  Returns true on success, false on
     //!  failure.
     //------------------------------------------------------------------------
-    bool Read(boost::asio::ip::tcp::socket & s) override;
+    bool Read(boost::asio::ip::tcp::socket & s) override
+    { return ASIO_Read(s); }
 
     //------------------------------------------------------------------------
     //!  Writes the Ipv6Address to @c s.  Returns true on success, false on
     //!  failure.
     //------------------------------------------------------------------------
-    bool Write(boost::asio::ip::tcp::socket & s) const override;
+    bool Write(boost::asio::ip::tcp::socket & s) const override
+    { return ASIO_Write(s); }
 
+    //------------------------------------------------------------------------
+    //!  Reads the Ipv6Address from @c s.  Returns true on success, false on
+    //!  failure.
+    //------------------------------------------------------------------------
+    bool Read(boost::asio::local::stream_protocol::socket & s) override
+    { return ASIO_Read(s); }
+
+    //------------------------------------------------------------------------
+    //!  Writes the Ipv6Address to @c s.  Returns true on success, false on
+    //!  failure.
+    //------------------------------------------------------------------------
+    bool Write(boost::asio::local::stream_protocol::socket & s) const override
+    { return ASIO_Write(s); }
+      
     //------------------------------------------------------------------------
     //!  Prints an Ipv6Address to an ostream in human-readable form.
     //------------------------------------------------------------------------

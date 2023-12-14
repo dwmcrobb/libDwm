@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2005-2007, 2020
+//  Copyright (c) Daniel W. McRobb 2005-2007, 2020, 2023
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -446,39 +446,25 @@ namespace Dwm {
   //!  
   //--------------------------------------------------------------------------
   bool Ipv6Prefix::Read(boost::asio::ip::tcp::socket & s)
-  {
-    using boost::asio::read, boost::asio::buffer;
-    bool  rc = false;
-    boost::system::error_code  ec;
-    if ((read(s, buffer(&_length, sizeof(_length)), ec) == sizeof(_length))
-          && (! ec)) {
-      size_t  len = (_length + 7) >> 3;
-      if ((read(s, buffer(_addr.s6_addr, len), ec) == sizeof(_length))
-          && (! ec)) {
-        rc = true;
-      }
-    }
-    return rc;
-  }
+  { return ASIO_Read(s); }
 
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
+  bool Ipv6Prefix::Read(boost::asio::local::stream_protocol::socket & s)
+  { return ASIO_Read(s); }
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
   bool Ipv6Prefix::Write(boost::asio::ip::tcp::socket & s) const
-  {
-    using boost::asio::write, boost::asio::buffer;
-    bool  rc = false;
-    boost::system::error_code  ec;
-    if ((write(s, buffer(&_length, sizeof(_length)), ec) == sizeof(_length))
-        && (! ec)) {
-      size_t  len = (_length + 7) >> 3;
-      if ((write(s, buffer(_addr.s6_addr, len), ec) == sizeof(_addr.s6_addr))
-          && (! ec)) {
-        rc = true;
-      }
-    }
-    return rc;
-  }
+  { return ASIO_Write(s); }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool Ipv6Prefix::Write(boost::asio::local::stream_protocol::socket & s) const
+  { return ASIO_Write(s); }
   
   //--------------------------------------------------------------------------
   //!  

@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2007, 2020
+//  Copyright (c) Daniel W. McRobb 2004-2007, 2020, 2023
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -294,26 +294,6 @@ namespace Dwm {
     return(rc);
   }
 
-  //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
-  bool Ipv6Address::Read(boost::asio::ip::tcp::socket & s)
-  {
-    using boost::asio::read, boost::asio::buffer;
-    boost::system::error_code  ec;
-    return ((read(s, buffer(_addr.s6_addr, 16), ec) == 16) && (! ec));
-  }
-  
-  //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
-  bool Ipv6Address::Write(boost::asio::ip::tcp::socket & s) const
-  {
-    using boost::asio::write, boost::asio::buffer;
-    boost::system::error_code  ec;
-    return ((write(s, buffer(_addr.s6_addr, 16), ec) == 16) && (! ec));
-  }
-  
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------

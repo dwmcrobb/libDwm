@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2021
+//  Copyright (c) Daniel W. McRobb 2021, 2023
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@
 //---------------------------------------------------------------------------
 //!  \file DwmIpv6AddrMap.hh
 //!  \author Daniel W. McRobb
-//!  \brief NOT YET DOCUMENTED
+//!  \brief Dwm::Ipv6AddrMap class template declaration
 //---------------------------------------------------------------------------
 
 #ifndef _DWMIPV6ADDRMAP_HH_
@@ -78,7 +78,7 @@ namespace Dwm {
     : public StreamIOCapable, public FileIOCapable,
       public DescriptorIOCapable, public StreamedLengthCapable,
       public GZIOCapable, public BZ2IOCapable,
-      public ASIOReadable, public ASIOWritable
+      public ASIOCapable
   {
   public:
     //------------------------------------------------------------------------
@@ -347,6 +347,26 @@ namespace Dwm {
       return ASIO::Write(s, _map);
     }
 
+    //------------------------------------------------------------------------
+    //!  Reads the Ipv6AddrMap from @c s.  Returns true on success, false
+    //!  on failure.
+    //------------------------------------------------------------------------
+    bool Read(boost::asio::local::stream_protocol::socket & s) override
+    {
+      std::unique_lock  lck(_mtx);
+      return ASIO::Read(s, _map);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes the Ipv6AddrMap to @c s.  Returns true on success, false
+    //!  on failure.
+    //------------------------------------------------------------------------
+    bool Write(boost::asio::local::stream_protocol::socket & s) const override
+    {
+      std::shared_lock  lck(_mtx);
+      return ASIO::Write(s, _map);
+    }
+    
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2005-2006, 2016
+//  Copyright (c) Daniel W. McRobb 2005-2006, 2016, 2023
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,7 @@ extern "C" {
 #define XXH_INLINE_ALL
 #include <xxhash.h>
 
-#include "DwmASIOCapable.hh"
+#include "DwmASIO.hh"
 #include "DwmIpv6Address.hh"
 #include "DwmDescriptorIOCapable.hh"
 #include "DwmFileIOCapable.hh"
@@ -63,8 +63,8 @@ namespace Dwm {
   //!  This class encapsulates an IPv6 network prefix.
   //--------------------------------------------------------------------------
   class Ipv6Prefix
-    : public DescriptorIOCapable, public FileIOCapable, public StreamIOCapable,
-      public GZIOCapable, public BZ2IOCapable, public ASIOCapable,
+    : public ASIOCapable, public DescriptorIOCapable, public FileIOCapable,
+      public StreamIOCapable, public GZIOCapable, public BZ2IOCapable, 
       public StreamedLengthCapable
   {
   public:
@@ -213,11 +213,22 @@ namespace Dwm {
     bool Write(boost::asio::ip::tcp::socket & s) const override;
 
     //------------------------------------------------------------------------
+    //!  Reads the prefix from @c s.  Returns true on success, false on
+    //!  failure.
+    //------------------------------------------------------------------------
+    bool Read(boost::asio::local::stream_protocol::socket & s) override;
+    
+    //------------------------------------------------------------------------
+    //!  Writes the prefix to @c s.  Returns true on success, false on
+    //!  failure.
+    //------------------------------------------------------------------------
+    bool Write(boost::asio::local::stream_protocol::socket & s) const override;
+    
+    //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
     uint64_t StreamedLength() const override
     { return (sizeof(_length) + ((_length + 7) >> 3)); }
-      
     
     //------------------------------------------------------------------------
     //!  Prints a prefix to an ostream in the usual colon-delimited form.
@@ -250,9 +261,54 @@ namespace Dwm {
     alignas(8) struct in6_addr  _addr;
     uint8_t                     _length;
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
     inline uint8_t NumAddrBytes() const
     {
       return((_length + 7) >> 3);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename S>
+    requires IsSupportedASIOSocket<S>
+    bool ASIO_Read(S & s)
+    {
+      using boost::asio::read, boost::asio::buffer;
+      bool  rc = false;
+      boost::system::error_code  ec;
+      if ((read(s, buffer(&_length, sizeof(_length)), ec) == sizeof(_length))
+          && (! ec)) {
+        size_t  len = (_length + 7) >> 3;
+        if ((read(s, buffer(_addr.s6_addr, len), ec) == sizeof(_length))
+          && (! ec)) {
+          rc = true;
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename S>
+    requires IsSupportedASIOSocket<S>
+    bool ASIO_Write(S & s) const
+    {
+      using boost::asio::write, boost::asio::buffer;
+      bool  rc = false;
+      boost::system::error_code  ec;
+      if ((write(s, buffer(&_length, sizeof(_length)), ec) == sizeof(_length))
+          && (! ec)) {
+        size_t  len = (_length + 7) >> 3;
+        if ((write(s, buffer(_addr.s6_addr, len), ec) == sizeof(_addr.s6_addr))
+            && (! ec)) {
+          rc = true;
+        }
+      }
+      return rc;
     }
     
   };

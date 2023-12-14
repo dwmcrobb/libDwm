@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2007
+//  Copyright (c) Daniel W. McRobb 2004-2007, 2023
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -195,6 +195,50 @@ namespace Dwm {
     if (bzf)
       rc = BZ2_bzwrite(bzf,(void *)&_addr,sizeof(_addr));
     return(rc);
+  }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool Ipv4Address::Read(boost::asio::ip::tcp::socket & s)
+  {
+    using boost::asio::read, boost::asio::buffer;
+    boost::system::error_code  ec;
+    return ((read(s, buffer(&_addr, sizeof(_addr)), ec) == sizeof(_addr))
+            && (! ec));
+  }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool Ipv4Address::Write(boost::asio::ip::tcp::socket & s) const
+  {
+    using boost::asio::write, boost::asio::buffer;
+    boost::system::error_code  ec;
+    return ((write(s, buffer(&_addr, sizeof(_addr)), ec) == sizeof(_addr))
+            && (! ec));
+  }
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool Ipv4Address::Read(boost::asio::local::stream_protocol::socket & s)
+  {
+    using boost::asio::read, boost::asio::buffer;
+    boost::system::error_code  ec;
+    return ((read(s, buffer(&_addr, sizeof(_addr)), ec) == sizeof(_addr))
+            && (! ec));
+  }
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool Ipv4Address::Write(boost::asio::local::stream_protocol::socket & s) const
+  {
+    using boost::asio::write, boost::asio::buffer;
+    boost::system::error_code  ec;
+    return ((write(s, buffer(&_addr, sizeof(_addr)), ec) == sizeof(_addr))
+            && (! ec));
   }
 
   //--------------------------------------------------------------------------
