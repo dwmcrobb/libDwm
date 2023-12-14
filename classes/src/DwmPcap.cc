@@ -41,14 +41,6 @@
 
 #include "DwmPortability.hh"
 
-extern "C" {
-#if (defined(HAVE_NET_PFVAR_H) && defined(HAVE_NET_IF_PFLOG_H))
-  #include <net/if.h>
-  #include <net/pfvar.h>
-  #include <net/if_pflog.h>
-#endif
-}
-
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
@@ -56,6 +48,14 @@ extern "C" {
 #include "DwmLocalInterfaces.hh"
 #include "DwmSysLogger.hh"
 #include "DwmPcap.hh"
+
+extern "C" {
+#if (defined(HAVE_NET_PFVAR_H) && defined(HAVE_NET_IF_PFLOG_H))
+  #include <net/if.h>
+  #include <net/pfvar.h>
+  #include <net/if_pflog.h>
+#endif
+}
 
 using namespace std;
 
