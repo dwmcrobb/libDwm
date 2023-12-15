@@ -255,7 +255,7 @@ static void TestVectorOf(const vector<T> & invec)
                                           std::ref(outvec),
                                           std::ref(serverReady));
   while (! serverReady) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
   
   boost::asio::io_context    ioContext;
@@ -289,7 +289,7 @@ static void LocalTestVectorOf(const vector<T> & invec)
                                           std::ref(outvec),
                                           std::ref(serverReady));
   while (! serverReady) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
   
   boost::asio::io_context    ioContext;
@@ -329,7 +329,7 @@ static void TestContainer(const ContainerT & ct)
                                           std::ref(outct),
                                           std::ref(serverReady));
   while (! serverReady) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
   
   boost::asio::io_context    ioContext;
@@ -361,7 +361,7 @@ static void LocalTestContainer(const ContainerT & ct)
     std::thread(LocalServerContainerReader<ContainerT>,
                 std::ref(outct), std::ref(serverReady));
   while (! serverReady) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
   
   boost::asio::io_context           ioContext;
@@ -399,7 +399,7 @@ static void TestArray(const std::array<valueT,N> & ct)
                                           std::ref(outct),
                                           std::ref(serverReady));
   while (! serverReady) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
   
   boost::asio::io_context    ioContext;
@@ -431,7 +431,7 @@ static void LocalTestArray(const std::array<valueT,N> & ct)
     std::thread(LocalServerArrayReader<valueT,N>,
                 std::ref(outct), std::ref(serverReady));
   while (! serverReady) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
   
   boost::asio::io_context           ioContext;
