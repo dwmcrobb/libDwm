@@ -97,14 +97,8 @@ static void LocalServerReader(std::vector<T> & entries,
 {
   entries.clear();
   unlink("./TestASIO.sock");
-#if defined(__APPLE__)
-  struct stat  udsStat;
-  while (stat("./TestASIO.sock", &udsStat) == 0) {
-    cerr << "Waiting for TestASIO.sock to be removed\n";
-  }
-#endif
-  boost::asio::io_context  ioContext;
-  local::stream_protocol::acceptor acc(ioContext);
+  boost::asio::io_context           ioContext;
+  local::stream_protocol::acceptor  acc(ioContext);
   acc.open();
   acc.non_blocking(false);
   acc.bind(local::stream_protocol::endpoint("./TestASIO.sock"));
@@ -121,6 +115,11 @@ static void LocalServerReader(std::vector<T> & entries,
       entries.push_back(entry);
     }
     sck.close();
+  }
+  else {
+    if (sck.is_open()) {
+      std::cerr << "SOCKET IS OPEN!!!\n";
+    }
   }
   acc.close();
   return;
@@ -177,11 +176,16 @@ static void LocalServerContainerReader(ContainerT & c,
     sck.non_blocking(false);
     Dwm::ASIO::Read(sck, c, ec);
     sck.close();
+    acc.close();
   }
   else {
-    cerr << "line " << __LINE__ << " ec: " << ec << '\n';
+    if (sck.is_open()) {
+      std::cerr << "SOCKET IS OPEN!!!\n";
+    }
+    acc.close();
+    cerr << "line " << __LINE__ << " ec: " << ec << " ("
+         << ec.message() << ")\n";
   }
-  acc.close();
   return;
 }
 
@@ -306,12 +310,6 @@ static void LocalTestVectorOf(const vector<T> & invec)
   }
   serverthread.join();
   unlink("./TestASIO.sock");
-#if defined(__APPLE__)
-  struct stat  udsStat;
-  while (stat("./TestASIO.sock", &udsStat) == 0) {
-    cerr << "Waiting for TestASIO.sock to be removed\n";
-  }
-#endif
   UnitAssert(invec == outvec);
     
   return;
@@ -370,18 +368,13 @@ static void LocalTestContainer(const ContainerT & ct)
   boost::system::error_code  ec;
   sck.connect(endPoint, ec);
   if (UnitAssert((! ec))) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
     sck.non_blocking(false);
     UnitAssert(Dwm::ASIO::Write(sck, ct, ec));
     sck.close();
   }
   serverthread.join();
   unlink("./TestASIO.sock");
-#if defined(__APPLE__)
-  struct stat  udsStat;
-  while (stat("./TestASIO.sock", &udsStat) == 0) {
-    cerr << "Waiting for TestASIO.sock to be removed\n";
-  }
-#endif
   UnitAssert(ct == outct);
     
   return;
@@ -440,18 +433,13 @@ static void LocalTestArray(const std::array<valueT,N> & ct)
   boost::system::error_code         ec = {};
   sck.connect(endPoint, ec);
   if (UnitAssert((! ec))) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
     sck.non_blocking(false);
     UnitAssert(Dwm::ASIO::Write(sck, ct, ec));
     sck.close();
   }
   serverthread.join();
   unlink("./TestASIO.sock");
-#if defined(__APPLE__)
-  struct stat  udsStat;
-  while (stat("./TestASIO.sock", &udsStat) == 0) {
-    cerr << "Waiting for TestASIO.sock to be removed\n";
-  }
-#endif
   UnitAssert(ct == outct);
     
   return;
@@ -640,9 +628,9 @@ static void TestInts()
 static void TestFloats()
 {
   vector<float>  vs1({
-      1.1, 10.2, 100.3, 1000.4, 10000.5, 100000.6,
-      2.7, 20.8, 200.9, 2000.11, 20000.12, 200000.13,
-      3.14, 30.15, 300.16, 3000.17, 30000.18, 300000.19
+      1.1,  10.2,  100.3,  1000.4,  10000.5,  100000.6,
+      2.7,  20.8,  200.9,  2000.10, 20000.11, 200000.12,
+      3.13, 30.14, 300.15, 3000.16, 30000.17, 300000.18
     });
   TestAsArray<float,18>(vs1);
   TestVectorOf(vs1);
@@ -763,7 +751,7 @@ int main(int argc, char *argv[])
   TestPairs();
   TestTuples();
   TestVariants();
-  
+
   if (Dwm::Assertions::Total().Failed()) {
     Dwm::Assertions::Print(cerr, true);
   }
