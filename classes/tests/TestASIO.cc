@@ -754,7 +754,7 @@ static void TestVariants()
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  Dwm::SysLogger::Open("TestASIO", LOG_PERROR, LOG_USER);
+  //  Dwm::SysLogger::Open("TestASIO", LOG_PERROR, LOG_USER);
   
   TestStrings();
   TestInts();
