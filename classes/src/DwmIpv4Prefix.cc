@@ -516,27 +516,31 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  bool Ipv4Prefix::Read(boost::asio::ip::tcp::socket & s)
-  { return ASIO_Read(s); }
+  bool Ipv4Prefix::Read(boost::asio::ip::tcp::socket & s,
+                        boost::system::error_code & ec)
+  { return ASIO_Read(s, ec); }
     
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  bool Ipv4Prefix::Write(boost::asio::ip::tcp::socket & s) const
-  { return ASIO_Write(s); }
+  bool Ipv4Prefix::Write(boost::asio::ip::tcp::socket & s,
+                         boost::system::error_code & ec) const
+  { return ASIO_Write(s, ec); }
 
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  bool Ipv4Prefix::Read(boost::asio::local::stream_protocol::socket & s)
-  { return ASIO_Read(s); }
+  bool Ipv4Prefix::Read(boost::asio::local::stream_protocol::socket & s,
+                        boost::system::error_code & ec)
+  { return ASIO_Read(s, ec); }
 
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
   bool
-  Ipv4Prefix::Write(boost::asio::local::stream_protocol::socket & s) const
-  { return ASIO_Write(s); }
+  Ipv4Prefix::Write(boost::asio::local::stream_protocol::socket & s,
+                    boost::system::error_code & ec) const
+  { return ASIO_Write(s, ec); }
 
   //--------------------------------------------------------------------------
   //  

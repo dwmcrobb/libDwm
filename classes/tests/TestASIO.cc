@@ -79,7 +79,7 @@ static void ServerReader(std::vector<T> & entries, std::atomic<bool> & ready)
   if (UnitAssert(! ec)) {
     sck.non_blocking(false);
     T  entry;
-    while (Dwm::ASIO::Read(sck, entry)) {
+    while (Dwm::ASIO::Read(sck, entry, ec)) {
       entries.push_back(entry);
     }
     sck.close();
@@ -117,7 +117,7 @@ static void LocalServerReader(std::vector<T> & entries,
   if (UnitAssert(! ec)) {
     sck.non_blocking(false);
     T  entry;
-    while (Dwm::ASIO::Read(sck, entry)) {
+    while (Dwm::ASIO::Read(sck, entry, ec)) {
       entries.push_back(entry);
     }
     sck.close();
@@ -146,7 +146,7 @@ static void ServerContainerReader(ContainerT & c, std::atomic<bool> & ready)
   acc.accept(sck, endPoint, ec);
   if (UnitAssert(! ec)) {
     sck.non_blocking(false);
-    Dwm::ASIO::Read(sck, c);
+    Dwm::ASIO::Read(sck, c, ec);
     sck.close();
   }
   acc.close();
@@ -175,7 +175,7 @@ static void LocalServerContainerReader(ContainerT & c,
   acc.accept(sck, ec);
   if (UnitAssert(! ec)) {
     sck.non_blocking(false);
-    Dwm::ASIO::Read(sck, c);
+    Dwm::ASIO::Read(sck, c, ec);
     sck.close();
   }
   else {
@@ -205,7 +205,7 @@ static void ServerArrayReader(std::array<valueT,N> & c,
   acc.accept(sck, endPoint, ec);
   if (UnitAssert(! ec)) {
     sck.non_blocking(false);
-    Dwm::ASIO::Read(sck, c);
+    Dwm::ASIO::Read(sck, c, ec);
     sck.close();
   }
   acc.close();
@@ -233,7 +233,7 @@ static void LocalServerArrayReader(std::array<valueT,N> & c,
   acc.accept(sck, ec);
   if (UnitAssert(! ec)) {
     sck.non_blocking(false);
-    Dwm::ASIO::Read(sck, c);
+    Dwm::ASIO::Read(sck, c, ec);
     sck.close();
   }
   else {
@@ -267,7 +267,7 @@ static void TestVectorOf(const vector<T> & invec)
   if (UnitAssert((! ec))) {
     sck.non_blocking(false);
     for (const auto & s : invec) {
-      UnitAssert(Dwm::ASIO::Write(sck, s));
+      UnitAssert(Dwm::ASIO::Write(sck, s, ec));
     }
     sck.close();
   }
@@ -300,7 +300,7 @@ static void LocalTestVectorOf(const vector<T> & invec)
   if (UnitAssert((! ec))) {
     sck.non_blocking(false);
     for (const auto & s : invec) {
-      UnitAssert(Dwm::ASIO::Write(sck, s));
+      UnitAssert(Dwm::ASIO::Write(sck, s, ec));
     }
     sck.close();
   }
@@ -340,7 +340,7 @@ static void TestContainer(const ContainerT & ct)
   sck.connect(endPoint, ec);
   if (UnitAssert((! ec))) {
     sck.non_blocking(false);
-    UnitAssert(Dwm::ASIO::Write(sck, ct));
+    UnitAssert(Dwm::ASIO::Write(sck, ct, ec));
     sck.close();
   }
   serverthread.join();
@@ -371,7 +371,7 @@ static void LocalTestContainer(const ContainerT & ct)
   sck.connect(endPoint, ec);
   if (UnitAssert((! ec))) {
     sck.non_blocking(false);
-    UnitAssert(Dwm::ASIO::Write(sck, ct));
+    UnitAssert(Dwm::ASIO::Write(sck, ct, ec));
     sck.close();
   }
   serverthread.join();
@@ -410,7 +410,7 @@ static void TestArray(const std::array<valueT,N> & ct)
   sck.connect(endPoint, ec);
   if (UnitAssert((! ec))) {
     sck.non_blocking(false);
-    UnitAssert(Dwm::ASIO::Write(sck, ct));
+    UnitAssert(Dwm::ASIO::Write(sck, ct, ec));
     sck.close();
   }
   serverthread.join();
@@ -441,7 +441,7 @@ static void LocalTestArray(const std::array<valueT,N> & ct)
   sck.connect(endPoint, ec);
   if (UnitAssert((! ec))) {
     sck.non_blocking(false);
-    UnitAssert(Dwm::ASIO::Write(sck, ct));
+    UnitAssert(Dwm::ASIO::Write(sck, ct, ec));
     sck.close();
   }
   serverthread.join();

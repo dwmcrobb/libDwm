@@ -204,25 +204,29 @@ namespace Dwm {
     //!  Reads the prefix from @c s.  Returns true on success, false on
     //!  failure.
     //------------------------------------------------------------------------
-    bool Read(boost::asio::ip::tcp::socket & s) override;
+    bool Read(boost::asio::ip::tcp::socket & s,
+              boost::system::error_code & ec) override;
     
     //------------------------------------------------------------------------
     //!  Writes the prefix to @c s.  Returns true on success, false on
     //!  failure.
     //------------------------------------------------------------------------
-    bool Write(boost::asio::ip::tcp::socket & s) const override;
+    bool Write(boost::asio::ip::tcp::socket & s,
+               boost::system::error_code & ec) const override;
 
     //------------------------------------------------------------------------
     //!  Reads the prefix from @c s.  Returns true on success, false on
     //!  failure.
     //------------------------------------------------------------------------
-    bool Read(boost::asio::local::stream_protocol::socket & s) override;
+    bool Read(boost::asio::local::stream_protocol::socket & s,
+              boost::system::error_code & ec) override;
     
     //------------------------------------------------------------------------
     //!  Writes the prefix to @c s.  Returns true on success, false on
     //!  failure.
     //------------------------------------------------------------------------
-    bool Write(boost::asio::local::stream_protocol::socket & s) const override;
+    bool Write(boost::asio::local::stream_protocol::socket & s,
+               boost::system::error_code & ec) const override;
     
     //------------------------------------------------------------------------
     //!  
@@ -274,11 +278,10 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <typename S>
     requires IsSupportedASIOSocket<S>
-    bool ASIO_Read(S & s)
+    bool ASIO_Read(S & s, boost::system::error_code & ec)
     {
       using boost::asio::read, boost::asio::buffer;
       bool  rc = false;
-      boost::system::error_code  ec;
       if ((read(s, buffer(&_length, sizeof(_length)), ec) == sizeof(_length))
           && (! ec)) {
         size_t  len = (_length + 7) >> 3;
@@ -295,11 +298,10 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <typename S>
     requires IsSupportedASIOSocket<S>
-    bool ASIO_Write(S & s) const
+    bool ASIO_Write(S & s, boost::system::error_code & ec) const
     {
       using boost::asio::write, boost::asio::buffer;
       bool  rc = false;
-      boost::system::error_code  ec;
       if ((write(s, buffer(&_length, sizeof(_length)), ec) == sizeof(_length))
           && (! ec)) {
         size_t  len = (_length + 7) >> 3;

@@ -219,10 +219,9 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <typename ST>
     requires IsSupportedASIOSocket<ST>
-    bool ASIO_Read(ST & s)
+    bool ASIO_Read(ST & s, boost::system::error_code & ec)
     {
       using boost::asio::read, boost::asio::buffer;
-      boost::system::error_code  ec;
       return ((read(s, buffer(_addr.s6_addr, 16), ec) == 16) && (! ec));
     }
 
@@ -231,10 +230,9 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <typename ST>
     requires IsSupportedASIOSocket<ST>
-    bool ASIO_Write(ST & s) const
+    bool ASIO_Write(ST & s, boost::system::error_code & ec) const
     {
       using boost::asio::write, boost::asio::buffer;
-      boost::system::error_code  ec;
       return ((write(s, buffer(_addr.s6_addr, 16), ec) == 16) && (! ec));
     }
 
@@ -242,29 +240,33 @@ namespace Dwm {
     //!  Reads the Ipv6Address from @c s.  Returns true on success, false on
     //!  failure.
     //------------------------------------------------------------------------
-    bool Read(boost::asio::ip::tcp::socket & s) override
-    { return ASIO_Read(s); }
+    bool Read(boost::asio::ip::tcp::socket & s,
+              boost::system::error_code & ec) override
+    { return ASIO_Read(s, ec); }
 
     //------------------------------------------------------------------------
     //!  Writes the Ipv6Address to @c s.  Returns true on success, false on
     //!  failure.
     //------------------------------------------------------------------------
-    bool Write(boost::asio::ip::tcp::socket & s) const override
-    { return ASIO_Write(s); }
+    bool Write(boost::asio::ip::tcp::socket & s,
+               boost::system::error_code & ec) const override
+    { return ASIO_Write(s, ec); }
 
     //------------------------------------------------------------------------
     //!  Reads the Ipv6Address from @c s.  Returns true on success, false on
     //!  failure.
     //------------------------------------------------------------------------
-    bool Read(boost::asio::local::stream_protocol::socket & s) override
-    { return ASIO_Read(s); }
+    bool Read(boost::asio::local::stream_protocol::socket & s,
+              boost::system::error_code & ec) override
+    { return ASIO_Read(s, ec); }
 
     //------------------------------------------------------------------------
     //!  Writes the Ipv6Address to @c s.  Returns true on success, false on
     //!  failure.
     //------------------------------------------------------------------------
-    bool Write(boost::asio::local::stream_protocol::socket & s) const override
-    { return ASIO_Write(s); }
+    bool Write(boost::asio::local::stream_protocol::socket & s,
+               boost::system::error_code & ec) const override
+    { return ASIO_Write(s, ec); }
       
     //------------------------------------------------------------------------
     //!  Prints an Ipv6Address to an ostream in human-readable form.

@@ -200,10 +200,10 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  bool Ipv4Address::Read(boost::asio::ip::tcp::socket & s)
+  bool Ipv4Address::Read(boost::asio::ip::tcp::socket & s,
+                         boost::system::error_code & ec)
   {
     using boost::asio::read, boost::asio::buffer;
-    boost::system::error_code  ec;
     return ((read(s, buffer(&_addr, sizeof(_addr)), ec) == sizeof(_addr))
             && (! ec));
   }
@@ -211,10 +211,10 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  bool Ipv4Address::Write(boost::asio::ip::tcp::socket & s) const
+  bool Ipv4Address::Write(boost::asio::ip::tcp::socket & s,
+                          boost::system::error_code & ec) const
   {
     using boost::asio::write, boost::asio::buffer;
-    boost::system::error_code  ec;
     return ((write(s, buffer(&_addr, sizeof(_addr)), ec) == sizeof(_addr))
             && (! ec));
   }
@@ -222,10 +222,10 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  bool Ipv4Address::Read(boost::asio::local::stream_protocol::socket & s)
+  bool Ipv4Address::Read(boost::asio::local::stream_protocol::socket & s,
+                         boost::system::error_code & ec)
   {
     using boost::asio::read, boost::asio::buffer;
-    boost::system::error_code  ec;
     return ((read(s, buffer(&_addr, sizeof(_addr)), ec) == sizeof(_addr))
             && (! ec));
   }
@@ -233,10 +233,10 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  bool Ipv4Address::Write(boost::asio::local::stream_protocol::socket & s) const
+  bool Ipv4Address::Write(boost::asio::local::stream_protocol::socket & s,
+                          boost::system::error_code & ec) const
   {
     using boost::asio::write, boost::asio::buffer;
-    boost::system::error_code  ec;
     return ((write(s, buffer(&_addr, sizeof(_addr)), ec) == sizeof(_addr))
             && (! ec));
   }

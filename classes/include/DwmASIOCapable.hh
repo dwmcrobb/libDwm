@@ -48,22 +48,27 @@
 namespace Dwm {
 
   //--------------------------------------------------------------------------
-  //!  Interface for classes that wish to be readable via Dwm::ASIO.
+  //!  Interface for classes that wish to be readable via Dwm::ASIO.  Pure
+  //!  virtual.
   //--------------------------------------------------------------------------
   class ASIOReadable
   {
   public:
     //------------------------------------------------------------------------
     //!  Should read the class from the given socket @c s and return true
-    //!  on success, faluse on failure.
+    //!  on success, false on failure.  Should set @c ec to the correct
+    //!  error code on failure.
     //------------------------------------------------------------------------
-    virtual bool Read(boost::asio::ip::tcp::socket & s) = 0;
+    virtual bool Read(boost::asio::ip::tcp::socket & s,
+                      boost::system::error_code & ec) = 0;
 
     //------------------------------------------------------------------------
     //!  Should read the class from the given socket @c s and return true
-    //!  on success, faluse on failure.
+    //!  on success, false on failure.  Should set @c ec to the correct
+    //!  error code on failure.
     //------------------------------------------------------------------------
-    virtual bool Read(boost::asio::local::stream_protocol::socket & s) = 0;
+    virtual bool Read(boost::asio::local::stream_protocol::socket & s,
+                      boost::system::error_code & ec) = 0;
   };
 
   //--------------------------------------------------------------------------
@@ -74,16 +79,19 @@ namespace Dwm {
   public:
     //------------------------------------------------------------------------
     //!  Should write the class to the given socket @c s and return true on
-    //!  success, false on failure.
+    //!  success, false on failure.  Should set @c ec to the correct
+    //!  error code on failure.
     //------------------------------------------------------------------------
-    virtual bool Write(boost::asio::ip::tcp::socket & s) const = 0;
+    virtual bool Write(boost::asio::ip::tcp::socket & s,
+                       boost::system::error_code & ec) const = 0;
 
     //------------------------------------------------------------------------
     //!  Should write the class to the given socket @c s and return true on
-    //!  success, false on failure.
+    //!  success, false on failure.  Should set @c ec to the correct
+    //!  error code on failure.
     //------------------------------------------------------------------------
-    virtual bool
-    Write(boost::asio::local::stream_protocol::socket & s) const = 0;
+    virtual bool Write(boost::asio::local::stream_protocol::socket & s,
+                       boost::system::error_code & ec) const = 0;
   };
   
   //--------------------------------------------------------------------------

@@ -331,40 +331,44 @@ namespace Dwm {
     //!  Reads the Ipv6AddrMap from @c s.  Returns true on success, false
     //!  on failure.
     //------------------------------------------------------------------------
-    bool Read(boost::asio::ip::tcp::socket & s) override
+    bool Read(boost::asio::ip::tcp::socket & s,
+              boost::system::error_code & ec) override
     {
       std::unique_lock  lck(_mtx);
-      return ASIO::Read(s, _map);
+      return ASIO::Read(s, _map, ec);
     }
 
     //------------------------------------------------------------------------
     //!  Writes the Ipv6AddrMap to @c s.  Returns true on success, false
     //!  on failure.
     //------------------------------------------------------------------------
-    bool Write(boost::asio::ip::tcp::socket & s) const override
+    bool Write(boost::asio::ip::tcp::socket & s,
+               boost::system::error_code & ec) const override
     {
       std::shared_lock  lck(_mtx);
-      return ASIO::Write(s, _map);
+      return ASIO::Write(s, _map, ec);
     }
 
     //------------------------------------------------------------------------
     //!  Reads the Ipv6AddrMap from @c s.  Returns true on success, false
     //!  on failure.
     //------------------------------------------------------------------------
-    bool Read(boost::asio::local::stream_protocol::socket & s) override
+    bool Read(boost::asio::local::stream_protocol::socket & s,
+              boost::system::error_code & ec) override
     {
       std::unique_lock  lck(_mtx);
-      return ASIO::Read(s, _map);
+      return ASIO::Read(s, _map, ec);
     }
 
     //------------------------------------------------------------------------
     //!  Writes the Ipv6AddrMap to @c s.  Returns true on success, false
     //!  on failure.
     //------------------------------------------------------------------------
-    bool Write(boost::asio::local::stream_protocol::socket & s) const override
+    bool Write(boost::asio::local::stream_protocol::socket & s,
+               boost::system::error_code & ec) const override
     {
       std::shared_lock  lck(_mtx);
-      return ASIO::Write(s, _map);
+      return ASIO::Write(s, _map, ec);
     }
     
     //------------------------------------------------------------------------

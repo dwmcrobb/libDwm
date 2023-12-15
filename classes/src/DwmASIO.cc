@@ -54,18 +54,23 @@ namespace Dwm {
   //-------------------------------------------------------------------------
   template <typename S, typename T>
   requires IsSupportedASIOSocket<S>
-  bool _asioread(S & s, T & value)
+  bool _asioread(S & s, T & value, boost::system::error_code & ec)
   {
     bool  rc = false;
     if (s.is_open()) {
-      boost::system::error_code  ec;
-      if ((read(s, buffer(&value, sizeof(value)), ec) == sizeof(value))
-          && (! ec)) {
+      size_t  bytesRead = read(s, buffer(&value, sizeof(value)), ec);
+      if ((sizeof(value) == bytesRead) && (! ec)) {
         rc = true;
       }
+      else if ((0 == bytesRead)
+               && (boost::asio::error::eof == ec.value())) {
+        Syslog(LOG_INFO, "EOF on socket");
+      }
       else {
-        Syslog(LOG_ERR, "Failed to read %llu bytes from socket",
-               sizeof(value));
+        Syslog(LOG_ERR, "Incomplete read (%zu of %zu bytes) from socket,"
+               " '%s'",
+               bytesRead, sizeof(value), ec.message().c_str(), ec.value(),
+               boost::asio::error::eof);
       }
     }
     else {
@@ -79,13 +84,18 @@ namespace Dwm {
   //-------------------------------------------------------------------------
   template <typename S>
   requires IsSupportedASIOSocket<S>
-  bool _asioread(S & s, char *buf, uint64_t len)
+  bool _asioread(S & s, char *buf, uint64_t len,
+                 boost::system::error_code & ec)
   {
     bool  rc = false;
     if (s.is_open()) {
-      boost::system::error_code  ec;
-      if ((read(s, buffer(buf, len), ec) == len) && (! ec)) {
+      size_t  bytesRead = read(s, buffer(buf, len), ec);
+      if ((bytesRead == len) && (! ec)) {
         rc = true;
+      }
+      else if ((0 == bytesRead)
+               && (boost::asio::error::eof == ec.value())) {
+        Syslog(LOG_INFO, "EOF on socket");
       }
       else {
         Syslog(LOG_ERR, "Failed to read %llu bytes from socket", len);
@@ -162,9 +172,9 @@ namespace Dwm {
   //-------------------------------------------------------------------------
   template <typename S, typename T>
   requires IsSupportedASIOSocket<S>
-  bool _asio_read_network(S & s, T & value)
+  bool _asio_read_network(S & s, T & value, boost::system::error_code & ec)
   {
-    bool  rc = _asioread(s, value);
+    bool  rc = _asioread(s, value, ec);
     if (rc) {
       _to_host_byte_order(value);
     }
@@ -235,11 +245,10 @@ namespace Dwm {
   //!  
   //-------------------------------------------------------------------------
   template <typename S, typename T>
-  bool _asiowrite(S & s, const T & value)
+  bool _asiowrite(S & s, const T & value, boost::system::error_code & ec)
   {
     bool  rc = false;
     if (s.is_open()) {
-      boost::system::error_code  ec;
       if ((write(s, buffer(&value, sizeof(value)), ec) == sizeof(value))
           && (! ec)) {
         rc = true;
@@ -259,14 +268,14 @@ namespace Dwm {
   //!  
   //-------------------------------------------------------------------------
   template <typename S>
-  bool _asiowrite(S & s, const char *buf, uint64_t len)
+  bool _asiowrite(S & s, const char *buf, uint64_t len,
+                  boost::system::error_code & ec)
   {
     bool  rc = false;
     if (s.is_open()) {
       uint64_t  wlen = len;
       _to_net_byte_order(wlen);
-      if (_asiowrite(s, wlen)) {
-        boost::system::error_code  ec;
+      if (_asiowrite(s, wlen, ec)) {
         if ((write(s, buffer(buf, len), ec) == len) && (! ec)) {
           rc = true;
         }
@@ -286,283 +295,300 @@ namespace Dwm {
   //!  
   //-------------------------------------------------------------------------
   template <typename S, typename T>
-  bool _asio_write_network(S & s, const T & value)
+  bool _asio_write_network(S & s, const T & value,
+                           boost::system::error_code & ec)
   {
     T  wvalue = value;
     _to_net_byte_order(wvalue);
-    return _asiowrite(s, wvalue);
+    return _asiowrite(s, wvalue, ec);
   }
   
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::ip::tcp::socket & s, uint8_t & value)
+  bool ASIO::Read(boost::asio::ip::tcp::socket & s, uint8_t & value,
+                  boost::system::error_code & ec)
   {
-    return _asioread(s, value);
+    return _asioread(s, value, ec);
   }
     
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
-  bool ASIO::Write(boost::asio::ip::tcp::socket & s, uint8_t value)
+  bool ASIO::Write(boost::asio::ip::tcp::socket & s, uint8_t value,
+                   boost::system::error_code & ec)
   {
-    return _asiowrite(s, value);
+    return _asiowrite(s, value, ec);
   }
 
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
   bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
-                  uint8_t & value)
+                  uint8_t & value, boost::system::error_code & ec)
   {
-    return _asioread(s, value);
-  }
-    
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
-                   uint8_t value)
-  {
-    return _asiowrite(s, value);
-  }
-  
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::ip::tcp::socket & s, uint16_t & value)
-  {
-    return _asio_read_network(s, value);
-  }
-
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Write(boost::asio::ip::tcp::socket & s, uint16_t value)
-  {
-    return _asio_write_network(s, value);
-  }
-
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
-                  uint16_t & value)
-  {
-    return _asio_read_network(s, value);
-  }
-
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
-                   uint16_t value)
-  {
-    return _asio_write_network(s, value);
-  }
-  
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::ip::tcp::socket & s, uint32_t & value)
-  {
-    return _asio_read_network(s, value);
-  }
-
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Write(boost::asio::ip::tcp::socket & s, uint32_t value)
-  {
-    return _asio_write_network(s, value);
-  }
-
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
-                  uint32_t & value)
-  {
-    return _asio_read_network(s, value);
-  }
-
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
-                   uint32_t value)
-  {
-    return _asio_write_network(s, value);
-  }
-  
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::ip::tcp::socket & s, uint64_t & value)
-  {
-    return _asio_read_network(s, value);
-  }
-
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Write(boost::asio::ip::tcp::socket & s, uint64_t value)
-  {
-    return _asio_write_network(s, value);
-  }
-
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
-                  uint64_t & value)
-  {
-    return _asio_read_network(s, value);
-  }
-
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
-                   uint64_t value)
-  {
-    return _asio_write_network(s, value);
-  }
-  
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::ip::tcp::socket & s, int8_t & value)
-  {
-    return _asio_read_network(s, value);
-  }
-  
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Write(boost::asio::ip::tcp::socket & s, int8_t value)
-  {
-    return _asiowrite(s, value);
-  }
-
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
-                  int8_t & value)
-  {
-    return _asio_read_network(s, value);
-  }
-  
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
-                   int8_t value)
-  {
-    return _asiowrite(s, value);
-  }
-  
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::ip::tcp::socket & s, int16_t & value)
-  {
-    return _asio_read_network(s, value);
-  }
-    
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Write(boost::asio::ip::tcp::socket & s, int16_t value)
-  {
-    return _asio_write_network(s, value);
-  }
-
-  //-------------------------------------------------------------------------
-  //!  
-  //-------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
-                  int16_t & value)
-  {
-    return _asio_read_network(s, value);
+    return _asioread(s, value, ec);
   }
     
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
   bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
-                   int16_t value)
+                   uint8_t value, boost::system::error_code & ec)
   {
-    return _asio_write_network(s, value);
+    return _asiowrite(s, value, ec);
   }
   
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::ip::tcp::socket & s, int32_t & value)
+  bool ASIO::Read(boost::asio::ip::tcp::socket & s, uint16_t & value,
+                  boost::system::error_code & ec)
   {
-    return _asio_read_network(s, value);
+    return _asio_read_network(s, value, ec);
   }
-  
+
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
-  bool ASIO::Write(boost::asio::ip::tcp::socket & s, int32_t value)
+  bool ASIO::Write(boost::asio::ip::tcp::socket & s, uint16_t value,
+                   boost::system::error_code & ec)
   {
-    return _asio_write_network(s, value);
+    return _asio_write_network(s, value, ec);
   }
 
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
   bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
-                  int32_t & value)
+                  uint16_t & value, boost::system::error_code & ec)
   {
-    return _asio_read_network(s, value);
+    return _asio_read_network(s, value, ec);
+  }
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
+                   uint16_t value, boost::system::error_code & ec)
+  {
+    return _asio_write_network(s, value, ec);
+  }
+  
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::ip::tcp::socket & s, uint32_t & value,
+                  boost::system::error_code & ec)
+  {
+    return _asio_read_network(s, value, ec);
+  }
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::ip::tcp::socket & s, uint32_t value,
+                   boost::system::error_code & ec)
+  {
+    return _asio_write_network(s, value, ec);
+  }
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
+                  uint32_t & value, boost::system::error_code & ec)
+  {
+    return _asio_read_network(s, value, ec);
+  }
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
+                   uint32_t value, boost::system::error_code & ec)
+  {
+    return _asio_write_network(s, value, ec);
+  }
+  
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::ip::tcp::socket & s, uint64_t & value,
+                  boost::system::error_code & ec)
+  {
+    return _asio_read_network(s, value, ec);
+  }
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::ip::tcp::socket & s, uint64_t value,
+                   boost::system::error_code & ec)
+  {
+    return _asio_write_network(s, value, ec);
+  }
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
+                  uint64_t & value, boost::system::error_code & ec)
+  {
+    return _asio_read_network(s, value, ec);
+  }
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
+                   uint64_t value, boost::system::error_code & ec)
+  {
+    return _asio_write_network(s, value, ec);
+  }
+  
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::ip::tcp::socket & s, int8_t & value,
+                  boost::system::error_code & ec)
+  {
+    return _asio_read_network(s, value, ec);
+  }
+  
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::ip::tcp::socket & s, int8_t value,
+                   boost::system::error_code & ec)
+  {
+    return _asiowrite(s, value, ec);
+  }
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
+                  int8_t & value, boost::system::error_code & ec)
+  {
+    return _asio_read_network(s, value, ec);
   }
   
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
   bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
-                   int32_t value)
+                   int8_t value, boost::system::error_code & ec)
   {
-    return _asio_write_network(s, value);
+    return _asiowrite(s, value, ec);
   }
   
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::ip::tcp::socket & s, int64_t & value)
+  bool ASIO::Read(boost::asio::ip::tcp::socket & s, int16_t & value,
+                  boost::system::error_code & ec)
   {
-    return _asio_read_network(s, value);
+    return _asio_read_network(s, value, ec);
+  }
+    
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::ip::tcp::socket & s, int16_t value,
+                   boost::system::error_code & ec)
+  {
+    return _asio_write_network(s, value, ec);
+  }
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
+                  int16_t & value, boost::system::error_code & ec)
+  {
+    return _asio_read_network(s, value, ec);
+  }
+    
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
+                   int16_t value, boost::system::error_code & ec)
+  {
+    return _asio_write_network(s, value, ec);
+  }
+  
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::ip::tcp::socket & s, int32_t & value,
+                  boost::system::error_code & ec)
+  {
+    return _asio_read_network(s, value, ec);
+  }
+  
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::ip::tcp::socket & s, int32_t value,
+                   boost::system::error_code & ec)
+  {
+    return _asio_write_network(s, value, ec);
+  }
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
+                  int32_t & value, boost::system::error_code & ec)
+  {
+    return _asio_read_network(s, value, ec);
+  }
+  
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
+                   int32_t value, boost::system::error_code & ec)
+  {
+    return _asio_write_network(s, value, ec);
+  }
+  
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::ip::tcp::socket & s, int64_t & value,
+                  boost::system::error_code & ec)
+  {
+    return _asio_read_network(s, value, ec);
   }
       
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
-  bool ASIO::Write(boost::asio::ip::tcp::socket & s, int64_t value)
+  bool ASIO::Write(boost::asio::ip::tcp::socket & s, int64_t value,
+                   boost::system::error_code & ec)
   {
-    return _asio_write_network(s, value);
+    return _asio_write_network(s, value, ec);
   }
 
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
   bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
-                  int64_t & value)
+                  int64_t & value, boost::system::error_code & ec)
   {
-    return _asio_read_network(s, value);
+    return _asio_read_network(s, value, ec);
   }
       
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
   bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
-                   int64_t value)
+                   int64_t value, boost::system::error_code & ec)
   {
-    return _asio_write_network(s, value);
+    return _asio_write_network(s, value, ec);
   }
 
   //-------------------------------------------------------------------------
@@ -570,12 +596,12 @@ namespace Dwm {
   //-------------------------------------------------------------------------
   template <typename S>
   requires IsSupportedASIOSocket<S>
-  bool ASIO_Read(S & s, std::string & value)
+  bool ASIO_Read(S & s, std::string & value, boost::system::error_code & ec)
   {
     bool  rc = false;
     value.clear();
     uint64_t  len;
-    if (_asio_read_network(s, len)) {
+    if (_asio_read_network(s, len, ec)) {
       try {
         value.resize(len);
       }
@@ -584,16 +610,26 @@ namespace Dwm {
                len);
         return false;
       }
-      if (_asioread(s, value.data(), value.size())) {
+      if (_asioread(s, value.data(), value.size(), ec)) {
         rc = true;
       }
       else {
-        Syslog(LOG_ERR, "Failed to read string data from socket");
+        if (boost::asio::error::eof == ec.value()) {
+          Syslog(LOG_INFO, "EOF on socket");
+        }
+        else {
+          Syslog(LOG_ERR, "Failed to read string data from socket");
+        }
         value.clear();
       }
     }
     else {
-      Syslog(LOG_ERR, "Failed to read string length from socket");
+      if (boost::asio::error::eof == ec.value()) {
+        Syslog(LOG_INFO, "EOF on socket");
+      }
+      else {
+        Syslog(LOG_ERR, "Failed to read string length from socket");
+      }
     }
     return rc;
   }
@@ -603,13 +639,14 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   template <typename S>
   requires IsSupportedASIOSocket<S>
-  bool ASIO_Write(S & s, const std::string & value)
+  bool ASIO_Write(S & s, const std::string & value,
+                  boost::system::error_code & ec)
   {
     bool  rc = false;
     uint64_t  len = value.size();
-    if (_asio_write_network(s, len)) {
-      boost::system::error_code  ec;
-      rc = (write(s, buffer(value.data(), value.size()), ec) == value.size());
+    if (_asio_write_network(s, len, ec)) {
+      rc = (write(s, buffer(value.data(), value.size()), ec) == value.size()
+            && (! ec));
     }
     return rc;
   }
@@ -617,29 +654,30 @@ namespace Dwm {
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::ip::tcp::socket & s, std::string & value)
-  { return ASIO_Read(s, value); }
+  bool ASIO::Read(boost::asio::ip::tcp::socket & s, std::string & value,
+                  boost::system::error_code & ec)
+  { return ASIO_Read(s, value, ec); }
 
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
   bool ASIO::Write(boost::asio::ip::tcp::socket & s,
-                   const std::string & value)
-  { return ASIO_Write(s, value); }
+                   const std::string & value, boost::system::error_code & ec)
+  { return ASIO_Write(s, value, ec); }
 
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
   bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
-                  std::string & value)
-  { return ASIO_Read(s, value); }
+                  std::string & value, boost::system::error_code & ec)
+  { return ASIO_Read(s, value, ec); }
   
   //-------------------------------------------------------------------------
   //!  
   //-------------------------------------------------------------------------
   bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
-                   const std::string & value)
-  { return ASIO_Write(s, value); }
+                   const std::string & value, boost::system::error_code & ec)
+  { return ASIO_Write(s, value, ec); }
 
   //-------------------------------------------------------------------------
   //!  
@@ -654,12 +692,12 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   template <typename S>
   requires IsSupportedASIOSocket<S>
-  bool ASIO_Read(S & s, float & val)
+  bool ASIO_Read(S & s, float & val, boost::system::error_code & ec)
   {
     bool  rc = false;
     std::array<char,4>  buf;
-    boost::system::error_code  ec;
-    if (read(s, buffer(buf.data(), buf.size()), ec) == buf.size()) {
+    if ((read(s, buffer(buf.data(), buf.size()), ec) == buf.size())
+        && (! ec)) {
       rc = XDRUtils::Decode(buf, val);
     }
     return rc;
@@ -670,13 +708,13 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   template <typename S>
   requires IsSupportedASIOSocket<S>
-  bool ASIO_Write(S & s, float val)
+  bool ASIO_Write(S & s, float val, boost::system::error_code & ec)
   {
     bool  rc = false;
     std::array<char,4>  buf;
-    boost::system::error_code  ec;
     if (XDRUtils::Encode(val, buf)) {
-      rc = (write(s, buffer(buf.data(), buf.size()), ec) == buf.size());
+      rc = ((write(s, buffer(buf.data(), buf.size()), ec) == buf.size())
+            && (! ec));
     }
     return rc;
   }
@@ -684,40 +722,42 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::ip::tcp::socket & s, float & val)
-  { return ASIO_Read(s, val); }
+  bool ASIO::Read(boost::asio::ip::tcp::socket & s, float & val,
+                  boost::system::error_code & ec)
+  { return ASIO_Read(s, val, ec); }
   
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  bool ASIO::Write(boost::asio::ip::tcp::socket & s, float val)
-  { return ASIO_Write(s, val); }
+  bool ASIO::Write(boost::asio::ip::tcp::socket & s, float val,
+                   boost::system::error_code & ec)
+  { return ASIO_Write(s, val, ec); }
 
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
   bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
-                  float & val)
-  { return ASIO_Read(s, val); }
+                  float & val, boost::system::error_code & ec)
+  { return ASIO_Read(s, val, ec); }
   
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
   bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
-                   float val)
-  { return ASIO_Write(s, val); }
+                   float val, boost::system::error_code & ec)
+  { return ASIO_Write(s, val, ec); }
   
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
   template <typename S>
   requires IsSupportedASIOSocket<S>
-  bool ASIO_Read(S & s, double & val)
+  bool ASIO_Read(S & s, double & val, boost::system::error_code & ec)
   {
     bool  rc = false;
     std::array<char,8>  buf;
-    boost::system::error_code  ec;
-    if (read(s, buffer(buf.data(), buf.size()), ec) == buf.size()) {
+    if ((read(s, buffer(buf.data(), buf.size()), ec) == buf.size())
+        && (! ec)) {
       rc = XDRUtils::Decode(buf, val);
     }
     return rc;
@@ -726,28 +766,29 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  bool ASIO::Read(boost::asio::ip::tcp::socket & s, double & val)
-  { return ASIO_Read(s, val); }
+  bool ASIO::Read(boost::asio::ip::tcp::socket & s, double & val,
+                  boost::system::error_code & ec)
+  { return ASIO_Read(s, val, ec); }
 
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
   bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
-                  double & val)
-  { return ASIO_Read(s, val); }
+                  double & val, boost::system::error_code & ec)
+  { return ASIO_Read(s, val, ec); }
 
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
   template <typename S>
   requires IsSupportedASIOSocket<S>
-  bool ASIO_Write(S & s, double val)
+  bool ASIO_Write(S & s, double val, boost::system::error_code & ec)
   {
     bool  rc = false;
     std::array<char,8>  buf;
-    boost::system::error_code  ec;
     if (XDRUtils::Encode(val, buf)) {
-      rc = (write(s, buffer(buf.data(), buf.size()), ec) == buf.size());
+      rc = ((write(s, buffer(buf.data(), buf.size()), ec) == buf.size())
+            && (! ec));
     }
     return rc;
   }
@@ -755,15 +796,16 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  bool ASIO::Write(boost::asio::ip::tcp::socket & s, double val)
-  { return ASIO_Write(s, val); }
+  bool ASIO::Write(boost::asio::ip::tcp::socket & s, double val,
+                   boost::system::error_code & ec)
+  { return ASIO_Write(s, val, ec); }
 
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
   bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
-                   double val)
-  { return ASIO_Write(s, val); }
+                   double val, boost::system::error_code & ec)
+  { return ASIO_Write(s, val, ec); }
   
 }  // namespace Dwm
 

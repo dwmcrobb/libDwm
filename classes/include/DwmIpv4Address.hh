@@ -328,13 +328,29 @@ namespace Dwm {
     //------------------------------------------------------------------------
     int BZWrite(BZFILE *bzf) const override;
 
-    bool Read(boost::asio::ip::tcp::socket & s) override;
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool Read(boost::asio::ip::tcp::socket & s,
+              boost::system::error_code & ec) override;
 
-    bool Write(boost::asio::ip::tcp::socket & s) const override;
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool Write(boost::asio::ip::tcp::socket & s,
+               boost::system::error_code & ec) const override;
     
-    bool Read(boost::asio::local::stream_protocol::socket & s) override;
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool Read(boost::asio::local::stream_protocol::socket & s,
+              boost::system::error_code & ec) override;
 
-    bool Write(boost::asio::local::stream_protocol::socket & s) const override;
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool Write(boost::asio::local::stream_protocol::socket & s,
+               boost::system::error_code & ec) const override;
 
     //------------------------------------------------------------------------
     //!  Prints an Ipv4Address to an ostream in human-readable form.
