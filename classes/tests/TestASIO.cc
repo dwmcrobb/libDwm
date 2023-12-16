@@ -98,28 +98,17 @@ static void LocalServerReader(std::vector<T> & entries,
   entries.clear();
   unlink("./TestASIO.sock");
   boost::asio::io_context           ioContext;
-  local::stream_protocol::acceptor  acc(ioContext);
-  acc.open();
-  acc.non_blocking(false);
-  acc.bind(local::stream_protocol::endpoint("./TestASIO.sock"));
-  acc.listen();
+  local::stream_protocol::acceptor  acc(ioContext, "./TestASIO.sock");
   local::stream_protocol::socket    sck(ioContext);
-  local::stream_protocol::endpoint  endPoint;
-  boost::system::error_code  ec = {};
+  boost::system::error_code         ec = {};
   ready = true;
   acc.accept(sck, ec);
   if (UnitAssert(! ec)) {
-    sck.non_blocking(false);
     T  entry;
     while (Dwm::ASIO::Read(sck, entry, ec)) {
       entries.push_back(entry);
     }
     sck.close();
-  }
-  else {
-    if (sck.is_open()) {
-      std::cerr << "SOCKET IS OPEN!!!\n";
-    }
   }
   acc.close();
   return;
@@ -161,31 +150,17 @@ static void LocalServerContainerReader(ContainerT & c,
 {
   c.clear();
   unlink("./TestASIO.sock");
-  boost::asio::io_context  ioContext;
-  local::stream_protocol::acceptor  acc(ioContext);
-  acc.open();
-  acc.non_blocking(false);
-  acc.bind(local::stream_protocol::endpoint("./TestASIO.sock"));
-  acc.listen();
-  local::stream_protocol::socket   sck(ioContext);
-  local::stream_protocol::endpoint endPoint;
-  boost::system::error_code  ec = {};
+  boost::asio::io_context           ioContext;
+  local::stream_protocol::acceptor  acc(ioContext, "./TestASIO.sock");
+  local::stream_protocol::socket    sck(ioContext);
+  boost::system::error_code         ec = {};
   ready = true;
   acc.accept(sck, ec);
   if (UnitAssert(! ec)) {
-    sck.non_blocking(false);
     Dwm::ASIO::Read(sck, c, ec);
     sck.close();
-    acc.close();
   }
-  else {
-    if (sck.is_open()) {
-      std::cerr << "SOCKET IS OPEN!!!\n";
-    }
-    acc.close();
-    cerr << "line " << __LINE__ << " ec: " << ec << " ("
-         << ec.message() << ")\n";
-  }
+  acc.close();
   return;
 }
 
@@ -224,24 +199,15 @@ static void LocalServerArrayReader(std::array<valueT,N> & c,
                                    std::atomic<bool> & ready)
 {
   unlink("./TestASIO.sock");
-  boost::asio::io_context  ioContext;
-  local::stream_protocol::acceptor  acc(ioContext);
-  acc.open();
-  acc.non_blocking(false);
-  acc.bind(local::stream_protocol::endpoint("./TestASIO.sock"));
-  acc.listen();
+  boost::asio::io_context           ioContext;
+  local::stream_protocol::acceptor  acc(ioContext, "./TestASIO.sock");
   local::stream_protocol::socket    sck(ioContext);
-  local::stream_protocol::endpoint  endPoint;
-  boost::system::error_code  ec = {};
+  boost::system::error_code         ec = {};
   ready = true;
   acc.accept(sck, ec);
   if (UnitAssert(! ec)) {
-    sck.non_blocking(false);
     Dwm::ASIO::Read(sck, c, ec);
     sck.close();
-  }
-  else {
-    cerr << "line " << __LINE__ << " ec: " << ec << '\n';
   }
   acc.close();
   return;
@@ -287,22 +253,21 @@ static void TestVectorOf(const vector<T> & invec)
 template <typename T>
 static void LocalTestVectorOf(const vector<T> & invec)
 {
-  vector<T>  outvec;
+  vector<T>          outvec;
   std::atomic<bool>  serverReady = false;
-  std::thread  serverthread = std::thread(LocalServerReader<T>,
-                                          std::ref(outvec),
-                                          std::ref(serverReady));
+  std::thread        serverthread = std::thread(LocalServerReader<T>,
+                                                std::ref(outvec),
+                                                std::ref(serverReady));
   while (! serverReady) {
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
   
-  boost::asio::io_context    ioContext;
-  local::stream_protocol::endpoint endPoint("./TestASIO.sock");
-  local::stream_protocol::socket   sck(ioContext);
-  boost::system::error_code  ec;
+  boost::asio::io_context           ioContext;
+  local::stream_protocol::endpoint  endPoint("./TestASIO.sock");
+  local::stream_protocol::socket    sck(ioContext);
+  boost::system::error_code         ec;
   sck.connect(endPoint, ec);
   if (UnitAssert((! ec))) {
-    sck.non_blocking(false);
     for (const auto & s : invec) {
       UnitAssert(Dwm::ASIO::Write(sck, s, ec));
     }
@@ -353,9 +318,9 @@ static void TestContainer(const ContainerT & ct)
 template <typename ContainerT>
 static void LocalTestContainer(const ContainerT & ct)
 {
-  ContainerT  outct;
+  ContainerT         outct;
   std::atomic<bool>  serverReady = false;
-  std::thread  serverthread =
+  std::thread        serverthread =
     std::thread(LocalServerContainerReader<ContainerT>,
                 std::ref(outct), std::ref(serverReady));
   while (! serverReady) {
@@ -365,11 +330,10 @@ static void LocalTestContainer(const ContainerT & ct)
   boost::asio::io_context           ioContext;
   local::stream_protocol::endpoint  endPoint("./TestASIO.sock");
   local::stream_protocol::socket    sck(ioContext);
-  boost::system::error_code  ec;
+  boost::system::error_code         ec;
   sck.connect(endPoint, ec);
   if (UnitAssert((! ec))) {
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    sck.non_blocking(false);
     UnitAssert(Dwm::ASIO::Write(sck, ct, ec));
     sck.close();
   }
@@ -387,7 +351,7 @@ template <typename valueT, size_t N>
 static void TestArray(const std::array<valueT,N> & ct)
 {
   std::array<valueT,N>  outct;
-  std::atomic<bool>  serverReady = false;
+  std::atomic<bool>     serverReady = false;
   std::thread  serverthread = std::thread(ServerArrayReader<valueT,N>,
                                           std::ref(outct),
                                           std::ref(serverReady));
@@ -434,7 +398,6 @@ static void LocalTestArray(const std::array<valueT,N> & ct)
   sck.connect(endPoint, ec);
   if (UnitAssert((! ec))) {
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    sck.non_blocking(false);
     UnitAssert(Dwm::ASIO::Write(sck, ct, ec));
     sck.close();
   }
