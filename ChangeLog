@@ -1,3 +1,19 @@
+2023-12-16  Daniel McRobb  <dwm@thrip.mcplex.net>
+
+	* I'm preparing to tag a new release, but the changes I made for
+	ASIO support for UNIX domain sockets require C++ 'concepts', hence
+	C++20 support.  That's working on macOS Sonoma 14.2,
+	FreeBSD 13.2-STABLE, Ubuntu 22.04 LTS and Raspberry Pi OS 11.
+	But the base clang++ and libc++ on FreeBSD 12.4-STABLE don't have
+	concepts support, and one of my hosts is still running FreeBSD
+	12.4-STABLE.  So there's been a slight delay while I update that
+	host.
+
+	The gist: you'll need C++20 concepts to use the library now, I'm
+	not going to add any workarounds for compilers without C++20
+	support, since I expect to use more C++20 features going forward.
+	My apologies if this affects you.
+
 2023-12-13  Daniel McRobb  <dwm@spark.mcplex.net>
 
 	* include/DwmASIO.hh, include/DwmASIOCapable.hh,
