@@ -1,6 +1,7 @@
 2023-12-16  Daniel McRobb  <dwm@spark.mcplex.net>
 
 	* tagged as libDwm-0.9.22
+	Now REQUIRES C++20 (for concepts).
 
 2023-12-16  Daniel McRobb  <dwm@thrip.mcplex.net>
 
