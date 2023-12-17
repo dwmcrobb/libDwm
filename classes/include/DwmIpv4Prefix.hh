@@ -326,30 +326,44 @@ namespace Dwm {
 
     //------------------------------------------------------------------------
     //!  Reads the prefix from @c s.  Returns true on success, false on
-    //!  failure.
+    //!  failure.  On failure @c ec will be set to the error code.
     //------------------------------------------------------------------------
     bool Read(boost::asio::ip::tcp::socket & s,
               boost::system::error_code & ec) override;
     
     //------------------------------------------------------------------------
     //!  Writes the prefix to @c s.  Returns true on success, false on
-    //!  failure.
+    //!  failure.  On failure @c ec will be set to the error code.
     //------------------------------------------------------------------------
     bool Write(boost::asio::ip::tcp::socket & s,
                boost::system::error_code & ec) const override;
     
     //------------------------------------------------------------------------
     //!  Reads the prefix from @c s.  Returns true on success, false on
-    //!  failure.
+    //!  failure.  On failure @c ec will be set to the error code.
     //------------------------------------------------------------------------
     bool Read(boost::asio::local::stream_protocol::socket & s,
               boost::system::error_code & ec) override;
 
     //------------------------------------------------------------------------
     //!  Writes the prefix to @c s.  Returns true on success, false on
-    //!  failure.
+    //!  failure.  On failure @c ec will be set to the error code.
     //------------------------------------------------------------------------
     bool Write(boost::asio::local::stream_protocol::socket & s,
+               boost::system::error_code & ec) const override;
+
+    //------------------------------------------------------------------------
+    //!  Reads the prefix from @c s.  Returns true on success, false on
+    //!  failure.  On failure @c ec will be set to the error code.
+    //------------------------------------------------------------------------
+    bool Read(boost::asio::generic::stream_protocol::socket & s,
+              boost::system::error_code & ec) override;
+
+    //------------------------------------------------------------------------
+    //!  Writes the prefix to @c s.  Returns true on success, false on
+    //!  failure.  On failure @c ec will be set to the error code.
+    //------------------------------------------------------------------------
+    bool Write(boost::asio::generic::stream_protocol::socket & s,
                boost::system::error_code & ec) const override;
 
     //------------------------------------------------------------------------
@@ -415,7 +429,6 @@ namespace Dwm {
       return ((write(s, buffer(_data, sizeof(_data)), ec) == sizeof(_data))
               && (! ec));
     }
-    
   };
 
   //--------------------------------------------------------------------------

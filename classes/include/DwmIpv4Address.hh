@@ -332,7 +332,8 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     bool Read(boost::asio::ip::tcp::socket & s,
-              boost::system::error_code & ec) override;
+              boost::system::error_code & ec) override
+    { return ASIO_Read(s, ec); }
 
     //------------------------------------------------------------------------
     //!  
@@ -350,6 +351,19 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     bool Write(boost::asio::local::stream_protocol::socket & s,
+               boost::system::error_code & ec) const override;
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool Read(boost::asio::generic::stream_protocol::socket & s,
+              boost::system::error_code & ec) override
+    { return ASIO_Read(s, ec); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool Write(boost::asio::generic::stream_protocol::socket & s,       
                boost::system::error_code & ec) const override;
 
     //------------------------------------------------------------------------
@@ -374,6 +388,18 @@ namespace Dwm {
     
   protected:
     uint32_t  _addr;
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename Protocol, typename Executor>
+    bool ASIO_Read(boost::asio::basic_stream_socket<Protocol,Executor> & s,
+              boost::system::error_code & ec)
+    {
+      using boost::asio::read, boost::asio::buffer;
+      return ((read(s, buffer(&_addr, sizeof(_addr)), ec) == sizeof(_addr))
+              && (! ec));
+    }
   };
 
 }  // namespace Dwm

@@ -455,6 +455,13 @@ namespace Dwm {
   bool Ipv6Prefix::Read(boost::asio::local::stream_protocol::socket & s,
                         boost::system::error_code & ec)
   { return ASIO_Read(s, ec); }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool Ipv6Prefix::Read(boost::asio::generic::stream_protocol::socket & s,
+                        boost::system::error_code & ec)
+  { return ASIO_Read(s, ec); }
   
   //--------------------------------------------------------------------------
   //!  
@@ -467,6 +474,13 @@ namespace Dwm {
   //!  
   //--------------------------------------------------------------------------
   bool Ipv6Prefix::Write(boost::asio::local::stream_protocol::socket & s,
+                         boost::system::error_code & ec) const
+  { return ASIO_Write(s, ec); }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool Ipv6Prefix::Write(boost::asio::generic::stream_protocol::socket & s,
                          boost::system::error_code & ec) const
   { return ASIO_Write(s, ec); }
   

@@ -543,6 +543,21 @@ namespace Dwm {
   { return ASIO_Write(s, ec); }
 
   //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool Ipv4Prefix::Read(boost::asio::generic::stream_protocol::socket & s,
+                        boost::system::error_code & ec)
+  { return ASIO_Read(s, ec); }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool
+  Ipv4Prefix::Write(boost::asio::generic::stream_protocol::socket & s,
+                    boost::system::error_code & ec) const
+  { return ASIO_Write(s, ec); }
+
+  //--------------------------------------------------------------------------
   //  
   //--------------------------------------------------------------------------
   ostream & operator << (ostream & os, const Ipv4Prefix & prefix)

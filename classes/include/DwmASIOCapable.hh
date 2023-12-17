@@ -69,6 +69,12 @@ namespace Dwm {
     //------------------------------------------------------------------------
     virtual bool Read(boost::asio::local::stream_protocol::socket & s,
                       boost::system::error_code & ec) = 0;
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    virtual bool Read(boost::asio::generic::stream_protocol::socket & s,
+                      boost::system::error_code & ec) = 0;
   };
 
   //--------------------------------------------------------------------------
@@ -92,6 +98,13 @@ namespace Dwm {
     //------------------------------------------------------------------------
     virtual bool Write(boost::asio::local::stream_protocol::socket & s,
                        boost::system::error_code & ec) const = 0;
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    virtual bool Write(boost::asio::generic::stream_protocol::socket & s,
+                       boost::system::error_code & ec) const = 0;
+        
   };
   
   //--------------------------------------------------------------------------

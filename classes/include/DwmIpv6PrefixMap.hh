@@ -497,6 +497,17 @@ namespace Dwm {
       std::unique_lock  lck(_mtx);
       return ASIO::Read(s, _maps, ec);
     }
+
+    //------------------------------------------------------------------------
+    //!  Reads the Ipv6PrefixMap from @c s.  Returns true on success, false
+    //!  on failure.
+    //------------------------------------------------------------------------
+    bool Read(boost::asio::generic::stream_protocol::socket & s,
+              boost::system::error_code & ec) override
+    {
+      std::unique_lock  lck(_mtx);
+      return ASIO::Read(s, _maps, ec);
+    }
     
     //------------------------------------------------------------------------
     //!  Writes the Ipv6PrefixMap to @c s.  Returns true on success, false
@@ -514,6 +525,17 @@ namespace Dwm {
     //!  on failure.
     //------------------------------------------------------------------------
     bool Write(boost::asio::local::stream_protocol::socket & s,
+               boost::system::error_code & ec) const override
+    {
+      std::shared_lock  lck(_mtx);
+      return ASIO::Write(s, _maps, ec);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes the Ipv6PrefixMap to @c s.  Returns true on success, false
+    //!  on failure.
+    //------------------------------------------------------------------------
+    bool Write(boost::asio::generic::stream_protocol::socket & s,
                boost::system::error_code & ec) const override
     {
       std::shared_lock  lck(_mtx);

@@ -67,11 +67,18 @@ namespace Dwm {
   template <typename S>
   concept IsSupportedASIOSocket =
   std::is_same_v<S,boost::asio::ip::tcp::socket>
-    || std::is_same_v<S,boost::asio::local::stream_protocol::socket>;
+    || std::is_same_v<S,boost::asio::local::stream_protocol::socket>
+    || std::is_same_v<S,boost::asio::generic::stream_protocol::socket>;
 
   //--------------------------------------------------------------------------
   //!  A collection of functions for reading from and writing to
-  //!  boost::asio::ip::tcp::socket.
+  //!  Boost ASIO stream sockets.
+  //!  TODO: I should probably redesign this.  Initially I was only using
+  //!  sockets of type boost::asio::ip::tcp::socket.  Once I needed support
+  //!  for boost::asio::local::stream_protocol::socket, things got messy.
+  //!  boost::asio doesn't have a class heirarchy here, it's all templatized.
+  //!  At the moment I don't have time to templatize or switch to only
+  //!  supporting generic::stream_protocol.
   //--------------------------------------------------------------------------
   class ASIO
   {
@@ -108,6 +115,20 @@ namespace Dwm {
     //!  Reads @c value from the given socket @c s.  Returns true on
     //!  success, false on failure.
     //------------------------------------------------------------------------
+    static bool Read(boost::asio::generic::stream_protocol::socket & s,
+                     uint8_t & value, boost::system::error_code & ec);
+
+    //------------------------------------------------------------------------
+    //!  Write @c value to the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::generic::stream_protocol::socket & s,
+                      uint8_t value, boost::system::error_code & ec);
+
+    //------------------------------------------------------------------------
+    //!  Reads @c value from the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
     static bool Read(boost::asio::ip::tcp::socket & s, uint16_t & value,
                      boost::system::error_code & ec);
 
@@ -130,6 +151,20 @@ namespace Dwm {
     //!  success, false on failure.
     //------------------------------------------------------------------------
     static bool Write(boost::asio::local::stream_protocol::socket & s,
+                      uint16_t value, boost::system::error_code & ec);
+    
+    //------------------------------------------------------------------------
+    //!  Reads @c value from the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Read(boost::asio::generic::stream_protocol::socket & s,
+                     uint16_t & value, boost::system::error_code & ec);
+
+    //------------------------------------------------------------------------
+    //!  Write @c value to the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::generic::stream_protocol::socket & s,
                       uint16_t value, boost::system::error_code & ec);
     
     //------------------------------------------------------------------------
@@ -164,6 +199,20 @@ namespace Dwm {
     //!  Reads @c value from the given socket @c s.  Returns true on
     //!  success, false on failure.
     //------------------------------------------------------------------------
+    static bool Read(boost::asio::generic::stream_protocol::socket & s,
+                     uint32_t & value, boost::system::error_code & ec);
+
+    //------------------------------------------------------------------------
+    //!  Write @c value to the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::generic::stream_protocol::socket & s,
+                      uint32_t value, boost::system::error_code & ec);
+        
+    //------------------------------------------------------------------------
+    //!  Reads @c value from the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
     static bool Read(boost::asio::ip::tcp::socket & s, uint64_t & value,
                      boost::system::error_code & ec);
 
@@ -186,6 +235,20 @@ namespace Dwm {
     //!  success, false on failure.
     //------------------------------------------------------------------------
     static bool Write(boost::asio::local::stream_protocol::socket & s,
+                      uint64_t value, boost::system::error_code & ec);
+    
+    //------------------------------------------------------------------------
+    //!  Reads @c value from the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Read(boost::asio::generic::stream_protocol::socket & s,
+                     uint64_t & value, boost::system::error_code & ec);
+
+    //------------------------------------------------------------------------
+    //!  Write @c value to the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::generic::stream_protocol::socket & s,
                       uint64_t value, boost::system::error_code & ec);
     
     //------------------------------------------------------------------------
@@ -220,6 +283,20 @@ namespace Dwm {
     //!  Reads @c value from the given socket @c s.  Returns true on
     //!  success, false on failure.
     //------------------------------------------------------------------------
+    static bool Read(boost::asio::generic::stream_protocol::socket & s,
+                     int8_t & value, boost::system::error_code & ec);
+
+    //------------------------------------------------------------------------
+    //!  Write @c value to the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::generic::stream_protocol::socket & s,
+                      int8_t value, boost::system::error_code & ec);
+    
+    //------------------------------------------------------------------------
+    //!  Reads @c value from the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
     static bool Read(boost::asio::ip::tcp::socket & s, int16_t & value,
                      boost::system::error_code & ec);
     
@@ -242,6 +319,20 @@ namespace Dwm {
     //!  success, false on failure.
     //------------------------------------------------------------------------
     static bool Write(boost::asio::local::stream_protocol::socket & s,
+                      int16_t value, boost::system::error_code & ec);
+    
+    //------------------------------------------------------------------------
+    //!  Reads @c value from the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Read(boost::asio::generic::stream_protocol::socket & s,
+                     int16_t & value, boost::system::error_code & ec);
+    
+    //------------------------------------------------------------------------
+    //!  Write @c value to the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::generic::stream_protocol::socket & s,
                       int16_t value, boost::system::error_code & ec);
     
     //------------------------------------------------------------------------
@@ -276,6 +367,20 @@ namespace Dwm {
     //!  Reads @c value from the given socket @c s.  Returns true on
     //!  success, false on failure.
     //------------------------------------------------------------------------
+    static bool Read(boost::asio::generic::stream_protocol::socket & s,
+                     int32_t & value, boost::system::error_code & ec);
+    
+    //------------------------------------------------------------------------
+    //!  Write @c value to the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::generic::stream_protocol::socket & s,
+                      int32_t value, boost::system::error_code & ec);
+    
+    //------------------------------------------------------------------------
+    //!  Reads @c value from the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
     static bool Read(boost::asio::ip::tcp::socket & s, int64_t & value,
                      boost::system::error_code & ec);
     
@@ -298,6 +403,20 @@ namespace Dwm {
     //!  success, false on failure.
     //------------------------------------------------------------------------
     static bool Write(boost::asio::local::stream_protocol::socket & s,
+                      int64_t value, boost::system::error_code & ec);
+    
+    //------------------------------------------------------------------------
+    //!  Reads @c value from the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Read(boost::asio::generic::stream_protocol::socket & s,
+                     int64_t & value, boost::system::error_code & ec);
+    
+    //------------------------------------------------------------------------
+    //!  Write @c value to the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::generic::stream_protocol::socket & s,
                       int64_t value, boost::system::error_code & ec);
     
     //------------------------------------------------------------------------
@@ -327,6 +446,21 @@ namespace Dwm {
     //!  success, false on failure.
     //------------------------------------------------------------------------
     static bool Write(boost::asio::local::stream_protocol::socket & s,
+                      const std::string & value,
+                      boost::system::error_code & ec);
+
+    //------------------------------------------------------------------------
+    //!  Reads @c value from the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Read(boost::asio::generic::stream_protocol::socket & s,
+                     std::string & value, boost::system::error_code & ec);
+    
+    //------------------------------------------------------------------------
+    //!  Write @c value to the given socket @c s.  Returns true on
+    //!  success, false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::generic::stream_protocol::socket & s,
                       const std::string & value,
                       boost::system::error_code & ec);
     
@@ -373,6 +507,22 @@ namespace Dwm {
     //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
     //!  \c false on failure.
     //------------------------------------------------------------------------
+    static bool Read(boost::asio::generic::stream_protocol::socket & s,
+                     float & val, boost::system::error_code & ec);
+
+    //------------------------------------------------------------------------
+    //!  Writes \c val to \c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
+    //!  \c false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::generic::stream_protocol::socket & s,
+                      float val, boost::system::error_code & ec);
+    
+    //------------------------------------------------------------------------
+    //!  Reads \c val from \c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
+    //!  \c false on failure.
+    //------------------------------------------------------------------------
     static bool Read(boost::asio::ip::tcp::socket & s, double & val,
                      boost::system::error_code & ec);
 
@@ -398,6 +548,22 @@ namespace Dwm {
     //!  \c false on failure.
     //------------------------------------------------------------------------
     static bool Write(boost::asio::local::stream_protocol::socket & s,
+                      double val, boost::system::error_code & ec);
+
+    //------------------------------------------------------------------------
+    //!  Reads \c val from \c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
+    //!  \c false on failure.
+    //------------------------------------------------------------------------
+    static bool Read(boost::asio::generic::stream_protocol::socket & s,
+                     double & val, boost::system::error_code & ec);
+
+    //------------------------------------------------------------------------
+    //!  Writes \c val to \c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
+    //!  \c false on failure.
+    //------------------------------------------------------------------------
+    static bool Write(boost::asio::generic::stream_protocol::socket & s,
                       double val, boost::system::error_code & ec);
     
     //------------------------------------------------------------------------

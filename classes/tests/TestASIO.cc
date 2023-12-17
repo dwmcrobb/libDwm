@@ -57,6 +57,7 @@ using namespace std;
 
 namespace ip = boost::asio::ip;
 namespace local = boost::asio::local;
+namespace generic = boost::asio::generic;
 
 //----------------------------------------------------------------------------
 //!  
@@ -283,6 +284,39 @@ static void LocalTestVectorOf(const vector<T> & invec)
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+template <typename T>
+static void GenericTestVectorOf(const vector<T> & invec)
+{
+  vector<T>          outvec;
+  std::atomic<bool>  serverReady = false;
+  std::thread        serverthread = std::thread(LocalServerReader<T>,
+                                                std::ref(outvec),
+                                                std::ref(serverReady));
+  while (! serverReady) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  }
+  
+  boost::asio::io_context           ioContext;
+  local::stream_protocol::endpoint  endPoint("./TestASIO.sock");
+  generic::stream_protocol::socket  sck(ioContext, generic::stream_protocol(AF_UNIX,0));
+  boost::system::error_code         ec;
+  sck.connect(endPoint, ec);
+  if (UnitAssert((! ec))) {
+    for (const auto & s : invec) {
+      UnitAssert(Dwm::ASIO::Write(sck, s, ec));
+    }
+    sck.close();
+  }
+  serverthread.join();
+  unlink("./TestASIO.sock");
+  UnitAssert(invec == outvec);
+    
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 template <typename ContainerT>
 static void TestContainer(const ContainerT & ct)
 {
@@ -339,6 +373,34 @@ static void LocalTestContainer(const ContainerT & ct)
   }
   serverthread.join();
   unlink("./TestASIO.sock");
+  UnitAssert(ct == outct);
+    
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+template <typename SocketT, typename EndPointT, typename ContainerT>
+static void GenericTestContainer(SocketT & sck, const EndPointT & endPoint,
+                                 const ContainerT & ct)
+{
+  ContainerT         outct;
+  std::atomic<bool>  serverReady = false;
+  std::thread        serverthread =
+    std::thread(LocalServerContainerReader<ContainerT>,
+                std::ref(outct), std::ref(serverReady));
+  while (! serverReady) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  }
+  
+  boost::system::error_code         ec;
+  sck.connect(endPoint, ec);
+  if (UnitAssert((! ec))) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    UnitAssert(Dwm::ASIO::Write(sck, ct, ec));
+  }
+  serverthread.join();
   UnitAssert(ct == outct);
     
   return;
@@ -431,6 +493,20 @@ static void TestAsVector(const vector<T> & invec)
 {
   TestContainer(invec);
   LocalTestContainer(invec);
+
+  boost::asio::io_context           ioContext;
+  local::stream_protocol::endpoint  endPoint("./TestASIO.sock");
+  generic::stream_protocol::socket  gsck(ioContext,
+                                         generic::stream_protocol(AF_UNIX, 0));
+  GenericTestContainer(gsck, endPoint, invec);
+  gsck.close();
+  unlink("./TestASIO.sock");
+
+  local::stream_protocol::socket    lsck(ioContext);
+  GenericTestContainer(gsck, endPoint, invec);
+  lsck.close();
+  unlink("./TestASIO.sock");
+
   return;
 }
 
@@ -444,6 +520,20 @@ static void TestAsDeque(const vector<T> & invec)
   for (const auto & val : invec) {  indeq.push_back(val);  }
   TestContainer(indeq);
   LocalTestContainer(indeq);
+
+  boost::asio::io_context           ioContext;
+  local::stream_protocol::endpoint  endPoint("./TestASIO.sock");
+  generic::stream_protocol::socket  gsck(ioContext,
+                                         generic::stream_protocol(AF_UNIX, 0));
+  GenericTestContainer(gsck, endPoint, indeq);
+  gsck.close();
+  unlink("./TestASIO.sock");
+
+  local::stream_protocol::socket    lsck(ioContext);
+  GenericTestContainer(gsck, endPoint, indeq);
+  lsck.close();
+  unlink("./TestASIO.sock");
+
   return;
 }
 
@@ -457,6 +547,19 @@ static void TestAsList(const vector<T> & invec)
   for (const auto & val : invec) {  inlist.push_back(val);  }
   TestContainer(inlist);
   LocalTestContainer(inlist);
+
+  boost::asio::io_context           ioContext;
+  local::stream_protocol::endpoint  endPoint("./TestASIO.sock");
+  generic::stream_protocol::socket  gsck(ioContext,
+                                         generic::stream_protocol(AF_UNIX, 0));
+  GenericTestContainer(gsck, endPoint, inlist);
+  gsck.close();
+  unlink("./TestASIO.sock");
+
+  local::stream_protocol::socket    lsck(ioContext);
+  GenericTestContainer(gsck, endPoint, inlist);
+  lsck.close();
+  unlink("./TestASIO.sock");
   return;
 }
 
@@ -470,6 +573,19 @@ static void TestAsMap(const vector<T> & invec)
   for (const auto & val : invec) {  inmap[val] = val;  }
   TestContainer(inmap);
   LocalTestContainer(inmap);
+
+  boost::asio::io_context           ioContext;
+  local::stream_protocol::endpoint  endPoint("./TestASIO.sock");
+  generic::stream_protocol::socket  gsck(ioContext,
+                                         generic::stream_protocol(AF_UNIX, 0));
+  GenericTestContainer(gsck, endPoint, inmap);
+  gsck.close();
+  unlink("./TestASIO.sock");
+
+  local::stream_protocol::socket    lsck(ioContext);
+  GenericTestContainer(gsck, endPoint, inmap);
+  lsck.close();
+  unlink("./TestASIO.sock");
   return;
 }
 
@@ -483,6 +599,19 @@ static void TestAsMultimap(const vector<T> & invec)
   for (const auto & val : invec) {  inmap.insert(pair<T,T>(val,val));  }
   TestContainer(inmap);
   LocalTestContainer(inmap);
+
+  boost::asio::io_context           ioContext;
+  local::stream_protocol::endpoint  endPoint("./TestASIO.sock");
+  generic::stream_protocol::socket  gsck(ioContext,
+                                         generic::stream_protocol(AF_UNIX, 0));
+  GenericTestContainer(gsck, endPoint, inmap);
+  gsck.close();
+  unlink("./TestASIO.sock");
+
+  local::stream_protocol::socket    lsck(ioContext);
+  GenericTestContainer(gsck, endPoint, inmap);
+  lsck.close();
+  unlink("./TestASIO.sock");
   return;
 }
 
@@ -496,6 +625,19 @@ static void TestAsSet(const vector<T> & invec)
   for (const auto & val : invec) {  inSet.insert(val);  }
   TestContainer(inSet);
   LocalTestContainer(inSet);
+
+  boost::asio::io_context           ioContext;
+  local::stream_protocol::endpoint  endPoint("./TestASIO.sock");
+  generic::stream_protocol::socket  gsck(ioContext,
+                                         generic::stream_protocol(AF_UNIX, 0));
+  GenericTestContainer(gsck, endPoint, inSet);
+  gsck.close();
+  unlink("./TestASIO.sock");
+
+  local::stream_protocol::socket    lsck(ioContext);
+  GenericTestContainer(gsck, endPoint, inSet);
+  lsck.close();
+  unlink("./TestASIO.sock");
   return;
 }
 
@@ -509,6 +651,19 @@ static void TestAsMultiset(const vector<T> & invec)
   for (const auto & val : invec) {  inSet.insert(val);  }
   TestContainer(inSet);
   LocalTestContainer(inSet);
+
+  boost::asio::io_context           ioContext;
+  local::stream_protocol::endpoint  endPoint("./TestASIO.sock");
+  generic::stream_protocol::socket  gsck(ioContext,
+                                         generic::stream_protocol(AF_UNIX, 0));
+  GenericTestContainer(gsck, endPoint, inSet);
+  gsck.close();
+  unlink("./TestASIO.sock");
+
+  local::stream_protocol::socket    lsck(ioContext);
+  GenericTestContainer(gsck, endPoint, inSet);
+  lsck.close();
+  unlink("./TestASIO.sock");
   return;
 }
 
@@ -522,6 +677,19 @@ static void TestAsUnorderedMap(const vector<T> & invec)
   for (const auto & val : invec) {  inmap[val] = val;  }
   TestContainer(inmap);
   LocalTestContainer(inmap);
+
+  boost::asio::io_context           ioContext;
+  local::stream_protocol::endpoint  endPoint("./TestASIO.sock");
+  generic::stream_protocol::socket  gsck(ioContext,
+                                         generic::stream_protocol(AF_UNIX, 0));
+  GenericTestContainer(gsck, endPoint, inmap);
+  gsck.close();
+  unlink("./TestASIO.sock");
+
+  local::stream_protocol::socket    lsck(ioContext);
+  GenericTestContainer(gsck, endPoint, inmap);
+  lsck.close();
+  unlink("./TestASIO.sock");
   return;
 }
 
@@ -535,6 +703,19 @@ static void TestAsUnorderedSet(const vector<T> & invec)
   for (const auto & val : invec) {  inSet.insert(val);  }
   TestContainer(inSet);
   LocalTestContainer(inSet);
+
+  boost::asio::io_context           ioContext;
+  local::stream_protocol::endpoint  endPoint("./TestASIO.sock");
+  generic::stream_protocol::socket  gsck(ioContext,
+                                         generic::stream_protocol(AF_UNIX, 0));
+  GenericTestContainer(gsck, endPoint, inSet);
+  gsck.close();
+  unlink("./TestASIO.sock");
+
+  local::stream_protocol::socket    lsck(ioContext);
+  GenericTestContainer(gsck, endPoint, inSet);
+  lsck.close();
+  unlink("./TestASIO.sock");
   return;
 }
 

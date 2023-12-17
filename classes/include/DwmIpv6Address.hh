@@ -269,6 +269,22 @@ namespace Dwm {
     { return ASIO_Write(s, ec); }
       
     //------------------------------------------------------------------------
+    //!  Reads the Ipv6Address from @c s.  Returns true on success, false on
+    //!  failure.
+    //------------------------------------------------------------------------
+    bool Read(boost::asio::generic::stream_protocol::socket & s,
+              boost::system::error_code & ec) override
+    { return ASIO_Read(s, ec); }
+
+    //------------------------------------------------------------------------
+    //!  Writes the Ipv6Address to @c s.  Returns true on success, false on
+    //!  failure.
+    //------------------------------------------------------------------------
+    bool Write(boost::asio::generic::stream_protocol::socket & s,
+               boost::system::error_code & ec) const override
+    { return ASIO_Write(s, ec); }
+      
+    //------------------------------------------------------------------------
     //!  Prints an Ipv6Address to an ostream in human-readable form.
     //------------------------------------------------------------------------
     friend std::ostream & operator << (std::ostream & os, 

@@ -229,6 +229,20 @@ namespace Dwm {
                boost::system::error_code & ec) const override;
     
     //------------------------------------------------------------------------
+    //!  Reads the prefix from @c s.  Returns true on success, false on
+    //!  failure.
+    //------------------------------------------------------------------------
+    bool Read(boost::asio::generic::stream_protocol::socket & s,
+              boost::system::error_code & ec) override;
+    
+    //------------------------------------------------------------------------
+    //!  Writes the prefix to @c s.  Returns true on success, false on
+    //!  failure.
+    //------------------------------------------------------------------------
+    bool Write(boost::asio::generic::stream_protocol::socket & s,
+               boost::system::error_code & ec) const override;
+    
+    //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
     uint64_t StreamedLength() const override
