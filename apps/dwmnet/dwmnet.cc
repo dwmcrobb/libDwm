@@ -85,9 +85,18 @@ int main(int argc, char *argv[])
         }
       }
       if (nextArg >= argc) {
-        cout << "Addresses: " << routes.AddressesCovered() << " (" 
+        auto  addrsCovered = routes.AddressesCovered();
+        cout.imbue(std::locale(""));
+        cout << "Addresses: " << addrsCovered << " (" 
              << setprecision(4)
-             << routes.AddressesCovered() / 42949672.96 << " %)\n";
+             << addrsCovered / 42949672.96 << "% of 2^32, "
+          //  Show percentage of non-reserved unicast address space.
+          //  Need to remove space for 10/8, 127/8, 169.254/16,
+          //  172.16/12, 198.18/15, 192.168/16, 224/4 from denominator.
+          //  That's 2^24 + 2^24 + 2^16 + 2^22 + 2^17 + 2^16 + 2^28
+          //    = 306,446,336
+             << addrsCovered / (42949672.96 - 3064463.36)
+             << "% of publicly routable unicast)\n";
         rc = 0;
       }
       else {
