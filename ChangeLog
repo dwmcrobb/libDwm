@@ -1,3 +1,11 @@
+2024-04-27  dwm  <dwm@ria.mcplex.net>
+
+	* apps/dwmnet/dwmnet.cc: Print percentage of routable public unicast
+	when reading prefixes from a file.  Just useful when I'm looking at
+	how much address space is covered by one of the pf tables on my
+	gateway.  Also set locale so that I get commas in big numbers when
+	my locale supports it.
+
 2023-12-16  Daniel McRobb  <dwm@spark.mcplex.net>
 
 	* tagged as libDwm-0.9.22
