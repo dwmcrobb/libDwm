@@ -1,3 +1,10 @@
+2024-05-06  Daniel McRobb  <dwm@spark.mcplex.net>
+
+	* classes/include/DwmIpv4Routes.hh:
+	Added bulk Add(const Ipv4Routes<_valueT> &)
+	Added GetAllKeys(std::vector<Ipv4Prefix> &)
+	Added const std::array<_RepSubType,33> & HashMaps() const
+
 2024-04-27  dwm  <dwm@ria.mcplex.net>
 
 	* apps/dwmnet/dwmnet.cc: Print percentage of routable public unicast
