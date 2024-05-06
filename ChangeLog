@@ -1,5 +1,9 @@
 2024-05-06  Daniel McRobb  <dwm@spark.mcplex.net>
 
+	* tagged as libDwm-0.9.22
+
+	* classes/tests/TestIpv4Routes.cc: Added test for GetAllKeys()
+
 	* classes/include/DwmIpv4Routes.hh:
 	Added bulk Add(const Ipv4Routes<_valueT> &)
 	Added GetAllKeys(std::vector<Ipv4Prefix> &)
