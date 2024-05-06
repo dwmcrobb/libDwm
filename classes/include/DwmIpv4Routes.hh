@@ -189,6 +189,21 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
+    //!  Bulk add all @c routes.  Note this will overwrite existing routes.
+    //------------------------------------------------------------------------
+    void Add(const Ipv4Routes<_valueT> & routes)
+    {
+      for (uint8_t i = 0; i < 33; ++i) {
+        if (! routes._hashMaps[i].empty()) {
+          for (const auto & entry : routes._hashMaps[i]) {
+            _hashMaps[i][entry.first] = entry.second;
+          }
+        }
+      }
+      return;
+    }
+          
+    //------------------------------------------------------------------------
     //!  operator [] works like you would expect from an STL map.
     //------------------------------------------------------------------------
     _valueT & operator [] (const Ipv4Prefix & prefix)
@@ -579,7 +594,24 @@ namespace Dwm {
       return Coalesce(std::equal_to<_valueT>());
     }
     
-
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    void GetAllKeys(std::vector<Ipv4Prefix> & keys) const
+    {
+      keys.resize(this->Size());
+      if (! keys.empty()) {
+        uint32_t  pfx = 0;
+        for (uint8_t hashNum = 0; hashNum < 33; ++hashNum) {
+          for (const auto & entry : this->_hashMaps[hashNum]) {
+            keys[pfx] = Ipv4Prefix(entry.first, hashNum);
+            ++pfx;
+          }
+        }
+      }
+      return;
+    }
+          
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
@@ -709,6 +741,14 @@ namespace Dwm {
       }
     };
 #endif
+
+    //------------------------------------------------------------------------
+    //!  Returns a const reference to the contained hash maps.
+    //------------------------------------------------------------------------
+    const std::array<_RepSubType,33> & HashMaps() const
+    {
+      return _hashMaps;
+    }
     
   protected:
     std::array<_RepSubType,33>   _hashMaps;
