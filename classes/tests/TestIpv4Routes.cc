@@ -260,6 +260,18 @@ static void CheckHashSizes(const vector<Ipv4Prefix> & pfxVec,
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void CheckGetAllKeys(const vector<Ipv4Prefix> & pfxVec,
+                            const Ipv4Routes<uint32_t> & r)
+{
+  vector<Ipv4Prefix>  keys;
+  r.GetAllKeys(keys);
+  UnitAssert(keys.size() == pfxVec.size());
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static void CheckLookups(const vector<Ipv4Prefix> & pfxVec,
                          const Ipv4Routes<uint32_t> & r)
 {
@@ -383,6 +395,7 @@ static void TestWithUint32()
     }
     CheckLookups(pfxVec, r);
     CheckHashSizes(pfxVec, r);
+    CheckGetAllKeys(pfxVec, r);
     
     TestBasicIO(r);
     TestGZIO(r);
