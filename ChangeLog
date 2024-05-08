@@ -1,6 +1,6 @@
 2024-05-06  Daniel McRobb  <dwm@spark.mcplex.net>
 
-	* tagged as libDwm-0.9.22
+	* tagged as libDwm-0.9.23
 
 	* classes/tests/TestIpv4Routes.cc: Added test for GetAllKeys()
 
