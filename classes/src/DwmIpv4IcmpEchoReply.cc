@@ -187,8 +187,8 @@ namespace Dwm {
   {
     bool  rc = false;
     if (s) {
-      size_t   buflen = 2048;
-      uint8_t  buf[buflen];
+      const size_t  buflen = 2048;
+      uint8_t       buf[buflen];
       struct sockaddr_in  sockAddr;
       ssize_t  bytesReceived = s.RecvFrom(buf, buflen, 0, sockAddr);
       //  Note the recvfrom() on a raw socket gets the IP header too,
