@@ -42,12 +42,13 @@
 #ifndef _DWMTHREADPOOL_HH_
 #define _DWMTHREADPOOL_HH_
 
+#include <array>
 #include <concepts>
 #include <condition_variable>
 #include <deque>
 #include <mutex>
 #include <thread>
-#include <vector>
+#include <type_traits>
 
 namespace Dwm {
 
@@ -59,7 +60,7 @@ namespace Dwm {
   //!  can pass your arguments internally and use that class as @c T.
   //--------------------------------------------------------------------------
   template <size_t N, typename T>
-  requires std::invocable<T>
+  requires (std::invocable<T> && std::is_copy_assignable_v<T>)
   class ThreadPool
   {
   public:
@@ -70,7 +71,7 @@ namespace Dwm {
         : _workers(), _tasks(), _mtx(), _cv(), _run(true)
     {
       for (size_t i = 0; i < N; ++i) {
-        _workers.emplace_back(std::thread(&ThreadPool::WorkerThread,this));
+        _workers[i] = std::thread(&ThreadPool::WorkerThread, this);
       }
     }
 
@@ -115,7 +116,7 @@ namespace Dwm {
     }
     
   private:
-    std::vector<std::thread>   _workers;
+    std::array<std::thread,N>  _workers;
     std::deque<T>              _tasks;
     std::mutex                 _mtx;
     std::condition_variable    _cv;
@@ -126,9 +127,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     void WorkerThread()
     {
-      //----------------------------------------------------------------------
-      //!  Just a lambda we use when waiting on the condition variable.
-      //----------------------------------------------------------------------
+      //  Just a lambda we use when waiting on the condition variable.
       auto  waitFor = 
         [this] { return ((! this->_run) || (! this->_tasks.empty())); };
         
