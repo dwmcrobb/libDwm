@@ -1,7 +1,7 @@
 2024-05-13  Daniel McRobb  <dwm@toto.mcplex.net>
 
 	* tagged as libDwm-0.9.24
-	
+
 	* classes/src/DwmIpv4IcmpEchoReply.cc:
 	Fix unnecessary use of variable length array; used fixed length array.
 
