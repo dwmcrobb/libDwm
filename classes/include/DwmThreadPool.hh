@@ -55,6 +55,8 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  Encapsulate a trivial thread pool.  @c N is the number of threads and
   //!  @c T is a functor type that takes @c Args when invoked.
+  //!
+  //!  Work is added to the pool via AddTask().
   //--------------------------------------------------------------------------
   template <size_t N, typename F, typename... Args>
   requires (std::invocable<F,Args...> && std::is_copy_assignable_v<F>
@@ -116,15 +118,19 @@ namespace Dwm {
     
   private:
     //------------------------------------------------------------------------
-    //!  Encapsulate a task to be executed by a worker thread.
+    //!  Encapsulate a task to be executed by a worker thread.  Just need to
+    //!  hold the function object and the function arguments.
     //------------------------------------------------------------------------
     class Task
     {
     public:
       Task() = default;
       Task(const Task & t) = default;
-      Task(F f, std::tuple<Args...> a) : _fn(f), _args(a) {}
-
+      Task(const Task && t) = default;
+      Task(F f, std::tuple<Args...> && a) : _fn(f), _args(a) { }
+      Task & operator = (const Task &) = default;
+      Task & operator = (Task &&) = default;
+      
       //----------------------------------------------------------------------
       //!
       //----------------------------------------------------------------------
@@ -155,11 +161,12 @@ namespace Dwm {
     bool                       _run;
 
     //------------------------------------------------------------------------
-    //!  
+    //!  The thread we'll run for each worker.
     //------------------------------------------------------------------------
     void WorkerThread()
     {
       //  Just a lambda we use when waiting on the condition variable.
+      //  We want to wait for a request to shut down or work to do.
       auto  waitFor = 
         [this] { return ((! this->_run) || (! this->_tasks.empty())); };
         
