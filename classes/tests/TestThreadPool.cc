@@ -55,11 +55,15 @@ using namespace Dwm;
 class Task
 {
 public:
-  Task() = default;
+  Task()
+      : _inc(1)
+  {}
   
+  Task(size_t i)  { _inc = i; }
+    
   void operator () ()
   {
-    ++_count;
+    _count += _inc;
     return;
   }
 
@@ -70,6 +74,7 @@ public:
   
 private:
   static std::atomic<size_t>  _count;
+  size_t                      _inc;
 };
 
 //----------------------------------------------------------------------------
@@ -112,10 +117,10 @@ int main(int argc, char *argv[])
   Dwm::ThreadPool<5,Task>  tp;
 
   for (int i = 0; i < 25; ++i) {
-    tp.Enqueue(Task());
+    tp.Enqueue(Task(5));
   }
   tp.Shutdown();
-  UnitAssert(25 == Task::Count());
+  UnitAssert((5 * 25) == Task::Count());
 
   TestWithFunction();
   

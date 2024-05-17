@@ -52,7 +52,10 @@ namespace Dwm {
 
   //--------------------------------------------------------------------------
   //!  Encapsulate a trivial thread pool.  @c N is the number of threads and
-  //!  @c is a functor type.
+  //!  @c T is a functor type.  At the moment I only handle functors with no
+  //!  arguments.  Hence if you want to call a function that takes arguments,
+  //!  you need to wrap it in a class with a function call operator that
+  //!  can pass your arguments internally and use that class as @c T.
   //--------------------------------------------------------------------------
   template <size_t N, typename T>
   requires std::invocable<T>
@@ -60,7 +63,7 @@ namespace Dwm {
   {
   public:
     //------------------------------------------------------------------------
-    //!  
+    //!  Constructs the thread pool and starts the threads.
     //------------------------------------------------------------------------
     ThreadPool()
         : _workers(), _tasks(), _mtx(), _cv(), _run(true)
@@ -71,7 +74,7 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Adds a task to be executed by the thread pool.
     //------------------------------------------------------------------------
     void Enqueue(T task)
     {
@@ -84,7 +87,8 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Shuts down the thread pool.  Note that we will wait for all tasks
+    //!  to be completed.
     //------------------------------------------------------------------------
     void Shutdown()
     {
@@ -100,7 +104,7 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Destructor
     //------------------------------------------------------------------------
     ~ThreadPool()
     {
@@ -108,7 +112,7 @@ namespace Dwm {
         Shutdown();
       }
     }
-        
+    
   private:
     std::vector<std::thread>   _workers;
     std::deque<T>              _tasks;
@@ -121,6 +125,9 @@ namespace Dwm {
     //------------------------------------------------------------------------
     void WorkerThread()
     {
+      //----------------------------------------------------------------------
+      //!  Just a lambda we use when waiting on the condition variable.
+      //----------------------------------------------------------------------
       auto  waitFor = 
         [this] { return ((! this->_run) || (! this->_tasks.empty())); };
         
@@ -130,11 +137,14 @@ namespace Dwm {
           std::unique_lock<std::mutex>  lock(this->_mtx);
           this->_cv.wait(lock, waitFor);
           if ((! this->_run) && (this->_tasks.empty())) {
+            //  We've been asked to stop and there are no more tasks.
             return;
           }
+          //  Get the task at the front of the queue.
           task = this->_tasks.front();
           this->_tasks.pop_front();
         }
+        //  Execute the task.
         task();
       }
     }
