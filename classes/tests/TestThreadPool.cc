@@ -50,43 +50,40 @@ using namespace Dwm;
 
 
 //----------------------------------------------------------------------------
-//!  
+//!  A function object with a non-default constructor to store some state,
+//!  but no arguments to call operator.
 //----------------------------------------------------------------------------
-class Task
+class VoidTask
 {
 public:
-  Task()
-      : _inc(1)
-  {}
-  
-  Task(size_t i)  { _inc = i; }
-    
-  void operator () ()
-  {
-    _count += _inc;
-    return;
-  }
-
-  static size_t Count()
-  {
-    return _count;
-  }
+  VoidTask() : _inc(1)   { }
+  VoidTask(size_t i)     { _inc = i; }
+  void operator () ()    { _count += _inc;  return; }
+  static size_t Count()  { return _count; }
   
 private:
-  static std::atomic<size_t>  _count;
-  size_t                      _inc;
+  static inline std::atomic<size_t>  _count = 0;
+  size_t                             _inc;
+};
+
+//----------------------------------------------------------------------------
+//!  A function object with a 2-argument call operator.
+//----------------------------------------------------------------------------
+class TwoArgTask
+{
+public:
+  TwoArgTask()                     { }
+  void operator () (int a, int b)  { _count += (a + b);  return; }
+  static size_t Count()            { return _count; }
+  
+private:
+  static inline std::atomic<size_t>  _count = 0;
 };
 
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
-std::atomic<size_t>  Task::_count = 0;
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static std::atomic<size_t>  g_count = 0;
-
+static std::atomic<size_t>               g_count = 0;
 static unordered_map<thread::id,size_t>  g_threadCalls;
 static mutex                             g_threadCallMtx;
 
@@ -110,17 +107,82 @@ void TestWithFunction()
 {
   Dwm::ThreadPool<5,std::function<void()>>  tp;
   for (int i = 0; i < 4001; ++i) {
-    tp.Enqueue(TaskFunction);
+    tp.AddTask(TaskFunction);
   }
   tp.Shutdown();
   UnitAssert(4001 == g_count);
 
   size_t  totalCalls = 0;
   for (auto thr : g_threadCalls) {
-    cout << thr.first << ' ' << thr.second << '\n';
+    UnitAssert(thr.second > 0);
+    // cout << thr.first << ' ' << thr.second << '\n';
     totalCalls += thr.second;
   }
   UnitAssert(4001 == totalCalls);
+}
+
+static atomic<size_t> g_twoArgCount = 0;
+static string         g_twoArgString;
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TwoArgTaskFunction(int a, string s)
+{
+  static mutex          mtx;
+
+  g_twoArgCount += a;
+  lock_guard<mutex>  lock(mtx);
+  g_twoArgString += s;
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestTwoArgFunction()
+{
+  Dwm::ThreadPool<5,std::function<void(int,string)>,int,string>  tp;
+  size_t  total = 0;
+  for (int i = 0; i < 43; ++i) {
+    tp.AddTask(TwoArgTaskFunction, i, "hi");
+    total += i;
+  }
+  tp.Shutdown();
+  UnitAssert(g_twoArgCount == total);
+  UnitAssert(g_twoArgString.size() == 86);
+  UnitAssert(g_twoArgString.front() == 'h');
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestTwoArgTask()
+{
+  Dwm::ThreadPool<5,TwoArgTask,int,int>  tp;
+  size_t  total = 0;
+  for (int i = 0; i < 401; ++i) {
+    tp.AddTask(TwoArgTask(), i, i+1);
+    total += (i + (i + 1));
+  }
+  tp.Shutdown();
+  UnitAssert(total == TwoArgTask::Count());
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestVoidTask()
+{
+  Dwm::ThreadPool<5,VoidTask>  tp;
+
+  for (int i = 0; i < 25; ++i) {
+    tp.AddTask(VoidTask(5));
+  }
+  tp.Shutdown();
+  UnitAssert((5 * 25) == VoidTask::Count());
+  return;
 }
 
 //----------------------------------------------------------------------------
@@ -128,16 +190,11 @@ void TestWithFunction()
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  Dwm::ThreadPool<5,Task>  tp;
-
-  for (int i = 0; i < 25; ++i) {
-    tp.Enqueue(Task(5));
-  }
-  tp.Shutdown();
-  UnitAssert((5 * 25) == Task::Count());
-
+  TestVoidTask();
   TestWithFunction();
-  
+  TestTwoArgTask();
+  TestTwoArgFunction();
+
   if (Assertions::Total().Failed()) {
     Assertions::Print(cerr, true);
     exit(1);
