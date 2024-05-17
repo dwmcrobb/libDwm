@@ -87,12 +87,19 @@ std::atomic<size_t>  Task::_count = 0;
 //----------------------------------------------------------------------------
 static std::atomic<size_t>  g_count = 0;
 
+static unordered_map<thread::id,size_t>  g_threadCalls;
+static mutex                             g_threadCallMtx;
+
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
 void TaskFunction()
 {
   ++g_count;
+
+  lock_guard<mutex>  lock(g_threadCallMtx);
+  ++g_threadCalls[this_thread::get_id()];
+  
   return;
 }
 
@@ -102,11 +109,18 @@ void TaskFunction()
 void TestWithFunction()
 {
   Dwm::ThreadPool<5,std::function<void()>>  tp;
-  for (int i = 0; i < 42; ++i) {
+  for (int i = 0; i < 4001; ++i) {
     tp.Enqueue(TaskFunction);
   }
   tp.Shutdown();
-  UnitAssert(42 == g_count);
+  UnitAssert(4001 == g_count);
+
+  size_t  totalCalls = 0;
+  for (auto thr : g_threadCalls) {
+    cout << thr.first << ' ' << thr.second << '\n';
+    totalCalls += thr.second;
+  }
+  UnitAssert(4001 == totalCalls);
 }
 
 //----------------------------------------------------------------------------
