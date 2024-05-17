@@ -63,6 +63,7 @@ OBJFILES = TestASIO.o \
 	   TestStringConverter.o \
 	   TestStringUtils.o \
 	   TestSvnTag.o \
+	   TestThreadPool.o \
 	   TestThreadQueue.o \
 	   TestTimeInterval64.o \
 	   TestTimeUtils.o \

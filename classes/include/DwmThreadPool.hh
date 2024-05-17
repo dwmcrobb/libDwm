@@ -36,14 +36,111 @@
 
 //---------------------------------------------------------------------------
 //!  \file DwmThreadPool.hh
-//!  \brief NOT YET DOCUMENTED
+//!  \brief Dwm::ThreadPool class template
 //---------------------------------------------------------------------------
 
 #ifndef _DWMTHREADPOOL_HH_
 #define _DWMTHREADPOOL_HH_
 
+#include <concepts>
+#include <deque>
+#include <mutex>
+#include <thread>
+#include <vector>
+
 namespace Dwm {
 
+  //--------------------------------------------------------------------------
+  //!  Encapsulate a trivial thread pool.  @c N is the number of threads and
+  //!  @c is a functor type.
+  //--------------------------------------------------------------------------
+  template <size_t N, typename T>
+  requires std::invocable<T>
+  class ThreadPool
+  {
+  public:
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    ThreadPool()
+        : _workers(), _tasks(), _mtx(), _cv(), _run(true)
+    {
+      for (size_t i = 0; i < N; ++i) {
+        _workers.emplace_back(std::thread(&ThreadPool::WorkerThread,this));
+      }
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    void Enqueue(T task)
+    {
+      {
+        std::lock_guard<std::mutex>  lock(_mtx);
+        _tasks.push_back(task);
+      }
+      _cv.notify_one();
+      return;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    void Shutdown()
+    {
+      {
+        std::lock_guard<std::mutex>  lock(_mtx);
+        _run = false;
+      }
+      _cv.notify_all();
+      for (std::thread & worker : _workers) {
+        worker.join();
+      }
+      return;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    ~ThreadPool()
+    {
+      if (_run) {
+        Shutdown();
+      }
+    }
+        
+  private:
+    std::vector<std::thread>   _workers;
+    std::deque<T>              _tasks;
+    std::mutex                 _mtx;
+    std::condition_variable    _cv;
+    bool                       _run;
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    void WorkerThread()
+    {
+      auto  waitFor = 
+        [this] { return ((! this->_run) || (! this->_tasks.empty())); };
+        
+      for (;;) {
+        T  task;
+        {
+          std::unique_lock<std::mutex>  lock(this->_mtx);
+          this->_cv.wait(lock, waitFor);
+          if ((! this->_run) && (this->_tasks.empty())) {
+            return;
+          }
+          task = this->_tasks.front();
+          this->_tasks.pop_front();
+        }
+        task();
+      }
+    }
+    
+  };
+  
 }  // namespace Dwm
 
 #endif  // _DWMTHREADPOOL_HH_
