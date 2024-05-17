@@ -54,13 +54,11 @@ namespace Dwm {
 
   //--------------------------------------------------------------------------
   //!  Encapsulate a trivial thread pool.  @c N is the number of threads and
-  //!  @c T is a functor type.  At the moment I only handle functors with no
-  //!  arguments.  Hence if you want to call a function that takes arguments,
-  //!  you need to wrap it in a class with a function call operator that
-  //!  can pass your arguments internally and use that class as @c T.
+  //!  @c T is a functor type that takes @c Args when invoked.
   //--------------------------------------------------------------------------
-  template <size_t N, typename T>
-  requires (std::invocable<T> && std::is_copy_assignable_v<T>)
+  template <size_t N, typename F, typename... Args>
+  requires (std::invocable<F,Args...> && std::is_copy_assignable_v<F>
+            && (std::is_copy_assignable_v<Args> && ...))
   class ThreadPool
   {
   public:
@@ -76,20 +74,21 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Adds a task to be executed by the thread pool.
+    //!  Adds a task to be executed by the thread pool.  @c fn is a function
+    //!  object and @c args are the arguments to the function.
     //------------------------------------------------------------------------
-    void Enqueue(T task)
+    void AddTask(F fn, Args ...args)
     {
       {
         std::lock_guard<std::mutex>  lock(_mtx);
-        _tasks.push_back(task);
+        _tasks.emplace_back(Task(fn,std::make_tuple(args...)));
       }
       _cv.notify_one();
       return;
     }
 
     //------------------------------------------------------------------------
-    //!  Shuts down the thread pool.  Note that we will wait for all tasks
+    //!  Shuts down the threads.  Note that we will wait for all tasks
     //!  to be completed.
     //------------------------------------------------------------------------
     void Shutdown()
@@ -116,8 +115,41 @@ namespace Dwm {
     }
     
   private:
+    //------------------------------------------------------------------------
+    //!  Encapsulate a task to be executed by a worker thread.
+    //------------------------------------------------------------------------
+    class Task
+    {
+    public:
+      Task() = default;
+      Task(const Task & t) = default;
+      Task(F f, std::tuple<Args...> a) : _fn(f), _args(a) {}
+
+      //----------------------------------------------------------------------
+      //!
+      //----------------------------------------------------------------------
+      inline void Execute()
+      {
+        return CallFunc(std::make_index_sequence<sizeof...(Args)>());
+      }
+      
+      //----------------------------------------------------------------------
+      //!
+      //----------------------------------------------------------------------
+      template<size_t ...S>
+      void CallFunc(std::index_sequence<S...>)
+      {
+        _fn(std::get<S>(_args) ...);
+        return;
+      }
+
+    private:
+      F                    _fn;
+      std::tuple<Args...>  _args;
+    };
+
     std::array<std::thread,N>  _workers;
-    std::deque<T>              _tasks;
+    std::deque<Task>           _tasks;
     std::mutex                 _mtx;
     std::condition_variable    _cv;
     bool                       _run;
@@ -132,7 +164,7 @@ namespace Dwm {
         [this] { return ((! this->_run) || (! this->_tasks.empty())); };
         
       for (;;) {
-        T  task;
+        Task  task;
         {
           std::unique_lock<std::mutex>  lock(this->_mtx);
           this->_cv.wait(lock, waitFor);
@@ -145,7 +177,7 @@ namespace Dwm {
           this->_tasks.pop_front();
         }
         //  Execute the task.
-        task();
+        task.Execute();
       }
     }
     
