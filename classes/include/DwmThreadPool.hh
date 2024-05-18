@@ -54,7 +54,7 @@ namespace Dwm {
 
   //--------------------------------------------------------------------------
   //!  Encapsulate a trivial thread pool.  @c N is the number of threads and
-  //!  @c T is a functor type that takes @c Args when invoked.
+  //!  @c F is a functor type that takes @c Args when invoked.
   //!
   //!  Work is added to the pool via AddTask().
   //--------------------------------------------------------------------------
@@ -118,7 +118,7 @@ namespace Dwm {
     
   private:
     //------------------------------------------------------------------------
-    //!  Encapsulate a task to be executed by a worker thread.  Just need to
+    //!  Encapsulate a task to be executed by a worker thread.  I just need to
     //!  hold the function object and the function arguments.
     //------------------------------------------------------------------------
     class Task
@@ -132,26 +132,27 @@ namespace Dwm {
       Task & operator = (Task &&) = default;
       
       //----------------------------------------------------------------------
-      //!
+      //!  Execute the task (i.e. call the function object with its
+      //!  arguments).
       //----------------------------------------------------------------------
       inline void Execute()
       {
-        return CallFunc(std::make_index_sequence<sizeof...(Args)>());
+        return CallFunc(std::index_sequence_for<Args...>());
       }
       
+    private:
+      F                    _fn;
+      std::tuple<Args...>  _args;
+
       //----------------------------------------------------------------------
       //!
       //----------------------------------------------------------------------
       template<size_t ...S>
-      void CallFunc(std::index_sequence<S...>)
+      inline void CallFunc(std::index_sequence<S...>)
       {
         _fn(std::get<S>(_args) ...);
         return;
       }
-
-    private:
-      F                    _fn;
-      std::tuple<Args...>  _args;
     };
 
     std::array<std::thread,N>  _workers;
