@@ -85,16 +85,16 @@ private:
 //----------------------------------------------------------------------------
 static std::atomic<size_t>               g_count = 0;
 static unordered_map<thread::id,size_t>  g_threadCalls;
-static mutex                             g_threadCallMtx;
 
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
 void VoidTaskFunction()
 {
+  static mutex  mtx;
   ++g_count;
 
-  lock_guard<mutex>  lock(g_threadCallMtx);
+  lock_guard<mutex>  lock(mtx);
   ++g_threadCalls[this_thread::get_id()];
   
   return;
@@ -189,13 +189,60 @@ static void TestVoidTask()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+class MemberFuncTask
+{
+public:
+  void Increment(size_t incr)   { _count += incr; }
+  size_t Count()                { return _count; }
+  
+private:
+  std::atomic<size_t>  _count = 0;
+};
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestMemberFunctionViaLambda()
+{
+  Dwm::ThreadPool<5,std::function<void(size_t)>,size_t>  tp;
+  MemberFuncTask   mft;
+  for (int i = 0; i < 25; ++i) {
+    tp.AddTask([&](size_t incr) { mft.Increment(incr); }, 42);
+  }
+  tp.Shutdown();
+  UnitAssert((42 * 25) == mft.Count());
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestMemberFunction()
+{
+  Dwm::ThreadPool<5,std::function<void(size_t)>,size_t>  tp;
+  MemberFuncTask   mft;
+  for (int i = 0; i < 25; ++i) {
+    std::function<void(size_t)>  task =
+      std::bind(&MemberFuncTask::Increment, &mft, std::placeholders::_1);
+    tp.AddTask(task, 42);
+  }
+  tp.Shutdown();
+  UnitAssert((42 * 25) == mft.Count());
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
   TestVoidTask();
   TestVoidFunction();
   TestTwoArgTask();
   TestTwoArgFunction();
-
+  TestMemberFunctionViaLambda();
+  TestMemberFunction();
+  
   if (Assertions::Total().Failed()) {
     Assertions::Print(cerr, true);
     exit(1);
