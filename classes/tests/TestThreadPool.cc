@@ -90,7 +90,7 @@ static mutex                             g_threadCallMtx;
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
-void TaskFunction()
+void VoidTaskFunction()
 {
   ++g_count;
 
@@ -103,19 +103,20 @@ void TaskFunction()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
-void TestWithFunction()
+void TestVoidFunction()
 {
-  Dwm::ThreadPool<5,std::function<void()>>  tp;
+  Dwm::ThreadPool<5,std::function<decltype(VoidTaskFunction)>>  tp;
   for (int i = 0; i < 4001; ++i) {
-    tp.AddTask(TaskFunction);
+    tp.AddTask(VoidTaskFunction);
   }
   tp.Shutdown();
   UnitAssert(4001 == g_count);
 
+  //  Check that every thread processed at least one task, and that the sum
+  //  of tasks processed by each thread equals the expected total.
   size_t  totalCalls = 0;
   for (auto thr : g_threadCalls) {
     UnitAssert(thr.second > 0);
-    // cout << thr.first << ' ' << thr.second << '\n';
     totalCalls += thr.second;
   }
   UnitAssert(4001 == totalCalls);
@@ -127,7 +128,7 @@ static string         g_twoArgString;
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
-static void TwoArgTaskFunction(int a, string s)
+static void TwoArgFunction(int a, const string & s)
 {
   static mutex          mtx;
 
@@ -142,10 +143,10 @@ static void TwoArgTaskFunction(int a, string s)
 //----------------------------------------------------------------------------
 static void TestTwoArgFunction()
 {
-  Dwm::ThreadPool<5,std::function<void(int,string)>,int,string>  tp;
+  Dwm::ThreadPool<5,std::function<decltype(TwoArgFunction)>,int,string>  tp;
   size_t  total = 0;
   for (int i = 0; i < 43; ++i) {
-    tp.AddTask(TwoArgTaskFunction, i, "hi");
+    tp.AddTask(TwoArgFunction, i, "hi");
     total += i;
   }
   tp.Shutdown();
@@ -191,7 +192,7 @@ static void TestVoidTask()
 int main(int argc, char *argv[])
 {
   TestVoidTask();
-  TestWithFunction();
+  TestVoidFunction();
   TestTwoArgTask();
   TestTwoArgFunction();
 
