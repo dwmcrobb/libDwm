@@ -1,3 +1,11 @@
+2024-05-17  Daniel W. McRobb  <dwm@kiva.mcplex.net>
+
+	* classes/include/DwmThreadPool.hh, classes/tests/TestThreadPool.cc:
+	First pass at simple thread pool class template.  I've used
+	variations of this in a few places over the years, but this is my
+	first attempt to make something reasonably generic.  The unit
+	tests provide some simple example usage.
+
 2024-05-13  Daniel McRobb  <dwm@toto.mcplex.net>
 
 	* tagged as libDwm-0.9.24
