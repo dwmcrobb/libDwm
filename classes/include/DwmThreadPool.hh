@@ -126,7 +126,7 @@ namespace Dwm {
     public:
       Task() = default;
       Task(const Task & t) = default;
-      Task(const Task && t) = default;
+      Task(Task && t) = default;
       Task(F f, std::tuple<Args...> && a) : _fn(f), _args(a) { }
       Task & operator = (const Task &) = default;
       Task & operator = (Task &&) = default;
