@@ -92,9 +92,8 @@ static unordered_map<thread::id,size_t>  g_threadCalls;
 void VoidTaskFunction()
 {
   static mutex  mtx;
-  ++g_count;
-
   lock_guard<mutex>  lock(mtx);
+  ++g_count;
   ++g_threadCalls[this_thread::get_id()];
   
   return;
