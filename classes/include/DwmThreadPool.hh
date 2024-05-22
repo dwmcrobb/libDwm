@@ -42,13 +42,13 @@
 #ifndef _DWMTHREADPOOL_HH_
 #define _DWMTHREADPOOL_HH_
 
-#include <array>
 #include <concepts>
 #include <condition_variable>
 #include <deque>
 #include <mutex>
 #include <thread>
 #include <type_traits>
+#include <vector>
 
 namespace Dwm {
 
@@ -70,11 +70,27 @@ namespace Dwm {
     ThreadPool()
         : _workers(), _tasks(), _mtx(), _cv(), _run(true)
     {
-      for (size_t i = 0; i < N; ++i) {
-        _workers[i] = std::thread(&ThreadPool::WorkerThread, this);
-      }
+      Start();
     }
 
+    //------------------------------------------------------------------------
+    //!  Starts the threads.  Returns true on success, false on failure.
+    //!  A failure indicates that the threads had not been joined (i.e. Stop()
+    //!  had not been called).
+    //------------------------------------------------------------------------
+    bool Start()
+    {
+      bool  rc = false;
+      std::lock_guard<std::mutex>  lock(_mtx);
+      if (_workers.empty()) {
+        for (size_t i = 0; i < N; ++i) {
+          _workers.emplace_back(std::thread(&ThreadPool::WorkerThread, this));
+        }
+        rc = true;
+      }
+      return rc;
+    }
+    
     //------------------------------------------------------------------------
     //!  Adds a task to be executed by the thread pool.  @c fn is a function
     //!  object and @c args are the arguments to the function.
@@ -90,10 +106,10 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Shuts down the threads.  Note that we will wait for all tasks
-    //!  to be completed.
+    //!  Stops the threads.  Note that we will wait for all remaining
+    //!  tasks to be completed.
     //------------------------------------------------------------------------
-    void Shutdown()
+    void Stop()
     {
       {
         std::lock_guard<std::mutex>  lock(_mtx);
@@ -103,16 +119,33 @@ namespace Dwm {
       for (std::thread & worker : _workers) {
         worker.join();
       }
+      {
+        std::lock_guard<std::mutex>  lock(_mtx);
+        _workers.clear();
+      }
       return;
     }
 
+    //------------------------------------------------------------------------
+    //!  Clears all the tasks from the task queue.  May be useful if you
+    //!  want to Stop() without waiting for queued tasks to complete.
+    //------------------------------------------------------------------------
+    void ClearTasks()
+    {
+      {
+        std::lock_guard<std::mutex>  lock(_mtx);
+        _tasks.clear();
+      }
+      return;
+    }
+    
     //------------------------------------------------------------------------
     //!  Destructor
     //------------------------------------------------------------------------
     ~ThreadPool()
     {
       if (_run) {
-        Shutdown();
+        Stop();
       }
     }
     
@@ -155,12 +188,12 @@ namespace Dwm {
       }
     };
 
-    std::array<std::thread,N>  _workers;
+    std::vector<std::thread>   _workers;
     std::deque<Task>           _tasks;
     std::mutex                 _mtx;
     std::condition_variable    _cv;
     bool                       _run;
-
+    
     //------------------------------------------------------------------------
     //!  The thread we'll run for each worker.
     //------------------------------------------------------------------------
@@ -176,7 +209,7 @@ namespace Dwm {
         {
           std::unique_lock<std::mutex>  lock(this->_mtx);
           this->_cv.wait(lock, waitFor);
-          if ((! this->_run) && (this->_tasks.empty())) {
+          if ((! this->_run) && this->_tasks.empty()) {
             //  We've been asked to stop and there are no more tasks.
             return;
           }

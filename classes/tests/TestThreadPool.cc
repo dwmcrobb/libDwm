@@ -109,7 +109,8 @@ void TestVoidFunction()
   for (int i = 0; i < 4001; ++i) {
     tp.AddTask(VoidTaskFunction);
   }
-  tp.Shutdown();
+  UnitAssert(! tp.Start());  //  Start() should fail, threads are running
+  tp.Stop();
   UnitAssert(4001 == g_count);
 
   //  Check that every thread processed at least one task, and that the sum
@@ -120,6 +121,22 @@ void TestVoidFunction()
     totalCalls += thr.second;
   }
   UnitAssert(4001 == totalCalls);
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestStopStart()
+{
+  Dwm::ThreadPool<5,std::function<decltype(VoidTaskFunction)>>  tp;
+  tp.Stop();
+  UnitAssert(tp.Start());
+  g_count = 0;
+  for (int i = 0; i < 41; ++i) {
+    tp.AddTask(VoidTaskFunction);
+  }
+  tp.Stop();
+  UnitAssert(41 == g_count);
 }
 
 static atomic<size_t> g_twoArgCount = 0;
@@ -149,7 +166,7 @@ static void TestTwoArgFunction()
     tp.AddTask(TwoArgFunction, i, "hi");
     total += i;
   }
-  tp.Shutdown();
+  tp.Stop();
   UnitAssert(g_twoArgCount == total);
   UnitAssert(g_twoArgString.size() == 86);
   UnitAssert(g_twoArgString.front() == 'h');
@@ -167,7 +184,7 @@ static void TestTwoArgTask()
     tp.AddTask(TwoArgTask(), i, i+1);
     total += (i + (i + 1));
   }
-  tp.Shutdown();
+  tp.Stop();
   UnitAssert(total == TwoArgTask::Count());
 }
 
@@ -181,7 +198,7 @@ static void TestVoidTask()
   for (int i = 0; i < 25; ++i) {
     tp.AddTask(VoidTask(5));
   }
-  tp.Shutdown();
+  tp.Stop();
   UnitAssert((5 * 25) == VoidTask::Count());
   return;
 }
@@ -209,7 +226,7 @@ static void TestMemberFunctionViaLambda()
   for (int i = 0; i < 25; ++i) {
     tp.AddTask([&](size_t incr) { mft.Increment(incr); }, 42);
   }
-  tp.Shutdown();
+  tp.Stop();
   UnitAssert((42 * 25) == mft.Count());
   return;
 }
@@ -226,7 +243,7 @@ static void TestMemberFunction()
       std::bind(&MemberFuncTask::Increment, &mft, std::placeholders::_1);
     tp.AddTask(task, 42);
   }
-  tp.Shutdown();
+  tp.Stop();
   UnitAssert((42 * 25) == mft.Count());
   return;
 }
@@ -238,6 +255,7 @@ int main(int argc, char *argv[])
 {
   TestVoidTask();
   TestVoidFunction();
+  TestStopStart();
   TestTwoArgTask();
   TestTwoArgFunction();
   TestMemberFunctionViaLambda();
