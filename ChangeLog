@@ -1,3 +1,7 @@
+2024-05-22  Daniel McRobb  <dwm@thrip.mcplex.net>
+
+	* tagged as libDwm-0.9.27
+
 2024-05-22  dwm  <dwm@ria.mcplex.net>
 
 	* classes/include/DwmThreadPool.hh, classes/tests/TestThreadPool.cc:
