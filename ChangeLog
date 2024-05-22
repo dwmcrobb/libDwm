@@ -1,3 +1,13 @@
+2024-05-22  dwm  <dwm@ria.mcplex.net>
+
+	* classes/include/DwmASIO.hh, classes/include/DwmBZ2IO.hh,
+	  classes/include/DwmGZIO.hh, classes/src/DwmASIO.cc,
+	  classes/src/DwmBZ2IO.cc, classes/src/DwmGZIO.cc,
+	  classes/tests/TestASIO.cc, classes/tests/TestDwmBZ2IO.cc,
+	  classes/tests/TestDwmGZIO.cc:
+	Support read/write of bool for gz, bzip2 and asio.
+	Add some unit tests to cover it.
+
 2024-05-18  Daniel W. McRobb  <dwm@grover.mcplex.net>
 
 	* tagged as libDwm-0.9.26
