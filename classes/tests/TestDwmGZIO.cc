@@ -2,7 +2,7 @@
 // @(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmGZIO.cc 9112 $
 // @(#) $Id: TestDwmGZIO.cc 9112 2017-04-14 22:34:43Z dwm $
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2007, 2016
+//  Copyright (c) Daniel W. McRobb 2004-2007, 2016, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -62,6 +62,7 @@ static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmGZ
 
 static const char      k_charVal   = 'a';
 static const uint8_t   k_ucharVal  = 0xF0;
+static const bool      k_boolVal   = true;
 static const int16_t   k_int16Val  = 32222;
 static const uint16_t  k_uint16Val = 33333;
 static const int32_t   k_int32Val  = 0x7FFFFFFF;
@@ -84,25 +85,28 @@ static bool WriteTestBlob(gzFile gzf)
     if (GZIO::Write(gzf,c) == sizeof(c)) {
       uint8_t  uc = k_ucharVal;
       if (GZIO::Write(gzf,uc) == sizeof(uc)) {
-        int16_t sh = k_int16Val;
-        if (GZIO::Write(gzf,sh) == sizeof(sh)) {
-          uint16_t ush = k_uint16Val;
-          if (GZIO::Write(gzf,ush) == sizeof(ush)) {
-            int32_t  w = k_int32Val;
-            if (GZIO::Write(gzf,w) == sizeof(w)) {
-              uint32_t  uw = k_uint32Val;
-              if (GZIO::Write(gzf,uw) == sizeof(uw)) {
-                int64_t  d = k_int64Val;
-                if (GZIO::Write(gzf,d) == sizeof(d)) {
-                  uint64_t  ud = k_uint64Val;
-                  if (GZIO::Write(gzf,ud) == sizeof(ud)) {
-                    std::string  s = k_stringVal;
-                    if (GZIO::Write(gzf,s) > 4) {
-                      float  f = k_floatVal;
-                      if (GZIO::Write(gzf,f) == sizeof(f)) {
-                        double  df = k_doubleVal;
-                        if (GZIO::Write(gzf,df) == sizeof(df)) {
-                          rc = true;
+        bool  b = k_boolVal;
+        if (GZIO::Write(gzf,b) == sizeof(b)) {
+          int16_t sh = k_int16Val;
+          if (GZIO::Write(gzf,sh) == sizeof(sh)) {
+            uint16_t ush = k_uint16Val;
+            if (GZIO::Write(gzf,ush) == sizeof(ush)) {
+              int32_t  w = k_int32Val;
+              if (GZIO::Write(gzf,w) == sizeof(w)) {
+                uint32_t  uw = k_uint32Val;
+                if (GZIO::Write(gzf,uw) == sizeof(uw)) {
+                  int64_t  d = k_int64Val;
+                  if (GZIO::Write(gzf,d) == sizeof(d)) {
+                    uint64_t  ud = k_uint64Val;
+                    if (GZIO::Write(gzf,ud) == sizeof(ud)) {
+                      std::string  s = k_stringVal;
+                      if (GZIO::Write(gzf,s) > 4) {
+                        float  f = k_floatVal;
+                        if (GZIO::Write(gzf,f) == sizeof(f)) {
+                          double  df = k_doubleVal;
+                          if (GZIO::Write(gzf,df) == sizeof(df)) {
+                            rc = true;
+                          }
                         }
                       }
                     }
@@ -149,28 +153,35 @@ static bool ReadTestBlob(gzFile gzf)
     if (GZIO::Read(gzf,c) && (c == k_charVal)) {
       uint8_t  uc = 0;
       if (GZIO::Read(gzf,uc) && (uc == k_ucharVal)) {
-        int16_t  sh = 0;
-        if (GZIO::Read(gzf,sh) && (sh == k_int16Val)) {
-          uint16_t  ush = 0;
-          if (GZIO::Read(gzf,ush) && (ush == k_uint16Val)) {
-            int32_t  w = 0;
-            if (GZIO::Read(gzf,w) && (w == k_int32Val)) {
-              uint32_t uw = 0;
-              if (GZIO::Read(gzf,uw) && (uw == k_uint32Val)) {
-                int64_t  d = 0;
-                if (GZIO::Read(gzf,d) && (d == k_int64Val)) {
-                  uint64_t  ud = 0;
-                  if (GZIO::Read(gzf,ud) && (ud == k_uint64Val)) {
-                    string  s;
-                    if (GZIO::Read(gzf,s) && (s == k_stringVal)) {
-                      float  f;
-                      if (GZIO::Read(gzf,f) && (f == k_floatVal)) {
-                        double  df;
-                        if (GZIO::Read(gzf,df) && (df == k_doubleVal)) {
-                          rc = true;
+        bool  b = false;
+        if (GZIO::Read(gzf,b) && (b == k_boolVal)) {
+          int16_t  sh = 0;
+          if (GZIO::Read(gzf,sh) && (sh == k_int16Val)) {
+            uint16_t  ush = 0;
+            if (GZIO::Read(gzf,ush) && (ush == k_uint16Val)) {
+              int32_t  w = 0;
+              if (GZIO::Read(gzf,w) && (w == k_int32Val)) {
+                uint32_t uw = 0;
+                if (GZIO::Read(gzf,uw) && (uw == k_uint32Val)) {
+                  int64_t  d = 0;
+                  if (GZIO::Read(gzf,d) && (d == k_int64Val)) {
+                    uint64_t  ud = 0;
+                    if (GZIO::Read(gzf,ud) && (ud == k_uint64Val)) {
+                      string  s;
+                      if (GZIO::Read(gzf,s) && (s == k_stringVal)) {
+                        float  f;
+                        if (GZIO::Read(gzf,f) && (f == k_floatVal)) {
+                          double  df;
+                          if (GZIO::Read(gzf,df) && (df == k_doubleVal)) {
+                            rc = true;
+                          }
+                          else { std::cerr << "fail " << __FILE__ << ':'
+                                           << __LINE__ << '\n';
+                          }
                         }
-                        else { std::cerr << "fail " << __FILE__ << ':'
-                                         << __LINE__ << '\n';
+                        else {
+                          std::cerr << "fail " << __FILE__ << ':'
+                                    << __LINE__ << '\n';
                         }
                       }
                       else {
@@ -179,13 +190,9 @@ static bool ReadTestBlob(gzFile gzf)
                       }
                     }
                     else {
-                        std::cerr << "fail " << __FILE__ << ':'
-                                  << __LINE__ << '\n';
+                      std::cerr << "fail " << __FILE__ << ':'
+                                << __LINE__ << '\n';
                     }
-                  }
-                  else {
-                    std::cerr << "fail " << __FILE__ << ':'
-                              << __LINE__ << '\n';
                   }
                 }
               }

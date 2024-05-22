@@ -2,7 +2,7 @@
 // @(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmBZ2IO.cc 11071 $
 // @(#) $Id: TestDwmBZ2IO.cc 11071 2020-09-05 15:20:31Z dwm $
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2007, 2016
+//  Copyright (c) Daniel W. McRobb 2004-2007, 2016, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -62,6 +62,7 @@ static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmBZ
 
 static const char      k_charVal   = 'a';
 static const uint8_t   k_ucharVal  = 0xF0;
+static const bool      k_boolVal   = true;
 static const int16_t   k_int16Val  = 32222;
 static const uint16_t  k_uint16Val = 33333;
 static const int32_t   k_int32Val  = 0x7FFFFFFF;
@@ -84,25 +85,28 @@ static bool WriteTestBlob(BZFILE *bzf)
     if (BZ2IO::BZWrite(bzf,c) == sizeof(c)) {
       uint8_t  uc = k_ucharVal;
       if (BZ2IO::BZWrite(bzf,uc) == sizeof(uc)) {
-        int16_t sh = k_int16Val;
-        if (BZ2IO::BZWrite(bzf,sh) == sizeof(sh)) {
-          uint16_t ush = k_uint16Val;
-          if (BZ2IO::BZWrite(bzf,ush) == sizeof(ush)) {
-            int32_t  w = k_int32Val;
-            if (BZ2IO::BZWrite(bzf,w) == sizeof(w)) {
-              uint32_t  uw = k_uint32Val;
-              if (BZ2IO::BZWrite(bzf,uw) == sizeof(uw)) {
-                int64_t  d = k_int64Val;
-                if (BZ2IO::BZWrite(bzf,d) == sizeof(d)) {
-                  uint64_t  ud = k_uint64Val;
-                  if (BZ2IO::BZWrite(bzf,ud) == sizeof(ud)) {
-                    std::string  s = k_stringVal;
-                    if (BZ2IO::BZWrite(bzf,s) > 4) {
-                      float  f = k_floatVal;
-                      if (BZ2IO::BZWrite(bzf,f) == sizeof(f)) {
-                        double  df = k_doubleVal;
-                        if (BZ2IO::BZWrite(bzf,df) == sizeof(df)) {
-                          rc = true;
+        bool  b = k_boolVal;
+        if (BZ2IO::BZWrite(bzf,b) == sizeof(b)) {
+          int16_t sh = k_int16Val;
+          if (BZ2IO::BZWrite(bzf,sh) == sizeof(sh)) {
+            uint16_t ush = k_uint16Val;
+            if (BZ2IO::BZWrite(bzf,ush) == sizeof(ush)) {
+              int32_t  w = k_int32Val;
+              if (BZ2IO::BZWrite(bzf,w) == sizeof(w)) {
+                uint32_t  uw = k_uint32Val;
+                if (BZ2IO::BZWrite(bzf,uw) == sizeof(uw)) {
+                  int64_t  d = k_int64Val;
+                  if (BZ2IO::BZWrite(bzf,d) == sizeof(d)) {
+                    uint64_t  ud = k_uint64Val;
+                    if (BZ2IO::BZWrite(bzf,ud) == sizeof(ud)) {
+                      std::string  s = k_stringVal;
+                      if (BZ2IO::BZWrite(bzf,s) > 4) {
+                        float  f = k_floatVal;
+                        if (BZ2IO::BZWrite(bzf,f) == sizeof(f)) {
+                          double  df = k_doubleVal;
+                          if (BZ2IO::BZWrite(bzf,df) == sizeof(df)) {
+                            rc = true;
+                          }
                         }
                       }
                     }
@@ -115,7 +119,6 @@ static bool WriteTestBlob(BZFILE *bzf)
       }
     }
   }
-
   UnitAssert(rc);
   return(rc);
 }
@@ -149,25 +152,28 @@ static bool ReadTestBlob(BZFILE *bzf)
     if (BZ2IO::BZRead(bzf,c) && (c == k_charVal)) {
       uint8_t  uc = 0;
       if (BZ2IO::BZRead(bzf,uc) && (uc == k_ucharVal)) {
-        int16_t  sh = 0;
-        if (BZ2IO::BZRead(bzf,sh) && (sh == k_int16Val)) {
-          uint16_t  ush = 0;
-          if (BZ2IO::BZRead(bzf,ush) && (ush == k_uint16Val)) {
-            int32_t  w = 0;
-            if (BZ2IO::BZRead(bzf,w) && (w == k_int32Val)) {
-              uint32_t uw = 0;
-              if (BZ2IO::BZRead(bzf,uw) && (uw == k_uint32Val)) {
-                int64_t  d = 0;
-                if (BZ2IO::BZRead(bzf,d) && (d == k_int64Val)) {
-                  uint64_t  ud = 0;
-                  if (BZ2IO::BZRead(bzf,ud) && (ud == k_uint64Val)) {
-                    string  s;
-                    if (BZ2IO::BZRead(bzf,s) && (s == k_stringVal)) {
-                      float  f;
-                      if (BZ2IO::BZRead(bzf,f) && (f == k_floatVal)) {
-                        double  df;
-                        if (BZ2IO::BZRead(bzf,df) && (df == k_doubleVal)) {
-                          rc = true;
+        bool  b = false;
+        if (BZ2IO::BZRead(bzf,b) && (b == k_boolVal)) {
+          int16_t  sh = 0;
+          if (BZ2IO::BZRead(bzf,sh) && (sh == k_int16Val)) {
+            uint16_t  ush = 0;
+            if (BZ2IO::BZRead(bzf,ush) && (ush == k_uint16Val)) {
+              int32_t  w = 0;
+              if (BZ2IO::BZRead(bzf,w) && (w == k_int32Val)) {
+                uint32_t uw = 0;
+                if (BZ2IO::BZRead(bzf,uw) && (uw == k_uint32Val)) {
+                  int64_t  d = 0;
+                  if (BZ2IO::BZRead(bzf,d) && (d == k_int64Val)) {
+                    uint64_t  ud = 0;
+                    if (BZ2IO::BZRead(bzf,ud) && (ud == k_uint64Val)) {
+                      string  s;
+                      if (BZ2IO::BZRead(bzf,s) && (s == k_stringVal)) {
+                        float  f;
+                        if (BZ2IO::BZRead(bzf,f) && (f == k_floatVal)) {
+                          double  df;
+                          if (BZ2IO::BZRead(bzf,df) && (df == k_doubleVal)) {
+                            rc = true;
+                          }
                         }
                       }
                     }
@@ -180,6 +186,7 @@ static bool ReadTestBlob(BZFILE *bzf)
       }
     }
   }
+  
   UnitAssert(rc);
   return(rc);
 }

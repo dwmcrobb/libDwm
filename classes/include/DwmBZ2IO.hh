@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2006, 2016, 2020
+//  Copyright (c) Daniel W. McRobb 2004-2006, 2016, 2020, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -94,7 +94,7 @@ namespace Dwm {
     static int BZWrite(BZFILE *bzf, char c);
 
     //------------------------------------------------------------------------
-    //!  Reads \c from \c bzf.  Returns the number of bytes read (1) on 
+    //!  Reads \c c from \c bzf.  Returns the number of bytes read (1) on 
     //!  success, less on failure.
     //------------------------------------------------------------------------
     static int BZRead(BZFILE *bzf, uint8_t & c);
@@ -105,6 +105,18 @@ namespace Dwm {
     //------------------------------------------------------------------------
     static int BZWrite(BZFILE *bzf, uint8_t c);
 
+    //------------------------------------------------------------------------
+    //!  Reads \c b from \c bzf.  Returns the number of bytes read (1) on 
+    //!  success, less on failure.
+    //------------------------------------------------------------------------
+    static int BZRead(BZFILE *bzf, bool & b);
+
+    //------------------------------------------------------------------------
+    //!  Writes \c b to \c bzf.  Returns the number of bytes written (1) on
+    //!  success, less on failure.
+    //------------------------------------------------------------------------
+    static int BZWrite(BZFILE *bzf, bool b);
+    
     //------------------------------------------------------------------------
     //!  Reads \c val from \c bzf, in network byte order (MSB first). 
     //!  Returns number of bytes read (2) on success, less on failure.

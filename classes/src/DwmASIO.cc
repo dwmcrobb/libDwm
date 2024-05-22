@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2018, 2020, 2023
+//  Copyright (c) Daniel W. McRobb 2018, 2020, 2023, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -256,6 +256,57 @@ namespace Dwm {
   bool ASIO::Write(boost::asio::generic::stream_protocol::socket & s,
                    uint8_t value, boost::system::error_code & ec)
   { return _asiowrite(s, value, ec); }
+
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::ip::tcp::socket & s, bool & value,
+                  boost::system::error_code & ec)
+  {
+    uint8_t c;
+    if (_asioread(s, c, ec)) {
+      value = (c ? true : false);
+      return true;
+    }
+    return false;
+  }
+
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::ip::tcp::socket & s, bool value,
+                   boost::system::error_code & ec)
+  { uint8_t c = (value ? 1 : 0);  return _asiowrite(s, c, ec); }
+
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
+                  bool & value, boost::system::error_code & ec)
+  {
+    uint8_t c;
+    if (_asioread(s, c, ec)) {
+      value = (c ? true : false);
+      return true;
+    }
+    return false;
+  }
+    
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
+                   bool value, boost::system::error_code & ec)
+  { uint8_t c = (value ? 1 : 0); return _asiowrite(s, c, ec); }
+
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::generic::stream_protocol::socket & s,
+                  bool & value, boost::system::error_code & ec)
+  {
+    uint8_t c;
+    if (_asioread(s, c, ec)) {
+      value = (c ? true : false);
+      return true;
+    }
+    return false;
+  }
+    
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::generic::stream_protocol::socket & s,
+                   bool value, boost::system::error_code & ec)
+  { uint8_t c = (value ? 1 : 0); return _asiowrite(s, c, ec); }
   
   //-------------------------------------------------------------------------
   bool ASIO::Read(boost::asio::ip::tcp::socket & s, uint16_t & value,

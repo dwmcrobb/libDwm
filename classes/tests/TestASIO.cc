@@ -2,7 +2,7 @@
 // @(#) $DwmPath: dwm/libDwm/trunk/tests/TestASIO.cc 10968 $
 // @(#) $Id: TestASIO.cc 10968 2020-08-24 22:45:47Z dwm $
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2018, 2020, 2023
+//  Copyright (c) Daniel W. McRobb 2018, 2020, 2023, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -745,6 +745,26 @@ static void TestStrings()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void TestBools()
+{
+  vector<bool>  vs1({true, false});
+  TestAsArray<bool,2>(vs1);
+  TestVectorOf(vs1);
+  TestAsVector(vs1);
+  TestAsDeque(vs1);
+  TestAsList(vs1);
+  TestAsMap(vs1);
+  TestAsMultimap(vs1);
+  TestAsSet(vs1);
+  TestAsMultiset(vs1);
+  TestAsUnorderedMap(vs1);
+  TestAsUnorderedSet(vs1);
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static void TestInts()
 {
   vector<int>  vs1({
@@ -889,6 +909,7 @@ int main(int argc, char *argv[])
   //  Dwm::SysLogger::Open("TestASIO", LOG_PERROR, LOG_USER);
   
   TestStrings();
+  TestBools();
   TestInts();
   TestFloats();
   TestDoubles();

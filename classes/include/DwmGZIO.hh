@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004, 2016, 2020
+//  Copyright (c) Daniel W. McRobb 2004, 2016, 2020, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -97,7 +97,7 @@ namespace Dwm {
     static int Write(gzFile gzf, char c);
 
     //------------------------------------------------------------------------
-    //!  Reads \c from \c gzf.  Returns the number of bytes read (1) on 
+    //!  Reads \c c from \c gzf.  Returns the number of bytes read (1) on 
     //!  success, less on failure.
     //------------------------------------------------------------------------
     static int Read(gzFile gzf, uint8_t & c);
@@ -107,6 +107,18 @@ namespace Dwm {
     //!  success, less on failure.
     //------------------------------------------------------------------------
     static int Write(gzFile gzf, uint8_t c);
+
+    //------------------------------------------------------------------------
+    //!  Reads \c b from \c gzf.  Returns the number of bytes read (1) on 
+    //!  success, less on failure.
+    //------------------------------------------------------------------------
+    static int Read(gzFile gzf, bool & b);
+    
+    //------------------------------------------------------------------------
+    //!  Writes \c b to \c gzf.  Returns the number of bytes written (1) on
+    //!  success, less on failure.
+    //------------------------------------------------------------------------
+    static int Write(gzFile gzf, bool b);
 
     //------------------------------------------------------------------------
     //!  Reads \c val from \c gzf, in network byte order (MSB first). 

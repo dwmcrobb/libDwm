@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2007, 2020
+//  Copyright (c) Daniel W. McRobb 2004-2007, 2020, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -74,6 +74,19 @@ namespace Dwm {
     int  rc = -1;
     if (bzf)
       rc = BZ2_bzwrite(bzf,(void *)&c,sizeof(c));
+    return(rc);
+  }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  int BZ2IO::BZWrite(BZFILE *bzf, bool b)
+  {
+    int  rc = -1;
+    if (bzf) {
+      uint8_t  c = (b ? 1 : 0);
+      rc = BZ2_bzwrite(bzf,(void *)&c,sizeof(c));
+    }
     return(rc);
   }
   
@@ -258,6 +271,21 @@ namespace Dwm {
     if (bzf)
       rc = BZ2_bzread(bzf,(void *)&c,sizeof(c));
     return(rc);
+  }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  int BZ2IO::BZRead(BZFILE *bzf, bool & b)
+  {
+    if (bzf) {
+      uint8_t  c;
+      if (BZ2_bzread(bzf,(void *)&c,sizeof(c)) == sizeof(c)) {
+        b = (c ? true : false);
+        return sizeof(c);
+      }
+    }
+    return -1;
   }
   
   //------------------------------------------------------------------------
