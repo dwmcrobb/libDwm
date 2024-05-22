@@ -68,7 +68,7 @@ namespace Dwm {
     //!  Constructs the thread pool and starts the threads.
     //------------------------------------------------------------------------
     ThreadPool()
-        : _workers(), _tasks(), _mtx(), _cv(), _run(true)
+        : _workers(), _tasks(), _mtx(), _cv(), _run(false)
     {
       Start();
     }
@@ -83,6 +83,7 @@ namespace Dwm {
       bool  rc = false;
       std::lock_guard<std::mutex>  lock(_mtx);
       if (_workers.empty()) {
+        _run = true;
         for (size_t i = 0; i < N; ++i) {
           _workers.emplace_back(std::thread(&ThreadPool::WorkerThread, this));
         }
