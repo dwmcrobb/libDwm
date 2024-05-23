@@ -644,26 +644,34 @@ namespace Dwm {
     //!  Reads a tuple from \c s.  Returns \c true on success, \c false on
     //!  failure.
     //------------------------------------------------------------------------
-    template <typename S, typename T, typename... Args>
+    template <typename S, typename... Args>
     requires IsSupportedASIOSocket<S>
-    static bool Read(S & s, std::tuple<T, Args...> & t,
+    static bool Read(S & s, std::tuple<Args...> & t,
                      boost::system::error_code & ec)
     {
-      return ReadTuple<S,std::tuple<T, Args...> >(s, t, ec);
+      return(std::apply([&s,&ec](auto&&...args) 
+      {
+        auto read_tuple_mem = [&s,&ec](auto&& x) { return Read(s, x, ec); };
+        return (read_tuple_mem(args) && ...);
+      }, t));
     }
 
     //------------------------------------------------------------------------
     //!  Writes a tuple to \c s.  Returns \c true on success, \c false on
     //!  failure.
     //------------------------------------------------------------------------
-    template <typename S, typename T, typename... Args>
+    template <typename S, typename... Args>
     requires IsSupportedASIOSocket<S>
-    static bool Write(S & s, const std::tuple<T, Args...> & t,
+    static bool Write(S & s, const std::tuple<Args...> & t,
                       boost::system::error_code & ec)
     {
-      return WriteTuple<S,std::tuple<T, Args...> >(s, t, ec);
+      return(std::apply([&s,&ec](auto&&...args)
+      {
+        auto write_tuple_mem = [&s,&ec](auto&& x) { return Write(s, x, ec); };
+        return (write_tuple_mem(args) && ...);
+      }, t));
     }
-
+    
     //------------------------------------------------------------------------
     //!  Reads a variant \C V from \c s.  Returns \c true on success, \c false
     //!  on failure.
@@ -992,103 +1000,6 @@ namespace Dwm {
     { return val.Write(s, ec); }
     
   private:
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    template <typename S, typename T>
-    requires IsSupportedASIOSocket<S>
-    static bool ReadTuple(S & s, T & t, boost::system::error_code & ec)
-    {
-      return TupleIOHelper<T,std::tuple_size<T>::value-1>::Read(s, t, ec);
-    }
-
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    template <typename S, typename T>
-    requires IsSupportedASIOSocket<S>
-    static bool WriteTuple(S & s, const T & t,
-                           boost::system::error_code & ec)
-    {
-      return TupleIOHelper<T,std::tuple_size<T>::value-1>::Write(s, t, ec);
-    }
-    
-    //------------------------------------------------------------------------
-    //!  Declare tuple IO helper class template.  elt is the last element
-    //!  index (size of the tuple minus 1).
-    //------------------------------------------------------------------------
-    template <typename T, size_t elt>
-    class TupleIOHelper;
-
-    //------------------------------------------------------------------------
-    //!  Specialization for a tuple with one element.
-    //------------------------------------------------------------------------
-    template <typename T>
-    class TupleIOHelper<T, 0>
-    {
-    public:
-      //----------------------------------------------------------------------
-      //!  Read a tuple \c t from \c s.  Returns \c true on success, \c false
-      //!  on failure.
-      //----------------------------------------------------------------------
-      template <typename S>
-      requires IsSupportedASIOSocket<S>
-      static bool Read(S & s, T & t, boost::system::error_code & ec)
-      {
-        return(ASIO::Read(s, std::get<0>(t), ec));
-      }
-
-      //----------------------------------------------------------------------
-      //!  Write a tuple \c t to \c s.  Returns \c true on success, \c false
-      //!  on failure.
-      //----------------------------------------------------------------------
-      template <typename S>
-      requires IsSupportedASIOSocket<S>
-      static bool Write(S & s, const T & t,
-                        boost::system::error_code & ec)
-      {
-        return(ASIO::Write(s, std::get<0>(t), ec));
-      }
-    };
-
-    //------------------------------------------------------------------------
-    //!  The recursive tuple ASIO helper template.
-    //------------------------------------------------------------------------
-    template <typename T, size_t elt>
-    class TupleIOHelper
-    {
-    public:
-      //----------------------------------------------------------------------
-      //!  Read a tuple \c t from \c s.  Returns true on success, \c false on
-      //!  failure.
-      //----------------------------------------------------------------------
-      template <typename S>
-      requires IsSupportedASIOSocket<S>      
-      static bool Read(S & s, T & t, boost::system::error_code & ec)
-      {
-        bool  rc = false;
-        if (TupleIOHelper<T,elt-1>::Read(s, t, ec)) {
-          rc = ASIO::Read(s, std::get<elt>(t), ec);
-        }
-        return rc;
-      }
-      
-      //----------------------------------------------------------------------
-      //!  Write a tuple \c t to an ostream \c os.
-      //----------------------------------------------------------------------
-      template <typename S>
-      requires IsSupportedASIOSocket<S>      
-      static bool Write(S & s, const T & t,
-                        boost::system::error_code & ec)
-      {
-        bool  rc = false;
-        if (TupleIOHelper<T,elt-1>::Write(s, t, ec)) {
-          rc = ASIO::Write(s, std::get<elt>(t), ec);
-        }
-        return rc;
-      }
-    };
-
     //------------------------------------------------------------------------
     //!  Just a dummy helper function for std::variant instances that hold
     //!  a std::monostate.  This should only be called from our Read() for
