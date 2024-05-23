@@ -495,21 +495,49 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    template <typename T, typename... Args>
-    static int BZWrite(BZFILE *bzf, const std::tuple<T, Args...> & t)
+    template <typename... Args>
+    static int BZWrite(BZFILE *bzf, const std::tuple<Args...> & t)
     {
-      return(BZWriteTuple<std::tuple<T, Args...> >(bzf, t));
+      return(std::apply([&bzf](auto&&...args) 
+      {
+        int  rc = 0;
+        auto read_tuple_mem = [&bzf,&rc](auto&& x) {
+          int  bytesWritten = BZWrite(bzf, x);
+          if (bytesWritten > 0) { rc += bytesWritten; return true; }
+          else                  { return false; }
+        };
+        if ((read_tuple_mem(args) && ...)) {
+          return rc;
+        }
+        else {
+          return -1;
+        }
+      }, t));
     }
     
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    template <typename T, typename... Args>
-    static int BZRead(BZFILE *bzf, std::tuple<T, Args...> & t)
+    template <typename... Args>
+    static int BZRead(BZFILE *bzf, std::tuple<Args...> & t)
     {
-      return(BZReadTuple<std::tuple<T, Args...> >(bzf, t));
+      return(std::apply([&bzf](auto&&...args) 
+      {
+        int  rc = 0;
+        auto read_tuple_mem = [&bzf,&rc](auto&& x) {
+          int  bytesRead = BZRead(bzf, x);
+          if (bytesRead > 0) { rc += bytesRead; return true; }
+          else               { return false; }
+        };
+        if ((read_tuple_mem(args) && ...)) {
+          return rc;
+        }
+        else {
+          return -1;
+        }
+      }, t));
     }
-
+    
     //------------------------------------------------------------------------
     //!  Reads an unordered_map from a BZFILE pointer.  Returns the number
     //!  of bytes read on success, -1 on failure.
@@ -685,24 +713,6 @@ namespace Dwm {
 
   private:
     //------------------------------------------------------------------------
-    //!  T must be a tuple, n is the number of elements.
-    //------------------------------------------------------------------------
-    template <typename T>
-    static int BZWriteTuple(BZFILE *bzf, const T & t)
-    {
-      return(TupleBZ2IOHelper<T,std::tuple_size<T>::value-1>::Write(bzf, t));
-    }
-
-    //------------------------------------------------------------------------
-    //!  T must be a tuple, n is the number of elements.
-    //------------------------------------------------------------------------
-    template <typename T>
-    static int BZReadTuple(BZFILE *bzf, T & t)
-    {
-      return(TupleBZ2IOHelper<T,std::tuple_size<T>::value-1>::Read(bzf, t));
-    }
-
-    //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
     template <typename _inputIteratorT>
@@ -828,82 +838,6 @@ namespace Dwm {
       }
       return(rc);
     }
-
-    //------------------------------------------------------------------------
-    //!  Declare tuple BZ2IO helper class template.  elt is the last element
-    //!  index (size of the tuple minus 1).
-    //------------------------------------------------------------------------
-    template <typename T, size_t elt>
-    class TupleBZ2IOHelper;
-    
-    //------------------------------------------------------------------------
-    //!  Specialization for a tuple with one element.
-    //------------------------------------------------------------------------
-    template <typename T>
-    class TupleBZ2IOHelper<T, 0>
-    {
-    public:
-      //----------------------------------------------------------------------
-      //!  Write a tuple \c t to an ostream \c os.
-      //----------------------------------------------------------------------
-      static int Write(BZFILE *bzf, const T & t)
-      {
-        return(BZ2IO::BZWrite(bzf, std::get<0>(t)));
-      }
-      
-      //----------------------------------------------------------------------
-      //!  Read a tuple \c t from an istream \c is.
-      //----------------------------------------------------------------------
-      static int Read(BZFILE *bzf, T & t)
-      {
-        return(BZ2IO::BZRead(bzf, std::get<0>(t)));
-      }
-    };
-    
-    //------------------------------------------------------------------------
-    //!  The recursive tuple BZ2IO helper template.
-    //------------------------------------------------------------------------
-    template <typename T, size_t elt>
-    class TupleBZ2IOHelper
-    {
-    public:
-      //----------------------------------------------------------------------
-      //!  Write a tuple \c t to an ostream \c os.
-      //----------------------------------------------------------------------
-      static int Write(BZFILE *bzf, const T & t)
-      {
-        int  rc = TupleBZ2IOHelper<T,elt-1>::Write(bzf, t);
-        if (rc > 0) {
-          int  rcr = BZ2IO::BZWrite(bzf, std::get<elt>(t));
-          if (rcr > 0) {
-            rc += rcr;
-          }
-          else {
-            rc = -1;
-          }
-        }
-        return(rc);
-      }
-      
-      //----------------------------------------------------------------------
-      //!  Read a tuple \c t from an istream \c is.
-      //----------------------------------------------------------------------
-      static int Read(BZFILE *bzf, T & t)
-      {
-        int  rc = TupleBZ2IOHelper<T,elt-1>::Read(bzf, t);
-        if (rc > 0) {
-          int  rcr = BZ2IO::BZRead(bzf, std::get<elt>(t));
-          if (rcr > 0) {
-            rc += rcr;
-          }
-          else {
-            rc = -1;
-          }
-        }
-        return(rc);
-      }
-
-    };
 
   };
 
