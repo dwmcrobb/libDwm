@@ -1,8 +1,9 @@
 2024-05-23  Daniel McRobb  <dwm@spark.mcplex.net>
 
-	* classes/include/DwmStreamIO.hh: Minor modernization... I don't
-	need the recursive tuple paradigm any more since I no longer need
-	to support anything older than C++17.  I can use std:apply().
+	* classes/include/DwmASIO.hh, classes/include/DwmStreamIO.hh:
+	Minor modernization... I don't need the recursive tuple paradigm
+	any more since I no longer need to support anything older than
+	C++17.  I can use std:apply() and fold expressions for tuples.
 
 2024-05-22  Daniel McRobb  <dwm@thrip.mcplex.net>
 
