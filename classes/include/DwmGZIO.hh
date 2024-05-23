@@ -564,25 +564,53 @@ namespace Dwm {
       }
       return rc;
     }
-    
+
     //------------------------------------------------------------------------
     //!  Reads a tuple from a gzFile.  Returns the number of bytes read on
     //!  success, -1 on failure.
     //------------------------------------------------------------------------
-    template <typename T, typename... Args>
-    static int Read(gzFile gzf, std::tuple<T, Args...> & t)
+    template <typename... Args>
+    static int Read(gzFile gzf, std::tuple<Args...> & t)
     {
-      return(ReadTuple<std::tuple<T, Args...> >(gzf, t));
+      return(std::apply([&gzf](auto&&...args) 
+      {
+        int  rc = 0;
+        auto read_tuple_mem = [&gzf,&rc](auto&& x) {
+          int  bytesRead = Read(gzf, x);
+          if (bytesRead > 0) { rc += bytesRead; return true; }
+          else               { return false; }
+        };
+        if ((read_tuple_mem(args) && ...)) {
+          return rc;
+        }
+        else {
+          return -1;
+        }
+      }, t));
     }
 
     //------------------------------------------------------------------------
     //!  Writes a tuple to a gzFile.  Returns the number of bytes written on
     //!  success, -1 on faiulure.
     //------------------------------------------------------------------------
-    template <typename T, typename... Args>
-    static int Write(gzFile gzf, const std::tuple<T, Args...> & t)
+    template <typename... Args>
+    static int Write(gzFile gzf, const std::tuple<Args...> & t)
     {
-      return(WriteTuple<std::tuple<T, Args...> >(gzf, t));
+      return(std::apply([&gzf](auto&&...args) 
+      {
+        int  rc = 0;
+        auto read_tuple_mem = [&gzf,&rc](auto&& x) {
+          int  bytesWritten = Write(gzf, x);
+          if (bytesWritten > 0) { rc += bytesWritten; return true; }
+          else                  { return false; }
+        };
+        if ((read_tuple_mem(args) && ...)) {
+          return rc;
+        }
+        else {
+          return -1;
+        }
+      }, t));
     }
     
     //------------------------------------------------------------------------
@@ -686,24 +714,6 @@ namespace Dwm {
     }
    
   private:
-    //------------------------------------------------------------------------
-    //!  T must be a tuple, n is the number of elements.
-    //------------------------------------------------------------------------
-    template <typename T>
-    static int WriteTuple(gzFile gzf, const T & t)
-    {
-      return(TupleIOHelper<T,std::tuple_size<T>::value-1>::Write(gzf, t));
-    }
-
-    //------------------------------------------------------------------------
-    //!  T must be a tuple, n is the number of elements.
-    //------------------------------------------------------------------------
-    template <typename T>
-    static int ReadTuple(gzFile gzf, T & t)
-    {
-      return(TupleIOHelper<T,std::tuple_size<T>::value-1>::Read(gzf, t));
-    }
-
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
@@ -832,82 +842,6 @@ namespace Dwm {
       }
       return(rc);
     }
-
-    //------------------------------------------------------------------------
-    //!  Declare tuple IO helper class template.  elt is the last element
-    //!  index (size of the tuple minus 1).
-    //------------------------------------------------------------------------
-    template <typename T, size_t elt>
-    class TupleIOHelper;
-    
-    //------------------------------------------------------------------------
-    //!  Specialization for a tuple with one element.
-    //------------------------------------------------------------------------
-    template <typename T>
-    class TupleIOHelper<T, 0>
-    {
-    public:
-      //----------------------------------------------------------------------
-      //!  Write a tuple \c t to a gzFile \c gzf.
-      //----------------------------------------------------------------------
-      static int Write(gzFile gzf, const T & t)
-      {
-        return(GZIO::Write(gzf, std::get<0>(t)));
-      }
-      
-      //----------------------------------------------------------------------
-      //!  Read a tuple \c t from an istream \c is.
-      //----------------------------------------------------------------------
-      static int Read(gzFile gzf, T & t)
-      {
-        return(GZIO::Read(gzf, std::get<0>(t)));
-      }
-    };
-    
-    //------------------------------------------------------------------------
-    //!  The recursive tuple IO helper template.
-    //------------------------------------------------------------------------
-    template <typename T, size_t elt>
-    class TupleIOHelper
-    {
-    public:
-      //----------------------------------------------------------------------
-      //!  Write a tuple \c t to a gzFile \c gzf.
-      //----------------------------------------------------------------------
-      static int Write(gzFile gzf, const T & t)
-      {
-        int  rc = TupleIOHelper<T,elt-1>::Write(gzf, t);
-        if (rc > 0) {
-          int  rcr = GZIO::Write(gzf, std::get<elt>(t));
-          if (rcr > 0) {
-            rc += rcr;
-          }
-          else {
-            rc = -1;
-          }
-        }
-        return(rc);
-      }
-      
-      //----------------------------------------------------------------------
-      //!  Read a tuple \c t from a gzFile \c gzf.
-      //----------------------------------------------------------------------
-      static int Read(gzFile gzf, T & t)
-      {
-        int  rc = TupleIOHelper<T,elt-1>::Read(gzf, t);
-        if (rc > 0) {
-          int  rcr = GZIO::Read(gzf, std::get<elt>(t));
-          if (rcr > 0) {
-            rc += rcr;
-          }
-          else {
-            rc = -1;
-          }
-        }
-        return(rc);
-      }
-
-    };
 
   };
 
