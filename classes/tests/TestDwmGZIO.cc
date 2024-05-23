@@ -262,6 +262,43 @@ static bool GZIOTest()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static bool TupleGZIOTest()
+{
+  bool  rc = false;
+  string  fn("/tmp/DwmTupleGZIOTest.gz");
+  tuple<string,int,string,int>  t1("alpha",1,"beta",2);
+  gzFile gzf = gzopen(fn.c_str(), "wb");
+  if (UnitAssert(gzf)) {
+    GZIO::Write(gzf, t1);
+    gzclose(gzf);
+
+    gzf = gzopen(fn.c_str(), "rb");
+    if (UnitAssert(gzf)) {
+      tuple<string,int,string,int>  t2;
+      if (UnitAssert(GZIO::Read(gzf, t2) > 0)) {
+        if (UnitAssert(t2 == t1)) {
+          rc = true;
+        }
+      }
+      gzclose(gzf);
+    }
+    std::remove(fn.c_str());
+  }
+
+  fn = "/dev/null";
+  gzf = gzopen(fn.c_str(), "rb");
+  if (UnitAssert(gzf)) {
+    tuple<string,int,string,int>  t2;
+    UnitAssert(GZIO::Read(gzf, t2) == -1);
+    gzclose(gzf);
+  }
+  
+  return rc;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static bool MapGZIOTest()
 {
   bool  rc = false;
@@ -526,6 +563,9 @@ void TestNullGzfile()
     { 3, "three" }
   };
   UnitAssert(GZIO::Write(gzf, m) < 0);
+  tuple<string,int,string,int>  t("beta",2,"alpha",1);
+  UnitAssert(GZIO::Write(gzf, t) < 0);
+  
   return;
 }
 
@@ -536,6 +576,7 @@ int main(int argc, char *argv[])
 {
   GZIOTest();
   ArrayGZIOTest();
+  TupleGZIOTest();
   MapGZIOTest();
   VectorGZIOTest();
   DequeGZIOTest();

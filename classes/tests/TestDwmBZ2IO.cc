@@ -248,6 +248,33 @@ static bool BZ2IOTest()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static bool TupleBZ2IOTest()
+{
+  bool  rc = false;
+  string  fn("/tmp/DWMTupleBZ2IOTest.bz2");
+  tuple<string,int,string,int>  t1("alpha",1,"beta",2);
+  BZFILE  *bzf = BZ2_bzopen(fn.c_str(), "wb");
+  if (UnitAssert(bzf)) {
+    BZ2IO::BZWrite(bzf, t1);
+    BZ2_bzclose(bzf);
+    bzf = BZ2_bzopen(fn.c_str(), "rb");
+    if (UnitAssert(bzf)) {
+      tuple<string,int,string,int>  t2;
+      if (UnitAssert(BZ2IO::BZRead(bzf, t2) > 0)) {
+        if (UnitAssert(t2 == t1)) {
+          rc = true;
+        }
+      }
+      BZ2_bzclose(bzf);
+    }
+    std::remove(fn.c_str());
+  }
+  return rc;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static bool MapBZ2IOTest()
 {
   bool  rc = false;
@@ -472,6 +499,9 @@ void TestNullBZ2File()
     { 3, "three" }
   };
   UnitAssert(BZ2IO::BZWrite(bzf, m) < 0);
+  tuple<int,string,int,string>  t(2,"beta",3,"gamma");
+  UnitAssert(BZ2IO::BZWrite(bzf, t) < 0);
+  
   return;
 }
 
@@ -521,6 +551,7 @@ int main(int argc, char *argv[])
 {
   
   BZ2IOTest();
+  TupleBZ2IOTest();
   MapBZ2IOTest();
   VectorBZ2IOTest();
   DequeBZ2IOTest();
