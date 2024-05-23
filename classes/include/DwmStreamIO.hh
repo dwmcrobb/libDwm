@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2007, 2016, 2017, 2020
+//  Copyright (c) Daniel W. McRobb 2004-2007, 2016, 2017, 2020, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -453,23 +453,25 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Reads a tuple from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    template <typename T, typename... Args>
+    template <typename... Args>
     static std::istream & Read(std::istream & is, 
-                               std::tuple<T, Args...> & t)
+                               std::tuple<Args...> & t)
     {
-      return(ReadTuple<std::tuple<T, Args...> >(is, t));
+      std::apply([&is](auto&&... args) {((Read(is,args)), ...);}, t);
+      return is;
     }
 
     //------------------------------------------------------------------------
     //!  Writes a tuple to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    template <typename T, typename... Args>
+    template <typename... Args>
     static std::ostream & Write(std::ostream & os, 
-                                const std::tuple<T, Args...> & t)
+                                const std::tuple<Args...> & t)
     {
-      return(WriteTuple<std::tuple<T, Args...> >(os, t));
+      std::apply([&os](auto&&... args) {((Write(os,args)), ...);}, t);
+      return os;
     }
-
+    
     //------------------------------------------------------------------------
     //!  Reads an unordered_map<_keyT,_valueT> from an istream.  Returns 
     //!  the istream.
@@ -631,24 +633,6 @@ namespace Dwm {
 
   private:
     //------------------------------------------------------------------------
-    //!  T must be a tuple.
-    //------------------------------------------------------------------------
-    template <typename T>
-    static std::istream & ReadTuple(std::istream & is, T & t)
-    {
-      return(TupleIOHelper<T,std::tuple_size<T>::value-1>::Read(is, t));
-    }
-
-    //------------------------------------------------------------------------
-    //!  T must be a tuple.
-    //------------------------------------------------------------------------
-    template <typename T>
-    static std::ostream & WriteTuple(std::ostream & os, const T & t)
-    {
-      return(TupleIOHelper<T,std::tuple_size<T>::value-1>::Write(os, t));
-    }
-
-    //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
     template <typename _inputIteratorT>
@@ -740,67 +724,6 @@ namespace Dwm {
       }
       return(is);
     }
-
-    //------------------------------------------------------------------------
-    //!  Declare tuple IO helper class template.  elt is the last element
-    //!  index (size of the tuple minus 1).
-    //------------------------------------------------------------------------
-    template <typename T, size_t elt>
-    class TupleIOHelper;
-    
-    //------------------------------------------------------------------------
-    //!  Specialization for a tuple with one element.
-    //------------------------------------------------------------------------
-    template <typename T>
-    class TupleIOHelper<T, 0>
-    {
-    public:
-      //----------------------------------------------------------------------
-      //!  Read a tuple \c t from an istream \c is.
-      //----------------------------------------------------------------------
-      static std::istream & Read(std::istream & is, T & t)
-      {
-        return(StreamIO::Read(is, std::get<0>(t)));
-      }
-      
-      //----------------------------------------------------------------------
-      //!  Write a tuple \c t to an ostream \c os.
-      //----------------------------------------------------------------------
-      static std::ostream & Write(std::ostream & os, const T & t)
-      {
-        return(StreamIO::Write(os, std::get<0>(t)));
-      }
-
-    };
-    
-    //------------------------------------------------------------------------
-    //!  The recursive tuple IO helper template.
-    //------------------------------------------------------------------------
-    template <typename T, size_t elt>
-    class TupleIOHelper
-    {
-    public:
-      //----------------------------------------------------------------------
-      //!  Read a tuple \c t from an istream \c is.
-      //----------------------------------------------------------------------
-      static std::istream & Read(std::istream & is, T & t)
-      {
-        if (TupleIOHelper<T,elt-1>::Read(is, t))
-          StreamIO::Read(is, std::get<elt>(t));
-        return(is);
-      }
-      
-      //----------------------------------------------------------------------
-      //!  Write a tuple \c t to an ostream \c os.
-      //----------------------------------------------------------------------
-      static std::ostream & Write(std::ostream & os, const T & t)
-      {
-        if (TupleIOHelper<T,elt-1>::Write(os, t))
-          StreamIO::Write(os, std::get<elt>(t));
-        return(os);
-      }
-
-    };
 
   };
 
