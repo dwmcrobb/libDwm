@@ -2,7 +2,7 @@
 // @(#) $DwmPath: dwm/libDwm/trunk/tests/TestTupleIO.cc 11087 $
 // @(#) $Id: TestTupleIO.cc 11087 2020-09-07 09:58:37Z dwm $
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2007, 2016, 2020
+//  Copyright (c) Daniel W. McRobb 2007, 2016, 2020, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -241,6 +241,10 @@ static void TestSingleTuples()
   
   TestTupleIO(t10);
 
+  tuple<int,string,tuple<int,string>>  t11(1,"alpha",{2,"beta"});
+  UnitAssert(IOUtils::StreamedLength(t11) == 33);
+  TestTupleIO(t11);
+  
   return;
 }
 
