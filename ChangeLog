@@ -1,4 +1,8 @@
-2024-05-23  Daniel McRobb  <dwm@spark.mcplex.net>
+2024-05-24  Daniel W. McRobb  <dwm@lassie.mcplex.net>
+
+	* tagged as libDwm-0.9.28
+
+2024-05-23  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* classes/include/DwmASIO.hh, classes/include/DwmStreamIO.hh:
 	  classes/include/DwmGZIO.hh, classes/include/DwmBZ2IO.hh,
