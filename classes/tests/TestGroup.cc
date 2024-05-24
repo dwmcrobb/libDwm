@@ -67,17 +67,12 @@ int main(int argc, char *argv[])
                          rootpwd.UserName());
   UnitAssert(gmit != wheel.Members().end());
 #else
-  Dwm::Group  adm("adm");
-  UnitAssert(0 != adm.Id());
-  Dwm::Password  syslogpwd("syslog");
-  auto  gmit = std::find(adm.Members().begin(), adm.Members().end(),
-                         syslogpwd.UserName());
-  if (gmit == adm.Members().end()) {
-    Dwm::Password  pipwd("pi");
-    gmit = std::find(adm.Members().begin(), adm.Members().end(),
-                     pipwd.UserName());
-  }
-  UnitAssert(gmit != adm.Members().end());
+  Dwm::Group  sudo("sudo");
+  UnitAssert(0 != sudo.Id());
+  Dwm::Password  myself(getlogin());
+  auto  gmit = std::find(sudo.Members().begin(), sudo.Members().end(),
+                         myself.UserName());
+  UnitAssert(gmit != sudo.Members().end());
 #endif  
   
   struct group  *grp = getgrgid(getgid());
