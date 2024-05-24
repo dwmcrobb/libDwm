@@ -272,7 +272,7 @@ bool TestStringToFloatType()
     T  maxValue = numeric_limits<T>::max();
     T  minValue = numeric_limits<T>::min();
     ostringstream  os;
-    os << setprecision(500);
+    os << setprecision(800);
 
     os << maxValue;
     UnitAssert(StringTo<T>(os.str()) == maxValue);
