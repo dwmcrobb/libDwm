@@ -2,7 +2,7 @@
 
 	* classes/include/DwmASIO.hh, classes/include/DwmStreamIO.hh:
 	  classes/include/DwmGZIO.hh, classes/include/DwmBZ2IO.hh,
-	  classes/include/DwmFieIO.hh:
+	  classes/include/DwmFieIO.hh, classes/include/DwmDescriptorIO.hh:
 	Minor modernization... I no longer need the recursive tuple
 	paradigm since I no longer need to support anything older than
 	C++20.  I can use std:apply() and fold expressions for tuples.
