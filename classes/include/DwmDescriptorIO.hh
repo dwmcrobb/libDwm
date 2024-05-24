@@ -515,7 +515,7 @@ namespace Dwm {
           return rc;
         }
         else {
-          return -1;
+          return (ssize_t)(-1);
         }
       }, t));
     }
@@ -539,7 +539,7 @@ namespace Dwm {
           return rc;
         }
         else {
-          return -1;
+          return (ssize_t)(-1);
         }
       }, t));
     }
