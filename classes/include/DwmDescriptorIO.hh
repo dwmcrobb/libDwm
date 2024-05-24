@@ -500,22 +500,50 @@ namespace Dwm {
     //!  Reads a tuple from a file descriptor.  Returns the number of
     //!  bytes read.
     //------------------------------------------------------------------------
-    template <typename T, typename... Args>
-    static ssize_t Read(int fd, std::tuple<T, Args...> & t)
+    template <typename... Args>
+    static ssize_t Read(int fd, std::tuple<Args...> & t)
     {
-      return(ReadTuple<std::tuple<T, Args...> >(fd, t));
+      return(std::apply([&fd](auto&&...args) 
+      {
+        ssize_t  rc = 0;
+        auto read_tuple_mem = [&fd,&rc](auto&& x) {
+          int  bytesRead = Read(fd, x);
+          if (bytesRead > 0) { rc += bytesRead; return true; }
+          else               { return false; }
+        };
+        if ((read_tuple_mem(args) && ...)) {
+          return rc;
+        }
+        else {
+          return -1;
+        }
+      }, t));
     }
 
     //------------------------------------------------------------------------
     //!  Writes a tuple to a file descriptor.  Returns the number of
     //!  bytes written.
     //------------------------------------------------------------------------
-    template <typename T, typename... Args>
-    static ssize_t Write(int fd, const std::tuple<T, Args...> & t)
+    template <typename... Args>
+    static ssize_t Write(int fd, const std::tuple<Args...> & t)
     {
-      return(WriteTuple<std::tuple<T, Args...> >(fd, t));
+      return(std::apply([&fd](auto&&...args) 
+      {
+        ssize_t  rc = 0;
+        auto read_tuple_mem = [&fd,&rc](auto&& x) {
+          int  bytesWritten = Write(fd, x);
+          if (bytesWritten > 0) { rc += bytesWritten; return true; }
+          else                  { return false; }
+        };
+        if ((read_tuple_mem(args) && ...)) {
+          return rc;
+        }
+        else {
+          return -1;
+        }
+      }, t));
     }
-
+    
     //------------------------------------------------------------------------
     //!  Reads an unordered_map<_keyT,_valueT> from a file descriptor.
     //!  Returns the number of bytes read on success, -1 on failure.
@@ -698,24 +726,6 @@ namespace Dwm {
     
   private:
     //------------------------------------------------------------------------
-    //!  T must be a tuple.
-    //------------------------------------------------------------------------
-    template <typename T>
-    static ssize_t ReadTuple(int fd, T & t)
-    {
-      return(TupleIOHelper<T,std::tuple_size<T>::value-1>::Read(fd, t));
-    }
-
-    //------------------------------------------------------------------------
-    //!  T must be a tuple.
-    //------------------------------------------------------------------------
-    template <typename T>
-    static ssize_t WriteTuple(int fd, const T & t)
-    {
-      return(TupleIOHelper<T,std::tuple_size<T>::value-1>::Write(fd, t));
-    }
-
-    //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
     template <typename _inputIteratorT>
@@ -841,70 +851,6 @@ namespace Dwm {
       }
       return(rc);
     }
-
-    //------------------------------------------------------------------------
-    //!  Declare tuple IO helper class template.  elt is the last element
-    //!  index (size of the tuple minus 1).
-    //------------------------------------------------------------------------
-    template <typename T, size_t elt>
-    class TupleIOHelper;
-    
-    //------------------------------------------------------------------------
-    //!  Specialization for a tuple with one element.
-    //------------------------------------------------------------------------
-    template <typename T>
-    class TupleIOHelper<T, 0>
-    {
-    public:
-      //----------------------------------------------------------------------
-      //!  Read a tuple \c t from a file descriptor \c fd.  Returns the
-      //!  number of bytes read on success, -1 on failure.
-      //----------------------------------------------------------------------
-      static ssize_t Read(int fd, T & t)
-      {
-        return(DescriptorIO::Read(fd, std::get<0>(t)));
-      }
-      
-      //----------------------------------------------------------------------
-      //!  Write a tuple \c t to a file descriptor \c fd.  Returns the
-      //!  number of bytes written on success, -1 on failure.
-      //----------------------------------------------------------------------
-      static ssize_t Write(int fd, const T & t)
-      {
-        return(DescriptorIO::Write(fd, std::get<0>(t)));
-      }
-      
-    };
-    
-    //------------------------------------------------------------------------
-    //!  The recursive tuple IO helper template.
-    //------------------------------------------------------------------------
-    template <typename T, size_t elt>
-    class TupleIOHelper
-    {
-    public:
-      //----------------------------------------------------------------------
-      //!  Read a tuple \c t from a file descriptor \c fd.
-      //----------------------------------------------------------------------
-      static ssize_t Read(int fd, T & t)
-      {
-        ssize_t  rc = TupleIOHelper<T,elt-1>::Read(fd, t);
-        rc += DescriptorIO::Read(fd, std::get<elt>(t));
-        return(rc);
-      }
-      
-      //----------------------------------------------------------------------
-      //!  Write a tuple \c t to a file descriptor \c fd.
-      //----------------------------------------------------------------------
-      static ssize_t Write(int fd, const T & t)
-      {
-        ssize_t  rc = TupleIOHelper<T,elt-1>::Write(fd, t);
-        rc += DescriptorIO::Write(fd, std::get<elt>(t));
-        return(rc);
-      }
-    };
-
-  public:
 
   };
 
