@@ -463,21 +463,29 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Reads a tuple from a FILE.  Returns 1 on success, 0 on failure.
     //------------------------------------------------------------------------
-    template <typename T, typename... Args>
-    static size_t Read(FILE *f, std::tuple<T, Args...> & t)
+    template <typename... Args>
+    static size_t Read(FILE *f, std::tuple<Args...> & t)
     {
-      return(ReadTuple<std::tuple<T, Args...> >(f, t));
+      return(std::apply([&f](auto && ...args)
+      {
+        auto  read_tuple_mem = [&f](auto && x) { return Read(f, x); };
+        return (read_tuple_mem(args) && ...);
+      }, t));
     }
 
     //------------------------------------------------------------------------
     //!  Writes a tuple to a FILE.  Returns 1 on success, 0 on failure.
     //------------------------------------------------------------------------
-    template <typename T, typename... Args>
-    static size_t Write(FILE *f, const std::tuple<T, Args...> & t)
+    template <typename... Args>
+    static size_t Write(FILE *f, const std::tuple<Args...> & t)
     {
-      return(WriteTuple<std::tuple<T, Args...> >(f, t));
+      return(std::apply([&f](auto && ...args)
+      {
+        auto  write_tuple_mem = [&f](auto && x) { return Write(f, x); };
+        return (write_tuple_mem(args) && ...);
+      }, t));
     }
-
+    
     //------------------------------------------------------------------------
     //!  Just a dummy helper function for std::variant instances that hold
     //!  a std::monostate.  This should only be called from our Read() for
@@ -627,28 +635,6 @@ namespace Dwm {
 
   private:
     //------------------------------------------------------------------------
-    //!  T must be a tuple.
-    //------------------------------------------------------------------------
-    template <typename T>
-    static size_t ReadTuple(FILE *f, T & t)
-    {
-      if (TupleIOHelper<T,std::tuple_size<T>::value-1>::Read(f, t) > 0)
-        return(1);
-      return(0);
-    }
-
-    //------------------------------------------------------------------------
-    //!  T must be a tuple.
-    //------------------------------------------------------------------------
-    template <typename T>
-    static size_t WriteTuple(FILE *f, const T & t)
-    {
-      if (TupleIOHelper<T,std::tuple_size<T>::value-1>::Write(f, t) > 0)
-        return(1);
-      return(0);
-    }
-    
-    //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
     template <typename _inputIteratorT>
@@ -755,71 +741,6 @@ namespace Dwm {
       }
       return(rc);
     }
-
-    //------------------------------------------------------------------------
-    //!  Declare tuple IO helper class template.  elt is the last element
-    //!  index (size of the tuple minus 1).
-    //------------------------------------------------------------------------
-    template <typename T, size_t elt>
-    class TupleIOHelper;
-    
-    //------------------------------------------------------------------------
-    //!  Specialization for a tuple with one element.
-    //------------------------------------------------------------------------
-    template <typename T>
-    class TupleIOHelper<T, 0>
-    {
-    public:
-      //----------------------------------------------------------------------
-      //!  Read a tuple \c t from a FILE \c f.  Returns 1 on success, 
-      //!  0 on failure.
-      //----------------------------------------------------------------------
-      static size_t Read(FILE *f, T & t)
-      {
-        return(FileIO::Read(f, std::get<0>(t)));
-      }
-      
-      //----------------------------------------------------------------------
-      //!  Write a tuple \c t to a FILE \c f.  Returns 1 on success,
-      //!  0 on failure.
-      //----------------------------------------------------------------------
-      static size_t Write(FILE *f, const T & t)
-      {
-        return(FileIO::Write(f, std::get<0>(t)));
-      }
-    };
-    
-    //------------------------------------------------------------------------
-    //!  The recursive tuple IO helper template.
-    //------------------------------------------------------------------------
-    template <typename T, size_t elt>
-    class TupleIOHelper
-    {
-    public:
-      //----------------------------------------------------------------------
-      //!  Read a tuple \c t from a FILE \c f.
-      //----------------------------------------------------------------------
-      static size_t Read(FILE *f, T & t)
-      {
-        size_t  rc = TupleIOHelper<T,elt-1>::Read(f, t);
-        if (rc > 0)
-          rc = FileIO::Read(f, std::get<elt>(t));
-        return(rc);
-      }
-      
-      //----------------------------------------------------------------------
-      //!  Write a tuple \c t to a FILE \c f.
-      //----------------------------------------------------------------------
-      static size_t Write(FILE *f, const T & t)
-      {
-        size_t  rc = TupleIOHelper<T,elt-1>::Write(f, t);
-        if (rc > 0) {
-          rc = FileIO::Write(f, std::get<elt>(t));
-        }
-        
-        return(rc);
-      }
-    };
 
   };
 
