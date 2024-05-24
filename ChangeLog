@@ -1,10 +1,11 @@
 2024-05-23  Daniel McRobb  <dwm@spark.mcplex.net>
 
-	* classes/include/DwmASIO.hh, classes/include/DwmStreamIO.hh,
-	  classes/include/DwmGZIO.hh, classes/include/DwmBZ2IO.hh:
+	* classes/include/DwmASIO.hh, classes/include/DwmStreamIO.hh:
+	  classes/include/DwmGZIO.hh, classes/include/DwmBZ2IO.hh,
+	  classes/include/DwmFieIO.hh:
 	Minor modernization... I no longer need the recursive tuple
 	paradigm since I no longer need to support anything older than
-	C++17.  I can use std:apply() and fold expressions for tuples.
+	C++20.  I can use std:apply() and fold expressions for tuples.
 
 2024-05-22  Daniel McRobb  <dwm@thrip.mcplex.net>
 
