@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2007, 2016, 2021
+//  Copyright (c) Daniel W. McRobb 2007, 2016, 2021, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -48,7 +48,9 @@ extern "C" {
 }
 
 #include <cstdio>
-#include <format>
+#if (defined __cpp_lib_format) && (__cpp_lib_format >= 202311L)
+  #include <format>
+#endif
 #include <map>
 #include <mutex>
 #include <string>
@@ -115,6 +117,7 @@ namespace Dwm {
                     const std::string & function, int priority,
                     const char *message, ...);
 
+#if (defined __cpp_lib_format) && (__cpp_lib_format >= 202311L)
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
@@ -131,7 +134,8 @@ namespace Dwm {
       return Log(filename, lineno, function, priority,
                  std::format(fmt,std::forward<Args>(args)...).c_str());
     }
-    
+#endif
+
     //--------------------------------------------------------------------
     //!  Just like vsyslog(), takes a priority and a format string and
     //!  a va_list.  Returns true on success, false on failure.
@@ -253,8 +257,10 @@ namespace Dwm {
 #define Syslog(...)                                                          \
   Dwm::SysLogger::Log(__FILE__,__LINE__,__PRETTY_FUNCTION__,__VA_ARGS__)
 
-#define FSyslog(...)                                                         \
-  Dwm::SysLogger::FmtLog(__FILE__,__LINE__,__PRETTY_FUNCTION__,__VA_ARGS__)
+#if (defined __cpp_lib_format) && (__cpp_lib_format >= 202311L)
+  #define FSyslog(...)                                                       \
+    Dwm::SysLogger::FmtLog(__FILE__,__LINE__,__PRETTY_FUNCTION__,__VA_ARGS__)
+#endif
 
 #endif  // _DWMSYSLOGGER_HH_
 

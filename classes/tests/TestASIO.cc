@@ -906,11 +906,7 @@ static void TestVariants()
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  Dwm::SysLogger::Open("TestASIO", LOG_PERROR, LOG_USER);
-  errno = EIO;
-  
-  FSyslog(LOG_INFO, "{}: %m", "hello");
-  
+  // Dwm::SysLogger::Open("TestASIO", LOG_PERROR, LOG_USER);
   TestStrings();
   TestBools();
   TestInts();

@@ -62,15 +62,15 @@ namespace Dwm {
       }
       else if ((0 == bytesRead)
                && (boost::asio::error::eof == ec.value())) {
-        FSyslog(LOG_INFO, "EOF on socket");
+        Syslog(LOG_INFO, "EOF on socket");
       }
       else {
-        FSyslog(LOG_ERR, "Incomplete read ({} of {} bytes) from socket, '{}'",
-                bytesRead, sizeof(value), ec.message());
+        Syslog(LOG_ERR, "Incomplete read (%zu of %zu bytes) from socket, '%s'",
+               bytesRead, sizeof(value), ec.message().c_str());
       }
     }
     else {
-      FSyslog(LOG_ERR, "Socket is not open");
+      Syslog(LOG_ERR, "Socket is not open");
     }
     return rc;
   }
@@ -89,14 +89,14 @@ namespace Dwm {
       }
       else if ((0 == bytesRead)
                && (boost::asio::error::eof == ec.value())) {
-        FSyslog(LOG_INFO, "EOF on socket");
+        Syslog(LOG_INFO, "EOF on socket");
       }
       else {
-        FSyslog(LOG_ERR, "Failed to read {} bytes from socket", len);
+        Syslog(LOG_ERR, "Failed to read %llu bytes from socket", len);
       }
     }
     else {
-      FSyslog(LOG_ERR, "Socket is not open");
+      Syslog(LOG_ERR, "Socket is not open");
     }
     return rc;
   }
@@ -180,12 +180,12 @@ namespace Dwm {
         rc = true;
       }
       else {
-        FSyslog(LOG_ERR, "Failed to write {} bytes to socket",
+        Syslog(LOG_ERR, "Failed to write %zu bytes to socket",
                 sizeof(value));
       }
     }
     else {
-      FSyslog(LOG_ERR, "Socket is not open");
+      Syslog(LOG_ERR, "Socket is not open");
     }
     return rc;
   }
@@ -204,11 +204,11 @@ namespace Dwm {
           rc = true;
         }
         else {
-          FSyslog(LOG_ERR, "Failed to write {} bytes to socket", len);
+          Syslog(LOG_ERR, "Failed to write %llu bytes to socket", len);
         }
       }
       else {
-        FSyslog(LOG_ERR, "Failed to write length to socket");
+        Syslog(LOG_ERR, "Failed to write length to socket");
       }
     }
     return rc;
@@ -528,7 +528,7 @@ namespace Dwm {
         value.resize(len);
       }
       catch (...) {
-        FSyslog(LOG_ERR, "Exception resizing string to {} characters", len);
+        Syslog(LOG_ERR, "Exception resizing string to %llu characters", len);
         return false;
       }
       if (_asioread(s, value.data(), value.size(), ec)) {
@@ -536,20 +536,20 @@ namespace Dwm {
       }
       else {
         if (boost::asio::error::eof == ec.value()) {
-          FSyslog(LOG_INFO, "EOF on socket");
+          Syslog(LOG_INFO, "EOF on socket");
         }
         else {
-          FSyslog(LOG_ERR, "Failed to read string data from socket");
+          Syslog(LOG_ERR, "Failed to read string data from socket");
         }
         value.clear();
       }
     }
     else {
       if (boost::asio::error::eof == ec.value()) {
-        FSyslog(LOG_INFO, "EOF on socket");
+        Syslog(LOG_INFO, "EOF on socket");
       }
       else {
-        FSyslog(LOG_ERR, "Failed to read string length from socket");
+        Syslog(LOG_ERR, "Failed to read string length from socket");
       }
     }
     return rc;
@@ -725,11 +725,3 @@ namespace Dwm {
 }  // namespace Dwm
 
 
-//---------------------------- emacs settings -----------------------------
-//  Local Variables:
-//  mode: C++
-//  tab-width: 2
-//  indent-tabs-mode: nil
-//  c-basic-offset: 2
-//  End:
-//-------------------------------------------------------------------------
