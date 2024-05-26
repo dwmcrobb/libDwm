@@ -48,6 +48,7 @@ extern "C" {
 }
 
 #include <cstdio>
+#include <format>
 #include <map>
 #include <mutex>
 #include <string>
@@ -114,6 +115,23 @@ namespace Dwm {
                     const std::string & function, int priority,
                     const char *message, ...);
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename ...Args>
+    static bool FmtLog(const std::string & filename, int lineno,
+                       const std::string & function, int priority,
+                       std::format_string<Args...> fmt,
+                       Args&&... args)
+    {
+      //  The reason I put the formatted string into the format string
+      //  instead of separately using a "%s": I want to be able to still
+      //  use the convenient "%m" in a log message, and it must be in the
+      //  format string.
+      return Log(filename, lineno, function, priority,
+                 std::format(fmt,std::forward<Args>(args)...).c_str());
+    }
+    
     //--------------------------------------------------------------------
     //!  Just like vsyslog(), takes a priority and a format string and
     //!  a va_list.  Returns true on success, false on failure.
@@ -232,9 +250,11 @@ namespace Dwm {
 //!  the priority tag text provided by Dwm::SysLogger.  Note this requires
 //!  variadic macros, but g++ and clang++ support them.
 //----------------------------------------------------------------------------
-#define Syslog(...)                                                     \
+#define Syslog(...)                                                          \
   Dwm::SysLogger::Log(__FILE__,__LINE__,__PRETTY_FUNCTION__,__VA_ARGS__)
-  
+
+#define FSyslog(...)                                                         \
+  Dwm::SysLogger::FmtLog(__FILE__,__LINE__,__PRETTY_FUNCTION__,__VA_ARGS__)
 
 #endif  // _DWMSYSLOGGER_HH_
 

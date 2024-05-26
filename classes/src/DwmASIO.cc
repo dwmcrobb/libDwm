@@ -62,17 +62,15 @@ namespace Dwm {
       }
       else if ((0 == bytesRead)
                && (boost::asio::error::eof == ec.value())) {
-        Syslog(LOG_INFO, "EOF on socket");
+        FSyslog(LOG_INFO, "EOF on socket");
       }
       else {
-        Syslog(LOG_ERR, "Incomplete read (%zu of %zu bytes) from socket,"
-               " '%s'",
-               bytesRead, sizeof(value), ec.message().c_str(), ec.value(),
-               boost::asio::error::eof);
+        FSyslog(LOG_ERR, "Incomplete read ({} of {} bytes) from socket, '{}'",
+                bytesRead, sizeof(value), ec.message());
       }
     }
     else {
-      Syslog(LOG_ERR, "Socket is not open");
+      FSyslog(LOG_ERR, "Socket is not open");
     }
     return rc;
   }
@@ -91,14 +89,14 @@ namespace Dwm {
       }
       else if ((0 == bytesRead)
                && (boost::asio::error::eof == ec.value())) {
-        Syslog(LOG_INFO, "EOF on socket");
+        FSyslog(LOG_INFO, "EOF on socket");
       }
       else {
-        Syslog(LOG_ERR, "Failed to read %llu bytes from socket", len);
+        FSyslog(LOG_ERR, "Failed to read {} bytes from socket", len);
       }
     }
     else {
-      Syslog(LOG_ERR, "Socket is not open");
+      FSyslog(LOG_ERR, "Socket is not open");
     }
     return rc;
   }
@@ -182,12 +180,12 @@ namespace Dwm {
         rc = true;
       }
       else {
-        Syslog(LOG_ERR, "Failed to write %llu bytes to socket",
-               sizeof(value));
+        FSyslog(LOG_ERR, "Failed to write {} bytes to socket",
+                sizeof(value));
       }
     }
     else {
-      Syslog(LOG_ERR, "Socket is not open");
+      FSyslog(LOG_ERR, "Socket is not open");
     }
     return rc;
   }
@@ -206,12 +204,11 @@ namespace Dwm {
           rc = true;
         }
         else {
-          Syslog(LOG_ERR, "Failed to write %llu bytes to socket",
-                 len);
+          FSyslog(LOG_ERR, "Failed to write {} bytes to socket", len);
         }
       }
       else {
-        Syslog(LOG_ERR, "Failed to write length to socket");
+        FSyslog(LOG_ERR, "Failed to write length to socket");
       }
     }
     return rc;
@@ -531,8 +528,7 @@ namespace Dwm {
         value.resize(len);
       }
       catch (...) {
-        Syslog(LOG_ERR, "Exception resizing string to %%llu characters",
-               len);
+        FSyslog(LOG_ERR, "Exception resizing string to {} characters", len);
         return false;
       }
       if (_asioread(s, value.data(), value.size(), ec)) {
@@ -540,20 +536,20 @@ namespace Dwm {
       }
       else {
         if (boost::asio::error::eof == ec.value()) {
-          Syslog(LOG_INFO, "EOF on socket");
+          FSyslog(LOG_INFO, "EOF on socket");
         }
         else {
-          Syslog(LOG_ERR, "Failed to read string data from socket");
+          FSyslog(LOG_ERR, "Failed to read string data from socket");
         }
         value.clear();
       }
     }
     else {
       if (boost::asio::error::eof == ec.value()) {
-        Syslog(LOG_INFO, "EOF on socket");
+        FSyslog(LOG_INFO, "EOF on socket");
       }
       else {
-        Syslog(LOG_ERR, "Failed to read string length from socket");
+        FSyslog(LOG_ERR, "Failed to read string length from socket");
       }
     }
     return rc;
