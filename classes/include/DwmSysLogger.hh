@@ -48,8 +48,10 @@ extern "C" {
 }
 
 #include <cstdio>
-#if (defined __cpp_lib_format) && (__cpp_lib_format >= 202311L)
+#if (defined __cpp_lib_format) && (__cpp_lib_format >= 202106L)
   #include <format>
+#else
+  #warning "__cpp_lib_format not available"
 #endif
 #include <map>
 #include <mutex>
@@ -117,7 +119,7 @@ namespace Dwm {
                     const std::string & function, int priority,
                     const char *message, ...);
 
-#if (defined __cpp_lib_format) && (__cpp_lib_format >= 202311L)
+#if (defined __cpp_lib_format) && (__cpp_lib_format >= 202106L)
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
@@ -128,9 +130,10 @@ namespace Dwm {
                        Args&&... args)
     {
       //  The reason I put the formatted string into the format string
-      //  instead of separately using a "%s": I want to be able to still
-      //  use the convenient "%m" in a log message, and it must be in the
-      //  format string.
+      //  of the downstream Log() call instead of separately using a
+      //  "%s": I want to be able to still use the convenient "%m" in
+      //  a log message, and it must be in the format string for that
+      //  to happen downstream.  This is likely to change at a later date.
       return Log(filename, lineno, function, priority,
                  std::format(fmt,std::forward<Args>(args)...).c_str());
     }
@@ -257,7 +260,14 @@ namespace Dwm {
 #define Syslog(...)                                                          \
   Dwm::SysLogger::Log(__FILE__,__LINE__,__PRETTY_FUNCTION__,__VA_ARGS__)
 
-#if (defined __cpp_lib_format) && (__cpp_lib_format >= 202311L)
+//----------------------------------------------------------------------------
+//!  Like Syslog() but the format string (second argument) is a std::format
+//!  format string.  Unfortunately many of the popular Linux distributions
+//!  are way behind on a libstdc++ that can do this.  It's May 26, 2024 and
+//!  Ubuntu 24.04 and Raspberry Pi 12 (bookwork) don't have the C++20
+//!  features that are needed.
+//----------------------------------------------------------------------------
+#if (defined __cpp_lib_format) && (__cpp_lib_format >= 202106L)
   #define FSyslog(...)                                                       \
     Dwm::SysLogger::FmtLog(__FILE__,__LINE__,__PRETTY_FUNCTION__,__VA_ARGS__)
 #endif
