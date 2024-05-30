@@ -181,7 +181,7 @@ namespace Dwm {
       }
       else {
         Syslog(LOG_ERR, "Failed to write %zu bytes to socket",
-                sizeof(value));
+               sizeof(value));
       }
     }
     else {
