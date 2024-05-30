@@ -1,3 +1,15 @@
+2024-05-30  dwm  <dwm@nomnom.mcplex.net>
+
+	* tagged as libDwm-0.9.29
+
+	* classes/include/DwmOptArgs.hh: Fix Argument constructor
+	and assignment operator declarations.
+
+	* classes/include/DwmIpv4Routes.hh: Fix constructor declaration.
+
+	* classes/include/DwmSysLogger.hh: Start work on logging that
+	uses std::format.
+
 2024-05-24  Daniel W. McRobb  <dwm@lassie.mcplex.net>
 
 	* tagged as libDwm-0.9.28
