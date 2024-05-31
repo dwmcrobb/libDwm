@@ -1,5 +1,7 @@
 2024-05-31  Daniel McRobb  <dwm@thrip.mcplex.net>
 
+	* tagged as libDwm-0.9.31
+
 	* classes/src/DwmOptArgs.cc: #include <cstdint.h>
 
 2024-05-30  dwm  <dwm@nomnom.mcplex.net>
