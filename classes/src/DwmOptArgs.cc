@@ -39,6 +39,7 @@
 //!  \brief Dwm::OptArg and Dwm::OptArgs class implementations
 //---------------------------------------------------------------------------
 
+#include <cstdint>
 #include <string>
 
 #include "DwmOptArgs.hh"
