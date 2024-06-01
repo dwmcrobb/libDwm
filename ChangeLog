@@ -1,3 +1,11 @@
+2024-06-01  Daniel W. McRobb  <dwm@kiva.mcplex.net>
+
+	* tagged as libDwm-0.9.32
+
+	* Makefile, apps/Makefile, apps/dwmcflags/Makefile,
+        apps/dwmnet/Makefile, apps/dwmspath/Makefile,
+	apps/dwmwhat/Makefile: Fix up 'distclean' target.
+
 2024-05-31  Daniel McRobb  <dwm@thrip.mcplex.net>
 
 	* tagged as libDwm-0.9.31
