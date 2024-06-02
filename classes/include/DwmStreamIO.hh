@@ -457,7 +457,7 @@ namespace Dwm {
     static std::istream & Read(std::istream & is, 
                                std::tuple<Args...> & t)
     {
-      std::apply([&is](auto&&... args) {((Read(is,args)), ...);}, t);
+      std::apply([&is](auto&&... args) {((Read(is,args)) && ...);}, t);
       return is;
     }
 
@@ -468,7 +468,7 @@ namespace Dwm {
     static std::ostream & Write(std::ostream & os, 
                                 const std::tuple<Args...> & t)
     {
-      std::apply([&os](auto&&... args) {((Write(os,args)), ...);}, t);
+      std::apply([&os](auto&&... args) {((Write(os,args)) && ...);}, t);
       return os;
     }
     
@@ -631,6 +631,28 @@ namespace Dwm {
       return os;
     }
 
+    //------------------------------------------------------------------------
+    //!  Reads multiple objects from an istream.  Returns the istream.  This
+    //!  is just a convenience function.
+    //------------------------------------------------------------------------
+    template <typename... Args>
+    static std::istream & ReadV(std::istream & is, Args & ...args)
+    {
+      (Read(is,args) &&...);
+      return is;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes multiple objects to an ostream.  Returns the ostream.  This
+    //!  is just a convenience function.
+    //------------------------------------------------------------------------
+    template <typename... Args>
+    static std::ostream & WriteV(std::ostream & os, const Args & ...args)
+    {
+      (Write(os,args) &&...);
+      return os;
+    }
+    
   private:
     //------------------------------------------------------------------------
     //!  
@@ -724,7 +746,7 @@ namespace Dwm {
       }
       return(is);
     }
-
+    
   };
 
 

@@ -633,6 +633,26 @@ namespace Dwm {
       return(ContainerWrite<std::unordered_multiset<_valueT,_Hash,_Pred,_Alloc> >(f, hm));
     }
 
+    //------------------------------------------------------------------------
+    //!  Reads multiple objects from a FILE.  Returns 1 on success, 0 on
+    //!  failure.
+    //------------------------------------------------------------------------
+    template <typename... Args>
+    static size_t ReadV(FILE *f, Args & ...args)
+    {
+      return (Read(f,args) && ...);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes multiple objects to a FILE.  Returns 1 on success, 0 on
+    //!  failure.
+    //------------------------------------------------------------------------
+    template <typename... Args>
+    static size_t WriteV(FILE *f, const Args & ...args)
+    {
+      return (Write(f,args) && ...);
+    }
+    
   private:
     //------------------------------------------------------------------------
     //!  

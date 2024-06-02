@@ -62,6 +62,73 @@ namespace generic = boost::asio::generic;
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+template <typename ...Args>
+static void VarArgServerReader(std::atomic<bool> & ready, Args & ...args)
+{
+  boost::asio::io_context  ioContext;
+  ip::tcp::acceptor        acc(ioContext,
+                               ip::tcp::endpoint(ip::address::from_string("127.0.0.1"), 7117),
+                               true);
+  boost::asio::socket_base::reuse_address option(true);
+  acc.set_option(option);
+  ip::tcp::socket            sck(ioContext);
+  ip::tcp::endpoint          endPoint;
+  boost::system::error_code  ec;
+  ready = true;
+  acc.accept(sck, endPoint, ec);
+  if (UnitAssert(! ec)) {
+    sck.non_blocking(false);
+    Dwm::ASIO::ReadV(sck, ec, args...);
+    sck.close();
+  }
+  acc.close();
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestVarArgs()
+{
+  int        i = -42;
+  string     s("GoOdByE");
+  tuple<string,bool,string,int>  t("Hello",true,"Goodbye",55);
+  
+  int                            i2;
+  string                         s2;
+  tuple<string,bool,string,int>  t2;
+  
+  std::atomic<bool>  serverReady = false;
+  std::thread  serverthread =
+    std::thread(VarArgServerReader<int,string,tuple<string,bool,string,int>>,
+                std::ref(serverReady), std::ref(i2),
+                std::ref(s2), std::ref(t2));
+  while (! serverReady) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  }
+  
+  boost::asio::io_context    ioContext;
+  ip::tcp::endpoint          endPoint(ip::address::from_string("127.0.0.1"),
+                                      7117);
+  ip::tcp::socket            sck(ioContext);
+  boost::system::error_code  ec;
+  sck.connect(endPoint, ec);
+  if (UnitAssert((! ec))) {
+    sck.non_blocking(false);
+    UnitAssert(Dwm::ASIO::WriteV(sck, ec, i, s, t));
+    sck.close();
+  }
+  serverthread.join();
+  UnitAssert(i == i2);
+  UnitAssert(s == s2);
+  UnitAssert(t == t2);
+  
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 template <typename T>
 static void ServerReader(std::vector<T> & entries, std::atomic<bool> & ready)
 {
@@ -915,7 +982,8 @@ int main(int argc, char *argv[])
   TestPairs();
   TestTuples();
   TestVariants();
-
+  TestVarArgs();
+  
   if (Dwm::Assertions::Total().Failed()) {
     Dwm::Assertions::Print(cerr, true);
   }

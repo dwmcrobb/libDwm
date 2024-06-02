@@ -1,3 +1,13 @@
+2024-06-02  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* classes/tests/TestASIO.cc, classes/tests/TestDwmIO.cc:
+	Added trivial unit tests for ReadV() and WriteV() function
+	templates.
+
+	* classes/include/DwmASIO.hh, classes/include/DwmFileIO.hh,
+	classes/include/DwmStreamIO.hh:
+	Added ReadV() and WriteV() function templates for convenience.
+
 2024-06-01  Daniel W. McRobb  <dwm@kiva.mcplex.net>
 
 	* tagged as libDwm-0.9.32

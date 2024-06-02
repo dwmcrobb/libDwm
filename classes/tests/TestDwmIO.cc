@@ -1240,6 +1240,133 @@ static bool SetDescriptorTest()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static bool VarArgStreamTest()
+{
+  bool  rc = false;
+  
+  std::string  s("Hello");
+  uint16_t     u = 0xf00f;
+  bool         b = true;
+  int32_t      i = -2020;
+  pair<string,bool>  p("Goodbye", false);
+
+  ostringstream  oss;
+  if (UnitAssert(StreamIO::WriteV(oss, s, u, b, i, p))) {
+    istringstream      iss(oss.str());
+    std::string        s2;
+    uint16_t           u2;
+    bool               b2;
+    int32_t            i2;
+    pair<string,bool>  p2;
+    if (UnitAssert(StreamIO::ReadV(iss, s2, u2, b2, i2, p2))) {
+      if (UnitAssert(s == s2)) {
+        if (UnitAssert(u == u2)) {
+          if (UnitAssert(b == b2)) {
+            if (UnitAssert(i == i2)) {
+              if (UnitAssert(p == p2)) {
+                rc = true;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return rc;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static bool VarArgStreamTestFail()
+{
+  bool  rc = false;
+  std::string  s("HeLlO");
+  ostringstream  oss;
+  if (UnitAssert(StreamIO::WriteV(oss, s))) {
+    istringstream      iss(oss.str());
+    std::string        s2;
+    uint16_t           u2;
+    if (UnitAssert(! StreamIO::ReadV(iss, s2, u2))) {
+      //  We expect ReadV() to fail because we only wrote a string, so the
+      //  stream should end before we can read u2.  But we should have
+      //  successfully read s2.
+      rc = UnitAssert(s == s2);
+    }
+  }
+  return rc;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static bool VarArgFileTest()
+{
+  bool  rc = false;
+  
+  std::string  s("Hello");
+  uint16_t     u = 0xf00f;
+  bool         b = true;
+  int32_t      i = -2020;
+  pair<string,bool>  p("Goodbye", false);
+
+  string  fn("/tmp/DWMVarArgFileTest");
+  FILE  *f = fopen(fn.c_str(), "w");
+  if (f) {
+    UnitAssert(FileIO::WriteV(f, s, u, b, i, p));
+    fclose(f);
+    f = fopen(fn.c_str(), "r");
+    if (f) {
+      std::string        s2;
+      uint16_t           u2;
+      bool               b2;
+      int32_t            i2;
+      pair<string,bool>  p2;
+      if (UnitAssert(FileIO::ReadV(f, s2, u2, b2, i2, p2))) {
+        if (UnitAssert(s == s2)) {
+          if (UnitAssert(u == u2)) {
+            if (UnitAssert(b == b2)) {
+              if (UnitAssert(i == i2)) {
+                if (UnitAssert(p == p2)) {
+                  rc = true;
+                }
+              }
+            }
+          }
+        }
+      }
+      fclose(f);
+    }
+    std::remove(fn.c_str());
+  }
+  return rc;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static bool VarArgFileTestFail()
+{
+  bool  rc = false;
+  std::string  s("HeLlO");
+  ostringstream  oss;
+  if (UnitAssert(StreamIO::WriteV(oss, s))) {
+    istringstream      iss(oss.str());
+    std::string        s2;
+    uint16_t           u2;
+    if (UnitAssert(! StreamIO::ReadV(iss, s2, u2))) {
+      //  We expect ReadV() to fail because we only wrote a string, so the
+      //  stream should end before we can read u2.  But we should have
+      //  successfully read s2.
+      rc = UnitAssert(s == s2);
+    }
+  }
+  return rc;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
   if (! StreamTest())
@@ -1280,7 +1407,13 @@ int main(int argc, char *argv[])
     goto testFailed;
   if (! SetDescriptorTest())
     goto testFailed;
-
+  if (!VarArgStreamTest())
+    goto testFailed;
+  if (! UnitAssert(VarArgStreamTestFail()))
+    goto testFailed;
+  if (! UnitAssert(VarArgFileTest()))
+    goto testFailed;
+  
   if (Assertions::Total().Failed())
     Assertions::Print(cerr, true);
   else
