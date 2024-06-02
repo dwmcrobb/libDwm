@@ -48,6 +48,7 @@ extern "C" {
 }
 
 #include <cstdio>
+#include <version>
 #if (defined __cpp_lib_format) && (__cpp_lib_format >= 202106L)
   #include <format>
 #else
