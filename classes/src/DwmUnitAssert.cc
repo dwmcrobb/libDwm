@@ -276,6 +276,43 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
+  std::ostream & FunctionAssertions::PrintJson(std::ostream & os,
+                                               bool onlyFailed) const
+  {
+    if (! _assertions.empty()) {
+      AssertionCounter  total;
+      os << "            {\n"
+         << "              \"" << _function << "\": {\n"
+         << "                \"assertions\": [\n";
+      for (auto it = _assertions.begin(); it != _assertions.end(); ++it) {
+        if ((! onlyFailed) || (onlyFailed && it->second.Failed())) {
+          if (it != _assertions.begin()) { os << ",\n"; }
+          os << "                  {\n"
+             << "                    \"failureCount\": " << it->second.Failed()
+             << ",\n"
+             << "                    \"passCount\": " << it->second.Passed()
+             << ",\n"
+             << "                    \"expression\": \""
+             << it->first.Expression()
+             << "\",\n"
+             << "                    \"line\": " << it->first.Line() << "\n"
+             << "                  }";
+        }
+        total += it->second;
+      }
+      os << "\n                ]";
+      if (! onlyFailed) {
+        os << ",\n                \"totalPassed\": " << total.Passed();
+      }
+      os << "\n              }"
+         << "\n            }";
+    }
+    return os;
+  }
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
   std::ostream & FunctionAssertions::PrintXML(std::ostream & os, 
                                               bool onlyFailed) const
   {
@@ -376,6 +413,41 @@ namespace Dwm {
   //!  
   //--------------------------------------------------------------------------
   std::ostream &
+  FileAssertions::PrintJson(std::ostream & os, bool onlyFailed) const
+  {
+    if (os && (! _assertions.empty())) {
+      AssertionCounter  total;
+      os << "      {\n"
+         << "        \"" << _filename << "\": {\n"
+         << "          \"functions\": [\n";
+      auto  lastit = _assertions.end();
+      --lastit;
+      for (auto it = _assertions.begin(); it != _assertions.end(); ++it) {
+        if ((! onlyFailed) || (onlyFailed && it->second.Total().Failed())) {
+          it->second.PrintJson(os, onlyFailed);
+          if (it != lastit) {
+            os << ',';
+          }
+          os << '\n';
+          total += it->second.Total();
+        }
+      }
+      os << "          ]";
+      if (! onlyFailed) {
+        os << ",\n"
+           << "          \"totalPassed\": " << total.Passed();
+      }
+      os << '\n'
+         << "        }\n"
+         << "      }";
+    }
+    return(os);
+  }
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  std::ostream &
   FileAssertions::PrintXML(std::ostream & os, bool onlyFailed) const
   {
     if (os && (! _assertions.empty())) {
@@ -461,6 +533,37 @@ namespace Dwm {
     return(os);
   }
 
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  std::ostream & Assertions::PrintJson(std::ostream & os, bool onlyFailed) 
+  {
+    std::lock_guard<std::mutex>  lock(_mutex);
+    if (os && (! _assertions.empty())) {
+      os << "{\n  \"assertions\": {\n"
+         << "    \"files\": [\n";
+      AssertionCounter  total;
+      auto  lastit = _assertions.end();
+      --lastit;
+      for (auto it = _assertions.begin(); it != _assertions.end(); ++it) {
+        if ((! onlyFailed) || (onlyFailed && it->second.Total().Failed())) {
+          it->second.PrintJson(os, onlyFailed);
+          if (it != lastit) {
+            os << ',';
+          }
+          os << '\n';
+          total += it->second.Total();
+        }
+      }
+      os << "    ]";
+      if (! onlyFailed) {
+        os << ",\n    \"totalPassed\": " << total.Passed();
+      }
+      os << "\n  }\n}\n";
+    }
+    return(os);
+  }
+  
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
