@@ -1,5 +1,15 @@
 2024-06-02  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* classes/tests/TestDwmIO.cc: Added unit tests for
+	DescriptorIO::ReadV() and DescritorIO::WriteV() function
+	templates.
+
+	* classes/include/DwmDescriptorIO.hh: Added Readv() and WriteV()
+	functiuon templates for convenience.
+
+	* classes/include/DwmUnitAssert.hh, classes/src/DwmUnitAssert.cc:
+	Added PrintJson() members.
+
 	* classes/tests/TestASIO.cc, classes/tests/TestDwmIO.cc:
 	Added trivial unit tests for ReadV() and WriteV() function
 	templates.

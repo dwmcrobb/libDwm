@@ -715,6 +715,54 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
+    //!  Reads @c args from @c fd.  Returns the number of bytes read on
+    //!  success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename ...Args>
+    static ssize_t ReadV(int fd, Args & ...args)
+    {
+      ssize_t  rv = 0;
+      auto  readOne = [&] (auto & arg) {
+        bool  rc = true;
+        int bytesRead = Read(fd,arg);
+        if (bytesRead > 0) {
+          rv += bytesRead;
+        }
+        else {
+          rv = -1;
+          rc = false;
+        }
+        return rc;
+      };
+      (readOne(args) && ...);
+      return rv;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes @c args to @c fd.  Returns the number of bytes written on
+    //!  success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename ...Args>
+    static ssize_t WriteV(int fd, const Args & ...args)
+    {
+      ssize_t  rv = 0;
+      auto  writeOne = [&] (auto & arg) {
+        bool  rc = true;
+        int bytesWritten = Write(fd, arg);
+        if (bytesWritten > 0) {
+          rv += bytesWritten;
+        }
+        else {
+          rv = -1;
+          rc = false;
+        }
+        return rc;
+      };
+      (writeOne(args) && ...);
+      return rv;
+    }
+    
+    //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
     static ssize_t Read(int fd, void *buf, size_t buflen);
