@@ -749,7 +749,7 @@ namespace Dwm {
       //  in our fold expression; we convert a failure to a boolean.
       auto  writeOne = [&] (auto & arg) {
         bool  rc = true;
-        int bytesWritten = Write(bzf, arg);
+        int bytesWritten = BZWrite(bzf, arg);
         if (bytesWritten > 0) {
           rv += bytesWritten;
         }

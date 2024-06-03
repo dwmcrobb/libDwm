@@ -227,7 +227,7 @@ static bool BZ2IOTest()
         BZ2_bzclose(bzf);
       }
       else {
-        cerr << "gzopen(\"/tmp/DWMBZ2IOTest.bz2\",\"rb\") failed: "
+        cerr << "BZ2_bzopen(\"/tmp/DWMBZ2IOTest.bz2\",\"rb\") failed: "
              << strerror(errno) << endl;
       }
     }
@@ -237,7 +237,7 @@ static bool BZ2IOTest()
     std::remove("/tmp/DWMBZ2IOTest.bz2");
   }
   else {
-    cerr << "gzopen(\"/tmp/DWMBZ2IOTest.bz2\",\"wb\")"
+    cerr << "BZ2_bzopen(\"/tmp/DWMBZ2IOTest.bz2\",\"wb\")"
          << " failed: " << strerror(errno) << endl;
   }
   
@@ -303,13 +303,13 @@ static bool MapBZ2IOTest()
       BZ2_bzclose(bzf);
     }
     else {
-      cerr << "Failed to gzopen '" << fn.c_str() << "' for reading: "
+      cerr << "Failed to BZ2_bzopen '" << fn.c_str() << "' for reading: "
            << strerror(errno) << endl;
     }
     std::remove(fn.c_str());
   }
   else {
-    cerr << "Failed to gzopen '" << fn.c_str() << "': " << strerror(errno)
+    cerr << "Failed to BZ2_bzopen '" << fn.c_str() << "': " << strerror(errno)
          << endl;
   }
   
@@ -344,13 +344,13 @@ static bool VectorBZ2IOTest()
       BZ2_bzclose(bzf);
     }
     else {
-      cerr << "Failed to gzopen '" << fn.c_str() << "' for reading: "
+      cerr << "Failed to BZ2_bzopen '" << fn.c_str() << "' for reading: "
            << strerror(errno) << endl;
     }
     std::remove(fn.c_str());
   }
   else {
-    cerr << "Failed to gzopen '" << fn.c_str() << "' for writing: "
+    cerr << "Failed to BZ2_bzopen '" << fn.c_str() << "' for writing: "
          << strerror(errno) << endl;
   }
   UnitAssert(rc);
@@ -385,13 +385,13 @@ static bool DequeBZ2IOTest()
       BZ2_bzclose(bzf);
     }
     else {
-      cerr << "Failed to gzopen '" << fn.c_str() << "' for reading: "
+      cerr << "Failed to BZ2_bzopen '" << fn.c_str() << "' for reading: "
            << strerror(errno) << endl;
     }
     std::remove(fn.c_str());
   }
   else {
-    cerr << "Failed to gzopen '" << fn.c_str() << "' for writing: "
+    cerr << "Failed to BZ2_bzopen '" << fn.c_str() << "' for writing: "
          << strerror(errno) << endl;
   }
   UnitAssert(rc);
@@ -426,13 +426,13 @@ static bool ListBZ2IOTest()
       BZ2_bzclose(bzf);
     }
     else {
-      cerr << "Failed to gzopen '" << fn.c_str() << "' for reading: "
+      cerr << "Failed to BZ2_bzopen '" << fn.c_str() << "' for reading: "
            << strerror(errno) << endl;
     }
     std::remove(fn.c_str());
   }
   else {
-    cerr << "Failed to gzopen '" << fn.c_str() << "' for writing: "
+    cerr << "Failed to BZ2_bzopen '" << fn.c_str() << "' for writing: "
          << strerror(errno) << endl;
   }
   UnitAssert(rc);
@@ -467,13 +467,13 @@ static bool SetBZ2IOTest()
       BZ2_bzclose(bzf);
     }
     else {
-      cerr << "Failed to gzopen '" << fn.c_str() << "' for reading: "
+      cerr << "Failed to BZ2_bzopen '" << fn.c_str() << "' for reading: "
            << strerror(errno) << endl;
     }
     std::remove(fn.c_str());
   }
   else {
-    cerr << "Failed to gzopen '" << fn.c_str() << "' for writing: "
+    cerr << "Failed to BZ2_bzopen '" << fn.c_str() << "' for writing: "
          << strerror(errno) << endl;
   }
   UnitAssert(rc);
@@ -563,7 +563,7 @@ static bool VarArgBZ2IOTest()
     UnitAssert(BZ2IO::BZWriteV(bzf, s, u, b, i, p));
     BZ2_bzclose(bzf);
     bzf = BZ2_bzopen(fn.c_str(), "rb");
-    if (gzf) {
+    if (bzf) {
       std::string        s2;
       uint16_t           u2;
       bool               b2;
