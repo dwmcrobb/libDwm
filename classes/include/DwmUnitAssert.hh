@@ -176,7 +176,17 @@ namespace Dwm {
     //------------------------------------------------------------------------
     std::ostream & Print(std::ostream & os, bool onlyFailed = false) const;
 
-    std::ostream & PrintXML(std::ostream & os, bool onlyFailed = false) const;
+    //------------------------------------------------------------------------
+    //!  Prints to an ostream in JSON format.
+    //------------------------------------------------------------------------
+    std::ostream &
+    PrintJson(std::ostream & os, bool onlyFailed = false) const;
+
+    //------------------------------------------------------------------------
+    //!  Prints to an ostream in XML format.
+    //------------------------------------------------------------------------
+    std::ostream &
+    PrintXML(std::ostream & os, bool onlyFailed = false) const;
 
   private:
     std::string                           _function;
@@ -212,6 +222,11 @@ namespace Dwm {
     //------------------------------------------------------------------------
     std::ostream & Print(std::ostream & os, bool onlyFailed = false) const;
 
+    //------------------------------------------------------------------------
+    //!  Prints JSON to an ostream.
+    //------------------------------------------------------------------------
+    std::ostream & PrintJson(std::ostream & os, bool onlyFailed = false) const;
+    
     //------------------------------------------------------------------------
     //!  Prints XML to an ostream.
     //------------------------------------------------------------------------
@@ -263,9 +278,15 @@ namespace Dwm {
     //!  shell as to whether or not all unit tests passed.
     //------------------------------------------------------------------------
     static int PrintAndReturn();
+
+    //------------------------------------------------------------------------
+    //!  Prints to an ostream in JSON format.
+    //------------------------------------------------------------------------
+    static std::ostream & PrintJson(std::ostream & os,
+                                    bool onlyFailed = false);
     
     //------------------------------------------------------------------------
-    //!  
+    //!  Prints to an ostream in XML format.
     //------------------------------------------------------------------------
     static std::ostream & PrintXML(std::ostream & os, bool onlyFailed = false);
 
