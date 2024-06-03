@@ -711,6 +711,58 @@ namespace Dwm {
       return rc;
     }
 
+    //------------------------------------------------------------------------
+    //!  Reads @c args from @c bzf.  Returns the number of bytes read on
+    //!  success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename ...Args>
+    static int BZReadV(BZFILE *bzf, Args & ...args)
+    {
+      int  rv = 0;
+      //  We need this lambda in order to have a means of short circuiting
+      //  in our fold expression; we convert a failure to a boolean.
+      auto  readOne = [&] (auto & arg) {
+        bool  rc = true;
+        int bytesRead = BZRead(bzf, arg);
+        if (bytesRead > 0) {
+          rv += bytesRead;
+        }
+        else {
+          rv = -1;
+          rc = false;
+        }
+        return rc;
+      };
+      (readOne(args) && ...);
+      return rv;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes @c args to @c bzf.  Returns the number of bytes written on
+    //!  success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename ...Args>
+    static int BZWriteV(BZFILE *bzf, const Args & ...args)
+    {
+      ssize_t  rv = 0;
+      //  We need this lambda in order to have a means of short circuiting
+      //  in our fold expression; we convert a failure to a boolean.
+      auto  writeOne = [&] (auto & arg) {
+        bool  rc = true;
+        int bytesWritten = Write(bzf, arg);
+        if (bytesWritten > 0) {
+          rv += bytesWritten;
+        }
+        else {
+          rv = -1;
+          rc = false;
+        }
+        return rc;
+      };
+      (writeOne(args) && ...);
+      return rv;
+    }
+    
   private:
     //------------------------------------------------------------------------
     //!  

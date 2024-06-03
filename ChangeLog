@@ -1,5 +1,11 @@
 2024-06-03  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* classes/tests/TestDwmBZ2IO.cc: Added unit tests for
+	BZ2IO::BZReadV() and BZ2IO::BZWriteV() function templates.
+
+	* classes/include/DwmBZ2IO.hh: Added BZReadV() and BZWriteV()
+	function templates for convenience.
+
 	* classes/tests/TestDwmGZIO.cc: Added unit tests for
 	GZIO::ReadV() and GZIO::WriteV() function templates.
 

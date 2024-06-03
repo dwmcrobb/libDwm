@@ -547,6 +547,85 @@ void VariantBZ2IOTest()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static bool VarArgBZ2IOTest()
+{
+  bool  rc = false;
+  
+  std::string  s("Hello");
+  uint16_t     u = 0xf00f;
+  bool         b = true;
+  int32_t      i = -2020;
+  pair<string,bool>  p("Goodbye", false);
+
+  string  fn("/tmp/DWMVarArgBZ2IOTest.bz2");
+  BZFILE  *bzf = BZ2_bzopen(fn.c_str(), "wb");
+  if (bzf)  {
+    UnitAssert(BZ2IO::BZWriteV(bzf, s, u, b, i, p));
+    BZ2_bzclose(bzf);
+    bzf = BZ2_bzopen(fn.c_str(), "rb");
+    if (gzf) {
+      std::string        s2;
+      uint16_t           u2;
+      bool               b2;
+      int32_t            i2;
+      pair<string,bool>  p2;
+      if (UnitAssert(BZ2IO::BZReadV(bzf, s2, u2, b2, i2, p2))) {
+        if (UnitAssert(s == s2)) {
+          if (UnitAssert(u == u2)) {
+            if (UnitAssert(b == b2)) {
+              if (UnitAssert(i == i2)) {
+                if (UnitAssert(p == p2)) {
+                  rc = true;
+                }
+              }
+            }
+          }
+        }
+      }
+      BZ2_bzclose(bzf);
+    }
+    std::remove(fn.c_str());
+  }
+  return rc;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static bool VarArgBZ2IOTestFail()
+{
+  bool  rc = false;
+  std::string  s("HeLlO");
+  
+  string  fn("/tmp/DWMVarArgBZ2IOTestFail.bz2");
+  BZFILE  *bzf = BZ2_bzopen(fn.c_str(), "wb");
+  if (UnitAssert(bzf))  {
+    if (UnitAssert(BZ2IO::BZWriteV(bzf, s))) {
+      BZ2_bzclose(bzf);
+      bzf = BZ2_bzopen(fn.c_str(), "rb");
+      if (UnitAssert(bzf)) {
+        std::string        s2;
+        uint16_t           u2;
+        if (UnitAssert(BZ2IO::BZReadV(bzf, s2, u2) < 0)) {
+          //  We expect ReadV() to fail because we only wrote a string, so the
+          //  stream should end before we can read u2.  But we should have
+          //  successfully read s2.
+          rc = UnitAssert(s == s2);
+        }
+        BZ2_bzclose(bzf);
+      }
+    }
+    else {
+      BZ2_bzclose(bzf);
+    }
+    std::remove(fn.c_str());
+  }
+  return rc;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
   
@@ -559,6 +638,8 @@ int main(int argc, char *argv[])
   SetBZ2IOTest();
   TestNullBZ2File();
   VariantBZ2IOTest();
+  VarArgBZ2IOTest();
+  VarArgBZ2IOTestFail();
   
   int  rc = 1;
   if (Assertions::Total().Failed()) {
