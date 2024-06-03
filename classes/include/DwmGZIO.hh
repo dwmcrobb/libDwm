@@ -712,7 +712,55 @@ namespace Dwm {
     {
       return(ContainerWrite<std::unordered_multiset<_valueT,_Hash,_Pred,_Alloc> >(gzf, hm));
     }
-   
+
+    //------------------------------------------------------------------------
+    //!  Reads @c args from @c gzf.  Returns the number of bytes read on
+    //!  success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename ...Args>
+    static int ReadV(gzFile gzf, Args & ...args)
+    {
+      int  rv = 0;
+      auto  readOne = [&] (auto & arg) {
+        bool  rc = true;
+        int bytesRead = Read(gzf, arg);
+        if (bytesRead > 0) {
+          rv += bytesRead;
+        }
+        else {
+          rv = -1;
+          rc = false;
+        }
+        return rc;
+      };
+      (readOne(args) && ...);
+      return rv;
+    }
+    
+    //------------------------------------------------------------------------
+    //!  Writes @c args to @c gzf.  Returns the number of bytes written on
+    //!  success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename ...Args>
+    static int WriteV(gzFile gzf, const Args & ...args)
+    {
+      ssize_t  rv = 0;
+      auto  writeOne = [&] (auto & arg) {
+        bool  rc = true;
+        int bytesWritten = Write(gzf, arg);
+        if (bytesWritten > 0) {
+          rv += bytesWritten;
+        }
+        else {
+          rv = -1;
+          rc = false;
+        }
+        return rc;
+      };
+      (writeOne(args) && ...);
+      return rv;
+    }
+    
   private:
     //------------------------------------------------------------------------
     //!  

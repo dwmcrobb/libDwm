@@ -572,6 +572,85 @@ void TestNullGzfile()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static bool VarArgGZIOTest()
+{
+  bool  rc = false;
+  
+  std::string  s("Hello");
+  uint16_t     u = 0xf00f;
+  bool         b = true;
+  int32_t      i = -2020;
+  pair<string,bool>  p("Goodbye", false);
+
+  string  fn("/tmp/DWMVarArgGZIOTest");
+  gzFile  gzf = gzopen(fn.c_str(), "wb");
+  if (gzf)  {
+    UnitAssert(GZIO::WriteV(gzf, s, u, b, i, p));
+    gzclose(gzf);
+    gzf = gzopen(fn.c_str(), "rb");
+    if (gzf) {
+      std::string        s2;
+      uint16_t           u2;
+      bool               b2;
+      int32_t            i2;
+      pair<string,bool>  p2;
+      if (UnitAssert(GZIO::ReadV(gzf, s2, u2, b2, i2, p2))) {
+        if (UnitAssert(s == s2)) {
+          if (UnitAssert(u == u2)) {
+            if (UnitAssert(b == b2)) {
+              if (UnitAssert(i == i2)) {
+                if (UnitAssert(p == p2)) {
+                  rc = true;
+                }
+              }
+            }
+          }
+        }
+      }
+      gzclose(gzf);
+    }
+    std::remove(fn.c_str());
+  }
+  return rc;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static bool VarArgGZIOTestFail()
+{
+  bool  rc = false;
+  std::string  s("HeLlO");
+  
+  string  fn("/tmp/DWMVarArgGZIOTestFail");
+  gzFile  gzf = gzopen(fn.c_str(), "wb");
+  if (UnitAssert(gzf))  {
+    if (UnitAssert(GZIO::WriteV(gzf, s))) {
+      gzclose(gzf);
+      gzf = gzopen(fn.c_str(), "r");
+      if (UnitAssert(gzf)) {
+        std::string        s2;
+        uint16_t           u2;
+        if (UnitAssert(GZIO::ReadV(gzf, s2, u2) < 0)) {
+          //  We expect ReadV() to fail because we only wrote a string, so the
+          //  stream should end before we can read u2.  But we should have
+          //  successfully read s2.
+          rc = UnitAssert(s == s2);
+        }
+        gzclose(gzf);
+      }
+    }
+    else {
+      gzclose(gzf);
+    }
+    std::remove(fn.c_str());
+  }
+  return rc;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
   GZIOTest();
@@ -583,7 +662,9 @@ int main(int argc, char *argv[])
   ListGZIOTest();
   SetGZIOTest();
   TestNullGzfile();
-
+  VarArgGZIOTest();
+  VarArgGZIOTestFail();
+  
   int  rc = 1;
   if (Assertions::Total().Failed()) {
     Assertions::Print(cerr, true);
