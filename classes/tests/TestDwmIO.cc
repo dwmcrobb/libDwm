@@ -1432,17 +1432,29 @@ static bool VarArgFileTestFail()
 {
   bool  rc = false;
   std::string  s("HeLlO");
-  ostringstream  oss;
-  if (UnitAssert(StreamIO::WriteV(oss, s))) {
-    istringstream      iss(oss.str());
-    std::string        s2;
-    uint16_t           u2;
-    if (UnitAssert(! StreamIO::ReadV(iss, s2, u2))) {
-      //  We expect ReadV() to fail because we only wrote a string, so the
-      //  stream should end before we can read u2.  But we should have
-      //  successfully read s2.
-      rc = UnitAssert(s == s2);
+
+  string  fn("/tmp/DWMVarArgFileTest");
+  FILE  *f = fopen(fn.c_str(), "wb");
+  if (UnitAssert(f)) {
+    if (UnitAssert(FileIO::WriteV(f, s))) {
+      fclose(f);
+      f = fopen(fn.c_str(), "rb");
+      if (UnitAssert(f)) {
+        std::string        s2;
+        uint16_t           u2;
+        if (UnitAssert(! FileIO::ReadV(f, s2, u2))) {
+          //  We expect ReadV() to fail because we only wrote a string, so the
+          //  stream should end before we can read u2.  But we should have
+          //  successfully read s2.
+          rc = UnitAssert(s == s2);
+        }
+        fclose(f);
+      }
     }
+    else {
+      fclose(f);
+    }
+    std::remove(fn.c_str());
   }
   return rc;
 }
@@ -1495,6 +1507,8 @@ int main(int argc, char *argv[])
   if (! UnitAssert(VarArgStreamTestFail()))
     goto testFailed;
   if (! UnitAssert(VarArgFileTest()))
+    goto testFailed;
+  if (! UnitAssert(VarArgFileTestFail()))
     goto testFailed;
   if (! VarArgDescriptorTest())
     goto testFailed;
