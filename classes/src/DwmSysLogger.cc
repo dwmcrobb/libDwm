@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2007, 2016
+//  Copyright (c) Daniel W. McRobb 2007, 2016, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -44,10 +44,12 @@ extern "C" {
   #include <unistd.h>
 }
 
-#include <cassert>
+#include <algorithm>
+#include <array>
 #include <iostream>
 #include <mutex>
-#include <sstream>
+#include <string_view>
+#include <utility>
 
 #include "DwmSysLogger.hh"
 
@@ -64,27 +66,38 @@ namespace Dwm {
   bool                SysLogger::_showFunction = false;
   bool                SysLogger::_showFileLocation = true;
   int                 SysLogger::_minimumPriority = LOG_DEBUG;
-  map<int,string>     SysLogger::_priorityTags = {
-    {LOG_EMERG,   "[M]"},
-    {LOG_ALERT,   "[A]"},
-    {LOG_CRIT,    "[C]"},
-    {LOG_ERR,     "[E]"},
-    {LOG_WARNING, "[W]"},
-    {LOG_NOTICE,  "[N]"},
-    {LOG_INFO,    "[I]"},
-    {LOG_DEBUG,   "[D]"}
-  };
-  map<string,int>     SysLogger::_priorityNames = {
-    {"debug",     LOG_DEBUG},
-    {"info",      LOG_INFO},
-    {"notice",    LOG_NOTICE},
-    {"warning",   LOG_WARNING},
-    {"error",     LOG_ERR},
-    {"critical",  LOG_CRIT},
-    {"alert",     LOG_ALERT},
-    {"emergency", LOG_EMERG}
+
+  typedef struct {
+    int          p;
+    const char  *pstr;
+    const char  *tag;
+  } SyslogPriorityInfo_t;
+  
+  static constexpr array<SyslogPriorityInfo_t,8>
+  sg_priorities = {
+    {
+      { LOG_DEBUG,   "debug",     "[D]" },
+      { LOG_INFO,    "info",      "[I]" },
+      { LOG_NOTICE,  "notice",    "[N]" },
+      { LOG_WARNING, "warning",   "[W]" },
+      { LOG_ERR,     "error",     "[E]" },
+      { LOG_CRIT,    "critical",  "[C]" },
+      { LOG_ALERT,   "alert",     "[A]" },
+      { LOG_EMERG,   "emergency", "[M]" }
+    }
   };
 
+  static constexpr array<pair<const char *,int>,11>  sg_facilities = {
+    {
+      { "user",   LOG_USER   },  { "auth",   LOG_AUTH   },
+      { "daemon", LOG_DAEMON },  { "local0", LOG_LOCAL0 },
+      { "local1", LOG_LOCAL1 },  { "local2", LOG_LOCAL2 },
+      { "local3", LOG_LOCAL3 },  { "local4", LOG_LOCAL4 },
+      { "local5", LOG_LOCAL5 },  { "local6", LOG_LOCAL6 },
+      { "local7", LOG_LOCAL7 }
+    }
+  };
+  
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
@@ -100,54 +113,50 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
+  static bool LogOptionsAreValid(int logopt)
+  {
+    //  We can't portably check all useful options in one shot;
+    //  FreeBSD and Linux have LOG_PERROR, and Solaris has LOG_NOWAIT.
+    int  knownLogOpts = LOG_PID | LOG_CONS | LOG_NDELAY;
+#ifdef LOG_NOWAIT
+    knownLogOpts |= LOG_NOWAIT;                                             
+#endif
+#ifdef LOG_PERROR
+    knownLogOpts |= LOG_PERROR;
+#endif
+    return ((logopt & (~knownLogOpts)) == 0);
+  }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  static bool FacilityIsValid(int facility)
+  {
+    return (ranges::find_if(sg_facilities,
+                            [=] (const auto & f) 
+                            { return f.second == facility; })
+            != sg_facilities.end());
+  }
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
   bool SysLogger::Open(const char *ident, int logopt, int facility)
   {
     bool  rc = false;
-    _mutex.lock();
     if (! _isOpen) {
-      switch (facility) {
-        case LOG_USER:
-        case LOG_DAEMON:
-        case LOG_AUTH:
-        case LOG_LOCAL0:
-        case LOG_LOCAL1:
-        case LOG_LOCAL2:
-        case LOG_LOCAL3:
-        case LOG_LOCAL4:
-        case LOG_LOCAL5:
-        case LOG_LOCAL6:
-        case LOG_LOCAL7:
+      if (FacilityIsValid(facility)) {
+        if (LogOptionsAreValid(logopt)) {
+          lock_guard<mutex>  lck(_mutex);
+          openlog(ident, logopt, facility);
+          _isOpen = true;
+          _logOptions = logopt;
+          _logFacility = facility;
+          _ident = (ident ? ident : "");
           rc = true;
-          break;
-        default:
-          break;
-      }
-      if (rc) {
-        //  We can't portably check all useful options in one shot;
-        //  FreeBSD and Linux have LOG_PERROR, and Solaris has LOG_NOWAIT.
-        int  knownLogOpts = LOG_PID | LOG_CONS | LOG_NDELAY;
-        
-#ifdef LOG_NOWAIT
-        knownLogOpts |= LOG_NOWAIT;
-#endif
-#ifdef LOG_PERROR
-        knownLogOpts |= LOG_PERROR;
-#endif
-        if (logopt & (~knownLogOpts)) {
-          //  unknown option
-          rc = false;
         }
       }
     }
-    if (rc) {
-      openlog(ident, logopt, facility);
-      _isOpen = true;
-      _logOptions = logopt;
-      _logFacility = facility;
-      if (ident)
-        _ident = ident;
-    }
-    _mutex.unlock();
     return(rc);
   }
 
@@ -157,21 +166,10 @@ namespace Dwm {
   bool SysLogger::Open(const char *ident, int logopt, const string & facility)
   {
     bool  rc = false;
-    const map<string,int>  facilities = {
-      { "user", LOG_USER },
-      { "auth", LOG_AUTH },
-      { "daemon", LOG_DAEMON },
-      { "local0", LOG_LOCAL0 },
-      { "local1", LOG_LOCAL1 },
-      { "local2", LOG_LOCAL2 },
-      { "local3", LOG_LOCAL3 },
-      { "local4", LOG_LOCAL4 },
-      { "local5", LOG_LOCAL5 },
-      { "local6", LOG_LOCAL6 },
-      { "local7", LOG_LOCAL7 }
-    };
-    auto  it = facilities.find(facility);
-    if (it != facilities.end()) {
+    auto  it = std::ranges::find_if(sg_facilities,
+                                    [&] (const auto & f)
+                                    { return (facility == f.first); });
+    if (it != sg_facilities.end()) {
       rc = Open(ident, logopt, it->second);
     }
     return rc;
@@ -186,9 +184,8 @@ namespace Dwm {
     //  syslogging in global context.  Even if we were to reference
     //  count the number of loggers we have open with syslog, we
     //  couldn't account for openlog() calls outside of our class.
-    _mutex.lock();
+    lock_guard  lck(_mutex);
     _isOpen = false;
-    _mutex.unlock();
     return(true);
   }
     
@@ -233,7 +230,7 @@ namespace Dwm {
       }
       string      fmtString("");
       if (_showPriorities) {
-        fmtString += PriorityTag(priority) + " ";
+        fmtString += PriorityTag(priority) + ' ';
       }
       fmtString += message;
       vsyslog(priority, fmtString.c_str(), vaList);
@@ -250,13 +247,14 @@ namespace Dwm {
                         const std::string & function, int priority,
                         const std::string & message, va_list & vaList)
   {
-    ostringstream  fmt;
-    fmt << message;
-    if (_showFunction)
-      fmt << " (" << function << ")";
-    if (_showFileLocation)
-      fmt << " {" << Basename(filename) << ":" << lineno << "}";
-    return(VaLog(priority, fmt.str(), vaList));
+    string  fmt(message);
+    if (_showFunction) {
+      fmt += " (" + function + ')';
+    }
+    if (_showFileLocation) {
+      fmt += " {" + Basename(filename) + ':' + to_string(lineno) + '}';
+    }
+    return(VaLog(priority, fmt, vaList));
   }
 
   //--------------------------------------------------------------------------
@@ -329,10 +327,11 @@ namespace Dwm {
   int SysLogger::MinimumPriority(const std::string & minimumPriority)
   {
     int  rc = MinimumPriority();
-    map<string,int,less<string> >::const_iterator  iter = 
-      _priorityNames.find(minimumPriority);
-    if (iter != _priorityNames.end()) {
-      rc = MinimumPriority(iter->second);
+    auto  iter = ranges::find_if(sg_priorities,
+                                 [&] (const auto & p)
+                                 { return minimumPriority == p.pstr; });
+    if (iter != sg_priorities.end()) {
+      rc = MinimumPriority(iter->p);
     }
     return(rc);
   }
@@ -343,9 +342,11 @@ namespace Dwm {
   std::string SysLogger::PriorityTag(int priority)
   {
     string  rc("");
-    map<int,string>::const_iterator  i = _priorityTags.find(priority);
-    if (i != _priorityTags.end()) {
-      rc = i->second;
+    auto  it = std::ranges::find_if(sg_priorities,
+                                    [=] (const auto & p)
+                                    { return p.p == priority; });
+    if (it != sg_priorities.end()) {
+      rc = it->tag;
     }
     return(rc);
   }
@@ -356,9 +357,11 @@ namespace Dwm {
   int SysLogger::PriorityValue(const std::string & name)
   {
     int  rc = LOG_DEBUG;
-    map<string,int>::const_iterator i = _priorityNames.find(name);
-    if (i != _priorityNames.end()) {
-      rc = i->second;
+    auto  it = ranges::find_if(sg_priorities,
+                               [&] (const auto & p)
+                               { return name == p.pstr; });
+    if (it != sg_priorities.end()) {
+      rc = it->p;
     }
     return(rc);
   }

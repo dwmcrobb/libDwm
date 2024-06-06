@@ -1,3 +1,10 @@
+2024-06-06  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* classes/include/DwmSysLogger.hh, classes/src/DwmSysLogger.cc:
+	Refactored a bit, replacing maps with arrays.  text section is
+	now more than 50% smaller on macOS Sonoma on M1 silicon, I
+	expect similar on Linux on amd64 and ARM.
+
 2024-06-03  Daniel W. McRobb  <dwm@toto.mcplex.net>
 
 	* tagged as libDwm-0.9.33

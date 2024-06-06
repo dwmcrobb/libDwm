@@ -42,19 +42,16 @@
 #define _DWMSYSLOGGER_HH_
 
 extern "C" {
-#include <errno.h>
-#include <stdarg.h>
-#include <syslog.h>
+  #include <errno.h>
+  #include <stdarg.h>
+  #include <syslog.h>
 }
 
 #include <cstdio>
 #include <version>
 #if (defined __cpp_lib_format) && (__cpp_lib_format >= 202106L)
   #include <format>
-#else
-  #warning "__cpp_lib_format not available"
 #endif
-#include <map>
 #include <mutex>
 #include <string>
 
@@ -246,8 +243,6 @@ namespace Dwm {
     static bool                          _showFunction;
     static bool                          _showFileLocation;
     static int                           _minimumPriority;
-    static std::map<int,std::string>     _priorityTags;
-    static std::map<std::string,int>     _priorityNames;
   };
 
 }  // namespace Dwm
