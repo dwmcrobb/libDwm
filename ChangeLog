@@ -1,3 +1,9 @@
+2024-06-09  Daniel McRobb  <dwm@thrip.mcplex.net>
+
+	* Clean up ProcessTable and ProcessInfo a bit for linux.  Use
+	/proc/<pid>/comm when we see blank cmdline in proc_t, useful
+	for kernel worker processes.
+
 2024-06-09  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* Bring back ProcessTable and ProcessInfo for macOS by replacing

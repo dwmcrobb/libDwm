@@ -51,6 +51,7 @@ extern "C" {
 
 #include <cassert>
 #include <cstdlib>
+#include <fstream>
 #include <sstream>
 
 #include "DwmGZIO.hh"
@@ -225,6 +226,20 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
+  static string ReadProcCommFile(pid_t pid)
+  {
+    string  comm;
+    ifstream  is(string("/proc/") + to_string(pid) + "/comm");
+    if (is) {
+      std::getline(is, comm, '\n');
+    }
+    comm = "[" + comm + "]";
+    return comm;
+  }
+    
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
   ProcessInfo::ProcessInfo(proc_t *proc)
   {
     if (proc) {
@@ -240,6 +255,12 @@ namespace Dwm {
       _savedEffectiveGroupId = proc->sgid;
       if (proc->cmdline) {
         _command = proc->cmdline[0];
+        for (int arg = 0; proc->cmdline[arg]; ++arg) {
+          _args.push_back(proc->cmdline[arg]);
+        }
+      }
+      else {
+        _command = ReadProcCommFile(_id);
       }
       _startTime.Set(proc->start_time, 0);
       _size = proc->size * getpagesize();

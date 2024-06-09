@@ -64,7 +64,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   static void DebugPrintProc(ostream & os, const ProcessInfo & proc)
   {
-    os << proc.Command();
+    os << proc.Id() << ' ' << proc.Command();
     for (const auto & arg : proc.Args()) {
       os << ' ' << arg;
     }
@@ -231,9 +231,10 @@ namespace Dwm {
 
 #elif (defined(__linux__))
 
-#define PROC_DESIRED_FLAGS (PROC_FILLMEM|PROC_FILLCOM|PROC_FILLENV|     \
-                            PROC_FILLSTATUS|PROC_FILLSTAT|PROC_FILLARG)
-  
+#define PROC_DESIRED_FLAGS                                                     \
+  (PROC_FILLMEM | PROC_FILLCOM | PROC_FILLARG | PROC_FILLENV |                 \
+   PROC_FILLSTATUS | PROC_FILLSTAT)
+
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
@@ -242,13 +243,9 @@ namespace Dwm {
     bool  rc = false;
 
     proc_t  **procs = readproctab(PROC_DESIRED_FLAGS);
-    for (int i = 0; procs[i] != 0; ++i) {
+    for (int i = 0; procs[i] != nullptr; ++i) {
       ProcessInfo  proc(procs[i]);
-      if (procs[i]->cmdline) {
-        for (int arg = 0; procs[i]->cmdline[arg]; ++arg) {
-          proc.AddArg(procs[i]->cmdline[arg]);
-        }
-      }
+      DebugPrintProc(cout, proc);
       processTable[proc.Id()] = proc;
       rc = true;
     }
