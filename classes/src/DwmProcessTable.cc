@@ -144,7 +144,8 @@ namespace Dwm {
     if (nextNul == string::npos) {
       return;
     }
-    args.push_back(s.substr(startPos, nextNul - startPos));
+    // skip over first argument since it's duplicated in the second
+    // argument
     startPos = s.find_first_not_of('\0', nextNul + 1);
     
     while (numArgs-- && (startPos != string::npos)) {
@@ -177,15 +178,14 @@ namespace Dwm {
             ProcessInfo  proc(allInfo);
             vector<string>  args;
             GetProcArgs(proc.Id(), args);
-            for (auto & arg : args) {
-              proc.AddArg(arg.c_str());
-            }
+            if (! args.empty()) { proc.Command(args.front()); }
+            for (auto & arg : args) { proc.AddArg(arg.c_str()); }
             DebugPrintProc(cout, proc);
             processTable[proc.Id()] = proc;
           }
           else {
-            cerr << "proc_pidinfo(" << pids[i]
-                 << ",PROC_PIDTASKALLINFO) failed\n";
+            Syslog(LOG_ERR, "proc_pidinfo(%d,PROC_PIDTASKALLINFO) failed",
+                   pids[i]);
           }
         }
         seteuid(origeuid);

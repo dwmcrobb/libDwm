@@ -1,3 +1,18 @@
+2024-06-09  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* Bring back ProcessTable and ProcessInfo for macOS by replacing
+	kvm with libproc and sysctl.  This still isn't ideal since macOS
+	now doesn't allow reading other users' process info via libproc,
+	which means you need setuid if you need to do that.  In
+	GetProcessTable(), I do save the effective UID on entry, then
+	try seteuid(0) while I need it and restore the saved effective
+	UID when I no longer need root.  But it won't have any effect
+	if your executable isn't marked as setuid root.
+
+	Note that the reason I need this is that qmcrover needs to kill
+	some QtWebEngineProcess processes when they grow large (which
+	they always do since QtWebEngineProcess leaks like crazy).
+
 2024-06-06  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* classes/include/DwmSysLogger.hh, classes/src/DwmSysLogger.cc:

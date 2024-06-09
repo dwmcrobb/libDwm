@@ -172,6 +172,11 @@ namespace Dwm {
     const std::string & Command() const;
 
     //------------------------------------------------------------------------
+    //!  Sets and returns the command.
+    //------------------------------------------------------------------------
+    const std::string & Command(const std::string & cmd);
+
+    //------------------------------------------------------------------------
     //!  Returns the argument list.
     //------------------------------------------------------------------------
     const std::vector<std::string> & Args() const;
