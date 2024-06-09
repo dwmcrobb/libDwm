@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2006-2007
+//  Copyright (c) Daniel W. McRobb 2006-2007, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -43,17 +43,35 @@
 
 extern "C" {
   #include <fcntl.h>
-
-  #ifdef HAVE_KVM_H
+  #include <unistd.h>
+#ifdef HAVE_KVM_H
     #include <kvm.h>
-  #endif
+#endif
+#ifdef __APPLE__
+  #include <sys/sysctl.h>
+#endif
 }
 
 #include "DwmProcessTable.hh"
+#include "DwmSysLogger.hh"
 
 namespace Dwm {
 
-#if (defined __FreeBSD__) || (defined __APPLE__)
+  using namespace std;
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  static void DebugPrintProc(ostream & os, const ProcessInfo & proc)
+  {
+    os << proc.Command();
+    for (const auto & arg : proc.Args()) {
+      os << ' ' << arg;
+    }
+    os << '\n';
+  }
+  
+#if (defined __FreeBSD__)
 
   //--------------------------------------------------------------------------
   //!  
@@ -65,27 +83,13 @@ namespace Dwm {
     if (! processTable.empty())
       processTable.clear();
 
-#if (defined __APPLE__)
-    kvm_t  *kvm = kvm_open(0, 0, 0, O_RDONLY, 0);
-#else
     kvm_t  *kvm = kvm_open(0, "/dev/null", 0, O_RDONLY, 0);
-#endif
     if (kvm) {
       int  numProcs = 0;
       struct kinfo_proc  *procs;
       procs = kvm_getprocs(kvm, KERN_PROC_ALL, 0, &numProcs);
       if (procs && numProcs) {
         for (int i = 0; i < numProcs; ++i) {
-#if defined(__APPLE__)
-          ProcessInfo  proc(procs[i]);
-          char **args = kvm_getargv(kvm, &procs[i], 0);
-          if (args) {
-            for (int j = 0; args[j]; ++j) {
-              proc.AddArg(args[j]);
-            }
-          }
-          processTable[procs[i].kp_proc.p_pid] = proc;
-#else
           if (procs[i].ki_textvp) {
             ProcessInfo  proc(procs[i]);
             char **args = kvm_getargv(kvm, &procs[i], 0);
@@ -96,13 +100,98 @@ namespace Dwm {
             }
             processTable[procs[i].ki_pid] = proc;
           }
-#endif
         }
         rc = true;
       }
       kvm_close(kvm);
     }
     return(rc);
+  }
+  
+#elif (defined(__APPLE__))
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  static void GetProcArgs(pid_t pid, vector<string> & args)
+  {
+    args.clear();
+    size_t  argsSize = 0;
+    size_t  argSizeEstimate;
+    int     tries = 3;
+    string  s;
+    do {
+      int  mib[4] = { CTL_KERN, KERN_PROCARGS2, pid };
+      if (sysctl(mib, 3, nullptr, &argSizeEstimate, nullptr, 0) != 0) {
+        return;
+      }
+      argsSize = argSizeEstimate + 1;
+      s.resize(argsSize);
+      if (sysctl(mib, 3, s.data(), &argsSize, nullptr, 0) != 0) {
+        return;
+      }
+    } while ((argsSize == argSizeEstimate) && tries--);
+
+    if ((argsSize >= (argSizeEstimate + 1))
+        || (argsSize < sizeof(int))) {
+      Syslog(LOG_ERR, "bad argsSize %zu", argsSize);
+      return;
+    }
+
+    int  numArgs = *(int *)(s.data());
+    size_t  startPos = sizeof(numArgs);
+    size_t  nextNul = s.find('\0', startPos);
+    if (nextNul == string::npos) {
+      return;
+    }
+    args.push_back(s.substr(startPos, nextNul - startPos));
+    startPos = s.find_first_not_of('\0', nextNul + 1);
+    
+    while (numArgs-- && (startPos != string::npos)) {
+      nextNul = s.find('\0', startPos);
+      args.push_back(s.substr(startPos, nextNul - startPos));
+      startPos = s.find_first_not_of('\0', nextNul + 1);
+    }
+    return;
+  }
+       
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool GetProcessTable(ProcessTable & processTable)
+  {
+    bool  rc = false;
+    pid_t  origeuid = geteuid();
+    processTable.clear();
+    int  numPids = proc_listpids(PROC_ALL_PIDS, 0, nullptr, 0);
+    if (numPids > 0) {
+      vector<int>  pids(numPids);
+      numPids = proc_listallpids(pids.data(), pids.size() * sizeof(int));
+      if (numPids > 0 && (numPids <= pids.size())) {
+        seteuid(0);
+        for (int i = 0; i < numPids; ++i) {
+          struct proc_taskallinfo  allInfo;
+          if (proc_pidinfo(pids[i], PROC_PIDTASKALLINFO, 0, &allInfo,
+                           PROC_PIDTASKALLINFO_SIZE)
+              == PROC_PIDTASKALLINFO_SIZE) {
+            ProcessInfo  proc(allInfo);
+            vector<string>  args;
+            GetProcArgs(proc.Id(), args);
+            for (auto & arg : args) {
+              proc.AddArg(arg.c_str());
+            }
+            DebugPrintProc(cout, proc);
+            processTable[proc.Id()] = proc;
+          }
+          else {
+            cerr << "proc_pidinfo(" << pids[i]
+                 << ",PROC_PIDTASKALLINFO) failed\n";
+          }
+        }
+        seteuid(origeuid);
+      }
+    }
+    return (! processTable.empty());
   }
   
 #elif (defined __OpenBSD__)

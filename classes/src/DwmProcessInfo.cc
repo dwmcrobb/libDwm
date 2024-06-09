@@ -44,6 +44,7 @@ extern "C" {
   #include <sys/types.h>
 #ifdef __APPLE__
   #include <sys/tty.h>
+  #include <sys/proc_info.h>
 #endif
   #include <pwd.h>
 }
@@ -139,6 +140,9 @@ namespace Dwm {
     _savedEffectiveUserId  = proc.kp_eproc.e_pcred.p_svuid;
     _realGroupId           = proc.kp_eproc.e_pcred.p_rgid;
     _savedEffectiveGroupId = proc.kp_eproc.e_pcred.p_svgid;
+    if (proc.kp_eproc.e_paddr) {
+      _command               = ((const struct proc_bsdinfo *)(proc.kp_eproc.e_paddr))->pbi_comm;
+    }
     /*
     if (_id != getpid()) {
       if (proc.kp_eproc.e_paddr) {
@@ -159,6 +163,29 @@ namespace Dwm {
     */
   }
 
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  ProcessInfo::ProcessInfo(const struct proc_taskallinfo & proc)
+      : _controllingTty(), _args()
+  {
+    _id                    = proc.pbsd.pbi_pid;
+    _parentId              = proc.pbsd.pbi_ppid;
+    _groupId               = proc.pbsd.pbi_pgid;
+    _sessionId = getsid(_id);
+    _terminalSessionId     = proc.pbsd.e_tpgid;
+    _effectiveUserId       = proc.pbsd.pbi_uid;
+    _realUserId            = proc.pbsd.pbi_ruid;
+    _savedEffectiveUserId  = proc.pbsd.pbi_svuid;
+    _realGroupId           = proc.pbsd.pbi_rgid;
+    _savedEffectiveGroupId = proc.pbsd.pbi_svgid;
+    _command               = proc.pbsd.pbi_comm;
+    _startTime             = TimeValue64(proc.pbsd.pbi_start_tvsec,
+                                         proc.pbsd.pbi_start_tvusec);
+    _size                  = proc.ptinfo.pti_virtual_size;
+    _residentSetSize       = proc.ptinfo.pti_resident_size;
+  }
+  
 #elif (defined __OpenBSD__)
 
   //--------------------------------------------------------------------------
@@ -356,7 +383,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  const TimeValue & ProcessInfo::StartTime() const 
+  const TimeValue64 & ProcessInfo::StartTime() const 
   { 
     return(_startTime);
   }

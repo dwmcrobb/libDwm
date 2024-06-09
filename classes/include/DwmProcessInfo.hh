@@ -57,6 +57,9 @@ extern "C" {
 #ifdef __linux__
   #include <proc/readproc.h>
 #endif
+#ifdef __APPLE__
+  #include <libproc.h>
+#endif
 }
 
 #include <string>
@@ -66,7 +69,7 @@ extern "C" {
 #include "DwmStreamedLengthCapable.hh"
 #include "DwmGZIOCapable.hh"
 #include "DwmRusage.hh"
-#include "DwmTimeValue.hh"
+#include "DwmTimeValue64.hh"
 
 namespace Dwm {
 
@@ -87,6 +90,9 @@ namespace Dwm {
     
 #if (defined(__FreeBSD__) || defined(__APPLE__))
     ProcessInfo(const struct kinfo_proc & proc);
+  #if defined(__APPLE__)
+    ProcessInfo(const struct proc_taskallinfo & proc);
+  #endif
 #elif (defined __OpenBSD__)
     ProcessInfo(const struct kinfo_proc2 & proc);
 #elif (defined __linux__)
@@ -173,7 +179,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Returns the proces start time.
     //------------------------------------------------------------------------
-    const TimeValue & StartTime() const;
+    const TimeValue64 & StartTime() const;
 
     //------------------------------------------------------------------------
     //!  Returns the virtual size of the process (in bytes).
@@ -242,7 +248,7 @@ namespace Dwm {
     uid_t                     _realGroupId;
     uid_t                     _savedEffectiveGroupId;
     std::string               _command;
-    TimeValue                 _startTime;
+    TimeValue64               _startTime;
     uint32_t                  _size;
     uint32_t                  _residentSetSize;
     Dwm::Rusage               _rusage;
