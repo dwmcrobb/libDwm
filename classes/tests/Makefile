@@ -60,6 +60,7 @@ OBJFILES = TestASIO.o \
 	   TestMplsLabel.o \
 	   TestMplsLabelStack.o \
 	   TestPatricia.o \
+           TestProcessTable.o \
 	   TestStringConverter.o \
 	   TestStringUtils.o \
 	   TestSvnTag.o \
@@ -77,9 +78,6 @@ OBJFILES = TestASIO.o \
 	   TestValueRange.o \
 	   TestVariantIO.o \
 	   TestXDRUtils.o
-ifneq ("${TARGETVENDOR}", "apple")
-OBJFILES += TestProcessTable.o
-endif
 OBJDEPS	 = $(OBJFILES:%.o=deps/%_deps)
 TESTS	 = $(OBJFILES:%.o=%)
 CXXFLAGS += -g

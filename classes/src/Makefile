@@ -51,6 +51,8 @@ OBJFILESNP =	DwmASIO.o \
 		DwmPackageInfo.o \
 		DwmPassword.o \
 		DwmPathUtils.o \
+                DwmProcessInfo.o \
+                DwmProcessTable.o \
 		DwmRusage.o \
 		DwmSignal.o \
 		DwmSocket.o \
@@ -74,9 +76,6 @@ OBJFILESNP =	DwmASIO.o \
 		DwmXmlElement.o
 shlib_version = $(shell ../../getvers.sh -s)
 
-ifneq ("${TARGETVENDOR}", "apple")
-OBJFILESNP +=	DwmProcessInfo.o DwmProcessTable.o
-endif
 ifeq (,$(findstring iPhone,$(PLATFORM)))
 OBJFILESNP +=	DwmHostPinger.o DwmPcap.o
 OBJFILESNP +=	DwmPingDestination.o DwmPingDestinationEntry.o 
