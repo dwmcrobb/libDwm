@@ -180,7 +180,6 @@ namespace Dwm {
             GetProcArgs(proc.Id(), args);
             if (! args.empty()) { proc.Command(args.front()); }
             for (auto & arg : args) { proc.AddArg(arg.c_str()); }
-            DebugPrintProc(cout, proc);
             processTable[proc.Id()] = proc;
           }
           else {
@@ -245,7 +244,6 @@ namespace Dwm {
     proc_t  **procs = readproctab(PROC_DESIRED_FLAGS);
     for (int i = 0; procs[i] != nullptr; ++i) {
       ProcessInfo  proc(procs[i]);
-      DebugPrintProc(cout, proc);
       processTable[proc.Id()] = proc;
       rc = true;
     }
