@@ -1,3 +1,7 @@
+2024-06-09  dwm  <dwm@ria.mcplex.net>
+
+	* tagged as libDwm-0.9.34
+
 2024-06-09  Daniel McRobb  <dwm@thrip.mcplex.net>
 
 	* Clean up ProcessTable and ProcessInfo a bit for linux.  Use
