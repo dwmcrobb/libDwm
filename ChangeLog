@@ -1,3 +1,10 @@
+2024-06-13  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* classes/src/DwmGZIO.cc, classes/tests/TestDwmGZIO.cc: Read
+	for float and double were returning failure when they actually
+	succeeded, due to return variable name alias.  Fixed, and fixed
+	the unit tests to catch it.
+
 2024-06-09  dwm  <dwm@ria.mcplex.net>
 
 	* tagged as libDwm-0.9.34

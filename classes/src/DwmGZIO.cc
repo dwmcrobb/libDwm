@@ -202,7 +202,8 @@ namespace Dwm {
     char  *buf = 0;
     uint32_t  xe = XDRUtils::Encode(val,&buf);
     int   rc = gzwrite(gzf,buf,xe);
-
+    free(buf);
+    
     if (rc < 8)
       rc = -1;
 
@@ -372,7 +373,7 @@ namespace Dwm {
     int  rc = -1;
     if (gzf) {
       char     buf[4];
-      int  rc = gzread(gzf, buf, 4);
+      rc = gzread(gzf, buf, 4);
       if (rc == 4) {
         XDRUtils::Decode(buf, val);
       }
@@ -388,7 +389,7 @@ namespace Dwm {
     int  rc = -1;
     if (gzf) {
       char     buf[8];
-      int  rc = gzread(gzf, buf, 8);
+      rc = gzread(gzf, buf, 8);
       if (rc == 8) {
         XDRUtils::Decode(buf, val);
       }

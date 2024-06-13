@@ -81,45 +81,33 @@ static bool WriteTestBlob(gzFile gzf)
   bool  rc = false;
 
   if (gzf) {
-    char  c = k_charVal;
-    if (GZIO::Write(gzf,c) == sizeof(c)) {
-      uint8_t  uc = k_ucharVal;
-      if (GZIO::Write(gzf,uc) == sizeof(uc)) {
-        bool  b = k_boolVal;
-        if (GZIO::Write(gzf,b) == sizeof(b)) {
-          int16_t sh = k_int16Val;
-          if (GZIO::Write(gzf,sh) == sizeof(sh)) {
-            uint16_t ush = k_uint16Val;
-            if (GZIO::Write(gzf,ush) == sizeof(ush)) {
-              int32_t  w = k_int32Val;
-              if (GZIO::Write(gzf,w) == sizeof(w)) {
-                uint32_t  uw = k_uint32Val;
-                if (GZIO::Write(gzf,uw) == sizeof(uw)) {
-                  int64_t  d = k_int64Val;
-                  if (GZIO::Write(gzf,d) == sizeof(d)) {
-                    uint64_t  ud = k_uint64Val;
-                    if (GZIO::Write(gzf,ud) == sizeof(ud)) {
-                      std::string  s = k_stringVal;
-                      if (GZIO::Write(gzf,s) > 4) {
-                        float  f = k_floatVal;
-                        if (GZIO::Write(gzf,f) == sizeof(f)) {
-                          double  df = k_doubleVal;
-                          if (GZIO::Write(gzf,df) == sizeof(df)) {
-                            rc = true;
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+    rc = true;
+    
+    char         c = k_charVal;
+    uint8_t      uc = k_ucharVal;
+    bool         b = k_boolVal;
+    int16_t      sh = k_int16Val;
+    uint16_t     ush = k_uint16Val;
+    int32_t      w = k_int32Val;
+    uint32_t     uw = k_uint32Val;
+    int64_t      d = k_int64Val;
+    uint64_t     ud = k_uint64Val;
+    std::string  s = k_stringVal;
+    float        f = k_floatVal;
+    double       df = k_doubleVal;
+    rc &= UnitAssert(GZIO::Write(gzf,c) == sizeof(c));
+    rc &= UnitAssert(GZIO::Write(gzf,uc) == sizeof(uc));
+    rc &= UnitAssert(GZIO::Write(gzf,b) == sizeof(b));
+    rc &= UnitAssert(GZIO::Write(gzf,sh) == sizeof(sh));
+    rc &= UnitAssert(GZIO::Write(gzf,ush) == sizeof(ush));
+    rc &= UnitAssert(GZIO::Write(gzf,w) == sizeof(w));
+    rc &= UnitAssert(GZIO::Write(gzf,uw) == sizeof(uw));
+    rc &= UnitAssert(GZIO::Write(gzf,d) == sizeof(d));
+    rc &= UnitAssert(GZIO::Write(gzf,ud) == sizeof(ud));
+    rc &= UnitAssert(GZIO::Write(gzf,s) > 4);
+    rc &= UnitAssert(GZIO::Write(gzf,f) == sizeof(f));
+    rc &= UnitAssert(GZIO::Write(gzf,df) == sizeof(df));
   }
-      
   UnitAssert(rc);
   return(rc);
 }
@@ -148,59 +136,37 @@ static bool WriteTestBlobs(gzFile gzf, uint32_t numBlobs)
 static bool ReadTestBlob(gzFile gzf)
 {
   bool  rc = false;
+  
+  char      c;
+  uint8_t   uc = 0;
+  bool      b = false;
+  int16_t   sh = 0;
+  uint16_t  ush = 0;
+  int32_t   w = 0;
+  uint32_t  uw = 0;
+  int64_t   d = 0;
+  uint64_t  ud = 0;
+  string    s;
+  float     f;
+  double    df;
   if (gzf) {
-    char  c;
-    if (GZIO::Read(gzf,c) && (c == k_charVal)) {
-      uint8_t  uc = 0;
-      if (GZIO::Read(gzf,uc) && (uc == k_ucharVal)) {
-        bool  b = false;
-        if (GZIO::Read(gzf,b) && (b == k_boolVal)) {
-          int16_t  sh = 0;
-          if (GZIO::Read(gzf,sh) && (sh == k_int16Val)) {
-            uint16_t  ush = 0;
-            if (GZIO::Read(gzf,ush) && (ush == k_uint16Val)) {
-              int32_t  w = 0;
-              if (GZIO::Read(gzf,w) && (w == k_int32Val)) {
-                uint32_t uw = 0;
-                if (GZIO::Read(gzf,uw) && (uw == k_uint32Val)) {
-                  int64_t  d = 0;
-                  if (GZIO::Read(gzf,d) && (d == k_int64Val)) {
-                    uint64_t  ud = 0;
-                    if (GZIO::Read(gzf,ud) && (ud == k_uint64Val)) {
-                      string  s;
-                      if (GZIO::Read(gzf,s) && (s == k_stringVal)) {
-                        float  f;
-                        if (GZIO::Read(gzf,f) && (f == k_floatVal)) {
-                          double  df;
-                          if (GZIO::Read(gzf,df) && (df == k_doubleVal)) {
-                            rc = true;
-                          }
-                          else { std::cerr << "fail " << __FILE__ << ':'
-                                           << __LINE__ << '\n';
-                          }
-                        }
-                        else {
-                          std::cerr << "fail " << __FILE__ << ':'
-                                    << __LINE__ << '\n';
-                        }
-                      }
-                      else {
-                        std::cerr << "fail " << __FILE__ << ':'
-                                  << __LINE__ << '\n';
-                      }
-                    }
-                    else {
-                      std::cerr << "fail " << __FILE__ << ':'
-                                << __LINE__ << '\n';
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+    rc = true;
+    rc &= UnitAssert((GZIO::Read(gzf,c) == sizeof(c)) && (c == k_charVal));
+    rc &= UnitAssert((GZIO::Read(gzf,uc) == sizeof(uc)) && (uc == k_ucharVal));
+    rc &= UnitAssert((GZIO::Read(gzf,b) == sizeof(b)) && (b == k_boolVal));
+    rc &= UnitAssert((GZIO::Read(gzf,sh) == sizeof(sh)) && (sh == k_int16Val));
+    rc &= UnitAssert((GZIO::Read(gzf,ush) == sizeof(ush))
+                     && (ush == k_uint16Val));
+    rc &= UnitAssert((GZIO::Read(gzf,w) == sizeof(w)) && (w == k_int32Val));
+    rc &= UnitAssert((GZIO::Read(gzf,uw) == sizeof(uw))
+                     && (uw == k_uint32Val));
+    rc &= UnitAssert((GZIO::Read(gzf,d) == sizeof(d)) && (d == k_int64Val));
+    rc &= UnitAssert((GZIO::Read(gzf,ud) == sizeof(ud))
+                     && (ud == k_uint64Val));
+    rc &= UnitAssert((GZIO::Read(gzf,s) > 0) && (s == k_stringVal));
+    rc &= UnitAssert((GZIO::Read(gzf,f) == sizeof(f)) && (f == k_floatVal));
+    rc &= UnitAssert((GZIO::Read(gzf,df) == sizeof(df))
+                     && (df == k_doubleVal));
   }
   UnitAssert(rc);
   return(rc);
