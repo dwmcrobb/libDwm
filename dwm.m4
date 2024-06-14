@@ -808,10 +808,6 @@ define(DWM_CHECK_NEED_LIBRT,[
   AC_LANG_POP()
 ])
 
-define(DWM_CHECK_PCAP,[
-
-])
-
 dnl #------------------------------------------------------------------------
 define(DWM_CHECK_LIBSTDCPPFS,[
   AC_MSG_CHECKING([for libstdc++fs])
@@ -983,6 +979,21 @@ define(CHECK_LIBPCAP_PKG,[
     AC_MSG_RESULT([not found])
   fi
 ])
+
+define(CHECK_LIBPCAP,[
+  CHECK_LIBPCAP_PKG
+  if [[ "${DWM_HAVE_LIBPCAP_PKG}" != "1" ]]; then
+    AC_MSG_CHECKING([for libpcap in standard location])
+    if [[ -f /usr/lib/libcap.so -o -L /usr/lib/libpcap.so ]]; then
+      EXTLIBS="${EXTLIBS} -lpcap"
+      AC_MSG_RESULT([found])
+    else
+      AC_MSG_RESULT([not found])
+      exit 1
+    fi
+  fi
+])
+
 
 define(CHECK_BZIP2,[
   AC_MSG_CHECKING([for bzip2 library])

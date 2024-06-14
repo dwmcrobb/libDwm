@@ -4314,6 +4314,7 @@ LT_INIT()
 
 
 
+
   # ===========================================================================
 #  https://www.gnu.org/software/autoconf-archive/ax_check_compile_flag.html
 # ===========================================================================
@@ -5088,6 +5089,11 @@ printf "%s\n" "not found" >&6; }
   fi
 
 
+EXTINCS=`pkg-config --cflags-only-I ${EXTPKGS}`
+EXTLIBS=`pkg-config --libs ${EXTPKGS}`
+
+
+
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for libpcap pkg" >&5
 printf %s "checking for libpcap pkg... " >&6; }
   pkg-config --exists libpcap
@@ -5101,9 +5107,19 @@ printf "%s\n" "found" >&6; }
 printf "%s\n" "not found" >&6; }
   fi
 
-
-EXTINCS=`pkg-config --cflags-only-I ${EXTPKGS}`
-EXTLIBS=`pkg-config --libs ${EXTPKGS}`
+  if [ "${DWM_HAVE_LIBPCAP_PKG}" != "1" ]; then
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for libpcap in standard location" >&5
+printf %s "checking for libpcap in standard location... " >&6; }
+    if [ -f /usr/lib/libcap.so -o -L /usr/lib/libpcap.so ]; then
+      EXTLIBS="${EXTLIBS} -lpcap"
+      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: found" >&5
+printf "%s\n" "found" >&6; }
+    else
+      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: not found" >&5
+printf "%s\n" "not found" >&6; }
+      exit 1
+    fi
+  fi
 
 
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for bzip2 library" >&5
@@ -5140,6 +5156,7 @@ printf "%s\n" "found in /opt/local" >&6; }
       EXTLIBS="${EXTLIBS} -lbz2"
     fi
   fi
+
 
 
 
