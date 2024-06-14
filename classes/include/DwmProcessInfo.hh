@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2006-2007, 2016, 2020
+//  Copyright (c) Daniel W. McRobb 2006-2007, 2016, 2020, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -36,240 +36,73 @@
 //---------------------------------------------------------------------------
 //!  \file DwmProcessInfo.hh
 //!  \author Daniel W. McRobb
-//!  \brief Dwm::ProcessInfo class definition
+//!  \brief Dwm::ProcessInfo class declaration
 //---------------------------------------------------------------------------
 
 #ifndef _DWMPROCESSINFO_HH_
 #define _DWMPROCESSINFO_HH_
 
 extern "C" {
-#ifdef HAVE_KVM_H
-    #include <kvm.h>
-#endif
-  #include <sys/param.h>
-#ifndef __linux__
-  #include <sys/sysctl.h>
-#else
-  #include <linux/sysctl.h>
-#endif
-  #include <sys/user.h>
-  #include <inttypes.h>
-#ifdef __linux__
-  #include <proc/readproc.h>
-#endif
-#ifdef __APPLE__
-  #include <libproc.h>
-#endif
+  #include <unistd.h>
 }
 
+#include <cstdint>
+#include <iostream>
 #include <string>
-#include <vector>
+#include <nlohmann/json.hpp>
 
 #include "DwmStreamIOCapable.hh"
 #include "DwmStreamedLengthCapable.hh"
 #include "DwmGZIOCapable.hh"
-#include "DwmRusage.hh"
-#include "DwmTimeValue64.hh"
+#include "DwmBZ2IOCapable.hh"
 
 namespace Dwm {
 
   //--------------------------------------------------------------------------
-  //!  Encapsulates information about a single process.
+  //!  
   //--------------------------------------------------------------------------
   class ProcessInfo
-    : public StreamIOCapable, public StreamedLengthCapable, public GZIOCapable
+    : public StreamIOCapable, public GZIOCapable, public BZ2IOCapable,
+      public StreamedLengthCapable
   {
   public:
-    ProcessInfo();
+    std::string  user {""};
+    std::string  ruser {""};
+    uint64_t     pid {0};
+    uint64_t     ppid {0};
+    uint64_t     gid {0};
+    uint64_t     uid {0};
+    uint64_t     ruid {0};
+    uint64_t     svuid {0};
+    uint64_t     rgid {0};
+    uint64_t     svgid {0};
+    uint64_t     rss {0};
+    uint64_t     vsz {0};
+    float        pcpu {0.0};
+    float        pmem {0.0};
+    int64_t      pri {0};
+    int64_t      lstart {0};
+    std::string  tty {""};
+    std::string  args {""};
 
-    //------------------------------------------------------------------------
-    //!  Construct from a process ID.  This will fetch values from the
-    //!  current process table.
-    //------------------------------------------------------------------------
-    ProcessInfo(pid_t pid);
-    
-#if (defined(__FreeBSD__) || defined(__APPLE__))
-    ProcessInfo(const struct kinfo_proc & proc);
-  #if defined(__APPLE__)
-    ProcessInfo(const struct proc_taskallinfo & proc);
-  #endif
-#elif (defined __OpenBSD__)
-    ProcessInfo(const struct kinfo_proc2 & proc);
-#elif (defined __linux__)
-    ProcessInfo(proc_t *proc);
-#endif
-
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    virtual ~ProcessInfo();
-    
-    //------------------------------------------------------------------------
-    //!  Returns the process ID.
-    //------------------------------------------------------------------------
-    pid_t Id() const;
-
-    //------------------------------------------------------------------------
-    //!  Returns the parent process ID.
-    //------------------------------------------------------------------------
-    pid_t ParentId() const;
-
-    //------------------------------------------------------------------------
-    //!  Returns the process group ID.
-    //------------------------------------------------------------------------
-    pid_t GroupId() const;
-
-    //------------------------------------------------------------------------
-    //!  Returns the controlling tty name.
-    //------------------------------------------------------------------------
-    const std::string & ControllingTty() const;
-
-    pid_t SessionId() const;
-    
-    //------------------------------------------------------------------------
-    //!  Returns the effective user ID.
-    //------------------------------------------------------------------------
-    uid_t EffectiveUserId() const;
-
-    //------------------------------------------------------------------------
-    //!  Returns the username of the effective user ID.
-    //------------------------------------------------------------------------
-    std::string EffectiveUserName() const;
-
-    //------------------------------------------------------------------------
-    //!  Returns the real user ID.
-    //------------------------------------------------------------------------
-    uid_t RealUserId() const;
-
-    //------------------------------------------------------------------------
-    //!  Returns the username of the real user ID.
-    //------------------------------------------------------------------------
-    std::string RealUserName() const;
-
-    //------------------------------------------------------------------------
-    //!  Returns the saved effective user ID.
-    //------------------------------------------------------------------------
-    uid_t SavedEffectiveUserId() const;
-
-    //------------------------------------------------------------------------
-    //!  Returns the username of the saved effective user ID.
-    //------------------------------------------------------------------------
-    std::string SavedEffectiveUserName() const;
-
-    //------------------------------------------------------------------------
-    //!  Returns the real process group ID.
-    //------------------------------------------------------------------------
-    uid_t RealGroupId() const;
-
-    //------------------------------------------------------------------------
-    //!  Returns the saved effective group ID.
-    //------------------------------------------------------------------------
-    uid_t SavedEffectiveGroupId() const;
-
-    //------------------------------------------------------------------------
-    //!  Returns the command.
-    //------------------------------------------------------------------------
-    const std::string & Command() const;
-
-    //------------------------------------------------------------------------
-    //!  Sets and returns the command.
-    //------------------------------------------------------------------------
-    const std::string & Command(const std::string & cmd);
-
-    //------------------------------------------------------------------------
-    //!  Returns the argument list.
-    //------------------------------------------------------------------------
-    const std::vector<std::string> & Args() const;
-    
-    //------------------------------------------------------------------------
-    //!  Returns the proces start time.
-    //------------------------------------------------------------------------
-    const TimeValue64 & StartTime() const;
-
-    //------------------------------------------------------------------------
-    //!  Returns the virtual size of the process (in bytes).
-    //------------------------------------------------------------------------
-    uint32_t Size() const;
-
-    //------------------------------------------------------------------------
-    //!  Returns the resident set size of the process (in bytes).
-    //------------------------------------------------------------------------
-    uint32_t ResidentSetSize() const;
-
-    //------------------------------------------------------------------------
-    //!  Returns the process rusage.
-    //------------------------------------------------------------------------
-    const Dwm::Rusage & Rusage() const;
-
-    //------------------------------------------------------------------------
-    //!  operator ==
-    //------------------------------------------------------------------------
-    bool operator == (const ProcessInfo & process) const;
-    
-    //------------------------------------------------------------------------
-    //!  Reads from an istream.  Returns the istream.
-    //------------------------------------------------------------------------
     std::istream & Read(std::istream & is) override;
-
-    //------------------------------------------------------------------------
-    //!  Writes to an ostream.  Returns the ostream.
-    //------------------------------------------------------------------------
     std::ostream & Write(std::ostream & os) const override;
-
-    //------------------------------------------------------------------------
-    //!  Reads from a gzFile.  Returns the number of bytes read on success,
-    //!  -1 on failure.
-    //------------------------------------------------------------------------
     int Read(gzFile gzf) override;
-    
-    //------------------------------------------------------------------------
-    //!  Writes to a gzFile.  Returns the number of bytes written on success,
-    //!  -1 on failure.
-    //------------------------------------------------------------------------
     int Write(gzFile gzf) const override;
-    
-    //------------------------------------------------------------------------
-    //!  Returns the number of bytes that would be written if we called
-    //!  one of the Write() members.
-    //------------------------------------------------------------------------
+    int BZRead(BZFILE *bzf) override;
+    int BZWrite(BZFILE *bzf) const override;
     uint64_t StreamedLength() const override;
     
     //------------------------------------------------------------------------
-    //!  Adds an argument to the list of args.  This shouldn't be used
-    //!  by anything but GetProcessTable()
+    //!  Returns a JSON representation of the ProcessInfo.
     //------------------------------------------------------------------------
-    void AddArg(const char *arg);
+    nlohmann::json ToJson() const;
     
-  private:
-    pid_t                     _id;
-    pid_t                     _parentId;
-    pid_t                     _groupId;
-    std::string               _controllingTty;
-    pid_t                     _sessionId;
-    pid_t                     _terminalSessionId;
-    uid_t                     _effectiveUserId;
-    uid_t                     _realUserId;
-    uid_t                     _savedEffectiveUserId;
-    uid_t                     _realGroupId;
-    uid_t                     _savedEffectiveGroupId;
-    std::string               _command;
-    TimeValue64               _startTime;
-    uint32_t                  _size;
-    uint32_t                  _residentSetSize;
-    Dwm::Rusage               _rusage;
-    std::vector<std::string>  _args;
-
+    bool operator == (const ProcessInfo &) const;
   };
   
 }  // namespace Dwm
 
-#endif  // _DWMPROCESSINFO_HH_
+std::ostream & operator << (std::ostream & os, const Dwm::ProcessInfo & pi);
 
-//---------------------------- emacs settings -----------------------------
-//  Local Variables:
-//  mode: C++
-//  tab-width: 2
-//  indent-tabs-mode: nil
-//  c-basic-offset: 2
-//  End:
-//-------------------------------------------------------------------------
+#endif  // _DWMPROCESSINFO_HH_

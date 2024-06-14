@@ -52,7 +52,8 @@ OBJFILESNP =	DwmASIO.o \
 		DwmPassword.o \
 		DwmPathUtils.o \
                 DwmProcessInfo.o \
-                DwmProcessTable.o \
+                DwmProcessTableLex.o \
+                DwmProcessTableParse.o \
 		DwmRusage.o \
 		DwmSignal.o \
 		DwmSocket.o \
@@ -114,6 +115,14 @@ tarprep: ${TARDIR}/lib/libDwm.la
 
 ${TARDIR}/lib/libDwm.la: ../lib/libDwm.la
 	${LIBTOOL} --mode=install ../../install-sh -s -c $< ${TARDIR}/lib/libDwm.la
+
+DwmProcessTableParse.hh: DwmProcessTableParse.cc
+
+DwmProcessTableParse.cc: DwmProcessTableParse.y
+	bison -d -o$@ $<
+
+DwmProcessTableLex.cc: DwmProcessTableLex.lex DwmProcessTableParse.hh
+	flex -f -o$@ $<
 
 clean:: clean-tarprep
 	${LIBTOOL} --mode=clean rm -f ../lib/libDwm.la ${OBJFILES} DwmCgi.cc \

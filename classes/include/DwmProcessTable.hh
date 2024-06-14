@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2006
+//  Copyright (c) Daniel W. McRobb 2006, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,8 @@
 
 //---------------------------------------------------------------------------
 //!  \file DwmProcessTable.hh
-//!  \brief Dwm::GetProcessTable() prototype and Dwm::ProcessTable typedef
+//!  \author Daniel W. McRobb
+//!  \brief  Dwm::ProcessTable typedef and utility function prototypes
 //---------------------------------------------------------------------------
 
 #ifndef _DWMPROCESSTABLE_HH_
@@ -57,16 +58,15 @@ namespace Dwm {
   //!  Fetches the current process table.  Returns true on success.
   //--------------------------------------------------------------------------
   bool GetProcessTable(ProcessTable & processTable);
+
+  bool GetProcessInfo(pid_t pid, ProcessInfo & processInfo);
+
+  bool ToJson(const ProcessTable & processTable, nlohmann::json & json);
+
+  nlohmann::json ToJson(const ProcessTable & processTable);
   
 }  // namespace Dwm
 
-#endif  // _DWMPROCESSTABLE_HH_
+std::ostream & operator << (std::ostream & os, const Dwm::ProcessTable & pt);
 
-//---------------------------- emacs settings -----------------------------
-//  Local Variables:
-//  mode: C++
-//  tab-width: 2
-//  indent-tabs-mode: nil
-//  c-basic-offset: 2
-//  End:
-//-------------------------------------------------------------------------
+#endif  // _DWMPROCESSTABLE_HH_

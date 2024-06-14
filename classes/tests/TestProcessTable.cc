@@ -50,7 +50,9 @@ extern "C" {
 #include <sstream>
 
 #include "DwmSvnTag.hh"
+#include "DwmBZ2IO.hh"
 #include "DwmGZIO.hh"
+#include "DwmIOUtils.hh"
 #include "DwmStreamIO.hh"
 #include "DwmProcessTable.hh"
 #include "DwmEngFormat.hh"
@@ -102,7 +104,7 @@ static void TestProcessTableGZIO(ProcessTable & processTable)
     UnitAssert(gzf);
     if (gzf) {
       ProcessTable  processTable2;
-      UnitAssert(GZIO::Read(gzf, processTable2));
+      UnitAssert(GZIO::Read(gzf, processTable2) > 0);
       UnitAssert(processTable == processTable2);
       gzclose(gzf);
     }
@@ -110,7 +112,33 @@ static void TestProcessTableGZIO(ProcessTable & processTable)
   }
   return;
 }
-    
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestProcessTableBZ2IO(ProcessTable & processTable)
+{
+  ostringstream  filename;
+  filename << "/tmp/TestProcessTableBZ2IO." << getpid() << ".bz2";
+  
+  BZFILE  *bzf = BZ2_bzopen(filename.str().c_str(), "wb");
+  if (UnitAssert(bzf)) {
+    UnitAssert(BZ2IO::BZWrite(bzf, processTable) ==
+               IOUtils::StreamedLength(processTable));
+    BZ2_bzclose(bzf);
+    bzf = BZ2_bzopen(filename.str().c_str(), "rb");
+    if (UnitAssert(bzf)) {
+      ProcessTable  processTable2;
+      UnitAssert(BZ2IO::BZRead(bzf, processTable2)
+                 == IOUtils::StreamedLength(processTable));
+      UnitAssert(processTable == processTable2);
+      BZ2_bzclose(bzf);
+    }
+    unlink(filename.str().c_str());
+  }
+  return;
+}
+
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
@@ -122,16 +150,17 @@ int main(int argc, char *argv[])
   
   TestProcessTableIO(processTable);
   TestProcessTableGZIO(processTable);
+  TestProcessTableBZ2IO(processTable);
   
   //  find myself in the process table, and verify against standard
   //  system calls.  
   ProcessTable::const_iterator  i = processTable.find(getpid());
   if (UnitAssert(i != processTable.end())) {
-    UnitAssert(i->second.RealUserId() == getuid());
-    UnitAssert(i->second.EffectiveUserId() == geteuid());
-    UnitAssert(i->second.RealGroupId() == getgid());
-    UnitAssert(i->second.Id() == getpid());
-    UnitAssert(i->second.ParentId() == getppid());
+    UnitAssert(i->second.ruid == getuid());
+    UnitAssert(i->second.uid == geteuid());
+    UnitAssert(i->second.rgid == getgid());
+    UnitAssert(i->second.pid == getpid());
+    UnitAssert(i->second.ppid == getppid());
   }
   
   if (Dwm::Assertions::Total().Failed() > 0) {

@@ -1,5 +1,8 @@
 DwmCgi.cc
 DwmExecutor.cc
 DwmPackageInfo.cc
+DwmProcessTableLex.cc
+DwmProcessTableParse.cc
+DwmProcessTableParse.hh
 DwmRegistry.cc
 DwmTimeUtil.cc

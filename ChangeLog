@@ -1,5 +1,13 @@
 2024-06-13  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* Completely refactor ProcessInfo and ProcessTable since it
+	has become ugly trying to maintain it for macOS, Linux and
+	FreeBSD.  I now parse 'ps' output instead of using
+	kvm/sysctl/libproc/etc. interfaces, and only grab the fields
+	that are common among the three aforementioned OSes.
+	Also added ProcessTree class which is handy for grabbing
+	info for a process and its descendants.
+
 	* classes/src/DwmGZIO.cc, classes/tests/TestDwmGZIO.cc: Read
 	for float and double were returning failure when they actually
 	succeeded, due to return variable name alias.  Fixed, and fixed
