@@ -12,7 +12,7 @@ TARTARGETS += ${TARDIR}/${HTMLMAN}/html1/dwmcflags.1.html
 endif
 
 dwmcflags: ${OBJFILES} ../../classes/lib/libDwm.la
-	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${PTHREADLDFLAGS} ${LDFLAGS} -rpath ${INSTALLPREFIX}/lib -o $@ $^ ${ZLIB} ${BZLIB} ${BOOSTLIBS} ${TERMCAPLIB} -lpcap ${TIRPCLIB} ${OSLIBS}
+	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${PTHREADLDFLAGS} ${LDFLAGS} -rpath ${INSTALLPREFIX}/lib -o $@ $^ ${EXTLIBS} ${OSLIBS}
 
 tarprep: ${TARTARGETS}
 

@@ -6,7 +6,7 @@ OBJFILES    = dwmspath.o
 OBJDEPS	    = $(OBJFILES:%.o=deps/%_deps)
 
 dwmspath: ${OBJFILES} ../../classes/lib/libDwm.la
-	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${PTHREADLDFLAGS} ${LDFLAGS} -o $@ $^ ${ZLIB} ${BZLIB} -lpcap ${OSLIBS} -static
+	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${PTHREADLDFLAGS} ${LDFLAGS} -o $@ $^ ${EXTLIBS} ${OSLIBS} -static
 
 tarprep: ${TARDIR}/bin/dwmspath
 

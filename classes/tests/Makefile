@@ -119,11 +119,11 @@ endif
 
 ifneq ("${TARGET_VENDOR}","apple")
 TestProcessTable: TestProcessTable.o ../lib/libDwm.la
-	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} -o $@ $^ ${ZLIB} ${BOOSTLIBS} ${TERMCAPLIB} ${EXTLIBS} ${PTHREADLDFLAGS}
+	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} -o $@ $^ ${EXTLIBS} ${PTHREADLDFLAGS}
 endif
 
 %: %.o ../lib/libDwm.la
-	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} -o $@ $^ ${ZLIB} ${BOOSTLIBS} ${TERMCAPLIB} ${EXTLIBS} ${PTHREADLDFLAGS}
+	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} -o $@ $^ ${EXTLIBS} ${PTHREADLDFLAGS}
 
 ../lib/libDwm.la::
 	${MAKE} -C ../src

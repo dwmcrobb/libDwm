@@ -747,11 +747,12 @@ define(DWM_CHECK_NEED_LIBIBVERBS,[
          struct ibv_context *ibvCtx = ibv_open_device(&ibvDev);
        }
       ]])],
-      [AC_MSG_RESULT(yes)],
-      [AC_MSG_RESULT(no)
-       LDFLAGS="$prev_LDFLAGS"]
+      [AC_MSG_RESULT(yes)
+       EXTLIBS="${EXTLIBS} -libverbs"],
+      [AC_MSG_RESULT(no)]
     )
   fi
+  LDFLAGS="$prev_LDFLAGS"
   AC_LANG_POP()
 ])
 
@@ -1024,6 +1025,28 @@ define(CHECK_BZIP2,[
       EXTLIBS="${EXTLIBS} -lbz2"
     fi
   fi
+])
+
+define(DWM_CHECK_LIBTERMAP,[
+  AC_MSG_CHECKING([for libtermcap])
+  AC_LANG_PUSH(C++)
+  AC_CHECK_LIB(termcap, tgetent,
+    [EXTLIBS="${EXTLIBS} -ltermcap"
+     AC_MSG_RESULT([found])],
+    [AC_MSG_RESULT([not found!!])
+     exit 1])
+  AC_LANG_POP()
+])
+
+define(DWM_CHECK_LIBZ,[
+  AC_MSG_CHECKING([for libz])
+  AC_LANG_PUSH(C++)
+  AC_CHECK_LIB(z, gzwrite,
+    [EXTLIBS="${EXTLIBS} -lz"
+     AC_MSG_RESULT([found])],
+    [AC_MSG_RESULT([not found!!])
+     exit 1])
+  AC_LANG_POP()
 ])
 
 define(ADD_IF_NOT_PRESENT,[

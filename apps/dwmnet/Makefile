@@ -5,7 +5,7 @@ OBJFILES	= dwmnet.o
 OBJDEPS		= $(OBJFILES:%.o=deps/%_deps)
 
 dwmnet: ${OBJFILES} ../../classes/lib/libDwm.la
-	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} ${PTHREADLDFLAGS} -o $@ $^ -rpath ${INSTALLPREFIX}/lib ${ZLIB} ${BOOSTLIBS} ${EXTLIBS}
+	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} ${PTHREADLDFLAGS} -o $@ $^ -rpath ${INSTALLPREFIX}/lib ${EXTLIBS}
 
 tarprep: ${TARDIR}/bin/dwmnet
 
