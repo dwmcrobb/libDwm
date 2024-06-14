@@ -84,8 +84,7 @@ CXXFLAGS += -g
 # CXXFLAGS += -fsanitize=address
 LDFLAGS  += -g
 # LDFLAGS += -fsanitize=address
-ALLINC   = -I../include ${BZINC} ${BOOSTINC} ${TIRPCINC}
-OSLIBS   += -lxxhash ${TIRPCLIB}
+ALLINC   = -I../include ${EXTINCS} ${BOOSTINC}
 
 all: ${TESTS}
 
@@ -120,11 +119,11 @@ endif
 
 ifneq ("${TARGET_VENDOR}","apple")
 TestProcessTable: TestProcessTable.o ../lib/libDwm.la
-	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} -o $@ $^ ${ZLIB} ${BZLIB} ${BOOSTLIBS} ${TERMCAPLIB} ${OSLIBS} ${PTHREADLDFLAGS} ${KVMLIB} -lpcap
+	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} -o $@ $^ ${ZLIB} ${BOOSTLIBS} ${TERMCAPLIB} ${EXTLIBS} ${PTHREADLDFLAGS}
 endif
 
 %: %.o ../lib/libDwm.la
-	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} -o $@ $^ ${ZLIB} ${BZLIB} ${BOOSTLIBS} ${TERMCAPLIB} ${OSLIBS} ${PTHREADLDFLAGS} -lpcap
+	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} -o $@ $^ ${ZLIB} ${BOOSTLIBS} ${TERMCAPLIB} ${EXTLIBS} ${PTHREADLDFLAGS}
 
 ../lib/libDwm.la::
 	${MAKE} -C ../src

@@ -1,6 +1,6 @@
 include ../../Makefile.vars
 
-ALLINC          = -I../include ${BOOSTINC} ${BZINC} ${PCAPINC} ${TIRPCINC}
+ALLINC          = -I../include ${BOOSTINC} ${EXTINCS}
 CXXFLAGS	+= -g -Wno-deprecated-register -Wno-register
 OBJFILESNP =	DwmASIO.o \
 		DwmBZ2IO.o \
@@ -88,7 +88,7 @@ OBJDEPS         = $(OBJFILESNP:%.o=deps/%_deps)
 all:: ../lib/libDwm.la
 
 ../lib/libDwm.la: ${SHARED_OBJFILES}
-	${LIBTOOL} --tag=CXX --mode=link ${CXX} -no-suppress -o $@ $^ -rpath ${INSTALLPREFIX}/lib ${ZLIB} ${BZLIB} ${TERMCAPLIB} ${PCAPLIB} ${KVMLIB} -version-info ${shlib_version} ${LDFLAGS}
+	${LIBTOOL} --tag=CXX --mode=link ${CXX} -no-suppress -o $@ $^ -rpath ${INSTALLPREFIX}/lib ${ZLIB} ${EXTLIBS} ${TERMCAPLIB} -version-info ${shlib_version} ${LDFLAGS}
 
 #  dependency rule
 deps/%_deps: %.cc

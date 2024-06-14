@@ -87,7 +87,7 @@ define(DWM_INSTALL_PATH,[
   AC_ARG_WITH([$1],
               [  --with-$1=value set default \$$1 to value],
               [$1=$withval; /usr/bin/printf "%s set to %s\n" [$1] $withval],
-	      [/usr/bin/printf "%s set to %s [(default)]\n" [$1] [$2]]
+	      [/usr/bin/printf ["%s set to %s (default)\n"] [$1] [$2]]
   )dnl
   AC_SUBST([$1])
   if test -z "$dwm_install_max_name_len" ; then
@@ -112,9 +112,9 @@ define(DWM_PREREQ_PATH,[
   $1=$2
   AC_ARG_WITH([$1],
     [AS_HELP_STRING([--with-$1=value],[set $1 to value ($3)])],
-    [$1=$withval; /usr/bin/printf "%s set to %s\n" [$1] $withval],
+    [$1=$withval; /usr/bin/printf ["%s set to %s\n"] [$1] [$withval]],
     [if test -n "$withval" ; then 
-       /usr/bin/printf "%s set to %s [(default)]\n" [$1] [$2]
+       /usr/bin/printf ["%s set to default %s\n"] [$1] [$2]
      else
        /usr/bin/printf "%s not set\n" [$1]
      fi
@@ -840,9 +840,9 @@ define(DWM_COMPILE_BOOSTASIO,[
       [[boost::asio::ip::tcp::iostream  tcpStream;]])
     ],
     [BOOSTDIR="$1"],
-    [BOOSTDIR="none"
-     CXXFLAGS="$prev_CPPFLAGS"]
+    [BOOSTDIR="none"]
   )
+  CXXFLAGS="$prev_CPPFLAGS"
   AC_LANG_POP()
 ])
 
@@ -932,4 +932,88 @@ define(DWM_GET_TAG,[
   AC_SUBST(DWM_TAG)
   AC_SUBST(DWM_VERSION)
   AC_SUBST(DWM_NAME)
+])
+
+define(CHECK_NLOHMANN_JSON_PKG,[
+  AC_MSG_CHECKING([for nlohmann_json pkg])
+  pkg-config --exists nlohmann_json
+  if [[ $? -eq 0 ]]; then
+    DWM_HAVE_NLOHMANN_JSON_PKG=1
+    EXTPKGS="${EXTPKGS} nlohmann_json"
+    AC_MSG_RESULT([found])
+  else
+    AC_MSG_RESULT([not found!])
+    exit 1
+  fi
+])
+
+define(CHECK_LIBXXHASH_PKG,[
+  AC_MSG_CHECKING([for libxxhash pkg])
+  pkg-config --exists libxxhash
+  if [[ $? -eq 0 ]]; then
+    DWM_HAVE_LIBXXHASH_PKG=1
+    EXTPKGS="${EXTPKGS} libxxhash"
+    AC_MSG_RESULT([found])
+  else
+    AC_MSG_RESULT([not found!])
+    exit 1
+  fi
+])
+
+define(CHECK_LIBTIRPC_PKG,[
+  AC_MSG_CHECKING([for libtirpc pkg])
+  pkg-config --exists libtirpc
+  if [[ $? -eq 0 ]]; then
+    DWM_HAVE_LIBXXHASH_PKG=1
+    EXTPKGS="${EXTPKGS} libtirpc"
+    AC_MSG_RESULT([found])
+  else
+    AC_MSG_RESULT([not found])
+  fi
+])
+
+define(CHECK_LIBPCAP_PKG,[
+  AC_MSG_CHECKING([for libpcap pkg])
+  pkg-config --exists libpcap
+  if [[ $? -eq 0 ]]; then
+    DWM_HAVE_LIBPCAP_PKG=1
+    EXTPKGS="${EXTPKGS} libpcap"
+    AC_MSG_RESULT([found])
+  else
+    AC_MSG_RESULT([not found])
+  fi
+])
+
+define(CHECK_BZIP2,[
+  AC_MSG_CHECKING([for bzip2 library])
+  if [[ -f /usr/include/bzlib.h ]]; then
+    DWM_HAVE_BZIP2LIB=1
+    AC_MSG_RESULT([found in standard location])
+    EXTLIBS="${EXTLIBS} -lbz2"
+  else
+    if [[ -f /opt/local/include/bzlib.h ]]; then
+      AC_MSG_RESULT([found in /opt/local])
+      inc_dir_present=0
+      for inc_dir in ${EXTINCS} ; do
+        if [[ "${inc_dir}" = "-I/opt/local/include" ]]; then
+	  inc_dir_present=1
+	  break
+	fi
+      done
+      if [[ ${inc_dir_present} -eq 0 ]]; then
+        EXTINCS="${EXTINCS} -I/opt/local/include
+      fi
+      lib_dir_present=0
+      for lib_dir in ${EXTLIBS} ; do
+        if [[ "${lib_dir}" = "-L/opt/local/lib" ]]; then
+	  lib_dir_present=1
+	  break
+        fi
+      done
+      if [[ ${lib_dir_present} -eq 0 ]]; then
+        EXTLIBS="${EXTLIBS} -L/opt/local/lib
+      fi
+      EXTLIBS="${EXTLIBS} -lbz2"
+    fi
+  fi
 ])

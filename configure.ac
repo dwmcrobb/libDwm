@@ -18,7 +18,6 @@ dnl  Set variables for pthreads
 DWM_SET_PTHREADFLAGS
 
 OSLIBS=""
-KVMLIB="-lkvm"
 LIBTOOL="libtool"
 
 case $host_os in
@@ -28,7 +27,6 @@ case $host_os in
     ;;
   linux*)
     CXXFLAGS="-O2"
-    KVMLIB=""
     LDFLAGS="$LDFLAGS"
     AC_CHECK_LIB(procps, readproctab, [OSLIBS+=" -lprocps"], [exit 1])
     DEBARCH=`dpkg --print-architecture`
@@ -38,7 +36,6 @@ case $host_os in
     CC="clang++"
     CXX="clang++"
     CXXFLAGS="${CXXFLAGS} -stdlib=libc++"
-    KVMLIB=""
     LDFLAGS="${LDFLAGS} -g -O2 -stdlib=libc++"
     LIBTOOL="glibtool"
     ;;
@@ -52,7 +49,6 @@ DWM_CHECK_CPLUSPLUS_20
 DWM_CHECK_NEED_LIBATOMIC
 DWM_CHECK_NEED_LIBRT
 
-AC_SUBST(KVMLIB)
 AC_SUBST(LIBTOOL)
 AC_SUBST(OSLIBS)
 
@@ -68,71 +64,32 @@ AC_CHECK_LIB(z, gzwrite, [ZLIB=-lz], [exit 1])
 AC_LANG_POP()
 AC_SUBST(ZLIB)
 
+CHECK_NLOHMANN_JSON_PKG
+CHECK_LIBXXHASH_PKG
+CHECK_LIBTIRPC_PKG
+CHECK_LIBPCAP_PKG
+
+EXTINCS=`pkg-config --cflags-only-I ${EXTPKGS}`
+EXTLIBS=`pkg-config --libs ${EXTPKGS}`
+
+CHECK_BZIP2
+AC_SUBST(EXTINCS)
+AC_SUBST(EXTLIBS)
+
 dnl ------------------------------------------------------------------------
 dnl //  Check for libbz2
 dnl ------------------------------------------------------------------------
-DWM_PREREQ_PATH(bz2src, [], [bz2 source path])
-if [[ -n "$bz2src" ]]; then
-   OLDLDFLAGS="${LDFLAGS}"
-   LDFLAGS="${LDFLAGS} -L${bz2src}"
-   AC_CHECK_LIB(bz2, BZ2_bzwrite, 
-                [ BZ2LIB="-L${bz2src} -lbz2"
-                  BZ2INC="-I${bz2src}"
-                ],
-                [exit 1])
-   LDFLAGS="${OLDLDFLAGS}"
-else
-  AC_LANG_PUSH(C++)
-  AC_CHECK_LIB(bz2, BZ2_bzwrite, [BZ2LIB=-lbz2], [exit 1])
-  AC_LANG_POP()
-fi
-
-AC_SUBST(BZ2INC)
+AC_LANG_PUSH(C++)
+AC_CHECK_LIB(bz2, BZ2_bzwrite, [BZ2LIB=-lbz2], [exit 1])
+AC_LANG_POP()
 AC_SUBST(BZ2LIB)
-
-dnl ------------------------------------------------------------------------
-dnl //  Check for libtirpc
-dnl ------------------------------------------------------------------------
-TIRPCINC=`pkg-config --cflags-only-I libtirpc 2>/dev/null`
-TIRPCLIB=`pkg-config --libs libtirpc 2>/dev/null`
-if [[ $? -eq 0 ]]; then
-  TIRPCPKG=libtirpc
-fi
-AC_SUBST(TIRPCINC)
-AC_SUBST(TIRPCLIB)
-
-XXHASHINC=`pkg-config --cflags-only-I libxxhash`
-XXHASHLIB=`pkg-config --libs libxxhash`
-AC_SUBST(XXHASHINC)
-AC_SUBST(XXHASHLIB)
-
-dnl ------------------------------------------------------------------------
-dnl //  Check for libpcap
-dnl ------------------------------------------------------------------------
-DWM_PREREQ_PATH(pcapsrc, [], [pcap source path])
-if [[ -n "$pcapsrc" ]]; then
-   OLDLDFLAGS="${LDFLAGS}"
-   LDFLAGS="${LDFLAGS} -L${pcapsrc}"
-   AC_CHECK_LIB(pcap, pcap_open_offline, 
-                [ PCAPLIB="-L${pcapsrc} -lpcap"
-                  PCAPINC="-I${pcapsrc}"
-                ],
-                [exit 1])
-   LDFLAGS="${OLDLDFLAGS}"
-else
-  AC_LANG_PUSH(C++)
-  AC_CHECK_LIB(pcap, pcap_open_offline, [PCAPLIB=-lpcap], [])
-  AC_LANG_POP()
-fi
 
 DWM_CHECK_BOOSTASIO
 DWM_CHECK_NEED_LIBIBVERBS
 
 AC_SUBST(LDFLAGS)
-AC_SUBST(PCAPINC)
-AC_SUBST(PCAPLIB)
-
-DWM_CHECK_STRTOF()
+dnl AC_SUBST(PCAPINC)
+dnl AC_SUBST(PCAPLIB)
 
 DWM_PREREQ_PATH(htmlman,share/htmlman,[HTML manpage path])
 
@@ -155,18 +112,15 @@ AC_CHECK_HEADER(byteswap.h, [AC_DEFINE(HAVE_BYTESWAP_H)])
 AC_CHECK_HEADER(endian.h, [AC_DEFINE(HAVE_ENDIAN_H)])
 
 dnl ------------------------------------------------------------------------
-dnl //  Check for <kvm.h>
-dnl ------------------------------------------------------------------------
-AC_CHECK_HEADER(kvm.h, [AC_DEFINE(HAVE_KVM_H)])
-
-dnl ------------------------------------------------------------------------
 dnl //  Check for <net/pfvar.h> and <net/if_pflog.h>
 dnl ------------------------------------------------------------------------
-AC_CHECK_HEADER(net/pfvar.h, [AC_DEFINE(HAVE_NET_PFVAR_H)], [],
+AC_CHECK_HEADER([net/pfvar.h], [AC_DEFINE(HAVE_NET_PFVAR_H)], [],
                 [#include <net/if.h>])
-AC_CHECK_HEADER(net/if_pflog.h, [AC_DEFINE(HAVE_NET_IF_PFLOG_H)], [],
+AC_CHECK_HEADER([net/if_pflog.h], [AC_DEFINE(HAVE_NET_IF_PFLOG_H)], [],
                 [#include <net/if.h>
-		 #include <net/pfvar.h>])
+		 #ifdef HAVE_NET_PFVAR_H
+		 #include <net/pfvar.h>
+		 #endif])
 
 AC_CHECK_PROG([MANDOC], [mandoc], [mandoc], [])
 
