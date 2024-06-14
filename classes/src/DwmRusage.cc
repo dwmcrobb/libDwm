@@ -304,24 +304,13 @@ namespace Dwm {
   std::istream & Rusage::Read(std::istream & is)
   {
     if (is) {
-      if (! StreamIO::Read(is, _userTime))                       goto readError;
-      if (! StreamIO::Read(is, _systemTime))                     goto readError;
-      if (! StreamIO::Read(is, _maxResidentSetSize))             goto readError;
-      if (! StreamIO::Read(is, _integralSharedTextMemorySize))   goto readError;
-      if (! StreamIO::Read(is, _integralUnsharedDataSize))       goto readError;
-      if (! StreamIO::Read(is, _integralUnsharedStackSize))      goto readError;
-      if (! StreamIO::Read(is, _pageReclaims))                   goto readError;
-      if (! StreamIO::Read(is, _pageFaults))                     goto readError;
-      if (! StreamIO::Read(is, _swaps))                          goto readError;
-      if (! StreamIO::Read(is, _blockInputOperations))           goto readError;
-      if (! StreamIO::Read(is, _blockOutputOperations))          goto readError;
-      if (! StreamIO::Read(is, _messagesSent))                   goto readError;
-      if (! StreamIO::Read(is, _messagesReceived))               goto readError;
-      if (! StreamIO::Read(is, _signalsReceived))                goto readError;
-      if (! StreamIO::Read(is, _voluntaryContextSwitches))       goto readError;
-      StreamIO::Read(is, _involuntaryContextSwitches);
+      StreamIO::ReadV(is, _userTime, _systemTime, _maxResidentSetSize,
+                      _integralSharedTextMemorySize, _integralUnsharedDataSize,
+                      _integralUnsharedStackSize, _pageReclaims, _pageFaults,
+                      _swaps, _blockInputOperations, _blockOutputOperations,
+                      _messagesSent, _messagesReceived, _signalsReceived,
+                      _voluntaryContextSwitches, _involuntaryContextSwitches);
     }
-  readError:
     return(is);
   }
   
@@ -331,24 +320,14 @@ namespace Dwm {
   std::ostream & Rusage::Write(std::ostream & os) const
   {
     if (os) {
-      if (! StreamIO::Write(os, _userTime))                        goto writeError;
-      if (! StreamIO::Write(os, _systemTime))                      goto writeError;
-      if (! StreamIO::Write(os, _maxResidentSetSize))              goto writeError;
-      if (! StreamIO::Write(os, _integralSharedTextMemorySize))    goto writeError;
-      if (! StreamIO::Write(os, _integralUnsharedDataSize))        goto writeError;
-      if (! StreamIO::Write(os, _integralUnsharedStackSize))       goto writeError;
-      if (! StreamIO::Write(os, _pageReclaims))                    goto writeError;
-      if (! StreamIO::Write(os, _pageFaults))                      goto writeError;
-      if (! StreamIO::Write(os, _swaps))                           goto writeError;
-      if (! StreamIO::Write(os, _blockInputOperations))            goto writeError;
-      if (! StreamIO::Write(os, _blockOutputOperations))           goto writeError;
-      if (! StreamIO::Write(os, _messagesSent))                    goto writeError;
-      if (! StreamIO::Write(os, _messagesReceived))                goto writeError;
-      if (! StreamIO::Write(os, _signalsReceived))                 goto writeError;
-      if (! StreamIO::Write(os, _voluntaryContextSwitches))        goto writeError;
-      StreamIO::Write(os, _involuntaryContextSwitches);
+      StreamIO::WriteV(os, _userTime, _systemTime, _maxResidentSetSize,
+                       _integralSharedTextMemorySize,
+                       _integralUnsharedDataSize, _integralUnsharedStackSize,
+                       _pageReclaims, _pageFaults, _swaps,
+                       _blockInputOperations, _blockOutputOperations,
+                       _messagesSent, _messagesReceived, _signalsReceived,
+                       _voluntaryContextSwitches, _involuntaryContextSwitches);
     }
-  writeError:
     return(os);
   }
 
