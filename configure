@@ -643,7 +643,6 @@ ac_header_c_list=
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
 BUILD_DOCS
-LIBSTDCPPFS
 SQLITEDIR
 MANDOC
 DWM_NAME
@@ -664,11 +663,12 @@ OSARCH
 OSVERSION
 OSNAME
 htmlman
+OSLIBS
 EXTLIBS
 EXTINCS
+LIBSTDCPPFS
 BOOSTLIBS
 BOOSTDIR
-OSLIBS
 LIBTOOL
 DEBARCH
 PTHREADLDFLAGS
@@ -4430,7 +4430,6 @@ case $host_os in
     ;;
   linux*)
     CXXFLAGS="-O2"
-    LDFLAGS="$LDFLAGS"
     DEBARCH=`dpkg --print-architecture`
 
     ;;
@@ -4442,6 +4441,7 @@ case $host_os in
     LIBTOOL="glibtool"
     ;;
 esac
+
 
 echo "host_os ${host_os}"
 
@@ -4654,181 +4654,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking if we need libatomic" >&5
-printf %s "checking if we need libatomic... " >&6; }
-  ac_ext=cpp
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-  prev_OSLIBS="$OSLIBS"
-  prev_LIBS="$LIBS"
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-     #include <atomic>
-     int main() {
-       std::atomic<bool>  foo;
-         std::atomic<uint64_t>  count(0);
-         while (foo.exchange(true)) {
-	   count += 1;
-	 }
-       bool  bar = foo.load();
-       foo.store(bar);
-       foo = bar;
-       std::atomic<uint64_t> ulfoo;
-       ulfoo.store(count);
-       --ulfoo;
-       ulfoo -= 5;
-       uint64_t  ulbar = ulfoo.load();
-       std::atomic<int *>  aip;
-     }
-
-_ACEOF
-if ac_fn_cxx_try_link "$LINENO"
-then :
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
-printf "%s\n" "no" >&6; }
-else case e in #(
-  e)
-     OSLIBS="$OSLIBS -latomic"
-     LIBS="$LIBS -latomic"
-     cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-        #include <atomic>
-        int main() {
-          std::atomic<bool>  foo;
-          std::atomic<uint64_t>  count(0);
-          while (foo.exchange(true)) {
- 	    count += 1;
- 	  }
-          bool  bar = foo.load();
-	  foo.store(bar);
-	  foo = bar;
-          std::atomic<uint64_t> ulfoo;
-          ulfoo.store(count);
-	  --ulfoo;
-          ulfoo -= 5;
-	  uint64_t  ulbar = ulfoo.load();
-          std::atomic<int *>  aip;
-        }
-
-_ACEOF
-if ac_fn_cxx_try_link "$LINENO"
-then :
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-printf "%s\n" "yes" >&6; }
-else case e in #(
-  e) { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
-printf "%s\n" "no" >&6; }
-        OSLIBS="$prev_OSLIBS"
-      ;;
-esac
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam \
-    conftest$ac_exeext conftest.$ac_ext
-
-   ;;
-esac
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam \
-    conftest$ac_exeext conftest.$ac_ext
-  LIBS="$prev_LIBS"
-  ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
-
-
-
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking if we need librt" >&5
-printf %s "checking if we need librt... " >&6; }
-  ac_ext=cpp
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-  NEED_LIBRT=0
-  prev_LIBS="$LIBS"
-  prev_OSLIBS="$OSLIBS"
-  LIBS="$LIBS $OSLIBS"
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-     extern "C" {
-     #include <aio.h>
-     }
-     #include <iostream>
-     int main() {
-       struct aiocb  myIocb;
-       if (aio_write(&myIocb) == 0) {
-         std::cerr << "success\n";
-       }
-     }
-
-_ACEOF
-if ac_fn_cxx_try_link "$LINENO"
-then :
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
-printf "%s\n" "no" >&6; }
-     LIBS="$prev_LIBS"
-     OSLIBS="$prev_OSLIBS"
-else case e in #(
-  e)
-     OSLIBS="$OSLIBS -lrt"
-     LIBS="$LIBS -lrt"
-     cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-        extern "C" {
-	#include <aio.h>
-	}
-	#include <iostream>
-        int main() {
-	  struct aiocb  myIocb;
-	  if (aio_write(&myIocb) == 0) {
-            std::cerr << "success\n";
-	  }
-        }
-
-_ACEOF
-if ac_fn_cxx_try_link "$LINENO"
-then :
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-printf "%s\n" "yes" >&6; }
-else case e in #(
-  e) { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
-printf "%s\n" "no" >&6; }
-        LIBS="$prev_LIBS"
-	OSLIBS="$prev_OSLIBS"
-      ;;
-esac
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam \
-    conftest$ac_exeext conftest.$ac_ext
-
-   ;;
-esac
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam \
-    conftest$ac_exeext conftest.$ac_ext
-  LIBS="$prev_LIBS"
-  ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
-
-
-
-
-
-
-
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for nlohmann_json pkg" >&5
 printf %s "checking for nlohmann_json pkg... " >&6; }
   pkg-config --exists nlohmann_json
@@ -4906,6 +4731,7 @@ printf "%s\n" "not found" >&6; }
   fi
 
 fi
+
 
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for bzip2 library" >&5
 printf %s "checking for bzip2 library... " >&6; }
@@ -5103,8 +4929,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for libtermcap" >&5
-printf %s "checking for libtermcap... " >&6; }
   ac_ext=cpp
 ac_cpp='$CXXCPP $CPPFLAGS'
 ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
@@ -5150,12 +4974,8 @@ printf "%s\n" "$ac_cv_lib_termcap_tgetent" >&6; }
 if test "x$ac_cv_lib_termcap_tgetent" = xyes
 then :
   EXTLIBS="${EXTLIBS} -ltermcap"
-     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: found" >&5
-printf "%s\n" "found" >&6; }
 else case e in #(
-  e) { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: not found!!" >&5
-printf "%s\n" "not found!!" >&6; }
-     exit 1 ;;
+  e) exit 1 ;;
 esac
 fi
 
@@ -5214,12 +5034,8 @@ printf "%s\n" "$ac_cv_lib_z_gzwrite" >&6; }
 if test "x$ac_cv_lib_z_gzwrite" = xyes
 then :
   EXTLIBS="${EXTLIBS} -lz"
-     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: found" >&5
-printf "%s\n" "found" >&6; }
 else case e in #(
-  e) { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: not found!!" >&5
-printf "%s\n" "not found!!" >&6; }
-     exit 1 ;;
+  e) exit 1 ;;
 esac
 fi
 
@@ -5228,6 +5044,53 @@ ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+
+
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for libstdc++fs" >&5
+printf %s "checking for libstdc++fs... " >&6; }
+  ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+  prev_CPPFLAGS="$CXXFLAGS"
+  prev_LIBS="${LIBS}"
+  CXXFLAGS="$CXXFLAGS -std=c++17"
+  LIBS="${LIBS} -lstdc++fs"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <filesystem>
+int
+main (void)
+{
+std::filesystem::remove("foo");
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"
+then :
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+               LIBSTDCPPFS=-lstdc++fs
+
+else case e in #(
+  e) { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+               LIBS="$prev_LIBS" ;;
+esac
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+  CXXFLAGS="$prev_CPPFLAGS"
+  ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
 
 
 
@@ -5576,53 +5439,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
     ;;
 esac
-
-
-
-
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for libstdc++fs" >&5
-printf %s "checking for libstdc++fs... " >&6; }
-  ac_ext=cpp
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-  prev_CPPFLAGS="$CXXFLAGS"
-  prev_LIBS="${LIBS}"
-  CXXFLAGS="$CXXFLAGS -std=c++17"
-  LIBS="${LIBS} -lstdc++fs"
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#include <filesystem>
-int
-main (void)
-{
-std::filesystem::remove("foo");
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_cxx_try_link "$LINENO"
-then :
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-printf "%s\n" "yes" >&6; }
-               LIBSTDCPPFS=-lstdc++fs
-
-else case e in #(
-  e) { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
-printf "%s\n" "no" >&6; }
-               LIBS="$prev_LIBS" ;;
-esac
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam \
-    conftest$ac_exeext conftest.$ac_ext
-  CXXFLAGS="$prev_CPPFLAGS"
-  ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 

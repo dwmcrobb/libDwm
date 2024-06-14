@@ -931,7 +931,7 @@ define(DWM_GET_TAG,[
   AC_SUBST(DWM_NAME)
 ])
 
-define(CHECK_NLOHMANN_JSON_PKG,[
+define(DWM_CHECK_NLOHMANN_JSON_PKG,[
   AC_MSG_CHECKING([for nlohmann_json pkg])
   pkg-config --exists nlohmann_json
   if [[ $? -eq 0 ]]; then
@@ -944,7 +944,7 @@ define(CHECK_NLOHMANN_JSON_PKG,[
   fi
 ])
 
-define(CHECK_LIBXXHASH_PKG,[
+define(DWM_CHECK_LIBXXHASH_PKG,[
   AC_MSG_CHECKING([for libxxhash pkg])
   pkg-config --exists libxxhash
   if [[ $? -eq 0 ]]; then
@@ -957,7 +957,7 @@ define(CHECK_LIBXXHASH_PKG,[
   fi
 ])
 
-define(CHECK_LIBTIRPC_PKG,[
+define(DWM_CHECK_LIBTIRPC_PKG,[
   AC_MSG_CHECKING([for libtirpc pkg])
   pkg-config --exists libtirpc
   if [[ $? -eq 0 ]]; then
@@ -969,7 +969,7 @@ define(CHECK_LIBTIRPC_PKG,[
   fi
 ])
 
-define(CHECK_LIBPCAP_PKG,[
+define(DWM_CHECK_LIBPCAP_PKG,[
   AC_MSG_CHECKING([for libpcap pkg])
   DWM_HAVE_LIBPCAP_PKG=0
   pkg-config --exists libpcap
@@ -982,7 +982,7 @@ define(CHECK_LIBPCAP_PKG,[
   fi
 ])
 
-define(CHECK_LIBPCAP,[
+define(DWM_CHECK_LIBPCAP,[
   AC_MSG_CHECKING([for libpcap in standard location])
   if [[ -f /usr/lib/libcap.so -o -L /usr/lib/libpcap.so ]]; then
     EXTLIBS="${EXTLIBS} -lpcap"
@@ -993,7 +993,7 @@ define(CHECK_LIBPCAP,[
   fi
 ])
 
-define(CHECK_BZIP2,[
+define(DWM_CHECK_BZIP2,[
   AC_MSG_CHECKING([for bzip2 library])
   if [[ -f /usr/include/bzlib.h ]]; then
     DWM_HAVE_BZIP2LIB=1
@@ -1028,13 +1028,10 @@ define(CHECK_BZIP2,[
 ])
 
 define(DWM_CHECK_LIBTERMAP,[
-  AC_MSG_CHECKING([for libtermcap])
   AC_LANG_PUSH(C++)
   AC_CHECK_LIB(termcap, tgetent,
-    [EXTLIBS="${EXTLIBS} -ltermcap"
-     AC_MSG_RESULT([found])],
-    [AC_MSG_RESULT([not found!!])
-     exit 1])
+    [EXTLIBS="${EXTLIBS} -ltermcap"],
+    [exit 1])
   AC_LANG_POP()
 ])
 
@@ -1042,10 +1039,8 @@ define(DWM_CHECK_LIBZ,[
   AC_MSG_CHECKING([for libz])
   AC_LANG_PUSH(C++)
   AC_CHECK_LIB(z, gzwrite,
-    [EXTLIBS="${EXTLIBS} -lz"
-     AC_MSG_RESULT([found])],
-    [AC_MSG_RESULT([not found!!])
-     exit 1])
+    [EXTLIBS="${EXTLIBS} -lz"],
+    [exit 1])
   AC_LANG_POP()
 ])
 
