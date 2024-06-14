@@ -1,7 +1,4 @@
 BOOSTDIR         = @BOOSTDIR@
-ifneq (,@BOOSTINC@)
-BOOSTINC         = @BOOSTINC@
-endif
 BOOSTLIBS        = @BOOSTLIBS@
 BUILD_DOCS       = @BUILD_DOCS@
 CXX		 = @CXX@

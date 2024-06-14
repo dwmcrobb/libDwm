@@ -866,6 +866,7 @@ define(DWM_CHECK_BOOSTASIO,[
     AC_SUBST(BOOSTDIR)
     AC_SUBST(BOOSTINC)
     AC_SUBST(BOOSTLIBS)
+    ADD_IF_NOT_PRESENT(EXTINCS,[${BOOSTINC}])
   else
     echo Boost asio is required\!\!
     exit 1
@@ -994,7 +995,6 @@ define(CHECK_LIBPCAP,[
   fi
 ])
 
-
 define(CHECK_BZIP2,[
   AC_MSG_CHECKING([for bzip2 library])
   if [[ -f /usr/include/bzlib.h ]]; then
@@ -1012,7 +1012,7 @@ define(CHECK_BZIP2,[
 	fi
       done
       if [[ ${inc_dir_present} -eq 0 ]]; then
-        EXTINCS="${EXTINCS} -I/opt/local/include
+        EXTINCS="${EXTINCS} -I/opt/local/include"
       fi
       lib_dir_present=0
       for lib_dir in ${EXTLIBS} ; do
@@ -1022,9 +1022,22 @@ define(CHECK_BZIP2,[
         fi
       done
       if [[ ${lib_dir_present} -eq 0 ]]; then
-        EXTLIBS="${EXTLIBS} -L/opt/local/lib
+        EXTLIBS="${EXTLIBS} -L/opt/local/lib"
       fi
       EXTLIBS="${EXTLIBS} -lbz2"
     fi
+  fi
+])
+
+define(ADD_IF_NOT_PRESENT,[
+  inc_found=0
+  for inc in ${[$1]} ; do
+    if [[ "$2" = "${inc}" ]]; then
+      inc_found=1
+      break
+    fi
+  done
+  if [[ ${inc_found} -eq 0 ]]; then
+    [$1]="${[$1]} [$2]"
   fi
 ])

@@ -84,7 +84,7 @@ CXXFLAGS += -g
 # CXXFLAGS += -fsanitize=address
 LDFLAGS  += -g
 # LDFLAGS += -fsanitize=address
-ALLINC   = -I../include ${EXTINCS} ${BOOSTINC}
+ALLINC   = -I../include ${EXTINCS}
 
 all: ${TESTS}
 

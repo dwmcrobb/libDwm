@@ -74,23 +74,13 @@ EXTLIBS=`pkg-config --libs ${EXTPKGS}`
 CHECK_LIBPCAP
 CHECK_BZIP2
 
-AC_SUBST(EXTINCS)
-AC_SUBST(EXTLIBS)
-
-dnl ------------------------------------------------------------------------
-dnl //  Check for libbz2
-dnl ------------------------------------------------------------------------
-AC_LANG_PUSH(C++)
-AC_CHECK_LIB(bz2, BZ2_bzwrite, [BZ2LIB=-lbz2], [exit 1])
-AC_LANG_POP()
-AC_SUBST(BZ2LIB)
-
 DWM_CHECK_BOOSTASIO
 DWM_CHECK_NEED_LIBIBVERBS
 
+AC_SUBST(EXTINCS)
+AC_SUBST(EXTLIBS)
+
 AC_SUBST(LDFLAGS)
-dnl AC_SUBST(PCAPINC)
-dnl AC_SUBST(PCAPLIB)
 
 DWM_PREREQ_PATH(htmlman,share/htmlman,[HTML manpage path])
 

@@ -1,6 +1,6 @@
 include ../../Makefile.vars
 
-ALLINC          = -I../include ${BOOSTINC} ${EXTINCS}
+ALLINC          = -I../include ${EXTINCS}
 CXXFLAGS	+= -g -Wno-deprecated-register -Wno-register
 OBJFILESNP =	DwmASIO.o \
 		DwmBZ2IO.o \
