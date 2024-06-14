@@ -28,7 +28,6 @@ case $host_os in
   linux*)
     CXXFLAGS="-O2"
     LDFLAGS="$LDFLAGS"
-    AC_CHECK_LIB(procps, readproctab, [OSLIBS+=" -lprocps"], [exit 1])
     DEBARCH=`dpkg --print-architecture`
     AC_SUBST(DEBARCH)
     ;;
