@@ -190,7 +190,6 @@ done
 
 define(DWM_SET_PKGVARS,[
   AC_MSG_CHECKING([package variables])
-  EPM_ARCH=""
   PKG_SUBDIR=[staging]
   TAGFULL=`./getvers.sh`
   if test "$TAGFULL" = "" ; then
@@ -248,7 +247,6 @@ define(DWM_SET_PKGVARS,[
       ;;
   esac
   TARDIR=`pwd`/${TARDIR_RELATIVE}
-  AC_SUBST(EPM_ARCH)
   AC_SUBST(OSNAME)
   AC_SUBST(OSVERSION)
   AC_SUBST(OSARCH)
@@ -855,18 +853,19 @@ define(DWM_CHECK_BOOSTASIO,[
     AC_MSG_RESULT([found ${BOOSTDIR}])
     AC_DEFINE(HAVE_BOOSTASIO)
     if [[ -n "${BOOSTDIR}" ]]; then
+      BOOSTLIBDIR="-L${BOOSTDIR}/lib"
       BOOSTINC=-I${BOOSTDIR}/include
-      BOOSTLIBS="-L${BOOSTDIR}/lib"
     fi
     if [[ -f ${BOOSTDIR}/lib/libboost_system-mt.dylib ]]; then
-      BOOSTLIBS="${BOOSTLIBS} -lboost_iostreams-mt -lboost_system-mt"
+      BOOSTLIBS="-lboost_iostreams-mt -lboost_system-mt"
     else
-      BOOSTLIBS="${BOOSTLIBS} -lboost_iostreams -lboost_system"
+      BOOSTLIBS="-lboost_iostreams -lboost_system"
     fi
     AC_SUBST(BOOSTDIR)
-    AC_SUBST(BOOSTINC)
     AC_SUBST(BOOSTLIBS)
     ADD_IF_NOT_PRESENT(EXTINCS,[${BOOSTINC}])
+    ADD_IF_NOT_PRESENT(EXTLIBS,[${BOOSTLIBDIR}])
+    EXTLIBS="${EXTLIBS} ${BOOSTLIBS}"
   else
     echo Boost asio is required\!\!
     exit 1
@@ -971,6 +970,7 @@ define(CHECK_LIBTIRPC_PKG,[
 
 define(CHECK_LIBPCAP_PKG,[
   AC_MSG_CHECKING([for libpcap pkg])
+  DWM_HAVE_LIBPCAP_PKG=0
   pkg-config --exists libpcap
   if [[ $? -eq 0 ]]; then
     DWM_HAVE_LIBPCAP_PKG=1
