@@ -982,16 +982,13 @@ define(CHECK_LIBPCAP_PKG,[
 ])
 
 define(CHECK_LIBPCAP,[
-  CHECK_LIBPCAP_PKG
-  if [[ "${DWM_HAVE_LIBPCAP_PKG}" != "1" ]]; then
-    AC_MSG_CHECKING([for libpcap in standard location])
-    if [[ -f /usr/lib/libcap.so -o -L /usr/lib/libpcap.so ]]; then
-      EXTLIBS="${EXTLIBS} -lpcap"
-      AC_MSG_RESULT([found])
-    else
-      AC_MSG_RESULT([not found])
-      exit 1
-    fi
+  AC_MSG_CHECKING([for libpcap in standard location])
+  if [[ -f /usr/lib/libcap.so -o -L /usr/lib/libpcap.so ]]; then
+    EXTLIBS="${EXTLIBS} -lpcap"
+    AC_MSG_RESULT([found])
+  else
+    AC_MSG_RESULT([not found])
+    exit 1
   fi
 ])
 
