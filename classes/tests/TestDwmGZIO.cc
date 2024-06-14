@@ -53,6 +53,7 @@ extern "C" {
 #include "DwmSvnTag.hh"
 #include "DwmIpv4Prefix.hh"
 #include "DwmGZIO.hh"
+#include "DwmIOUtils.hh"
 #include "DwmUnitAssert.hh"
 
 using namespace std;
@@ -551,29 +552,33 @@ static bool VarArgGZIOTest()
   string  fn("/tmp/DWMVarArgGZIOTest");
   gzFile  gzf = gzopen(fn.c_str(), "wb");
   if (gzf)  {
-    UnitAssert(GZIO::WriteV(gzf, s, u, b, i, p));
+    rc = UnitAssert(GZIO::WriteV(gzf, s, u, b, i, p)
+                    == IOUtils::StreamedLengthV(s, u, b, i, p));
     gzclose(gzf);
-    gzf = gzopen(fn.c_str(), "rb");
-    if (gzf) {
-      std::string        s2;
-      uint16_t           u2;
-      bool               b2;
-      int32_t            i2;
-      pair<string,bool>  p2;
-      if (UnitAssert(GZIO::ReadV(gzf, s2, u2, b2, i2, p2))) {
-        if (UnitAssert(s == s2)) {
-          if (UnitAssert(u == u2)) {
-            if (UnitAssert(b == b2)) {
-              if (UnitAssert(i == i2)) {
-                if (UnitAssert(p == p2)) {
-                  rc = true;
+    if (rc) {
+      gzf = gzopen(fn.c_str(), "rb");
+      if (gzf) {
+        std::string        s2;
+        uint16_t           u2;
+        bool               b2;
+        int32_t            i2;
+        pair<string,bool>  p2;
+        if (UnitAssert(GZIO::ReadV(gzf, s2, u2, b2, i2, p2)
+                       == IOUtils::StreamedLengthV(s, u, b, i, p))) {
+          if (UnitAssert(s == s2)) {
+            if (UnitAssert(u == u2)) {
+              if (UnitAssert(b == b2)) {
+                if (UnitAssert(i == i2)) {
+                  if (UnitAssert(p == p2)) {
+                    rc = true;
+                  }
                 }
               }
             }
           }
         }
+        gzclose(gzf);
       }
-      gzclose(gzf);
     }
     std::remove(fn.c_str());
   }
