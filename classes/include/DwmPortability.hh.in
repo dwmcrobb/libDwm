@@ -41,7 +41,6 @@
 #undef HAVE_CFBYTE_ORDER_H
 #undef HAVE_BYTESWAP_H
 #undef HAVE_ENDIAN_H
-#undef HAVE_KVM_H
 
 //---------------------------------------------------------------------------
 //  Deal with lack of be64toh() and htobe64() on OS X and Linux
