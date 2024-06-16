@@ -4929,6 +4929,7 @@ printf "%s\n" "found in /opt/local" >&6; }
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for Boost asio" >&5
 printf %s "checking for Boost asio... " >&6; }
   for boost_dir in "" "/usr/local" "/opt/local" "/opt/local/libexec/boost/1.81"; do
+    if [ -f ${boost_dir}/include/boost/asio.hpp ]; then
 
   ac_ext=cpp
 ac_cpp='$CXXCPP $CPPFLAGS'
@@ -4969,8 +4970,9 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
-    if [ "${BOOSTDIR}" != "none" ]; then
-      break
+      if [ "${BOOSTDIR}" != "none" ]; then
+        break
+      fi
     fi
   done
   if [ "${BOOSTDIR}" != "none" ]; then

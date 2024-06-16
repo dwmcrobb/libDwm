@@ -423,9 +423,11 @@ dnl #------------------------------------------------------------------------
 define(DWM_CHECK_BOOSTASIO,[
   AC_MSG_CHECKING([for Boost asio])
   for boost_dir in "" "/usr/local" "/opt/local" "/opt/local/libexec/boost/1.81"; do
-    DWM_COMPILE_BOOSTASIO([${boost_dir}])
-    if [[ "${BOOSTDIR}" != "none" ]]; then
-      break
+    if [[ -f ${boost_dir}/include/boost/asio.hpp ]]; then
+      DWM_COMPILE_BOOSTASIO([${boost_dir}])
+      if [[ "${BOOSTDIR}" != "none" ]]; then
+        break
+      fi
     fi
   done
   if [[ "${BOOSTDIR}" != "none" ]]; then
