@@ -45,15 +45,21 @@ echo "host_os ${host_os}"
 dnl  Check for C++20
 DWM_CHECK_CPLUSPLUS_20
 
-DWM_CHECK_NLOHMANN_JSON_PKG
-DWM_CHECK_LIBXXHASH_PKG
-DWM_CHECK_LIBTIRPC_PKG
-DWM_CHECK_LIBPCAP_PKG
+dnl  Check for packages with pkg-config.  These will set the m4 macro
+dnl  PC_REQ_PKGS to a comma-separated list appropriate for the 'Required:'
+dnl  field in our libDwm.pc file.  They will also set the PC_PKGS m4 macro
+dnl  to a space-separated list appropriate for pkg-config queries.
+DWM_CHECK_PKG(nlohmann_json,[exit 1])
+DWM_CHECK_PKG(libxxhash,[exit 1])
+DWM_CHECK_PKG(libtirpc)
+DWM_CHECK_PKG(libpcap)
 
-EXTINCS=`pkg-config --cflags-only-I ${EXTPKGS}`
-EXTLIBS=`pkg-config --libs ${EXTPKGS}`
+AC_SUBST(PC_REQUIRED_PKGS,"[PC_REQ_PKGS]")
 
-if [[ ${DWM_HAVE_LIBPCAP_PKG} -ne 1 ]]; then
+EXTINCS=`pkg-config --cflags-only-I PC_PKGS`
+EXTLIBS=`pkg-config --libs PC_PKGS`
+
+if [[ ${DWM_HAVE_libpcap_PKG} -ne 1 ]]; then
   DWM_CHECK_LIBPCAP
 fi
 
@@ -62,7 +68,6 @@ DWM_CHECK_BOOSTASIO
 DWM_CHECK_NEED_LIBIBVERBS
 DWM_CHECK_LIBTERMAP
 DWM_CHECK_LIBZ
-DWM_CHECK_LIBSTDCPPFS
 
 AC_SUBST(EXTINCS)
 AC_SUBST(EXTLIBS)
@@ -101,13 +106,6 @@ AC_CHECK_HEADER([net/if_pflog.h], [AC_DEFINE(HAVE_NET_IF_PFLOG_H)], [],
 		 #endif])
 
 AC_CHECK_PROG([MANDOC], [mandoc], [mandoc], [])
-
-case $host_os in
-  freebsd1*)  
-    DWM_CHECK_SQLITE3()
-    AC_SUBST(SQLITEDIR)
-    ;;
-esac
 
 AC_SUBST(CXXFLAGS)
 

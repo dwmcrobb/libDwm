@@ -1,106 +1,3 @@
-dnl  ###  
-dnl  ###  
-dnl  ###  
-define(DWM_PRESET_PATH,[
-  case $1 in
-    sbindir)
-      if test "$[$1]" = '${exec_prefix}/sbin'; then
-        $1=$2
-      fi
-      ;;
-    datadir)
-      if test "$[$1]" = '${prefix}/share'; then
-        $1=$2
-      fi
-      ;;
-    bindir)
-      if test "$[$1]" = '${exec_prefix}/bin'; then
-        $1=$2
-      fi
-      ;;
-    libdir)
-      if test "$[$1]" = '${exec_prefix}/lib'; then
-        $1=$2
-      fi
-      ;;
-    libexecdir)
-      if test "$[$1]" = '${exec_prefix}/libexec'; then
-        $1=$2
-      fi
-      ;;
-    sysconfdir)
-      if test "$[$1]" = '${prefix}/etc'; then
-        $1=$2
-      fi
-      ;;
-    sharedstatedir)
-      if test "$[$1]" = '${prefix}/com'; then
-        $1=$2
-      fi
-      ;;
-    localstatedir)
-      if test "$[$1]" = '${prefix}/var'; then
-        $1=$2
-      fi
-      ;;
-    infodir)
-      if test "$[$1]" = '${prefix}/info'; then
-        $1=$2
-      fi
-      ;;
-    mandir)
-      if test "$[$1]" = '${prefix}/man'; then
-        $1=$2
-      fi
-      ;;
-    srcdir)
-      ;;
-    includedir)
-      if test "$[$1]" = '${prefix}/include'; then
-        $1=$2
-      fi
-      ;;
-    *)
-      ;;
-  esac
-  if test -z "$dwm_install_max_name_len" ; then
-    dwm_install_max_name_len=`echo $1 | wc -c | awk '{print [$1]}'`
-  else
-    if test `echo $1 | wc -c` -ge [$dwm_install_max_name_len] ; then
-      dwm_install_max_name_len=`echo $1 | wc -c | awk '{print [$1]}'`
-    fi
-  fi
-  dwm_preset_path_names="$dwm_preset_path_names $1"
-  dwm_preset_path_values="$dwm_preset_path_values $[$1]"
-])
-
-
-dnl  #############################################################
-dnl  ###  Function to add a path for an installation directory.  #
-dnl  ###  We'll check/set the variable whose name is passed      #
-dnl  ###  as the first argument ($1), which is also a '--with-'  #
-dnl  ###  argument for configure.  The second argument should    #
-dnl  ###  be the default value for the variable named by $1.     #
-dnl  #############################################################
-define(DWM_INSTALL_PATH,[
-  $1=$2
-  AC_ARG_WITH([$1],
-              [  --with-$1=value set default \$$1 to value],
-              [$1=$withval; /usr/bin/printf "%s set to %s\n" [$1] $withval],
-	      [/usr/bin/printf ["%s set to %s (default)\n"] [$1] [$2]]
-  )dnl
-  AC_SUBST([$1])
-  if test -z "$dwm_install_max_name_len" ; then
-    dwm_install_max_name_len=`echo [$1] | wc -c | awk '{print [$1]}'`
-  else
-    if test `echo $[$1] | wc -c` -ge [$dwm_install_max_name_len] ; then
-      dwm_install_max_name_len=`echo [$1] | wc -c | awk '{print [$1]}'`
-    fi
-  fi
-  dwm_install_names="$dwm_install_names $1"
-  dwm_install_vals="$dwm_install_vals $[$1]"
-])dnl
-
 dnl  #############################################################
 dnl  ###  Function to add a path for a prerequisite.             #
 dnl  ###  The prerequisite is the variable whose name is passed  #
@@ -153,39 +50,6 @@ for dwm_prereq_name in $dwm_prereq_names ; do
 done
 /bin/echo ""
 ]
-])
-
-dnl  #############################################################
-dnl  ###  Function to list the paths added with                  #
-dnl  ###  DWM_INSTALL_PATH.                                      #
-dnl  #############################################################
-define(DWM_LIST_INSTALL_PATHS,[
-/bin/echo ""
-/bin/echo "Install paths: "
-dwm_name_index=0
-for dwm_install_name in $dwm_install_names ; do
-  dwm_val_index=0
-  for dwm_install_value in $dwm_install_vals ; do
-    if test "$dwm_name_index" = "$dwm_val_index"; then
-      /usr/bin/printf "    %${dwm_install_max_name_len}s:  %s\n" $dwm_install_name $dwm_install_value
-    fi
-    dwm_val_index=`expr $dwm_val_index + 1`
-  done
-  dwm_name_index=`expr $dwm_name_index + 1`
-done
-dwm_name_index=0
-for dwm_install_name in $dwm_preset_path_names ; do
-  dwm_val_index=0
-  for dwm_install_value in $dwm_preset_path_values ; do
-    if test "$dwm_name_index" = "$dwm_val_index"; then
-      /usr/bin/printf "    %${dwm_install_max_name_len}s:  %s\n" $dwm_install_name $dwm_install_value
-    fi
-    dwm_val_index=`expr $dwm_val_index + 1`
-  done
-  dwm_name_index=`expr $dwm_name_index + 1`
-done
-
-/bin/echo ""
 ])
 
 define(DWM_SET_PKGVARS,[
@@ -268,61 +132,6 @@ define(DWM_SET_PKGVARS,[
     TAR="${TAR}"
     TARDIR="${TARDIR}"
     TARDIR_RELATIVE="${TARDIR_RELATIVE}"])
-])
-
-dnl #------------------------------------------------------------------------
-dnl #  Sets flags needed for compiling omniORB files (output from omniidl)
-dnl #------------------------------------------------------------------------
-define(DWM_SET_OMNIFLAGS,[
-  AC_MSG_CHECKING([omniORB flags])
-  case $host_os in
-    freebsd[[4567]]*)
-      AC_DEFINE(__freebsd__)
-      OMNIFLAGS="-D__freebsd__"
-      case $host_cpu in
-        i?86)
-          AC_DEFINE(__x86__)
-          OMNIFLAGS="${OMNIFLAGS} -D__x86__"
-          ;;
-        *)
-          echo "unknown host_cpu $host_cpu"
-          ;;
-        esac
-      ;;
-    linux*)
-      AC_DEFINE(__linux__)
-      OMNIFLAGS="-D__linux__"
-      case $host_cpu in
-        i?86)
-          AC_DEFINE(__x86__)
-          OMNIFLAGS="${OMNIFLAGS} -D__x86__"
-          ;;
-        *)
-          echo "unknown host_cpu $host_cpu"
-          ;;
-      esac
-      ;;
-    solaris*)
-      AC_DEFINE(__sunos__)
-      AC_DEFINE(__OSVERSION__,5)
-      OMNIFLAGS="-D__sunos__ -D__OSVERSION__=5"
-      case $host_cpu in
-        sparc)
-          AC_DEFINE(__sparc__)
-          OMNIFLAGS="${OMNIFLAGS} -D__sparc__"
-          ;;
-        *)
-          echo "unknown host_cpu $host_cpu"
-          ;;
-      esac
-      ;;
-    *)
-      ;;
-  esac
-
-  AC_SUBST(OMNIFLAGS)
-  AC_MSG_RESULT([
-    OMNIFLAGS=\"${OMNIFLAGS}\"])
 ])
 
 dnl #------------------------------------------------------------------------
@@ -426,95 +235,6 @@ define(DWM_SET_PTHREADFLAGS,[
     PTHREADCXXFLAGS="${PTHREADCXXFLAGS}"
     PTHREADLDFLAGS="${PTHREADLDFLAGS}"])
 ])
-
-define(DWM_CHECK_STRTOF,[
-  AC_CHECK_LIB(c, strtof, 
-    [AC_DEFINE(HAVE_STRTOF)])
-])
-
-define(DWM_CHECK_GETHOSTBYNAME_R,[
-  AC_MSG_CHECKING([for gethostbyname_r])
-  OLDCPPFLAGS="$CPPFLAGS"
-  CPPFLAGS="$OLDCPPFLAGS -D_REENTRANT"
-  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-      #include <sys/types.h>
-      #include <sys/socket.h>
-      #include <netinet/in.h>
-      #include <arpa/inet.h>
-      #include <netdb.h>]], [[
-      struct hostent  *hp;
-      struct hostent   result;
-      char            *name = "caimis.com";
-      char             buf[4096];
-
-      hp = gethostbyname_r(name,&result,buf,4096,NULL);
-    ]])],[AC_DEFINE(HAVE_GETHOSTBYNAME_R)
-      AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)
-  ])
-  AC_SUBST(HAVE_GETHOSTBYNAME_R)
-  CPPFLAGS="$OLDCPPFLAGS"
-  ]
-)
-
-define(DWM_CHECK_GETHOSTBYADDR_R,[
-  AC_MSG_CHECKING([for gethostbyaddr_r])
-  OLDCPPFLAGS="$CPPFLAGS"
-  CPPFLAGS="$OLDCPPFLAGS -D_REENTRANT"
-  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-      #include <sys/types.h>
-      #include <sys/socket.h>
-      #include <netinet/in.h>
-      #include <arpa/inet.h>
-      #include <netdb.h>]], [[
-      struct hostent  *hp;
-      struct hostent   result;
-      unsigned int     ipAddr = inet_addr("127.0.0.1");
-      char             buf[4096];
-	
-      hp = gethostbyaddr_r(&ipAddr,sizeof(ipAddr),AF_INET,&result,
-			   buf,4096,NULL);
-    ]])],[AC_DEFINE(HAVE_GETHOSTBYADDR_R)
-      AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)
-  ])
-  AC_SUBST(HAVE_GETHOSTBYADDR_R)
-  CPPFLAGS="$OLDCPPFLAGS"
-  ]
-)
-
-
-dnl ######################################################################
-dnl #  Sets variable named [$1] to the value of the installation prefix
-dnl #  for the package named by [$1].  Substitutes for [$1] in output.
-dnl #  Example: DWM_FIND_PKG_PREFIX(libCaimis) would set libCaimis
-dnl #  to the installation prefix (directory) where libCaimis is 
-dnl #  installed, and substitute the value for all instances of 
-dnl #  @libCaimis@ in output files.
-dnl ######################################################################
-define(DWM_FIND_PKG_PREFIX,[
-  AC_MSG_CHECKING([$1 installation prefix])
-  case $host_os in
-    freebsd[[4567]]*)
-      [$1]=`pkg_info -p [$1\*] | grep 'CWD ' | head -1 | cut -d' ' -f3`
-      ;;
-    linux*)
-      [$1]=`rpm -q --queryformat '%{INSTALLPREFIX}' [$1]`
-      ;;
-    solaris*)
-      [$1]=`pkginfo -r [$1]`
-      ;;
-    *)
-      ;;
-  esac
-
-  AC_ARG_WITH([$1],
-    [  --with-$1=value   set $1 to value ([$1 prefix])],
-    [$1=$withval]
-  )
-  AC_SUBST([$1])
-  AC_MSG_RESULT($[$1])
-
-  ]
-)
 
 dnl ------------------------------------------------------------------------
 dnl //  Check for <tuple> (indicating C++0x features) or <tr1/tuple>
@@ -645,82 +365,6 @@ define(DWM_CHECK_CPLUSPLUS_23,[
 ])
 
 dnl #-------------------------------------------------------------------------
-define(DWM_CHECK_SQLITE3,[
-  AC_MSG_CHECKING([for sqlite3])
-  AC_LANG_PUSH(C++)
-  prev_CPPFLAGS="$CXXFLAGS"
-  CXXFLAGS="$CXXFLAGS -I/usr/src/contrib/sqlite3"
-  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-    #include <sqlite3.h>]], [[sqlite3  *ppdb;]])],[AC_MSG_RESULT(yes)
-     AC_DEFINE(HAVE_SQLITE3)
-     SQLITEDIR=/usr/src/contrib/sqlite3],[AC_MSG_RESULT(no)
-     echo '/usr/src/contrib/sqlite3 is required (FreeBSD src)'
-     exit 1])
-  CXXFLAGS="$prev_CPPFLAGS"
-  AC_LANG_POP()
-])
-
-dnl #-------------------------------------------------------------------------
-define(DWM_CHECK_NEED_LIBATOMIC,[
-  AC_MSG_CHECKING([if we need libatomic])
-  AC_LANG_PUSH(C++)
-  prev_OSLIBS="$OSLIBS"
-  prev_LIBS="$LIBS"
-  AC_LINK_IFELSE(
-    [AC_LANG_SOURCE([[
-     #include <atomic>
-     int main() {
-       std::atomic<bool>  foo;
-         std::atomic<uint64_t>  count(0);
-         while (foo.exchange(true)) {
-	   count += 1;
-	 }
-       bool  bar = foo.load();
-       foo.store(bar);
-       foo = bar;
-       std::atomic<uint64_t> ulfoo;
-       ulfoo.store(count);
-       --ulfoo;
-       ulfoo -= 5;
-       uint64_t  ulbar = ulfoo.load();
-       std::atomic<int *>  aip;
-     }
-    ]])],
-    [AC_MSG_RESULT(no)],
-    [
-     OSLIBS="$OSLIBS -latomic"
-     LIBS="$LIBS -latomic"
-     AC_LINK_IFELSE(
-       [AC_LANG_SOURCE([[
-        #include <atomic>
-        int main() {
-          std::atomic<bool>  foo;
-          std::atomic<uint64_t>  count(0);
-          while (foo.exchange(true)) {
- 	    count += 1;
- 	  }
-          bool  bar = foo.load();
-	  foo.store(bar);
-	  foo = bar;
-          std::atomic<uint64_t> ulfoo;
-          ulfoo.store(count);
-	  --ulfoo;
-          ulfoo -= 5;
-	  uint64_t  ulbar = ulfoo.load();
-          std::atomic<int *>  aip;
-        }
-       ]])],
-       [AC_MSG_RESULT(yes)],
-       [AC_MSG_RESULT(no)
-        OSLIBS="$prev_OSLIBS"]
-     )
-    ]
-  )
-  LIBS="$prev_LIBS"
-  AC_LANG_POP()
-])
-    
-dnl #-------------------------------------------------------------------------
 define(DWM_CHECK_NEED_LIBIBVERBS,[
   AC_MSG_CHECKING([if we need libibverbs])
   AC_LANG_PUSH(C++)
@@ -753,72 +397,6 @@ define(DWM_CHECK_NEED_LIBIBVERBS,[
     )
   fi
   LDFLAGS="$prev_LDFLAGS"
-  AC_LANG_POP()
-])
-
-dnl #-------------------------------------------------------------------------
-define(DWM_CHECK_NEED_LIBRT,[
-  AC_MSG_CHECKING([if we need librt])
-  AC_LANG_PUSH(C++)
-  NEED_LIBRT=0
-  prev_LIBS="$LIBS"
-  prev_OSLIBS="$OSLIBS"
-  LIBS="$LIBS $OSLIBS"
-  AC_LINK_IFELSE(
-    [AC_LANG_SOURCE([[
-     extern "C" {
-     #include <aio.h>
-     }
-     #include <iostream>
-     int main() {
-       struct aiocb  myIocb;
-       if (aio_write(&myIocb) == 0) {
-         std::cerr << "success\n";
-       }
-     }
-    ]])],
-    [AC_MSG_RESULT(no)
-     LIBS="$prev_LIBS"
-     OSLIBS="$prev_OSLIBS"],
-    [
-     OSLIBS="$OSLIBS -lrt"
-     LIBS="$LIBS -lrt"
-     AC_LINK_IFELSE(
-       [AC_LANG_SOURCE([[
-        extern "C" {
-	#include <aio.h>
-	}
-	#include <iostream>
-        int main() {
-	  struct aiocb  myIocb;
-	  if (aio_write(&myIocb) == 0) {
-            std::cerr << "success\n";
-	  }
-        }
-       ]])],
-       [AC_MSG_RESULT(yes)],
-       [AC_MSG_RESULT(no)
-        LIBS="$prev_LIBS"
-	OSLIBS="$prev_OSLIBS"]
-     )
-    ]
-  )
-  LIBS="$prev_LIBS"
-  AC_LANG_POP()
-])
-
-dnl #------------------------------------------------------------------------
-define(DWM_CHECK_LIBSTDCPPFS,[
-  AC_MSG_CHECKING([for libstdc++fs])
-  AC_LANG_PUSH(C++)
-  prev_CPPFLAGS="$CXXFLAGS"
-  prev_LIBS="${LIBS}"
-  CXXFLAGS="$CXXFLAGS -std=c++17"
-  LIBS="${LIBS} -lstdc++fs"
-  AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <filesystem>]], [[std::filesystem::remove("foo");]])],[AC_MSG_RESULT(yes)
-               AC_SUBST(LIBSTDCPPFS,[-lstdc++fs])],[AC_MSG_RESULT(no)
-               LIBS="$prev_LIBS"])
-  CXXFLAGS="$prev_CPPFLAGS"
   AC_LANG_POP()
 ])
 
@@ -864,8 +442,8 @@ define(DWM_CHECK_BOOSTASIO,[
     fi
     AC_SUBST(BOOSTDIR)
     AC_SUBST(BOOSTLIBS)
-    ADD_IF_NOT_PRESENT(EXTINCS,[${BOOSTINC}])
-    ADD_IF_NOT_PRESENT(EXTLIBS,[${BOOSTLIBDIR}])
+    DWM_ADD_IF_NOT_PRESENT(EXTINCS,[${BOOSTINC}])
+    DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[${BOOSTLIBDIR}])
     EXTLIBS="${EXTLIBS} ${BOOSTLIBS}"
   else
     echo Boost asio is required\!\!
@@ -931,61 +509,26 @@ define(DWM_GET_TAG,[
   AC_SUBST(DWM_NAME)
 ])
 
-define(DWM_CHECK_NLOHMANN_JSON_PKG,[
-  AC_MSG_CHECKING([for nlohmann_json pkg])
-  pkg-config --exists nlohmann_json
+dnl --------------------------------------------------------------------------
+define(DWM_CHECK_PKG,[
+  AC_MSG_CHECKING([for [$1] pkg])
+  pkg-config --exists [$1]
   if [[ $? -eq 0 ]]; then
-    DWM_HAVE_NLOHMANN_JSON_PKG=1
-    EXTPKGS="${EXTPKGS} nlohmann_json"
+    DWM_HAVE_[$1]_PKG=1
+    m4_append([PC_REQ_PKGS],[$1],[, ])
+    m4_append([PC_PKGS],[$1],[ ])
     AC_MSG_RESULT([found])
   else
     AC_MSG_RESULT([not found!])
-    exit 1
+    [$2]
   fi
 ])
 
-define(DWM_CHECK_LIBXXHASH_PKG,[
-  AC_MSG_CHECKING([for libxxhash pkg])
-  pkg-config --exists libxxhash
-  if [[ $? -eq 0 ]]; then
-    DWM_HAVE_LIBXXHASH_PKG=1
-    EXTPKGS="${EXTPKGS} libxxhash"
-    AC_MSG_RESULT([found])
-  else
-    AC_MSG_RESULT([not found!])
-    exit 1
-  fi
-])
-
-define(DWM_CHECK_LIBTIRPC_PKG,[
-  AC_MSG_CHECKING([for libtirpc pkg])
-  pkg-config --exists libtirpc
-  if [[ $? -eq 0 ]]; then
-    DWM_HAVE_LIBXXHASH_PKG=1
-    EXTPKGS="${EXTPKGS} libtirpc"
-    AC_MSG_RESULT([found])
-  else
-    AC_MSG_RESULT([not found])
-  fi
-])
-
-define(DWM_CHECK_LIBPCAP_PKG,[
-  AC_MSG_CHECKING([for libpcap pkg])
-  DWM_HAVE_LIBPCAP_PKG=0
-  pkg-config --exists libpcap
-  if [[ $? -eq 0 ]]; then
-    DWM_HAVE_LIBPCAP_PKG=1
-    EXTPKGS="${EXTPKGS} libpcap"
-    AC_MSG_RESULT([found])
-  else
-    AC_MSG_RESULT([not found])
-  fi
-])
-
+dnl --------------------------------------------------------------------------
 define(DWM_CHECK_LIBPCAP,[
   AC_MSG_CHECKING([for libpcap in standard location])
   if [[ -f /usr/lib/libcap.so -o -L /usr/lib/libpcap.so ]]; then
-    EXTLIBS="${EXTLIBS} -lpcap"
+    DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-lpcap])
     AC_MSG_RESULT([found])
   else
     AC_MSG_RESULT([not found])
@@ -993,58 +536,45 @@ define(DWM_CHECK_LIBPCAP,[
   fi
 ])
 
+dnl --------------------------------------------------------------------------
 define(DWM_CHECK_BZIP2,[
   AC_MSG_CHECKING([for bzip2 library])
   if [[ -f /usr/include/bzlib.h ]]; then
     DWM_HAVE_BZIP2LIB=1
     AC_MSG_RESULT([found in standard location])
-    EXTLIBS="${EXTLIBS} -lbz2"
+    DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-lbz2])
   else
     if [[ -f /opt/local/include/bzlib.h ]]; then
+      DWM_HAVE_BZIP2LIB=1
       AC_MSG_RESULT([found in /opt/local])
-      inc_dir_present=0
-      for inc_dir in ${EXTINCS} ; do
-        if [[ "${inc_dir}" = "-I/opt/local/include" ]]; then
-	  inc_dir_present=1
-	  break
-	fi
-      done
-      if [[ ${inc_dir_present} -eq 0 ]]; then
-        EXTINCS="${EXTINCS} -I/opt/local/include"
-      fi
-      lib_dir_present=0
-      for lib_dir in ${EXTLIBS} ; do
-        if [[ "${lib_dir}" = "-L/opt/local/lib" ]]; then
-	  lib_dir_present=1
-	  break
-        fi
-      done
-      if [[ ${lib_dir_present} -eq 0 ]]; then
-        EXTLIBS="${EXTLIBS} -L/opt/local/lib"
-      fi
-      EXTLIBS="${EXTLIBS} -lbz2"
+      DWM_ADD_IF_NOT_PRESENT(EXTINCS,[-I/opt/local/include])
+      DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-L/opt/local/lib])
+      DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-lbz2])
     fi
   fi
 ])
 
+dnl --------------------------------------------------------------------------
 define(DWM_CHECK_LIBTERMAP,[
   AC_LANG_PUSH(C++)
   AC_CHECK_LIB(termcap, tgetent,
-    [EXTLIBS="${EXTLIBS} -ltermcap"],
+    [DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-ltermcap])],
     [exit 1])
   AC_LANG_POP()
 ])
 
+dnl --------------------------------------------------------------------------
 define(DWM_CHECK_LIBZ,[
   AC_MSG_CHECKING([for libz])
   AC_LANG_PUSH(C++)
   AC_CHECK_LIB(z, gzwrite,
-    [EXTLIBS="${EXTLIBS} -lz"],
+    [DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-lz])],
     [exit 1])
   AC_LANG_POP()
 ])
 
-define(ADD_IF_NOT_PRESENT,[
+dnl --------------------------------------------------------------------------
+define(DWM_ADD_IF_NOT_PRESENT,[
   inc_found=0
   for inc in ${[$1]} ; do
     if [[ "$2" = "${inc}" ]]; then

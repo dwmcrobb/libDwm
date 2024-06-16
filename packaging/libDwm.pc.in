@@ -6,6 +6,6 @@ includedir=${prefix}/include/libDwm
 Name: libDwm
 Description: Miscellaneous C++ classes
 Version: @TAGVERSION@
-Requires:
-Libs: @PTHREADLDFLAGS@ -L${libdir} -lDwm @EXTLIBS@ @OSLIBS@
+Requires: @PC_REQUIRED_PKGS@
+Libs: @PTHREADLDFLAGS@ -L${libdir} -lDwm @EXTLIBS@
 Cflags: @PTHREADCXXFLAGS@ -I${includedir} @EXTINCS@
