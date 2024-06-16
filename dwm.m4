@@ -512,6 +512,7 @@ define(DWM_GET_TAG,[
 dnl --------------------------------------------------------------------------
 define(DWM_CHECK_PKG,[
   AC_MSG_CHECKING([for [$1] pkg])
+  DWM_HAVE_[$1]_PKG=0
   pkg-config --exists [$1]
   if [[ $? -eq 0 ]]; then
     DWM_HAVE_[$1]_PKG=1
