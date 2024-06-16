@@ -442,8 +442,8 @@ define(DWM_CHECK_BOOSTASIO,[
     fi
     AC_SUBST(BOOSTDIR)
     AC_SUBST(BOOSTLIBS)
-    DWM_ADD_IF_NOT_PRESENT(EXTINCS,[${BOOSTINC}])
-    DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[${BOOSTLIBDIR}])
+    DWM_ADD_IF_NOT_PRESENT(EXTINCS,[${BOOSTINC}],[ ])
+    DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[${BOOSTLIBDIR}],[ ])
     EXTLIBS="${EXTLIBS} ${BOOSTLIBS}"
   else
     echo Boost asio is required\!\!
@@ -515,11 +515,11 @@ define(DWM_CHECK_PKG,[
   pkg-config --exists [$1]
   if [[ $? -eq 0 ]]; then
     DWM_HAVE_[$1]_PKG=1
-    m4_append([PC_REQ_PKGS],[$1],[, ])
-    m4_append([PC_PKGS],[$1],[ ])
+    DWM_ADD_IF_NOT_PRESENT(PC_PKGS,[$1],[ ])
+    DWM_ADD_IF_NOT_PRESENT(PC_REQ_PKGS,[$1],[, ])
     AC_MSG_RESULT([found])
   else
-    AC_MSG_RESULT([not found!])
+    AC_MSG_RESULT([not found])
     [$2]
   fi
 ])
@@ -528,7 +528,7 @@ dnl --------------------------------------------------------------------------
 define(DWM_CHECK_LIBPCAP,[
   AC_MSG_CHECKING([for libpcap in standard location])
   if [[ -f /usr/lib/libcap.so -o -L /usr/lib/libpcap.so ]]; then
-    DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-lpcap])
+    DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-lpcap],[ ])
     AC_MSG_RESULT([found])
   else
     AC_MSG_RESULT([not found])
@@ -542,23 +542,23 @@ define(DWM_CHECK_BZIP2,[
   if [[ -f /usr/include/bzlib.h ]]; then
     DWM_HAVE_BZIP2LIB=1
     AC_MSG_RESULT([found in standard location])
-    DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-lbz2])
+    DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-lbz2],[ ])
   else
     if [[ -f /opt/local/include/bzlib.h ]]; then
       DWM_HAVE_BZIP2LIB=1
       AC_MSG_RESULT([found in /opt/local])
-      DWM_ADD_IF_NOT_PRESENT(EXTINCS,[-I/opt/local/include])
-      DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-L/opt/local/lib])
-      DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-lbz2])
+      DWM_ADD_IF_NOT_PRESENT(EXTINCS,[-I/opt/local/include],[ ])
+      DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-L/opt/local/lib],[ ])
+      DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-lbz2],[ ])
     fi
   fi
 ])
 
 dnl --------------------------------------------------------------------------
-define(DWM_CHECK_LIBTERMAP,[
+define(DWM_CHECK_LIBTERMCAP,[
   AC_LANG_PUSH(C++)
   AC_CHECK_LIB(termcap, tgetent,
-    [DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-ltermcap])],
+    [DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-ltermcap],[ ])],
     [exit 1])
   AC_LANG_POP()
 ])
@@ -568,7 +568,7 @@ define(DWM_CHECK_LIBZ,[
   AC_MSG_CHECKING([for libz])
   AC_LANG_PUSH(C++)
   AC_CHECK_LIB(z, gzwrite,
-    [DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-lz])],
+    [DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-lz],[ ])],
     [exit 1])
   AC_LANG_POP()
 ])
@@ -576,13 +576,17 @@ define(DWM_CHECK_LIBZ,[
 dnl --------------------------------------------------------------------------
 define(DWM_ADD_IF_NOT_PRESENT,[
   inc_found=0
-  for inc in ${[$1]} ; do
+  for inc in ${$1} ; do
     if [[ "$2" = "${inc}" ]]; then
       inc_found=1
       break
     fi
   done
   if [[ ${inc_found} -eq 0 ]]; then
-    [$1]="${[$1]} [$2]"
+    if [[ -n "${$1}" ]]; then
+      [$1]="${$1}[$3][$2]"
+    else
+      [$1]="[$2]"
+    fi
   fi
 ])

@@ -45,19 +45,19 @@ echo "host_os ${host_os}"
 dnl  Check for C++20
 DWM_CHECK_CPLUSPLUS_20
 
-dnl  Check for packages with pkg-config.  These will set the m4 macro
-dnl  PC_REQ_PKGS to a comma-separated list appropriate for the 'Required:'
-dnl  field in our libDwm.pc file.  They will also set the PC_PKGS m4 macro
-dnl  to a space-separated list appropriate for pkg-config queries.
+dnl  Check for packages with pkg-config.  These will set PKG_REQ_PKGS to a
+dnl  comma-separated list appropriate for the 'Required:' field in our
+dnl  libDwm.pc file.  They will also set PC_PKGS to a space-separated list
+dnl  appropriate for pkg-config queries.
 DWM_CHECK_PKG(nlohmann_json,[exit 1])
 DWM_CHECK_PKG(libxxhash,[exit 1])
 DWM_CHECK_PKG(libtirpc)
 DWM_CHECK_PKG(libpcap)
 
-AC_SUBST(PC_REQUIRED_PKGS,"[PC_REQ_PKGS]")
+AC_SUBST(PC_REQ_PKGS)
 
-EXTINCS=`pkg-config --cflags-only-I PC_PKGS`
-EXTLIBS=`pkg-config --libs PC_PKGS`
+EXTINCS=`pkg-config --cflags-only-I ${PC_PKGS}`
+EXTLIBS=`pkg-config --libs ${PC_PKGS}`
 
 if [[ ${DWM_HAVE_libpcap_PKG} -ne 1 ]]; then
   DWM_CHECK_LIBPCAP
@@ -66,7 +66,7 @@ fi
 DWM_CHECK_BZIP2
 DWM_CHECK_BOOSTASIO
 DWM_CHECK_NEED_LIBIBVERBS
-DWM_CHECK_LIBTERMAP
+DWM_CHECK_LIBTERMCAP
 DWM_CHECK_LIBZ
 
 AC_SUBST(EXTINCS)
