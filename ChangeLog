@@ -1,8 +1,17 @@
+2024-06-17  Daniel W. McRobb  <dwm@nomnom.mcplex.net>
+
+	* tagged as libDwm-0.9.35
+
+	* A bunch of configure/build cleanups to remove old and unused
+	bits.  Some parts are still a bit wonky due to differences in
+	the installations for boost, libpcap, bzip2, etc. on FreeBSD,
+	macOS ports, Rasperry Pi OS and Ubuntu.
+
 2024-06-13  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* classes/include/DwmIOUtils.hh: Added StreamedLengthV()
 	convenience function template.
-	
+
 	* Completely refactor ProcessInfo and ProcessTable since it
 	has become ugly trying to maintain it for macOS, Linux and
 	FreeBSD.  I now parse 'ps' output instead of using
