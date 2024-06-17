@@ -413,41 +413,48 @@ define(DWM_COMPILE_BOOSTASIO,[
       [[boost::asio::ip::tcp::iostream  tcpStream;]])
     ],
     [BOOSTDIR="$1"],
-    [BOOSTDIR="none"]
+    [BOOSTDIR=""]
   )
   CXXFLAGS="$prev_CPPFLAGS"
   AC_LANG_POP()
 ])
 
 dnl #------------------------------------------------------------------------
-define(DWM_CHECK_BOOSTASIO,[
-  AC_MSG_CHECKING([for Boost asio])
-  for boost_dir in "" "/usr/local" "/opt/local" "/opt/local/libexec/boost/1.81"; do
+define(DWM_FIND_BOOST_DIR,[
+  BOOSTDIR=""
+  for boost_dir in "/usr/local" "/opt/local" "/opt/local/libexec/boost/1.81"; do
     if [[ -f ${boost_dir}/include/boost/asio.hpp ]]; then
-      DWM_COMPILE_BOOSTASIO([${boost_dir}])
-      if [[ "${BOOSTDIR}" != "none" ]]; then
-        break
-      fi
+      BOOSTDIR="${boost_dir}"
+      break
     fi
   done
-  if [[ "${BOOSTDIR}" != "none" ]]; then
-    AC_MSG_RESULT([found ${BOOSTDIR}])
-    AC_DEFINE(HAVE_BOOSTASIO)
-    if [[ -n "${BOOSTDIR}" ]]; then
-      BOOSTLIBDIR="-L${BOOSTDIR}/lib"
-      BOOSTINC=-I${BOOSTDIR}/include
-    fi
-    if [[ -f ${BOOSTDIR}/lib/libboost_system-mt.dylib ]]; then
-      BOOSTLIBS="-lboost_iostreams-mt -lboost_system-mt"
+])
+
+dnl #------------------------------------------------------------------------
+define(DWM_CHECK_BOOSTASIO,[
+  AC_MSG_CHECKING([for Boost asio])
+  DWM_FIND_BOOST_DIR
+  if [[ -n "${BOOSTDIR}" ]]; then
+    DWM_COMPILE_BOOSTASIO([${BOOSTDIR}])
+    if [[ "${BOOSTDIR}" = "" ]]; then
+      AC_MSG_RESULT([not found (compile failed)])
+      echo Boost asio is required\!\!
+      exit 1
     else
-      BOOSTLIBS="-lboost_iostreams -lboost_system"
+      AC_MSG_RESULT([found in ${BOOSTDIR}])
+      BOOSTLIBDIR="-L${BOOSTDIR}/lib"
+      BOOSTINC="-I${BOOSTDIR}/include"
+      if [[ -f ${BOOSTDIR}/lib/libboost_system-mt.dylib ]]; then
+        BOOSTLIBS="-lboost_iostreams-mt -lboost_system-mt"
+      else
+        BOOSTLIBS="-lboost_iostreams -lboost_system"
+      fi
+      DWM_ADD_IF_NOT_PRESENT(EXTINCS,[${BOOSTINC}],[ ])
+      DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[${BOOSTLIBDIR}],[ ])
+      EXTLIBS="${EXTLIBS} ${BOOSTLIBS}"
     fi
-    AC_SUBST(BOOSTDIR)
-    AC_SUBST(BOOSTLIBS)
-    DWM_ADD_IF_NOT_PRESENT(EXTINCS,[${BOOSTINC}],[ ])
-    DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[${BOOSTLIBDIR}],[ ])
-    EXTLIBS="${EXTLIBS} ${BOOSTLIBS}"
   else
+    AC_MSG_RESULT([not found])
     echo Boost asio is required\!\!
     exit 1
   fi
