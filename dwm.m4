@@ -422,12 +422,25 @@ define(DWM_COMPILE_BOOSTASIO,[
 dnl #------------------------------------------------------------------------
 define(DWM_FIND_BOOST_DIR,[
   BOOSTDIR=""
-  for boost_dir in "/usr/local" "/opt/local" "/opt/local/libexec/boost/1.81"; do
+  for boost_dir in "/usr" "/usr/local" "/opt/local" "/opt/local/libexec/boost/1.81"; do
     if [[ -f ${boost_dir}/include/boost/asio.hpp ]]; then
       BOOSTDIR="${boost_dir}"
       break
     fi
   done
+])
+
+dnl #------------------------------------------------------------------------
+define(DWM_ADD_BOOST_DIRS,[
+  if [[ ${BOOSTDIR} != "/usr" ]]; then
+    DWM_ADD_IF_NOT_PRESENT(EXTINCS,[-I${BOOSTDIR}/include],[ ])
+    DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-L${BOOSTDIR}/lib],[ ])
+  fi
+  if [[ -f ${BOOSTDIR}/lib/libboost_system-mt.dylib ]]; then
+    EXTLIBS="${EXTLIBS} -lboost_iostreams-mt -lboost_system-mt"
+  else
+    EXTLIBS="${EXTLIBS}	-lboost_iostreams -lboost_system"
+  fi
 ])
 
 dnl #------------------------------------------------------------------------
@@ -442,16 +455,7 @@ define(DWM_CHECK_BOOSTASIO,[
       exit 1
     else
       AC_MSG_RESULT([found in ${BOOSTDIR}])
-      BOOSTLIBDIR="-L${BOOSTDIR}/lib"
-      BOOSTINC="-I${BOOSTDIR}/include"
-      if [[ -f ${BOOSTDIR}/lib/libboost_system-mt.dylib ]]; then
-        BOOSTLIBS="-lboost_iostreams-mt -lboost_system-mt"
-      else
-        BOOSTLIBS="-lboost_iostreams -lboost_system"
-      fi
-      DWM_ADD_IF_NOT_PRESENT(EXTINCS,[${BOOSTINC}],[ ])
-      DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[${BOOSTLIBDIR}],[ ])
-      EXTLIBS="${EXTLIBS} ${BOOSTLIBS}"
+      DWM_ADD_BOOST_DIRS
     fi
   else
     AC_MSG_RESULT([not found])
