@@ -59,63 +59,26 @@ define(DWM_SET_PKGVARS,[
   if test "$TAGFULL" = "" ; then
     TAGFULL=$2
   fi
-  TAGNAME=`echo $TAGFULL | cut -d'-' -f1`
   TAGVERSION=`echo $TAGFULL | cut -d'-' -f2-`
   TARDIR_RELATIVE=${PKG_SUBDIR}
   case $host_os in
     darwin*)
       OSNAME="darwin"
-      OSVERSION=`uname -r`
-      OSARCH=`uname -m`
       TAR="/usr/bin/tar"
       ;;
     freebsd*)
       OSNAME="freebsd"
-      OSVERSION=`uname -r | cut -d- -f1`
-      OSARCH=`uname -m`
-      case $OSARCH in
-	i[[3456]]86)
-	  OSARCH=intel
-	  ;;
-	*)
-	  ;;
-      esac
       TAR="/usr/bin/tar"
       ;;
     linux*)
       OSNAME="linux"
-      OSVERSION=`uname -r | cut -d- -f1`
-      OSARCH=`uname -m`
-      case $OSARCH in
-	i[[3456]]86)
-	  OSARCH=intel
-	  ;;
-	x86_64)
-	  OSARCH=amd64
-	  ;;
-	*)
-	  ;;
-      esac
       TAR="/bin/tar"
-      unamem=`uname -m`
-      case ${unamem} in
-        armv7l)
-          EPM_ARCH="-a armhf"
-          ;;
-        x86_64)
-          EPM_ARCH="-a amd64"
-          ;;
-      esac
       ;;
     *)
       ;;
   esac
   TARDIR=`pwd`/${TARDIR_RELATIVE}
   AC_SUBST(OSNAME)
-  AC_SUBST(OSVERSION)
-  AC_SUBST(OSARCH)
-  AC_SUBST(TAGFULL)
-  AC_SUBST(TAGNAME)
   AC_SUBST(TAGVERSION)
   AC_SUBST(PKG_SUBDIR)
   AC_SUBST(TAR)
@@ -123,10 +86,6 @@ define(DWM_SET_PKGVARS,[
   AC_SUBST(TARDIR_RELATIVE)
   AC_MSG_RESULT([
     OSNAME="${OSNAME}"
-    OSVERSION="${OSVERSION}"
-    OSARCH="${OSARCH}"
-    TAGFULL="${TAGFULL}"
-    TAGNAME="${TAGNAME}"
     TAGVERSION="${TAGVERSION}"
     PKG_SUBDIR="${PKG_SUBDIR}"
     TAR="${TAR}"

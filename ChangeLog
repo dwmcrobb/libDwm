@@ -1,3 +1,8 @@
+2024-06-18  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* classes/include/DwmPortability.hh.in, configure, configure.ac,
+	dwm.m4: Minor configure tweaks.
+
 2024-06-17  Daniel W. McRobb  <dwm@nomnom.mcplex.net>
 
 	* tagged as libDwm-0.9.35

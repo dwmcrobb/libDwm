@@ -100,8 +100,6 @@
 
 #endif
 
-#undef HAVE_STRTOF
-
 #undef HAVE_CPP0X
 #undef HAVE_TR1
 #undef HAVE_CPP11

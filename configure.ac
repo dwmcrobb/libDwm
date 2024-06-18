@@ -84,8 +84,9 @@ dnl //  Check for CoreFoundation/CFByteOrder.h, an OS X thing.  We need
 dnl //  this so we can define be64toh() and htobe64() to use
 dnl //  CFSwapInt64BigToHost() and CFSwapInt64HostToBig() respectively.
 dnl ------------------------------------------------------------------------
-AC_CHECK_HEADER(CoreFoundation/CFByteOrder.h, [AC_DEFINE(HAVE_CFBYTE_ORDER_H)])
-
+AC_CHECK_HEADER(CoreFoundation/CFByteOrder.h,
+                [AC_DEFINE(HAVE_CFBYTE_ORDER_H)], [], [//])
+  
 dnl ------------------------------------------------------------------------
 dnl //  Check for byteswap.h, a Linux thing.  We need this so we can define
 dnl //  be64toh() and htobe64() to use bswap_64() on Linux running on 
