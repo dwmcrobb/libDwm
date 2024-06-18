@@ -92,8 +92,8 @@ dnl //  Check for byteswap.h, a Linux thing.  We need this so we can define
 dnl //  be64toh() and htobe64() to use bswap_64() on Linux running on 
 dnl //  little-endian hardware.
 dnl ------------------------------------------------------------------------
-AC_CHECK_HEADER(byteswap.h, [AC_DEFINE(HAVE_BYTESWAP_H)])
-AC_CHECK_HEADER(endian.h, [AC_DEFINE(HAVE_ENDIAN_H)])
+AC_CHECK_HEADER(byteswap.h, [AC_DEFINE(HAVE_BYTESWAP_H)], [], [//])
+AC_CHECK_HEADER(endian.h, [AC_DEFINE(HAVE_ENDIAN_H)], [], [//])
 
 dnl ------------------------------------------------------------------------
 dnl //  Check for <net/pfvar.h> and <net/if_pflog.h>
