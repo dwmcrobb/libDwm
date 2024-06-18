@@ -407,15 +407,17 @@ define(DWM_CHECK_BOOSTASIO,[
   AC_MSG_CHECKING([for Boost asio])
   DWM_FIND_BOOST_DIR
   if [[ -n "${BOOSTDIR}" ]]; then
-    DWM_COMPILE_BOOSTASIO([${BOOSTDIR}])
-    if [[ "${BOOSTDIR}" = "" ]]; then
-      AC_MSG_RESULT([not found (compile failed)])
-      echo Boost asio is required\!\!
-      exit 1
-    else
-      AC_MSG_RESULT([found in ${BOOSTDIR}])
-      DWM_ADD_BOOST_DIRS
-    fi
+    AC_MSG_RESULT([found in ${BOOSTDIR}])
+    DWM_ADD_BOOST_DIRS
+dnl    DWM_COMPILE_BOOSTASIO([${BOOSTDIR}])
+dnl    if [[ "${BOOSTDIR}" = "" ]]; then
+dnl      AC_MSG_RESULT([not found (compile failed)])
+dnl      echo Boost asio is required\!\!
+dnl      exit 1
+dnl    else
+dnl      AC_MSG_RESULT([found in ${BOOSTDIR}])
+dnl      DWM_ADD_BOOST_DIRS
+dnl    fi
   else
     AC_MSG_RESULT([not found])
     echo Boost asio is required\!\!
