@@ -110,6 +110,8 @@ AC_CHECK_PROG([MANDOC], [mandoc], [mandoc], [])
 
 AC_SUBST(CXXFLAGS)
 
+DWM_CHECK_STD_FORMAT
+
 BUILD_DOCS=""
 AC_ARG_ENABLE([docs],[AS_HELP_STRING([--enable-docs],[build documentation])],
 	      [BUILD_DOCS="yes"], [])

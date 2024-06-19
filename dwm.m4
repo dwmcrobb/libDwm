@@ -565,3 +565,27 @@ define(DWM_ADD_IF_NOT_PRESENT,[
     fi
   fi
 ])
+
+dnl --------------------------------------------------------------------------
+define(DWM_CHECK_STD_FORMAT,[
+  AC_MSG_CHECKING([for working std::format])
+  AC_LANG_PUSH(C++)
+  AC_LINK_IFELSE(
+    [AC_LANG_SOURCE([[
+      #include <format>
+      template <typename ...Args>
+      static std::string FmtTest(std::format_string<Args...> fmt,
+                                 Args&&... args)
+      { return std::format(fmt,std::forward<Args>(args)...); }
+      int main(int argc, char *argv[])
+      {
+        if (FmtTest("{} {}", 1, "hey") == "1 hey") { return 0; }
+	else { return 1; }
+      }
+    ]])],
+    [AC_MSG_RESULT([yes])],
+    [AC_MSG_RESULT([no])]
+  )
+  AC_LANG_POP()
+])
+    
