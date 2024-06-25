@@ -113,7 +113,8 @@
 
 #undef HAVE_NET_PFVAR_H
 #undef HAVE_NET_IF_PFLOG_H
-
+#undef DWM_HAVE_STD_FORMAT
+#undef DWM_HAVE_LIBFMT
 
 //---------------------------- emacs settings -----------------------------
 //  Local Variables:
