@@ -598,7 +598,9 @@ define(DWM_CHECK_LIBFMT,[
     AC_MSG_CHECKING([for working fmt::format])
     AC_LANG_PUSH(C++)
     prev_LIBS="${LIBS}"
-    LIBS="${LIBS} -lfmt"
+    LIBS=`pkg-config --libs fmt`
+    prev_CXXFLAGS="${CXXFLAGS}"
+    CXXFLAGS=`pkg-config --cflags fmt`
     AC_LINK_IFELSE(
       [AC_LANG_SOURCE([[
         #include <fmt/format.h>
@@ -619,6 +621,7 @@ define(DWM_CHECK_LIBFMT,[
        DWM_HAVE_LIBFMT=0]
     )
     LIBS="${prev_LIBS}"
+    CXXFLAGS="${prev_CXXFLAGS}"
     AC_LANG_POP()
   else
        DWM_HAVE_LIBFMT=0
