@@ -27,6 +27,7 @@ TestDwmTermios
 TestEngFormat
 TestFFIVar
 TestFileRoller
+TestFSyslog
 TestGetAddrInfo
 TestGitVersion
 TestGroup
