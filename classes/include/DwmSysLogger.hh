@@ -280,10 +280,10 @@ namespace Dwm {
 
 //----------------------------------------------------------------------------
 //!  Like Syslog() but the format string (second argument) is a std::format
-//!  format string.  Unfortunately many of the popular Linux distributions
-//!  are way behind on a libstdc++ that can do this.  It's May 26, 2024 and
+//!  format string.  Unfortunately some of the popular Linux distributions
+//!  are way behind on a libstdc++ that has <format>.  It's May 26, 2024 and
 //!  Ubuntu 24.04 and Raspberry Pi 12 (bookwork) don't have the C++20
-//!  features that are needed.
+//!  features that are needed.  On such platforms, I use libfmt instead.
 //----------------------------------------------------------------------------
 #if (defined DWM_HAVE_STD_FORMAT || defined DWM_HAVE_LIBFMT)
   #define FSyslog(...)                                                       \
