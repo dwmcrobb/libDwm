@@ -318,7 +318,7 @@ void TestSimplePerformance()
   thread  pop_threads[numThreads];
   std::unique_ptr<Thread::Queue<uint64_t>>  queues[numThreads];
 
-  TimeValue  startTime(true);
+  Dwm::TimeValue  startTime(true);
   for (int i = 0; i < numThreads; ++i) {
     queues[i] = make_unique<Thread::Queue<uint64_t>>();
     queues[i]->MaxLength(10000);
@@ -331,7 +331,7 @@ void TestSimplePerformance()
     pop_threads[i].join();
     push_threads[i].join();
   }
-  TimeValue runTime(true);
+  Dwm::TimeValue runTime(true);
 
   runTime -= startTime;
   cout << "Processed " << (numThreads * 1000000) / (double)runTime
@@ -350,7 +350,7 @@ void TestBulkPerformance()
   thread  pop_threads[numThreads];
   std::unique_ptr<Thread::Queue<uint64_t>>  queues[numThreads];
 
-  TimeValue  startTime(true);
+  Dwm::TimeValue  startTime(true);
   for (int i = 0; i < numThreads; ++i) {
     queues[i] = make_unique<Thread::Queue<uint64_t>>();
     queues[i]->MaxLength(10000);
@@ -363,7 +363,7 @@ void TestBulkPerformance()
     pop_threads[i].join();
     push_threads[i].join();
   }
-  TimeValue runTime(true);
+  Dwm::TimeValue runTime(true);
 
   runTime -= startTime;
   cout << "Bulk processed " << (numThreads * 1000000) / (double)runTime
