@@ -1,0 +1,81 @@
+.TH "Dwm::TermioFlags" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::TermioFlags \- Base class for input, output, control and local termio flags\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmTermios\&.hh>\fP
+.PP
+Inherited by \fBDwm::TermioControlFlags\fP, \fBDwm::TermioInputFlags\fP, \fBDwm::TermioLocalFlags\fP, and \fBDwm::TermioOutputFlags\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "bool \fBIsSet\fP (const std::string &flagName) const"
+.br
+.RI "Returns true if the given \fRflagName\fP is set, else returns false\&. "
+.ti -1c
+.RI "bool \fBSet\fP (const std::string &flagName)"
+.br
+.RI "Sets the flag for the given \fRflagName\fP\&. "
+.ti -1c
+.RI "bool \fBUnset\fP (const std::string &flagName)"
+.br
+.RI "Unsets the flag for the given \fRflagName\fP\&. "
+.ti -1c
+.RI "virtual const \fBTermioFlagInfo_t\fP * \fBKnownFlags\fP () const =0"
+.br
+.RI "Returns the known flags\&. "
+.in -1c
+.SS "Protected Member Functions"
+
+.in +1c
+.ti -1c
+.RI "const \fBTermioFlagInfo_t\fP * \fBFindFlag\fP (const std::string &flagName) const"
+.br
+.in -1c
+.SS "Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "tcflag_t * \fB_flagPtr\fP"
+.br
+.ti -1c
+.RI "const \fBTermioFlagInfo_t\fP * \fB_flagInfo\fP"
+.br
+.in -1c
+.SS "Friends"
+
+.in +1c
+.ti -1c
+.RI "std::ostream & \fBoperator<<\fP (std::ostream &os, const \fBTermioFlags\fP &flags)"
+.br
+.RI "Prints to an ostream\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Base class for input, output, control and local termio flags\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "virtual const \fBTermioFlagInfo_t\fP * Dwm::TermioFlags::KnownFlags () const\fR [pure virtual]\fP"
+
+.PP
+Returns the known flags\&. 
+.PP
+Implemented in \fBDwm::TermioControlFlags\fP, \fBDwm::TermioInputFlags\fP, \fBDwm::TermioLocalFlags\fP, and \fBDwm::TermioOutputFlags\fP\&.
+.SS "bool Dwm::TermioFlags::Set (const std::string & flagName)"
+
+.PP
+Sets the flag for the given \fRflagName\fP\&. Returns true on success, false on failure\&. 
+.SS "bool Dwm::TermioFlags::Unset (const std::string & flagName)"
+
+.PP
+Unsets the flag for the given \fRflagName\fP\&. Returns true on success, false on failure\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

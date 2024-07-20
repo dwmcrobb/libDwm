@@ -1,0 +1,931 @@
+\doxysection{Dwm\+ASIO.\+hh}
+\hypertarget{DwmASIO_8hh_source}{}\label{DwmASIO_8hh_source}\index{DwmASIO.hh@{DwmASIO.hh}}
+\mbox{\hyperlink{DwmASIO_8hh}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ @(\#)\ \$DwmPath\$}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ \ Copyright\ (c)\ Daniel\ W.\ McRobb\ 2018,\ 2020,\ 2023,\ 2024}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ \ All\ rights\ reserved.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ \ Redistribution\ and\ use\ in\ source\ and\ binary\ forms,\ with\ or\ without}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ \ modification,\ are\ permitted\ provided\ that\ the\ following\ conditions}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ \ are\ met:}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ \ 1.\ Redistributions\ of\ source\ code\ must\ retain\ the\ above\ copyright}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ \ \ \ \ notice,\ this\ list\ of\ conditions\ and\ the\ following\ disclaimer.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ \ 2.\ Redistributions\ in\ binary\ form\ must\ reproduce\ the\ above\ copyright}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ \ \ \ \ notice,\ this\ list\ of\ conditions\ and\ the\ following\ disclaimer\ in\ the}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ \ \ \ \ documentation\ and/or\ other\ materials\ provided\ with\ the\ distribution.}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ \ 3.\ The\ names\ of\ the\ authors\ and\ copyright\ holders\ may\ not\ be\ used\ to}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ \ \ \ \ endorse\ or\ promote\ products\ derived\ from\ this\ software\ without}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ \ \ \ \ specific\ prior\ written\ permission.}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ \ IN\ NO\ EVENT\ SHALL\ DANIEL\ W.\ MCROBB\ BE\ LIABLE\ TO\ ANY\ PARTY\ FOR}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ \ DIRECT,\ INDIRECT,\ SPECIAL,\ INCIDENTAL,\ OR\ CONSEQUENTIAL\ DAMAGES,}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ \ INCLUDING\ LOST\ PROFITS,\ ARISING\ OUT\ OF\ THE\ USE\ OF\ THIS\ SOFTWARE,}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ \ EVEN\ IF\ DANIEL\ W.\ MCROBB\ HAS\ BEEN\ ADVISED\ OF\ THE\ POSSIBILITY\ OF\ SUCH}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ \ DAMAGE.}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ \ THE\ SOFTWARE\ PROVIDED\ HEREIN\ IS\ ON\ AN\ "{}AS\ IS"{}\ BASIS,\ AND}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ \ DANIEL\ W.\ MCROBB\ HAS\ NO\ OBLIGATION\ TO\ PROVIDE\ MAINTENANCE,\ SUPPORT,}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ \ UPDATES,\ ENHANCEMENTS,\ OR\ MODIFICATIONS.\ DANIEL\ W.\ MCROBB\ MAKES\ NO}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ \ REPRESENTATIONS\ AND\ EXTENDS\ NO\ WARRANTIES\ OF\ ANY\ KIND,\ EITHER}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ \ IMPLIED\ OR\ EXPRESS,\ INCLUDING,\ BUT\ NOT\ LIMITED\ TO,\ THE\ IMPLIED}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ \ WARRANTIES\ OF\ MERCHANTABILITY\ OR\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE,}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ \ OR\ THAT\ THE\ USE\ OF\ THIS\ SOFTWARE\ WILL\ NOT\ INFRINGE\ ANY\ PATENT,}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ \ TRADEMARK\ OR\ OTHER\ RIGHTS.}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#ifndef\ \_DWMASIO\_HH\_}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#define\ \_DWMASIO\_HH\_}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#include\ <array>}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#include\ <deque>}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#include\ <list>}}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#include\ <map>}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#include\ <set>}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#include\ <tuple>}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#include\ <unordered\_set>}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#include\ <variant>}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{DwmASIOCapable_8hh}{DwmASIOCapable.hh}}"{}}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{DwmVariantFromIndex_8hh}{DwmVariantFromIndex.hh}}"{}}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \textcolor{keyword}{namespace\ }Dwm\ \{}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00066\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S>}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket}}\ =}
+\DoxyCodeLine{00069\ \ \ std::is\_same\_v<S,boost::asio::ip::tcp::socket>}
+\DoxyCodeLine{00070\ \ \ \ \ ||\ std::is\_same\_v<S,boost::asio::local::stream\_protocol::socket>}
+\DoxyCodeLine{00071\ \ \ \ \ ||\ std::is\_same\_v<S,boost::asio::generic::stream\_protocol::socket>;}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00082\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classDwm_1_1ASIO}{ASIO}}}
+\DoxyCodeLine{00084\ \ \ \{}
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_aa7244083d6658ae54fc5df488ad29741}{Read}}(boost::asio::ip::tcp::socket\ \&\ s,\ uint8\_t\ \&\ value,}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a4922b0689674c3088ea89975ec8d2dc4}{Write}}(boost::asio::ip::tcp::socket\ \&\ s,\ uint8\_t\ value,}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_acfd5af010f3abdb712773fd57880078a}{Read}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a4c922f5a3456ffd701a6909f7f9d8651}{Write}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00113\ \ \ \ \ }
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a98d9f5f2ef11e01e2e2939b6824c872f}{Read}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a0e51f8feaecfab61328b35a619555bd7}{Write}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a9b3cdbf18e9c4150d4fa4b176ee552cd}{Read}}(boost::asio::ip::tcp::socket\ \&\ s,\ \textcolor{keywordtype}{bool}\ \&\ value,}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_afdbf4b9d1aa742c8201d19c91efd33ad}{Write}}(boost::asio::ip::tcp::socket\ \&\ s,\ \textcolor{keywordtype}{bool}\ value,}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a155097c8e091acb096a4cee518be5355}{Read}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_abf717f91bb54a0a18784662c89173222}{Write}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00155\ \ \ \ \ }
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a129f576197846d347f07b85e30ff8f9f}{Read}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a61d97fed4de616f56dd65640374c3f20}{Write}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00169\ \ \ \ \ }
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_ab2c8ebc1160be60f868c5548cad12df4}{Read}}(boost::asio::ip::tcp::socket\ \&\ s,\ uint16\_t\ \&\ value,}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a887314ab3006d4bad313cd7445adf295}{Write}}(boost::asio::ip::tcp::socket\ \&\ s,\ uint16\_t\ value,}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a85c07e108c345caa46112b38c5b0ed3a}{Read}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_aba7bb8765fd6cc32b2fbdb4800fe492d}{Write}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00197\ \ \ \ \ }
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_ad8dc24efa3a3291a003d4e53f5de6dca}{Read}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a0360ca4f5088bc9dcc3532c442663cbe}{Write}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00211\ \ \ \ \ }
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_aa0ea6750a851c8481580455fecc11a7a}{Read}}(boost::asio::ip::tcp::socket\ \&\ s,\ uint32\_t\ \&\ value,}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00218\ }
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a3da3a644f5af461fc863b6fb89c1659a}{Write}}(boost::asio::ip::tcp::socket\ \&\ s,\ uint32\_t\ value,}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a8197f536b8a44c38b56fc208233e1496}{Read}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00236\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_af2b097109b8db3f0994e6267a85958e9}{Write}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a49551043b5ed5ce728d856b6413937a7}{Read}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00251\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a7c99e34374765d3c3b6d301e2207414b}{Write}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00254\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00257\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a0d907b04dccc901d4a35add368de77c6}{Read}}(boost::asio::ip::tcp::socket\ \&\ s,\ uint64\_t\ \&\ value,}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a39a02f433ffe2a55ed3b88cfdef29652}{Write}}(boost::asio::ip::tcp::socket\ \&\ s,\ uint64\_t\ value,}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00271\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a89f5da33987faa8aa642625fae27ceeb}{Read}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint64\_t\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00275\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00278\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00279\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a07d0a800185fd5b4bf77ee6af19a315b}{Write}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint64\_t\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00281\ \ \ \ \ }
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00286\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a677d218a4f556c3925bc90a45362663b}{Read}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint64\_t\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00288\ }
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00293\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_ab1b31f0afa51fb0e212c1f4abe422c73}{Write}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint64\_t\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00295\ \ \ \ \ }
+\DoxyCodeLine{00296\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00300\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a38a1af049ce682c65db814787c05b17d}{Read}}(boost::asio::ip::tcp::socket\ \&\ s,\ int8\_t\ \&\ value,}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00302\ }
+\DoxyCodeLine{00303\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00307\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_acc8f7088f1d5400b6f5835b5cadf4038}{Write}}(boost::asio::ip::tcp::socket\ \&\ s,\ int8\_t\ value,}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00309\ }
+\DoxyCodeLine{00310\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a7dfaf0841681b7d489a63f35f3ce5db7}{Read}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00320\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a45b98f9afec7495a3a8300c778c3118f}{Write}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00323\ \ \ \ \ }
+\DoxyCodeLine{00324\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00327\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00328\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_ae7f71eefd474fa83e140ae1bbcb98d19}{Read}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00330\ }
+\DoxyCodeLine{00331\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00334\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00335\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a5babd14ff83b4acc66bfe5252fef8beb}{Write}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00337\ \ \ \ \ }
+\DoxyCodeLine{00338\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00341\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00342\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a8cebe3c215cdaae37e11af462510ab60}{Read}}(boost::asio::ip::tcp::socket\ \&\ s,\ int16\_t\ \&\ value,}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00344\ \ \ \ \ }
+\DoxyCodeLine{00345\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00348\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00349\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_af30f8363de1a61634585b4b160016634}{Write}}(boost::asio::ip::tcp::socket\ \&\ s,\ int16\_t\ value,}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00351\ }
+\DoxyCodeLine{00352\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00355\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00356\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a1351bab3266e1bbb7adec8f9ef414352}{Read}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int16\_t\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00358\ \ \ \ \ }
+\DoxyCodeLine{00359\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00362\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00363\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_afae91f8f2e875ac2804aca3b9c3a7878}{Write}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int16\_t\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00365\ \ \ \ \ }
+\DoxyCodeLine{00366\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00369\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00370\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a3f0b5c26cc2cb7973dce23cef70ef9e7}{Read}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int16\_t\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00372\ \ \ \ \ }
+\DoxyCodeLine{00373\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00376\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00377\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a05a9633c1805d2a0a51ad7b281e2df01}{Write}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int16\_t\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00379\ \ \ \ \ }
+\DoxyCodeLine{00380\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00383\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00384\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a20d75715fad4f4850c934f12644cd6df}{Read}}(boost::asio::ip::tcp::socket\ \&\ s,\ int32\_t\ \&\ value,}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00386\ \ \ \ \ }
+\DoxyCodeLine{00387\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00390\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00391\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_ad5d92d5ac9acb7e10163c31d328c6cdb}{Write}}(boost::asio::ip::tcp::socket\ \&\ s,\ int32\_t\ value,}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00393\ }
+\DoxyCodeLine{00394\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00397\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00398\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_ada5053e6cb4c3f6183d6bf9f29cf0278}{Read}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int32\_t\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00400\ \ \ \ \ }
+\DoxyCodeLine{00401\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00404\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00405\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a6d36a634b329254810da181cf5da1570}{Write}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int32\_t\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00407\ \ \ \ \ }
+\DoxyCodeLine{00408\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00411\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00412\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a4b0d77266287bb16849760d1aa62b0e7}{Read}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int32\_t\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00414\ \ \ \ \ }
+\DoxyCodeLine{00415\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00418\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00419\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a3e114ec02768340f8e142e0bc11b16d1}{Write}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int32\_t\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00421\ \ \ \ \ }
+\DoxyCodeLine{00422\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00425\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00426\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a990fdc7326ec5815df7ba89dd07a4d0e}{Read}}(boost::asio::ip::tcp::socket\ \&\ s,\ int64\_t\ \&\ value,}
+\DoxyCodeLine{00427\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00428\ \ \ \ \ }
+\DoxyCodeLine{00429\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00432\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00433\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_ac829fcb12585e86b77f83207e5e71550}{Write}}(boost::asio::ip::tcp::socket\ \&\ s,\ int64\_t\ value,}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00435\ }
+\DoxyCodeLine{00436\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00439\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00440\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_ad97e8ca219386e2f6e4218c762e353c1}{Read}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00441\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int64\_t\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00442\ \ \ \ \ }
+\DoxyCodeLine{00443\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00446\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00447\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_ab768d5fcac40e555ede8b8508d789ef7}{Write}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int64\_t\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00449\ \ \ \ \ }
+\DoxyCodeLine{00450\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00453\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00454\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_adf174e4f63ec6ef38b9342ac3a7b0b48}{Read}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int64\_t\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00456\ \ \ \ \ }
+\DoxyCodeLine{00457\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00460\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00461\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a589727c5fc519a9ccbcb84d617614f15}{Write}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int64\_t\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00463\ \ \ \ \ }
+\DoxyCodeLine{00464\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00467\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00468\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a8b803155295f96d4fe23c4c8cc48ca6d}{Read}}(boost::asio::ip::tcp::socket\ \&\ s,\ std::string\ \&\ value,}
+\DoxyCodeLine{00469\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00470\ \ \ \ \ }
+\DoxyCodeLine{00471\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00474\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00475\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a8777ed8ccc124cd1309d02d9f035c0bc}{Write}}(boost::asio::ip::tcp::socket\ \&\ s,}
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \&\ value,}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00478\ }
+\DoxyCodeLine{00479\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00482\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00483\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a9dcc64e5c45d8223ce2ad14f132dd184}{Read}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00485\ \ \ \ \ }
+\DoxyCodeLine{00486\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00489\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00490\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a11475fd1bdee98e06703acc52a1ee88a}{Write}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00491\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \&\ value,}
+\DoxyCodeLine{00492\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00493\ }
+\DoxyCodeLine{00494\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00497\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00498\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a086ba8c6b7b0dd36bf8cfb26608d45ab}{Read}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00499\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \&\ value,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00500\ \ \ \ \ }
+\DoxyCodeLine{00501\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00504\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00505\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a3e8c57b9f15c903f04d20a7328478db3}{Write}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00506\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \&\ value,}
+\DoxyCodeLine{00507\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00508\ \ \ \ \ }
+\DoxyCodeLine{00509\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00512\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00513\ \ \ \ \ \textcolor{keyword}{static}\ uint64\_t\ \mbox{\hyperlink{classDwm_1_1ASIO_a7319909e58de8724fc1aac465d3fe835}{StreamedLength}}(\textcolor{keyword}{const}\ std::string\ \&\ s);}
+\DoxyCodeLine{00514\ }
+\DoxyCodeLine{00515\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00519\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00520\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a43234621c8f14ce9c677d619cacddb02}{Read}}(boost::asio::ip::tcp::socket\ \&\ s,\ \textcolor{keywordtype}{float}\ \&\ val,}
+\DoxyCodeLine{00521\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00522\ }
+\DoxyCodeLine{00523\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00527\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00528\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_ab6107742a6f9063ed3589f00bbda71dd}{Write}}(boost::asio::ip::tcp::socket\ \&\ s,\ \textcolor{keywordtype}{float}\ val,}
+\DoxyCodeLine{00529\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00530\ }
+\DoxyCodeLine{00531\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00535\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00536\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_af1a44a9c20aca18a232a20976f540172}{Read}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00537\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ \&\ val,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00538\ }
+\DoxyCodeLine{00539\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00543\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00544\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a05eff54b176f739faaa2c0c038a24fcb}{Write}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00545\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ val,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00546\ \ \ \ \ }
+\DoxyCodeLine{00547\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00551\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00552\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_aaa6b1f98a508b1dd55d8539eca40f9de}{Read}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00553\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ \&\ val,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00554\ }
+\DoxyCodeLine{00555\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00559\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00560\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a6bd03928b2f11c4123776238948c5d41}{Write}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00561\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ val,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00562\ \ \ \ \ }
+\DoxyCodeLine{00563\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00567\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00568\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_ae2c28a1b439fdd5901363f267633f911}{Read}}(boost::asio::ip::tcp::socket\ \&\ s,\ \textcolor{keywordtype}{double}\ \&\ val,}
+\DoxyCodeLine{00569\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00570\ }
+\DoxyCodeLine{00571\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00575\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00576\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a2a6e2d9a124b7de157310118f968d059}{Write}}(boost::asio::ip::tcp::socket\ \&\ s,\ \textcolor{keywordtype}{double}\ val,}
+\DoxyCodeLine{00577\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00578\ }
+\DoxyCodeLine{00579\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00583\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00584\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a4d4e36f5dcf846a4bd0596d5e28f2931}{Read}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00585\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ \&\ val,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00586\ }
+\DoxyCodeLine{00587\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00591\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00592\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_ad7956f806b5b8ec58dd4227a3ef7a50c}{Write}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00593\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ val,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00594\ }
+\DoxyCodeLine{00595\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00599\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00600\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_aff170bc35ef9483600363ac313ef8c95}{Read}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00601\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ \&\ val,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00602\ }
+\DoxyCodeLine{00603\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00607\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00608\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a90d686b6a0b69b7bbb3bd6e56021cfcb}{Write}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00609\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ val,\ boost::system::error\_code\ \&\ ec);}
+\DoxyCodeLine{00610\ \ \ \ \ }
+\DoxyCodeLine{00611\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00614\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00615\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_firstT,\ \textcolor{keyword}{typename}\ \_secondT>}
+\DoxyCodeLine{00616\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00617\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_aedac8f16a76c57df219a571219698140}{Read}}(S\ \&\ s,\ std::pair<\_firstT,\ \_secondT>\ \&\ p,}
+\DoxyCodeLine{00618\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00619\ \ \ \ \ \{}
+\DoxyCodeLine{00620\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \ rc\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00621\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classDwm_1_1ASIO_aa7244083d6658ae54fc5df488ad29741}{Read}}(s,\ p.first,\ ec))\ \{}
+\DoxyCodeLine{00622\ \ \ \ \ \ \ \ \ rc\ =\ \mbox{\hyperlink{classDwm_1_1ASIO_aa7244083d6658ae54fc5df488ad29741}{Read}}(s,\ p.second,\ ec);}
+\DoxyCodeLine{00623\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00624\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(rc);}
+\DoxyCodeLine{00625\ \ \ \ \ \}}
+\DoxyCodeLine{00626\ }
+\DoxyCodeLine{00627\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00630\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00631\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_firstT,\ \textcolor{keyword}{typename}\ \_secondT>}
+\DoxyCodeLine{00632\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00633\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a46cfc90c302c985ebb5e212bc540f293}{Write}}(S\ \&\ s,\ \textcolor{keyword}{const}\ std::pair<\_firstT,\_secondT>\ \&\ p,}
+\DoxyCodeLine{00634\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00635\ \ \ \ \ \{}
+\DoxyCodeLine{00636\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \ rc\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00637\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classDwm_1_1ASIO_a4922b0689674c3088ea89975ec8d2dc4}{Write}}(s,\ p.first,\ ec))\ \{}
+\DoxyCodeLine{00638\ \ \ \ \ \ \ \ \ rc\ =\ \mbox{\hyperlink{classDwm_1_1ASIO_a4922b0689674c3088ea89975ec8d2dc4}{Write}}(s,\ p.second,\ ec);}
+\DoxyCodeLine{00639\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00640\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rc;}
+\DoxyCodeLine{00641\ \ \ \ \ \}}
+\DoxyCodeLine{00642\ }
+\DoxyCodeLine{00643\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00646\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00647\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00648\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00649\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_aa283c615647b42e55c3f4efaea9c3446}{Read}}(S\ \&\ s,\ std::tuple<Args...>\ \&\ t,}
+\DoxyCodeLine{00650\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00651\ \ \ \ \ \{}
+\DoxyCodeLine{00652\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(std::apply([\&s,\&ec](\textcolor{keyword}{auto}\&\&...args)\ }
+\DoxyCodeLine{00653\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00654\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ read\_tuple\_mem\ =\ [\&s,\&ec](\textcolor{keyword}{auto}\&\&\ x)\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classDwm_1_1ASIO_aa7244083d6658ae54fc5df488ad29741}{Read}}(s,\ x,\ ec);\ \};}
+\DoxyCodeLine{00655\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (read\_tuple\_mem(args)\ \&\&\ ...);}
+\DoxyCodeLine{00656\ \ \ \ \ \ \ \},\ t));}
+\DoxyCodeLine{00657\ \ \ \ \ \}}
+\DoxyCodeLine{00658\ }
+\DoxyCodeLine{00659\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00662\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00663\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00664\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00665\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a20afa05126b328f9a7a0529baac0b6eb}{Write}}(S\ \&\ s,\ \textcolor{keyword}{const}\ std::tuple<Args...>\ \&\ t,}
+\DoxyCodeLine{00666\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00667\ \ \ \ \ \{}
+\DoxyCodeLine{00668\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(std::apply([\&s,\&ec](\textcolor{keyword}{auto}\&\&...args)}
+\DoxyCodeLine{00669\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00670\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ write\_tuple\_mem\ =\ [\&s,\&ec](\textcolor{keyword}{auto}\&\&\ x)\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classDwm_1_1ASIO_a4922b0689674c3088ea89975ec8d2dc4}{Write}}(s,\ x,\ ec);\ \};}
+\DoxyCodeLine{00671\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (write\_tuple\_mem(args)\ \&\&\ ...);}
+\DoxyCodeLine{00672\ \ \ \ \ \ \ \},\ t));}
+\DoxyCodeLine{00673\ \ \ \ \ \}}
+\DoxyCodeLine{00674\ \ \ \ \ }
+\DoxyCodeLine{00675\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00678\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00679\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}...\ Ts>}
+\DoxyCodeLine{00680\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00681\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a2c1c2dc975009004428d414011296147}{Read}}(S\ \&\ s,\ std::variant<Ts...>\ \&\ v,}
+\DoxyCodeLine{00682\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00683\ \ \ \ \ \{}
+\DoxyCodeLine{00684\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \ rc\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00685\ \ \ \ \ \ \ uint64\_t\ \ index\ =\ 0;}
+\DoxyCodeLine{00686\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classDwm_1_1ASIO_aa7244083d6658ae54fc5df488ad29741}{Read}}(s,\ index,\ ec))\ \{}
+\DoxyCodeLine{00687\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (index\ <\ std::variant\_size\_v<std::variant<Ts...>>)\ \{}
+\DoxyCodeLine{00688\ \ \ \ \ \ \ \ \ \ \ rc\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00689\ \ \ \ \ \ \ \ \ \ \ v\ =\ \mbox{\hyperlink{DwmVariantFromIndex_8hh_a9fb6da3f1a2ddcca10da239e2b0e7079}{VariantFromIndex}}<Ts...>(index);}
+\DoxyCodeLine{00690\ \ \ \ \ \ \ \ \ \ \ std::visit([\&]\ (\textcolor{keyword}{auto}\ \&\&\ arg)\ \{\ rc\ \&=\ \mbox{\hyperlink{classDwm_1_1ASIO_aa7244083d6658ae54fc5df488ad29741}{Read}}(s,\ arg,\ ec);\ \},\ v);}
+\DoxyCodeLine{00691\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00692\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00693\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rc;}
+\DoxyCodeLine{00694\ \ \ \ \ \}}
+\DoxyCodeLine{00695\ }
+\DoxyCodeLine{00696\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00699\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00700\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}...\ Ts>}
+\DoxyCodeLine{00701\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00702\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a47f65ac25a2c48c195953aa72ac11285}{Write}}(S\ \&\ s,\ \textcolor{keyword}{const}\ std::variant<Ts...>\ \&\ v,}
+\DoxyCodeLine{00703\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00704\ \ \ \ \ \{}
+\DoxyCodeLine{00705\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \ rc\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00706\ \ \ \ \ \ \ uint64\_t\ \ index\ =\ v.index();}
+\DoxyCodeLine{00707\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classDwm_1_1ASIO_a4922b0689674c3088ea89975ec8d2dc4}{Write}}(s,\ index,\ ec))\ \{}
+\DoxyCodeLine{00708\ \ \ \ \ \ \ \ \ rc\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00709\ \ \ \ \ \ \ \ \ std::visit([\&]\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ \&\ arg)\ \{\ rc\ \&=\ \mbox{\hyperlink{classDwm_1_1ASIO_a4922b0689674c3088ea89975ec8d2dc4}{Write}}(s,\ arg,\ ec);\ \},\ v);}
+\DoxyCodeLine{00710\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00711\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rc;}
+\DoxyCodeLine{00712\ \ \ \ \ \}}
+\DoxyCodeLine{00713\ }
+\DoxyCodeLine{00714\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00717\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00718\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keywordtype}{size\_t}\ N>}
+\DoxyCodeLine{00719\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00720\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a4ddb7d5ed2ce292f5b0d0d7f96c012df}{Read}}(S\ \&\ s,\ std::array<\_valueT,\ N>\ \&\ a,}
+\DoxyCodeLine{00721\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00722\ \ \ \ \ \{}
+\DoxyCodeLine{00723\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \ i\ =\ 0;}
+\DoxyCodeLine{00724\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\ ;\ i\ <\ N;\ ++i)\ \{}
+\DoxyCodeLine{00725\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\ \mbox{\hyperlink{classDwm_1_1ASIO_aa7244083d6658ae54fc5df488ad29741}{Read}}(s,\ a[i],\ ec))\ \{}
+\DoxyCodeLine{00726\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00727\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00728\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00729\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (N\ ==\ i);}
+\DoxyCodeLine{00730\ \ \ \ \ \}}
+\DoxyCodeLine{00731\ }
+\DoxyCodeLine{00732\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00735\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00736\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keywordtype}{size\_t}\ N>}
+\DoxyCodeLine{00737\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00738\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a066aabeacbbbfab7257215185adfbb85}{Write}}(S\ \&\ s,\ \textcolor{keyword}{const}\ std::array<\_valueT,\ N>\ \&\ a,}
+\DoxyCodeLine{00739\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00740\ \ \ \ \ \{}
+\DoxyCodeLine{00741\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \ i\ =\ 0;}
+\DoxyCodeLine{00742\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\ ;\ i\ <\ N;\ ++i)\ \{}
+\DoxyCodeLine{00743\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\ \mbox{\hyperlink{classDwm_1_1ASIO_a4922b0689674c3088ea89975ec8d2dc4}{Write}}(s,\ a[i],\ ec))\ \{}
+\DoxyCodeLine{00744\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00745\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00746\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00747\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (N\ ==\ i);}
+\DoxyCodeLine{00748\ \ \ \ \ \}}
+\DoxyCodeLine{00749\ \ \ \ \ }
+\DoxyCodeLine{00750\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00753\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00754\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00755\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00756\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a9c33081f04fbfae28ea327fd97993037}{Read}}(S\ \&\ s,\ std::vector<\_valueT,\ \_Alloc>\ \&\ v,}
+\DoxyCodeLine{00757\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00758\ \ \ \ \ \{}
+\DoxyCodeLine{00759\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ContainerRead<S,std::vector<\_valueT,\ \_Alloc>\ >(s,\ v,\ ec);}
+\DoxyCodeLine{00760\ \ \ \ \ \}}
+\DoxyCodeLine{00761\ }
+\DoxyCodeLine{00762\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00765\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00766\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00767\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00768\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a6a4cde60cf8a40e8f960937b8a9b6af8}{Write}}(S\ \&\ s,\ \textcolor{keyword}{const}\ std::vector<\_valueT,\ \_Alloc>\ \&\ v,}
+\DoxyCodeLine{00769\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00770\ \ \ \ \ \{}
+\DoxyCodeLine{00771\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ContainerWrite<S,std::vector<\_valueT,\ \_Alloc>\ >(s,\ v,\ ec);}
+\DoxyCodeLine{00772\ \ \ \ \ \}}
+\DoxyCodeLine{00773\ }
+\DoxyCodeLine{00774\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00777\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00778\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00779\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00780\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a29d2358c3424a3b9d449f4619342b023}{Read}}(S\ \&\ s,\ std::deque<\_valueT,\ \_Alloc>\ \&\ d,}
+\DoxyCodeLine{00781\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00782\ \ \ \ \ \{}
+\DoxyCodeLine{00783\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ContainerRead<S,std::deque<\_valueT,\ \_Alloc>\ >(s,\ d,\ ec);}
+\DoxyCodeLine{00784\ \ \ \ \ \}}
+\DoxyCodeLine{00785\ }
+\DoxyCodeLine{00786\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00789\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00790\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00791\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00792\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a0bd35006894bc518659ee368cfc3d4f9}{Write}}(S\ \&\ s,\ \textcolor{keyword}{const}\ std::deque<\_valueT,\ \_Alloc>\ \&\ d,}
+\DoxyCodeLine{00793\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00794\ \ \ \ \ \{}
+\DoxyCodeLine{00795\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ContainerWrite<S,std::deque<\_valueT,\ \_Alloc>\ >(s,\ d,\ ec);}
+\DoxyCodeLine{00796\ \ \ \ \ \}}
+\DoxyCodeLine{00797\ \ \ \ \ }
+\DoxyCodeLine{00798\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00801\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00802\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00803\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00804\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_ae3f3ded1340ff8ce5691c67d3972d8f2}{Read}}(S\ \&\ s,\ std::list<\_valueT,\ \_Alloc>\ \&\ l,}
+\DoxyCodeLine{00805\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00806\ \ \ \ \ \{}
+\DoxyCodeLine{00807\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ContainerRead<S,std::list<\_valueT,\ \_Alloc>\ >(s,\ l,\ ec);}
+\DoxyCodeLine{00808\ \ \ \ \ \}}
+\DoxyCodeLine{00809\ }
+\DoxyCodeLine{00810\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00813\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00814\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00815\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00816\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a7166618b6f5d3c211c28084951cbea77}{Write}}(S\ \&\ s,\ \textcolor{keyword}{const}\ std::list<\_valueT,\ \_Alloc>\ \&\ l,}
+\DoxyCodeLine{00817\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00818\ \ \ \ \ \{}
+\DoxyCodeLine{00819\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ContainerWrite<S,std::list<\_valueT,\ \_Alloc>\ >(s,\ l,\ ec);}
+\DoxyCodeLine{00820\ \ \ \ \ \}}
+\DoxyCodeLine{00821\ }
+\DoxyCodeLine{00822\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00825\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00826\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_keyT,\ \textcolor{keyword}{typename}\ \_valueT,\ }
+\DoxyCodeLine{00827\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_Compare,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00828\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00829\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a6a9e30bdff9fe7327dc8e3d015981bca}{Read}}(S\ \&\ s,\ std::map<\_keyT,\ \_valueT,\ \_Compare,\ \_Alloc>\ \&\ m,}
+\DoxyCodeLine{00830\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00831\ \ \ \ \ \{}
+\DoxyCodeLine{00832\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(PairAssocContRead<S,std::map<\_keyT,\ \_valueT,\ \_Compare,\ \_Alloc>\ >(s,\ m,\ ec));}
+\DoxyCodeLine{00833\ \ \ \ \ \}}
+\DoxyCodeLine{00834\ }
+\DoxyCodeLine{00835\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00838\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00839\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_keyT,\ \textcolor{keyword}{typename}\ \_valueT,\ }
+\DoxyCodeLine{00840\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_Compare,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00841\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00842\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_ae8e5e6561a595fb0abb3d9ebf5068dd9}{Write}}(S\ \&\ s,}
+\DoxyCodeLine{00843\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::map<\_keyT,\_valueT,\ \_Compare,\ \_Alloc>\ \&\ m,}
+\DoxyCodeLine{00844\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00845\ \ \ \ \ \{}
+\DoxyCodeLine{00846\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(ContainerWrite<S,std::map<\_keyT,\_valueT,\_Compare,\_Alloc>\ >(s,\ m,\ ec));}
+\DoxyCodeLine{00847\ \ \ \ \ \}}
+\DoxyCodeLine{00848\ }
+\DoxyCodeLine{00849\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00852\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00853\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_keyT,\ \textcolor{keyword}{typename}\ \_valueT,\ }
+\DoxyCodeLine{00854\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_Compare,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00855\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00856\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_afc14bead94b8de5b13943ef4e49ae89b}{Read}}(S\ \&\ s,\ std::multimap<\_keyT,\_valueT,\_Compare,\_Alloc>\ \&\ m,}
+\DoxyCodeLine{00857\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00858\ \ \ \ \ \{}
+\DoxyCodeLine{00859\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(PairAssocContRead<S,std::multimap<\_keyT,\_valueT,\_Compare,\_Alloc>>(s,\ m,\ ec));}
+\DoxyCodeLine{00860\ \ \ \ \ \}}
+\DoxyCodeLine{00861\ }
+\DoxyCodeLine{00862\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00865\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00866\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_keyT,\ \textcolor{keyword}{typename}\ \_valueT,\ }
+\DoxyCodeLine{00867\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_Compare,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00868\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00869\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{00870\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1ASIO_a449bc2fae39001d41c93e872fa2f61cf}{Write}}(S\ \&\ s,}
+\DoxyCodeLine{00871\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::multimap<\_keyT,\_valueT,\ \_Compare,\ \_Alloc>\ \&\ m,}
+\DoxyCodeLine{00872\ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00873\ \ \ \ \ \{}
+\DoxyCodeLine{00874\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(ContainerWrite<S,std::multimap<\_keyT,\_valueT,\_Compare,\_Alloc>>(s,\ m,\ ec));}
+\DoxyCodeLine{00875\ \ \ \ \ \}}
+\DoxyCodeLine{00876\ }
+\DoxyCodeLine{00877\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00880\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00881\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_keyT,\ \textcolor{keyword}{typename}\ \_valueT,\ }
+\DoxyCodeLine{00882\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_Hash,\ \textcolor{keyword}{typename}\ \_Pred,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00883\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00884\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{00885\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1ASIO_a8a4d98110cb350fce2996b41c9756402}{Read}}(S\ \&\ s,\ std::unordered\_map<\_keyT,\ \_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ m,}
+\DoxyCodeLine{00886\ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00887\ \ \ \ \ \{}
+\DoxyCodeLine{00888\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(PairAssocContRead<S,std::unordered\_map<\_keyT,\ \_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ >(s,\ m,\ ec));}
+\DoxyCodeLine{00889\ \ \ \ \ \}}
+\DoxyCodeLine{00890\ }
+\DoxyCodeLine{00891\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00894\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00895\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_keyT,\ \textcolor{keyword}{typename}\ \_valueT,\ }
+\DoxyCodeLine{00896\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_Hash,\ \textcolor{keyword}{typename}\ \_Pred,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00897\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00898\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{00899\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1ASIO_a2ef35245ac5ed89a77458f7d330f6733}{Write}}(S\ \&\ s,}
+\DoxyCodeLine{00900\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::unordered\_map<\_keyT,\ \_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ m,}
+\DoxyCodeLine{00901\ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00902\ \ \ \ \ \{}
+\DoxyCodeLine{00903\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(ContainerWrite<S,std::unordered\_map<\_keyT,\_valueT,\_Hash,\_Pred,\_Alloc>\ >(s,\ m,\ ec));}
+\DoxyCodeLine{00904\ \ \ \ \ \}}
+\DoxyCodeLine{00905\ }
+\DoxyCodeLine{00906\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00909\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00910\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Compare,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00911\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00912\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_ac6f7b858101557ed29895630a535384e}{Read}}(S\ \&\ s,}
+\DoxyCodeLine{00913\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::set<\_valueT,\_Compare,\_Alloc>\ \&\ m,}
+\DoxyCodeLine{00914\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00915\ \ \ \ \ \{}
+\DoxyCodeLine{00916\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(ContainerRead<S,std::set<\_valueT,\_Compare,\_Alloc>>(s,\ m,\ ec));}
+\DoxyCodeLine{00917\ \ \ \ \ \}}
+\DoxyCodeLine{00918\ }
+\DoxyCodeLine{00919\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00922\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00923\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Compare,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00924\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00925\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a7c829e83ffb852a545b0777324c5730d}{Write}}(S\ \&\ s,\ \textcolor{keyword}{const}\ std::set<\_valueT,\_Compare,\_Alloc>\ \&\ m,}
+\DoxyCodeLine{00926\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00927\ \ \ \ \ \{}
+\DoxyCodeLine{00928\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(ContainerWrite<S,std::set<\_valueT,\_Compare,\_Alloc>>(s,\ m,\ ec));}
+\DoxyCodeLine{00929\ \ \ \ \ \}}
+\DoxyCodeLine{00930\ }
+\DoxyCodeLine{00931\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00934\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00935\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Compare,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00936\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00937\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_af42643884e9e4f92c526a40976681bf5}{Read}}(S\ \&\ s,\ std::multiset<\_valueT,\_Compare,\_Alloc>\ \&\ m,}
+\DoxyCodeLine{00938\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00939\ \ \ \ \ \{}
+\DoxyCodeLine{00940\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(ContainerRead<S,std::multiset<\_valueT,\_Compare,\_Alloc>>(s,\ m,\ ec));}
+\DoxyCodeLine{00941\ \ \ \ \ \}}
+\DoxyCodeLine{00942\ }
+\DoxyCodeLine{00943\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00946\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00947\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Compare,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00948\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00949\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_aa890e1407aa53e1529ef4d5491dbf4b6}{Write}}(S\ \&\ s,}
+\DoxyCodeLine{00950\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::multiset<\_valueT,\_Compare,\_Alloc>\ \&\ m,}
+\DoxyCodeLine{00951\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00952\ \ \ \ \ \{}
+\DoxyCodeLine{00953\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(ContainerWrite<S,std::multiset<\_valueT,\_Compare,\_Alloc>>(s,\ m,\ ec));}
+\DoxyCodeLine{00954\ \ \ \ \ \}}
+\DoxyCodeLine{00955\ }
+\DoxyCodeLine{00956\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00959\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00960\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Hash,\ }
+\DoxyCodeLine{00961\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_Pred,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00962\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00963\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{00964\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1ASIO_a663e94db7c35cb700eb0803fb1253371}{Read}}(S\ \&\ s,\ std::unordered\_set<\_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ m,}
+\DoxyCodeLine{00965\ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00966\ \ \ \ \ \{}
+\DoxyCodeLine{00967\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(ContainerRead<S,std::unordered\_set<\_valueT,\_Hash,\_Pred,\_Alloc>>(s,\ m,\ ec));}
+\DoxyCodeLine{00968\ \ \ \ \ \}}
+\DoxyCodeLine{00969\ }
+\DoxyCodeLine{00970\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00973\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00974\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Hash,}
+\DoxyCodeLine{00975\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_Pred,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00976\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00977\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{00978\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1ASIO_adc49bb30914b2d49a666d715b729cf45}{Write}}(S\ \&\ s,\ \textcolor{keyword}{const}\ std::unordered\_set<\_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ m,}
+\DoxyCodeLine{00979\ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00980\ \ \ \ \ \{}
+\DoxyCodeLine{00981\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(ContainerWrite<S,std::unordered\_set<\_valueT,\_Hash,\_Pred,\_Alloc>>(s,\ m,\ ec));}
+\DoxyCodeLine{00982\ \ \ \ \ \}}
+\DoxyCodeLine{00983\ }
+\DoxyCodeLine{00984\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00986\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00987\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S>}
+\DoxyCodeLine{00988\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00989\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_aecd7aa95284fb69f8691a9fb9217488c}{Read}}(S\ \&\ s,\ \mbox{\hyperlink{classDwm_1_1ASIOReadable}{ASIOReadable}}\ \&\ val,}
+\DoxyCodeLine{00990\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00991\ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ val.\mbox{\hyperlink{classDwm_1_1ASIOReadable_a65830c7e919d26ce0c5a650ce5a53de1}{Read}}(s,\ ec);\ \}}
+\DoxyCodeLine{00992\ \ \ \ \ }
+\DoxyCodeLine{00993\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00995\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00996\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S>}
+\DoxyCodeLine{00997\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{00998\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_abfe4c043d4737003309a3b7edc609afe}{Write}}(S\ \&\ s,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classDwm_1_1ASIOWritable}{ASIOWritable}}\ \&\ val,}
+\DoxyCodeLine{00999\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{01000\ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ val.\mbox{\hyperlink{classDwm_1_1ASIOWritable_a73a0aa7dc43f313e4032693f0d0f7651}{Write}}(s,\ ec);\ \}}
+\DoxyCodeLine{01001\ }
+\DoxyCodeLine{01002\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01004\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01005\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{01006\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{01007\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a656975d51d906ca49261263c93203a40}{ReadV}}(S\ \&\ s,\ boost::system::error\_code\ \&\ ec,\ Args\ \&\ ...args)}
+\DoxyCodeLine{01008\ \ \ \ \ \{}
+\DoxyCodeLine{01009\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\mbox{\hyperlink{classDwm_1_1ASIO_aa7244083d6658ae54fc5df488ad29741}{Read}}(s,args,ec)\ \&\&\ ...);}
+\DoxyCodeLine{01010\ \ \ \ \ \}}
+\DoxyCodeLine{01011\ }
+\DoxyCodeLine{01012\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01014\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01015\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{01016\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}}
+\DoxyCodeLine{01017\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a04de9c3c58bee667368ebef301e4ddc6}{WriteV}}(S\ \&\ s,\ boost::system::error\_code\ \&\ ec,}
+\DoxyCodeLine{01018\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Args\ \&\ ...args)}
+\DoxyCodeLine{01019\ \ \ \ \ \{}
+\DoxyCodeLine{01020\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\mbox{\hyperlink{classDwm_1_1ASIO_a4922b0689674c3088ea89975ec8d2dc4}{Write}}(s,args,ec)\ \&\&\ ...);}
+\DoxyCodeLine{01021\ \ \ \ \ \}}
+\DoxyCodeLine{01022\ \ \ \ \ }
+\DoxyCodeLine{01023\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{01024\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01028\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01029\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S>}
+\DoxyCodeLine{01030\ \ \ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{IsSupportedASIOSocket<S>}}\ \ \ \ \ \ }
+\DoxyCodeLine{01031\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_aa7244083d6658ae54fc5df488ad29741}{Read}}(S\ \&\ s,\ std::monostate\ \&\ sm,}
+\DoxyCodeLine{01032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{01033\ \ \ \ \ \{}
+\DoxyCodeLine{01034\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01035\ \ \ \ \ \}}
+\DoxyCodeLine{01036\ }
+\DoxyCodeLine{01037\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01041\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01042\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S>}
+\DoxyCodeLine{01043\ \ \ \ \ \textcolor{keyword}{requires}\ IsSupportedASIOSocket<S>\ \ \ \ \ \ }
+\DoxyCodeLine{01044\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a4922b0689674c3088ea89975ec8d2dc4}{Write}}(S\ \&\ s,\ \textcolor{keyword}{const}\ std::monostate\ \&\ sm,}
+\DoxyCodeLine{01045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{01046\ \ \ \ \ \{}
+\DoxyCodeLine{01047\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01048\ \ \ \ \ \}}
+\DoxyCodeLine{01049\ }
+\DoxyCodeLine{01050\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01054\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01055\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_containerT>}
+\DoxyCodeLine{01056\ \ \ \ \ \textcolor{keyword}{requires}\ IsSupportedASIOSocket<S>}
+\DoxyCodeLine{01057\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ ContainerRead(S\ \&\ s,\ \_containerT\ \&\ c,}
+\DoxyCodeLine{01058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{01059\ \ \ \ \ \{}
+\DoxyCodeLine{01060\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \ rc\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01061\ \ \ \ \ \ \ c.clear();}
+\DoxyCodeLine{01062\ \ \ \ \ \ \ uint64\_t\ \ numEntries;}
+\DoxyCodeLine{01063\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classDwm_1_1ASIO_aa7244083d6658ae54fc5df488ad29741}{Read}}(s,\ numEntries,\ ec))\ \{}
+\DoxyCodeLine{01064\ \ \ \ \ \ \ \ \ uint64\_t\ \ i\ =\ 0;}
+\DoxyCodeLine{01065\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\ ;\ i\ <\ numEntries;\ ++i)\ \{}
+\DoxyCodeLine{01066\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_containerT::value\_type\ \ val;}
+\DoxyCodeLine{01067\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\ \mbox{\hyperlink{classDwm_1_1ASIO_aa7244083d6658ae54fc5df488ad29741}{Read}}(s,\ val,\ ec))\ \{}
+\DoxyCodeLine{01068\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{01069\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01070\ \ \ \ \ \ \ \ \ \ \ c.insert(c.end(),\ std::move(val));}
+\DoxyCodeLine{01071\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01072\ \ \ \ \ \ \ \ \ rc\ =\ (i\ ==\ numEntries);}
+\DoxyCodeLine{01073\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01074\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rc;}
+\DoxyCodeLine{01075\ \ \ \ \ \}}
+\DoxyCodeLine{01076\ }
+\DoxyCodeLine{01077\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01080\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01081\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_containerT>}
+\DoxyCodeLine{01082\ \ \ \ \ \textcolor{keyword}{requires}\ IsSupportedASIOSocket<S>}
+\DoxyCodeLine{01083\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ ContainerWrite(S\ \&\ s,\ \textcolor{keyword}{const}\ \_containerT\ \&\ c,}
+\DoxyCodeLine{01084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{01085\ \ \ \ \ \{}
+\DoxyCodeLine{01086\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \ rc\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01087\ \ \ \ \ \ \ uint64\_t\ \ numEntries\ =\ c.size();}
+\DoxyCodeLine{01088\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classDwm_1_1ASIO_a4922b0689674c3088ea89975ec8d2dc4}{Write}}(s,\ numEntries,\ ec))\ \{}
+\DoxyCodeLine{01089\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (numEntries)\ \{}
+\DoxyCodeLine{01090\ \ \ \ \ \ \ \ \ \ \ rc\ =\ \mbox{\hyperlink{classDwm_1_1ASIO_a4922b0689674c3088ea89975ec8d2dc4}{Write<S,typename\ \_containerT::const\_iterator>}}(s,\ }
+\DoxyCodeLine{01091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.begin(),\ }
+\DoxyCodeLine{01092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.end(),}
+\DoxyCodeLine{01093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ec);}
+\DoxyCodeLine{01094\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01095\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01096\ \ \ \ \ \ \ \ \ \ \ rc\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01097\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01098\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01099\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rc;}
+\DoxyCodeLine{01100\ \ \ \ \ \}}
+\DoxyCodeLine{01101\ }
+\DoxyCodeLine{01102\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01104\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01105\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_inputIteratorT>}
+\DoxyCodeLine{01106\ \ \ \ \ \textcolor{keyword}{requires}\ IsSupportedASIOSocket<S>}
+\DoxyCodeLine{01107\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1ASIO_a4922b0689674c3088ea89975ec8d2dc4}{Write}}(S\ \&\ s,\ \_inputIteratorT\ f,\ \_inputIteratorT\ l,}
+\DoxyCodeLine{01108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{01109\ \ \ \ \ \{}
+\DoxyCodeLine{01110\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\ ;\ f\ !=\ l;\ ++f)\ \{}
+\DoxyCodeLine{01111\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\ \mbox{\hyperlink{classDwm_1_1ASIO_a4922b0689674c3088ea89975ec8d2dc4}{Write}}(s,\ *f,\ ec))\ \{}
+\DoxyCodeLine{01112\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{01113\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01114\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01115\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (f\ ==\ l);}
+\DoxyCodeLine{01116\ \ \ \ \ \}}
+\DoxyCodeLine{01117\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01121\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01122\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ S,\ \textcolor{keyword}{typename}\ \_containerT>}
+\DoxyCodeLine{01123\ \ \ \ \ \textcolor{keyword}{requires}\ IsSupportedASIOSocket<S>}
+\DoxyCodeLine{01124\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ PairAssocContRead(S\ \&\ s,\ \_containerT\ \&\ m,}
+\DoxyCodeLine{01125\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{01126\ \ \ \ \ \{}
+\DoxyCodeLine{01127\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \ rc\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01128\ \ \ \ \ \ \ m.clear();}
+\DoxyCodeLine{01129\ \ \ \ \ \ \ uint64\_t\ \ numEntries;}
+\DoxyCodeLine{01130\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classDwm_1_1ASIO_aa7244083d6658ae54fc5df488ad29741}{Read}}(s,\ numEntries,\ ec))\ \{}
+\DoxyCodeLine{01131\ \ \ \ \ \ \ \ \ uint64\_t\ i\ =\ 0;}
+\DoxyCodeLine{01132\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\ ;\ i\ <\ numEntries;\ ++i)\ \{}
+\DoxyCodeLine{01133\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_containerT::key\_type\ \ key;}
+\DoxyCodeLine{01134\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classDwm_1_1ASIO_aa7244083d6658ae54fc5df488ad29741}{Read}}(s,\ key,\ ec))\ \{}
+\DoxyCodeLine{01135\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_containerT::mapped\_type\ \ val;}
+\DoxyCodeLine{01136\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classDwm_1_1ASIO_aa7244083d6658ae54fc5df488ad29741}{Read}}(s,\ val,\ ec))\ \{}
+\DoxyCodeLine{01137\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m.insert(\textcolor{keyword}{typename}\ \_containerT::value\_type(std::move(key),}
+\DoxyCodeLine{01138\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::move(val)));}
+\DoxyCodeLine{01139\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01140\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01141\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{01142\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01143\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01144\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01145\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{01146\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01147\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01148\ \ \ \ \ \ \ \ \ rc\ =\ (i\ ==\ numEntries);}
+\DoxyCodeLine{01149\ }
+\DoxyCodeLine{01150\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01151\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rc;}
+\DoxyCodeLine{01152\ \ \ \ \ \}}
+\DoxyCodeLine{01153\ \ \ \ \ }
+\DoxyCodeLine{01154\ \ \ \};}
+\DoxyCodeLine{01155\ }
+\DoxyCodeLine{01156\ \}\ \ \textcolor{comment}{//\ namespace\ Dwm}}
+\DoxyCodeLine{01157\ }
+\DoxyCodeLine{01158\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ \_DWMASIO\_HH\_}}
+\DoxyCodeLine{01159\ }
+\DoxyCodeLine{01160\ }
+\DoxyCodeLine{01161\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ emacs\ settings\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01162\ \textcolor{comment}{//\ \ Local\ Variables:}}
+\DoxyCodeLine{01163\ \textcolor{comment}{//\ \ mode:\ C++}}
+\DoxyCodeLine{01164\ \textcolor{comment}{//\ \ tab-\/width:\ 2}}
+\DoxyCodeLine{01165\ \textcolor{comment}{//\ \ indent-\/tabs-\/mode:\ nil}}
+\DoxyCodeLine{01166\ \textcolor{comment}{//\ \ c-\/basic-\/offset:\ 2}}
+\DoxyCodeLine{01167\ \textcolor{comment}{//\ \ End:}}
+\DoxyCodeLine{01168\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+
+\end{DoxyCode}

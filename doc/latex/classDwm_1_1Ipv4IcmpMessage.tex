@@ -1,0 +1,267 @@
+\doxysection{Dwm\+::Ipv4\+Icmp\+Message Class Reference}
+\hypertarget{classDwm_1_1Ipv4IcmpMessage}{}\label{classDwm_1_1Ipv4IcmpMessage}\index{Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}}
+
+
+Base class for ICMP messages.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Ipv4\+Icmp\+Message.\+hh$>$}
+
+
+
+Inheritance diagram for Dwm\+::Ipv4\+Icmp\+Message\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4IcmpMessage__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Dwm\+::Ipv4\+Icmp\+Message\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4IcmpMessage__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_a58f319d6103cb8eee97cb34c1918e7db}\label{classDwm_1_1Ipv4IcmpMessage_a58f319d6103cb8eee97cb34c1918e7db} 
+{\bfseries Ipv4\+Icmp\+Message} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_a4d4f520ce92811b4df2d210207a31435}\label{classDwm_1_1Ipv4IcmpMessage_a4d4f520ce92811b4df2d210207a31435} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Ipv4\+Icmp\+Message} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_a4e4bf4934682f2563387a84181f59e96}\label{classDwm_1_1Ipv4IcmpMessage_a4e4bf4934682f2563387a84181f59e96} 
+uint8\+\_\+t {\bfseries Type} () const
+\begin{DoxyCompactList}\small\item\em Returns the ICMP message type. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_a67ef6952b3e4d0082e998ad4d143e1ff}\label{classDwm_1_1Ipv4IcmpMessage_a67ef6952b3e4d0082e998ad4d143e1ff} 
+uint8\+\_\+t {\bfseries Type} (uint8\+\_\+t type)
+\begin{DoxyCompactList}\small\item\em Sets and returns the ICMP message type. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_a6f2f77f2f6743ce591add6906387beba}\label{classDwm_1_1Ipv4IcmpMessage_a6f2f77f2f6743ce591add6906387beba} 
+uint8\+\_\+t {\bfseries Code} () const
+\begin{DoxyCompactList}\small\item\em Returns the ICMP message code. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_a8930d79f79307712606d0f0757dcf99c}\label{classDwm_1_1Ipv4IcmpMessage_a8930d79f79307712606d0f0757dcf99c} 
+uint8\+\_\+t {\bfseries Code} (uint8\+\_\+t code)
+\begin{DoxyCompactList}\small\item\em Sets and returns the ICMP message code. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_a976993f6f9774709257e0b0823c1ff6f}\label{classDwm_1_1Ipv4IcmpMessage_a976993f6f9774709257e0b0823c1ff6f} 
+uint16\+\_\+t {\bfseries Checksum} ()
+\begin{DoxyCompactList}\small\item\em Returns the ICMP checksum. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_aa1f239b5b23b2c2282f3b97882a17f79}\label{classDwm_1_1Ipv4IcmpMessage_aa1f239b5b23b2c2282f3b97882a17f79} 
+void {\bfseries Set\+Checksum} ()
+\begin{DoxyCompactList}\small\item\em Computes and sets the checksum. \end{DoxyCompactList}\item 
+std\+::istream \& \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_aeff698ca190a7a0bf4e42c516ccdf932}{Read}} (std\+::istream \&is, uint16\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Reads the message of length {\ttfamily len} from an istream. \end{DoxyCompactList}\item 
+std\+::ostream \& \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_aa34acca71bd2486b14c4fd68bbdcc7a7}{Write}} (std\+::ostream \&os) const override
+\begin{DoxyCompactList}\small\item\em Writes the message to an ostream. Returns the ostream. \end{DoxyCompactList}\item 
+ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_a5c9227029e1a619a022ed059897b447f}{Read}} (int fd, uint16\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Reads the message of length {\ttfamily len} from a file descriptor. \end{DoxyCompactList}\item 
+ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_ae091fd6b27c4c4d5024b921b89885a87}{Write}} (int fd) const override
+\begin{DoxyCompactList}\small\item\em Writes the message to a file descriptor. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_a6ebd166fd58244f2ea6caf494ab6e326}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, uint16\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Reads the message of length {\ttfamily len} from a FILE. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_af6c12d482a7a34254eda82b1f310aabf}{Write}} (FILE \texorpdfstring{$\ast$}{*}f) const override
+\begin{DoxyCompactList}\small\item\em Writes the message to a FILE. Returns 1 on success, 0 on failure. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_a3ec6a13d10986155449635470e00239f}{Read}} (gz\+File gzf, uint16\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Reads the message of length {\ttfamily len} from a gz\+File. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_a3d35ae766103617bf2a054f742bb9e10}{Write}} (gz\+File gzf) const override
+\begin{DoxyCompactList}\small\item\em Writes the message to a gz\+File. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_a41d1f32092535ccbbf84786298ef4db9}{BZRead}} (BZFILE \texorpdfstring{$\ast$}{*}bzf, uint16\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Reads the message of length {\ttfamily len} from a BZFILE. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_ace035305406ff25acb43821497982f03}{BZWrite}} (BZFILE \texorpdfstring{$\ast$}{*}bzf) const override
+\begin{DoxyCompactList}\small\item\em Writes the message to a BZFILE. \end{DoxyCompactList}\item 
+uint64\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_a5a0a1e2abd5fa4fd63e8ddb001ccfc87}{Streamed\+Length}} () const override
+\begin{DoxyCompactList}\small\item\em Returns the number of bytes that would be written if we called one of the \doxylink{classDwm_1_1Ipv4IcmpMessage_aa34acca71bd2486b14c4fd68bbdcc7a7}{Write()} members. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_a0779a6142192d41ac35507d66b871944}\label{classDwm_1_1Ipv4IcmpMessage_a0779a6142192d41ac35507d66b871944} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage}{Ipv4\+Icmp\+Message}} \&msg) const
+\begin{DoxyCompactList}\small\item\em operator == \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1DescriptorWritable}{Dwm\+::\+Descriptor\+Writable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Descriptor\+Writable} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1FileWritable}{Dwm\+::\+File\+Writable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+File\+Writable} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1StreamWritable}{Dwm\+::\+Stream\+Writable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Stream\+Writable} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1GZWritable}{Dwm\+::\+GZWritable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+GZWritable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_a702b806cd97a917208aecac2355fee06}\label{classDwm_1_1Ipv4IcmpMessage_a702b806cd97a917208aecac2355fee06} 
+void {\bfseries Free} ()
+\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_a2c7d96209dcf60dbf333e56698f8eb29}\label{classDwm_1_1Ipv4IcmpMessage_a2c7d96209dcf60dbf333e56698f8eb29} 
+void {\bfseries Allocate} (uint16\+\_\+t len)
+\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_a8e1f25b8dbffafb2dd571b93fe54d18d}\label{classDwm_1_1Ipv4IcmpMessage_a8e1f25b8dbffafb2dd571b93fe54d18d} 
+void {\bfseries Reallocate} (uint16\+\_\+t len)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_ac1e0c85b9058e41a625d9a3778b0f4be}\label{classDwm_1_1Ipv4IcmpMessage_ac1e0c85b9058e41a625d9a3778b0f4be} 
+std\+::pair$<$ uint16\+\_\+t, uint8\+\_\+t \texorpdfstring{$\ast$}{*} $>$ {\bfseries \+\_\+data}
+\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_ac65357cb8715e6993223748de9e655a3}\label{classDwm_1_1Ipv4IcmpMessage_ac65357cb8715e6993223748de9e655a3} 
+bool {\bfseries \+\_\+own\+Data}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Base class for ICMP messages. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_a41d1f32092535ccbbf84786298ef4db9}\index{Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}!BZRead@{BZRead}}
+\index{BZRead@{BZRead}!Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}}
+\doxysubsubsection{\texorpdfstring{BZRead()}{BZRead()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4IcmpMessage_a41d1f32092535ccbbf84786298ef4db9} 
+int Dwm\+::\+Ipv4\+Icmp\+Message\+::\+BZRead (\begin{DoxyParamCaption}\item[{BZFILE \texorpdfstring{$\ast$}{*}}]{bzf}{, }\item[{uint16\+\_\+t}]{len}{}\end{DoxyParamCaption})}
+
+
+
+Reads the message of length {\ttfamily len} from a BZFILE. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1Ipv4IcmpMessage_ace035305406ff25acb43821497982f03}\index{Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}!BZWrite@{BZWrite}}
+\index{BZWrite@{BZWrite}!Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}}
+\doxysubsubsection{\texorpdfstring{BZWrite()}{BZWrite()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4IcmpMessage_ace035305406ff25acb43821497982f03} 
+int Dwm\+::\+Ipv4\+Icmp\+Message\+::\+BZWrite (\begin{DoxyParamCaption}\item[{BZFILE \texorpdfstring{$\ast$}{*}}]{bzf}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the message to a BZFILE. 
+
+Returns the number of bytes written on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1BZ2Writable_aa4481114d6865e31f0aa94f08c2b2e5d}{Dwm\+::\+BZ2\+Writable}}.
+
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_a6ebd166fd58244f2ea6caf494ab6e326}\index{Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}!Read@{Read}}
+\index{Read@{Read}!Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4IcmpMessage_a6ebd166fd58244f2ea6caf494ab6e326} 
+size\+\_\+t Dwm\+::\+Ipv4\+Icmp\+Message\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{uint16\+\_\+t}]{len}{}\end{DoxyParamCaption})}
+
+
+
+Reads the message of length {\ttfamily len} from a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1Ipv4IcmpMessage_a3ec6a13d10986155449635470e00239f}\index{Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}!Read@{Read}}
+\index{Read@{Read}!Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4IcmpMessage_a3ec6a13d10986155449635470e00239f} 
+int Dwm\+::\+Ipv4\+Icmp\+Message\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{uint16\+\_\+t}]{len}{}\end{DoxyParamCaption})}
+
+
+
+Reads the message of length {\ttfamily len} from a gz\+File. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1Ipv4IcmpMessage_a5c9227029e1a619a022ed059897b447f}\index{Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}!Read@{Read}}
+\index{Read@{Read}!Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4IcmpMessage_a5c9227029e1a619a022ed059897b447f} 
+ssize\+\_\+t Dwm\+::\+Ipv4\+Icmp\+Message\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{uint16\+\_\+t}]{len}{}\end{DoxyParamCaption})}
+
+
+
+Reads the message of length {\ttfamily len} from a file descriptor. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1Ipv4IcmpMessage_aeff698ca190a7a0bf4e42c516ccdf932}\index{Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}!Read@{Read}}
+\index{Read@{Read}!Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4IcmpMessage_aeff698ca190a7a0bf4e42c516ccdf932} 
+std\+::istream \& Dwm\+::\+Ipv4\+Icmp\+Message\+::\+Read (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{is}{, }\item[{uint16\+\_\+t}]{len}{}\end{DoxyParamCaption})}
+
+
+
+Reads the message of length {\ttfamily len} from an istream. 
+
+Returns the istream. \Hypertarget{classDwm_1_1Ipv4IcmpMessage_a5a0a1e2abd5fa4fd63e8ddb001ccfc87}\index{Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}!StreamedLength@{StreamedLength}}
+\index{StreamedLength@{StreamedLength}!Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}}
+\doxysubsubsection{\texorpdfstring{StreamedLength()}{StreamedLength()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4IcmpMessage_a5a0a1e2abd5fa4fd63e8ddb001ccfc87} 
+uint64\+\_\+t Dwm\+::\+Ipv4\+Icmp\+Message\+::\+Streamed\+Length (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Returns the number of bytes that would be written if we called one of the \doxylink{classDwm_1_1Ipv4IcmpMessage_aa34acca71bd2486b14c4fd68bbdcc7a7}{Write()} members. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamedLengthCapable_abe671443353ea6ed173005c6f515ca5d}{Dwm\+::\+Streamed\+Length\+Capable}}.
+
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_af6c12d482a7a34254eda82b1f310aabf}\index{Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}!Write@{Write}}
+\index{Write@{Write}!Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4IcmpMessage_af6c12d482a7a34254eda82b1f310aabf} 
+size\+\_\+t Dwm\+::\+Ipv4\+Icmp\+Message\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the message to a FILE. Returns 1 on success, 0 on failure. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1FileWritable_ad46fa6f29a2fec8c8080f054c0a8febe}{Dwm\+::\+File\+Writable}}.
+
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_a3d35ae766103617bf2a054f742bb9e10}\index{Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}!Write@{Write}}
+\index{Write@{Write}!Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4IcmpMessage_a3d35ae766103617bf2a054f742bb9e10} 
+int Dwm\+::\+Ipv4\+Icmp\+Message\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the message to a gz\+File. 
+
+Returns the number of bytes written on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1GZWritable_a5f50bad679854f91bc5a67728a329681}{Dwm\+::\+GZWritable}}.
+
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_ae091fd6b27c4c4d5024b921b89885a87}\index{Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}!Write@{Write}}
+\index{Write@{Write}!Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4IcmpMessage_ae091fd6b27c4c4d5024b921b89885a87} 
+ssize\+\_\+t Dwm\+::\+Ipv4\+Icmp\+Message\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the message to a file descriptor. 
+
+Returns the number of bytes written on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1DescriptorWritable_ae0b23058b0de909d4705c05507b10864}{Dwm\+::\+Descriptor\+Writable}}.
+
+\Hypertarget{classDwm_1_1Ipv4IcmpMessage_aa34acca71bd2486b14c4fd68bbdcc7a7}\index{Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}!Write@{Write}}
+\index{Write@{Write}!Dwm::Ipv4IcmpMessage@{Dwm::Ipv4IcmpMessage}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4IcmpMessage_aa34acca71bd2486b14c4fd68bbdcc7a7} 
+std\+::ostream \& Dwm\+::\+Ipv4\+Icmp\+Message\+::\+Write (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the message to an ostream. Returns the ostream. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamWritable_a66994f2c5fbf07308b6b766f9774d079}{Dwm\+::\+Stream\+Writable}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmIpv4IcmpMessage_8hh}{Dwm\+Ipv4\+Icmp\+Message.\+hh}}\end{DoxyCompactItemize}

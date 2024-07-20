@@ -1,0 +1,366 @@
+\doxysection{Dwm\+Ipv4\+Address.\+hh}
+\hypertarget{DwmIpv4Address_8hh_source}{}\label{DwmIpv4Address_8hh_source}\index{DwmIpv4Address.hh@{DwmIpv4Address.hh}}
+\mbox{\hyperlink{DwmIpv4Address_8hh}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ @(\#)\ \$DwmPath\$}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ \ Copyright\ (c)\ Daniel\ W.\ McRobb\ 2004-\/2006,\ 2016,\ 2023}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ \ All\ rights\ reserved.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ \ Redistribution\ and\ use\ in\ source\ and\ binary\ forms,\ with\ or\ without}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ \ modification,\ are\ permitted\ provided\ that\ the\ following\ conditions}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ \ are\ met:}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ \ 1.\ Redistributions\ of\ source\ code\ must\ retain\ the\ above\ copyright}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ \ \ \ notice,\ this\ list\ of\ conditions\ and\ the\ following\ disclaimer.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ \ 2.\ Redistributions\ in\ binary\ form\ must\ reproduce\ the\ above\ copyright}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ \ \ \ notice,\ this\ list\ of\ conditions\ and\ the\ following\ disclaimer\ in\ the}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ \ \ \ documentation\ and/or\ other\ materials\ provided\ with\ the\ distribution.}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ \ 3.\ The\ names\ of\ the\ authors\ and\ copyright\ holders\ may\ not\ be\ used\ to}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ \ \ \ endorse\ or\ promote\ products\ derived\ from\ this\ software\ without}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ \ \ \ specific\ prior\ written\ permission.}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ \ IN\ NO\ EVENT\ SHALL\ DANIEL\ W.\ MCROBB\ BE\ LIABLE\ TO\ ANY\ PARTY\ FOR}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ \ DIRECT,\ INDIRECT,\ SPECIAL,\ INCIDENTAL,\ OR\ CONSEQUENTIAL\ DAMAGES,}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ \ INCLUDING\ LOST\ PROFITS,\ ARISING\ OUT\ OF\ THE\ USE\ OF\ THIS\ SOFTWARE,}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ \ EVEN\ IF\ DANIEL\ W.\ MCROBB\ HAS\ BEEN\ ADVISED\ OF\ THE\ POSSIBILITY\ OF\ SUCH}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ \ DAMAGE.}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ \ THE\ SOFTWARE\ PROVIDED\ HEREIN\ IS\ ON\ AN\ "{}AS\ IS"{}\ BASIS,\ AND}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ \ DANIEL\ W.\ MCROBB\ HAS\ NO\ OBLIGATION\ TO\ PROVIDE\ MAINTENANCE,\ SUPPORT,}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ \ UPDATES,\ ENHANCEMENTS,\ OR\ MODIFICATIONS.\ DANIEL\ W.\ MCROBB\ MAKES\ NO}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ \ REPRESENTATIONS\ AND\ EXTENDS\ NO\ WARRANTIES\ OF\ ANY\ KIND,\ EITHER\ }}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ \ IMPLIED\ OR\ EXPRESS,\ INCLUDING,\ BUT\ NOT\ LIMITED\ TO,\ THE\ IMPLIED\ }}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ \ WARRANTIES\ OF\ MERCHANTABILITY\ OR\ FITNESS\ FOR\ A\ PARTICULAR}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ \ PURPOSE,\ OR\ THAT\ THE\ USE\ OF\ THIS\ SOFTWARE\ WILL\ NOT\ INFRINGE\ ANY\ }}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ \ PATENT,\ TRADEMARK\ OR\ OTHER\ RIGHTS.}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#ifndef\ \_DWMIPV4ADDRESS\_HH\_}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ \_DWMIPV4ADDRESS\_HH\_}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\ \ \#include\ <inttypes.h>}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\ \ \#include\ <sys/types.h>}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\ \ \#include\ <netinet/in.h>}}
+\DoxyCodeLine{00048\ \}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{DwmASIOCapable_8hh}{DwmASIOCapable.hh}}"{}}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{DwmDescriptorIOCapable_8hh}{DwmDescriptorIOCapable.hh}}"{}}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{DwmFileIOCapable_8hh}{DwmFileIOCapable.hh}}"{}}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{DwmStreamIOCapable_8hh}{DwmStreamIOCapable.hh}}"{}}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{DwmStreamedLengthCapable_8hh}{DwmStreamedLengthCapable.hh}}"{}}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{DwmGZIOCapable_8hh}{DwmGZIOCapable.hh}}"{}}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{DwmBZ2IOCapable_8hh}{DwmBZ2IOCapable.hh}}"{}}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \textcolor{keyword}{typedef}\ uint32\_t\ \ ipv4addr\_t;}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{keyword}{namespace\ }Dwm\ \{}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00066\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}}
+\DoxyCodeLine{00068\ \ \ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classDwm_1_1ASIOCapable}{ASIOCapable}},\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classDwm_1_1StreamIOCapable}{StreamIOCapable}},\ \textcolor{keyword}{public}\ FileIOCapable,}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{classDwm_1_1DescriptorIOCapable}{DescriptorIOCapable}},\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classDwm_1_1StreamedLengthCapable}{StreamedLengthCapable}},}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{classDwm_1_1GZIOCapable}{GZIOCapable}},\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classDwm_1_1BZ2IOCapable}{BZ2IOCapable}}}
+\DoxyCodeLine{00071\ \ \ \{}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00076\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a75456cfc50d5f64212f6ae990d1ba541}{Ipv4Address}}();}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a0a0c91d41ee5ae7fd01666b834c32ce0}{Ipv4Address}}(ipv4addr\_t\ addr)}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ :\ \_addr(addr)}
+\DoxyCodeLine{00083\ \ \ \ \ \{\}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00088\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a46ca85e75f9371cd3f62156809c39c5c}{Ipv4Address}}(\textcolor{keyword}{const}\ std::string\ \&\ dottedAddr);}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keyword}{inline}\ ipv4addr\_t\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_aa918e6d9739230617de49207f130bce1}{Raw}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00095\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\_addr);}
+\DoxyCodeLine{00097\ \ \ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \ \ }
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keyword}{explicit}\ \textcolor{keyword}{operator}\ std::string\ ()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00103\ \ \ \ \ }
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a5552c1978a1cdc780aa9c436b085e9c3}{operator\ <\ }}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ \&\ addr)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00108\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(ntohl(\_addr)\ <\ ntohl(addr.\_addr));}
+\DoxyCodeLine{00110\ \ \ \ \ \}}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a3924d61bc825baf3cbc8d8016b56fd5b}{operator\ >\ }}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ \&\ addr)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00116\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(ntohl(\_addr)\ >\ ntohl(addr.\_addr));}
+\DoxyCodeLine{00118\ \ \ \ \ \}}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a0ce65ef567fcb320af04c393893b5e66}{operator\ >=\ }}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ \&\ addr)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00124\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \textcolor{keywordflow}{return}((ntohl(\_addr)\ >\ ntohl(addr.\_addr))}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ (\_addr\ ==\ addr.\_addr));}
+\DoxyCodeLine{00127\ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \ \ }
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a8835323f252c0190bf32667c43fa9924}{operator\ <=\ }}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ \&\ addr)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00133\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \textcolor{keywordflow}{return}((ntohl(\_addr)\ <\ ntohl(addr.\_addr))}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ (\_addr\ ==\ addr.\_addr));}
+\DoxyCodeLine{00136\ \ \ \ \ \}}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_ae7db725b1f5d58df7303dd218d2ac623}{operator\ ==\ }}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ \&\ addr)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00142\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\_addr\ ==\ addr.\_addr);}
+\DoxyCodeLine{00144\ \ \ \ \ \}}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a9e6edd54c54b056087e4296734df0e32}{operator\ !=\ }}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ \&\ addr)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00150\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\_addr\ !=\ addr.\_addr);}
+\DoxyCodeLine{00152\ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \ \ }
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ \&\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a9cddae8548683fb49c83225a97662838}{operator\ \&=\ }}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ \&\ mask)}
+\DoxyCodeLine{00158\ \ \ \ \ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \_addr\ \&=\ mask.\_addr;}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00161\ \ \ \ \ \}}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_ae6166118e9112f2327496c658642b941}{operator\ ++\ }}(\textcolor{keywordtype}{int})}
+\DoxyCodeLine{00167\ \ \ \ \ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ rc(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ uint32\_t\ \ a\ =\ ntohl(\_addr);}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (a\ !=\ 0xFFFFFFFF)\ \{}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \_addr\ =\ htonl(a\ +\ 1);}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rc;}
+\DoxyCodeLine{00174\ \ \ \ \ \}}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ \&\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_ae6166118e9112f2327496c658642b941}{operator\ ++\ }}()}
+\DoxyCodeLine{00180\ \ \ \ \ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ uint32\_t\ \ a\ =\ ntohl(\_addr);}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (a\ !=\ 0xFFFFFFFF)\ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \_addr\ =\ htonl(a\ +\ 1);}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00186\ \ \ \ \ \}}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a9f118a04bb9f39aedb7c202b1b1abd53}{operator\ -\/-\/\ }}(\textcolor{keywordtype}{int})}
+\DoxyCodeLine{00192\ \ \ \ \ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ rc(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ uint32\_t\ \ a\ =\ ntohl(\_addr);}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (a\ !=\ 0)\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \_addr\ =\ htonl(a\ -\/\ 1);}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rc;}
+\DoxyCodeLine{00199\ \ \ \ \ \}}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ \&\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a9f118a04bb9f39aedb7c202b1b1abd53}{operator\ -\/-\/\ }}()}
+\DoxyCodeLine{00205\ \ \ \ \ \{}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ uint32\_t\ \ a\ =\ ntohl(\_addr);}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (a\ !=\ 0)\ \{}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \_addr\ =\ htonl(a\ -\/\ 1);}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00211\ \ \ \ \ \}}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ \&\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a4984166650b167732e9b556f7acf9ac1}{operator\ -\/=\ }}(uint32\_t\ i)}
+\DoxyCodeLine{00218\ \ \ \ \ \{}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ uint32\_t\ \ a\ =\ ntohl(\_addr);}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (a\ >=\ i)\ \{}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \_addr\ =\ htonl(a\ -\/\ i);}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \_addr\ =\ htonl(0);}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00227\ \ \ \ \ \}}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ \&\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a102436bbe8c3e2c457fde8c0efc4dd21}{operator\ +=\ }}(uint32\_t\ i)}
+\DoxyCodeLine{00235\ \ \ \ \ \{}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ uint32\_t\ \ a\ =\ ntohl(\_addr);}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((uint32\_t)(a\ +\ i)\ >=\ a)\ \{}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \_addr\ =\ htonl(a\ +\ i);}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \_addr\ =\ htonl(0xFFFFFFFF);}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00244\ \ \ \ \ \}}
+\DoxyCodeLine{00245\ \ \ \ \ }
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ BitIsSet(int8\_t\ bit)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00247\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(((ntohl(\_addr)\ >>\ bit)\ \&\ 1)\ !=\ 0);}
+\DoxyCodeLine{00249\ \ \ \ \ \}}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ GetBit(\textcolor{keywordtype}{int}\ bit)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00252\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \textcolor{comment}{//\ return\ (((const\ char\ *)(\&\_addr))[bit\ >>\ 3]\ >>\ (7\ -\/\ (bit\ \&\ 0x7)))\ \&\ 0x1;}}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \textcolor{comment}{//\ const\ uint8\_t\ \ *p\ =\ ((const\ uint8\_t\ *)(\&\_addr))\ +\ (bit\ >>\ 3);}}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \textcolor{comment}{//\ return\ (*p\ >>\ (7\ -\/\ (bit\ \&\ 0x7)))\ \&\ 0x1;}}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ }
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (ntohl(\_addr)\ >>\ (31\ -\/\ bit))\ \&\ 1;}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00259\ \textcolor{comment}{\ \ \ \ \ \ const\ uint8\_t\ \ *p\ =\ (const\ uint8\_t\ *)(\&\_addr);}}
+\DoxyCodeLine{00260\ \textcolor{comment}{\ \ \ \ \ \ return\ ((p[bit\ >>\ 3])\ >>\ (7\ -\/\ (bit\ \&\ 0x7)))\ \&\ 0x1;}}
+\DoxyCodeLine{00261\ \textcolor{comment}{\ \ \ \ \ \ */}}
+\DoxyCodeLine{00262\ \ \ \ \ \}}
+\DoxyCodeLine{00263\ \ \ \ \ }
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ uint8\_t\ MaxKeyBits()}
+\DoxyCodeLine{00265\ \ \ \ \ \{}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(32);}
+\DoxyCodeLine{00267\ \ \ \ \ \}}
+\DoxyCodeLine{00268\ \ \ \ \ }
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00273\ \ \ \ \ uint64\_t\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a7f70f1c631d393ece2e847f72b249415}{StreamedLength}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00274\ \ \ \ \ }
+\DoxyCodeLine{00275\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00278\ \ \ \ \ std::istream\ \&\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_ad3c4b1912acd945a6115db8bfc85cbd9}{Read}}(std::istream\ \&\ is)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00279\ }
+\DoxyCodeLine{00280\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00283\ \ \ \ \ std::ostream\ \&\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_aa2098331aef3117b11e06ddfb08e4530}{Write}}(std::ostream\ \&\ os)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00284\ }
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00289\ \ \ \ \ ssize\_t\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_ae161342bd9299d392b8b7e34fd8d8b3c}{Read}}(\textcolor{keywordtype}{int}\ fd)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00290\ \ \ \ \ }
+\DoxyCodeLine{00291\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00294\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00295\ \ \ \ \ ssize\_t\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a940ef7f8d1e5a77f442ec944303ab8ef}{Write}}(\textcolor{keywordtype}{int}\ fd)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00296\ }
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00300\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a98bc54b24e77becfaf51cb17add7c965}{Read}}(FILE\ *\ f)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00301\ \ \ \ \ }
+\DoxyCodeLine{00302\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00304\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00305\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a3a047299e3456e26e6742ee4d3abd535}{Write}}(FILE\ *\ f)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00306\ }
+\DoxyCodeLine{00307\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00310\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00311\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a820c8934dfb20768f5c7a329e8d17bce}{Read}}(gzFile\ gzf)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00312\ \ \ \ \ }
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00316\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00317\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a8620368e41e62e82d359182f7551430a}{Write}}(gzFile\ gzf)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00318\ \ \ \ \ }
+\DoxyCodeLine{00319\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00322\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00323\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_ab552d64423e4aa31920547d99566a45c}{BZRead}}(BZFILE\ *bzf)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00324\ \ \ \ \ }
+\DoxyCodeLine{00325\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00328\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00329\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a2d9c873b6d483e6e6f6593b0c8b552d8}{BZWrite}}(BZFILE\ *bzf)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00330\ }
+\DoxyCodeLine{00331\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00333\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00334\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_acfd467633e8f2a313e68d3b3a6853dd1}{Read}}(boost::asio::ip::tcp::socket\ \&\ s,}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00336\ \textcolor{keyword}{\ \ \ \ }\{\ \textcolor{keywordflow}{return}\ ASIO\_Read(s,\ ec);\ \}}
+\DoxyCodeLine{00337\ }
+\DoxyCodeLine{00338\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00340\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00341\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a3a2d233544130dea28d0f5f86350f321}{Write}}(boost::asio::ip::tcp::socket\ \&\ s,}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00343\ \ \ \ \ }
+\DoxyCodeLine{00344\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00346\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00347\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a7064865ce2336c3d6287099baf70ee71}{Read}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00349\ }
+\DoxyCodeLine{00350\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00352\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00353\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a9aef863f3271f9de1048532a1191444b}{Write}}(boost::asio::local::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00355\ }
+\DoxyCodeLine{00356\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00358\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00359\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_ad3c4b1912acd945a6115db8bfc85cbd9}{Read}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00361\ \textcolor{keyword}{\ \ \ \ }\{\ \textcolor{keywordflow}{return}\ ASIO\_Read(s,\ ec);\ \}}
+\DoxyCodeLine{00362\ }
+\DoxyCodeLine{00363\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00365\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00366\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_aa2098331aef3117b11e06ddfb08e4530}{Write}}(boost::asio::generic::stream\_protocol::socket\ \&\ s,\ \ \ \ \ \ \ }
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00368\ }
+\DoxyCodeLine{00369\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00371\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00372\ \ \ \ \ \textcolor{keyword}{friend}\ std::ostream\ \&\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_ac8f0dcf4e6cb367f40ea450f0b8b1b2e}{operator\ <<\ }}(std::ostream\ \&\ os,\ }
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ \&\ addr);}
+\DoxyCodeLine{00374\ }
+\DoxyCodeLine{00375\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00378\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00379\ \ \ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_a86ec9655713b1f59aa88944ffded5426}{operator\ \&\ }}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ \&\ addr,}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4Address}}\ \&\ mask);}
+\DoxyCodeLine{00381\ }
+\DoxyCodeLine{00382\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00386\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00387\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{classDwm_1_1Ipv4Address_aaa3ffe4326fe57c13454902d57d12115}{IpSum}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00388\ \ \ \ \ }
+\DoxyCodeLine{00389\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00390\ \ \ \ \ uint32\_t\ \ \_addr;}
+\DoxyCodeLine{00391\ }
+\DoxyCodeLine{00392\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00394\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00395\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Protocol,\ \textcolor{keyword}{typename}\ Executor>}
+\DoxyCodeLine{00396\ \ \ \ \ \textcolor{keywordtype}{bool}\ ASIO\_Read(boost::asio::basic\_stream\_socket<Protocol,Executor>\ \&\ s,}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ boost::system::error\_code\ \&\ ec)}
+\DoxyCodeLine{00398\ \ \ \ \ \{}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \textcolor{keyword}{using\ }boost::asio::read,\ boost::asio::buffer;}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ((read(s,\ buffer(\&\_addr,\ \textcolor{keyword}{sizeof}(\_addr)),\ ec)\ ==\ \textcolor{keyword}{sizeof}(\_addr))}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ (!\ ec));}
+\DoxyCodeLine{00402\ \ \ \ \ \}}
+\DoxyCodeLine{00403\ \ \ \};}
+\DoxyCodeLine{00404\ }
+\DoxyCodeLine{00405\ \}\ \ \textcolor{comment}{//\ namespace\ Dwm}}
+\DoxyCodeLine{00406\ }
+\DoxyCodeLine{00407\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ \_DWMIPV4ADDRESS\_HH\_}}
+\DoxyCodeLine{00408\ }
+\DoxyCodeLine{00409\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ emacs\ settings\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00410\ \textcolor{comment}{//\ \ Local\ Variables:}}
+\DoxyCodeLine{00411\ \textcolor{comment}{//\ \ mode:\ C++}}
+\DoxyCodeLine{00412\ \textcolor{comment}{//\ \ tab-\/width:\ 2}}
+\DoxyCodeLine{00413\ \textcolor{comment}{//\ \ indent-\/tabs-\/mode:\ nil}}
+\DoxyCodeLine{00414\ \textcolor{comment}{//\ \ c-\/basic-\/offset:\ 2}}
+\DoxyCodeLine{00415\ \textcolor{comment}{//\ \ End:}}
+\DoxyCodeLine{00416\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+
+\end{DoxyCode}

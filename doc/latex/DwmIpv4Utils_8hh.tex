@@ -1,0 +1,29 @@
+\doxysection{Dwm\+Ipv4\+Utils.\+hh File Reference}
+\hypertarget{DwmIpv4Utils_8hh}{}\label{DwmIpv4Utils_8hh}\index{DwmIpv4Utils.hh@{DwmIpv4Utils.hh}}
+
+
+Miscellaneous IPv4 utilities.  
+
+
+{\ttfamily \#include $<$inttypes.\+h$>$}\newline
+Include dependency graph for Dwm\+Ipv4\+Utils.\+hh\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=172pt]{DwmIpv4Utils_8hh__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{DwmIpv4Utils_8hh_a2df7715bb7bb737f79b0bb198f88b0d0}\label{DwmIpv4Utils_8hh_a2df7715bb7bb737f79b0bb198f88b0d0} 
+uint32\+\_\+t {\bfseries Dwm\+::\+Ipv4\+Utils\+::\+Sum} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}ptr, uint16\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Compute the IP sum (part of checksum computation) of the memory at {\ttfamily ptr} of length {\ttfamily len}. \end{DoxyCompactList}\item 
+\Hypertarget{DwmIpv4Utils_8hh_a4e2625cb155427e59bd488552e6cd708}\label{DwmIpv4Utils_8hh_a4e2625cb155427e59bd488552e6cd708} 
+void {\bfseries Dwm\+::\+Ipv4\+Utils\+::\+Add\+Carries} (uint32\+\_\+t \&sum)
+\begin{DoxyCompactList}\small\item\em Part of IP checksum computation... add the carries and do the 1\textquotesingle{}s complement. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Miscellaneous IPv4 utilities. 
+

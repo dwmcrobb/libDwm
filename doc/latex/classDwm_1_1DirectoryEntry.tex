@@ -1,0 +1,164 @@
+\doxysection{Dwm\+::Directory\+Entry Class Reference}
+\hypertarget{classDwm_1_1DirectoryEntry}{}\label{classDwm_1_1DirectoryEntry}\index{Dwm::DirectoryEntry@{Dwm::DirectoryEntry}}
+
+
+Encapsulates a directory entry (file, directory, FIFO, et. al.).  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Directory\+Entry.\+hh$>$}
+
+
+
+Collaboration diagram for Dwm\+::Directory\+Entry\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=242pt]{classDwm_1_1DirectoryEntry__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1DirectoryEntry_ab747473a0b96b13226760ef03655bbee}\label{classDwm_1_1DirectoryEntry_ab747473a0b96b13226760ef03655bbee} 
+enum \mbox{\hyperlink{classDwm_1_1DirectoryEntry_ab747473a0b96b13226760ef03655bbee}{Type\+Enum}} \{ \newline
+{\bfseries e\+\_\+type\+Unknown} = 0x00
+, {\bfseries e\+\_\+type\+Fifo} = 0x01
+, {\bfseries e\+\_\+type\+Character\+Special} = 0x02
+, {\bfseries e\+\_\+type\+Directory} = 0x04
+, \newline
+{\bfseries e\+\_\+type\+Block\+Special} = 0x08
+, {\bfseries e\+\_\+type\+Regular} = 0x10
+, {\bfseries e\+\_\+type\+Symbolic\+Link} = 0x20
+, {\bfseries e\+\_\+type\+Socket} = 0x40
+ \}
+\begin{DoxyCompactList}\small\item\em The types of \doxylink{classDwm_1_1DirectoryEntry}{Directory\+Entry} objects. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1DirectoryEntry_aa70fdab7bcdc7975dffb4433759c1130}\label{classDwm_1_1DirectoryEntry_aa70fdab7bcdc7975dffb4433759c1130} 
+{\bfseries Directory\+Entry} (const std\+::string \&path)
+\begin{DoxyCompactList}\small\item\em Construct from a path. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1DirectoryEntry_a0f80fba1566a06a9342fa0b25cdbd3ee}\label{classDwm_1_1DirectoryEntry_a0f80fba1566a06a9342fa0b25cdbd3ee} 
+{\bfseries Directory\+Entry} (const std\+::string \&path, const \mbox{\hyperlink{classDwm_1_1DirectoryEntry}{Directory\+Entry}} \texorpdfstring{$\ast$}{*}parent)
+\begin{DoxyCompactList}\small\item\em Construct from a path and a parent. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1DirectoryEntry_a3c5223d2dd4215586be1528088e47821}\label{classDwm_1_1DirectoryEntry_a3c5223d2dd4215586be1528088e47821} 
+\mbox{\hyperlink{classDwm_1_1DirectoryEntry_ab747473a0b96b13226760ef03655bbee}{Type\+Enum}} {\bfseries Type} () const
+\begin{DoxyCompactList}\small\item\em Returns the \doxylink{classDwm_1_1DirectoryEntry}{Directory\+Entry}\textquotesingle{}s type. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1DirectoryEntry_ace7e6a819bb0872cc2ae291cf04f0438}\label{classDwm_1_1DirectoryEntry_ace7e6a819bb0872cc2ae291cf04f0438} 
+const std\+::string \& {\bfseries Path} () const
+\begin{DoxyCompactList}\small\item\em Returns the \doxylink{classDwm_1_1DirectoryEntry}{Directory\+Entry}\textquotesingle{}s path. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1DirectoryEntry_a9cf2663c91a00a1dce8a057962f3f77d}\label{classDwm_1_1DirectoryEntry_a9cf2663c91a00a1dce8a057962f3f77d} 
+std\+::string {\bfseries Relative\+Path} () const
+\item 
+\Hypertarget{classDwm_1_1DirectoryEntry_a7ec116ee5a9e47460e5250d0973c98c5}\label{classDwm_1_1DirectoryEntry_a7ec116ee5a9e47460e5250d0973c98c5} 
+std\+::string {\bfseries Base\+Name} () const
+\begin{DoxyCompactList}\small\item\em Returns the final component of the \doxylink{classDwm_1_1DirectoryEntry}{Directory\+Entry}\textquotesingle{}s path. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1DirectoryEntry_aa5772aae67d8d99d64358372129379e9}\label{classDwm_1_1DirectoryEntry_aa5772aae67d8d99d64358372129379e9} 
+std\+::string {\bfseries Dir\+Name} () const
+\begin{DoxyCompactList}\small\item\em Returns the name of the directory in which \doxylink{classDwm_1_1DirectoryEntry}{Directory\+Entry} resides. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classDwm_1_1DirectoryEntry_aec9cf6330fc161fb43a3367d0634c6da}{Real\+Path}} () const
+\begin{DoxyCompactList}\small\item\em If the \doxylink{classDwm_1_1DirectoryEntry}{Directory\+Entry} exists in the filesystem, returns its path with all symlinks, extra \textquotesingle{}/\textquotesingle{} characters and references to \textquotesingle{}/. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classDwm_1_1DirectoryEntry_ab0550bcee082425c7ca1feb05e5b2fc5}{Extension}} () const
+\begin{DoxyCompactList}\small\item\em If the \doxylink{classDwm_1_1DirectoryEntry}{Directory\+Entry} has dots (\textquotesingle{}. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{classDwm_1_1DirectoryEntry}{Directory\+Entry}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classDwm_1_1DirectoryEntry_ad8bb966aa9a1ef805d7eff2553d0d5a3}{Parent}} () const
+\begin{DoxyCompactList}\small\item\em If the \doxylink{classDwm_1_1DirectoryEntry}{Directory\+Entry} has a parent, returns a pointer to it. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1DirectoryEntry_a4db6cd88c94fe41deee1bece912ac7e4}\label{classDwm_1_1DirectoryEntry_a4db6cd88c94fe41deee1bece912ac7e4} 
+bool {\bfseries Exists} () const
+\begin{DoxyCompactList}\small\item\em Returns true if the \doxylink{classDwm_1_1DirectoryEntry}{Directory\+Entry} exists in the filesystem. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1DirectoryEntry_a46eeefe6a98115c08319bc5a614cd929}\label{classDwm_1_1DirectoryEntry_a46eeefe6a98115c08319bc5a614cd929} 
+bool {\bfseries Is\+Directory} () const
+\begin{DoxyCompactList}\small\item\em Returns true if the \doxylink{classDwm_1_1DirectoryEntry}{Directory\+Entry} is a directory. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1DirectoryEntry_aa336316147d5ae223be351f666f894a6}{Get\+Children}} (std\+::vector$<$ \mbox{\hyperlink{classDwm_1_1DirectoryEntry}{Directory\+Entry}} $>$ \&children, uint8\+\_\+t type\+Mask=0x\+FF) const
+\begin{DoxyCompactList}\small\item\em If the \doxylink{classDwm_1_1DirectoryEntry}{Directory\+Entry} is a directory and has children, fills {\ttfamily children} with its direct children and returns true. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1DirectoryEntry_ad511a94fc42f282a00715aa7778dc8b8}\label{classDwm_1_1DirectoryEntry_ad511a94fc42f282a00715aa7778dc8b8} 
+bool {\bfseries Get\+Children} (std\+::vector$<$ \mbox{\hyperlink{classDwm_1_1DirectoryEntry}{Directory\+Entry}} $>$ \&children, Directory\+Entry\+Functor \&dir\+Entry\+Func) const
+\item 
+\Hypertarget{classDwm_1_1DirectoryEntry_a060d9286b6a6b84ae8774377aef92ed1}\label{classDwm_1_1DirectoryEntry_a060d9286b6a6b84ae8774377aef92ed1} 
+uint32\+\_\+t {\bfseries Recurse} (Directory\+Entry\+Functor \&dir\+Entry\+Func, bool depth\+First=false, int max\+Depth=-\/1)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1DirectoryEntry_a0fc9dc42d564104775c40e29d5029169}\label{classDwm_1_1DirectoryEntry_a0fc9dc42d564104775c40e29d5029169} 
+uint32\+\_\+t {\bfseries Recurse} (\mbox{\hyperlink{classDwm_1_1DirectoryEntry}{Directory\+Entry}} \&de, Directory\+Entry\+Functor \&dir\+Entry\+Func, int depth, bool depth\+First, int max\+Depth)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1DirectoryEntry_a85ff12d093677a31d0dc3bbcce3c5a7f}\label{classDwm_1_1DirectoryEntry_a85ff12d093677a31d0dc3bbcce3c5a7f} 
+static \mbox{\hyperlink{classDwm_1_1DirectoryEntry_ab747473a0b96b13226760ef03655bbee}{Type\+Enum}} {\bfseries Get\+Type} (const struct stat \&stat\+Struct)
+\item 
+\Hypertarget{classDwm_1_1DirectoryEntry_a337b2cf5149ce6b548813f57447a6c1b}\label{classDwm_1_1DirectoryEntry_a337b2cf5149ce6b548813f57447a6c1b} 
+static \mbox{\hyperlink{classDwm_1_1DirectoryEntry_ab747473a0b96b13226760ef03655bbee}{Type\+Enum}} {\bfseries Get\+Type} (const struct dirent \&dir\+Entry)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1DirectoryEntry_a8e8fdf0f18ad7c5577873828029186f2}\label{classDwm_1_1DirectoryEntry_a8e8fdf0f18ad7c5577873828029186f2} 
+std\+::string {\bfseries \+\_\+path}
+\item 
+\Hypertarget{classDwm_1_1DirectoryEntry_a51ed58831e4d19ca16867f71cadc2c47}\label{classDwm_1_1DirectoryEntry_a51ed58831e4d19ca16867f71cadc2c47} 
+const \mbox{\hyperlink{classDwm_1_1DirectoryEntry}{Directory\+Entry}} \texorpdfstring{$\ast$}{*} {\bfseries \+\_\+parent}
+\item 
+\Hypertarget{classDwm_1_1DirectoryEntry_a9ed156e3973de2405e0bba4d589b163d}\label{classDwm_1_1DirectoryEntry_a9ed156e3973de2405e0bba4d589b163d} 
+\mbox{\hyperlink{classDwm_1_1DirectoryEntry_ab747473a0b96b13226760ef03655bbee}{Type\+Enum}} {\bfseries \+\_\+type}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1DirectoryEntry_abab6c7f56c8a73f38f8b3356f74aa8bb}\label{classDwm_1_1DirectoryEntry_abab6c7f56c8a73f38f8b3356f74aa8bb} 
+static std\+::mutex {\bfseries \+\_\+readdir\+Mtx}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Encapsulates a directory entry (file, directory, FIFO, et. al.). 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1DirectoryEntry_ab0550bcee082425c7ca1feb05e5b2fc5}\index{Dwm::DirectoryEntry@{Dwm::DirectoryEntry}!Extension@{Extension}}
+\index{Extension@{Extension}!Dwm::DirectoryEntry@{Dwm::DirectoryEntry}}
+\doxysubsubsection{\texorpdfstring{Extension()}{Extension()}}
+{\footnotesize\ttfamily \label{classDwm_1_1DirectoryEntry_ab0550bcee082425c7ca1feb05e5b2fc5} 
+std\+::string Dwm\+::\+Directory\+Entry\+::\+Extension (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+If the \doxylink{classDwm_1_1DirectoryEntry}{Directory\+Entry} has dots (\textquotesingle{}. 
+
+\textquotesingle{}) followed by other characters in its \doxylink{classDwm_1_1DirectoryEntry_a7ec116ee5a9e47460e5250d0973c98c5}{Base\+Name()}, returns the string of characters beyond the last dot (\textquotesingle{}.\textquotesingle{}). Else returns an empty string. \Hypertarget{classDwm_1_1DirectoryEntry_aa336316147d5ae223be351f666f894a6}\index{Dwm::DirectoryEntry@{Dwm::DirectoryEntry}!GetChildren@{GetChildren}}
+\index{GetChildren@{GetChildren}!Dwm::DirectoryEntry@{Dwm::DirectoryEntry}}
+\doxysubsubsection{\texorpdfstring{GetChildren()}{GetChildren()}}
+{\footnotesize\ttfamily \label{classDwm_1_1DirectoryEntry_aa336316147d5ae223be351f666f894a6} 
+bool Dwm\+::\+Directory\+Entry\+::\+Get\+Children (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{classDwm_1_1DirectoryEntry}{Directory\+Entry}} $>$ \&}]{children}{, }\item[{uint8\+\_\+t}]{type\+Mask}{ = {\ttfamily 0xFF}}\end{DoxyParamCaption}) const}
+
+
+
+If the \doxylink{classDwm_1_1DirectoryEntry}{Directory\+Entry} is a directory and has children, fills {\ttfamily children} with its direct children and returns true. 
+
+Else clears {\ttfamily children} and returns false. \Hypertarget{classDwm_1_1DirectoryEntry_ad8bb966aa9a1ef805d7eff2553d0d5a3}\index{Dwm::DirectoryEntry@{Dwm::DirectoryEntry}!Parent@{Parent}}
+\index{Parent@{Parent}!Dwm::DirectoryEntry@{Dwm::DirectoryEntry}}
+\doxysubsubsection{\texorpdfstring{Parent()}{Parent()}}
+{\footnotesize\ttfamily \label{classDwm_1_1DirectoryEntry_ad8bb966aa9a1ef805d7eff2553d0d5a3} 
+const \mbox{\hyperlink{classDwm_1_1DirectoryEntry}{Directory\+Entry}} \texorpdfstring{$\ast$}{*} Dwm\+::\+Directory\+Entry\+::\+Parent (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+If the \doxylink{classDwm_1_1DirectoryEntry}{Directory\+Entry} has a parent, returns a pointer to it. 
+
+Else returns (\doxylink{classDwm_1_1DirectoryEntry}{Directory\+Entry} \texorpdfstring{$\ast$}{*})0. \Hypertarget{classDwm_1_1DirectoryEntry_aec9cf6330fc161fb43a3367d0634c6da}\index{Dwm::DirectoryEntry@{Dwm::DirectoryEntry}!RealPath@{RealPath}}
+\index{RealPath@{RealPath}!Dwm::DirectoryEntry@{Dwm::DirectoryEntry}}
+\doxysubsubsection{\texorpdfstring{RealPath()}{RealPath()}}
+{\footnotesize\ttfamily \label{classDwm_1_1DirectoryEntry_aec9cf6330fc161fb43a3367d0634c6da} 
+std\+::string Dwm\+::\+Directory\+Entry\+::\+Real\+Path (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+If the \doxylink{classDwm_1_1DirectoryEntry}{Directory\+Entry} exists in the filesystem, returns its path with all symlinks, extra \textquotesingle{}/\textquotesingle{} characters and references to \textquotesingle{}/. 
+
+/\textquotesingle{} and \textquotesingle{}/../\textquotesingle{} resolved. Else returns an empty string. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmDirectoryEntry_8hh}{Dwm\+Directory\+Entry.\+hh}}\end{DoxyCompactItemize}

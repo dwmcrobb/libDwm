@@ -1,0 +1,31 @@
+.TH "DwmStrptime.hh" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+DwmStrptime.hh \- \fBDwm::Strptime()\fP prototype\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "char * \fBDwm::Strptime\fP (const char *buf, const char *format, struct tm *tm)"
+.br
+.RI "On FreeBSD, just calls strptime()\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+\fBDwm::Strptime()\fP prototype\&. 
+
+
+.SH "Function Documentation"
+.PP 
+.SS "char * Dwm::Strptime (const char * buf, const char * format, struct tm * tm)"
+
+.PP
+On FreeBSD, just calls strptime()\&. On OpenBSD, calls our own _Strptime() so we can use Z in the format string\&. 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

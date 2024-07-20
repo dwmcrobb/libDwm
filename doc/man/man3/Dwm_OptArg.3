@@ -1,0 +1,85 @@
+.TH "Dwm::OptArg" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::OptArg \- Encapsulates a command line option and its argument (if it takes an argument)\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmOptArgs\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBOptArg\fP (const std::string &c, const std::string &longName='', bool isRequired=false, const std::string &value='', const std::string &help='')"
+.br
+.ti -1c
+.RI "const std::string & \fBName\fP () const"
+.br
+.RI "Returns the name of the option\&. "
+.ti -1c
+.RI "const std::string & \fBLongName\fP () const"
+.br
+.RI "Returns the long name for the option\&. "
+.ti -1c
+.RI "bool \fBIsRequired\fP () const"
+.br
+.RI "Returns whether or not the option is required\&. "
+.ti -1c
+.RI "bool \fBIsRequired\fP (bool isRequired)"
+.br
+.RI "Sets whether or not the option is required\&. "
+.ti -1c
+.RI "bool \fBNeedsArg\fP () const"
+.br
+.RI "Returns true if an argument is required for the option\&. "
+.ti -1c
+.RI "const std::string & \fBValue\fP () const"
+.br
+.RI "Returns the value of the argument\&. "
+.ti -1c
+.RI "const std::string & \fBValue\fP (const std::string &value)"
+.br
+.RI "Sets and returns the value of the argument\&. "
+.ti -1c
+.RI "const std::string & \fBHelp\fP () const"
+.br
+.RI "Returns the help text for the argument\&. "
+.ti -1c
+.RI "const std::string & \fBHelp\fP (const std::string &help)"
+.br
+.RI "Sets and returns the help text for the argument\&. "
+.in -1c
+.SS "Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "std::string \fB_name\fP"
+.br
+.ti -1c
+.RI "std::string \fB_longName\fP"
+.br
+.ti -1c
+.RI "bool \fB_isRequired\fP"
+.br
+.ti -1c
+.RI "bool \fB_needsArg\fP"
+.br
+.ti -1c
+.RI "std::string \fB_value\fP"
+.br
+.ti -1c
+.RI "std::string \fB_help\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Encapsulates a command line option and its argument (if it takes an argument)\&. 
+
+Like getopt(), an option whose short name is followed by a colon will have an argument\&. An option whoe short name does not have an argument is a boolean\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

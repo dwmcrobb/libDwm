@@ -42,22 +42,18 @@
 #define _DWMIPV6ADDRESS_HH_
 
 extern "C" {
-#include <inttypes.h>
-#include <netinet/in.h>
+  #include <netinet/in.h>
+  #include <bzlib.h>
+  #include <zlib.h>
 }
 
+#include <cstdint>
 #include <string>
 
 #define XXH_INLINE_ALL
 #include <xxhash.h>
 
 #include "DwmASIO.hh"
-#include "DwmDescriptorIOCapable.hh"
-#include "DwmFileIOCapable.hh"
-#include "DwmStreamIOCapable.hh"
-#include "DwmStreamedLengthCapable.hh"
-#include "DwmGZIOCapable.hh"
-#include "DwmBZ2IOCapable.hh"
 
 namespace Dwm {
 
@@ -65,9 +61,6 @@ namespace Dwm {
   //!  This class encapsulates an IPv6 address.
   //--------------------------------------------------------------------------
   class Ipv6Address
-    : public ASIOCapable, public StreamIOCapable, public FileIOCapable,
-      public DescriptorIOCapable, public StreamedLengthCapable,
-      public GZIOCapable, public BZ2IOCapable
   {
   public:
     //------------------------------------------------------------------------
@@ -156,63 +149,63 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if we called
     //!  one of the Write() members.
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const override;
+    uint64_t StreamedLength() const;
     
     //------------------------------------------------------------------------
     //!  Reads from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    std::istream & Read(std::istream & is) override;
+    std::istream & Read(std::istream & is);
 
     //------------------------------------------------------------------------
     //!  Writes to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const override;
+    std::ostream & Write(std::ostream & os) const;
 
     //------------------------------------------------------------------------
     //!  Reads from a file descriptor.  Returns the number of bytes read
     //!  (16 on success).
     //------------------------------------------------------------------------
-    ssize_t Read(int fd) override;
+    ssize_t Read(int fd);
     
     //------------------------------------------------------------------------
     //!  Writes to a file descriptor.  Returns the number of bytes written
     //!  (16 on success).
     //------------------------------------------------------------------------
-    ssize_t Write(int fd) const override;
+    ssize_t Write(int fd) const;
 
     //------------------------------------------------------------------------
     //!  Reads from a FILE pointer.  Returns 1 on success, 0 on failure.
     //------------------------------------------------------------------------
-    size_t Read(FILE * f) override;
+    size_t Read(FILE * f);
     
     //------------------------------------------------------------------------
     //!  Writes to a FILE pointer.  Returns 1 on success, 0 on failure.
     //------------------------------------------------------------------------
-    size_t Write(FILE * f) const override;
+    size_t Write(FILE * f) const;
     
     //------------------------------------------------------------------------
     //!  Reads from a gzFile.  Returns the number of bytes read
     //!  (16 on success).
     //------------------------------------------------------------------------
-    int Read(gzFile gzf) override;
+    int Read(gzFile gzf);
     
     //------------------------------------------------------------------------
     //!  Writes to a gzFile.  Returns the number of bytes written
     //!  (16 on success).
     //------------------------------------------------------------------------
-    int Write(gzFile gzf) const override;
+    int Write(gzFile gzf) const;
 
     //------------------------------------------------------------------------
     //!  Reads from a BZFILE pointer.  Returns the number of bytes read
     //!  (16 on success).
     //------------------------------------------------------------------------
-    int BZRead(BZFILE *bzf) override;
+    int BZRead(BZFILE *bzf);
     
     //------------------------------------------------------------------------
     //!  Writes to a BZFILE pointer.  Returns the number of bytes written
     //!  (16 on success).
     //------------------------------------------------------------------------
-    int BZWrite(BZFILE *bzf) const override;
+    int BZWrite(BZFILE *bzf) const;
 
     //------------------------------------------------------------------------
     //!  Function template intended for boost::asio stream sockets.
@@ -241,7 +234,7 @@ namespace Dwm {
     //!  failure.
     //------------------------------------------------------------------------
     bool Read(boost::asio::ip::tcp::socket & s,
-              boost::system::error_code & ec) override
+              boost::system::error_code & ec)
     { return ASIO_Read(s, ec); }
 
     //------------------------------------------------------------------------
@@ -249,7 +242,7 @@ namespace Dwm {
     //!  failure.
     //------------------------------------------------------------------------
     bool Write(boost::asio::ip::tcp::socket & s,
-               boost::system::error_code & ec) const override
+               boost::system::error_code & ec) const
     { return ASIO_Write(s, ec); }
 
     //------------------------------------------------------------------------
@@ -257,7 +250,7 @@ namespace Dwm {
     //!  failure.
     //------------------------------------------------------------------------
     bool Read(boost::asio::local::stream_protocol::socket & s,
-              boost::system::error_code & ec) override
+              boost::system::error_code & ec)
     { return ASIO_Read(s, ec); }
 
     //------------------------------------------------------------------------
@@ -265,7 +258,7 @@ namespace Dwm {
     //!  failure.
     //------------------------------------------------------------------------
     bool Write(boost::asio::local::stream_protocol::socket & s,
-               boost::system::error_code & ec) const override
+               boost::system::error_code & ec) const
     { return ASIO_Write(s, ec); }
       
     //------------------------------------------------------------------------
@@ -273,7 +266,7 @@ namespace Dwm {
     //!  failure.
     //------------------------------------------------------------------------
     bool Read(boost::asio::generic::stream_protocol::socket & s,
-              boost::system::error_code & ec) override
+              boost::system::error_code & ec)
     { return ASIO_Read(s, ec); }
 
     //------------------------------------------------------------------------
@@ -281,7 +274,7 @@ namespace Dwm {
     //!  failure.
     //------------------------------------------------------------------------
     bool Write(boost::asio::generic::stream_protocol::socket & s,
-               boost::system::error_code & ec) const override
+               boost::system::error_code & ec) const
     { return ASIO_Write(s, ec); }
       
     //------------------------------------------------------------------------

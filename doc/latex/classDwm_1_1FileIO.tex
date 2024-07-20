@@ -1,0 +1,763 @@
+\doxysection{Dwm\+::File\+IO Class Reference}
+\hypertarget{classDwm_1_1FileIO}{}\label{classDwm_1_1FileIO}\index{Dwm::FileIO@{Dwm::FileIO}}
+
+
+This class contains a collection of static functions for reading and writing simple types, in network byte order (MSB first).  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+File\+IO.\+hh$>$}
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_ab7126329d196524c0795783e38634f75}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, char \&c)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily c} from {\ttfamily f}. \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a4dc8fcff4f20a42b409f1dacac8df3e5}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, char c)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily c} to {\ttfamily f}. \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a924fd8077f2812e25c4f6bac1cc97bd9}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, uint8\+\_\+t \&c)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily c} from {\ttfamily f}. \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_aaed6b7e16bcac346587c196f9764507e}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, uint8\+\_\+t c)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily c} to {\ttfamily f}. \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a5fba8bbca7ee98cea242b8223cf60d73}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, bool \&b)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily b} from {\ttfamily f}. \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a2ccc38acba8bbf01517786f31c960e70}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, bool b)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily b} to {\ttfamily f}. \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_aa4b01ec870b6c0db8952d67742e6b805}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, int16\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily f}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_acafa52ebf823436405018dfb9f50af39}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, int16\+\_\+t val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily f}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a20843bb92fd60976cc8cd45b3a65feba}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, uint16\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily f}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_ada7a4b666cebe3b905477ee6c74697b2}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, uint16\+\_\+t val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily f}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_af83d73e6fd23155723ff61b51d2ce7e5}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, int32\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily f}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a2d3039f8264a6a817d785687439bf5b5}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, int32\+\_\+t val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily f}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a886b906a026aad5ec9b999dd395a1b93}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, uint32\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily f}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_aafd709288eb87295901cd62a6d4ec0c7}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, uint32\+\_\+t val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily f}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a40cba52f882117bd3df7c26e6e687dc6}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, int64\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily f}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_ac795e3b767ccfe230a426c9b0d41892a}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, const int64\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily f}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a21ac990717c22bd783f95a3ba5fc2511}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, uint64\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily f}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a9237ed59e8b3601eb1880f4e157c7a0e}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, const uint64\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily f}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a29c67ea52c4a363f633726b592e2f5cf}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, float \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily f}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_ad156392e1776bdf72274b056c2d835d9}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, float val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily f}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a30308a7a467ebe9d93876b569c2a0178}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, double \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily f}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a6b7ae85c2b61aea092027c3763250824}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, const double \&val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily f}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_ac420f7993eaaa891e99125005f9d6b29}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, std\+::string \&s)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily s} from {\ttfamily f}. \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a891e8852dcf2ce7c4d7b65ebd578c0e6}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, const std\+::string \&s)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily s} to {\ttfamily f}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1FileIO_a5c2ccb0d93667abb4275e4dd12992fbe}\label{classDwm_1_1FileIO_a5c2ccb0d93667abb4275e4dd12992fbe} 
+static size\+\_\+t {\bfseries Read} (FILE \texorpdfstring{$\ast$}{*}f, \mbox{\hyperlink{classDwm_1_1FileReadable}{File\+Readable}} \&val)
+\begin{DoxyCompactList}\small\item\em Wrapper function to read a \doxylink{classDwm_1_1FileReadable}{File\+Readable} object from a FILE. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1FileIO_aa12b5290d7b5584abc0c7a45cf1a7ca2}\label{classDwm_1_1FileIO_aa12b5290d7b5584abc0c7a45cf1a7ca2} 
+static size\+\_\+t {\bfseries Write} (FILE \texorpdfstring{$\ast$}{*}f, const \mbox{\hyperlink{classDwm_1_1FileWritable}{File\+Writable}} \&val)
+\begin{DoxyCompactList}\small\item\em Wrapper function to write a \doxylink{classDwm_1_1FileWritable}{File\+Writable} object to a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+firstT , typename \+\_\+secondT $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a40e3f7cfefa4a598f289d280132069ec}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, std\+::pair$<$ \+\_\+firstT, \+\_\+secondT $>$ \&p)
+\begin{DoxyCompactList}\small\item\em Reads a pair$<$\+\_\+first\+T,\+\_\+second\+T$>$ from a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+firstT , typename \+\_\+secondT $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a51a5fecb4b34d21cfad7295440c9d0da}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, const std\+::pair$<$ \+\_\+firstT, \+\_\+secondT $>$ \&p)
+\begin{DoxyCompactList}\small\item\em Writes a pair$<$\+\_\+first\+T,\+\_\+second\+T$>$ to a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_aba35e3a494c74b65065c91c8a7df0566}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, std\+::map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Reads a map$<$\+\_\+key\+T,\+\_\+value\+T$>$ from a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_af62cb71a80d01b782a6df058fec11a08}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, const std\+::map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Writes a map$<$\+\_\+key\+T,\+\_\+value\+T$>$ to a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a73ae23443ab925da5fdedef52de5f464}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, std\+::multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Reads a multimap$<$\+\_\+key\+T,\+\_\+value\+T$>$ from a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a2a302d11bc8f2b227d2a7947d9d6c39c}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, const std\+::multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Writes a multimap$<$\+\_\+key\+T,\+\_\+value\+T$>$ to a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , size\+\_\+t N$>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a7574e43f19a2e72d672730609d55d09e}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, std\+::array$<$ \+\_\+valueT, N $>$ \&a)
+\begin{DoxyCompactList}\small\item\em Reads an array$<$\+\_\+value\+T,\+N$>$ from a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , size\+\_\+t N$>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a8f4a91f7c6909e3480ab08fcbca092ac}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, const std\+::array$<$ \+\_\+valueT, N $>$ \&a)
+\begin{DoxyCompactList}\small\item\em Writes an array$<$\+\_\+value\+T,\+N$>$ to a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_adcf6dea4df14c9f12374a8abe4ee0dc6}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, std\+::vector$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&v)
+\begin{DoxyCompactList}\small\item\em Reads a vector$<$\+\_\+value\+T$>$ from a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a6f7565bbb192a2337194ef3a21af458d}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, const std\+::vector$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&v)
+\begin{DoxyCompactList}\small\item\em Writes a vector$<$\+\_\+value\+T$>$ to a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a6bf6378f7a156ac9d1b6d40d2826518d}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, std\+::deque$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&d)
+\begin{DoxyCompactList}\small\item\em Reads a deque$<$\+\_\+value\+T$>$ from a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a3fd78b89feb77625f17c0dc039f02c03}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, const std\+::deque$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&d)
+\begin{DoxyCompactList}\small\item\em Writes a deque$<$\+\_\+value\+T$>$ to a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a1bb756e6954c74e38298573c4bd51a71}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, std\+::list$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&l)
+\begin{DoxyCompactList}\small\item\em Reads a list$<$\+\_\+value\+T$>$ from a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_aef44b2b925e6ecdee278925b2854d41a}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, const std\+::list$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&l)
+\begin{DoxyCompactList}\small\item\em Writes a list$<$\+\_\+value\+T$>$ to a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a08dc7a37c49f43ed0314336b155465d8}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, std\+::set$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&l)
+\begin{DoxyCompactList}\small\item\em Reads a set$<$\+\_\+value\+T$>$ from a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a8a4069124bad822e17a3f515e4b21193}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, const std\+::set$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&l)
+\begin{DoxyCompactList}\small\item\em Writes a set$<$\+\_\+value\+T$>$ to a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_ab90d17f3b559e641fbb73cfa0f443144}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, std\+::multiset$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&l)
+\begin{DoxyCompactList}\small\item\em Reads a multiset$<$\+\_\+value\+T$>$ from a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_ae4d57e05a381836d8aae1f7980dc09ae}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, const std\+::multiset$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&l)
+\begin{DoxyCompactList}\small\item\em Writes a multiset$<$\+\_\+value\+T$>$ to a FILE. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1FileIO_a317d4d7564348d3cabf087586400d0b3}\label{classDwm_1_1FileIO_a317d4d7564348d3cabf087586400d0b3} 
+{\footnotesize template$<$typename... Args$>$ }\\static size\+\_\+t {\bfseries Read} (FILE \texorpdfstring{$\ast$}{*}f, std\+::tuple$<$ Args... $>$ \&t)
+\begin{DoxyCompactList}\small\item\em Reads a tuple from a FILE. Returns 1 on success, 0 on failure. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1FileIO_aea3f252af5ae6ab1027c8c99250b4e57}\label{classDwm_1_1FileIO_aea3f252af5ae6ab1027c8c99250b4e57} 
+{\footnotesize template$<$typename... Args$>$ }\\static size\+\_\+t {\bfseries Write} (FILE \texorpdfstring{$\ast$}{*}f, const std\+::tuple$<$ Args... $>$ \&t)
+\begin{DoxyCompactList}\small\item\em Writes a tuple to a FILE. Returns 1 on success, 0 on failure. \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a105f896d048fad94885aeba0abd3f4a8}{Read}} (FILE \texorpdfstring{$\ast$}{*}fp, std\+::monostate \&sm)
+\begin{DoxyCompactList}\small\item\em Just a dummy helper function for std\+::variant instances that hold a std\+::monostate. \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a2af55b0bfd87854dcb56927c31fd412a}{Write}} (FILE \texorpdfstring{$\ast$}{*}fp, const std\+::monostate \&sm)
+\begin{DoxyCompactList}\small\item\em Just a dummy helper function for std\+::variant instances that hold a std\+::monostate. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1FileIO_a2b1099d2465dc74ecfdba6d1b9226b5c}\label{classDwm_1_1FileIO_a2b1099d2465dc74ecfdba6d1b9226b5c} 
+{\footnotesize template$<$typename... Ts$>$ }\\static size\+\_\+t {\bfseries Read} (FILE \texorpdfstring{$\ast$}{*}fp, std\+::variant$<$ Ts... $>$ \&v)
+\begin{DoxyCompactList}\small\item\em Reads a variant from a FILE. Returns 1 on success, 0 on failure. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1FileIO_ae1fe3daa076952f585ed46ff2c33f463}\label{classDwm_1_1FileIO_ae1fe3daa076952f585ed46ff2c33f463} 
+{\footnotesize template$<$typename... Ts$>$ }\\static size\+\_\+t {\bfseries Write} (FILE \texorpdfstring{$\ast$}{*}fp, const std\+::variant$<$ Ts... $>$ \&v)
+\begin{DoxyCompactList}\small\item\em Writes a variant to a FILE. Returns 1 on success, 0 on failure. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_ac97d2e235841d2a4db02c643ca29275e}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, std\+::unordered\+\_\+map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&hm)
+\begin{DoxyCompactList}\small\item\em Reads an unordered\+\_\+map from a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_acd365cc781dbde01b3cde53e2b81d029}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, const std\+::unordered\+\_\+map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&hm)
+\begin{DoxyCompactList}\small\item\em Writes an unordered\+\_\+map to a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a85d9258d442fd8db005aa82dc0574597}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, std\+::unordered\+\_\+multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&hm)
+\begin{DoxyCompactList}\small\item\em Reads an unordered\+\_\+multimap from a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a154bf5d8e96a6cd0abcaf0c978857ded}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, const std\+::unordered\+\_\+multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&hm)
+\begin{DoxyCompactList}\small\item\em Writes an unordered\+\_\+multimap to a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a468cd58c439978fc97145b34be4fbd34}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, std\+::unordered\+\_\+set$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&hm)
+\begin{DoxyCompactList}\small\item\em Reads an unordered\+\_\+set from a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a74a2dcfeeb7172fe92075698ebe6df0e}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, const std\+::unordered\+\_\+set$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&hm)
+\begin{DoxyCompactList}\small\item\em Writes an unordered\+\_\+set to a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a04073767fc8acc22d27c4a6153c231a0}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, std\+::unordered\+\_\+multiset$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&hm)
+\begin{DoxyCompactList}\small\item\em Reads an unordered\+\_\+multiset from a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_afa505ac20357afbb48674eac41bc4420}{Write}} (FILE \texorpdfstring{$\ast$}{*}f, const std\+::unordered\+\_\+multiset$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&hm)
+\begin{DoxyCompactList}\small\item\em Writes an unordered\+\_\+multiset to a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename... Args$>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a6fa86af67a5317ca44fb75fb6916126a}{ReadV}} (FILE \texorpdfstring{$\ast$}{*}f, Args \&...args)
+\begin{DoxyCompactList}\small\item\em Reads multiple objects from a FILE. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename... Args$>$ }\\static size\+\_\+t \mbox{\hyperlink{classDwm_1_1FileIO_a8e874a71f14c200a2ec990d8ba91221e}{WriteV}} (FILE \texorpdfstring{$\ast$}{*}f, const Args \&...args)
+\begin{DoxyCompactList}\small\item\em Writes multiple objects to a FILE. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class contains a collection of static functions for reading and writing simple types, in network byte order (MSB first). 
+
+It also contains functions to read and write strings. It also contains function templates to read and write STL deques, lists, vectors, maps, multimaps, sets, multisets, unordered\+\_\+maps, unordered\+\_\+multimaps, unordered\+\_\+sets, unordered\+\_\+multisets, tuples and variants. We use our member functions to handle reading and writing simple types in the containers, and function templates to handle reading and writing other class types. For a user-\/defined class, the class must implement the \doxylink{classDwm_1_1FileReadable}{File\+Readable} and \doxylink{classDwm_1_1FileWritable}{File\+Writable} interfaces, since our function templates simply call out to them. Since templates are static polymorphism, you don\textquotesingle{}t need to inherit from \doxylink{classDwm_1_1FileReadable}{File\+Readable} and \doxylink{classDwm_1_1FileWritable}{File\+Writable}, but you must implement the interfaces. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1FileIO_a5fba8bbca7ee98cea242b8223cf60d73}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [1/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a5fba8bbca7ee98cea242b8223cf60d73} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{bool \&}]{b}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily b} from {\ttfamily f}. 
+
+Returns the number of bytes read (1 on success). \Hypertarget{classDwm_1_1FileIO_ab7126329d196524c0795783e38634f75}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [2/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_ab7126329d196524c0795783e38634f75} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{char \&}]{c}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily c} from {\ttfamily f}. 
+
+Returns the number of bytes read (1 on success, 0 on failure). \Hypertarget{classDwm_1_1FileIO_a30308a7a467ebe9d93876b569c2a0178}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [3/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a30308a7a467ebe9d93876b569c2a0178} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{double \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily f}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). 
+
+Returns the number of bytes read (8 on success). \Hypertarget{classDwm_1_1FileIO_a29c67ea52c4a363f633726b592e2f5cf}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [4/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a29c67ea52c4a363f633726b592e2f5cf} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{float \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily f}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). 
+
+Returns the number of bytes read (4 on success). \Hypertarget{classDwm_1_1FileIO_aa4b01ec870b6c0db8952d67742e6b805}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [5/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_aa4b01ec870b6c0db8952d67742e6b805} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{int16\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily f}, in network byte order (MSB first). 
+
+Returns the number of bytes read (2 on success). \Hypertarget{classDwm_1_1FileIO_af83d73e6fd23155723ff61b51d2ce7e5}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [6/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_af83d73e6fd23155723ff61b51d2ce7e5} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{int32\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily f}, in network byte order (MSB first). 
+
+Returns the number of bytes read (4 on success). \Hypertarget{classDwm_1_1FileIO_a40cba52f882117bd3df7c26e6e687dc6}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [7/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a40cba52f882117bd3df7c26e6e687dc6} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{int64\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily f}, in network byte order (MSB first). 
+
+Returns the number of bytes read (8 on success). \Hypertarget{classDwm_1_1FileIO_a7574e43f19a2e72d672730609d55d09e}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [8/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a7574e43f19a2e72d672730609d55d09e} 
+template$<$typename \+\_\+valueT , size\+\_\+t N$>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{std\+::array$<$ \+\_\+valueT, N $>$ \&}]{a}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads an array$<$\+\_\+value\+T,\+N$>$ from a FILE. 
+
+Returns 1 on success, 0 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=318pt]{classDwm_1_1FileIO_a7574e43f19a2e72d672730609d55d09e_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1FileIO_a6bf6378f7a156ac9d1b6d40d2826518d}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [9/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a6bf6378f7a156ac9d1b6d40d2826518d} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{std\+::deque$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&}]{d}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a deque$<$\+\_\+value\+T$>$ from a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_a1bb756e6954c74e38298573c4bd51a71}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [10/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a1bb756e6954c74e38298573c4bd51a71} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{std\+::list$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&}]{l}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a list$<$\+\_\+value\+T$>$ from a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_aba35e3a494c74b65065c91c8a7df0566}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [11/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_aba35e3a494c74b65065c91c8a7df0566} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{std\+::map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a map$<$\+\_\+key\+T,\+\_\+value\+T$>$ from a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_a73ae23443ab925da5fdedef52de5f464}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [12/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a73ae23443ab925da5fdedef52de5f464} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{std\+::multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a multimap$<$\+\_\+key\+T,\+\_\+value\+T$>$ from a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_ab90d17f3b559e641fbb73cfa0f443144}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [13/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_ab90d17f3b559e641fbb73cfa0f443144} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{std\+::multiset$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{l}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a multiset$<$\+\_\+value\+T$>$ from a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_a40e3f7cfefa4a598f289d280132069ec}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [14/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a40e3f7cfefa4a598f289d280132069ec} 
+template$<$typename \+\_\+firstT , typename \+\_\+secondT $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{std\+::pair$<$ \+\_\+firstT, \+\_\+secondT $>$ \&}]{p}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a pair$<$\+\_\+first\+T,\+\_\+second\+T$>$ from a FILE. 
+
+Returns 1 on success, 0 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=318pt]{classDwm_1_1FileIO_a40e3f7cfefa4a598f289d280132069ec_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1FileIO_a08dc7a37c49f43ed0314336b155465d8}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [15/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a08dc7a37c49f43ed0314336b155465d8} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{std\+::set$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{l}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a set$<$\+\_\+value\+T$>$ from a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_ac420f7993eaaa891e99125005f9d6b29}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [16/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_ac420f7993eaaa891e99125005f9d6b29} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{std\+::string \&}]{s}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily s} from {\ttfamily f}. 
+
+Since we write strings with a 64-\/bit length value preceding, and always write the terminating NULL, this function will always return a value of 9 or greater on success. \Hypertarget{classDwm_1_1FileIO_ac97d2e235841d2a4db02c643ca29275e}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [17/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_ac97d2e235841d2a4db02c643ca29275e} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{std\+::unordered\+\_\+map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{hm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads an unordered\+\_\+map from a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_a85d9258d442fd8db005aa82dc0574597}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [18/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a85d9258d442fd8db005aa82dc0574597} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{std\+::unordered\+\_\+multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{hm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads an unordered\+\_\+multimap from a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_a04073767fc8acc22d27c4a6153c231a0}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [19/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a04073767fc8acc22d27c4a6153c231a0} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{std\+::unordered\+\_\+multiset$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{hm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads an unordered\+\_\+multiset from a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_a468cd58c439978fc97145b34be4fbd34}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [20/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a468cd58c439978fc97145b34be4fbd34} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{std\+::unordered\+\_\+set$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{hm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads an unordered\+\_\+set from a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_adcf6dea4df14c9f12374a8abe4ee0dc6}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [21/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_adcf6dea4df14c9f12374a8abe4ee0dc6} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{std\+::vector$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&}]{v}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a vector$<$\+\_\+value\+T$>$ from a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_a20843bb92fd60976cc8cd45b3a65feba}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [22/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a20843bb92fd60976cc8cd45b3a65feba} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{uint16\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily f}, in network byte order (MSB first). 
+
+Returns the number of bytes read (2 on success). \Hypertarget{classDwm_1_1FileIO_a886b906a026aad5ec9b999dd395a1b93}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [23/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a886b906a026aad5ec9b999dd395a1b93} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{uint32\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily f}, in network byte order (MSB first). 
+
+Returns the number of bytes read (4 on success). \Hypertarget{classDwm_1_1FileIO_a21ac990717c22bd783f95a3ba5fc2511}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [24/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a21ac990717c22bd783f95a3ba5fc2511} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{uint64\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily f}, in network byte order (MSB first). 
+
+Returns the number of bytes read (8 on success). \Hypertarget{classDwm_1_1FileIO_a924fd8077f2812e25c4f6bac1cc97bd9}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [25/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a924fd8077f2812e25c4f6bac1cc97bd9} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{uint8\+\_\+t \&}]{c}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily c} from {\ttfamily f}. 
+
+Returns the number of bytes read (1 on success). \Hypertarget{classDwm_1_1FileIO_a105f896d048fad94885aeba0abd3f4a8}\index{Dwm::FileIO@{Dwm::FileIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [26/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a105f896d048fad94885aeba0abd3f4a8} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{fp}{, }\item[{std\+::monostate \&}]{sm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Just a dummy helper function for std\+::variant instances that hold a std\+::monostate. 
+
+This should only be called from our \doxylink{classDwm_1_1FileIO_ab7126329d196524c0795783e38634f75}{Read()} for std\+::variant (via std\+::visit()), and does nothing. Returns 1. \Hypertarget{classDwm_1_1FileIO_a6fa86af67a5317ca44fb75fb6916126a}\index{Dwm::FileIO@{Dwm::FileIO}!ReadV@{ReadV}}
+\index{ReadV@{ReadV}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{ReadV()}{ReadV()}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a6fa86af67a5317ca44fb75fb6916126a} 
+template$<$typename... Args$>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+ReadV (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{Args \&...}]{args}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads multiple objects from a FILE. 
+
+Returns 1 on success, 0 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=324pt]{classDwm_1_1FileIO_a6fa86af67a5317ca44fb75fb6916126a_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1FileIO_a2ccc38acba8bbf01517786f31c960e70}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [1/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a2ccc38acba8bbf01517786f31c960e70} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{bool}]{b}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily b} to {\ttfamily f}. 
+
+Returns the number of bytes written (1) on success. \Hypertarget{classDwm_1_1FileIO_a4dc8fcff4f20a42b409f1dacac8df3e5}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [2/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a4dc8fcff4f20a42b409f1dacac8df3e5} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{char}]{c}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily c} to {\ttfamily f}. 
+
+Returns the number of bytes written (1) on success. \Hypertarget{classDwm_1_1FileIO_a6b7ae85c2b61aea092027c3763250824}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [3/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a6b7ae85c2b61aea092027c3763250824} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{const double \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily f}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). 
+
+Returns the number of bytes written (8 on success). \Hypertarget{classDwm_1_1FileIO_ac795e3b767ccfe230a426c9b0d41892a}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [4/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_ac795e3b767ccfe230a426c9b0d41892a} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{const int64\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily f}, in network byte order (MSB first). 
+
+Returns the number of bytes written (8) on success. \Hypertarget{classDwm_1_1FileIO_a8f4a91f7c6909e3480ab08fcbca092ac}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [5/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a8f4a91f7c6909e3480ab08fcbca092ac} 
+template$<$typename \+\_\+valueT , size\+\_\+t N$>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{const std\+::array$<$ \+\_\+valueT, N $>$ \&}]{a}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes an array$<$\+\_\+value\+T,\+N$>$ to a FILE. 
+
+Returns 1 on success, 0 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=316pt]{classDwm_1_1FileIO_a8f4a91f7c6909e3480ab08fcbca092ac_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1FileIO_a3fd78b89feb77625f17c0dc039f02c03}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [6/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a3fd78b89feb77625f17c0dc039f02c03} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{const std\+::deque$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&}]{d}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a deque$<$\+\_\+value\+T$>$ to a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_aef44b2b925e6ecdee278925b2854d41a}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [7/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_aef44b2b925e6ecdee278925b2854d41a} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{const std\+::list$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&}]{l}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a list$<$\+\_\+value\+T$>$ to a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_af62cb71a80d01b782a6df058fec11a08}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [8/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_af62cb71a80d01b782a6df058fec11a08} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{const std\+::map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a map$<$\+\_\+key\+T,\+\_\+value\+T$>$ to a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_a2a302d11bc8f2b227d2a7947d9d6c39c}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [9/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a2a302d11bc8f2b227d2a7947d9d6c39c} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{const std\+::multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a multimap$<$\+\_\+key\+T,\+\_\+value\+T$>$ to a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_ae4d57e05a381836d8aae1f7980dc09ae}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [10/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_ae4d57e05a381836d8aae1f7980dc09ae} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{const std\+::multiset$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{l}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a multiset$<$\+\_\+value\+T$>$ to a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_a51a5fecb4b34d21cfad7295440c9d0da}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [11/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a51a5fecb4b34d21cfad7295440c9d0da} 
+template$<$typename \+\_\+firstT , typename \+\_\+secondT $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{const std\+::pair$<$ \+\_\+firstT, \+\_\+secondT $>$ \&}]{p}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a pair$<$\+\_\+first\+T,\+\_\+second\+T$>$ to a FILE. 
+
+Returns 1 on success, 0 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=316pt]{classDwm_1_1FileIO_a51a5fecb4b34d21cfad7295440c9d0da_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1FileIO_a8a4069124bad822e17a3f515e4b21193}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [12/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a8a4069124bad822e17a3f515e4b21193} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{const std\+::set$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{l}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a set$<$\+\_\+value\+T$>$ to a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_a891e8852dcf2ce7c4d7b65ebd578c0e6}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [13/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a891e8852dcf2ce7c4d7b65ebd578c0e6} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{const std\+::string \&}]{s}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily s} to {\ttfamily f}. 
+
+Returns the number of bytes written. Note that we first write a 64-\/bit length value, then the string itself (with terminating NULL). Hence a successful write will always return a value of 8 + {\ttfamily s.\+length()} + 1. \Hypertarget{classDwm_1_1FileIO_acd365cc781dbde01b3cde53e2b81d029}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [14/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_acd365cc781dbde01b3cde53e2b81d029} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{const std\+::unordered\+\_\+map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{hm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes an unordered\+\_\+map to a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_a154bf5d8e96a6cd0abcaf0c978857ded}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [15/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a154bf5d8e96a6cd0abcaf0c978857ded} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{const std\+::unordered\+\_\+multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{hm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes an unordered\+\_\+multimap to a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_afa505ac20357afbb48674eac41bc4420}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [16/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_afa505ac20357afbb48674eac41bc4420} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{const std\+::unordered\+\_\+multiset$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{hm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes an unordered\+\_\+multiset to a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_a74a2dcfeeb7172fe92075698ebe6df0e}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [17/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a74a2dcfeeb7172fe92075698ebe6df0e} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{const std\+::unordered\+\_\+set$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{hm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes an unordered\+\_\+set to a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_a6f7565bbb192a2337194ef3a21af458d}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [18/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a6f7565bbb192a2337194ef3a21af458d} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{const std\+::vector$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&}]{v}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a vector$<$\+\_\+value\+T$>$ to a FILE. 
+
+Returns 1 on success, 0 on failure. \Hypertarget{classDwm_1_1FileIO_a9237ed59e8b3601eb1880f4e157c7a0e}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [19/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a9237ed59e8b3601eb1880f4e157c7a0e} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{const uint64\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily f}, in network byte order (MSB first). 
+
+Returns the number of bytes written (8) on success. \Hypertarget{classDwm_1_1FileIO_ad156392e1776bdf72274b056c2d835d9}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [20/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_ad156392e1776bdf72274b056c2d835d9} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{float}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily f}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). 
+
+Returns the number of bytes written (4 on success). \Hypertarget{classDwm_1_1FileIO_acafa52ebf823436405018dfb9f50af39}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [21/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_acafa52ebf823436405018dfb9f50af39} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{int16\+\_\+t}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily f}, in network byte order (MSB first). 
+
+Returns the number of bytes written (2) on success. \Hypertarget{classDwm_1_1FileIO_a2d3039f8264a6a817d785687439bf5b5}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [22/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a2d3039f8264a6a817d785687439bf5b5} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{int32\+\_\+t}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily f}, in network byte order (MSB first). 
+
+Returns the number of bytes written (4) on success. \Hypertarget{classDwm_1_1FileIO_ada7a4b666cebe3b905477ee6c74697b2}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [23/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_ada7a4b666cebe3b905477ee6c74697b2} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{uint16\+\_\+t}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily f}, in network byte order (MSB first). 
+
+Returns the number of bytes written (2) on success. \Hypertarget{classDwm_1_1FileIO_aafd709288eb87295901cd62a6d4ec0c7}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [24/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_aafd709288eb87295901cd62a6d4ec0c7} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{uint32\+\_\+t}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily f}, in network byte order (MSB first). 
+
+Returns the number of bytes written (4) on success. \Hypertarget{classDwm_1_1FileIO_aaed6b7e16bcac346587c196f9764507e}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [25/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_aaed6b7e16bcac346587c196f9764507e} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{uint8\+\_\+t}]{c}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily c} to {\ttfamily f}. 
+
+Returns the number of bytes written (1) on success. \Hypertarget{classDwm_1_1FileIO_a2af55b0bfd87854dcb56927c31fd412a}\index{Dwm::FileIO@{Dwm::FileIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [26/26]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a2af55b0bfd87854dcb56927c31fd412a} 
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{fp}{, }\item[{const std\+::monostate \&}]{sm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Just a dummy helper function for std\+::variant instances that hold a std\+::monostate. 
+
+This should only be called from our \doxylink{classDwm_1_1FileIO_a4dc8fcff4f20a42b409f1dacac8df3e5}{Write()} for std\+::variant (via std\+::visit()), and does nothing. Returns 1. \Hypertarget{classDwm_1_1FileIO_a8e874a71f14c200a2ec990d8ba91221e}\index{Dwm::FileIO@{Dwm::FileIO}!WriteV@{WriteV}}
+\index{WriteV@{WriteV}!Dwm::FileIO@{Dwm::FileIO}}
+\doxysubsubsection{\texorpdfstring{WriteV()}{WriteV()}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileIO_a8e874a71f14c200a2ec990d8ba91221e} 
+template$<$typename... Args$>$ \\
+static size\+\_\+t Dwm\+::\+File\+IO\+::\+WriteV (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{, }\item[{const Args \&...}]{args}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes multiple objects to a FILE. 
+
+Returns 1 on success, 0 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=323pt]{classDwm_1_1FileIO_a8e874a71f14c200a2ec990d8ba91221e_cgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmFileIO_8hh}{Dwm\+File\+IO.\+hh}}\end{DoxyCompactItemize}

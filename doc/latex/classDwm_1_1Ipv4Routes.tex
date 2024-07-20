@@ -1,0 +1,613 @@
+\doxysection{Dwm\+::Ipv4\+Routes\texorpdfstring{$<$}{<} \+\_\+valueT \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classDwm_1_1Ipv4Routes}{}\label{classDwm_1_1Ipv4Routes}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+
+
+This template class provides an associative container keyed by IPv4 addresses, with longest-\/match searching.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Ipv4\+Routes.\+hh$>$}
+
+
+
+Inheritance diagram for Dwm\+::Ipv4\+Routes\texorpdfstring{$<$}{<} \+\_\+valueT \texorpdfstring{$>$}{>}\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4Routes__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Dwm\+::Ipv4\+Routes\texorpdfstring{$<$}{<} \+\_\+valueT \texorpdfstring{$>$}{>}\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4Routes__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Ipv4Routes_ab60c6f6922832c41cf8791055378f11a}\label{classDwm_1_1Ipv4Routes_ab60c6f6922832c41cf8791055378f11a} 
+typedef std\+::unordered\+\_\+map$<$ \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4\+Address}}, \+\_\+valueT, Our\+Ipv4\+Address\+Hash $>$ {\bfseries \+\_\+\+Rep\+Sub\+Type}
+\item 
+\Hypertarget{classDwm_1_1Ipv4Routes_a0567879492644a989efaf77d047582b4}\label{classDwm_1_1Ipv4Routes_a0567879492644a989efaf77d047582b4} 
+typedef \+\_\+\+Rep\+Sub\+Type\+::const\+\_\+iterator {\bfseries const\+\_\+iterator}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Ipv4Routes_a444346b6c1d990033a6580e1e854dbbb}\label{classDwm_1_1Ipv4Routes_a444346b6c1d990033a6580e1e854dbbb} 
+{\bfseries Ipv4\+Routes} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4Routes_aa6fb35e7db18caf67132551bda70f486}\label{classDwm_1_1Ipv4Routes_aa6fb35e7db18caf67132551bda70f486} 
+void {\bfseries Clear} ()
+\begin{DoxyCompactList}\small\item\em Clears all entries. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4Routes_ad80c8f14940fdc12f48309ffeca8baab}\label{classDwm_1_1Ipv4Routes_ad80c8f14940fdc12f48309ffeca8baab} 
+bool {\bfseries Empty} () const
+\begin{DoxyCompactList}\small\item\em Returns true if there are no entries. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1Ipv4Routes_aef6bb28e1113d78a88dff59c26458639}{Add}} (const \mbox{\hyperlink{classDwm_1_1Ipv4Prefix}{Ipv4\+Prefix}} \&prefix, const \+\_\+valueT \&value)
+\begin{DoxyCompactList}\small\item\em Adds an entry. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4Routes_ae2e930dae8ede7d4a091e935e5a2c74d}\label{classDwm_1_1Ipv4Routes_ae2e930dae8ede7d4a091e935e5a2c74d} 
+void {\bfseries Add} (const \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Ipv4\+Routes}}$<$ \+\_\+valueT $>$ \&routes)
+\begin{DoxyCompactList}\small\item\em Bulk add all {\ttfamily routes}. Note this will overwrite existing routes. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4Routes_ac60008bcb5d78ba515b5b24194459e43}\label{classDwm_1_1Ipv4Routes_ac60008bcb5d78ba515b5b24194459e43} 
+\+\_\+valueT \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (const \mbox{\hyperlink{classDwm_1_1Ipv4Prefix}{Ipv4\+Prefix}} \&prefix)
+\begin{DoxyCompactList}\small\item\em operator \mbox{[}\mbox{]} works like you would expect from an STL map. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1Ipv4Routes_a4f748db738aa91a6d2d5fb54088d192c}{Delete}} (const \mbox{\hyperlink{classDwm_1_1Ipv4Prefix}{Ipv4\+Prefix}} \&prefix)
+\begin{DoxyCompactList}\small\item\em Deletes the entry for {\ttfamily prefix}. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1Ipv4Routes_a2d7c337cdeca457b96705d679f601068}{Find}} (const \mbox{\hyperlink{classDwm_1_1Ipv4Prefix}{Ipv4\+Prefix}} \&prefix, \+\_\+valueT \&match) const
+\begin{DoxyCompactList}\small\item\em Find the entry for the given {\ttfamily prefix}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4Routes_a1cad1fe60522c1d90cd6e69e814f53a7}\label{classDwm_1_1Ipv4Routes_a1cad1fe60522c1d90cd6e69e814f53a7} 
+void {\bfseries Find\+In\+Sub\+Map} (const \+\_\+\+Rep\+Sub\+Type \&sub\+Map, \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4\+Address}} ip\+Addr, std\+::pair$<$ bool, \+\_\+valueT $>$ \&result) const
+\item 
+\Hypertarget{classDwm_1_1Ipv4Routes_a386e0ac73bfc499e3fba4ef6b3938f5f}\label{classDwm_1_1Ipv4Routes_a386e0ac73bfc499e3fba4ef6b3938f5f} 
+bool {\bfseries New\+Find\+Longest} (const \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4\+Address}} \&ip\+Addr, std\+::pair$<$ \mbox{\hyperlink{classDwm_1_1Ipv4Prefix}{Ipv4\+Prefix}}, \+\_\+valueT $>$ \&match) const
+\item 
+bool \mbox{\hyperlink{classDwm_1_1Ipv4Routes_a134944eea0411d3bcb61a85d99d00a7b}{Find\+Longest}} (const \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4\+Address}} \&ip\+Addr, std\+::pair$<$ \mbox{\hyperlink{classDwm_1_1Ipv4Prefix}{Ipv4\+Prefix}}, \+\_\+valueT $>$ \&match) const
+\begin{DoxyCompactList}\small\item\em Finds the longest match for {\ttfamily ip\+Addr}. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1Ipv4Routes_aadc54b26a033728aeba39acac108b86c}{Find\+Longest}} (const \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4\+Address}} \&ip\+Addr, std\+::pair$<$ \mbox{\hyperlink{classDwm_1_1Ipv4Prefix}{Ipv4\+Prefix}}, const \+\_\+valueT \texorpdfstring{$\ast$}{*} $>$ \&match) const
+\begin{DoxyCompactList}\small\item\em Finds the longest match for {\ttfamily ip\+Addr}. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1Ipv4Routes_a04577937241d00e2040ac3bdefec5bc9}{Find}} (const \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4\+Address}} \&ip\+Addr, std\+::vector$<$ std\+::pair$<$ \mbox{\hyperlink{classDwm_1_1Ipv4Prefix}{Ipv4\+Prefix}}, \+\_\+valueT $>$ $>$ \&matches) const
+\begin{DoxyCompactList}\small\item\em Finds all matches for {\ttfamily ip\+Addr}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4Routes_a538abb410648b57958e3c7312a33ad7a}\label{classDwm_1_1Ipv4Routes_a538abb410648b57958e3c7312a33ad7a} 
+void {\bfseries Max\+Load\+Factor} (float load\+Factor)
+\item 
+bool \mbox{\hyperlink{classDwm_1_1Ipv4Routes_a49c1030e3a6d03b9c3bed9138542f083}{operator==}} (const \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Ipv4\+Routes}}$<$ \+\_\+valueT $>$ \&r) const
+\begin{DoxyCompactList}\small\item\em operator == It\textquotesingle{}s unlikely you\textquotesingle{}d ever need to use this, and it\textquotesingle{}s expensive. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1Ipv4Routes_afcc7579f6953bf227b394f02477e0f32}{operator!=}} (const \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Ipv4\+Routes}}$<$ \+\_\+valueT $>$ \&r) const
+\begin{DoxyCompactList}\small\item\em operator != It\textquotesingle{}s unlikely you\textquotesingle{}d ever need to use this, and it\textquotesingle{}s expensive. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4Routes_ad61ffed1c519bba2d7b4b505117d2d6e}\label{classDwm_1_1Ipv4Routes_ad61ffed1c519bba2d7b4b505117d2d6e} 
+uint32\+\_\+t {\bfseries Size} () const
+\begin{DoxyCompactList}\small\item\em Returns the number of routes. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4Routes_a0f072be893c21cf99b51544453b7ed80}\label{classDwm_1_1Ipv4Routes_a0f072be893c21cf99b51544453b7ed80} 
+void {\bfseries Hash\+Sizes} (std\+::vector$<$ std\+::pair$<$ uint8\+\_\+t, uint32\+\_\+t $>$ $>$ \&sizes) const
+\item 
+uint64\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4Routes_a404910d4d98e5c9b9023e3d21880a0ba}{Streamed\+Length}} () const override
+\begin{DoxyCompactList}\small\item\em Return the number of bytes that would be written if the object\textquotesingle{}s Write(ostream \&), Write(\+FILE \texorpdfstring{$\ast$}{*}) or Write(int) member were called. \end{DoxyCompactList}\item 
+std\+::istream \& \mbox{\hyperlink{classDwm_1_1Ipv4Routes_a7080d7876bd10bf018248deabaf96037}{Read}} (std\+::istream \&is) override
+\begin{DoxyCompactList}\small\item\em Reads the routes from an istream. Returns the istream. \end{DoxyCompactList}\item 
+std\+::ostream \& \mbox{\hyperlink{classDwm_1_1Ipv4Routes_a7fe1a97d9944ca6d4c8b5629355b6fde}{Write}} (std\+::ostream \&os) const override
+\begin{DoxyCompactList}\small\item\em Writes the routes to an ostream. Returns the ostream. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4Routes_a8f61d64ad60b9116300c202e2bf7e003}{Read}} (FILE \texorpdfstring{$\ast$}{*}f) override
+\begin{DoxyCompactList}\small\item\em Reades the routes from a FILE pointer. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4Routes_af256c08b9a3c3c93b20db74f277a3c65}{Write}} (FILE \texorpdfstring{$\ast$}{*}f) const override
+\begin{DoxyCompactList}\small\item\em Writes the routes to a FILE pointer. \end{DoxyCompactList}\item 
+ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4Routes_a5ebc10ca6e1a7b4bda031ef3bfed534e}{Read}} (int fd) override
+\begin{DoxyCompactList}\small\item\em Reads the routes from a file descriptor. \end{DoxyCompactList}\item 
+ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4Routes_adc72baccb4e70d89610363a141581301}{Write}} (int fd) const override
+\begin{DoxyCompactList}\small\item\em Writes the routes to a file descriptor. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv4Routes_a5640c59b6018d36f0cf1a10711d090b6}{Read}} (gz\+File gzf) override
+\begin{DoxyCompactList}\small\item\em Reads the routes from a gz\+File. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv4Routes_a4382e47ec377977552a44198d2894a50}{Write}} (gz\+File gzf) const override
+\begin{DoxyCompactList}\small\item\em Writes the routes to a gz\+File. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv4Routes_aa2b1362649bf22c874ee546cff41afbc}{BZRead}} (BZFILE \texorpdfstring{$\ast$}{*}bzf) override
+\begin{DoxyCompactList}\small\item\em Reads the routes from a BZFILE pointer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv4Routes_abc559b4fab7111a4f238bdcf15f515c9}{BZWrite}} (BZFILE \texorpdfstring{$\ast$}{*}bzf) const override
+\begin{DoxyCompactList}\small\item\em Writes the routes to a BZFILE pointer. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Binary\+Predicate $>$ }\\void \mbox{\hyperlink{classDwm_1_1Ipv4Routes_a5444635cdb733de037864f89497c53d3}{Coalesce}} (Binary\+Predicate pred)
+\begin{DoxyCompactList}\small\item\em Combines adjacent prefixes that can be combined (same value and prefixes can be represented by a prefix with a mask length one bit wider), then removes specific prefixes that are covered by a wider prefix with the same value. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4Routes_aa45daee0d3821411677ecb3cd0dfbb7a}\label{classDwm_1_1Ipv4Routes_aa45daee0d3821411677ecb3cd0dfbb7a} 
+void {\bfseries Coalesce} ()
+\item 
+\Hypertarget{classDwm_1_1Ipv4Routes_a3abbf2a52c052b32c8a2fc2b3f7f6cb0}\label{classDwm_1_1Ipv4Routes_a3abbf2a52c052b32c8a2fc2b3f7f6cb0} 
+void {\bfseries Get\+All\+Keys} (std\+::vector$<$ \mbox{\hyperlink{classDwm_1_1Ipv4Prefix}{Ipv4\+Prefix}} $>$ \&keys) const
+\item 
+\Hypertarget{classDwm_1_1Ipv4Routes_a65845ab25f2efc7566355144344e340c}\label{classDwm_1_1Ipv4Routes_a65845ab25f2efc7566355144344e340c} 
+void {\bfseries Sort\+By\+Key} (std\+::vector$<$ std\+::pair$<$ \mbox{\hyperlink{classDwm_1_1Ipv4Prefix}{Ipv4\+Prefix}}, \+\_\+valueT $>$ $>$ \&target, bool ascending=true) const
+\item 
+void \mbox{\hyperlink{classDwm_1_1Ipv4Routes_a6eb6dbf5dceada65c8186bb5df688493}{Sort\+By\+Value}} (std\+::vector$<$ std\+::pair$<$ \mbox{\hyperlink{classDwm_1_1Ipv4Prefix}{Ipv4\+Prefix}}, \+\_\+valueT $>$ $>$ \&target)
+\begin{DoxyCompactList}\small\item\em Sorts the contained pair$<$\+Ipv4\+Prefix,\+\_\+value\+T$>$ values into a vector, in descending order by the value stored for each prefix. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4Routes_af607e7b3dd1df819185e745011343ea4}\label{classDwm_1_1Ipv4Routes_af607e7b3dd1df819185e745011343ea4} 
+uint32\+\_\+t {\bfseries Addresses\+Covered} () const
+\begin{DoxyCompactList}\small\item\em Returns the number of addresses covered by the contained prefixes, not including 0/0. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4Routes_abaca3b60ad50a8c5b1f04ddc789dc5c8}\label{classDwm_1_1Ipv4Routes_abaca3b60ad50a8c5b1f04ddc789dc5c8} 
+const std\+::array$<$ \+\_\+\+Rep\+Sub\+Type, 33 $>$ \& {\bfseries Hash\+Maps} () const
+\begin{DoxyCompactList}\small\item\em Returns a const reference to the contained hash maps. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1DescriptorReadable}{Dwm\+::\+Descriptor\+Readable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Descriptor\+Readable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1DescriptorWritable}{Dwm\+::\+Descriptor\+Writable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Descriptor\+Writable} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1StreamReadable}{Dwm\+::\+Stream\+Readable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Stream\+Readable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1StreamWritable}{Dwm\+::\+Stream\+Writable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Stream\+Writable} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1GZReadable}{Dwm\+::\+GZReadable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+GZReadable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1GZWritable}{Dwm\+::\+GZWritable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+GZWritable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Ipv4Routes_a94203fe6b00844932bf0ece29cdc1c29}\label{classDwm_1_1Ipv4Routes_a94203fe6b00844932bf0ece29cdc1c29} 
+{\footnotesize template$<$typename Binary\+Predicate $>$ }\\bool {\bfseries Have\+Wider\+Match} (const \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4\+Address}} \&addr, uint8\+\_\+t mask\+Len, const \+\_\+valueT \&val, Binary\+Predicate pred) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Ipv4Routes_ae0a30669b6ab02052d9ed5e9dd46760c}\label{classDwm_1_1Ipv4Routes_ae0a30669b6ab02052d9ed5e9dd46760c} 
+std\+::array$<$ \+\_\+\+Rep\+Sub\+Type, 33 $>$ {\bfseries \+\_\+hash\+Maps}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename \+\_\+valueT$>$\newline
+class Dwm\+::\+Ipv4\+Routes$<$ \+\_\+value\+T $>$}
+This template class provides an associative container keyed by IPv4 addresses, with longest-\/match searching. 
+
+While this isn\textquotesingle{}t as speedy to search as \doxylink{classDwm_1_1Patricia}{Patricia} or radix, it is based on STL containers and is hence easy to understand and maintain (note how few lines of actual code are here).
+
+I/O functionality is provided, but the real work there is done in the \doxylink{classDwm_1_1IO}{Dwm\+::\+IO} class.\hypertarget{classDwm_1_1Ipv4Routes_autotoc_md0}{}\doxysubsubsection{\texorpdfstring{Performance}{Performance}}\label{classDwm_1_1Ipv4Routes_autotoc_md0}
+I tested this class with a global IPv4 routing table from October 7, 2005. It contained 178,567 unique prefixes. The code was compiled with \textquotesingle{}g++ -\/O2 ...\textquotesingle{} and run on a Xeon 2.\+8\+GHz host running Free\+BSD 5.\+3. Each test looked up one address from each of the 178,567 prefixes, and was run 10 times.
+
+Find\+Longest(const Ipv4\+Address \&, std\+::pair$<$\+Ipv4\+Prefix,\+\_\+value\+T$>$ \&)
+\begin{DoxyItemize}
+\item yielded 830,000 lookups/sec with an Ipv4\+Routes$<$uint32\+\_\+t$>$. Since this member copies into the value in the passed-\/in pair reference using operator =, it will be slower with larger \+\_\+valueT types.
+\end{DoxyItemize}
+
+Find\+Longest(const Ipv4\+Address \&, std\+::pair$<$\+Ipv4\+Prefix,\+\_\+value\+T \texorpdfstring{$\ast$}{*}$>$ \&)
+\begin{DoxyItemize}
+\item yielded 1,040,000 lookups/sec with an Ipv4\+Routes$<$string$>$. It makes sense to use this with larger \+\_\+valueT types. I\textquotesingle{}ve no idea why it is faster than the previous \doxylink{classDwm_1_1Ipv4Routes_a134944eea0411d3bcb61a85d99d00a7b}{Find\+Longest()} function that copies by value; it should be just as cheap to copy a uint32\+\_\+t as it is to copy a pointer.
+\end{DoxyItemize}
+
+In October 2007 I switched to using $<$unordered\+\_\+map$>$ for the internal containers. I set the max\+\_\+load\+\_\+factor to .15 and get 1,168,000 lookups/sec for Ipv4\+Routes$<$uint32\+\_\+t$>$ when calling Find\+Longest(const Ipv4\+Address \&, std\+::pair$<$\+Ipv4\+Prefix,\+\_\+value\+T$>$ \&) and 1,489,081 lookups/sec with Ipv4\+Routes$<$string$>$ when calling Find\+Longest(const Ipv4\+Address \&, std\+::pair$<$\+Ipv4\+Prefix,\+\_\+value\+T \texorpdfstring{$\ast$}{*}$>$ \&)
+
+More current measurements in 2020 on a Threadripper 3960X\+: roughly 5.\+3 million lookups/second for Ipv4\+Routes$<$string$>$.
+
+Note\+: I don\textquotesingle{}t consider this code fast for lookups; it\textquotesingle{}s a tradeoff. You can get {\itshape much} faster lookups with sorted instances of std\+::vector, but at the expense of poor average insertion and deletion (and linear in the size of each vector in the worst-\/case). On modern CPUs, cache-\/friendly containers like std\+::vector are a big advantage for lookups if you keep them sorted, but keeping them sorted is expensive. A quick hack using sorted std\+::vector and std\+::lower\+\_\+bound yield about a 10X improvement in lookups but a severe penaly for insertions. This would be less true if the typical prefix length distribution was close to normal, but in the real world it\textquotesingle{}s typically heavy-\/tailed with the peak between /22 and /24. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1Ipv4Routes_aef6bb28e1113d78a88dff59c26458639}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!Add@{Add}}
+\index{Add@{Add}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{Add()}{Add()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_aef6bb28e1113d78a88dff59c26458639} 
+template$<$typename \+\_\+valueT $>$ \\
+bool \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::\+Add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classDwm_1_1Ipv4Prefix}{Ipv4\+Prefix}} \&}]{prefix}{, }\item[{const \+\_\+valueT \&}]{value}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Adds an entry. 
+
+Returns false (and does nothing) if there was already an entry present for {\ttfamily prefix}. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4Routes_aef6bb28e1113d78a88dff59c26458639_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4Routes_aa2b1362649bf22c874ee546cff41afbc}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!BZRead@{BZRead}}
+\index{BZRead@{BZRead}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{BZRead()}{BZRead()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_aa2b1362649bf22c874ee546cff41afbc} 
+template$<$typename \+\_\+valueT $>$ \\
+int \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::\+BZRead (\begin{DoxyParamCaption}\item[{BZFILE \texorpdfstring{$\ast$}{*}}]{bzf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the routes from a BZFILE pointer. 
+
+Returns the number of bytes read on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1BZ2Readable_a4b71c8697049e8e2e5df8ff22405f6b7}{Dwm\+::\+BZ2\+Readable}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4Routes_aa2b1362649bf22c874ee546cff41afbc_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4Routes_abc559b4fab7111a4f238bdcf15f515c9}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!BZWrite@{BZWrite}}
+\index{BZWrite@{BZWrite}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{BZWrite()}{BZWrite()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_abc559b4fab7111a4f238bdcf15f515c9} 
+template$<$typename \+\_\+valueT $>$ \\
+int \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::\+BZWrite (\begin{DoxyParamCaption}\item[{BZFILE \texorpdfstring{$\ast$}{*}}]{bzf}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the routes to a BZFILE pointer. 
+
+Returns the number of bytes written on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1BZ2Writable_aa4481114d6865e31f0aa94f08c2b2e5d}{Dwm\+::\+BZ2\+Writable}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4Routes_abc559b4fab7111a4f238bdcf15f515c9_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4Routes_a5444635cdb733de037864f89497c53d3}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!Coalesce@{Coalesce}}
+\index{Coalesce@{Coalesce}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{Coalesce()}{Coalesce()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_a5444635cdb733de037864f89497c53d3} 
+template$<$typename \+\_\+valueT $>$ \\
+template$<$typename Binary\+Predicate $>$ \\
+void \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::\+Coalesce (\begin{DoxyParamCaption}\item[{Binary\+Predicate}]{pred}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Combines adjacent prefixes that can be combined (same value and prefixes can be represented by a prefix with a mask length one bit wider), then removes specific prefixes that are covered by a wider prefix with the same value. 
+
+While we accept a predicate used to compare the two values, it only makes sense to use std\+::equal\+\_\+to$<$\+\_\+value\+T$>$() or an equivalent since we make no guarantee of which of the two values we will use in the combined entry. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4Routes_a5444635cdb733de037864f89497c53d3_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4Routes_a4f748db738aa91a6d2d5fb54088d192c}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!Delete@{Delete}}
+\index{Delete@{Delete}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{Delete()}{Delete()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_a4f748db738aa91a6d2d5fb54088d192c} 
+template$<$typename \+\_\+valueT $>$ \\
+bool \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::\+Delete (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classDwm_1_1Ipv4Prefix}{Ipv4\+Prefix}} \&}]{prefix}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Deletes the entry for {\ttfamily prefix}. 
+
+Returns true on success, false if an entry wasn\textquotesingle{}t found for {\ttfamily prefix}. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4Routes_a4f748db738aa91a6d2d5fb54088d192c_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4Routes_a04577937241d00e2040ac3bdefec5bc9}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!Find@{Find}}
+\index{Find@{Find}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{Find()}{Find()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_a04577937241d00e2040ac3bdefec5bc9} 
+template$<$typename \+\_\+valueT $>$ \\
+bool \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::\+Find (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4\+Address}} \&}]{ip\+Addr}{, }\item[{std\+::vector$<$ std\+::pair$<$ \mbox{\hyperlink{classDwm_1_1Ipv4Prefix}{Ipv4\+Prefix}}, \+\_\+valueT $>$ $>$ \&}]{matches}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Finds all matches for {\ttfamily ip\+Addr}. 
+
+Places the results in {\ttfamily matches} (in longest-\/match-\/first order) and returns true if any matches were found. Returns false if no matches were found. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4Routes_a04577937241d00e2040ac3bdefec5bc9_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4Routes_a2d7c337cdeca457b96705d679f601068}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!Find@{Find}}
+\index{Find@{Find}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{Find()}{Find()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_a2d7c337cdeca457b96705d679f601068} 
+template$<$typename \+\_\+valueT $>$ \\
+bool \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::\+Find (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classDwm_1_1Ipv4Prefix}{Ipv4\+Prefix}} \&}]{prefix}{, }\item[{\+\_\+valueT \&}]{match}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Find the entry for the given {\ttfamily prefix}. 
+
+If an entry is found, the value is stored in {\ttfamily match} and true is returned. Else false is returned. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4Routes_a2d7c337cdeca457b96705d679f601068_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4Routes_a134944eea0411d3bcb61a85d99d00a7b}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!FindLongest@{FindLongest}}
+\index{FindLongest@{FindLongest}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{FindLongest()}{FindLongest()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_a134944eea0411d3bcb61a85d99d00a7b} 
+template$<$typename \+\_\+valueT $>$ \\
+bool \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::\+Find\+Longest (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4\+Address}} \&}]{ip\+Addr}{, }\item[{std\+::pair$<$ \mbox{\hyperlink{classDwm_1_1Ipv4Prefix}{Ipv4\+Prefix}}, \+\_\+valueT $>$ \&}]{match}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Finds the longest match for {\ttfamily ip\+Addr}. 
+
+Places the result in {\ttfamily match} and returns true on success. Returns false if no match was found for {\ttfamily ip\+Addr}. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4Routes_a134944eea0411d3bcb61a85d99d00a7b_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4Routes_aadc54b26a033728aeba39acac108b86c}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!FindLongest@{FindLongest}}
+\index{FindLongest@{FindLongest}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{FindLongest()}{FindLongest()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_aadc54b26a033728aeba39acac108b86c} 
+template$<$typename \+\_\+valueT $>$ \\
+bool \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::\+Find\+Longest (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4\+Address}} \&}]{ip\+Addr}{, }\item[{std\+::pair$<$ \mbox{\hyperlink{classDwm_1_1Ipv4Prefix}{Ipv4\+Prefix}}, const \+\_\+valueT \texorpdfstring{$\ast$}{*} $>$ \&}]{match}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Finds the longest match for {\ttfamily ip\+Addr}. 
+
+Places the result in {\ttfamily match} and returns true on success. Returns false if no match was found for {\ttfamily ip\+Addr}. Note that match.\+second is a pointer to const for the value stored under the prefix. That means you need to be careful using this member; don\textquotesingle{}t call free() or delete() on match.\+second. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4Routes_aadc54b26a033728aeba39acac108b86c_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4Routes_afcc7579f6953bf227b394f02477e0f32}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_afcc7579f6953bf227b394f02477e0f32} 
+template$<$typename \+\_\+valueT $>$ \\
+bool \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::operator!= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Ipv4\+Routes}}$<$ \+\_\+valueT $>$ \&}]{r}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+operator != It\textquotesingle{}s unlikely you\textquotesingle{}d ever need to use this, and it\textquotesingle{}s expensive. 
+
+It\textquotesingle{}s mainly here for unit testing. \Hypertarget{classDwm_1_1Ipv4Routes_a49c1030e3a6d03b9c3bed9138542f083}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!operator==@{operator==}}
+\index{operator==@{operator==}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_a49c1030e3a6d03b9c3bed9138542f083} 
+template$<$typename \+\_\+valueT $>$ \\
+bool \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Ipv4\+Routes}}$<$ \+\_\+valueT $>$ \&}]{r}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+operator == It\textquotesingle{}s unlikely you\textquotesingle{}d ever need to use this, and it\textquotesingle{}s expensive. 
+
+It\textquotesingle{}s mainly here for unit testing. \Hypertarget{classDwm_1_1Ipv4Routes_a8f61d64ad60b9116300c202e2bf7e003}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!Read@{Read}}
+\index{Read@{Read}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_a8f61d64ad60b9116300c202e2bf7e003} 
+template$<$typename \+\_\+valueT $>$ \\
+size\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reades the routes from a FILE pointer. 
+
+Returns 1 on success, 0 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1FileReadable_a2e51685eb4fecc584ab48ca7609bba6f}{Dwm\+::\+File\+Readable}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{classDwm_1_1Ipv4Routes_a8f61d64ad60b9116300c202e2bf7e003_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4Routes_a5640c59b6018d36f0cf1a10711d090b6}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!Read@{Read}}
+\index{Read@{Read}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_a5640c59b6018d36f0cf1a10711d090b6} 
+template$<$typename \+\_\+valueT $>$ \\
+int \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the routes from a gz\+File. 
+
+Returns the number of bytes read on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1GZReadable_a4243984d9d8fb2f79997403824834dd2}{Dwm\+::\+GZReadable}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=339pt]{classDwm_1_1Ipv4Routes_a5640c59b6018d36f0cf1a10711d090b6_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4Routes_a5ebc10ca6e1a7b4bda031ef3bfed534e}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!Read@{Read}}
+\index{Read@{Read}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_a5ebc10ca6e1a7b4bda031ef3bfed534e} 
+template$<$typename \+\_\+valueT $>$ \\
+ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the routes from a file descriptor. 
+
+Returns the number of bytes read on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1DescriptorReadable_aec1a0c67dd53343e52be7a6728081b7f}{Dwm\+::\+Descriptor\+Readable}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4Routes_a5ebc10ca6e1a7b4bda031ef3bfed534e_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4Routes_a7080d7876bd10bf018248deabaf96037}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!Read@{Read}}
+\index{Read@{Read}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_a7080d7876bd10bf018248deabaf96037} 
+template$<$typename \+\_\+valueT $>$ \\
+std\+::istream \& \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::\+Read (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{is}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the routes from an istream. Returns the istream. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamReadable_a8337a0949e0ce4458f18884d00eb5153}{Dwm\+::\+Stream\+Readable}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4Routes_a7080d7876bd10bf018248deabaf96037_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4Routes_a6eb6dbf5dceada65c8186bb5df688493}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!SortByValue@{SortByValue}}
+\index{SortByValue@{SortByValue}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{SortByValue()}{SortByValue()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_a6eb6dbf5dceada65c8186bb5df688493} 
+template$<$typename \+\_\+valueT $>$ \\
+void \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::\+Sort\+By\+Value (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::pair$<$ \mbox{\hyperlink{classDwm_1_1Ipv4Prefix}{Ipv4\+Prefix}}, \+\_\+valueT $>$ $>$ \&}]{target}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Sorts the contained pair$<$\+Ipv4\+Prefix,\+\_\+value\+T$>$ values into a vector, in descending order by the value stored for each prefix. 
+
+For example, if you had an Ipv4\+Routes$<$uint32\+\_\+t$>$ object, {\ttfamily target} would contain the pair$<$\+Ipv4\+Prefix,\+\_\+value\+T$>$ objects sorted in descending order by the uint32\+\_\+t values. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4Routes_a6eb6dbf5dceada65c8186bb5df688493_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4Routes_a404910d4d98e5c9b9023e3d21880a0ba}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!StreamedLength@{StreamedLength}}
+\index{StreamedLength@{StreamedLength}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{StreamedLength()}{StreamedLength()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_a404910d4d98e5c9b9023e3d21880a0ba} 
+template$<$typename \+\_\+valueT $>$ \\
+uint64\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::\+Streamed\+Length (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Return the number of bytes that would be written if the object\textquotesingle{}s Write(ostream \&), Write(\+FILE \texorpdfstring{$\ast$}{*}) or Write(int) member were called. 
+
+These members would be inherited from \doxylink{classDwm_1_1StreamWritable}{Stream\+Writable}, \doxylink{classDwm_1_1FileWritable}{File\+Writable} or \doxylink{classDwm_1_1DescriptorWritable}{Descriptor\+Writable}, respectively. 
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamedLengthCapable_abe671443353ea6ed173005c6f515ca5d}{Dwm\+::\+Streamed\+Length\+Capable}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4Routes_a404910d4d98e5c9b9023e3d21880a0ba_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4Routes_af256c08b9a3c3c93b20db74f277a3c65}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!Write@{Write}}
+\index{Write@{Write}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_af256c08b9a3c3c93b20db74f277a3c65} 
+template$<$typename \+\_\+valueT $>$ \\
+size\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the routes to a FILE pointer. 
+
+Returns 1 on success, 0 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1FileWritable_ad46fa6f29a2fec8c8080f054c0a8febe}{Dwm\+::\+File\+Writable}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=340pt]{classDwm_1_1Ipv4Routes_af256c08b9a3c3c93b20db74f277a3c65_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4Routes_a4382e47ec377977552a44198d2894a50}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!Write@{Write}}
+\index{Write@{Write}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_a4382e47ec377977552a44198d2894a50} 
+template$<$typename \+\_\+valueT $>$ \\
+int \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the routes to a gz\+File. 
+
+Returns the number of bytes written on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1GZWritable_a5f50bad679854f91bc5a67728a329681}{Dwm\+::\+GZWritable}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=338pt]{classDwm_1_1Ipv4Routes_a4382e47ec377977552a44198d2894a50_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4Routes_adc72baccb4e70d89610363a141581301}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!Write@{Write}}
+\index{Write@{Write}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_adc72baccb4e70d89610363a141581301} 
+template$<$typename \+\_\+valueT $>$ \\
+ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the routes to a file descriptor. 
+
+Returns the number of bytes written on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1DescriptorWritable_ae0b23058b0de909d4705c05507b10864}{Dwm\+::\+Descriptor\+Writable}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=347pt]{classDwm_1_1Ipv4Routes_adc72baccb4e70d89610363a141581301_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4Routes_a7fe1a97d9944ca6d4c8b5629355b6fde}\index{Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}!Write@{Write}}
+\index{Write@{Write}!Dwm::Ipv4Routes$<$ \_valueT $>$@{Dwm::Ipv4Routes$<$ \_valueT $>$}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4Routes_a7fe1a97d9944ca6d4c8b5629355b6fde} 
+template$<$typename \+\_\+valueT $>$ \\
+std\+::ostream \& \mbox{\hyperlink{classDwm_1_1Ipv4Routes}{Dwm\+::\+Ipv4\+Routes}}$<$ \+\_\+valueT $>$\+::\+Write (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the routes to an ostream. Returns the ostream. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamWritable_a66994f2c5fbf07308b6b766f9774d079}{Dwm\+::\+Stream\+Writable}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4Routes_a7fe1a97d9944ca6d4c8b5629355b6fde_cgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmIpv4Routes_8hh}{Dwm\+Ipv4\+Routes.\+hh}}\end{DoxyCompactItemize}

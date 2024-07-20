@@ -244,18 +244,26 @@ namespace Dwm {
     //!  Wrapper function to read a BZ2Readable object from a BZFILE pointer.
     //------------------------------------------------------------------------
     static int BZRead(BZFILE *bzf, BZ2Readable & val)
-    {
-      return(val.BZRead(bzf));
-    }
+    { return(val.BZRead(bzf)); }
 
+    //------------------------------------------------------------------------
+    //!  Reads @c val from @c bzf.
+    //------------------------------------------------------------------------
+    static int BZRead(BZFILE *bzf, HasBZRead auto & val)
+    { return val.BZRead(bzf); }
+      
     //------------------------------------------------------------------------
     //!  Wrapper function to write a BZ2Writable object to a BZFILE pointer.
     //------------------------------------------------------------------------
     static int BZWrite(BZFILE *bzf, const BZ2Writable & val)
-    {
-      return(val.BZWrite(bzf));
-    }
+    { return(val.BZWrite(bzf)); }
 
+    //------------------------------------------------------------------------
+    //!  Writes @c val to @c bzf.
+    //------------------------------------------------------------------------
+    static int BZWrite(BZFILE *bzf, const HasBZRead auto & val)
+    { return val.BZWrite(bzf); }
+      
     //------------------------------------------------------------------------
     //!  Reads a pair<_firstT,_secondT> from a BZFILE pointer.  Returns
     //!  the number of bytes read on success, -1 on failure.

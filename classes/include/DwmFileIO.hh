@@ -236,18 +236,26 @@ namespace Dwm {
     //!  Wrapper function to read a FileReadable object from a FILE.
     //------------------------------------------------------------------------
     static size_t Read(FILE *f, FileReadable & val)
-    {
-      return(val.Read(f));
-    }
-    
+    { return val.Read(f); }
+
+    //------------------------------------------------------------------------
+    //!  Reads @c t from FILE @c f.
+    //------------------------------------------------------------------------
+    static size_t Read(FILE *f, HasFileRead auto & val)
+    { return val.Read(f); }
+      
     //------------------------------------------------------------------------
     //!  Wrapper function to write a FileWritable object to a FILE.
     //------------------------------------------------------------------------
     static size_t Write(FILE * f, const FileWritable & val)
-    {
-      return(val.Write(f));
-    }
+    { return(val.Write(f)); }
 
+    //------------------------------------------------------------------------
+    //!  Writes @c t to FILE @c f.
+    //------------------------------------------------------------------------
+    static size_t Write(FILE *f, const HasFileRead auto & val)
+    { return val.Write(f); }
+    
     //------------------------------------------------------------------------
     //!  Reads a pair<_firstT,_secondT> from a FILE.  Returns 1 on success,
     //!  0 on failure.

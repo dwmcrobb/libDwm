@@ -1,0 +1,35 @@
+<map id="Dwm::Ipv4Address" name="Dwm::Ipv4Address">
+<area shape="rect" id="Node000001" title="This class encapsulates an IPv4 address." alt="" coords="480,228,613,254"/>
+<area shape="rect" id="Node000002" href="$classDwm_1_1ASIOCapable.html" title="Interface for classes that can read/write their contents from/to a boost::asio::ip::tcp::socket." alt="" coords="260,55,401,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="365,87,434,139,533,225,529,229,430,143,361,91"/>
+<area shape="rect" id="Node000003" href="$classDwm_1_1ASIOReadable.html" title="Interface for classes that wish to be readable via Dwm::ASIO." alt="" coords="19,5,167,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="174,32,266,51,264,57,173,37"/>
+<area shape="rect" id="Node000004" href="$classDwm_1_1ASIOWritable.html" title="Interface for classes that wish to be writable via Dwm::ASIO." alt="" coords="23,55,163,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="178,65,260,65,260,70,178,70"/>
+<area shape="rect" id="Node000005" href="$classDwm_1_1StreamIOCapable.html" title="Interface for classes with iostream read and write capabilities." alt="" coords="248,153,413,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="411,181,433,188,520,225,518,230,431,193,409,186"/>
+<area shape="rect" id="Node000006" href="$classDwm_1_1StreamReadable.html" title="This class defines an interface for classes that can read their contents from an istream." alt="" coords="14,104,172,130"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="174,131,266,150,264,155,173,136"/>
+<area shape="rect" id="Node000007" href="$classDwm_1_1StreamWritable.html" title="This class defines an interface for classes that can write their contents to an ostream." alt="" coords="18,153,168,179"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="183,164,248,164,248,169,183,169"/>
+<area shape="rect" id="Node000008" href="$classDwm_1_1DescriptorIOCapable.html" title="This class defines an interface for classes that can write/read their contents to/from a file descrip..." alt="" coords="239,203,422,228"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="437,225,480,230,479,236,436,231"/>
+<area shape="rect" id="Node000009" href="$classDwm_1_1DescriptorReadable.html" title="This class defines an interface for classes that can read their contents from a file descriptor." alt="" coords="5,203,181,228"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="196,213,239,213,239,218,196,218"/>
+<area shape="rect" id="Node000010" href="$classDwm_1_1DescriptorWritable.html" title="This class defines an interface for classes that can write their contents to a file descriptor." alt="" coords="9,252,177,278"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="173,246,264,226,266,232,174,251"/>
+<area shape="rect" id="Node000011" href="$classDwm_1_1StreamedLengthCapable.html" title="Interface for classes which can return their streamed length." alt="" coords="229,252,432,278"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="447,249,479,246,480,251,448,254"/>
+<area shape="rect" id="Node000012" href="$classDwm_1_1GZIOCapable.html" title="Interface for classes with GZIO read and write capabilities." alt="" coords="260,301,401,327"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="409,294,431,288,517,252,519,257,433,293,411,299"/>
+<area shape="rect" id="Node000013" href="$classDwm_1_1GZReadable.html" title="This class is a pure virtual class, defining an interface for classes that can read their contents fr..." alt="" coords="26,301,160,327"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="176,312,260,312,260,317,176,317"/>
+<area shape="rect" id="Node000014" href="$classDwm_1_1GZWritable.html" title="This class is a pure virtual class, defining an interface for classes that can write their contents t..." alt="" coords="30,351,156,376"/>
+<area shape="poly" id="edge13_Node000012_Node000014" title=" " alt="" coords="170,345,264,325,265,330,172,350"/>
+<area shape="rect" id="Node000015" href="$classDwm_1_1BZ2IOCapable.html" title="Interface for classes with BZ2IO read and write capabilities." alt="" coords="257,400,404,426"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="361,389,430,337,529,252,533,256,434,342,365,393"/>
+<area shape="rect" id="Node000016" href="$classDwm_1_1BZ2Readable.html" title="This class is a pure virtual class, defining an interface for classes that can read their contents fr..." alt="" coords="23,400,163,426"/>
+<area shape="poly" id="edge15_Node000015_Node000016" title=" " alt="" coords="178,410,257,410,257,416,178,416"/>
+<area shape="rect" id="Node000017" href="$classDwm_1_1BZ2Writable.html" title="This class is a pure virtual class, defining an interface for classes that can write their contents t..." alt="" coords="27,449,159,475"/>
+<area shape="poly" id="edge16_Node000015_Node000017" title=" " alt="" coords="173,443,264,424,266,429,174,448"/>
+</map>

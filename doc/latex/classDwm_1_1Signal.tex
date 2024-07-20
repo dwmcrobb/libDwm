@@ -1,0 +1,88 @@
+\doxysection{Dwm\+::Signal Class Reference}
+\hypertarget{classDwm_1_1Signal}{}\label{classDwm_1_1Signal}\index{Dwm::Signal@{Dwm::Signal}}
+
+
+This class encapsulates a signal.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Signal.\+hh$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Signal_a1e4f1eaf62771cbd672fd09b349d0b58}\label{classDwm_1_1Signal_a1e4f1eaf62771cbd672fd09b349d0b58} 
+{\bfseries Signal} (int sig\+Num)
+\begin{DoxyCompactList}\small\item\em Construct from a signal number (e.\+g. SIGHUP). \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Signal_aafdd450852a44a64d9336e5872e37e06}\label{classDwm_1_1Signal_aafdd450852a44a64d9336e5872e37e06} 
+{\bfseries Signal} (const \mbox{\hyperlink{classDwm_1_1Signal}{Signal}} \&signal)
+\begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Signal_ac4d47cb82cc3d979cc34b1d9ea11cf61}\label{classDwm_1_1Signal_ac4d47cb82cc3d979cc34b1d9ea11cf61} 
+bool {\bfseries Block} ()
+\begin{DoxyCompactList}\small\item\em Block the signal. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Signal_a40f7fec1bc19ab19c211c98d444bb66e}\label{classDwm_1_1Signal_a40f7fec1bc19ab19c211c98d444bb66e} 
+bool {\bfseries Unblock} ()
+\begin{DoxyCompactList}\small\item\em Unblock the signal. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Signal_aa18b1933cd8643ea9b71ac24cc3ca66c}\label{classDwm_1_1Signal_aa18b1933cd8643ea9b71ac24cc3ca66c} 
+bool {\bfseries Is\+Blocked} ()
+\begin{DoxyCompactList}\small\item\em Returns true if the signal is currently blocked. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Signal_a4477617446fb39dd5febab94b8a8a9c0}\label{classDwm_1_1Signal_a4477617446fb39dd5febab94b8a8a9c0} 
+bool {\bfseries Is\+Pending} ()
+\begin{DoxyCompactList}\small\item\em Returns true if the signal is currently pending. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDwm_1_1Signal_ade652ea88547e676ac5e9fe27f289462}{Wait}} ()
+\begin{DoxyCompactList}\small\item\em Waits for the delivery of the signal to the calling thread. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Signal_a51d3c33a4ce584d37ca54998b292c85d}{Push\+Handler}} (void(\texorpdfstring{$\ast$}{*}handler)(int))
+\begin{DoxyCompactList}\small\item\em Pushes a signal onto the top of a stack of signal handlers for the signal. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Signal_a533c6874c2af36c5ff2d53bed93220de}\label{classDwm_1_1Signal_a533c6874c2af36c5ff2d53bed93220de} 
+int {\bfseries Pop\+Handler} ()
+\begin{DoxyCompactList}\small\item\em Pops the top signal handler off of the stack of signal handlers. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Signal_a082937f8746600993c206256e9163d5c}\label{classDwm_1_1Signal_a082937f8746600993c206256e9163d5c} 
+const std\+::string \& {\bfseries Name} () const
+\begin{DoxyCompactList}\small\item\em Returns a string representation of the signal ("{}e.\+g. "{}SIGHUP"{}). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Signal_a35d236e94c578ab0a7c030624af3b366}\label{classDwm_1_1Signal_a35d236e94c578ab0a7c030624af3b366} 
+int {\bfseries \+\_\+sig\+Num}
+\item 
+\Hypertarget{classDwm_1_1Signal_a385e5eb14596108964df95a3dbb95f38}\label{classDwm_1_1Signal_a385e5eb14596108964df95a3dbb95f38} 
+std\+::deque$<$ void(\texorpdfstring{$\ast$}{*})(int)$>$ {\bfseries \+\_\+handlers}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Signal_af5eb2de4fde2b6d2e9f10d4e37839359}\label{classDwm_1_1Signal_af5eb2de4fde2b6d2e9f10d4e37839359} 
+static const std\+::map$<$ int, std\+::string, std\+::less$<$ int $>$ $>$ {\bfseries \+\_\+names}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class encapsulates a signal. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1Signal_a51d3c33a4ce584d37ca54998b292c85d}\index{Dwm::Signal@{Dwm::Signal}!PushHandler@{PushHandler}}
+\index{PushHandler@{PushHandler}!Dwm::Signal@{Dwm::Signal}}
+\doxysubsubsection{\texorpdfstring{PushHandler()}{PushHandler()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Signal_a51d3c33a4ce584d37ca54998b292c85d} 
+int Dwm\+::\+Signal\+::\+Push\+Handler (\begin{DoxyParamCaption}\item[{void(\texorpdfstring{$\ast$}{*}}]{handler~}{)(int)}\end{DoxyParamCaption})}
+
+
+
+Pushes a signal onto the top of a stack of signal handlers for the signal. 
+
+The handler on the top of the stack is the one which will be called on reception of the signal. \Hypertarget{classDwm_1_1Signal_ade652ea88547e676ac5e9fe27f289462}\index{Dwm::Signal@{Dwm::Signal}!Wait@{Wait}}
+\index{Wait@{Wait}!Dwm::Signal@{Dwm::Signal}}
+\doxysubsubsection{\texorpdfstring{Wait()}{Wait()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Signal_ade652ea88547e676ac5e9fe27f289462} 
+void Dwm\+::\+Signal\+::\+Wait (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Waits for the delivery of the signal to the calling thread. 
+
+See the sigwait() manpage. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmSignal_8hh}{Dwm\+Signal.\+hh}}\end{DoxyCompactItemize}

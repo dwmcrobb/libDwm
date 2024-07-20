@@ -1,0 +1,247 @@
+.TH "Dwm::MplsLabel" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::MplsLabel \- Encapsulates an MPLS label\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmMplsLabel\&.hh>\fP
+.PP
+Inherits \fBDwm::DescriptorIOCapable\fP, Dwm::FileIOCapable, \fBDwm::StreamIOCapable\fP, \fBDwm::StreamedLengthCapable\fP, \fBDwm::GZIOCapable\fP, and \fBDwm::BZ2IOCapable\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBMplsLabel\fP ()"
+.br
+.RI "Constructor\&. Sets all label bits to 0\&. "
+.ti -1c
+.RI "\fBMplsLabel\fP (const std::string &s)"
+.br
+.RI "Construct from a string of the form 'label:exp:s:ttl'\&. "
+.ti -1c
+.RI "uint32_t \fBLabel\fP () const"
+.br
+.RI "Returns the 20-bit label portion of the label\&. "
+.ti -1c
+.RI "uint32_t \fBLabel\fP (uint32_t label)"
+.br
+.RI "Sets and returns the 20-bit label portion of the label\&. "
+.ti -1c
+.RI "uint8_t \fBExp\fP () const"
+.br
+.RI "Returns the 3-bit exp portion of the label\&. "
+.ti -1c
+.RI "uint8_t \fBExp\fP (uint8_t exp)"
+.br
+.RI "Sets and returns the 3-bit exp portion of the label\&. "
+.ti -1c
+.RI "bool \fBS\fP () const"
+.br
+.RI "Returns true if the S (bottom-of-stack) bit is set\&. "
+.ti -1c
+.RI "bool \fBS\fP (bool s)"
+.br
+.RI "Sets the S bit\&. "
+.ti -1c
+.RI "uint8_t \fBTtl\fP () const"
+.br
+.RI "Returns the TTL portion of the label\&. "
+.ti -1c
+.RI "uint8_t \fBTtl\fP (uint8_t ttl)"
+.br
+.RI "Sets and returns the TTL portion of the label\&. "
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBMplsLabel\fP &label) const"
+.br
+.RI "operator == "
+.ti -1c
+.RI "std::istream & \fBRead\fP (std::istream &is) override"
+.br
+.RI "Reads the MPLS label from an istream\&. Returns the istream\&. "
+.ti -1c
+.RI "std::ostream & \fBWrite\fP (std::ostream &os) const override"
+.br
+.RI "Writes the MPLS label to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "ssize_t \fBRead\fP (int fd) override"
+.br
+.RI "Reads the MPLS label from a file descriptor\&. "
+.ti -1c
+.RI "ssize_t \fBWrite\fP (int fd) const override"
+.br
+.RI "Writes the MPLS label to a file descriptor\&. "
+.ti -1c
+.RI "size_t \fBRead\fP (FILE *f) override"
+.br
+.RI "Reads the MPLS label from a FILE\&. "
+.ti -1c
+.RI "size_t \fBWrite\fP (FILE *f) const override"
+.br
+.RI "Writes the MPLS label to a FILE\&. "
+.ti -1c
+.RI "int \fBRead\fP (gzFile gzf) override"
+.br
+.RI "Reads the MPLS label from the given gzFile \fRgzf\fP\&. "
+.ti -1c
+.RI "int \fBWrite\fP (gzFile gzf) const override"
+.br
+.RI "Writes the MPLS lable to the given gzFile \fRgzf\fP\&. "
+.ti -1c
+.RI "int \fBBZRead\fP (BZFILE *bzf) override"
+.br
+.RI "Reads the MPLS label from the given BZFILE \fRbzf\fP\&. "
+.ti -1c
+.RI "int \fBBZWrite\fP (BZFILE *bzf) const override"
+.br
+.RI "Writes the MPLS lable to the given BZFILE \fRbzf\fP\&. "
+.ti -1c
+.RI "uint64_t \fBStreamedLength\fP () const override"
+.br
+.RI "Returns the number of bytes that should be written if we call one of the \fBWrite()\fP members\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::DescriptorReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~DescriptorReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::DescriptorWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~DescriptorWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::StreamReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~StreamReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::StreamWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~StreamWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::GZReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~GZReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::GZWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~GZWritable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+.SS "Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "uint32_t \fB_data\fP"
+.br
+.in -1c
+.SS "Friends"
+
+.in +1c
+.ti -1c
+.RI "std::ostream & \fBoperator<<\fP (std::ostream &os, const \fBMplsLabel\fP &label)"
+.br
+.RI "Prints to an ostream in 'label:exp:s:ttl' format\&. "
+.ti -1c
+.RI "std::istream & \fBoperator>>\fP (std::istream &is, \fBMplsLabel\fP &label)"
+.br
+.RI "Reads from an istream in 'label:exp:s:ttl' format\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Encapsulates an MPLS label\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "int Dwm::MplsLabel::BZRead (BZFILE * bzf)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the MPLS label from the given BZFILE \fRbzf\fP\&. Return the number of bytes read on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::BZ2Readable\fP\&.
+.SS "int Dwm::MplsLabel::BZWrite (BZFILE * bzf) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the MPLS lable to the given BZFILE \fRbzf\fP\&. Returns the number of bytes written on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::BZ2Writable\fP\&.
+.SS "size_t Dwm::MplsLabel::Read (FILE * f)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the MPLS label from a FILE\&. Returns 1 on success, 0 on failure (fread() semantics)\&. 
+.PP
+Implements \fBDwm::FileReadable\fP\&.
+.SS "int Dwm::MplsLabel::Read (gzFile gzf)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the MPLS label from the given gzFile \fRgzf\fP\&. Return the number of bytes read on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::GZReadable\fP\&.
+.SS "ssize_t Dwm::MplsLabel::Read (int fd)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the MPLS label from a file descriptor\&. Returns the number of bytes read on success (should be 4), -1 on failure\&. 
+.PP
+Implements \fBDwm::DescriptorReadable\fP\&.
+.SS "std::istream & Dwm::MplsLabel::Read (std::istream & is)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the MPLS label from an istream\&. Returns the istream\&. 
+.PP
+Implements \fBDwm::StreamReadable\fP\&.
+.SS "uint64_t Dwm::MplsLabel::StreamedLength () const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Returns the number of bytes that should be written if we call one of the \fBWrite()\fP members\&. Should always return 4\&. 
+.PP
+Implements \fBDwm::StreamedLengthCapable\fP\&.
+.SS "size_t Dwm::MplsLabel::Write (FILE * f) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the MPLS label to a FILE\&. Returns 1 on success, 0 on failure (fwrite() semantics)\&. 
+.PP
+Implements \fBDwm::FileWritable\fP\&.
+.SS "int Dwm::MplsLabel::Write (gzFile gzf) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the MPLS lable to the given gzFile \fRgzf\fP\&. Returns the number of bytes written on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::GZWritable\fP\&.
+.SS "ssize_t Dwm::MplsLabel::Write (int fd) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the MPLS label to a file descriptor\&. Returns the number of bytes written on success (should be 4), -1 on failure\&. 
+.PP
+Implements \fBDwm::DescriptorWritable\fP\&.
+.SS "std::ostream & Dwm::MplsLabel::Write (std::ostream & os) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the MPLS label to an ostream\&. Returns the ostream\&. 
+.PP
+Implements \fBDwm::StreamWritable\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

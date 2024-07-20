@@ -1,0 +1,204 @@
+.TH "Dwm::Ipv4IcmpDestinationUnreachable" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::Ipv4IcmpDestinationUnreachable \- Encapsulates an ICMP destination unreachable message\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmIpv4IcmpDestinationUnreachable\&.hh>\fP
+.PP
+Inherits \fBDwm::Ipv4IcmpMessage\fP\&.
+.SS "Public Types"
+
+.in +1c
+.ti -1c
+.RI "enum \fBCodeEnum\fP { \fBe_networkUnreachable\fP = 0, \fBe_hostUnreachable\fP = 1, \fBe_protocolUnreachable\fP = 2, \fBe_portUnreachable\fP = 3, \fBe_tooBig\fP = 4, \fBe_sourceRouteFailed\fP = 5, \fBe_networkUnknown\fP = 6, \fBe_hostUnknown\fP = 7, \fBe_sourceHostIsolated\fP = 8, \fBe_networkProhibited\fP = 9, \fBe_hostProhibited\fP = 10, \fBe_tosNetworkUnreachable\fP = 11, \fBe_tosHostUnreachable\fP = 12, \fBe_communicatonProhibited\fP = 13, \fBe_hostPrecedenceViolation\fP = 14, \fBe_precedenceCutoffInEffect\fP = 15 }"
+.br
+.RI "Known destination unreachable codes\&. "
+.in -1c
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBIpv4IcmpDestinationUnreachable\fP ()"
+.br
+.RI "Default constructor\&. "
+.ti -1c
+.RI "\fBIpv4IcmpDestinationUnreachable\fP (uint8_t code, uint16_t nexthopMTU, const \fBIpv4PacketHeader\fP &ipHeader, const std::string &data)"
+.br
+.RI "Constrct from the given \fRcode\fP, \fRnexthopMTU\fP, \fRipHeader\fP and \fRdata\fP\&. "
+.ti -1c
+.RI "\fBIpv4IcmpDestinationUnreachable\fP (uint8_t *buf, uint16_t len)"
+.br
+.ti -1c
+.RI "uint16_t \fBNexthopMTU\fP () const"
+.br
+.RI "Returns the next hop MTU\&. "
+.ti -1c
+.RI "uint16_t \fBNexthopMTU\fP (uint16_t nexthopMTU)"
+.br
+.RI "Sets and returns the next hop MTU\&. "
+.ti -1c
+.RI "\fBIpv4PacketHeader\fP \fBIpHeader\fP () const"
+.br
+.RI "Returns a copy of the IPv4 packet header\&. "
+.ti -1c
+.RI "\fBIpv4PacketHeader\fP \fBIpHeader\fP (const \fBIpv4PacketHeader\fP &ipHeader)"
+.br
+.RI "Sets the IPv4 packet header and returns a copy of it\&. "
+.ti -1c
+.RI "std::string \fBData\fP () const"
+.br
+.RI "Returns the data as a string\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::Ipv4IcmpMessage\fP
+.in +1c
+.ti -1c
+.RI "\fBIpv4IcmpMessage\fP ()"
+.br
+.RI "Default constructor\&. "
+.ti -1c
+.RI "\fB~Ipv4IcmpMessage\fP ()"
+.br
+.RI "Destructor\&. "
+.ti -1c
+.RI "uint8_t \fBType\fP () const"
+.br
+.RI "Returns the ICMP message type\&. "
+.ti -1c
+.RI "uint8_t \fBType\fP (uint8_t type)"
+.br
+.RI "Sets and returns the ICMP message type\&. "
+.ti -1c
+.RI "uint8_t \fBCode\fP () const"
+.br
+.RI "Returns the ICMP message code\&. "
+.ti -1c
+.RI "uint8_t \fBCode\fP (uint8_t code)"
+.br
+.RI "Sets and returns the ICMP message code\&. "
+.ti -1c
+.RI "uint16_t \fBChecksum\fP ()"
+.br
+.RI "Returns the ICMP checksum\&. "
+.ti -1c
+.RI "void \fBSetChecksum\fP ()"
+.br
+.RI "Computes and sets the checksum\&. "
+.ti -1c
+.RI "std::istream & \fBRead\fP (std::istream &is, uint16_t len)"
+.br
+.RI "Reads the message of length \fRlen\fP from an istream\&. "
+.ti -1c
+.RI "std::ostream & \fBWrite\fP (std::ostream &os) const override"
+.br
+.RI "Writes the message to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "ssize_t \fBRead\fP (int fd, uint16_t len)"
+.br
+.RI "Reads the message of length \fRlen\fP from a file descriptor\&. "
+.ti -1c
+.RI "ssize_t \fBWrite\fP (int fd) const override"
+.br
+.RI "Writes the message to a file descriptor\&. "
+.ti -1c
+.RI "size_t \fBRead\fP (FILE *f, uint16_t len)"
+.br
+.RI "Reads the message of length \fRlen\fP from a FILE\&. "
+.ti -1c
+.RI "size_t \fBWrite\fP (FILE *f) const override"
+.br
+.RI "Writes the message to a FILE\&. Returns 1 on success, 0 on failure\&. "
+.ti -1c
+.RI "int \fBRead\fP (gzFile gzf, uint16_t len)"
+.br
+.RI "Reads the message of length \fRlen\fP from a gzFile\&. "
+.ti -1c
+.RI "int \fBWrite\fP (gzFile gzf) const override"
+.br
+.RI "Writes the message to a gzFile\&. "
+.ti -1c
+.RI "int \fBBZRead\fP (BZFILE *bzf, uint16_t len)"
+.br
+.RI "Reads the message of length \fRlen\fP from a BZFILE\&. "
+.ti -1c
+.RI "int \fBBZWrite\fP (BZFILE *bzf) const override"
+.br
+.RI "Writes the message to a BZFILE\&. "
+.ti -1c
+.RI "uint64_t \fBStreamedLength\fP () const override"
+.br
+.RI "Returns the number of bytes that would be written if we called one of the \fBWrite()\fP members\&. "
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBIpv4IcmpMessage\fP &msg) const"
+.br
+.RI "operator == "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::DescriptorWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~DescriptorWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::FileWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~FileWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::StreamWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~StreamWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::GZWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~GZWritable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+.SS "Additional Inherited Members"
+
+
+Protected Member Functions inherited from \fBDwm::Ipv4IcmpMessage\fP
+.in +1c
+.ti -1c
+.RI "void \fBFree\fP ()"
+.br
+.ti -1c
+.RI "void \fBAllocate\fP (uint16_t len)"
+.br
+.ti -1c
+.RI "void \fBReallocate\fP (uint16_t len)"
+.br
+.in -1c
+
+Protected Attributes inherited from \fBDwm::Ipv4IcmpMessage\fP
+.in +1c
+.ti -1c
+.RI "std::pair< uint16_t, uint8_t * > \fB_data\fP"
+.br
+.ti -1c
+.RI "bool \fB_ownData\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Encapsulates an ICMP destination unreachable message\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

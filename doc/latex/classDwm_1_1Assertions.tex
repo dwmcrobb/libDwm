@@ -1,0 +1,82 @@
+\doxysection{Dwm\+::Assertions Class Reference}
+\hypertarget{classDwm_1_1Assertions}{}\label{classDwm_1_1Assertions}\index{Dwm::Assertions@{Dwm::Assertions}}
+
+
+A container to hold all assertions. Note everything is static here.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Unit\+Assert.\+hh$>$}
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static bool \mbox{\hyperlink{classDwm_1_1Assertions_a1a2a8d09c57b08cd48e50b992bf95257}{Failed}} (const std\+::string \&filename, const std\+::string \&function, int line\+Number, const std\+::string \&test)
+\begin{DoxyCompactList}\small\item\em Adds a failed assertion. \end{DoxyCompactList}\item 
+static bool \mbox{\hyperlink{classDwm_1_1Assertions_a81b82e6020165e19dc214ca5bf6410c0}{Passed}} (const std\+::string \&filename, const std\+::string \&function, int line\+Number, const std\+::string \&test)
+\begin{DoxyCompactList}\small\item\em Adds a passed assertion. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Assertions_a768887cf3691ef3cd6da82d2a74b7729}\label{classDwm_1_1Assertions_a768887cf3691ef3cd6da82d2a74b7729} 
+static \mbox{\hyperlink{classDwm_1_1AssertionCounter}{Assertion\+Counter}} {\bfseries Total} ()
+\begin{DoxyCompactList}\small\item\em Returns the total passed and failed counter. \end{DoxyCompactList}\item 
+static std\+::ostream \& \mbox{\hyperlink{classDwm_1_1Assertions_a5dd5acb0323c5153dd857dee7e422503}{Print}} (std\+::ostream \&os, bool only\+Failed=false)
+\begin{DoxyCompactList}\small\item\em Prints to an ostream. \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1Assertions_a137e456cd4f489cfab40898c75f67082}{Print\+And\+Return}} ()
+\begin{DoxyCompactList}\small\item\em Prints failed tests to cerr and successful test count to cout in a simple form that I use in unit test applications. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Assertions_add532e48cca1c04419f9640f58eed061}\label{classDwm_1_1Assertions_add532e48cca1c04419f9640f58eed061} 
+static std\+::ostream \& {\bfseries Print\+Json} (std\+::ostream \&os, bool only\+Failed=false)
+\begin{DoxyCompactList}\small\item\em Prints to an ostream in JSON format. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Assertions_ab0df4b4d193dd44944fa020cc2866c2a}\label{classDwm_1_1Assertions_ab0df4b4d193dd44944fa020cc2866c2a} 
+static std\+::ostream \& {\bfseries Print\+XML} (std\+::ostream \&os, bool only\+Failed=false)
+\begin{DoxyCompactList}\small\item\em Prints to an ostream in XML format. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A container to hold all assertions. Note everything is static here. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1Assertions_a1a2a8d09c57b08cd48e50b992bf95257}\index{Dwm::Assertions@{Dwm::Assertions}!Failed@{Failed}}
+\index{Failed@{Failed}!Dwm::Assertions@{Dwm::Assertions}}
+\doxysubsubsection{\texorpdfstring{Failed()}{Failed()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Assertions_a1a2a8d09c57b08cd48e50b992bf95257} 
+static bool Dwm\+::\+Assertions\+::\+Failed (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename}{, }\item[{const std\+::string \&}]{function}{, }\item[{int}]{line\+Number}{, }\item[{const std\+::string \&}]{test}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Adds a failed assertion. 
+
+Not called directly; \doxylink{DwmUnitAssert_8hh_ac6ef8a61e8418d80847517047c2c8958}{Unit\+Assert()} calls this member. Always returns false. \Hypertarget{classDwm_1_1Assertions_a81b82e6020165e19dc214ca5bf6410c0}\index{Dwm::Assertions@{Dwm::Assertions}!Passed@{Passed}}
+\index{Passed@{Passed}!Dwm::Assertions@{Dwm::Assertions}}
+\doxysubsubsection{\texorpdfstring{Passed()}{Passed()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Assertions_a81b82e6020165e19dc214ca5bf6410c0} 
+static bool Dwm\+::\+Assertions\+::\+Passed (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename}{, }\item[{const std\+::string \&}]{function}{, }\item[{int}]{line\+Number}{, }\item[{const std\+::string \&}]{test}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Adds a passed assertion. 
+
+Not called directly; \doxylink{DwmUnitAssert_8hh_ac6ef8a61e8418d80847517047c2c8958}{Unit\+Assert()} calls this member. Always returns true. \Hypertarget{classDwm_1_1Assertions_a5dd5acb0323c5153dd857dee7e422503}\index{Dwm::Assertions@{Dwm::Assertions}!Print@{Print}}
+\index{Print@{Print}!Dwm::Assertions@{Dwm::Assertions}}
+\doxysubsubsection{\texorpdfstring{Print()}{Print()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Assertions_a5dd5acb0323c5153dd857dee7e422503} 
+static std\+::ostream \& Dwm\+::\+Assertions\+::\+Print (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os}{, }\item[{bool}]{only\+Failed}{ = {\ttfamily false}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Prints to an ostream. 
+
+If {\ttfamily only\+Failed} is true, prints only information for failed assertions. \Hypertarget{classDwm_1_1Assertions_a137e456cd4f489cfab40898c75f67082}\index{Dwm::Assertions@{Dwm::Assertions}!PrintAndReturn@{PrintAndReturn}}
+\index{PrintAndReturn@{PrintAndReturn}!Dwm::Assertions@{Dwm::Assertions}}
+\doxysubsubsection{\texorpdfstring{PrintAndReturn()}{PrintAndReturn()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Assertions_a137e456cd4f489cfab40898c75f67082} 
+static int Dwm\+::\+Assertions\+::\+Print\+And\+Return (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Prints failed tests to cerr and successful test count to cout in a simple form that I use in unit test applications. 
+
+Returns 0 if all unit tests passed, else returns 1. The return value can be used as the exit value of a unit test application to signal to the shell as to whether or not all unit tests passed. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmUnitAssert_8hh}{Dwm\+Unit\+Assert.\+hh}}\end{DoxyCompactItemize}

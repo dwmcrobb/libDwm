@@ -48,6 +48,24 @@
 namespace Dwm {
 
   //--------------------------------------------------------------------------
+  //!  T has a Read(std::istream &) method that returns a std::istream
+  //!  reference.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept HasStreamRead = requires(T t, std::istream & is) {
+    { t.Read(is) } -> std::same_as<std::istream &>;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  T has a Write(std::ostream &) method that returns a std::ostream
+  //!  referencee.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept HasStreamWrite = requires(T t, std::ostream & os) {
+    { ((const T)t).Write(os) } -> std::same_as<std::ostream &>;
+  };
+  
+  //--------------------------------------------------------------------------
   //!  This class defines an interface for classes that can read their
   //!  contents from an istream.
   //--------------------------------------------------------------------------

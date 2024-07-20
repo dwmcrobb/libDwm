@@ -1,0 +1,31 @@
+.TH "Dwm::OurIpv6PrefixHash" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::OurIpv6PrefixHash \- Default hash for our unordered_map in \fBIpv6PrefixMap\fP\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmIpv6PrefixMap\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "size_t \fBoperator()\fP (const \fBDwm::Ipv6Prefix\fP &pfx) const"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Default hash for our unordered_map in \fBIpv6PrefixMap\fP\&. 
+
+On a Threadripper 3960X, this gets me over 13 million longest-match lookups per second with the IPV6_prefixes\&.202010122 file in the tests directory\&. The data in IPV6_prefixes\&.202010122 comes from routeviews via CAIDA\&.
+.PP
+The implementation uses xxhash\&. I tried some other techniques, but they worked very poorly on some architectures (Xeon L5640, 2018 Macbook Pro)\&. This is at least consistent\&. On a Threadripper 3960X, I get about 1\&.5 million longest-match lookups/sec\&.
+.PP
+Note that the interfaces are all single-threaded internally\&. Hence the performance scales with CPU clock, memory bandwidth, on-die cache, etc\&. and NOT the number of CPU cores\&. However, multiple threads can safely call any of the public members since we have shared/unique locks providing protection\&. The overhead of the locks is insignificant for members like FindLongest(), but measurable for members like Find()\&. This is a tradeoff I'm willing to make in order to maintain enforcement of thread safety in my use\&. I rarely write single-threaded C++ code these days, and built-in thread safety makes my life easier\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2020
+//  Copyright (c) Daniel W. McRobb 2020, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -50,6 +50,22 @@ extern "C" {
 #include <cstddef>
 
 namespace Dwm {
+
+  //--------------------------------------------------------------------------
+  //!  T has a Read(int) member that returns ssize_t.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept HasDescriptorRead = requires (T t, int fd) {
+    { t.Read(fd) } -> std::same_as<ssize_t>;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  T has a Write(int fd) const member that returns ssize_t.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept HasDescriptorWrite = requires (T t, int fd) {
+    { ((const T)t).Write(fd) } -> std::same_as<ssize_t>;
+  };
 
   //--------------------------------------------------------------------------
   //!  This class defines an interface for classes that can read their

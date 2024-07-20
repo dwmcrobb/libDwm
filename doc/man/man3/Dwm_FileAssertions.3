@@ -1,0 +1,46 @@
+.TH "Dwm::FileAssertions" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::FileAssertions \- A container class to hold all assertions called from a single source file\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmUnitAssert\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBFailed\fP (const std::string &filename, const std::string &function, int lineNumber, const std::string &test)"
+.br
+.RI "Add a failed assertion\&. "
+.ti -1c
+.RI "void \fBPassed\fP (const std::string &filename, const std::string &function, int lineNumber, const std::string &test)"
+.br
+.RI "Add a passed assertion\&. "
+.ti -1c
+.RI "\fBAssertionCounter\fP \fBTotal\fP () const"
+.br
+.RI "Returns the total passed and failed counter\&. "
+.ti -1c
+.RI "std::ostream & \fBPrint\fP (std::ostream &os, bool onlyFailed=false) const"
+.br
+.RI "Prints to an ostream\&. "
+.ti -1c
+.RI "std::ostream & \fBPrintJson\fP (std::ostream &os, bool onlyFailed=false) const"
+.br
+.RI "Prints JSON to an ostream\&. "
+.ti -1c
+.RI "std::ostream & \fBPrintXML\fP (std::ostream &os, bool onlyFailed=false) const"
+.br
+.RI "Prints XML to an ostream\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+A container class to hold all assertions called from a single source file\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

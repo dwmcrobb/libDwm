@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2006-2007, 2016
+//  Copyright (c) Daniel W. McRobb 2006-2007, 2016, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -42,18 +42,11 @@
 #define _DWMRUSAGE_HH_
 
 extern "C" {
-  #include <sys/types.h>
-  #include <sys/time.h>
   #include <sys/resource.h>
-  #include <inttypes.h>
 }
 
-#include <iostream>
+#include <cstdint>
 
-#include "DwmDescriptorIOCapable.hh"
-#include "DwmStreamIOCapable.hh"
-#include "DwmStreamedLengthCapable.hh"
-#include "DwmGZIOCapable.hh"
 #include "DwmTimeValue.hh"
 
 namespace Dwm {
@@ -62,8 +55,6 @@ namespace Dwm {
   //!  This class encapsulates struct rusage and getrusage() functionality.
   //--------------------------------------------------------------------------
   class Rusage
-    : public DescriptorIOCapable, public StreamIOCapable,
-      public StreamedLengthCapable, public GZIOCapable
   {
   public:
     //------------------------------------------------------------------------
@@ -186,42 +177,42 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Reads from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    std::istream & Read(std::istream & is) override;
+    std::istream & Read(std::istream & is);
     
     //------------------------------------------------------------------------
     //!  Writes to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const override;
+    std::ostream & Write(std::ostream & os) const;
     
     //------------------------------------------------------------------------
     //!  Reads from a gzFile.  Returns the number of bytes read on success,
     //!  -1 on failure.
     //------------------------------------------------------------------------
-    int Read(gzFile gzf) override;
+    int Read(gzFile gzf);
     
     //------------------------------------------------------------------------
     //!  Writes to a gzFile.  Returns the number of bytes written on 
     //!  success, -1 on failure.
     //------------------------------------------------------------------------
-    int Write(gzFile gzf) const override;
+    int Write(gzFile gzf) const;
     
     //------------------------------------------------------------------------
     //!  Reads from a file descriptor.  Returns the number of bytes read 
     //!  on success, -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Read(int fd) override;
+    ssize_t Read(int fd);
     
     //------------------------------------------------------------------------
     //!  Writes to a file descriptor.  Returns the number of bytes written
     //!  on success, -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Write(int fd) const override;
+    ssize_t Write(int fd) const;
     
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if we called
     //!  one of the Write() members.
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const override;
+    uint64_t StreamedLength() const;
 
     //------------------------------------------------------------------------
     //!  operator ==

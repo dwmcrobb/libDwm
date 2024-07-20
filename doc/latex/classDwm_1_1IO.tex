@@ -1,0 +1,45 @@
+\doxysection{Dwm\+::IO Class Reference}
+\hypertarget{classDwm_1_1IO}{}\label{classDwm_1_1IO}\index{Dwm::IO@{Dwm::IO}}
+
+
+This class is now just a wrapper for \doxylink{classDwm_1_1DescriptorIO}{Descriptor\+IO}, \doxylink{classDwm_1_1FileIO}{File\+IO}, \doxylink{classDwm_1_1StreamIO}{Stream\+IO} and \doxylink{classDwm_1_1IOUtils}{IOUtils}.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+IO.\+hh$>$}
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1IO_a33eea1a608fc8ee438f8b98a729d64ca}\label{classDwm_1_1IO_a33eea1a608fc8ee438f8b98a729d64ca} 
+{\footnotesize template$<$typename T $>$ }\\static std\+::istream \& {\bfseries Read} (std\+::istream \&is, T \&val)
+\item 
+\Hypertarget{classDwm_1_1IO_ae0729c8b26bd944d0de8d15fcaf0f938}\label{classDwm_1_1IO_ae0729c8b26bd944d0de8d15fcaf0f938} 
+{\footnotesize template$<$typename T $>$ }\\static std\+::ostream \& {\bfseries Write} (std\+::ostream \&os, const T \&val)
+\item 
+\Hypertarget{classDwm_1_1IO_abcdafb6a91c95c3289e5e6d135096c2c}\label{classDwm_1_1IO_abcdafb6a91c95c3289e5e6d135096c2c} 
+{\footnotesize template$<$typename T $>$ }\\static ssize\+\_\+t {\bfseries Read} (int fd, T \&val)
+\item 
+\Hypertarget{classDwm_1_1IO_a3aec82081a33e75168d7a19e10b8281b}\label{classDwm_1_1IO_a3aec82081a33e75168d7a19e10b8281b} 
+{\footnotesize template$<$typename T $>$ }\\static ssize\+\_\+t {\bfseries Write} (int fd, const T \&val)
+\item 
+\Hypertarget{classDwm_1_1IO_aed5daa5ce3da3266fc322aa05f47391c}\label{classDwm_1_1IO_aed5daa5ce3da3266fc322aa05f47391c} 
+{\footnotesize template$<$typename T $>$ }\\static size\+\_\+t {\bfseries Read} (FILE \texorpdfstring{$\ast$}{*}f, T \&val)
+\item 
+\Hypertarget{classDwm_1_1IO_a15a3057bc701695bfe8288888e06dff6}\label{classDwm_1_1IO_a15a3057bc701695bfe8288888e06dff6} 
+{\footnotesize template$<$typename T $>$ }\\static size\+\_\+t {\bfseries Write} (FILE \texorpdfstring{$\ast$}{*}f, const T \&val)
+\item 
+\Hypertarget{classDwm_1_1IO_a0df5a3e3f69d0a63f2ecaf1634936f8f}\label{classDwm_1_1IO_a0df5a3e3f69d0a63f2ecaf1634936f8f} 
+{\footnotesize template$<$typename T $>$ }\\static uint64\+\_\+t {\bfseries Streamed\+Length} (const T \&val)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class is now just a wrapper for \doxylink{classDwm_1_1DescriptorIO}{Descriptor\+IO}, \doxylink{classDwm_1_1FileIO}{File\+IO}, \doxylink{classDwm_1_1StreamIO}{Stream\+IO} and \doxylink{classDwm_1_1IOUtils}{IOUtils}. 
+
+It is essentially deprecated due to the introduction of theses classes, but was refactored as a simple bucket of wrapper function templates to allow older code to compile and work without source code changes. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmIO_8hh}{Dwm\+IO.\+hh}}\end{DoxyCompactItemize}

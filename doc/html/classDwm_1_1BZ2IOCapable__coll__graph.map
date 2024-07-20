@@ -1,0 +1,7 @@
+<map id="Dwm::BZ2IOCapable" name="Dwm::BZ2IOCapable">
+<area shape="rect" id="Node000001" title="Interface for classes with BZ2IO read and write capabilities." alt="" coords="82,79,228,105"/>
+<area shape="rect" id="Node000002" href="$classDwm_1_1BZ2Readable.html" title="This class is a pure virtual class, defining an interface for classes that can read their contents fr..." alt="" coords="5,5,145,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,39,143,77,140,81,98,43"/>
+<area shape="rect" id="Node000003" href="$classDwm_1_1BZ2Writable.html" title="This class is a pure virtual class, defining an interface for classes that can write their contents t..." alt="" coords="169,5,301,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="212,43,170,81,167,77,208,39"/>
+</map>

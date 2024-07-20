@@ -1,0 +1,361 @@
+.TH "Dwm::Ipv4Address" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::Ipv4Address \- This class encapsulates an IPv4 address\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmIpv4Address\&.hh>\fP
+.PP
+Inherits \fBDwm::ASIOCapable\fP, \fBDwm::StreamIOCapable\fP, Dwm::FileIOCapable, \fBDwm::DescriptorIOCapable\fP, \fBDwm::StreamedLengthCapable\fP, \fBDwm::GZIOCapable\fP, and \fBDwm::BZ2IOCapable\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBIpv4Address\fP ()"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "\fBIpv4Address\fP (ipv4addr_t addr)"
+.br
+.RI "Construct from an ipv4addr_t (32-bit value in network byte order)\&. "
+.ti -1c
+.RI "\fBIpv4Address\fP (const std::string &dottedAddr)"
+.br
+.RI "Construct from a dotted-decimal string\&. "
+.ti -1c
+.RI "ipv4addr_t \fBRaw\fP () const"
+.br
+.RI "Returns an ipv4addr_t representation (32-bit value in network byte order)\&. "
+.ti -1c
+.RI "\fBoperator std::string\fP () const"
+.br
+.RI "Returns a dotted-decimal string representation\&. "
+.ti -1c
+.RI "bool \fBoperator<\fP (const \fBIpv4Address\fP &addr) const"
+.br
+.RI "less-than operator\&. "
+.ti -1c
+.RI "bool \fBoperator>\fP (const \fBIpv4Address\fP &addr) const"
+.br
+.RI "Greater-than operator\&. "
+.ti -1c
+.RI "bool \fBoperator>=\fP (const \fBIpv4Address\fP &addr) const"
+.br
+.RI "Greater than or equal-to operator\&. "
+.ti -1c
+.RI "bool \fBoperator<=\fP (const \fBIpv4Address\fP &addr) const"
+.br
+.RI "Less-than or equal-to operator\&. "
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBIpv4Address\fP &addr) const"
+.br
+.RI "Equal-to operator\&. "
+.ti -1c
+.RI "bool \fBoperator!=\fP (const \fBIpv4Address\fP &addr) const"
+.br
+.RI "Not-equal-to operator\&. "
+.ti -1c
+.RI "\fBIpv4Address\fP & \fBoperator&=\fP (const \fBIpv4Address\fP &mask)"
+.br
+.RI "Mask operator\&. "
+.ti -1c
+.RI "\fBIpv4Address\fP \fBoperator++\fP (int)"
+.br
+.RI "Post-increment operator\&. "
+.ti -1c
+.RI "\fBIpv4Address\fP & \fBoperator++\fP ()"
+.br
+.RI "Pre-increment operator\&. "
+.ti -1c
+.RI "\fBIpv4Address\fP \fBoperator\-\-\fP (int)"
+.br
+.RI "Post-decrement operator\&. "
+.ti -1c
+.RI "\fBIpv4Address\fP & \fBoperator\-\-\fP ()"
+.br
+.RI "Pre-decrement operator\&. "
+.ti -1c
+.RI "\fBIpv4Address\fP & \fBoperator\-=\fP (uint32_t i)"
+.br
+.RI "-= operator\&. "
+.ti -1c
+.RI "\fBIpv4Address\fP & \fBoperator+=\fP (uint32_t i)"
+.br
+.RI "+= operator\&. "
+.ti -1c
+.RI "bool \fBBitIsSet\fP (int8_t bit) const"
+.br
+.ti -1c
+.RI "int \fBGetBit\fP (int bit) const"
+.br
+.ti -1c
+.RI "uint64_t \fBStreamedLength\fP () const override"
+.br
+.RI "Returns the number of bytes that would be written if we called one of the non-compressing \fBWrite()\fP members\&. "
+.ti -1c
+.RI "std::istream & \fBRead\fP (std::istream &is) override"
+.br
+.RI "Reads from an istream\&. Returns the istream\&. "
+.ti -1c
+.RI "std::ostream & \fBWrite\fP (std::ostream &os) const override"
+.br
+.RI "Writes to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "ssize_t \fBRead\fP (int fd) override"
+.br
+.RI "Reads from a file descriptor\&. "
+.ti -1c
+.RI "ssize_t \fBWrite\fP (int fd) const override"
+.br
+.RI "Writes to a file descriptor\&. "
+.ti -1c
+.RI "size_t \fBRead\fP (FILE *f) override"
+.br
+.RI "Reads from a FILE pointer\&. Returns 1 on success, 0 on failure\&. "
+.ti -1c
+.RI "size_t \fBWrite\fP (FILE *f) const override"
+.br
+.RI "Writes to a FILE pointer\&. Returns 1 on success, 0 on failure\&. "
+.ti -1c
+.RI "int \fBRead\fP (gzFile gzf) override"
+.br
+.RI "Reads from a gzFile\&. "
+.ti -1c
+.RI "int \fBWrite\fP (gzFile gzf) const override"
+.br
+.RI "Writes to a gzFile\&. "
+.ti -1c
+.RI "int \fBBZRead\fP (BZFILE *bzf) override"
+.br
+.RI "Reads from a BZFILE pointer\&. "
+.ti -1c
+.RI "int \fBBZWrite\fP (BZFILE *bzf) const override"
+.br
+.RI "Writes to a BZFILE pointer\&. "
+.ti -1c
+.RI "bool \fBRead\fP (boost::asio::ip::tcp::socket &s, boost::system::error_code &ec) override"
+.br
+.RI "Should read the class from the given socket \fRs\fP and return true on success, false on failure\&. "
+.ti -1c
+.RI "bool \fBWrite\fP (boost::asio::ip::tcp::socket &s, boost::system::error_code &ec) const override"
+.br
+.RI "Should write the class to the given socket \fRs\fP and return true on success, false on failure\&. "
+.ti -1c
+.RI "bool \fBRead\fP (boost::asio::local::stream_protocol::socket &s, boost::system::error_code &ec) override"
+.br
+.RI "Should read the class from the given socket \fRs\fP and return true on success, false on failure\&. "
+.ti -1c
+.RI "bool \fBWrite\fP (boost::asio::local::stream_protocol::socket &s, boost::system::error_code &ec) const override"
+.br
+.RI "Should write the class to the given socket \fRs\fP and return true on success, false on failure\&. "
+.ti -1c
+.RI "bool \fBRead\fP (boost::asio::generic::stream_protocol::socket &s, boost::system::error_code &ec) override"
+.br
+.ti -1c
+.RI "bool \fBWrite\fP (boost::asio::generic::stream_protocol::socket &s, boost::system::error_code &ec) const override"
+.br
+.ti -1c
+.RI "uint32_t \fBIpSum\fP () const"
+.br
+.RI "Returns the partial sum of the IP address, as would be used when calculating the IP header checksum or UDP checksum (as part of the 'pseudo-header' used for UDP checksums)\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::StreamReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~StreamReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::StreamWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~StreamWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::DescriptorReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~DescriptorReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::DescriptorWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~DescriptorWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::GZReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~GZReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::GZWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~GZWritable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+.SS "Static Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "static uint8_t \fBMaxKeyBits\fP ()"
+.br
+.in -1c
+.SS "Protected Member Functions"
+
+.in +1c
+.ti -1c
+.RI "template<typename Protocol , typename \fBExecutor\fP > bool \fBASIO_Read\fP (boost::asio::basic_stream_socket< Protocol, \fBExecutor\fP > &s, boost::system::error_code &ec)"
+.br
+.in -1c
+.SS "Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "uint32_t \fB_addr\fP"
+.br
+.in -1c
+.SS "Friends"
+
+.in +1c
+.ti -1c
+.RI "std::ostream & \fBoperator<<\fP (std::ostream &os, const \fBIpv4Address\fP &addr)"
+.br
+.RI "Prints an \fBIpv4Address\fP to an ostream in human-readable form\&. "
+.ti -1c
+.RI "\fBIpv4Address\fP \fBoperator&\fP (const \fBIpv4Address\fP &addr, const \fBIpv4Address\fP &mask)"
+.br
+.RI "Apply a \fRmask\fP (bitwise AND) to the given \fRaddr\fP and return the result\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+This class encapsulates an IPv4 address\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "int Dwm::Ipv4Address::BZRead (BZFILE * bzf)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads from a BZFILE pointer\&. Returns the number of bytes read (4 on success)\&. 
+.PP
+Implements \fBDwm::BZ2Readable\fP\&.
+.SS "int Dwm::Ipv4Address::BZWrite (BZFILE * bzf) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes to a BZFILE pointer\&. Returns the number of bytes written (4 on success)\&. 
+.PP
+Implements \fBDwm::BZ2Writable\fP\&.
+.SS "\fBIpv4Address\fP & Dwm::Ipv4Address::operator+= (uint32_t i)\fR [inline]\fP"
+
+.PP
++= operator\&. Protects against roll-over (will not increment past 255\&.255\&.255\&.255)\&. Note that the right hand side must be in host byte order\&. 
+.SS "\fBIpv4Address\fP & Dwm::Ipv4Address::operator\-= (uint32_t i)\fR [inline]\fP"
+
+.PP
+-= operator\&. Protects against roll-under (will not decrement past 0\&.0\&.0\&.0)\&. Note that the right hand side must be in host byte order\&. 
+.SS "bool Dwm::Ipv4Address::Read (boost::asio::generic::stream_protocol::socket & s, boost::system::error_code & ec)\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Implements \fBDwm::ASIOReadable\fP\&.
+.SS "bool Dwm::Ipv4Address::Read (boost::asio::ip::tcp::socket & s, boost::system::error_code & ec)\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Should read the class from the given socket \fRs\fP and return true on success, false on failure\&. Should set \fRec\fP to the correct error code on failure\&. 
+.PP
+Implements \fBDwm::ASIOReadable\fP\&.
+.SS "bool Dwm::Ipv4Address::Read (boost::asio::local::stream_protocol::socket & s, boost::system::error_code & ec)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Should read the class from the given socket \fRs\fP and return true on success, false on failure\&. Should set \fRec\fP to the correct error code on failure\&. 
+.PP
+Implements \fBDwm::ASIOReadable\fP\&.
+.SS "size_t Dwm::Ipv4Address::Read (FILE * f)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads from a FILE pointer\&. Returns 1 on success, 0 on failure\&. 
+.PP
+Implements \fBDwm::FileReadable\fP\&.
+.SS "int Dwm::Ipv4Address::Read (gzFile gzf)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads from a gzFile\&. Returns the number of bytes read (4 on success)\&. 
+.PP
+Implements \fBDwm::GZReadable\fP\&.
+.SS "ssize_t Dwm::Ipv4Address::Read (int fd)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads from a file descriptor\&. Returns the number of bytes read (4 on success)\&. 
+.PP
+Implements \fBDwm::DescriptorReadable\fP\&.
+.SS "std::istream & Dwm::Ipv4Address::Read (std::istream & is)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads from an istream\&. Returns the istream\&. 
+.PP
+Implements \fBDwm::StreamReadable\fP\&.
+.SS "uint64_t Dwm::Ipv4Address::StreamedLength () const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Returns the number of bytes that would be written if we called one of the non-compressing \fBWrite()\fP members\&. 
+.PP
+Implements \fBDwm::StreamedLengthCapable\fP\&.
+.SS "bool Dwm::Ipv4Address::Write (boost::asio::generic::stream_protocol::socket & s, boost::system::error_code & ec) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Implements \fBDwm::ASIOWritable\fP\&.
+.SS "bool Dwm::Ipv4Address::Write (boost::asio::ip::tcp::socket & s, boost::system::error_code & ec) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Should write the class to the given socket \fRs\fP and return true on success, false on failure\&. Should set \fRec\fP to the correct error code on failure\&. 
+.PP
+Implements \fBDwm::ASIOWritable\fP\&.
+.SS "bool Dwm::Ipv4Address::Write (boost::asio::local::stream_protocol::socket & s, boost::system::error_code & ec) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Should write the class to the given socket \fRs\fP and return true on success, false on failure\&. Should set \fRec\fP to the correct error code on failure\&. 
+.PP
+Implements \fBDwm::ASIOWritable\fP\&.
+.SS "size_t Dwm::Ipv4Address::Write (FILE * f) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes to a FILE pointer\&. Returns 1 on success, 0 on failure\&. 
+.PP
+Implements \fBDwm::FileWritable\fP\&.
+.SS "int Dwm::Ipv4Address::Write (gzFile gzf) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes to a gzFile\&. Returns the number of bytes written (4 on success)\&. 
+.PP
+Implements \fBDwm::GZWritable\fP\&.
+.SS "ssize_t Dwm::Ipv4Address::Write (int fd) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes to a file descriptor\&. Returns the number of bytes written (4 on success)\&. 
+.PP
+Implements \fBDwm::DescriptorWritable\fP\&.
+.SS "std::ostream & Dwm::Ipv4Address::Write (std::ostream & os) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes to an ostream\&. Returns the ostream\&. 
+.PP
+Implements \fBDwm::StreamWritable\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

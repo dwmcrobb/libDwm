@@ -1,0 +1,52 @@
+.TH "DwmHostPinger.hh" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+DwmHostPinger.hh \- \fBDwm::HostPinger\fP class definition\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <atomic>\fP
+.br
+\fR#include <condition_variable>\fP
+.br
+\fR#include <iostream>\fP
+.br
+\fR#include <map>\fP
+.br
+\fR#include <mutex>\fP
+.br
+\fR#include <thread>\fP
+.br
+\fR#include 'DwmIpv4Address\&.hh'\fP
+.br
+\fR#include 'DwmPcap\&.hh'\fP
+.br
+\fR#include 'DwmSocket\&.hh'\fP
+.br
+\fR#include 'DwmTimeValue\&.hh'\fP
+.br
+\fR#include 'DwmPingDestinationEntry\&.hh'\fP
+.br
+
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "class \fBDwm::HostPinger\fP"
+.br
+.RI "Encapsulates a 'pinger', which can 'ping' one or more hosts using TCP or ICMP\&. "
+.ti -1c
+.RI "class \fBDwm::HostPinger::Receiver\fP"
+.br
+.RI "Data callback interface\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+\fBDwm::HostPinger\fP class definition\&. 
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

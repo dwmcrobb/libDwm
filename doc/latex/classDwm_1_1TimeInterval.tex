@@ -1,0 +1,306 @@
+\doxysection{Dwm\+::Time\+Interval Class Reference}
+\hypertarget{classDwm_1_1TimeInterval}{}\label{classDwm_1_1TimeInterval}\index{Dwm::TimeInterval@{Dwm::TimeInterval}}
+
+
+This class encapsulates a time interval.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Time\+Interval.\+hh$>$}
+
+
+
+Inheritance diagram for Dwm\+::Time\+Interval\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1TimeInterval__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Dwm\+::Time\+Interval\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1TimeInterval__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1TimeInterval_ad5851ee2ae00e3fce6b52f2ebd625125}\label{classDwm_1_1TimeInterval_ad5851ee2ae00e3fce6b52f2ebd625125} 
+{\bfseries Time\+Interval} ()
+\begin{DoxyCompactList}\small\item\em Contructor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeInterval_a028b2598d2cb109dd9dc071bf327f194}\label{classDwm_1_1TimeInterval_a028b2598d2cb109dd9dc071bf327f194} 
+{\bfseries Time\+Interval} (const \mbox{\hyperlink{classDwm_1_1TimeValue}{Time\+Value}} \&start, const \mbox{\hyperlink{classDwm_1_1TimeValue}{Time\+Value}} \&end)
+\begin{DoxyCompactList}\small\item\em Construct from a start and end time. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeInterval_ab03c4f6eb93ba0955c0275e3146c8691}\label{classDwm_1_1TimeInterval_ab03c4f6eb93ba0955c0275e3146c8691} 
+{\bfseries Time\+Interval} (const \mbox{\hyperlink{classDwm_1_1TimeInterval}{Time\+Interval}} \&time\+Interval)
+\begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeInterval_a68a6aa89d6d2987ed5e5d5f9bf4978f8}\label{classDwm_1_1TimeInterval_a68a6aa89d6d2987ed5e5d5f9bf4978f8} 
+const \mbox{\hyperlink{classDwm_1_1TimeValue}{Time\+Value}} \& {\bfseries Start} () const
+\begin{DoxyCompactList}\small\item\em Returns the start time. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeInterval_aed179dcef215c908de26151c1a19b0f9}\label{classDwm_1_1TimeInterval_aed179dcef215c908de26151c1a19b0f9} 
+const \mbox{\hyperlink{classDwm_1_1TimeValue}{Time\+Value}} \& {\bfseries Start} (const \mbox{\hyperlink{classDwm_1_1TimeValue}{Time\+Value}} \&start)
+\begin{DoxyCompactList}\small\item\em Sets and returns the start time. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeInterval_a1c17c9107c435975fb64b8e3774640b8}\label{classDwm_1_1TimeInterval_a1c17c9107c435975fb64b8e3774640b8} 
+const \mbox{\hyperlink{classDwm_1_1TimeValue}{Time\+Value}} \& {\bfseries End} () const
+\begin{DoxyCompactList}\small\item\em Returns the end time. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeInterval_a110e25b896f89892182abb025a682d4c}\label{classDwm_1_1TimeInterval_a110e25b896f89892182abb025a682d4c} 
+const \mbox{\hyperlink{classDwm_1_1TimeValue}{Time\+Value}} \& {\bfseries End} (const \mbox{\hyperlink{classDwm_1_1TimeValue}{Time\+Value}} \&end)
+\begin{DoxyCompactList}\small\item\em Sets and returns the end time. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeInterval_a798a7fbc9188d6ca963fd56d45f67194}\label{classDwm_1_1TimeInterval_a798a7fbc9188d6ca963fd56d45f67194} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classDwm_1_1TimeInterval}{Time\+Interval}} \&ti) const
+\begin{DoxyCompactList}\small\item\em operator == \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeInterval_ab7b0af3ab32d5eaa66b957dc52527964}\label{classDwm_1_1TimeInterval_ab7b0af3ab32d5eaa66b957dc52527964} 
+\mbox{\hyperlink{classDwm_1_1TimeValue}{Time\+Value}} {\bfseries Duration} () const
+\item 
+bool \mbox{\hyperlink{classDwm_1_1TimeInterval_a7261cbdc74edd78765c6ffbead4dbb15}{Contains}} (const \mbox{\hyperlink{classDwm_1_1TimeValue}{Time\+Value}} \&tv) const
+\begin{DoxyCompactList}\small\item\em Returns true if the \doxylink{classDwm_1_1TimeValue}{Time\+Value} {\ttfamily tv} falls within the time interval, i.\+e. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeInterval_afad7035b06213457745e0e4a7df7d6df}\label{classDwm_1_1TimeInterval_afad7035b06213457745e0e4a7df7d6df} 
+bool {\bfseries Contains} (const \mbox{\hyperlink{classDwm_1_1TimeInterval}{Time\+Interval}} \&ti) const
+\begin{DoxyCompactList}\small\item\em Returns true if the \doxylink{classDwm_1_1TimeInterval}{Time\+Interval} {\ttfamily ti} is completely contained within our time interval. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeInterval_a092223e7f77e8a3852e775acc76c2c81}\label{classDwm_1_1TimeInterval_a092223e7f77e8a3852e775acc76c2c81} 
+bool {\bfseries Overlaps} (const \mbox{\hyperlink{classDwm_1_1TimeInterval}{Time\+Interval}} \&ti) const
+\begin{DoxyCompactList}\small\item\em Returns true if {\ttfamily ti} overlaps the time interval. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1TimeInterval_aeb23b59c81eb442d58e1c876a7fbb8f5}{Adjacent}} (const \mbox{\hyperlink{classDwm_1_1TimeInterval}{Time\+Interval}} \&ti) const
+\begin{DoxyCompactList}\small\item\em Returns true if {\ttfamily ti} is immediately adjacent our time interval, i.\+e. \end{DoxyCompactList}\item 
+uint64\+\_\+t \mbox{\hyperlink{classDwm_1_1TimeInterval_abe9ebf0a3628fd1de35338b0cd229263}{Streamed\+Length}} () const override
+\begin{DoxyCompactList}\small\item\em Returns the length of the time insterval, in bytes. \end{DoxyCompactList}\item 
+std\+::istream \& \mbox{\hyperlink{classDwm_1_1TimeInterval_a8cdbce1c59495e419c4c22abef180dc4}{Read}} (std\+::istream \&is) override
+\begin{DoxyCompactList}\small\item\em Reads the time interval from an istream. Returns the istream. \end{DoxyCompactList}\item 
+std\+::ostream \& \mbox{\hyperlink{classDwm_1_1TimeInterval_aaa6a4a6efa823d960a6a9dfa7c6e4cb3}{Write}} (std\+::ostream \&os) const override
+\begin{DoxyCompactList}\small\item\em Writes the time interval to an ostream. Returns the ostream. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classDwm_1_1TimeInterval_a33f8877d54998e9b35f5de18086d411d}{Read}} (FILE \texorpdfstring{$\ast$}{*}f) override
+\begin{DoxyCompactList}\small\item\em Reads the time interval from a FILE pointer. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classDwm_1_1TimeInterval_aa6f0dc7e02b22c276a3e249699335ebd}{Write}} (FILE \texorpdfstring{$\ast$}{*}f) const override
+\begin{DoxyCompactList}\small\item\em Writes the time interval to a FILE pointer. \end{DoxyCompactList}\item 
+ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1TimeInterval_a57998e4fe238433a831ab43078a7fd0e}{Read}} (int fd) override
+\begin{DoxyCompactList}\small\item\em Reads the time interval from a file descriptor. \end{DoxyCompactList}\item 
+ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1TimeInterval_ab339210a084bb417dfe1a4aa153442e6}{Write}} (int fd) const override
+\begin{DoxyCompactList}\small\item\em Wries the time interval to a file descriptor. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1TimeInterval_a1892c4a8689be5b3dc7b9022c9e46571}{Read}} (gz\+File gzf) override
+\begin{DoxyCompactList}\small\item\em Reads the time interval from a gz\+File. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1TimeInterval_ae5efe8c90a55bd3c55967f1a19db6a45}{Write}} (gz\+File gzf) const override
+\begin{DoxyCompactList}\small\item\em Writes the time interval to a gz\+File. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1TimeInterval_aec82abd420009564b7b6e13f45fbbba5}{BZRead}} (BZFILE \texorpdfstring{$\ast$}{*}bzf) override
+\begin{DoxyCompactList}\small\item\em Reads the time interval from a BZFILE pointer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1TimeInterval_a414e7547dae520c9a23d4098de0f8ee4}{BZWrite}} (BZFILE \texorpdfstring{$\ast$}{*}bzf) const override
+\begin{DoxyCompactList}\small\item\em Writes the time interval to a BZFILE pointer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1DescriptorReadable}{Dwm\+::\+Descriptor\+Readable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Descriptor\+Readable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1DescriptorWritable}{Dwm\+::\+Descriptor\+Writable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Descriptor\+Writable} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1StreamReadable}{Dwm\+::\+Stream\+Readable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Stream\+Readable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1StreamWritable}{Dwm\+::\+Stream\+Writable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Stream\+Writable} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1GZReadable}{Dwm\+::\+GZReadable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+GZReadable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1GZWritable}{Dwm\+::\+GZWritable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+GZWritable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class encapsulates a time interval. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1TimeInterval_aeb23b59c81eb442d58e1c876a7fbb8f5}\index{Dwm::TimeInterval@{Dwm::TimeInterval}!Adjacent@{Adjacent}}
+\index{Adjacent@{Adjacent}!Dwm::TimeInterval@{Dwm::TimeInterval}}
+\doxysubsubsection{\texorpdfstring{Adjacent()}{Adjacent()}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeInterval_aeb23b59c81eb442d58e1c876a7fbb8f5} 
+bool Dwm\+::\+Time\+Interval\+::\+Adjacent (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classDwm_1_1TimeInterval}{Time\+Interval}} \&}]{ti}{}\end{DoxyParamCaption}) const}
+
+
+
+Returns true if {\ttfamily ti} is immediately adjacent our time interval, i.\+e. 
+
+our start is equal to {\ttfamily ti.\+End()} or our end is equal to {\ttfamily ti.\+Start()} \Hypertarget{classDwm_1_1TimeInterval_aec82abd420009564b7b6e13f45fbbba5}\index{Dwm::TimeInterval@{Dwm::TimeInterval}!BZRead@{BZRead}}
+\index{BZRead@{BZRead}!Dwm::TimeInterval@{Dwm::TimeInterval}}
+\doxysubsubsection{\texorpdfstring{BZRead()}{BZRead()}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeInterval_aec82abd420009564b7b6e13f45fbbba5} 
+int Dwm\+::\+Time\+Interval\+::\+BZRead (\begin{DoxyParamCaption}\item[{BZFILE \texorpdfstring{$\ast$}{*}}]{bzf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the time interval from a BZFILE pointer. 
+
+Returns the number of bytes read on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1BZ2Readable_a4b71c8697049e8e2e5df8ff22405f6b7}{Dwm\+::\+BZ2\+Readable}}.
+
+\Hypertarget{classDwm_1_1TimeInterval_a414e7547dae520c9a23d4098de0f8ee4}\index{Dwm::TimeInterval@{Dwm::TimeInterval}!BZWrite@{BZWrite}}
+\index{BZWrite@{BZWrite}!Dwm::TimeInterval@{Dwm::TimeInterval}}
+\doxysubsubsection{\texorpdfstring{BZWrite()}{BZWrite()}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeInterval_a414e7547dae520c9a23d4098de0f8ee4} 
+int Dwm\+::\+Time\+Interval\+::\+BZWrite (\begin{DoxyParamCaption}\item[{BZFILE \texorpdfstring{$\ast$}{*}}]{bzf}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the time interval to a BZFILE pointer. 
+
+Returns the number of bytes written on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1BZ2Writable_aa4481114d6865e31f0aa94f08c2b2e5d}{Dwm\+::\+BZ2\+Writable}}.
+
+\Hypertarget{classDwm_1_1TimeInterval_a7261cbdc74edd78765c6ffbead4dbb15}\index{Dwm::TimeInterval@{Dwm::TimeInterval}!Contains@{Contains}}
+\index{Contains@{Contains}!Dwm::TimeInterval@{Dwm::TimeInterval}}
+\doxysubsubsection{\texorpdfstring{Contains()}{Contains()}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeInterval_a7261cbdc74edd78765c6ffbead4dbb15} 
+bool Dwm\+::\+Time\+Interval\+::\+Contains (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classDwm_1_1TimeValue}{Time\+Value}} \&}]{tv}{}\end{DoxyParamCaption}) const}
+
+
+
+Returns true if the \doxylink{classDwm_1_1TimeValue}{Time\+Value} {\ttfamily tv} falls within the time interval, i.\+e. 
+
+\textbackslash{}tv is greater than or equal to the start and less than or equal to the end. \Hypertarget{classDwm_1_1TimeInterval_a33f8877d54998e9b35f5de18086d411d}\index{Dwm::TimeInterval@{Dwm::TimeInterval}!Read@{Read}}
+\index{Read@{Read}!Dwm::TimeInterval@{Dwm::TimeInterval}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeInterval_a33f8877d54998e9b35f5de18086d411d} 
+size\+\_\+t Dwm\+::\+Time\+Interval\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the time interval from a FILE pointer. 
+
+Returns 1 on success, 0 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1FileReadable_a2e51685eb4fecc584ab48ca7609bba6f}{Dwm\+::\+File\+Readable}}.
+
+\Hypertarget{classDwm_1_1TimeInterval_a1892c4a8689be5b3dc7b9022c9e46571}\index{Dwm::TimeInterval@{Dwm::TimeInterval}!Read@{Read}}
+\index{Read@{Read}!Dwm::TimeInterval@{Dwm::TimeInterval}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeInterval_a1892c4a8689be5b3dc7b9022c9e46571} 
+int Dwm\+::\+Time\+Interval\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the time interval from a gz\+File. 
+
+Returns the number of bytes read on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1GZReadable_a4243984d9d8fb2f79997403824834dd2}{Dwm\+::\+GZReadable}}.
+
+\Hypertarget{classDwm_1_1TimeInterval_a57998e4fe238433a831ab43078a7fd0e}\index{Dwm::TimeInterval@{Dwm::TimeInterval}!Read@{Read}}
+\index{Read@{Read}!Dwm::TimeInterval@{Dwm::TimeInterval}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeInterval_a57998e4fe238433a831ab43078a7fd0e} 
+ssize\+\_\+t Dwm\+::\+Time\+Interval\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the time interval from a file descriptor. 
+
+Returns the number of bytes read on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1DescriptorReadable_aec1a0c67dd53343e52be7a6728081b7f}{Dwm\+::\+Descriptor\+Readable}}.
+
+\Hypertarget{classDwm_1_1TimeInterval_a8cdbce1c59495e419c4c22abef180dc4}\index{Dwm::TimeInterval@{Dwm::TimeInterval}!Read@{Read}}
+\index{Read@{Read}!Dwm::TimeInterval@{Dwm::TimeInterval}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeInterval_a8cdbce1c59495e419c4c22abef180dc4} 
+std\+::istream \& Dwm\+::\+Time\+Interval\+::\+Read (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{is}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the time interval from an istream. Returns the istream. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamReadable_a8337a0949e0ce4458f18884d00eb5153}{Dwm\+::\+Stream\+Readable}}.
+
+\Hypertarget{classDwm_1_1TimeInterval_abe9ebf0a3628fd1de35338b0cd229263}\index{Dwm::TimeInterval@{Dwm::TimeInterval}!StreamedLength@{StreamedLength}}
+\index{StreamedLength@{StreamedLength}!Dwm::TimeInterval@{Dwm::TimeInterval}}
+\doxysubsubsection{\texorpdfstring{StreamedLength()}{StreamedLength()}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeInterval_abe9ebf0a3628fd1de35338b0cd229263} 
+uint64\+\_\+t Dwm\+::\+Time\+Interval\+::\+Streamed\+Length (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Returns the length of the time insterval, in bytes. 
+
+This is used for some I/O functions. 
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamedLengthCapable_abe671443353ea6ed173005c6f515ca5d}{Dwm\+::\+Streamed\+Length\+Capable}}.
+
+\Hypertarget{classDwm_1_1TimeInterval_aa6f0dc7e02b22c276a3e249699335ebd}\index{Dwm::TimeInterval@{Dwm::TimeInterval}!Write@{Write}}
+\index{Write@{Write}!Dwm::TimeInterval@{Dwm::TimeInterval}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeInterval_aa6f0dc7e02b22c276a3e249699335ebd} 
+size\+\_\+t Dwm\+::\+Time\+Interval\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the time interval to a FILE pointer. 
+
+Returns 1 on success, 0 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1FileWritable_ad46fa6f29a2fec8c8080f054c0a8febe}{Dwm\+::\+File\+Writable}}.
+
+\Hypertarget{classDwm_1_1TimeInterval_ae5efe8c90a55bd3c55967f1a19db6a45}\index{Dwm::TimeInterval@{Dwm::TimeInterval}!Write@{Write}}
+\index{Write@{Write}!Dwm::TimeInterval@{Dwm::TimeInterval}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeInterval_ae5efe8c90a55bd3c55967f1a19db6a45} 
+int Dwm\+::\+Time\+Interval\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the time interval to a gz\+File. 
+
+Returns the number of bytes written on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1GZWritable_a5f50bad679854f91bc5a67728a329681}{Dwm\+::\+GZWritable}}.
+
+\Hypertarget{classDwm_1_1TimeInterval_ab339210a084bb417dfe1a4aa153442e6}\index{Dwm::TimeInterval@{Dwm::TimeInterval}!Write@{Write}}
+\index{Write@{Write}!Dwm::TimeInterval@{Dwm::TimeInterval}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeInterval_ab339210a084bb417dfe1a4aa153442e6} 
+ssize\+\_\+t Dwm\+::\+Time\+Interval\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Wries the time interval to a file descriptor. 
+
+Returns the number of bytes written on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1DescriptorWritable_ae0b23058b0de909d4705c05507b10864}{Dwm\+::\+Descriptor\+Writable}}.
+
+\Hypertarget{classDwm_1_1TimeInterval_aaa6a4a6efa823d960a6a9dfa7c6e4cb3}\index{Dwm::TimeInterval@{Dwm::TimeInterval}!Write@{Write}}
+\index{Write@{Write}!Dwm::TimeInterval@{Dwm::TimeInterval}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeInterval_aaa6a4a6efa823d960a6a9dfa7c6e4cb3} 
+std\+::ostream \& Dwm\+::\+Time\+Interval\+::\+Write (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the time interval to an ostream. Returns the ostream. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamWritable_a66994f2c5fbf07308b6b766f9774d079}{Dwm\+::\+Stream\+Writable}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmTimeInterval_8hh}{Dwm\+Time\+Interval.\+hh}}\end{DoxyCompactItemize}

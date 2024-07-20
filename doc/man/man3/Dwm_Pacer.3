@@ -1,0 +1,46 @@
+.TH "Dwm::Pacer" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::Pacer \- This class permits throttling of functions to a max number of repetitions per second\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmPacer\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBPacer\fP (uint32_t rate)"
+.br
+.RI "Construct with the given \fRrate\fP (reps per second)\&. "
+.ti -1c
+.RI "uint32_t \fBRate\fP () const"
+.br
+.RI "Returns the rate (reps per second)\&. "
+.ti -1c
+.RI "uint32_t \fBRate\fP (uint32_t rate)"
+.br
+.RI "Sets the rate (reps per second)\&. "
+.ti -1c
+.RI "void \fBPace\fP ()"
+.br
+.RI "This should be called between each call you wish to throttle\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+This class permits throttling of functions to a max number of repetitions per second\&. 
+
+Instead of bogusly calling one of the sleep functions between each call (which will result in more throttling than desired), it will always sleep at least one clock tick when it sleeps\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "void Dwm::Pacer::Pace ()"
+
+.PP
+This should be called between each call you wish to throttle\&. If the current time is less than or equal to the time in which the next function call is supposed to be made, it will sleep the difference\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

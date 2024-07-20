@@ -1,0 +1,327 @@
+.TH "Dwm::Ipv6Address" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::Ipv6Address \- This class encapsulates an IPv6 address\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmIpv6Address\&.hh>\fP
+.PP
+Inherits \fBDwm::ASIOCapable\fP, \fBDwm::StreamIOCapable\fP, Dwm::FileIOCapable, \fBDwm::DescriptorIOCapable\fP, \fBDwm::StreamedLengthCapable\fP, \fBDwm::GZIOCapable\fP, and \fBDwm::BZ2IOCapable\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBIpv6Address\fP ()"
+.br
+.RI "Constructor\&. Sets address to 0:: "
+.ti -1c
+.RI "\fBIpv6Address\fP (const std::string &addr)"
+.br
+.RI "Construct from a string\&. "
+.ti -1c
+.RI "\fBIpv6Address\fP (const struct in6_addr &addr)"
+.br
+.RI "Construct from an in6_addr\&. "
+.ti -1c
+.RI "\fBoperator std::string\fP () const"
+.br
+.RI "Returns a string representation\&. "
+.ti -1c
+.RI "\fBoperator struct in6_addr\fP () const"
+.br
+.RI "Returns an in6_addr representation\&. "
+.ti -1c
+.RI "bool \fBoperator<\fP (const \fBIpv6Address\fP &addr) const"
+.br
+.RI "Less-than operator\&. "
+.ti -1c
+.RI "bool \fBoperator>\fP (const \fBIpv6Address\fP &addr) const"
+.br
+.RI "Greater-than operator\&. "
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBIpv6Address\fP &addr) const"
+.br
+.RI "Equal-to operator\&. "
+.ti -1c
+.RI "bool \fBoperator!=\fP (const \fBIpv6Address\fP &addr) const"
+.br
+.RI "Not-equal-to operator\&. "
+.ti -1c
+.RI "\fBIpv6Address\fP & \fBoperator&=\fP (const \fBIpv6Address\fP &netmask)"
+.br
+.RI "Mask operator\&. "
+.ti -1c
+.RI "\fBIpv6Address\fP \fBoperator&\fP (const \fBIpv6Address\fP &netmask) const"
+.br
+.RI "Mask operator\&. "
+.ti -1c
+.RI "bool \fBIsLinkLocal\fP () const"
+.br
+.RI "Returns true if the address is link-local\&. "
+.ti -1c
+.RI "bool \fBIsSiteLocal\fP () const"
+.br
+.RI "Returns true if the address is site-local\&. "
+.ti -1c
+.RI "const uint8_t * \fBRawPointer\fP () const"
+.br
+.RI "Returns a pointer to the memory containing the address\&. "
+.ti -1c
+.RI "const in6_addr & \fBIn6Addr\fP () const"
+.br
+.ti -1c
+.RI "uint64_t \fBStreamedLength\fP () const override"
+.br
+.RI "Returns the number of bytes that would be written if we called one of the \fBWrite()\fP members\&. "
+.ti -1c
+.RI "std::istream & \fBRead\fP (std::istream &is) override"
+.br
+.RI "Reads from an istream\&. Returns the istream\&. "
+.ti -1c
+.RI "std::ostream & \fBWrite\fP (std::ostream &os) const override"
+.br
+.RI "Writes to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "ssize_t \fBRead\fP (int fd) override"
+.br
+.RI "Reads from a file descriptor\&. "
+.ti -1c
+.RI "ssize_t \fBWrite\fP (int fd) const override"
+.br
+.RI "Writes to a file descriptor\&. "
+.ti -1c
+.RI "size_t \fBRead\fP (FILE *f) override"
+.br
+.RI "Reads from a FILE pointer\&. Returns 1 on success, 0 on failure\&. "
+.ti -1c
+.RI "size_t \fBWrite\fP (FILE *f) const override"
+.br
+.RI "Writes to a FILE pointer\&. Returns 1 on success, 0 on failure\&. "
+.ti -1c
+.RI "int \fBRead\fP (gzFile gzf) override"
+.br
+.RI "Reads from a gzFile\&. "
+.ti -1c
+.RI "int \fBWrite\fP (gzFile gzf) const override"
+.br
+.RI "Writes to a gzFile\&. "
+.ti -1c
+.RI "int \fBBZRead\fP (BZFILE *bzf) override"
+.br
+.RI "Reads from a BZFILE pointer\&. "
+.ti -1c
+.RI "int \fBBZWrite\fP (BZFILE *bzf) const override"
+.br
+.RI "Writes to a BZFILE pointer\&. "
+.ti -1c
+.RI "template<typename ST > 
+.br
+requires IsSupportedASIOSocket<ST>bool \fBASIO_Read\fP (ST &s, boost::system::error_code &ec)"
+.br
+.RI "Function template intended for boost::asio stream sockets\&. "
+.ti -1c
+.RI "template<typename ST > 
+.br
+requires IsSupportedASIOSocket<ST>bool \fBASIO_Write\fP (ST &s, boost::system::error_code &ec) const"
+.br
+.RI "Function template intended for boost::asio stream sockets\&. "
+.ti -1c
+.RI "bool \fBRead\fP (boost::asio::ip::tcp::socket &s, boost::system::error_code &ec) override"
+.br
+.RI "Reads the \fBIpv6Address\fP from \fRs\fP\&. "
+.ti -1c
+.RI "bool \fBWrite\fP (boost::asio::ip::tcp::socket &s, boost::system::error_code &ec) const override"
+.br
+.RI "Writes the \fBIpv6Address\fP to \fRs\fP\&. "
+.ti -1c
+.RI "bool \fBRead\fP (boost::asio::local::stream_protocol::socket &s, boost::system::error_code &ec) override"
+.br
+.RI "Reads the \fBIpv6Address\fP from \fRs\fP\&. "
+.ti -1c
+.RI "bool \fBWrite\fP (boost::asio::local::stream_protocol::socket &s, boost::system::error_code &ec) const override"
+.br
+.RI "Writes the \fBIpv6Address\fP to \fRs\fP\&. "
+.ti -1c
+.RI "bool \fBRead\fP (boost::asio::generic::stream_protocol::socket &s, boost::system::error_code &ec) override"
+.br
+.RI "Reads the \fBIpv6Address\fP from \fRs\fP\&. "
+.ti -1c
+.RI "bool \fBWrite\fP (boost::asio::generic::stream_protocol::socket &s, boost::system::error_code &ec) const override"
+.br
+.RI "Writes the \fBIpv6Address\fP to \fRs\fP\&. "
+.ti -1c
+.RI "uint64_t \fBHash\fP () const"
+.br
+.RI "Returns a 64-bit hash value for the \fBIpv6Address\fP\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::StreamReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~StreamReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::StreamWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~StreamWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::DescriptorReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~DescriptorReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::DescriptorWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~DescriptorWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::GZReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~GZReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::GZWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~GZWritable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+.SS "Friends"
+
+.in +1c
+.ti -1c
+.RI "std::ostream & \fBoperator<<\fP (std::ostream &os, const \fBIpv6Address\fP &addr)"
+.br
+.RI "Prints an \fBIpv6Address\fP to an ostream in human-readable form\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+This class encapsulates an IPv6 address\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "int Dwm::Ipv6Address::BZRead (BZFILE * bzf)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads from a BZFILE pointer\&. Returns the number of bytes read (16 on success)\&. 
+.PP
+Implements \fBDwm::BZ2Readable\fP\&.
+.SS "int Dwm::Ipv6Address::BZWrite (BZFILE * bzf) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes to a BZFILE pointer\&. Returns the number of bytes written (16 on success)\&. 
+.PP
+Implements \fBDwm::BZ2Writable\fP\&.
+.SS "bool Dwm::Ipv6Address::Read (boost::asio::generic::stream_protocol::socket & s, boost::system::error_code & ec)\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the \fBIpv6Address\fP from \fRs\fP\&. Returns true on success, false on failure\&. 
+.PP
+Implements \fBDwm::ASIOReadable\fP\&.
+.SS "bool Dwm::Ipv6Address::Read (boost::asio::ip::tcp::socket & s, boost::system::error_code & ec)\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the \fBIpv6Address\fP from \fRs\fP\&. Returns true on success, false on failure\&. 
+.PP
+Implements \fBDwm::ASIOReadable\fP\&.
+.SS "bool Dwm::Ipv6Address::Read (boost::asio::local::stream_protocol::socket & s, boost::system::error_code & ec)\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the \fBIpv6Address\fP from \fRs\fP\&. Returns true on success, false on failure\&. 
+.PP
+Implements \fBDwm::ASIOReadable\fP\&.
+.SS "size_t Dwm::Ipv6Address::Read (FILE * f)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads from a FILE pointer\&. Returns 1 on success, 0 on failure\&. 
+.PP
+Implements \fBDwm::FileReadable\fP\&.
+.SS "int Dwm::Ipv6Address::Read (gzFile gzf)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads from a gzFile\&. Returns the number of bytes read (16 on success)\&. 
+.PP
+Implements \fBDwm::GZReadable\fP\&.
+.SS "ssize_t Dwm::Ipv6Address::Read (int fd)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads from a file descriptor\&. Returns the number of bytes read (16 on success)\&. 
+.PP
+Implements \fBDwm::DescriptorReadable\fP\&.
+.SS "std::istream & Dwm::Ipv6Address::Read (std::istream & is)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads from an istream\&. Returns the istream\&. 
+.PP
+Implements \fBDwm::StreamReadable\fP\&.
+.SS "uint64_t Dwm::Ipv6Address::StreamedLength () const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Returns the number of bytes that would be written if we called one of the \fBWrite()\fP members\&. 
+.PP
+Implements \fBDwm::StreamedLengthCapable\fP\&.
+.SS "bool Dwm::Ipv6Address::Write (boost::asio::generic::stream_protocol::socket & s, boost::system::error_code & ec) const\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the \fBIpv6Address\fP to \fRs\fP\&. Returns true on success, false on failure\&. 
+.PP
+Implements \fBDwm::ASIOWritable\fP\&.
+.SS "bool Dwm::Ipv6Address::Write (boost::asio::ip::tcp::socket & s, boost::system::error_code & ec) const\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the \fBIpv6Address\fP to \fRs\fP\&. Returns true on success, false on failure\&. 
+.PP
+Implements \fBDwm::ASIOWritable\fP\&.
+.SS "bool Dwm::Ipv6Address::Write (boost::asio::local::stream_protocol::socket & s, boost::system::error_code & ec) const\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the \fBIpv6Address\fP to \fRs\fP\&. Returns true on success, false on failure\&. 
+.PP
+Implements \fBDwm::ASIOWritable\fP\&.
+.SS "size_t Dwm::Ipv6Address::Write (FILE * f) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes to a FILE pointer\&. Returns 1 on success, 0 on failure\&. 
+.PP
+Implements \fBDwm::FileWritable\fP\&.
+.SS "int Dwm::Ipv6Address::Write (gzFile gzf) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes to a gzFile\&. Returns the number of bytes written (16 on success)\&. 
+.PP
+Implements \fBDwm::GZWritable\fP\&.
+.SS "ssize_t Dwm::Ipv6Address::Write (int fd) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes to a file descriptor\&. Returns the number of bytes written (16 on success)\&. 
+.PP
+Implements \fBDwm::DescriptorWritable\fP\&.
+.SS "std::ostream & Dwm::Ipv6Address::Write (std::ostream & os) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes to an ostream\&. Returns the ostream\&. 
+.PP
+Implements \fBDwm::StreamWritable\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

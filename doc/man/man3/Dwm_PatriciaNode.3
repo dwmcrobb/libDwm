@@ -1,0 +1,82 @@
+.TH "Dwm::PatriciaNode< KeyType, ValueType >" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::PatriciaNode< KeyType, ValueType > \- A node in a \fBPatricia\fP trie\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmPatricia\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBPatriciaNode\fP ()"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "\fBPatriciaNode\fP (const \fBPatriciaNode\fP &pn)"
+.br
+.ti -1c
+.RI "\fBPatriciaNode\fP< KeyType, ValueType > & \fBoperator=\fP (const \fBPatriciaNode\fP< KeyType, ValueType > &pn)"
+.br
+.ti -1c
+.RI "\fBPatriciaNode\fP (const KeyType &key, const ValueType &data, int bitIdx, \fBPatriciaNode\fP< KeyType, ValueType > *left, \fBPatriciaNode\fP< KeyType, ValueType > *right)"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "\fB~PatriciaNode\fP ()"
+.br
+.RI "Destructor\&. "
+.ti -1c
+.RI "void \fBInitialize\fP (const KeyType &key, const ValueType &data, int bitIdx, \fBPatriciaNode\fP< KeyType, ValueType > *left, \fBPatriciaNode\fP< KeyType, ValueType > *right)"
+.br
+.RI "Initialize this node with the given data\&. "
+.ti -1c
+.RI "ValueType & \fBGetData\fP ()"
+.br
+.RI "Returns the data field\&. "
+.ti -1c
+.RI "bool \fBSetData\fP (const ValueType &data)"
+.br
+.RI "Sets the data field\&. "
+.ti -1c
+.RI "KeyType \fBGetKey\fP () const"
+.br
+.RI "Returns the key field\&. "
+.ti -1c
+.RI "\fBPatriciaNode\fP< KeyType, ValueType > * \fBGetLeft\fP ()"
+.br
+.RI "Returns the left branch\&. "
+.ti -1c
+.RI "\fBPatriciaNode\fP< KeyType, ValueType > * \fBGetRight\fP ()"
+.br
+.RI "Returns the right branch\&. "
+.ti -1c
+.RI "uint64_t \fBStreamedLength\fP () const"
+.br
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBPatriciaNode\fP< KeyType, ValueType > &n) const"
+.br
+.in -1c
+.SS "Friends"
+
+.in +1c
+.ti -1c
+.RI "class \fBPatricia< KeyType, ValueType, std::equal_to< KeyType > >\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.SS "template<typename KeyType, typename ValueType>
+.br
+class Dwm::PatriciaNode< KeyType, ValueType >"A node in a \fBPatricia\fP trie\&. 
+
+Each node stores one key, and the data associated with that key\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

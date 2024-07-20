@@ -247,18 +247,26 @@ namespace Dwm {
     //!  Wrapper function to read a GZReadable object from a gzFile.
     //------------------------------------------------------------------------
     static int Read(gzFile gzf, GZReadable & val)
-    {
-      return(val.Read(gzf));
-    }
+    { return(val.Read(gzf)); }
 
+    //------------------------------------------------------------------------
+    //!  Reads @c val from @c gzf.
+    //------------------------------------------------------------------------
+    static int Read(gzFile gzf, HasGZRead auto & val)
+    { return val.Read(gzf); }
+      
     //------------------------------------------------------------------------
     //!  Wrapper function to write a GZWritable object to a gzFile.
     //------------------------------------------------------------------------
     static int Write(gzFile gzf, const GZWritable & val)
-    {
-      return(val.Write(gzf));
-    }
+    { return(val.Write(gzf)); }
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    static int Write(gzFile gzf, const HasGZWrite auto & val)
+    { return val.Write(gzf); }
+    
     //------------------------------------------------------------------------
     //!  Reads a pair<_firstT,_secondT> from a gzFile.  Returns
     //!  the number of bytes read on success, -1 on failure.

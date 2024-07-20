@@ -1,0 +1,123 @@
+\doxysection{Dwm\+::File\+Roller Class Reference}
+\hypertarget{classDwm_1_1FileRoller}{}\label{classDwm_1_1FileRoller}\index{Dwm::FileRoller@{Dwm::FileRoller}}
+
+
+This class can be used to roll over files such as log files.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+File\+Roller.\+hh$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1FileRoller_a161b1bc4e63de06e74549ec3c8e92f12}\label{classDwm_1_1FileRoller_a161b1bc4e63de06e74549ec3c8e92f12} 
+enum \mbox{\hyperlink{classDwm_1_1FileRoller_a161b1bc4e63de06e74549ec3c8e92f12}{Compression\+Enum}} \{ {\bfseries e\+\_\+compression\+None}
+, {\bfseries e\+\_\+compression\+Gzip}
+, {\bfseries e\+\_\+compression\+Bzip2}
+ \}
+\begin{DoxyCompactList}\small\item\em Available compression types. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classDwm_1_1FileRoller_a254b1bb98c43c81ee4330b9c9400516e}{File\+Roller}} (const std\+::string \&dir, const std\+::string \&prefix, size\+\_\+t max\+Size, size\+\_\+t num\+Files, \mbox{\hyperlink{classDwm_1_1FileRoller_a161b1bc4e63de06e74549ec3c8e92f12}{Compression\+Enum}} compression=e\+\_\+compression\+None)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1FileRoller_ab65e6e603069deddefc4e1924e7b9cd2}\label{classDwm_1_1FileRoller_ab65e6e603069deddefc4e1924e7b9cd2} 
+bool {\bfseries Files\+Need\+Rolling} () const
+\begin{DoxyCompactList}\small\item\em Returns true if the active file (identified by the {\ttfamily dir} and {\ttfamily prefix} in the call to our constructor) is larger than our maximum file size (set with {\ttfamily max\+Size} in our constructor). \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1FileRoller_a2fcf213abd446d182a9272a4e7806519}{Files\+Need\+Rolling}} (int fd) const
+\begin{DoxyCompactList}\small\item\em Returns true if the current write position of {\ttfamily fd} is larger than our maximum file size (set with {\ttfamily max\+Size} in our constructor). \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1FileRoller_a6bc5233692134c11d5c118703d8810a1}{Files\+Need\+Rolling}} (std\+::ostream \&os) const
+\begin{DoxyCompactList}\small\item\em Returns true if the current write position of {\ttfamily os} is larger than our maximum file size (set with {\ttfamily max\+Size} in our constructor). \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1FileRoller_a17852ff6d94a64b8f7b0cf69336965e2}{Files\+Need\+Rolling}} (FILE \texorpdfstring{$\ast$}{*}f) const
+\begin{DoxyCompactList}\small\item\em Returns true if the current write position of {\ttfamily f} is larger than our maximum file size (set with {\ttfamily max\+Size} in our constructor). \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1FileRoller_ad22888d82c091926768bf5f10e26f623}{Roll\+Files}} ()
+\begin{DoxyCompactList}\small\item\em Rolls the files. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1FileRoller_a39acb62fcb96f3b32eaa9701c181af47}\label{classDwm_1_1FileRoller_a39acb62fcb96f3b32eaa9701c181af47} 
+size\+\_\+t {\bfseries Max\+Size} () const
+\begin{DoxyCompactList}\small\item\em Returns the max file size. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1FileRoller_a5986c33792f1f7683cd4777f4ca19f54}\label{classDwm_1_1FileRoller_a5986c33792f1f7683cd4777f4ca19f54} 
+size\+\_\+t {\bfseries Max\+Size} (size\+\_\+t max\+Size)
+\begin{DoxyCompactList}\small\item\em Sets and returns the max file size. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1FileRoller_a539b75d895141682124e8817e121d7b8}\label{classDwm_1_1FileRoller_a539b75d895141682124e8817e121d7b8} 
+size\+\_\+t {\bfseries Num\+Files} () const
+\begin{DoxyCompactList}\small\item\em Returns the max file size. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1FileRoller_a45dd1ed59e368b5a9889346cc1b6e9c6}\label{classDwm_1_1FileRoller_a45dd1ed59e368b5a9889346cc1b6e9c6} 
+size\+\_\+t {\bfseries Num\+Files} (size\+\_\+t num\+Files)
+\begin{DoxyCompactList}\small\item\em Sets and returns the max file size. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class can be used to roll over files such as log files. 
+
+Typically an application logging to a file will periodically call one of the \doxylink{classDwm_1_1FileRoller_ab65e6e603069deddefc4e1924e7b9cd2}{Files\+Need\+Rolling()} members, and if it returns true, close the logging file and then call \doxylink{classDwm_1_1FileRoller_ad22888d82c091926768bf5f10e26f623}{Roll\+Files()}. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classDwm_1_1FileRoller_a254b1bb98c43c81ee4330b9c9400516e}\index{Dwm::FileRoller@{Dwm::FileRoller}!FileRoller@{FileRoller}}
+\index{FileRoller@{FileRoller}!Dwm::FileRoller@{Dwm::FileRoller}}
+\doxysubsubsection{\texorpdfstring{FileRoller()}{FileRoller()}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileRoller_a254b1bb98c43c81ee4330b9c9400516e} 
+Dwm\+::\+File\+Roller\+::\+File\+Roller (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{dir}{, }\item[{const std\+::string \&}]{prefix}{, }\item[{size\+\_\+t}]{max\+Size}{, }\item[{size\+\_\+t}]{num\+Files}{, }\item[{\mbox{\hyperlink{classDwm_1_1FileRoller_a161b1bc4e63de06e74549ec3c8e92f12}{Compression\+Enum}}}]{compression}{ = {\ttfamily e\+\_\+compressionNone}}\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+{\ttfamily dir} is the directory in which the files are stored. {\ttfamily prefix} is the name of the first file, which presumably your application is using for logging or the like. {\ttfamily max\+Size} is the file size (in bytes) at which we\textquotesingle{}d like to roll over files. {\ttfamily num\+Files} is the number of files we\textquotesingle{}d like to keep beyond the first file. {\ttfamily compression} may be set to use gzip or bzip2 compression. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1FileRoller_a17852ff6d94a64b8f7b0cf69336965e2}\index{Dwm::FileRoller@{Dwm::FileRoller}!FilesNeedRolling@{FilesNeedRolling}}
+\index{FilesNeedRolling@{FilesNeedRolling}!Dwm::FileRoller@{Dwm::FileRoller}}
+\doxysubsubsection{\texorpdfstring{FilesNeedRolling()}{FilesNeedRolling()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileRoller_a17852ff6d94a64b8f7b0cf69336965e2} 
+bool Dwm\+::\+File\+Roller\+::\+Files\+Need\+Rolling (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{}\end{DoxyParamCaption}) const}
+
+
+
+Returns true if the current write position of {\ttfamily f} is larger than our maximum file size (set with {\ttfamily max\+Size} in our constructor). 
+
+Here we assume that {\ttfamily f} is a FILE pointer being used to write to the active file (identified by the {\ttfamily dir} and {\ttfamily prefix} in the call to our constructor). \begin{DoxyNote}{Note}
+This is a convenience routine that avoids the overhead of calling stat(). 
+\end{DoxyNote}
+\Hypertarget{classDwm_1_1FileRoller_a2fcf213abd446d182a9272a4e7806519}\index{Dwm::FileRoller@{Dwm::FileRoller}!FilesNeedRolling@{FilesNeedRolling}}
+\index{FilesNeedRolling@{FilesNeedRolling}!Dwm::FileRoller@{Dwm::FileRoller}}
+\doxysubsubsection{\texorpdfstring{FilesNeedRolling()}{FilesNeedRolling()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileRoller_a2fcf213abd446d182a9272a4e7806519} 
+bool Dwm\+::\+File\+Roller\+::\+Files\+Need\+Rolling (\begin{DoxyParamCaption}\item[{int}]{fd}{}\end{DoxyParamCaption}) const}
+
+
+
+Returns true if the current write position of {\ttfamily fd} is larger than our maximum file size (set with {\ttfamily max\+Size} in our constructor). 
+
+Here we assume that {\ttfamily fd} is a descriptor being used to write to the active file (identified by the {\ttfamily dir} and {\ttfamily prefix} in the call to our constructor). \begin{DoxyNote}{Note}
+This is a convenience routine that avoids the overhead of calling stat(). 
+\end{DoxyNote}
+\Hypertarget{classDwm_1_1FileRoller_a6bc5233692134c11d5c118703d8810a1}\index{Dwm::FileRoller@{Dwm::FileRoller}!FilesNeedRolling@{FilesNeedRolling}}
+\index{FilesNeedRolling@{FilesNeedRolling}!Dwm::FileRoller@{Dwm::FileRoller}}
+\doxysubsubsection{\texorpdfstring{FilesNeedRolling()}{FilesNeedRolling()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileRoller_a6bc5233692134c11d5c118703d8810a1} 
+bool Dwm\+::\+File\+Roller\+::\+Files\+Need\+Rolling (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os}{}\end{DoxyParamCaption}) const}
+
+
+
+Returns true if the current write position of {\ttfamily os} is larger than our maximum file size (set with {\ttfamily max\+Size} in our constructor). 
+
+Here we assume that {\ttfamily os} is an ostream being used to write to the active file (identified by the {\ttfamily dir} and {\ttfamily prefix} in the call to our constructor). \begin{DoxyNote}{Note}
+This is a convenience routine that avoids the overhead of calling stat(). 
+\end{DoxyNote}
+\Hypertarget{classDwm_1_1FileRoller_ad22888d82c091926768bf5f10e26f623}\index{Dwm::FileRoller@{Dwm::FileRoller}!RollFiles@{RollFiles}}
+\index{RollFiles@{RollFiles}!Dwm::FileRoller@{Dwm::FileRoller}}
+\doxysubsubsection{\texorpdfstring{RollFiles()}{RollFiles()}}
+{\footnotesize\ttfamily \label{classDwm_1_1FileRoller_ad22888d82c091926768bf5f10e26f623} 
+bool Dwm\+::\+File\+Roller\+::\+Roll\+Files (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Rolls the files. 
+
+The active file should be closed before calling this function. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmFileRoller_8hh}{Dwm\+File\+Roller.\+hh}}\end{DoxyCompactItemize}

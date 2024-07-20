@@ -1,0 +1,161 @@
+.TH "Dwm::FFIVar< T, typename std::enable_if< std::is_integral< T >::value >::type >" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::FFIVar< T, typename std::enable_if< std::is_integral< T >::value >::type > \- Specialization for integral types\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmFFIVar\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBFFIVar\fP ()"
+.br
+.RI "Default constructor\&. "
+.ti -1c
+.RI "\fB~FFIVar\fP ()"
+.br
+.RI "Destructor\&. "
+.ti -1c
+.RI "\fBFFIVar\fP (const \fBFFIVar\fP &v)=default"
+.br
+.RI "Copy constructor\&. "
+.ti -1c
+.RI "\fBFFIVar\fP (const T &t)"
+.br
+.RI "Construct from a reference to a \fRT\fP\&. "
+.ti -1c
+.RI "\fBFFIVar\fP (\fBFFIVar\fP &&v)=default"
+.br
+.RI "Move constructor\&. "
+.ti -1c
+.RI "\fBFFIVar\fP (T &&t)"
+.br
+.RI "Construct from an rvalue reference to a \fRT\fP\&. "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator=\fP (const \fBFFIVar\fP &v)=default"
+.br
+.RI "Copy assignment\&. "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator=\fP (const T &t)"
+.br
+.RI "Assign from a \fRT\fP\&. "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator=\fP (\fBFFIVar\fP &&)=default"
+.br
+.RI "Move assignment\&. "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator=\fP (T &&t)"
+.br
+.RI "Assign from an rvalue reference to a \fRT\fP\&. "
+.ti -1c
+.RI "\fBoperator T\fP () const"
+.br
+.RI "Conversion to \fRT\fP operator\&. "
+.ti -1c
+.RI "bool \fBoperator<=\fP (const \fBFFIVar\fP &v) const"
+.br
+.RI "Less-than-or-equal operator\&. "
+.ti -1c
+.RI "bool \fBoperator>=\fP (const \fBFFIVar\fP &v) const"
+.br
+.RI "Greater-than-or-equal operator\&. "
+.ti -1c
+.RI "bool \fBoperator<\fP (const \fBFFIVar\fP &v) const"
+.br
+.RI "Less-than operator\&. "
+.ti -1c
+.RI "bool \fBoperator>\fP (const \fBFFIVar\fP &v) const"
+.br
+.RI "Greater-than operator\&. "
+.ti -1c
+.RI "template<typename IT > 
+.br
+requires std::is_integral<IT>::valuebool \fBoperator==\fP (const IT &it) const"
+.br
+.RI "Equality to an integral operator\&. "
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBFFIVar\fP &v) const"
+.br
+.RI "Equality operator\&. "
+.ti -1c
+.RI "\fBFFIVar\fP \fBoperator++\fP (int)"
+.br
+.RI "post-increment operator "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator++\fP ()"
+.br
+.RI "pre-increment operator "
+.ti -1c
+.RI "\fBFFIVar\fP \fBoperator\-\-\fP (int)"
+.br
+.RI "post-decrement operator "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator\-\-\fP ()"
+.br
+.RI "pre-decrement operator "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator+=\fP (const \fBFFIVar\fP &v)"
+.br
+.RI "Compound add and assignment operator\&. "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator\-=\fP (const \fBFFIVar\fP &v)"
+.br
+.RI "Compound subtract and assignment operator\&. "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator*=\fP (const \fBFFIVar\fP &v)"
+.br
+.RI "Compound multiply and assignment operator\&. "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator/=\fP (const \fBFFIVar\fP &v)"
+.br
+.RI "Compound divide and assignment operator\&. "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator%=\fP (const \fBFFIVar\fP &v)"
+.br
+.RI "Compound modulo and assignment operator\&. "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator>>=\fP (const \fBFFIVar\fP &v)"
+.br
+.RI "Compound right shift and assignment operator\&. "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator<<=\fP (const \fBFFIVar\fP &v)"
+.br
+.RI "Compound left shift and assignment operator\&. "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator&=\fP (const \fBFFIVar\fP &v)"
+.br
+.RI "Compound bitwise 'and' and assignment operator\&. "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator|=\fP (const \fBFFIVar\fP &v)"
+.br
+.RI "Compound bitwise 'or' and assignment operator\&. "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator^=\fP (const \fBFFIVar\fP &v)"
+.br
+.RI "Compound exclusive 'or' and assignment operator\&. "
+.ti -1c
+.RI "\fBFFIVar\fP \fBoperator~\fP () const"
+.br
+.RI "Complement operator\&. "
+.ti -1c
+.RI "bool \fBIsFFI\fP () const"
+.br
+.RI "Returns true if object appears to be free from interference\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.SS "template<typename T>
+.br
+class Dwm::FFIVar< T, typename std::enable_if< std::is_integral< T >::value >::type >"Specialization for integral types\&. 
+
+Encapsulate operators and conversion to/from integral type T\&. Our copy of the integral value is the bitwise complement of the value\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

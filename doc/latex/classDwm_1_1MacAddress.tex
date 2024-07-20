@@ -1,0 +1,285 @@
+\doxysection{Dwm\+::Mac\+Address Class Reference}
+\hypertarget{classDwm_1_1MacAddress}{}\label{classDwm_1_1MacAddress}\index{Dwm::MacAddress@{Dwm::MacAddress}}
+
+
+Encapsulates a 6-\/byte MAC address.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Mac\+Address.\+hh$>$}
+
+
+
+Inheritance diagram for Dwm\+::Mac\+Address\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1MacAddress__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Dwm\+::Mac\+Address\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1MacAddress__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1MacAddress_a2cb9ca91911553ddc797d01f9a4c5f50}\label{classDwm_1_1MacAddress_a2cb9ca91911553ddc797d01f9a4c5f50} 
+{\bfseries Mac\+Address} ()
+\begin{DoxyCompactList}\small\item\em Constructor. Sets the address to 00\+:00\+:00\+:00\+:00\+:00. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1MacAddress_a02e2e79a1250c874d9a02e4363b00c5c}\label{classDwm_1_1MacAddress_a02e2e79a1250c874d9a02e4363b00c5c} 
+{\bfseries Mac\+Address} (const std\+::string \&s)
+\begin{DoxyCompactList}\small\item\em Construct from a string of the form xx\+:xx\+:xx\+:xx\+:xx\+:xx. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1MacAddress_a92b720eeac1ea208d0d0c25344bda9f5}\label{classDwm_1_1MacAddress_a92b720eeac1ea208d0d0c25344bda9f5} 
+{\bfseries Mac\+Address} (const \mbox{\hyperlink{classDwm_1_1MacAddress}{Mac\+Address}} \&addr)
+\begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1MacAddress_aaaa4c812482f97c7b01e74f49373e07c}\label{classDwm_1_1MacAddress_aaaa4c812482f97c7b01e74f49373e07c} 
+\mbox{\hyperlink{classDwm_1_1MacAddress}{Mac\+Address}} \& {\bfseries operator=} (const \mbox{\hyperlink{classDwm_1_1MacAddress}{Mac\+Address}} \&addr)
+\begin{DoxyCompactList}\small\item\em operator = \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1MacAddress_aeeb24965bbce3311c5320ba0b6d39bf9}\label{classDwm_1_1MacAddress_aeeb24965bbce3311c5320ba0b6d39bf9} 
+{\bfseries operator std\+::string} () const
+\begin{DoxyCompactList}\small\item\em Returns a string representation of the MAC address. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1MacAddress_a3eece179b4d42caef32b5d3268d368e3}\label{classDwm_1_1MacAddress_a3eece179b4d42caef32b5d3268d368e3} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classDwm_1_1MacAddress}{Mac\+Address}} \&addr) const
+\begin{DoxyCompactList}\small\item\em operator == \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1MacAddress_aa4ae91420f726e8e4fd9e2b6398defa9}\label{classDwm_1_1MacAddress_aa4ae91420f726e8e4fd9e2b6398defa9} 
+bool {\bfseries operator$<$} (const \mbox{\hyperlink{classDwm_1_1MacAddress}{Mac\+Address}} \&addr) const
+\begin{DoxyCompactList}\small\item\em operator \texorpdfstring{$<$}{<} \end{DoxyCompactList}\item 
+std\+::istream \& \mbox{\hyperlink{classDwm_1_1MacAddress_a7c12513f39a62fc725189375f80f1f9c}{Read}} (std\+::istream \&is) override
+\begin{DoxyCompactList}\small\item\em Reads the MAC address from an istream. Returns the istream. \end{DoxyCompactList}\item 
+std\+::ostream \& \mbox{\hyperlink{classDwm_1_1MacAddress_a1fe54cdd792edd8cecc2550c95d9cc62}{Write}} (std\+::ostream \&os) const override
+\begin{DoxyCompactList}\small\item\em Writes the MAC address to an ostream. Returns the ostream. \end{DoxyCompactList}\item 
+ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1MacAddress_a9b20a60538147b6f5718beb9ff41e6fd}{Read}} (int fd) override
+\begin{DoxyCompactList}\small\item\em Reads the MAC address from a file descriptor. \end{DoxyCompactList}\item 
+ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1MacAddress_a9e877dc6c7bf606d312d859cb0ee9f9b}{Write}} (int fd) const override
+\begin{DoxyCompactList}\small\item\em Writes the MAC address to a file descriptor. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classDwm_1_1MacAddress_a2c996b15a1e44d90c5547215e1129ac9}{Read}} (FILE \texorpdfstring{$\ast$}{*}f) override
+\begin{DoxyCompactList}\small\item\em Reads the MAC address from a FILE. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classDwm_1_1MacAddress_ae5f212714c2d8027931b3a782ad78519}{Write}} (FILE \texorpdfstring{$\ast$}{*}f) const override
+\begin{DoxyCompactList}\small\item\em Writes the MAC address to a FILE. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1MacAddress_a3e64d2ad6db714b3b54dea3a29fe613c}{Read}} (gz\+File gzf) override
+\begin{DoxyCompactList}\small\item\em Reads the MAC address from a gz\+File. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1MacAddress_ae11fcfe4d747854235a9883a2d3338ab}{Write}} (gz\+File gzf) const override
+\begin{DoxyCompactList}\small\item\em Writes the MAC address to a gz\+File. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1MacAddress_a2f8b13aa0bf1f6062f1869a6f7b38132}{BZRead}} (BZFILE \texorpdfstring{$\ast$}{*}bzf) override
+\begin{DoxyCompactList}\small\item\em Reads the MAC address from a BZFILE. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1MacAddress_a364daea1d9407965eb8921c40296ea3e}{BZWrite}} (BZFILE \texorpdfstring{$\ast$}{*}bzf) const override
+\begin{DoxyCompactList}\small\item\em Writes the MAC address to a BZFILE. \end{DoxyCompactList}\item 
+uint64\+\_\+t \mbox{\hyperlink{classDwm_1_1MacAddress_aadb12a154d862f502c189edfd93a8a9d}{Streamed\+Length}} () const override
+\begin{DoxyCompactList}\small\item\em Returns the number of bytes that should be written if we call one of the \doxylink{classDwm_1_1MacAddress_a1fe54cdd792edd8cecc2550c95d9cc62}{Write()} members. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1DescriptorReadable}{Dwm\+::\+Descriptor\+Readable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Descriptor\+Readable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1DescriptorWritable}{Dwm\+::\+Descriptor\+Writable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Descriptor\+Writable} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1StreamReadable}{Dwm\+::\+Stream\+Readable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Stream\+Readable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1StreamWritable}{Dwm\+::\+Stream\+Writable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Stream\+Writable} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1GZReadable}{Dwm\+::\+GZReadable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+GZReadable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1GZWritable}{Dwm\+::\+GZWritable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+GZWritable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1MacAddress_aef23d5754959aca2609db63bcc2b143b}\label{classDwm_1_1MacAddress_aef23d5754959aca2609db63bcc2b143b} 
+uint8\+\_\+t {\bfseries \+\_\+addr} \mbox{[}6\mbox{]}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1MacAddress_ac5fccb04e03b6f880a79013594b47b73}\label{classDwm_1_1MacAddress_ac5fccb04e03b6f880a79013594b47b73} 
+std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, const \mbox{\hyperlink{classDwm_1_1MacAddress}{Mac\+Address}} \&addr)
+\begin{DoxyCompactList}\small\item\em Prints to an ostream in \textquotesingle{}xx\+:xx\+:xx\+:xx\+:xx\+:xx\textquotesingle{} format. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1MacAddress_ab9d7c48e138c1f2879b8410010e32727}\label{classDwm_1_1MacAddress_ab9d7c48e138c1f2879b8410010e32727} 
+std\+::istream \& {\bfseries operator$>$$>$} (std\+::istream \&is, \mbox{\hyperlink{classDwm_1_1MacAddress}{Mac\+Address}} \&addr)
+\begin{DoxyCompactList}\small\item\em Reads from an istream in \textquotesingle{}xx\+:xx\+:xx\+:xx\+:xx\+:xx\textquotesingle{} format. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Encapsulates a 6-\/byte MAC address. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1MacAddress_a2f8b13aa0bf1f6062f1869a6f7b38132}\index{Dwm::MacAddress@{Dwm::MacAddress}!BZRead@{BZRead}}
+\index{BZRead@{BZRead}!Dwm::MacAddress@{Dwm::MacAddress}}
+\doxysubsubsection{\texorpdfstring{BZRead()}{BZRead()}}
+{\footnotesize\ttfamily \label{classDwm_1_1MacAddress_a2f8b13aa0bf1f6062f1869a6f7b38132} 
+int Dwm\+::\+Mac\+Address\+::\+BZRead (\begin{DoxyParamCaption}\item[{BZFILE \texorpdfstring{$\ast$}{*}}]{bzf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the MAC address from a BZFILE. 
+
+Returns the number of bytes read on success (should be 6), -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1BZ2Readable_a4b71c8697049e8e2e5df8ff22405f6b7}{Dwm\+::\+BZ2\+Readable}}.
+
+\Hypertarget{classDwm_1_1MacAddress_a364daea1d9407965eb8921c40296ea3e}\index{Dwm::MacAddress@{Dwm::MacAddress}!BZWrite@{BZWrite}}
+\index{BZWrite@{BZWrite}!Dwm::MacAddress@{Dwm::MacAddress}}
+\doxysubsubsection{\texorpdfstring{BZWrite()}{BZWrite()}}
+{\footnotesize\ttfamily \label{classDwm_1_1MacAddress_a364daea1d9407965eb8921c40296ea3e} 
+int Dwm\+::\+Mac\+Address\+::\+BZWrite (\begin{DoxyParamCaption}\item[{BZFILE \texorpdfstring{$\ast$}{*}}]{bzf}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the MAC address to a BZFILE. 
+
+Returns the number of bytes written on success (should be 6), -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1BZ2Writable_aa4481114d6865e31f0aa94f08c2b2e5d}{Dwm\+::\+BZ2\+Writable}}.
+
+\Hypertarget{classDwm_1_1MacAddress_a2c996b15a1e44d90c5547215e1129ac9}\index{Dwm::MacAddress@{Dwm::MacAddress}!Read@{Read}}
+\index{Read@{Read}!Dwm::MacAddress@{Dwm::MacAddress}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1MacAddress_a2c996b15a1e44d90c5547215e1129ac9} 
+size\+\_\+t Dwm\+::\+Mac\+Address\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the MAC address from a FILE. 
+
+Returns 1 on success, 0 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1FileReadable_a2e51685eb4fecc584ab48ca7609bba6f}{Dwm\+::\+File\+Readable}}.
+
+\Hypertarget{classDwm_1_1MacAddress_a3e64d2ad6db714b3b54dea3a29fe613c}\index{Dwm::MacAddress@{Dwm::MacAddress}!Read@{Read}}
+\index{Read@{Read}!Dwm::MacAddress@{Dwm::MacAddress}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1MacAddress_a3e64d2ad6db714b3b54dea3a29fe613c} 
+int Dwm\+::\+Mac\+Address\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the MAC address from a gz\+File. 
+
+Returns the number of bytes read on success (should be 6), -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1GZReadable_a4243984d9d8fb2f79997403824834dd2}{Dwm\+::\+GZReadable}}.
+
+\Hypertarget{classDwm_1_1MacAddress_a9b20a60538147b6f5718beb9ff41e6fd}\index{Dwm::MacAddress@{Dwm::MacAddress}!Read@{Read}}
+\index{Read@{Read}!Dwm::MacAddress@{Dwm::MacAddress}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1MacAddress_a9b20a60538147b6f5718beb9ff41e6fd} 
+ssize\+\_\+t Dwm\+::\+Mac\+Address\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the MAC address from a file descriptor. 
+
+Returns the number of bytes read on success (should be 6), -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1DescriptorReadable_aec1a0c67dd53343e52be7a6728081b7f}{Dwm\+::\+Descriptor\+Readable}}.
+
+\Hypertarget{classDwm_1_1MacAddress_a7c12513f39a62fc725189375f80f1f9c}\index{Dwm::MacAddress@{Dwm::MacAddress}!Read@{Read}}
+\index{Read@{Read}!Dwm::MacAddress@{Dwm::MacAddress}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1MacAddress_a7c12513f39a62fc725189375f80f1f9c} 
+std\+::istream \& Dwm\+::\+Mac\+Address\+::\+Read (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{is}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the MAC address from an istream. Returns the istream. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamReadable_a8337a0949e0ce4458f18884d00eb5153}{Dwm\+::\+Stream\+Readable}}.
+
+\Hypertarget{classDwm_1_1MacAddress_aadb12a154d862f502c189edfd93a8a9d}\index{Dwm::MacAddress@{Dwm::MacAddress}!StreamedLength@{StreamedLength}}
+\index{StreamedLength@{StreamedLength}!Dwm::MacAddress@{Dwm::MacAddress}}
+\doxysubsubsection{\texorpdfstring{StreamedLength()}{StreamedLength()}}
+{\footnotesize\ttfamily \label{classDwm_1_1MacAddress_aadb12a154d862f502c189edfd93a8a9d} 
+uint64\+\_\+t Dwm\+::\+Mac\+Address\+::\+Streamed\+Length (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Returns the number of bytes that should be written if we call one of the \doxylink{classDwm_1_1MacAddress_a1fe54cdd792edd8cecc2550c95d9cc62}{Write()} members. 
+
+Should always return 6. 
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamedLengthCapable_abe671443353ea6ed173005c6f515ca5d}{Dwm\+::\+Streamed\+Length\+Capable}}.
+
+\Hypertarget{classDwm_1_1MacAddress_ae5f212714c2d8027931b3a782ad78519}\index{Dwm::MacAddress@{Dwm::MacAddress}!Write@{Write}}
+\index{Write@{Write}!Dwm::MacAddress@{Dwm::MacAddress}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1MacAddress_ae5f212714c2d8027931b3a782ad78519} 
+size\+\_\+t Dwm\+::\+Mac\+Address\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the MAC address to a FILE. 
+
+Returns 1 on success, 0 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1FileWritable_ad46fa6f29a2fec8c8080f054c0a8febe}{Dwm\+::\+File\+Writable}}.
+
+\Hypertarget{classDwm_1_1MacAddress_ae11fcfe4d747854235a9883a2d3338ab}\index{Dwm::MacAddress@{Dwm::MacAddress}!Write@{Write}}
+\index{Write@{Write}!Dwm::MacAddress@{Dwm::MacAddress}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1MacAddress_ae11fcfe4d747854235a9883a2d3338ab} 
+int Dwm\+::\+Mac\+Address\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the MAC address to a gz\+File. 
+
+Returns the number of bytes written on success (should be 6), -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1GZWritable_a5f50bad679854f91bc5a67728a329681}{Dwm\+::\+GZWritable}}.
+
+\Hypertarget{classDwm_1_1MacAddress_a9e877dc6c7bf606d312d859cb0ee9f9b}\index{Dwm::MacAddress@{Dwm::MacAddress}!Write@{Write}}
+\index{Write@{Write}!Dwm::MacAddress@{Dwm::MacAddress}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1MacAddress_a9e877dc6c7bf606d312d859cb0ee9f9b} 
+ssize\+\_\+t Dwm\+::\+Mac\+Address\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the MAC address to a file descriptor. 
+
+Returns the number of bytes written on success (should be 6), -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1DescriptorWritable_ae0b23058b0de909d4705c05507b10864}{Dwm\+::\+Descriptor\+Writable}}.
+
+\Hypertarget{classDwm_1_1MacAddress_a1fe54cdd792edd8cecc2550c95d9cc62}\index{Dwm::MacAddress@{Dwm::MacAddress}!Write@{Write}}
+\index{Write@{Write}!Dwm::MacAddress@{Dwm::MacAddress}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1MacAddress_a1fe54cdd792edd8cecc2550c95d9cc62} 
+std\+::ostream \& Dwm\+::\+Mac\+Address\+::\+Write (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the MAC address to an ostream. Returns the ostream. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamWritable_a66994f2c5fbf07308b6b766f9774d079}{Dwm\+::\+Stream\+Writable}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmMacAddress_8hh}{Dwm\+Mac\+Address.\+hh}}\end{DoxyCompactItemize}

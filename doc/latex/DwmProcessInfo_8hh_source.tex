@@ -1,0 +1,109 @@
+\doxysection{Dwm\+Process\+Info.\+hh}
+\hypertarget{DwmProcessInfo_8hh_source}{}\label{DwmProcessInfo_8hh_source}\index{DwmProcessInfo.hh@{DwmProcessInfo.hh}}
+\mbox{\hyperlink{DwmProcessInfo_8hh}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ @(\#)\ \$DwmPath\$}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ \ Copyright\ (c)\ Daniel\ W.\ McRobb\ 2006-\/2007,\ 2016,\ 2020,\ 2024}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ \ All\ rights\ reserved.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ \ Redistribution\ and\ use\ in\ source\ and\ binary\ forms,\ with\ or\ without}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ \ modification,\ are\ permitted\ provided\ that\ the\ following\ conditions}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ \ are\ met:}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ \ 1.\ Redistributions\ of\ source\ code\ must\ retain\ the\ above\ copyright}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ \ \ \ \ notice,\ this\ list\ of\ conditions\ and\ the\ following\ disclaimer.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ \ 2.\ Redistributions\ in\ binary\ form\ must\ reproduce\ the\ above\ copyright}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ \ \ \ \ notice,\ this\ list\ of\ conditions\ and\ the\ following\ disclaimer\ in\ the}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ \ \ \ \ documentation\ and/or\ other\ materials\ provided\ with\ the\ distribution.}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ \ 3.\ The\ names\ of\ the\ authors\ and\ copyright\ holders\ may\ not\ be\ used\ to}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ \ \ \ \ endorse\ or\ promote\ products\ derived\ from\ this\ software\ without}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ \ \ \ \ specific\ prior\ written\ permission.}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ \ IN\ NO\ EVENT\ SHALL\ DANIEL\ W.\ MCROBB\ BE\ LIABLE\ TO\ ANY\ PARTY\ FOR}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ \ DIRECT,\ INDIRECT,\ SPECIAL,\ INCIDENTAL,\ OR\ CONSEQUENTIAL\ DAMAGES,}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ \ INCLUDING\ LOST\ PROFITS,\ ARISING\ OUT\ OF\ THE\ USE\ OF\ THIS\ SOFTWARE,}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ \ EVEN\ IF\ DANIEL\ W.\ MCROBB\ HAS\ BEEN\ ADVISED\ OF\ THE\ POSSIBILITY\ OF\ SUCH}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ \ DAMAGE.}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ \ THE\ SOFTWARE\ PROVIDED\ HEREIN\ IS\ ON\ AN\ "{}AS\ IS"{}\ BASIS,\ AND}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ \ DANIEL\ W.\ MCROBB\ HAS\ NO\ OBLIGATION\ TO\ PROVIDE\ MAINTENANCE,\ SUPPORT,}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ \ UPDATES,\ ENHANCEMENTS,\ OR\ MODIFICATIONS.\ DANIEL\ W.\ MCROBB\ MAKES\ NO}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ \ REPRESENTATIONS\ AND\ EXTENDS\ NO\ WARRANTIES\ OF\ ANY\ KIND,\ EITHER}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ \ IMPLIED\ OR\ EXPRESS,\ INCLUDING,\ BUT\ NOT\ LIMITED\ TO,\ THE\ IMPLIED}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ \ WARRANTIES\ OF\ MERCHANTABILITY\ OR\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE,}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ \ OR\ THAT\ THE\ USE\ OF\ THIS\ SOFTWARE\ WILL\ NOT\ INFRINGE\ ANY\ PATENT,}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ \ TRADEMARK\ OR\ OTHER\ RIGHTS.}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#ifndef\ \_DWMPROCESSINFO\_HH\_}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#define\ \_DWMPROCESSINFO\_HH\_}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\ \ \#include\ <unistd.h>}}
+\DoxyCodeLine{00047\ \}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#include\ <nlohmann/json.hpp>}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{DwmStreamIOCapable_8hh}{DwmStreamIOCapable.hh}}"{}}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{DwmStreamedLengthCapable_8hh}{DwmStreamedLengthCapable.hh}}"{}}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{DwmGZIOCapable_8hh}{DwmGZIOCapable.hh}}"{}}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{DwmBZ2IOCapable_8hh}{DwmBZ2IOCapable.hh}}"{}}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{keyword}{namespace\ }Dwm\ \{}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00063\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{class\ }ProcessInfo}
+\DoxyCodeLine{00065\ \ \ \ \ :\ \textcolor{keyword}{public}\ StreamIOCapable,\ \textcolor{keyword}{public}\ GZIOCapable,\ \textcolor{keyword}{public}\ BZ2IOCapable,}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{keyword}{public}\ StreamedLengthCapable}
+\DoxyCodeLine{00067\ \ \ \{}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00069\ \ \ \ \ std::string\ \ user\ \{\textcolor{stringliteral}{"{}"{}}\};}
+\DoxyCodeLine{00070\ \ \ \ \ std::string\ \ ruser\ \{\textcolor{stringliteral}{"{}"{}}\};}
+\DoxyCodeLine{00071\ \ \ \ \ uint64\_t\ \ \ \ \ pid\ \{0\};}
+\DoxyCodeLine{00072\ \ \ \ \ uint64\_t\ \ \ \ \ ppid\ \{0\};}
+\DoxyCodeLine{00073\ \ \ \ \ uint64\_t\ \ \ \ \ gid\ \{0\};}
+\DoxyCodeLine{00074\ \ \ \ \ uint64\_t\ \ \ \ \ uid\ \{0\};}
+\DoxyCodeLine{00075\ \ \ \ \ uint64\_t\ \ \ \ \ ruid\ \{0\};}
+\DoxyCodeLine{00076\ \ \ \ \ uint64\_t\ \ \ \ \ svuid\ \{0\};}
+\DoxyCodeLine{00077\ \ \ \ \ uint64\_t\ \ \ \ \ rgid\ \{0\};}
+\DoxyCodeLine{00078\ \ \ \ \ uint64\_t\ \ \ \ \ svgid\ \{0\};}
+\DoxyCodeLine{00079\ \ \ \ \ uint64\_t\ \ \ \ \ rss\ \{0\};}
+\DoxyCodeLine{00080\ \ \ \ \ uint64\_t\ \ \ \ \ vsz\ \{0\};}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordtype}{float}\ \ \ \ \ \ \ \ pcpu\ \{0.0\};}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{float}\ \ \ \ \ \ \ \ pmem\ \{0.0\};}
+\DoxyCodeLine{00083\ \ \ \ \ int64\_t\ \ \ \ \ \ pri\ \{0\};}
+\DoxyCodeLine{00084\ \ \ \ \ int64\_t\ \ \ \ \ \ lstart\ \{0\};}
+\DoxyCodeLine{00085\ \ \ \ \ std::string\ \ tty\ \{\textcolor{stringliteral}{"{}"{}}\};}
+\DoxyCodeLine{00086\ \ \ \ \ std::string\ \ args\ \{\textcolor{stringliteral}{"{}"{}}\};}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \ \ std::istream\ \&\ Read(std::istream\ \&\ is)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00089\ \ \ \ \ std::ostream\ \&\ Write(std::ostream\ \&\ os)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordtype}{int}\ Read(gzFile\ gzf)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordtype}{int}\ Write(gzFile\ gzf)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordtype}{int}\ BZRead(BZFILE\ *bzf)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordtype}{int}\ BZWrite(BZFILE\ *bzf)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00094\ \ \ \ \ uint64\_t\ StreamedLength()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00095\ \ \ \ \ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00099\ \ \ \ \ nlohmann::json\ ToJson()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00100\ \ \ \ \ }
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ ProcessInfo\ \&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00102\ \ \ \};}
+\DoxyCodeLine{00103\ \ \ }
+\DoxyCodeLine{00104\ \}\ \ \textcolor{comment}{//\ namespace\ Dwm}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ std::ostream\ \&\ operator\ <<\ (std::ostream\ \&\ os,\ \textcolor{keyword}{const}\ Dwm::ProcessInfo\ \&\ pi);}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ \_DWMPROCESSINFO\_HH\_}}
+
+\end{DoxyCode}

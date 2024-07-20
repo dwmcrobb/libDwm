@@ -1,0 +1,219 @@
+.TH "Dwm::Ipv4IcmpMessage" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::Ipv4IcmpMessage \- Base class for ICMP messages\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmIpv4IcmpMessage\&.hh>\fP
+.PP
+Inherits \fBDwm::DescriptorWritable\fP, \fBDwm::FileWritable\fP, \fBDwm::StreamWritable\fP, \fBDwm::StreamedLengthCapable\fP, \fBDwm::GZWritable\fP, and \fBDwm::BZ2Writable\fP\&.
+.PP
+Inherited by \fBDwm::Ipv4IcmpDestinationUnreachable\fP, \fBDwm::Ipv4IcmpEchoReply\fP, \fBDwm::Ipv4IcmpEchoRequest\fP, \fBDwm::Ipv4IcmpRedirect\fP, \fBDwm::Ipv4IcmpSourceQuench\fP, and \fBDwm::Ipv4IcmpTimeExceeded\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBIpv4IcmpMessage\fP ()"
+.br
+.RI "Default constructor\&. "
+.ti -1c
+.RI "\fB~Ipv4IcmpMessage\fP ()"
+.br
+.RI "Destructor\&. "
+.ti -1c
+.RI "uint8_t \fBType\fP () const"
+.br
+.RI "Returns the ICMP message type\&. "
+.ti -1c
+.RI "uint8_t \fBType\fP (uint8_t type)"
+.br
+.RI "Sets and returns the ICMP message type\&. "
+.ti -1c
+.RI "uint8_t \fBCode\fP () const"
+.br
+.RI "Returns the ICMP message code\&. "
+.ti -1c
+.RI "uint8_t \fBCode\fP (uint8_t code)"
+.br
+.RI "Sets and returns the ICMP message code\&. "
+.ti -1c
+.RI "uint16_t \fBChecksum\fP ()"
+.br
+.RI "Returns the ICMP checksum\&. "
+.ti -1c
+.RI "void \fBSetChecksum\fP ()"
+.br
+.RI "Computes and sets the checksum\&. "
+.ti -1c
+.RI "std::istream & \fBRead\fP (std::istream &is, uint16_t len)"
+.br
+.RI "Reads the message of length \fRlen\fP from an istream\&. "
+.ti -1c
+.RI "std::ostream & \fBWrite\fP (std::ostream &os) const override"
+.br
+.RI "Writes the message to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "ssize_t \fBRead\fP (int fd, uint16_t len)"
+.br
+.RI "Reads the message of length \fRlen\fP from a file descriptor\&. "
+.ti -1c
+.RI "ssize_t \fBWrite\fP (int fd) const override"
+.br
+.RI "Writes the message to a file descriptor\&. "
+.ti -1c
+.RI "size_t \fBRead\fP (FILE *f, uint16_t len)"
+.br
+.RI "Reads the message of length \fRlen\fP from a FILE\&. "
+.ti -1c
+.RI "size_t \fBWrite\fP (FILE *f) const override"
+.br
+.RI "Writes the message to a FILE\&. Returns 1 on success, 0 on failure\&. "
+.ti -1c
+.RI "int \fBRead\fP (gzFile gzf, uint16_t len)"
+.br
+.RI "Reads the message of length \fRlen\fP from a gzFile\&. "
+.ti -1c
+.RI "int \fBWrite\fP (gzFile gzf) const override"
+.br
+.RI "Writes the message to a gzFile\&. "
+.ti -1c
+.RI "int \fBBZRead\fP (BZFILE *bzf, uint16_t len)"
+.br
+.RI "Reads the message of length \fRlen\fP from a BZFILE\&. "
+.ti -1c
+.RI "int \fBBZWrite\fP (BZFILE *bzf) const override"
+.br
+.RI "Writes the message to a BZFILE\&. "
+.ti -1c
+.RI "uint64_t \fBStreamedLength\fP () const override"
+.br
+.RI "Returns the number of bytes that would be written if we called one of the \fBWrite()\fP members\&. "
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBIpv4IcmpMessage\fP &msg) const"
+.br
+.RI "operator == "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::DescriptorWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~DescriptorWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::FileWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~FileWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::StreamWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~StreamWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::GZWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~GZWritable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+.SS "Protected Member Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBFree\fP ()"
+.br
+.ti -1c
+.RI "void \fBAllocate\fP (uint16_t len)"
+.br
+.ti -1c
+.RI "void \fBReallocate\fP (uint16_t len)"
+.br
+.in -1c
+.SS "Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "std::pair< uint16_t, uint8_t * > \fB_data\fP"
+.br
+.ti -1c
+.RI "bool \fB_ownData\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Base class for ICMP messages\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "int Dwm::Ipv4IcmpMessage::BZRead (BZFILE * bzf, uint16_t len)"
+
+.PP
+Reads the message of length \fRlen\fP from a BZFILE\&. Returns the number of bytes read on success, -1 on failure\&. 
+.SS "int Dwm::Ipv4IcmpMessage::BZWrite (BZFILE * bzf) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the message to a BZFILE\&. Returns the number of bytes written on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::BZ2Writable\fP\&.
+.SS "size_t Dwm::Ipv4IcmpMessage::Read (FILE * f, uint16_t len)"
+
+.PP
+Reads the message of length \fRlen\fP from a FILE\&. Returns 1 on success, 0 on failure\&. 
+.SS "int Dwm::Ipv4IcmpMessage::Read (gzFile gzf, uint16_t len)"
+
+.PP
+Reads the message of length \fRlen\fP from a gzFile\&. Returns the number of bytes read on success, -1 on failure\&. 
+.SS "ssize_t Dwm::Ipv4IcmpMessage::Read (int fd, uint16_t len)"
+
+.PP
+Reads the message of length \fRlen\fP from a file descriptor\&. Returns the number of bytes read on success, -1 on failure\&. 
+.SS "std::istream & Dwm::Ipv4IcmpMessage::Read (std::istream & is, uint16_t len)"
+
+.PP
+Reads the message of length \fRlen\fP from an istream\&. Returns the istream\&. 
+.SS "uint64_t Dwm::Ipv4IcmpMessage::StreamedLength () const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Returns the number of bytes that would be written if we called one of the \fBWrite()\fP members\&. 
+.PP
+Implements \fBDwm::StreamedLengthCapable\fP\&.
+.SS "size_t Dwm::Ipv4IcmpMessage::Write (FILE * f) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the message to a FILE\&. Returns 1 on success, 0 on failure\&. 
+.PP
+Implements \fBDwm::FileWritable\fP\&.
+.SS "int Dwm::Ipv4IcmpMessage::Write (gzFile gzf) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the message to a gzFile\&. Returns the number of bytes written on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::GZWritable\fP\&.
+.SS "ssize_t Dwm::Ipv4IcmpMessage::Write (int fd) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the message to a file descriptor\&. Returns the number of bytes written on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::DescriptorWritable\fP\&.
+.SS "std::ostream & Dwm::Ipv4IcmpMessage::Write (std::ostream & os) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the message to an ostream\&. Returns the ostream\&. 
+.PP
+Implements \fBDwm::StreamWritable\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

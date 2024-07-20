@@ -1,0 +1,24 @@
+\doxysection{Dwm\+::Are\+FFI\+\_\+\+Moduloable Concept Reference}
+\hypertarget{conceptDwm_1_1AreFFI__Moduloable}{}\label{conceptDwm_1_1AreFFI__Moduloable}\index{Dwm::AreFFI\_Moduloable@{Dwm::AreFFI\_Moduloable}}
+
+
+T1 modulo T2 yields a T1. i.\+e. \{ T1 \% T2 \} -\/\texorpdfstring{$>$}{>} T1.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+FFIVar.\+hh$>$}
+
+\doxysubsection{Concept definition}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T1,\ \textcolor{keyword}{typename}\ T2>}
+\DoxyCodeLine{\textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptDwm_1_1AreFFI__Moduloable}{Dwm::AreFFI\_Moduloable}}\ =\ \ \textcolor{keyword}{requires}(T1\ a,\ T2\ b)\ \{}
+\DoxyCodeLine{\ \ \ \ \{\ a\ \%\ b\ \}\ -\/>\ std::same\_as<T1>;}
+\DoxyCodeLine{\ \ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Detailed Description}
+T1 modulo T2 yields a T1. i.\+e. \{ T1 \% T2 \} -\/\texorpdfstring{$>$}{>} T1. 

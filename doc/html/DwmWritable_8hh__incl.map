@@ -1,0 +1,17 @@
+<map id="DwmWritable.hh" name="DwmWritable.hh">
+<area shape="rect" id="Node000001" title="Dwm::Writable pure virtual class definition." alt="" coords="240,5,358,31"/>
+<area shape="rect" id="Node000002" href="$DwmDescriptorIOCapable_8hh.html" title="Dwm::DescriptorReadable, Dwm::DescriptorWritable and Dwm::DescriptorIOCapable pure virtual class decl..." alt="" coords="5,79,198,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="266,34,150,76,148,71,264,29"/>
+<area shape="rect" id="Node000005" href="$DwmFileIOCapable_8hh.html" title="Dwm::FileIOCapable pure virtual class declaration." alt="" coords="222,79,376,105"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="302,31,302,63,296,63,296,31"/>
+<area shape="rect" id="Node000007" href="$DwmStreamIOCapable_8hh.html" title="Dwm::StreamReadable, Dwm::StreamWritable and Dwm::StreamIOCapable pure virtual class declarations." alt="" coords="400,79,574,105"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="332,29,441,70,440,75,330,34"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="6,153,96,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="95,106,70,141,66,138,91,103"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="120,153,184,178"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="112,103,137,138,133,141,108,106"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="271,153,327,178"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="302,105,302,137,296,137,296,105"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="451,153,523,178"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="490,105,490,137,484,137,484,105"/>
+</map>

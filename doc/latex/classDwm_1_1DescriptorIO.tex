@@ -1,0 +1,837 @@
+\doxysection{Dwm\+::Descriptor\+IO Class Reference}
+\hypertarget{classDwm_1_1DescriptorIO}{}\label{classDwm_1_1DescriptorIO}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+
+
+This class contains a collection of static functions for reading and writing simple types, in network byte order (MSB first).  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Descriptor\+IO.\+hh$>$}
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a8677ae5fb9962f022fc05f0e34fccc8c}{Read}} (int fd, char \&c)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily c} from {\ttfamily fd}. \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a6e3889dd0928fe283cbfa2f5eedcc5be}{Write}} (int fd, char c)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily c} to {\ttfamily fd}. \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a2b7b107c64c929e3a2790f3da6688057}{Read}} (int fd, uint8\+\_\+t \&c)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily c} from {\ttfamily fd}. \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a1341a68eeb157065eb291977f6398517}{Write}} (int fd, uint8\+\_\+t c)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily c} to {\ttfamily fd}. \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a2849b5317ff90f52da748ce42c4f0aa3}{Read}} (int fd, bool \&b)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily b} from {\ttfamily fd}. \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a71816e9bfe85fbc0997833f54462c2b6}{Write}} (int fd, bool b)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily b} to {\ttfamily fd}. \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a2550e7c6e2338849b5fcf8a09d1e55c1}{Read}} (int fd, int16\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily fd}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_aa824703cca75d8c49c839fdd37a6026b}{Write}} (int fd, int16\+\_\+t val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily fd}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_af41011217879b1c3448499aaf98f0841}{Read}} (int fd, uint16\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily fd}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a34bc75aee5a278f526869a0c4b330f6a}{Write}} (int fd, uint16\+\_\+t val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily fd}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a4a2deab85756f28cd1bfd923d4add14e}{Read}} (int fd, int32\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily fd}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_afde955052720ad25c202df2e467caf65}{Write}} (int fd, int32\+\_\+t val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily fd}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a87618e07d80e516beedf0f481523e509}{Read}} (int fd, uint32\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily fd}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_abe3d8cc4599df029154990fab402c0f7}{Write}} (int fd, uint32\+\_\+t val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily fd}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_abf6abf8862c10ba1bfd175489ebeff7b}{Read}} (int fd, int64\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily fd}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a464d078efa1e575fb89e498f8967c455}{Write}} (int fd, const int64\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily fd}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a20919344bcb1bb45953ced27073fc2f3}{Read}} (int fd, uint64\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily fd}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a850b0364b748433ad4492f60ca8245fa}{Write}} (int fd, const uint64\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily fd}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_ad6f0d2472ef72fc4b5452b3c9ef29ecd}{Read}} (int fd, float \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily fd}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_ab2a022c6fec27a06f1cb0b3ceb8fbdc1}{Write}} (int fd, float val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily fd}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_aeaa44971a28b3c750aa5da9c5c2191a6}{Read}} (int fd, double \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily fd}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a0fce8e6468344dd6c4f3f33eeb58d9af}{Write}} (int fd, const double \&val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily fd}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_af88a6162c30bb758fc7280af8b5fc67b}{Read}} (int fd, std\+::string \&s)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily s} from {\ttfamily fd}. \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a92f3f28d3081afe12479668689fe0ff4}{Write}} (int fd, const std\+::string \&s)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily s} to {\ttfamily fd}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1DescriptorIO_aaa165486969a00d57fe4c3dcb8a3aee3}\label{classDwm_1_1DescriptorIO_aaa165486969a00d57fe4c3dcb8a3aee3} 
+static ssize\+\_\+t {\bfseries Read} (int fd, \mbox{\hyperlink{classDwm_1_1DescriptorReadable}{Descriptor\+Readable}} \&val)
+\begin{DoxyCompactList}\small\item\em Wrapper function to read a \doxylink{classDwm_1_1DescriptorReadable}{Descriptor\+Readable} object from a descriptor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1DescriptorIO_a700c8fda68c66bd1e9254d5cb45c788d}\label{classDwm_1_1DescriptorIO_a700c8fda68c66bd1e9254d5cb45c788d} 
+static ssize\+\_\+t {\bfseries Write} (int fd, const \mbox{\hyperlink{classDwm_1_1DescriptorWritable}{Descriptor\+Writable}} \&val)
+\begin{DoxyCompactList}\small\item\em Wrapper function to write a \doxylink{classDwm_1_1DescriptorWritable}{Descriptor\+Writable} object to a descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+firstT , typename \+\_\+secondT $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a4031c7d8e2967e4a3f7381a0cd92b6ab}{Read}} (int fd, std\+::pair$<$ \+\_\+firstT, \+\_\+secondT $>$ \&p)
+\begin{DoxyCompactList}\small\item\em Reads a pair$<$\+\_\+first\+T,\+\_\+second\+T$>$ from a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+firstT , typename \+\_\+secondT $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_af1fefbe447a0096465e6912560c2a06c}{Write}} (int fd, const std\+::pair$<$ \+\_\+firstT, \+\_\+secondT $>$ \&p)
+\begin{DoxyCompactList}\small\item\em Writes a pair$<$\+\_\+first\+T,\+\_\+second\+T$>$ to a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a1cb05dc99816dfb0fd20d17fb2e82766}{Read}} (int fd, std\+::map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Reads a map$<$\+\_\+key\+T,\+\_\+value\+T$>$ from a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_ac95a9d2f76d288ac98d6cb63cc180555}{Write}} (int fd, const std\+::map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Writes a map$<$\+\_\+key\+T,\+\_\+value\+T$>$ to a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_ad5d06e63a3a4ecc1553d7f3822926c93}{Read}} (int fd, std\+::multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Reads a multimap$<$\+\_\+key\+T,\+\_\+value\+T$>$ from a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a5d6c2bd07d1f90dbe392b212a8d4b115}{Write}} (int fd, const std\+::multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Writes a multimap$<$\+\_\+key\+T,\+\_\+value\+T$>$ to a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , std\+::size\+\_\+t N$>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a9810bc662366c07b10920f2566a81ede}{Read}} (int fd, std\+::array$<$ \+\_\+valueT, N $>$ \&a)
+\begin{DoxyCompactList}\small\item\em Read an array$<$\+\_\+value\+T,\+N$>$ from a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , std\+::size\+\_\+t N$>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a89672cd5e695c6535b6cc840e37486c9}{Write}} (int fd, const std\+::array$<$ \+\_\+valueT, N $>$ \&a)
+\begin{DoxyCompactList}\small\item\em Writes an array$<$\+\_\+value\+T,\+N$>$ to a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_ad512ba5f6c50e2ac03d5c66fd266bbca}{Read}} (int fd, std\+::vector$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&v)
+\begin{DoxyCompactList}\small\item\em Reads a vector$<$\+\_\+value\+T$>$ from a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_ab53d409573ebda88479a760791d44753}{Write}} (int fd, const std\+::vector$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&v)
+\begin{DoxyCompactList}\small\item\em Writes a vector$<$\+\_\+value\+T$>$ to a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a209131ab40cae06d9093ee6f3ac7e4ec}{Read}} (int fd, std\+::deque$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&d)
+\begin{DoxyCompactList}\small\item\em Reads a deque$<$\+\_\+value\+T$>$ from a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_aafd762729e961496189985e172af3fdd}{Write}} (int fd, const std\+::deque$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&d)
+\begin{DoxyCompactList}\small\item\em Writes a deque$<$\+\_\+value\+T$>$ to a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_ac668d96640a0a69d374e706447377ca3}{Read}} (int fd, std\+::list$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&l)
+\begin{DoxyCompactList}\small\item\em Reads a list$<$\+\_\+value\+T$>$ from a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_af7366372ff60184e17d7a638c8138194}{Write}} (int fd, const std\+::list$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&l)
+\begin{DoxyCompactList}\small\item\em Writes a list$<$\+\_\+value\+T$>$ to a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a62fa4f854f67bb0bde502b8f10cb1b85}{Read}} (int fd, std\+::set$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&l)
+\begin{DoxyCompactList}\small\item\em Reads a set$<$\+\_\+value\+T$>$ from a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a40e805d8d7d22bb9e206b0ce48b42c86}{Write}} (int fd, const std\+::set$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&l)
+\begin{DoxyCompactList}\small\item\em Writes a set$<$\+\_\+value\+T$>$ to a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a156c3bf9b011bdf91f5e329e43c55cd3}{Read}} (int fd, std\+::multiset$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&l)
+\begin{DoxyCompactList}\small\item\em Reads a multiset$<$\+\_\+value\+T$>$ from a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_ac8b4cfd3540896f731565d4efc559075}{Write}} (int fd, const std\+::multiset$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&l)
+\begin{DoxyCompactList}\small\item\em Writes a multiset$<$\+\_\+value\+T$>$ to a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename... Args$>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_aff73d85f3dc081eaaa40acfaeefaac4a}{Read}} (int fd, std\+::tuple$<$ Args... $>$ \&t)
+\begin{DoxyCompactList}\small\item\em Reads a tuple from a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename... Args$>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a0aa0e81df9270ead6017e5dfaf220a8e}{Write}} (int fd, const std\+::tuple$<$ Args... $>$ \&t)
+\begin{DoxyCompactList}\small\item\em Writes a tuple to a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_aa2c2093b0dc717811ccbc5a5f4a12fac}{Read}} (int fd, std\+::unordered\+\_\+map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Reads an unordered\+\_\+map$<$\+\_\+key\+T,\+\_\+value\+T$>$ from a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_ac6d6b9ffa077bf73c65d553a93988914}{Write}} (int fd, const std\+::unordered\+\_\+map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Writes an unordered\+\_\+map$<$\+\_\+key\+T,\+\_\+value\+T$>$ to a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_ade74c3ef04466d6a9913d48e96b6d8e9}{Read}} (int fd, std\+::unordered\+\_\+multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Reads an unordered\+\_\+multimap$<$\+\_\+key\+T,\+\_\+value\+T$>$ from a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a70f1417e1f083b27b0e26be8607f5778}{Write}} (int fd, const std\+::unordered\+\_\+multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Writes an unordered\+\_\+multimap$<$\+\_\+key\+T,\+\_\+value\+T$>$ to a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_abffb2cc9f18dafb88a9066f80d17e850}{Read}} (int fd, std\+::unordered\+\_\+set$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Reads an unordered\+\_\+set$<$\+\_\+value\+T$>$ from a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a695023a580b2823bbbe26708c6feb962}{Write}} (int fd, const std\+::unordered\+\_\+set$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Writes an unordered\+\_\+set$<$\+\_\+value\+T$>$ to a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a2152c41433b302be3d408715c6b8f7be}{Read}} (int fd, std\+::unordered\+\_\+multiset$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Reads an unordered\+\_\+multiset$<$\+\_\+value\+T$>$ from a file descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a98b3cba04f161ec0ffe6a61381f875ca}{Write}} (int fd, const std\+::unordered\+\_\+multiset$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Writes an unordered\+\_\+multiset$<$\+\_\+value\+T$>$ to a file descriptor. \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a3d28bf4bd50457d3822ab07afe2f82a6}{Read}} (int fd, std\+::monostate \&sm)
+\begin{DoxyCompactList}\small\item\em Just a dummy helper function for std\+::variant instances that hold a std\+::monostate. \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a01c2e29e24ff63b3025e8fa18d29f9eb}{Write}} (int fd, const std\+::monostate \&sm)
+\begin{DoxyCompactList}\small\item\em Just a dummy helper function for std\+::variant instances that hold a std\+::monostate. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename... Ts$>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_acb3aab087d085d736e3b94bb372ff811}{Read}} (int fd, std\+::variant$<$ Ts... $>$ \&v)
+\begin{DoxyCompactList}\small\item\em Reads a variant from a descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename... Ts$>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_abfaca113960890147ba396361dc9883f}{Write}} (int fd, const std\+::variant$<$ Ts... $>$ \&v)
+\begin{DoxyCompactList}\small\item\em Writes a variant to a descriptor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename ... Args$>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_abeea71a7e14d4160aee153cef3aef4f3}{ReadV}} (int fd, Args \&...args)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily args} from {\ttfamily fd}. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename ... Args$>$ }\\static ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorIO_a9ea13631bc698a8917883529766dfbea}{WriteV}} (int fd, const Args \&...args)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily args} to {\ttfamily fd}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1DescriptorIO_a957bf46fae95a841f2ed532e8e2c0325}\label{classDwm_1_1DescriptorIO_a957bf46fae95a841f2ed532e8e2c0325} 
+static ssize\+\_\+t {\bfseries Read} (int fd, void \texorpdfstring{$\ast$}{*}buf, size\+\_\+t buflen)
+\item 
+\Hypertarget{classDwm_1_1DescriptorIO_ab60c6f22785fe8170becdba94a7ed975}\label{classDwm_1_1DescriptorIO_ab60c6f22785fe8170becdba94a7ed975} 
+static ssize\+\_\+t {\bfseries Write} (int fd, const void \texorpdfstring{$\ast$}{*}buf, size\+\_\+t buflen)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class contains a collection of static functions for reading and writing simple types, in network byte order (MSB first). 
+
+It also contains functions to read and write strings. It also contains function templates to read and write arrays, deques, lists, vectors, maps, multimaps, sets, multisets, unordered\+\_\+maps, unordered\+\_\+multimaps, unordered\+\_\+sets, unordered\+\_\+multisets, tuples and variants. We use our member functions to handle reading and writing simple types in the containers, and function templates to handle reading and writing other class types. For a user-\/defined class, the class must implement the \doxylink{classDwm_1_1DescriptorReadable}{Descriptor\+Readable} and \doxylink{classDwm_1_1DescriptorWritable}{Descriptor\+Writable} interfaces, since our function templates simply call out to them. Since templates are static polymorphism, you don\textquotesingle{}t need to inherit from \doxylink{classDwm_1_1DescriptorReadable}{Descriptor\+Readable} and \doxylink{classDwm_1_1DescriptorWritable}{Descriptor\+Writable}, but you must implement the interfaces. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1DescriptorIO_a2849b5317ff90f52da748ce42c4f0aa3}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [1/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a2849b5317ff90f52da748ce42c4f0aa3} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{bool \&}]{b}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily b} from {\ttfamily fd}. 
+
+Returns the number of bytes read (1) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_a8677ae5fb9962f022fc05f0e34fccc8c}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [2/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a8677ae5fb9962f022fc05f0e34fccc8c} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{char \&}]{c}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily c} from {\ttfamily fd}. 
+
+Returns the number of bytes read (1) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_aeaa44971a28b3c750aa5da9c5c2191a6}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [3/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_aeaa44971a28b3c750aa5da9c5c2191a6} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{double \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily fd}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). 
+
+Returns number of bytes read (8) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_ad6f0d2472ef72fc4b5452b3c9ef29ecd}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [4/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_ad6f0d2472ef72fc4b5452b3c9ef29ecd} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{float \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily fd}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). 
+
+Returns number of bytes read (4) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_a2550e7c6e2338849b5fcf8a09d1e55c1}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [5/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a2550e7c6e2338849b5fcf8a09d1e55c1} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{int16\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily fd}, in network byte order (MSB first). 
+
+Returns number of bytes read (2) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_a4a2deab85756f28cd1bfd923d4add14e}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [6/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a4a2deab85756f28cd1bfd923d4add14e} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{int32\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily fd}, in network byte order (MSB first). 
+
+Returns number of bytes read (4) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_abf6abf8862c10ba1bfd175489ebeff7b}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [7/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_abf6abf8862c10ba1bfd175489ebeff7b} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{int64\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily fd}, in network byte order (MSB first). 
+
+Returns number of bytes read (8) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_a9810bc662366c07b10920f2566a81ede}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [8/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a9810bc662366c07b10920f2566a81ede} 
+template$<$typename \+\_\+valueT , std\+::size\+\_\+t N$>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{std\+::array$<$ \+\_\+valueT, N $>$ \&}]{a}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Read an array$<$\+\_\+value\+T,\+N$>$ from a file descriptor. 
+
+Returns the number of bytes read on success, -\/1 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1DescriptorIO_a9810bc662366c07b10920f2566a81ede_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1DescriptorIO_a209131ab40cae06d9093ee6f3ac7e4ec}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [9/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a209131ab40cae06d9093ee6f3ac7e4ec} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{std\+::deque$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&}]{d}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a deque$<$\+\_\+value\+T$>$ from a file descriptor. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_ac668d96640a0a69d374e706447377ca3}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [10/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_ac668d96640a0a69d374e706447377ca3} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{std\+::list$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&}]{l}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a list$<$\+\_\+value\+T$>$ from a file descriptor. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_a1cb05dc99816dfb0fd20d17fb2e82766}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [11/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a1cb05dc99816dfb0fd20d17fb2e82766} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{std\+::map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a map$<$\+\_\+key\+T,\+\_\+value\+T$>$ from a file descriptor. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_a3d28bf4bd50457d3822ab07afe2f82a6}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [12/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a3d28bf4bd50457d3822ab07afe2f82a6} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{std\+::monostate \&}]{sm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Just a dummy helper function for std\+::variant instances that hold a std\+::monostate. 
+
+This should only be called from our \doxylink{classDwm_1_1DescriptorIO_a8677ae5fb9962f022fc05f0e34fccc8c}{Read()} for std\+::variant (via std\+::visit()), and does nothing. Returns 0. \Hypertarget{classDwm_1_1DescriptorIO_ad5d06e63a3a4ecc1553d7f3822926c93}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [13/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_ad5d06e63a3a4ecc1553d7f3822926c93} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{std\+::multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a multimap$<$\+\_\+key\+T,\+\_\+value\+T$>$ from a file descriptor. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_a156c3bf9b011bdf91f5e329e43c55cd3}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [14/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a156c3bf9b011bdf91f5e329e43c55cd3} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{std\+::multiset$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{l}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a multiset$<$\+\_\+value\+T$>$ from a file descriptor. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_a4031c7d8e2967e4a3f7381a0cd92b6ab}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [15/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a4031c7d8e2967e4a3f7381a0cd92b6ab} 
+template$<$typename \+\_\+firstT , typename \+\_\+secondT $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{std\+::pair$<$ \+\_\+firstT, \+\_\+secondT $>$ \&}]{p}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a pair$<$\+\_\+first\+T,\+\_\+second\+T$>$ from a file descriptor. 
+
+Returns the number of bytes read on success, -\/1 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1DescriptorIO_a4031c7d8e2967e4a3f7381a0cd92b6ab_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1DescriptorIO_a62fa4f854f67bb0bde502b8f10cb1b85}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [16/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a62fa4f854f67bb0bde502b8f10cb1b85} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{std\+::set$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{l}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a set$<$\+\_\+value\+T$>$ from a file descriptor. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_af88a6162c30bb758fc7280af8b5fc67b}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [17/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_af88a6162c30bb758fc7280af8b5fc67b} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{std\+::string \&}]{s}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily s} from {\ttfamily fd}. 
+
+Returns the number of bytes read on success, -\/1 on failure. Since we write strings with a 64-\/bit unsigned length value preceding the actual string, and always have a terminating NULL, this always reads at least 9 bytes on success. \Hypertarget{classDwm_1_1DescriptorIO_aff73d85f3dc081eaaa40acfaeefaac4a}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [18/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_aff73d85f3dc081eaaa40acfaeefaac4a} 
+template$<$typename... Args$>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{std\+::tuple$<$ Args... $>$ \&}]{t}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a tuple from a file descriptor. 
+
+Returns the number of bytes read. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1DescriptorIO_aff73d85f3dc081eaaa40acfaeefaac4a_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1DescriptorIO_aa2c2093b0dc717811ccbc5a5f4a12fac}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [19/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_aa2c2093b0dc717811ccbc5a5f4a12fac} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{std\+::unordered\+\_\+map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads an unordered\+\_\+map$<$\+\_\+key\+T,\+\_\+value\+T$>$ from a file descriptor. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_ade74c3ef04466d6a9913d48e96b6d8e9}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [20/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_ade74c3ef04466d6a9913d48e96b6d8e9} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{std\+::unordered\+\_\+multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads an unordered\+\_\+multimap$<$\+\_\+key\+T,\+\_\+value\+T$>$ from a file descriptor. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_a2152c41433b302be3d408715c6b8f7be}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [21/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a2152c41433b302be3d408715c6b8f7be} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{std\+::unordered\+\_\+multiset$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads an unordered\+\_\+multiset$<$\+\_\+value\+T$>$ from a file descriptor. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_abffb2cc9f18dafb88a9066f80d17e850}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [22/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_abffb2cc9f18dafb88a9066f80d17e850} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{std\+::unordered\+\_\+set$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads an unordered\+\_\+set$<$\+\_\+value\+T$>$ from a file descriptor. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_acb3aab087d085d736e3b94bb372ff811}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [23/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_acb3aab087d085d736e3b94bb372ff811} 
+template$<$typename... Ts$>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{std\+::variant$<$ Ts... $>$ \&}]{v}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a variant from a descriptor. 
+
+Returns the number of bytes written on success, -\/1 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1DescriptorIO_acb3aab087d085d736e3b94bb372ff811_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1DescriptorIO_ad512ba5f6c50e2ac03d5c66fd266bbca}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [24/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_ad512ba5f6c50e2ac03d5c66fd266bbca} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{std\+::vector$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&}]{v}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a vector$<$\+\_\+value\+T$>$ from a file descriptor. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_af41011217879b1c3448499aaf98f0841}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [25/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_af41011217879b1c3448499aaf98f0841} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{uint16\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily fd}, in network byte order (MSB first). 
+
+Returns number of bytes read (2) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_a87618e07d80e516beedf0f481523e509}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [26/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a87618e07d80e516beedf0f481523e509} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{uint32\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily fd}, in network byte order (MSB first). 
+
+Returns number of bytes read (4) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_a20919344bcb1bb45953ced27073fc2f3}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [27/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a20919344bcb1bb45953ced27073fc2f3} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{uint64\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily fd}, in network byte order (MSB first). 
+
+Returns number of bytes read (8) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_a2b7b107c64c929e3a2790f3da6688057}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [28/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a2b7b107c64c929e3a2790f3da6688057} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{uint8\+\_\+t \&}]{c}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily c} from {\ttfamily fd}. 
+
+Returns the number of bytes read (1) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_abeea71a7e14d4160aee153cef3aef4f3}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!ReadV@{ReadV}}
+\index{ReadV@{ReadV}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{ReadV()}{ReadV()}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_abeea71a7e14d4160aee153cef3aef4f3} 
+template$<$typename ... Args$>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+ReadV (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{Args \&...}]{args}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads {\ttfamily args} from {\ttfamily fd}. 
+
+Returns the number of bytes read on success, -\/1 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1DescriptorIO_abeea71a7e14d4160aee153cef3aef4f3_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1DescriptorIO_a71816e9bfe85fbc0997833f54462c2b6}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [1/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a71816e9bfe85fbc0997833f54462c2b6} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{bool}]{b}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily b} to {\ttfamily fd}. 
+
+Returns the number of bytes written (1) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_a6e3889dd0928fe283cbfa2f5eedcc5be}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [2/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a6e3889dd0928fe283cbfa2f5eedcc5be} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{char}]{c}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily c} to {\ttfamily fd}. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_a0fce8e6468344dd6c4f3f33eeb58d9af}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [3/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a0fce8e6468344dd6c4f3f33eeb58d9af} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const double \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily fd}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). 
+
+Returns the number of bytes written (8) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_a464d078efa1e575fb89e498f8967c455}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [4/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a464d078efa1e575fb89e498f8967c455} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const int64\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily fd}, in network byte order (MSB first). 
+
+Returns the number of bytes written (8) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_a89672cd5e695c6535b6cc840e37486c9}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [5/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a89672cd5e695c6535b6cc840e37486c9} 
+template$<$typename \+\_\+valueT , std\+::size\+\_\+t N$>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const std\+::array$<$ \+\_\+valueT, N $>$ \&}]{a}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes an array$<$\+\_\+value\+T,\+N$>$ to a file descriptor. 
+
+Returns the number of bytes written on success, -\/1 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=330pt]{classDwm_1_1DescriptorIO_a89672cd5e695c6535b6cc840e37486c9_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1DescriptorIO_aafd762729e961496189985e172af3fdd}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [6/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_aafd762729e961496189985e172af3fdd} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const std\+::deque$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&}]{d}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a deque$<$\+\_\+value\+T$>$ to a file descriptor. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_af7366372ff60184e17d7a638c8138194}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [7/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_af7366372ff60184e17d7a638c8138194} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const std\+::list$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&}]{l}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a list$<$\+\_\+value\+T$>$ to a file descriptor. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_ac95a9d2f76d288ac98d6cb63cc180555}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [8/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_ac95a9d2f76d288ac98d6cb63cc180555} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const std\+::map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a map$<$\+\_\+key\+T,\+\_\+value\+T$>$ to a file descriptor. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_a01c2e29e24ff63b3025e8fa18d29f9eb}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [9/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a01c2e29e24ff63b3025e8fa18d29f9eb} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const std\+::monostate \&}]{sm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Just a dummy helper function for std\+::variant instances that hold a std\+::monostate. 
+
+This should only be called from our \doxylink{classDwm_1_1DescriptorIO_a6e3889dd0928fe283cbfa2f5eedcc5be}{Write()} for std\+::variant (via std\+::visit()), and does nothing. Returns 0. \Hypertarget{classDwm_1_1DescriptorIO_a5d6c2bd07d1f90dbe392b212a8d4b115}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [10/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a5d6c2bd07d1f90dbe392b212a8d4b115} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const std\+::multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a multimap$<$\+\_\+key\+T,\+\_\+value\+T$>$ to a file descriptor. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_ac8b4cfd3540896f731565d4efc559075}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [11/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_ac8b4cfd3540896f731565d4efc559075} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const std\+::multiset$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{l}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a multiset$<$\+\_\+value\+T$>$ to a file descriptor. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_af1fefbe447a0096465e6912560c2a06c}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [12/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_af1fefbe447a0096465e6912560c2a06c} 
+template$<$typename \+\_\+firstT , typename \+\_\+secondT $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const std\+::pair$<$ \+\_\+firstT, \+\_\+secondT $>$ \&}]{p}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a pair$<$\+\_\+first\+T,\+\_\+second\+T$>$ to a file descriptor. 
+
+Returns the number of bytes written on success, -\/1 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=330pt]{classDwm_1_1DescriptorIO_af1fefbe447a0096465e6912560c2a06c_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1DescriptorIO_a40e805d8d7d22bb9e206b0ce48b42c86}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [13/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a40e805d8d7d22bb9e206b0ce48b42c86} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const std\+::set$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{l}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a set$<$\+\_\+value\+T$>$ to a file descriptor. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_a92f3f28d3081afe12479668689fe0ff4}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [14/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a92f3f28d3081afe12479668689fe0ff4} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const std\+::string \&}]{s}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily s} to {\ttfamily fd}. 
+
+Returns the number of bytes written on success, -\/1 on failure. Note that a 64-\/bit value is written first, holding the length of the string. The terminating NULL is also written. Hence, on success this will always return a value of 9 or greater. \Hypertarget{classDwm_1_1DescriptorIO_a0aa0e81df9270ead6017e5dfaf220a8e}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [15/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a0aa0e81df9270ead6017e5dfaf220a8e} 
+template$<$typename... Args$>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const std\+::tuple$<$ Args... $>$ \&}]{t}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a tuple to a file descriptor. 
+
+Returns the number of bytes written. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=330pt]{classDwm_1_1DescriptorIO_a0aa0e81df9270ead6017e5dfaf220a8e_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1DescriptorIO_ac6d6b9ffa077bf73c65d553a93988914}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [16/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_ac6d6b9ffa077bf73c65d553a93988914} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const std\+::unordered\+\_\+map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes an unordered\+\_\+map$<$\+\_\+key\+T,\+\_\+value\+T$>$ to a file descriptor. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_a70f1417e1f083b27b0e26be8607f5778}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [17/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a70f1417e1f083b27b0e26be8607f5778} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const std\+::unordered\+\_\+multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes an unordered\+\_\+multimap$<$\+\_\+key\+T,\+\_\+value\+T$>$ to a file descriptor. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_a98b3cba04f161ec0ffe6a61381f875ca}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [18/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a98b3cba04f161ec0ffe6a61381f875ca} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const std\+::unordered\+\_\+multiset$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes an unordered\+\_\+multiset$<$\+\_\+value\+T$>$ to a file descriptor. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_a695023a580b2823bbbe26708c6feb962}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [19/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a695023a580b2823bbbe26708c6feb962} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const std\+::unordered\+\_\+set$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes an unordered\+\_\+set$<$\+\_\+value\+T$>$ to a file descriptor. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_abfaca113960890147ba396361dc9883f}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [20/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_abfaca113960890147ba396361dc9883f} 
+template$<$typename... Ts$>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const std\+::variant$<$ Ts... $>$ \&}]{v}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a variant to a descriptor. 
+
+Returns the number of bytes written on success, -\/1 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=330pt]{classDwm_1_1DescriptorIO_abfaca113960890147ba396361dc9883f_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1DescriptorIO_ab53d409573ebda88479a760791d44753}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [21/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_ab53d409573ebda88479a760791d44753} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const std\+::vector$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&}]{v}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a vector$<$\+\_\+value\+T$>$ to a file descriptor. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1DescriptorIO_a850b0364b748433ad4492f60ca8245fa}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [22/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a850b0364b748433ad4492f60ca8245fa} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const uint64\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily fd}, in network byte order (MSB first). 
+
+Returns the number of bytes written (8) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_ab2a022c6fec27a06f1cb0b3ceb8fbdc1}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [23/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_ab2a022c6fec27a06f1cb0b3ceb8fbdc1} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{float}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily fd}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). 
+
+Returns the number of bytes written (4) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_aa824703cca75d8c49c839fdd37a6026b}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [24/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_aa824703cca75d8c49c839fdd37a6026b} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{int16\+\_\+t}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily fd}, in network byte order (MSB first). 
+
+Returns the number of bytes written (2) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_afde955052720ad25c202df2e467caf65}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [25/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_afde955052720ad25c202df2e467caf65} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{int32\+\_\+t}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily fd}, in network byte order (MSB first). 
+
+Returns the number of bytes written (4) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_a34bc75aee5a278f526869a0c4b330f6a}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [26/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a34bc75aee5a278f526869a0c4b330f6a} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{uint16\+\_\+t}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily fd}, in network byte order (MSB first). 
+
+Returns the number of bytes written (2) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_abe3d8cc4599df029154990fab402c0f7}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [27/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_abe3d8cc4599df029154990fab402c0f7} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{uint32\+\_\+t}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily fd}, in network byte order (MSB first). 
+
+Returns the number of bytes written (4) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_a1341a68eeb157065eb291977f6398517}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [28/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a1341a68eeb157065eb291977f6398517} 
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{uint8\+\_\+t}]{c}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily c} to {\ttfamily fd}. 
+
+Returns the number of bytes written (1) on success, less on failure. \Hypertarget{classDwm_1_1DescriptorIO_a9ea13631bc698a8917883529766dfbea}\index{Dwm::DescriptorIO@{Dwm::DescriptorIO}!WriteV@{WriteV}}
+\index{WriteV@{WriteV}!Dwm::DescriptorIO@{Dwm::DescriptorIO}}
+\doxysubsubsection{\texorpdfstring{WriteV()}{WriteV()}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorIO_a9ea13631bc698a8917883529766dfbea} 
+template$<$typename ... Args$>$ \\
+static ssize\+\_\+t Dwm\+::\+Descriptor\+IO\+::\+WriteV (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{const Args \&...}]{args}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes {\ttfamily args} to {\ttfamily fd}. 
+
+Returns the number of bytes written on success, -\/1 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=330pt]{classDwm_1_1DescriptorIO_a9ea13631bc698a8917883529766dfbea_cgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmDescriptorIO_8hh}{Dwm\+Descriptor\+IO.\+hh}}\end{DoxyCompactItemize}

@@ -1,0 +1,54 @@
+.TH "Dwm::ASIOCapable" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::ASIOCapable \- Interface for classes that can read/write their contents from/to a boost::asio::ip::tcp::socket\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmASIOCapable\&.hh>\fP
+.PP
+Inherits \fBDwm::ASIOReadable\fP, and \fBDwm::ASIOWritable\fP\&.
+.PP
+Inherited by \fBDwm::Ipv4Address\fP, \fBDwm::Ipv4Prefix\fP, \fBDwm::Ipv6AddrMap< T, Hash >\fP, \fBDwm::Ipv6Address\fP, \fBDwm::Ipv6Prefix\fP, and \fBDwm::Ipv6PrefixMap< T, Hash >\fP\&.
+.SS "Additional Inherited Members"
+
+
+Public Member Functions inherited from \fBDwm::ASIOReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual bool \fBRead\fP (boost::asio::ip::tcp::socket &s, boost::system::error_code &ec)=0"
+.br
+.RI "Should read the class from the given socket \fRs\fP and return true on success, false on failure\&. "
+.ti -1c
+.RI "virtual bool \fBRead\fP (boost::asio::local::stream_protocol::socket &s, boost::system::error_code &ec)=0"
+.br
+.RI "Should read the class from the given socket \fRs\fP and return true on success, false on failure\&. "
+.ti -1c
+.RI "virtual bool \fBRead\fP (boost::asio::generic::stream_protocol::socket &s, boost::system::error_code &ec)=0"
+.br
+.in -1c
+
+Public Member Functions inherited from \fBDwm::ASIOWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual bool \fBWrite\fP (boost::asio::ip::tcp::socket &s, boost::system::error_code &ec) const =0"
+.br
+.RI "Should write the class to the given socket \fRs\fP and return true on success, false on failure\&. "
+.ti -1c
+.RI "virtual bool \fBWrite\fP (boost::asio::local::stream_protocol::socket &s, boost::system::error_code &ec) const =0"
+.br
+.RI "Should write the class to the given socket \fRs\fP and return true on success, false on failure\&. "
+.ti -1c
+.RI "virtual bool \fBWrite\fP (boost::asio::generic::stream_protocol::socket &s, boost::system::error_code &ec) const =0"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Interface for classes that can read/write their contents from/to a boost::asio::ip::tcp::socket\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

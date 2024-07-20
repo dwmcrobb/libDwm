@@ -1,0 +1,336 @@
+.TH "Dwm::Ipv4TcpHeader" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::Ipv4TcpHeader \- Encapsulates a TCP header\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmIpv4TcpHeader\&.hh>\fP
+.PP
+Inherits \fBDwm::DescriptorIOCapable\fP, Dwm::FileIOCapable, \fBDwm::StreamIOCapable\fP, \fBDwm::StreamedLengthCapable\fP, \fBDwm::GZIOCapable\fP, and \fBDwm::BZ2IOCapable\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBIpv4TcpHeader\fP ()"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "\fBIpv4TcpHeader\fP (const \fBIpv4PacketHeader\fP &ipHeader)"
+.br
+.RI "Construct from an \fBIpv4PacketHeader\fP which points at the IP header in a TCP packet\&. "
+.ti -1c
+.RI "\fBIpv4TcpHeader\fP (const \fBIpv4TcpHeader\fP &tcpHeader)"
+.br
+.RI "Copy constructor\&. "
+.ti -1c
+.RI "\fBIpv4TcpHeader\fP (struct tcphdr *tcpHdr)"
+.br
+.RI "Construct from a pointer to a struct tcphdr\&. "
+.ti -1c
+.RI "\fBIpv4TcpHeader\fP (const struct tcphdr &tcpHdr)"
+.br
+.RI "Construct by copying from a struct tcphdr\&. "
+.ti -1c
+.RI "\fBIpv4TcpHeader\fP & \fBoperator=\fP (const \fBIpv4TcpHeader\fP &tcpHeader)"
+.br
+.RI "operator = "
+.ti -1c
+.RI "\fB~Ipv4TcpHeader\fP ()"
+.br
+.RI "Destructor\&. "
+.ti -1c
+.RI "uint16_t \fBSourcePort\fP () const"
+.br
+.RI "Returns the source port\&. "
+.ti -1c
+.RI "uint16_t \fBSourcePort\fP (uint16_t port)"
+.br
+.RI "Sets and returns the source port\&. "
+.ti -1c
+.RI "uint16_t \fBDestinationPort\fP () const"
+.br
+.RI "Returns the destination port\&. "
+.ti -1c
+.RI "uint16_t \fBDestinationPort\fP (uint16_t port)"
+.br
+.RI "Sets and returns the destination port\&. "
+.ti -1c
+.RI "uint32_t \fBSequenceNumber\fP () const"
+.br
+.RI "Returns the sequence number\&. "
+.ti -1c
+.RI "uint32_t \fBSequenceNumber\fP (uint32_t seq)"
+.br
+.RI "Sets and returns the sequence number\&. "
+.ti -1c
+.RI "uint32_t \fBAckNumber\fP () const"
+.br
+.RI "Returns the ACK nuber\&. "
+.ti -1c
+.RI "uint32_t \fBAckNumber\fP (uint32_t ack)"
+.br
+.RI "Sets and returns the ACK number\&. "
+.ti -1c
+.RI "uint8_t \fBDataOffset\fP () const"
+.br
+.RI "The number of 32 bit words in the TCP header\&. "
+.ti -1c
+.RI "uint8_t \fBDataOffset\fP (uint8_t offset)"
+.br
+.RI "Sets the number of 32 bit words in the TCP header\&. "
+.ti -1c
+.RI "uint8_t \fBFlags\fP () const"
+.br
+.RI "Returns the flags\&. "
+.ti -1c
+.RI "uint8_t \fBFlags\fP (uint8_t flags)"
+.br
+.RI "Sets and returns the flags\&. "
+.ti -1c
+.RI "uint16_t \fBWindow\fP () const"
+.br
+.RI "Returns the window\&. "
+.ti -1c
+.RI "uint16_t \fBWindow\fP (uint16_t window)"
+.br
+.RI "Sets and returns the window\&. "
+.ti -1c
+.RI "uint16_t \fBChecksum\fP () const"
+.br
+.RI "Returns the checksum\&. "
+.ti -1c
+.RI "void \fBSetChecksum\fP (const \fBIpv4PacketHeader\fP &ipHeader, const std::string &data)"
+.br
+.RI "Sets the checksum, for which we need the IP header and the data\&. "
+.ti -1c
+.RI "uint16_t \fBUrgentPointer\fP () const"
+.br
+.RI "Returns the urgent pointer\&. "
+.ti -1c
+.RI "uint16_t \fBUrgentPointer\fP (uint16_t urgent)"
+.br
+.RI "Sets the urgent pointer\&. "
+.ti -1c
+.RI "std::istream & \fBRead\fP (std::istream &is) override"
+.br
+.RI "Reads from an istream\&. Returns the istream\&. "
+.ti -1c
+.RI "std::ostream & \fBWrite\fP (std::ostream &os) const override"
+.br
+.RI "Writes to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "ssize_t \fBRead\fP (int fd) override"
+.br
+.RI "Reads from the given file descriptor \fRfd\fP\&. "
+.ti -1c
+.RI "ssize_t \fBWrite\fP (int fd) const override"
+.br
+.RI "Writes to the given file descriptor \fRfd\fP\&. "
+.ti -1c
+.RI "size_t \fBRead\fP (FILE *f) override"
+.br
+.RI "Reads from the given FILE pointer \fRf\fP\&. "
+.ti -1c
+.RI "size_t \fBWrite\fP (FILE *f) const override"
+.br
+.RI "Writes to the given FILE pointer \fRf\fP\&. "
+.ti -1c
+.RI "int \fBRead\fP (gzFile gzf) override"
+.br
+.RI "Reads from the given gzFile \fRgzf\fP\&. "
+.ti -1c
+.RI "int \fBWrite\fP (gzFile gzf) const override"
+.br
+.RI "Writes to the given gzFile \fRgzf\fP\&. "
+.ti -1c
+.RI "int \fBBZRead\fP (BZFILE *bzf) override"
+.br
+.RI "Reads from the given BZFILE pointer \fRbzf\fP\&. "
+.ti -1c
+.RI "int \fBBZWrite\fP (BZFILE *bzf) const override"
+.br
+.RI "Writes to the given BZFILE pointer \fRbzf\fP\&. "
+.ti -1c
+.RI "uint64_t \fBStreamedLength\fP () const override"
+.br
+.RI "Returns the number of bytes that would be written if one of the \fBWrite()\fP members were called\&. "
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBIpv4TcpHeader\fP &tcpHeader) const"
+.br
+.RI "operator == "
+.ti -1c
+.RI "std::ostream & \fBPrintXML\fP (std::ostream &os, const std::string &pre='') const"
+.br
+.RI "Prints the TCP header to an ostream as pseudo-XML\&. "
+.ti -1c
+.RI "uint8_t * \fBEnd\fP () const"
+.br
+.RI "Returns the address of the end of the TCP header\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::DescriptorReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~DescriptorReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::DescriptorWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~DescriptorWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::StreamReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~StreamReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::StreamWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~StreamWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::GZReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~GZReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::GZWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~GZWritable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Encapsulates a TCP header\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Dwm::Ipv4TcpHeader::Ipv4TcpHeader (const \fBIpv4PacketHeader\fP & ipHeader)"
+
+.PP
+Construct from an \fBIpv4PacketHeader\fP which points at the IP header in a TCP packet\&. DO NOT FREE THE UNDERLYING MEMORY WHILE THE \fBIpv4TcpHeader\fP IS STILL IN USE! 
+.SS "Dwm::Ipv4TcpHeader::Ipv4TcpHeader (struct tcphdr * tcpHdr)"
+
+.PP
+Construct from a pointer to a struct tcphdr\&. We don't copy, so don't free the data into which \fRtcpHdr\fP points until after the \fBIpv4TcpHeader\fP is no longer in use\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "int Dwm::Ipv4TcpHeader::BZRead (BZFILE * bzf)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads from the given BZFILE pointer \fRbzf\fP\&. Returns the number of bytes read on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::BZ2Readable\fP\&.
+.SS "int Dwm::Ipv4TcpHeader::BZWrite (BZFILE * bzf) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes to the given BZFILE pointer \fRbzf\fP\&. Returns the number of bytes written on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::BZ2Writable\fP\&.
+.SS "uint8_t Dwm::Ipv4TcpHeader::DataOffset () const"
+
+.PP
+The number of 32 bit words in the TCP header\&. This indicates where the data begins\&. The TCP header (even one including options) is an integral number of 32 bits long\&. 
+.PP
+\fBNote\fP
+.RS 4
+since the offset field is only 4 bits, a TCP header can't be more than 60 bytes long (15 * 4)\&. 
+.RE
+.PP
+
+.SS "uint8_t Dwm::Ipv4TcpHeader::DataOffset (uint8_t offset)"
+
+.PP
+Sets the number of 32 bit words in the TCP header\&. This indicates where the data begins\&. The TCP header (even one including options) is an integral number of 32 bits long\&. 
+.PP
+\fBNote\fP
+.RS 4
+since the offset field is only 4 bits, a TCP header can't be more than 60 bytes long (15 * 4)\&. 
+.RE
+.PP
+
+.SS "uint8_t * Dwm::Ipv4TcpHeader::End () const"
+
+.PP
+Returns the address of the end of the TCP header\&. If our TCP header points into an existing TCP packet, this will be the first byte of the user data\&. 
+.SS "std::ostream & Dwm::Ipv4TcpHeader::PrintXML (std::ostream & os, const std::string & pre = \fR''\fP) const"
+
+.PP
+Prints the TCP header to an ostream as pseudo-XML\&. Each line will be prefixed with \fRpre\fP\&. 
+.SS "size_t Dwm::Ipv4TcpHeader::Read (FILE * f)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads from the given FILE pointer \fRf\fP\&. Returns 1 on success, 0 on failure (fread() semantics)\&. 
+.PP
+Implements \fBDwm::FileReadable\fP\&.
+.SS "int Dwm::Ipv4TcpHeader::Read (gzFile gzf)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads from the given gzFile \fRgzf\fP\&. Returns the number of bytes read on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::GZReadable\fP\&.
+.SS "ssize_t Dwm::Ipv4TcpHeader::Read (int fd)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads from the given file descriptor \fRfd\fP\&. Returns the number of bytes read on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::DescriptorReadable\fP\&.
+.SS "std::istream & Dwm::Ipv4TcpHeader::Read (std::istream & is)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads from an istream\&. Returns the istream\&. 
+.PP
+Implements \fBDwm::StreamReadable\fP\&.
+.SS "uint64_t Dwm::Ipv4TcpHeader::StreamedLength () const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Returns the number of bytes that would be written if one of the \fBWrite()\fP members were called\&. 
+.PP
+Implements \fBDwm::StreamedLengthCapable\fP\&.
+.SS "size_t Dwm::Ipv4TcpHeader::Write (FILE * f) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes to the given FILE pointer \fRf\fP\&. Returns 1 on success, 0 on failure (fwrite() semantics)\&. 
+.PP
+Implements \fBDwm::FileWritable\fP\&.
+.SS "int Dwm::Ipv4TcpHeader::Write (gzFile gzf) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes to the given gzFile \fRgzf\fP\&. Returns the number of bytes written on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::GZWritable\fP\&.
+.SS "ssize_t Dwm::Ipv4TcpHeader::Write (int fd) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes to the given file descriptor \fRfd\fP\&. Returns the number of bytes written on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::DescriptorWritable\fP\&.
+.SS "std::ostream & Dwm::Ipv4TcpHeader::Write (std::ostream & os) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes to an ostream\&. Returns the ostream\&. 
+.PP
+Implements \fBDwm::StreamWritable\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

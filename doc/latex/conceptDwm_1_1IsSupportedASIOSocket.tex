@@ -1,0 +1,27 @@
+\doxysection{Dwm\+::Is\+Supported\+ASIOSocket Concept Reference}
+\hypertarget{conceptDwm_1_1IsSupportedASIOSocket}{}\label{conceptDwm_1_1IsSupportedASIOSocket}\index{Dwm::IsSupportedASIOSocket@{Dwm::IsSupportedASIOSocket}}
+
+
+Concept for the types of ASIO sockets we can utilize.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+ASIO.\+hh$>$}
+
+\doxysubsection{Concept definition}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename}\ S>}
+\DoxyCodeLine{\textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptDwm_1_1IsSupportedASIOSocket}{Dwm::IsSupportedASIOSocket}}\ =\ }
+\DoxyCodeLine{\ \ std::is\_same\_v<S,boost::asio::ip::tcp::socket>}
+\DoxyCodeLine{\ \ \ \ ||\ std::is\_same\_v<S,boost::asio::local::stream\_protocol::socket>}
+\DoxyCodeLine{\ \ \ \ ||\ std::is\_same\_v<S,boost::asio::generic::stream\_protocol::socket>}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Detailed Description}
+Concept for the types of ASIO sockets we can utilize. 
+
+Originally I only used ASIO for TCP sockets, but later I had use cases for UNIX domain sockets. 

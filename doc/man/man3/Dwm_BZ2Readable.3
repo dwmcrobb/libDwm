@@ -1,0 +1,36 @@
+.TH "Dwm::BZ2Readable" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::BZ2Readable \- This class is a pure virtual class, defining an interface for classes that can read their contents from a BZFILE pointer\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmBZ2IOCapable\&.hh>\fP
+.PP
+Inherited by \fBDwm::BZ2IOCapable\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "virtual int \fBBZRead\fP (BZFILE *bzf)=0"
+.br
+.RI "Read from a BZFILE pointer\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+This class is a pure virtual class, defining an interface for classes that can read their contents from a BZFILE pointer\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "virtual int Dwm::BZ2Readable::BZRead (BZFILE * bzf)\fR [pure virtual]\fP"
+
+.PP
+Read from a BZFILE pointer\&. Should return the number of bytes read on success (-1 on failure?) 
+.PP
+Implemented in \fBDwm::IpAddress\fP, \fBDwm::Ipv4Address\fP, \fBDwm::Ipv4PacketHeader\fP, \fBDwm::Ipv4Prefix\fP, \fBDwm::Ipv4Routes< _valueT >\fP, \fBDwm::Ipv4TcpHeader\fP, \fBDwm::Ipv4TcpPacket\fP, \fBDwm::Ipv4UdpHeader\fP, \fBDwm::Ipv4UdpPacket\fP, \fBDwm::Ipv6Address\fP, \fBDwm::Ipv6AddrMap< T, Hash >\fP, \fBDwm::Ipv6Prefix\fP, \fBDwm::Ipv6PrefixMap< T, Hash >\fP, \fBDwm::MacAddress\fP, \fBDwm::MplsLabel\fP, \fBDwm::MplsLabelStack\fP, \fBDwm::TimeInterval64\fP, \fBDwm::TimeInterval\fP, \fBDwm::TimeValue64\fP, and \fBDwm::TimeValue\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

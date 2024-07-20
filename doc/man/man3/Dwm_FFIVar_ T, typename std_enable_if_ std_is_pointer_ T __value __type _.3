@@ -1,0 +1,106 @@
+.TH "Dwm::FFIVar< T, typename std::enable_if< std::is_pointer< T >::value >::type >" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::FFIVar< T, typename std::enable_if< std::is_pointer< T >::value >::type > \- Specialization for pointers\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmFFIVar\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBFFIVar\fP ()"
+.br
+.RI "Default constructor\&. "
+.ti -1c
+.RI "\fB~FFIVar\fP ()"
+.br
+.RI "Destructor\&. "
+.ti -1c
+.RI "\fBFFIVar\fP (const \fBFFIVar\fP &v)=default"
+.br
+.RI "Copy constructor\&. "
+.ti -1c
+.RI "\fBFFIVar\fP (const T &t)"
+.br
+.RI "Construct from a T\&. "
+.ti -1c
+.RI "\fBFFIVar\fP (\fBFFIVar\fP &&v)=default"
+.br
+.RI "Move constructor\&. "
+.ti -1c
+.RI "\fBFFIVar\fP (T &&t)"
+.br
+.RI "Move construct from a T\&. "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator=\fP (const \fBFFIVar\fP &v)=default"
+.br
+.RI "Assign from an \fBFFIVar\fP\&. "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator=\fP (const T &t)"
+.br
+.RI "Assign from a T\&. "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator=\fP (\fBFFIVar\fP &&)=default"
+.br
+.RI "Move assignment from an \fBFFIVar\fP\&. "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator=\fP (T &&t)"
+.br
+.RI "Move assignment from a T\&. "
+.ti -1c
+.RI "\fBoperator T\fP () const"
+.br
+.RI "Conversion to T operator\&. "
+.ti -1c
+.RI "template<typename IT > bool \fBoperator==\fP (const IT &it) const"
+.br
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBFFIVar\fP &v) const"
+.br
+.RI "Equality operator\&. "
+.ti -1c
+.RI "\fBFFIVar\fP \fBoperator++\fP (int)"
+.br
+.RI "post-increment operator "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator++\fP ()"
+.br
+.RI "pre-increment operator "
+.ti -1c
+.RI "\fBFFIVar\fP \fBoperator\-\-\fP (int)"
+.br
+.RI "post-decrement operator "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator\-\-\fP ()"
+.br
+.RI "pre-decrement operator "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator+=\fP (const \fBFFIVar\fP &v)"
+.br
+.RI "Add and assignment operator\&. "
+.ti -1c
+.RI "\fBFFIVar\fP & \fBoperator\-=\fP (const \fBFFIVar\fP &v)"
+.br
+.RI "Subtract and assignment operator\&. "
+.ti -1c
+.RI "bool \fBIsFFI\fP () const"
+.br
+.RI "Returns true if object appears to be free from interference\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.SS "template<typename T>
+.br
+class Dwm::FFIVar< T, typename std::enable_if< std::is_pointer< T >::value >::type >"Specialization for pointers\&. 
+
+No bitwise operators, no multiply, no divide, no modulo\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

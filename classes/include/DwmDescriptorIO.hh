@@ -247,19 +247,27 @@ namespace Dwm {
     //!  descriptor.
     //------------------------------------------------------------------------
     static ssize_t Read(int fd, DescriptorReadable & val)
-    {
-      return(val.Read(fd));
-    }
-    
+    { return(val.Read(fd)); }
+
+    //------------------------------------------------------------------------
+    //!  Reads @c val from @c fd.
+    //------------------------------------------------------------------------
+    static ssize_t Read(int fd, HasDescriptorRead auto & val)
+    { return val.Read(fd); }
+      
     //------------------------------------------------------------------------
     //!  Wrapper function to write a DescriptorWritable object to a
     //!  descriptor.
     //------------------------------------------------------------------------
     static ssize_t Write(int fd, const DescriptorWritable & val)
-    {
-      return(val.Write(fd));
-    }
+    { return(val.Write(fd)); }
 
+    //------------------------------------------------------------------------
+    //!  Writes @c val to @c fd.
+    //------------------------------------------------------------------------
+    static ssize_t Write(int fd, const HasDescriptorRead auto & val)
+    { return val.Write(fd); }
+      
     //------------------------------------------------------------------------
     //!  Reads a pair<_firstT,_secondT> from a file descriptor.  Returns
     //!  the number of bytes read on success, -1 on failure.

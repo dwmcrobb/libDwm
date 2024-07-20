@@ -1,0 +1,324 @@
+\doxysection{Dwm\+::Time\+Value64 Class Reference}
+\hypertarget{classDwm_1_1TimeValue64}{}\label{classDwm_1_1TimeValue64}\index{Dwm::TimeValue64@{Dwm::TimeValue64}}
+
+
+This class encapsulates a time value beyond the UNIX epoch, with microsecond granularity.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Time\+Value64.\+hh$>$}
+
+
+
+Inheritance diagram for Dwm\+::Time\+Value64\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1TimeValue64__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Dwm\+::Time\+Value64\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1TimeValue64__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classDwm_1_1TimeValue64_ae05bb8299b71cde918c2eab107624a22}{Time\+Value64}} (bool set\+Now=false)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeValue64_ac1ad6e48975dd087bd93c67a89a89333}\label{classDwm_1_1TimeValue64_ac1ad6e48975dd087bd93c67a89a89333} 
+{\bfseries Time\+Value64} (const struct timeval \&tv)
+\begin{DoxyCompactList}\small\item\em Construct from a struct timeval. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeValue64_ad5b0fdd94b8c00aaad6481badfb14b91}\label{classDwm_1_1TimeValue64_ad5b0fdd94b8c00aaad6481badfb14b91} 
+{\bfseries Time\+Value64} (const struct timespec \&ts)
+\begin{DoxyCompactList}\small\item\em Construct from a struct timespec. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeValue64_a0ad17493adaf9736c58af990e0414552}\label{classDwm_1_1TimeValue64_a0ad17493adaf9736c58af990e0414552} 
+{\bfseries Time\+Value64} (const \mbox{\hyperlink{classDwm_1_1TimeValue}{Time\+Value}} \&tv)
+\begin{DoxyCompactList}\small\item\em Construct from a \doxylink{classDwm_1_1TimeValue}{Time\+Value}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeValue64_a29df0d138eeeac8eaa55eb379839f833}\label{classDwm_1_1TimeValue64_a29df0d138eeeac8eaa55eb379839f833} 
+{\bfseries Time\+Value64} (uint64\+\_\+t secs, uint32\+\_\+t usecs)
+\begin{DoxyCompactList}\small\item\em Construct from the given {\ttfamily secs} and {\ttfamily usecs}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeValue64_a4479bb34d92396f3f95effccc20d58e4}\label{classDwm_1_1TimeValue64_a4479bb34d92396f3f95effccc20d58e4} 
+void {\bfseries Set\+Now} ()
+\begin{DoxyCompactList}\small\item\em Sets the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} to the current time. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeValue64_af52aaee5a352f7cfbd03b1686d800ac9}\label{classDwm_1_1TimeValue64_af52aaee5a352f7cfbd03b1686d800ac9} 
+void {\bfseries Set} (const struct timeval \&tv)
+\begin{DoxyCompactList}\small\item\em Sets the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} from the given struct timeval {\ttfamily tv}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeValue64_a188bbf536acd6092ff8b30c59b60523b}\label{classDwm_1_1TimeValue64_a188bbf536acd6092ff8b30c59b60523b} 
+void {\bfseries Set} (uint64\+\_\+t secs, uint32\+\_\+t usecs)
+\begin{DoxyCompactList}\small\item\em Sets the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} from the given {\ttfamily secs} and {\ttfamily usecs}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeValue64_af96c98f7e9fae9a83ec2040890c02182}\label{classDwm_1_1TimeValue64_af96c98f7e9fae9a83ec2040890c02182} 
+uint64\+\_\+t {\bfseries Secs} () const
+\begin{DoxyCompactList}\small\item\em Returns the seconds. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeValue64_ad66d4c6ad7bfda8127c0d6855a260bfc}\label{classDwm_1_1TimeValue64_ad66d4c6ad7bfda8127c0d6855a260bfc} 
+uint32\+\_\+t {\bfseries Usecs} () const
+\begin{DoxyCompactList}\small\item\em Returns the residual microseconds. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeValue64_adb8cabc25aec3a79ff8ae6f8417c78da}\label{classDwm_1_1TimeValue64_adb8cabc25aec3a79ff8ae6f8417c78da} 
+struct tm {\bfseries Local\+Time} () const
+\item 
+\Hypertarget{classDwm_1_1TimeValue64_a159428d7ad18bfab3042e34b750a8b37}\label{classDwm_1_1TimeValue64_a159428d7ad18bfab3042e34b750a8b37} 
+bool {\bfseries operator$<$} (const \mbox{\hyperlink{classDwm_1_1TimeValue64}{Time\+Value64}} \&tv) const
+\begin{DoxyCompactList}\small\item\em Less-\/than operator. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeValue64_a22a0e0f58396418d1597281137b5ae2f}\label{classDwm_1_1TimeValue64_a22a0e0f58396418d1597281137b5ae2f} 
+bool {\bfseries operator$<$=} (const \mbox{\hyperlink{classDwm_1_1TimeValue64}{Time\+Value64}} \&tv) const
+\begin{DoxyCompactList}\small\item\em operator \texorpdfstring{$<$}{<}= \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeValue64_a30d90e883dcd493d5e9830f5f045a205}\label{classDwm_1_1TimeValue64_a30d90e883dcd493d5e9830f5f045a205} 
+bool {\bfseries operator$>$} (const \mbox{\hyperlink{classDwm_1_1TimeValue64}{Time\+Value64}} \&tv) const
+\begin{DoxyCompactList}\small\item\em Greater-\/than operator. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeValue64_a2f7a378854fe308c78776a5b1d3ca6aa}\label{classDwm_1_1TimeValue64_a2f7a378854fe308c78776a5b1d3ca6aa} 
+bool {\bfseries operator$>$=} (const \mbox{\hyperlink{classDwm_1_1TimeValue64}{Time\+Value64}} \&tv) const
+\begin{DoxyCompactList}\small\item\em operator \texorpdfstring{$>$}{>}= \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeValue64_a81a0452d4a2ef584a050b16af2f18712}\label{classDwm_1_1TimeValue64_a81a0452d4a2ef584a050b16af2f18712} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classDwm_1_1TimeValue64}{Time\+Value64}} \&tv) const
+\begin{DoxyCompactList}\small\item\em Equal-\/to operator. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeValue64_ad6fce478662d029775b6aaf33c238509}\label{classDwm_1_1TimeValue64_ad6fce478662d029775b6aaf33c238509} 
+\mbox{\hyperlink{classDwm_1_1TimeValue64}{Time\+Value64}} \& {\bfseries operator+=} (const \mbox{\hyperlink{classDwm_1_1TimeValue64}{Time\+Value64}} \&tv)
+\item 
+\Hypertarget{classDwm_1_1TimeValue64_a4d5881dc3f797331e2061fbff8351ac3}\label{classDwm_1_1TimeValue64_a4d5881dc3f797331e2061fbff8351ac3} 
+\mbox{\hyperlink{classDwm_1_1TimeValue64}{Time\+Value64}} \& {\bfseries operator-\/=} (const \mbox{\hyperlink{classDwm_1_1TimeValue64}{Time\+Value64}} \&tv)
+\item 
+\Hypertarget{classDwm_1_1TimeValue64_a247d3bb1c84571be701cf3c9202259e9}\label{classDwm_1_1TimeValue64_a247d3bb1c84571be701cf3c9202259e9} 
+\mbox{\hyperlink{classDwm_1_1TimeValue64}{Time\+Value64}} \& {\bfseries operator\texorpdfstring{$\ast$}{*}=} (uint32\+\_\+t x)
+\item 
+\Hypertarget{classDwm_1_1TimeValue64_ad6537c8544c35ef5ba5649a3dc837d0c}\label{classDwm_1_1TimeValue64_ad6537c8544c35ef5ba5649a3dc837d0c} 
+\mbox{\hyperlink{classDwm_1_1TimeValue64}{Time\+Value64}} \& {\bfseries operator/=} (uint32\+\_\+t x)
+\item 
+uint64\+\_\+t \mbox{\hyperlink{classDwm_1_1TimeValue64_a72f54553951291352a4008dac254a470}{Streamed\+Length}} () const override
+\begin{DoxyCompactList}\small\item\em Returns the number of bytes that would be written if one of the \doxylink{classDwm_1_1TimeValue64_a0ab73710b1ac4aedf0ba529e73649846}{Write()} members were called. \end{DoxyCompactList}\item 
+std\+::istream \& \mbox{\hyperlink{classDwm_1_1TimeValue64_adffb1900700ce65d3f4b1cb9b03aebe2}{Read}} (std\+::istream \&is) override
+\begin{DoxyCompactList}\small\item\em Reads the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} from an istream. Returns the istream. \end{DoxyCompactList}\item 
+std\+::ostream \& \mbox{\hyperlink{classDwm_1_1TimeValue64_a0ab73710b1ac4aedf0ba529e73649846}{Write}} (std\+::ostream \&os) const override
+\begin{DoxyCompactList}\small\item\em Writes the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} to an ostream. Returns the ostream. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classDwm_1_1TimeValue64_aaf8c9d6ede525067f9c5337cfdd8b4fb}{Read}} (FILE \texorpdfstring{$\ast$}{*}f) override
+\begin{DoxyCompactList}\small\item\em Reads the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} from a FILE pointer. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classDwm_1_1TimeValue64_afc08c203481e0225babf10ed8fa45a21}{Write}} (FILE \texorpdfstring{$\ast$}{*}f) const override
+\begin{DoxyCompactList}\small\item\em Writes the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} to a FILE pointer. \end{DoxyCompactList}\item 
+ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1TimeValue64_a4d26c22511a42e2baa4b666ff44dc34a}{Read}} (int fd) override
+\begin{DoxyCompactList}\small\item\em Reads the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} from a file descriptor. \end{DoxyCompactList}\item 
+ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1TimeValue64_a0f5c4ed7529b1e68e1c72d88d7568b2b}{Write}} (int fd) const override
+\begin{DoxyCompactList}\small\item\em Writes the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} to a file descriptor. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1TimeValue64_a15e5bee4a3191c455625a8403fe0974f}{Read}} (gz\+File gzf) override
+\begin{DoxyCompactList}\small\item\em Reads the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} from a gz\+File. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1TimeValue64_aba64eccc8b9dce42ea5bf5d4a2d2df63}{Write}} (gz\+File gzf) const override
+\begin{DoxyCompactList}\small\item\em Writes the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} to a gz\+File. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1TimeValue64_a51e8984afbbb1adab928fce563545795}{BZRead}} (BZFILE \texorpdfstring{$\ast$}{*}bzf) override
+\begin{DoxyCompactList}\small\item\em Reads the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} from a BZFILE pointer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1TimeValue64_ac4be60badda1d9c16399e6fb0b407e27}{BZWrite}} (BZFILE \texorpdfstring{$\ast$}{*}bzf) const override
+\begin{DoxyCompactList}\small\item\em Writes the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} to a BZFILE pointer. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1TimeValue64_acdc8450f59c8d82f38075317801339e5}\label{classDwm_1_1TimeValue64_acdc8450f59c8d82f38075317801339e5} 
+{\bfseries operator double} () const
+\begin{DoxyCompactList}\small\item\em Returns value as a double (useful for printing). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1DescriptorReadable}{Dwm\+::\+Descriptor\+Readable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Descriptor\+Readable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1DescriptorWritable}{Dwm\+::\+Descriptor\+Writable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Descriptor\+Writable} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1StreamReadable}{Dwm\+::\+Stream\+Readable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Stream\+Readable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1StreamWritable}{Dwm\+::\+Stream\+Writable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Stream\+Writable} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1GZReadable}{Dwm\+::\+GZReadable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+GZReadable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1GZWritable}{Dwm\+::\+GZWritable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+GZWritable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class encapsulates a time value beyond the UNIX epoch, with microsecond granularity. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classDwm_1_1TimeValue64_ae05bb8299b71cde918c2eab107624a22}\index{Dwm::TimeValue64@{Dwm::TimeValue64}!TimeValue64@{TimeValue64}}
+\index{TimeValue64@{TimeValue64}!Dwm::TimeValue64@{Dwm::TimeValue64}}
+\doxysubsubsection{\texorpdfstring{TimeValue64()}{TimeValue64()}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeValue64_ae05bb8299b71cde918c2eab107624a22} 
+Dwm\+::\+Time\+Value64\+::\+Time\+Value64 (\begin{DoxyParamCaption}\item[{bool}]{set\+Now}{ = {\ttfamily false}}\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+Initializes to 0 (the UNIX epoch) if set\+Now is false, else initializaes to the current time. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1TimeValue64_a51e8984afbbb1adab928fce563545795}\index{Dwm::TimeValue64@{Dwm::TimeValue64}!BZRead@{BZRead}}
+\index{BZRead@{BZRead}!Dwm::TimeValue64@{Dwm::TimeValue64}}
+\doxysubsubsection{\texorpdfstring{BZRead()}{BZRead()}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeValue64_a51e8984afbbb1adab928fce563545795} 
+int Dwm\+::\+Time\+Value64\+::\+BZRead (\begin{DoxyParamCaption}\item[{BZFILE \texorpdfstring{$\ast$}{*}}]{bzf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} from a BZFILE pointer. 
+
+Returns the number of bytes read on success (8), -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1BZ2Readable_a4b71c8697049e8e2e5df8ff22405f6b7}{Dwm\+::\+BZ2\+Readable}}.
+
+\Hypertarget{classDwm_1_1TimeValue64_ac4be60badda1d9c16399e6fb0b407e27}\index{Dwm::TimeValue64@{Dwm::TimeValue64}!BZWrite@{BZWrite}}
+\index{BZWrite@{BZWrite}!Dwm::TimeValue64@{Dwm::TimeValue64}}
+\doxysubsubsection{\texorpdfstring{BZWrite()}{BZWrite()}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeValue64_ac4be60badda1d9c16399e6fb0b407e27} 
+int Dwm\+::\+Time\+Value64\+::\+BZWrite (\begin{DoxyParamCaption}\item[{BZFILE \texorpdfstring{$\ast$}{*}}]{bzf}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} to a BZFILE pointer. 
+
+Returns the number of bytes written on success (8), -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1BZ2Writable_aa4481114d6865e31f0aa94f08c2b2e5d}{Dwm\+::\+BZ2\+Writable}}.
+
+\Hypertarget{classDwm_1_1TimeValue64_aaf8c9d6ede525067f9c5337cfdd8b4fb}\index{Dwm::TimeValue64@{Dwm::TimeValue64}!Read@{Read}}
+\index{Read@{Read}!Dwm::TimeValue64@{Dwm::TimeValue64}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeValue64_aaf8c9d6ede525067f9c5337cfdd8b4fb} 
+size\+\_\+t Dwm\+::\+Time\+Value64\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} from a FILE pointer. 
+
+Returns 1 on success, 0 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1FileReadable_a2e51685eb4fecc584ab48ca7609bba6f}{Dwm\+::\+File\+Readable}}.
+
+\Hypertarget{classDwm_1_1TimeValue64_a15e5bee4a3191c455625a8403fe0974f}\index{Dwm::TimeValue64@{Dwm::TimeValue64}!Read@{Read}}
+\index{Read@{Read}!Dwm::TimeValue64@{Dwm::TimeValue64}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeValue64_a15e5bee4a3191c455625a8403fe0974f} 
+int Dwm\+::\+Time\+Value64\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} from a gz\+File. 
+
+Returns the number of bytes read on success (8), -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1GZReadable_a4243984d9d8fb2f79997403824834dd2}{Dwm\+::\+GZReadable}}.
+
+\Hypertarget{classDwm_1_1TimeValue64_a4d26c22511a42e2baa4b666ff44dc34a}\index{Dwm::TimeValue64@{Dwm::TimeValue64}!Read@{Read}}
+\index{Read@{Read}!Dwm::TimeValue64@{Dwm::TimeValue64}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeValue64_a4d26c22511a42e2baa4b666ff44dc34a} 
+ssize\+\_\+t Dwm\+::\+Time\+Value64\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} from a file descriptor. 
+
+Returns the number of bytes read on success (8), -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1DescriptorReadable_aec1a0c67dd53343e52be7a6728081b7f}{Dwm\+::\+Descriptor\+Readable}}.
+
+\Hypertarget{classDwm_1_1TimeValue64_adffb1900700ce65d3f4b1cb9b03aebe2}\index{Dwm::TimeValue64@{Dwm::TimeValue64}!Read@{Read}}
+\index{Read@{Read}!Dwm::TimeValue64@{Dwm::TimeValue64}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeValue64_adffb1900700ce65d3f4b1cb9b03aebe2} 
+std\+::istream \& Dwm\+::\+Time\+Value64\+::\+Read (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{is}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} from an istream. Returns the istream. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamReadable_a8337a0949e0ce4458f18884d00eb5153}{Dwm\+::\+Stream\+Readable}}.
+
+\Hypertarget{classDwm_1_1TimeValue64_a72f54553951291352a4008dac254a470}\index{Dwm::TimeValue64@{Dwm::TimeValue64}!StreamedLength@{StreamedLength}}
+\index{StreamedLength@{StreamedLength}!Dwm::TimeValue64@{Dwm::TimeValue64}}
+\doxysubsubsection{\texorpdfstring{StreamedLength()}{StreamedLength()}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeValue64_a72f54553951291352a4008dac254a470} 
+uint64\+\_\+t Dwm\+::\+Time\+Value64\+::\+Streamed\+Length (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Returns the number of bytes that would be written if one of the \doxylink{classDwm_1_1TimeValue64_a0ab73710b1ac4aedf0ba529e73649846}{Write()} members were called. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamedLengthCapable_abe671443353ea6ed173005c6f515ca5d}{Dwm\+::\+Streamed\+Length\+Capable}}.
+
+\Hypertarget{classDwm_1_1TimeValue64_afc08c203481e0225babf10ed8fa45a21}\index{Dwm::TimeValue64@{Dwm::TimeValue64}!Write@{Write}}
+\index{Write@{Write}!Dwm::TimeValue64@{Dwm::TimeValue64}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeValue64_afc08c203481e0225babf10ed8fa45a21} 
+size\+\_\+t Dwm\+::\+Time\+Value64\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} to a FILE pointer. 
+
+Returns 1 on success, 0 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1FileWritable_ad46fa6f29a2fec8c8080f054c0a8febe}{Dwm\+::\+File\+Writable}}.
+
+\Hypertarget{classDwm_1_1TimeValue64_aba64eccc8b9dce42ea5bf5d4a2d2df63}\index{Dwm::TimeValue64@{Dwm::TimeValue64}!Write@{Write}}
+\index{Write@{Write}!Dwm::TimeValue64@{Dwm::TimeValue64}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeValue64_aba64eccc8b9dce42ea5bf5d4a2d2df63} 
+int Dwm\+::\+Time\+Value64\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} to a gz\+File. 
+
+Returns the number of bytes written on success (8), -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1GZWritable_a5f50bad679854f91bc5a67728a329681}{Dwm\+::\+GZWritable}}.
+
+\Hypertarget{classDwm_1_1TimeValue64_a0f5c4ed7529b1e68e1c72d88d7568b2b}\index{Dwm::TimeValue64@{Dwm::TimeValue64}!Write@{Write}}
+\index{Write@{Write}!Dwm::TimeValue64@{Dwm::TimeValue64}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeValue64_a0f5c4ed7529b1e68e1c72d88d7568b2b} 
+ssize\+\_\+t Dwm\+::\+Time\+Value64\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} to a file descriptor. 
+
+Returns the number of bytes written on success (8), -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1DescriptorWritable_ae0b23058b0de909d4705c05507b10864}{Dwm\+::\+Descriptor\+Writable}}.
+
+\Hypertarget{classDwm_1_1TimeValue64_a0ab73710b1ac4aedf0ba529e73649846}\index{Dwm::TimeValue64@{Dwm::TimeValue64}!Write@{Write}}
+\index{Write@{Write}!Dwm::TimeValue64@{Dwm::TimeValue64}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1TimeValue64_a0ab73710b1ac4aedf0ba529e73649846} 
+std\+::ostream \& Dwm\+::\+Time\+Value64\+::\+Write (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the \doxylink{classDwm_1_1TimeValue64}{Time\+Value64} to an ostream. Returns the ostream. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamWritable_a66994f2c5fbf07308b6b766f9774d079}{Dwm\+::\+Stream\+Writable}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmTimeValue64_8hh}{Dwm\+Time\+Value64.\+hh}}\end{DoxyCompactItemize}

@@ -1,0 +1,13 @@
+<map id="DwmXmlElement.hh" name="DwmXmlElement.hh">
+<area shape="rect" id="Node000001" title="Dwm::Xml::Element class declaration." alt="" coords="32,5,174,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="49,153,120,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="70,34,37,52,23,65,12,80,9,97,16,114,31,129,49,142,46,147,27,133,12,117,4,98,7,78,19,62,34,48,67,29"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="21,79,68,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="95,33,66,69,62,65,91,30"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="190,153,243,178"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="175,29,215,47,233,61,248,78,254,94,252,110,238,141,233,139,247,109,248,94,243,80,230,64,212,52,173,34"/>
+<area shape="rect" id="Node000005" href="$DwmXmlAttribute_8hh.html" title="Dwm::Xml::Attribute class declaration." alt="" coords="92,79,234,105"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="115,30,145,65,141,69,111,33"/>
+<area shape="poly" id="edge5_Node000005_Node000002" title=" " alt="" coords="152,107,111,144,107,140,148,103"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="174,103,200,138,196,142,170,106"/>
+</map>

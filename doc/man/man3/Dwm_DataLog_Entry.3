@@ -1,0 +1,67 @@
+.TH "Dwm::DataLog< T >::Entry" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::DataLog< T >::Entry \- Encapsulates a single data log entry\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmDataLog\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBEntry\fP ()"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "\fBEntry\fP (const T &value)"
+.br
+.RI "Construct from the given \fRvalue\fP\&. "
+.ti -1c
+.RI "const \fBTimeValue\fP & \fBTimestamp\fP () const"
+.br
+.RI "Returns the timestamp of the \fBEntry\fP\&. "
+.ti -1c
+.RI "const T & \fBValue\fP () const"
+.br
+.RI "Returns the value of the entry\&. "
+.ti -1c
+.RI "std::istream & \fBRead\fP (std::istream &is)"
+.br
+.RI "Reads the \fBEntry\fP from the given istream \fRis\fP\&. "
+.ti -1c
+.RI "std::ostream & \fBWrite\fP (std::ostream &os) const"
+.br
+.RI "Writes the \fBEntry\fP to the given ostream \fRos\fP\&. "
+.ti -1c
+.RI "size_t \fBStreamedLength\fP () const"
+.br
+.RI "Returns the number of bytes that would be written if the \fBWrite()\fP member were called\&. "
+.in -1c
+.SS "Friends"
+
+.in +1c
+.ti -1c
+.RI "std::ostream & \fBoperator<<\fP (std::ostream &os, const \fBEntry\fP &entry)"
+.br
+.RI "Prints the \fBEntry\fP to an ostream in human-readable form\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.SS "template<typename T>
+.br
+class Dwm::DataLog< T >::Entry"Encapsulates a single data log entry\&. 
+.SH "Friends And Related Symbol Documentation"
+.PP 
+.SS "template<typename T > std::ostream & operator<< (std::ostream & os, const \fBEntry\fP & entry)\fR [friend]\fP"
+
+.PP
+Prints the \fBEntry\fP to an ostream in human-readable form\&. Note that this depends on the paramaterized type having a similar operator\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

@@ -1,0 +1,7 @@
+<map id="Dwm::Ipv4UdpPacket::GetPayload" name="Dwm::Ipv4UdpPacket::GetPayload">
+<area shape="rect" id="Node000001" title="Copies the contained payload into payload." alt="" coords="5,5,156,46"/>
+<area shape="rect" id="Node000002" href="$classDwm_1_1Ipv4UdpPayload.html#a881debb693d7ed65f6af63275d23816f" title="Copies the payload into payload." alt="" coords="204,5,360,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,23,188,23,188,28,156,28"/>
+<area shape="rect" id="Node000003" href="$classDwm_1_1StreamIO.html#a53f8175153c0a8a5da8d363cfa23c61a" title="Reads c from is. Returns is." alt="" coords="408,13,563,39"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="360,23,393,23,393,28,360,28"/>
+</map>

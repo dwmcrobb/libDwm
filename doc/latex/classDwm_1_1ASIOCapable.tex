@@ -1,0 +1,56 @@
+\doxysection{Dwm\+::ASIOCapable Class Reference}
+\hypertarget{classDwm_1_1ASIOCapable}{}\label{classDwm_1_1ASIOCapable}\index{Dwm::ASIOCapable@{Dwm::ASIOCapable}}
+
+
+Interface for classes that can read/write their contents from/to a boost\+::asio\+::ip\+::tcp\+::socket.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+ASIOCapable.\+hh$>$}
+
+
+
+Inheritance diagram for Dwm\+::ASIOCapable\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1ASIOCapable__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Dwm\+::ASIOCapable\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=314pt]{classDwm_1_1ASIOCapable__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1ASIOReadable}{Dwm\+::\+ASIOReadable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool \mbox{\hyperlink{classDwm_1_1ASIOReadable_a65830c7e919d26ce0c5a650ce5a53de1}{Read}} (boost\+::asio\+::ip\+::tcp\+::socket \&s, boost\+::system\+::error\+\_\+code \&ec)=0
+\begin{DoxyCompactList}\small\item\em Should read the class from the given socket {\ttfamily s} and return true on success, false on failure. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classDwm_1_1ASIOReadable_abe578512f89ada0c4a5b5b528dee0db9}{Read}} (boost\+::asio\+::local\+::stream\+\_\+protocol\+::socket \&s, boost\+::system\+::error\+\_\+code \&ec)=0
+\begin{DoxyCompactList}\small\item\em Should read the class from the given socket {\ttfamily s} and return true on success, false on failure. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classDwm_1_1ASIOReadable_a171beb81be47e9b5c8d6dacad897a631}{Read}} (boost\+::asio\+::generic\+::stream\+\_\+protocol\+::socket \&s, boost\+::system\+::error\+\_\+code \&ec)=0
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1ASIOWritable}{Dwm\+::\+ASIOWritable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool \mbox{\hyperlink{classDwm_1_1ASIOWritable_a73a0aa7dc43f313e4032693f0d0f7651}{Write}} (boost\+::asio\+::ip\+::tcp\+::socket \&s, boost\+::system\+::error\+\_\+code \&ec) const =0
+\begin{DoxyCompactList}\small\item\em Should write the class to the given socket {\ttfamily s} and return true on success, false on failure. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classDwm_1_1ASIOWritable_a41aad4be237a07b5301a4fe78c9bfcff}{Write}} (boost\+::asio\+::local\+::stream\+\_\+protocol\+::socket \&s, boost\+::system\+::error\+\_\+code \&ec) const =0
+\begin{DoxyCompactList}\small\item\em Should write the class to the given socket {\ttfamily s} and return true on success, false on failure. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classDwm_1_1ASIOWritable_ab0bf82d835c63f1419ca16ce78143e34}{Write}} (boost\+::asio\+::generic\+::stream\+\_\+protocol\+::socket \&s, boost\+::system\+::error\+\_\+code \&ec) const =0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Interface for classes that can read/write their contents from/to a boost\+::asio\+::ip\+::tcp\+::socket. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmASIOCapable_8hh}{Dwm\+ASIOCapable.\+hh}}\end{DoxyCompactItemize}

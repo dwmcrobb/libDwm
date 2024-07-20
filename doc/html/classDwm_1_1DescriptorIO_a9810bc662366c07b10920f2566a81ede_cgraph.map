@@ -1,0 +1,5 @@
+<map id="Dwm::DescriptorIO::Read" name="Dwm::DescriptorIO::Read">
+<area shape="rect" id="Node000001" title="Read an array&lt;_valueT,N&gt; from a file descriptor." alt="" coords="5,5,179,31"/>
+<area shape="rect" id="Node000002" href="$classDwm_1_1DescriptorIO.html#a8677ae5fb9962f022fc05f0e34fccc8c" title="Reads c from fd." alt="" coords="227,5,400,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="179,16,211,16,211,21,179,21"/>
+</map>

@@ -1,0 +1,38 @@
+.TH "Dwm::StreamedLengthCapable" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::StreamedLengthCapable \- Interface for classes which can return their streamed length\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmStreamedLengthCapable\&.hh>\fP
+.PP
+Inherited by \fBDwm::IpAddress\fP, Dwm::IpPrefix, \fBDwm::Ipv4Address\fP, \fBDwm::Ipv4IcmpMessage\fP, \fBDwm::Ipv4PacketHeader\fP, \fBDwm::Ipv4Prefix\fP, \fBDwm::Ipv4Routes< _valueT >\fP, \fBDwm::Ipv4TcpHeader\fP, \fBDwm::Ipv4TcpPacket\fP, \fBDwm::Ipv4TcpPayload\fP, \fBDwm::Ipv4UdpHeader\fP, \fBDwm::Ipv4UdpPacket\fP, \fBDwm::Ipv4UdpPayload\fP, \fBDwm::Ipv6AddrMap< T, Hash >\fP, \fBDwm::Ipv6Address\fP, \fBDwm::Ipv6Prefix\fP, \fBDwm::Ipv6PrefixMap< T, Hash >\fP, \fBDwm::MacAddress\fP, \fBDwm::MplsLabel\fP, \fBDwm::MplsLabelStack\fP, \fBDwm::Patricia< KeyType, ValueType, KeyEqual >\fP, Dwm::ProcessInfo, \fBDwm::Rusage\fP, \fBDwm::TimeInterval\fP, \fBDwm::TimeInterval64\fP, \fBDwm::TimeValue\fP, and \fBDwm::TimeValue64\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "virtual uint64_t \fBStreamedLength\fP () const =0"
+.br
+.RI "Return the number of bytes that would be written if the object's Write(ostream &), Write(FILE *) or Write(int) member were called\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Interface for classes which can return their streamed length\&. 
+
+This is often an expensive operation on variable-length data structures, but is useful when we want to store the length of a piece of data before the data itself, since it allows us to skip over the data (or just treeat it as an opaque blob) without interpreting it\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "virtual uint64_t Dwm::StreamedLengthCapable::StreamedLength () const\fR [pure virtual]\fP"
+
+.PP
+Return the number of bytes that would be written if the object's Write(ostream &), Write(FILE *) or Write(int) member were called\&. These members would be inherited from \fBStreamWritable\fP, \fBFileWritable\fP or \fBDescriptorWritable\fP, respectively\&. 
+.PP
+Implemented in \fBDwm::IpAddress\fP, \fBDwm::Ipv4Address\fP, \fBDwm::Ipv4IcmpMessage\fP, \fBDwm::Ipv4PacketHeader\fP, \fBDwm::Ipv4Prefix\fP, \fBDwm::Ipv4Routes< _valueT >\fP, \fBDwm::Ipv4TcpHeader\fP, \fBDwm::Ipv4TcpPacket\fP, \fBDwm::Ipv4TcpPayload\fP, \fBDwm::Ipv4UdpHeader\fP, \fBDwm::Ipv4UdpPacket\fP, \fBDwm::Ipv4UdpPayload\fP, \fBDwm::Ipv6Address\fP, \fBDwm::Ipv6AddrMap< T, Hash >\fP, \fBDwm::Ipv6Prefix\fP, \fBDwm::Ipv6PrefixMap< T, Hash >\fP, \fBDwm::MacAddress\fP, \fBDwm::MplsLabel\fP, \fBDwm::MplsLabelStack\fP, \fBDwm::Patricia< KeyType, ValueType, KeyEqual >\fP, \fBDwm::Rusage\fP, \fBDwm::TimeInterval64\fP, \fBDwm::TimeInterval\fP, \fBDwm::TimeValue64\fP, and \fBDwm::TimeValue\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

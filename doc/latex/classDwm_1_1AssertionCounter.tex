@@ -1,0 +1,46 @@
+\doxysection{Dwm\+::Assertion\+Counter Class Reference}
+\hypertarget{classDwm_1_1AssertionCounter}{}\label{classDwm_1_1AssertionCounter}\index{Dwm::AssertionCounter@{Dwm::AssertionCounter}}
+
+
+Holds \textquotesingle{}passed\textquotesingle{} and \textquotesingle{}failed\textquotesingle{} counters.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Unit\+Assert.\+hh$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1AssertionCounter_a42fcecd166cfa76841c6e9dfc87d9d52}\label{classDwm_1_1AssertionCounter_a42fcecd166cfa76841c6e9dfc87d9d52} 
+{\bfseries Assertion\+Counter} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1AssertionCounter_a9b246ef86c6d82f0f4210166625767ab}\label{classDwm_1_1AssertionCounter_a9b246ef86c6d82f0f4210166625767ab} 
+uint64\+\_\+t {\bfseries Failed} () const
+\begin{DoxyCompactList}\small\item\em Returns the failed counter. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1AssertionCounter_a4c0605b335e154b95250aef395729b2c}\label{classDwm_1_1AssertionCounter_a4c0605b335e154b95250aef395729b2c} 
+uint64\+\_\+t {\bfseries Passed} () const
+\begin{DoxyCompactList}\small\item\em Returns the passed counter. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1AssertionCounter_a45c039c1b9526783060f0d7b3447ab49}\label{classDwm_1_1AssertionCounter_a45c039c1b9526783060f0d7b3447ab49} 
+void {\bfseries Add\+Failed} ()
+\begin{DoxyCompactList}\small\item\em Increments the failed counter. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1AssertionCounter_a83b5cdcb828f0b801cc3ea1fc94dffac}\label{classDwm_1_1AssertionCounter_a83b5cdcb828f0b801cc3ea1fc94dffac} 
+void {\bfseries Add\+Passed} ()
+\begin{DoxyCompactList}\small\item\em Increments the passed counter. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1AssertionCounter_a78735c33371619789067e5dbdd8470c2}\label{classDwm_1_1AssertionCounter_a78735c33371619789067e5dbdd8470c2} 
+\mbox{\hyperlink{classDwm_1_1AssertionCounter}{Assertion\+Counter}} \& {\bfseries operator+=} (const \mbox{\hyperlink{classDwm_1_1AssertionCounter}{Assertion\+Counter}} \&assertion\+Counter)
+\begin{DoxyCompactList}\small\item\em operator += \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1AssertionCounter_a98b7b88ce199a8f17f3607dd605c386a}\label{classDwm_1_1AssertionCounter_a98b7b88ce199a8f17f3607dd605c386a} 
+std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, const \mbox{\hyperlink{classDwm_1_1AssertionCounter}{Assertion\+Counter}} \&assertion\+Counter)
+\begin{DoxyCompactList}\small\item\em Prints to an ostream. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Holds \textquotesingle{}passed\textquotesingle{} and \textquotesingle{}failed\textquotesingle{} counters. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmUnitAssert_8hh}{Dwm\+Unit\+Assert.\+hh}}\end{DoxyCompactItemize}

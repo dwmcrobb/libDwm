@@ -1,0 +1,75 @@
+.TH "Dwm::TermioLocalFlags" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::TermioLocalFlags \- Encapsulates termios local flags\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmTermios\&.hh>\fP
+.PP
+Inherits \fBDwm::TermioFlags\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBTermioLocalFlags\fP (struct termios &t)"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "const \fBTermioFlagInfo_t\fP * \fBKnownFlags\fP () const"
+.br
+.RI "Returns the known local flags\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::TermioFlags\fP
+.in +1c
+.ti -1c
+.RI "bool \fBIsSet\fP (const std::string &flagName) const"
+.br
+.RI "Returns true if the given \fRflagName\fP is set, else returns false\&. "
+.ti -1c
+.RI "bool \fBSet\fP (const std::string &flagName)"
+.br
+.RI "Sets the flag for the given \fRflagName\fP\&. "
+.ti -1c
+.RI "bool \fBUnset\fP (const std::string &flagName)"
+.br
+.RI "Unsets the flag for the given \fRflagName\fP\&. "
+.in -1c
+.SS "Additional Inherited Members"
+
+
+Protected Member Functions inherited from \fBDwm::TermioFlags\fP
+.in +1c
+.ti -1c
+.RI "const \fBTermioFlagInfo_t\fP * \fBFindFlag\fP (const std::string &flagName) const"
+.br
+.in -1c
+
+Protected Attributes inherited from \fBDwm::TermioFlags\fP
+.in +1c
+.ti -1c
+.RI "tcflag_t * \fB_flagPtr\fP"
+.br
+.ti -1c
+.RI "const \fBTermioFlagInfo_t\fP * \fB_flagInfo\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Encapsulates termios local flags\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "const \fBTermioFlagInfo_t\fP * Dwm::TermioLocalFlags::KnownFlags () const\fR [virtual]\fP"
+
+.PP
+Returns the known local flags\&. 
+.PP
+Implements \fBDwm::TermioFlags\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

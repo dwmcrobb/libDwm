@@ -1,0 +1,225 @@
+\doxysection{Dwm\+Concurrent\+Queue.\+hh}
+\hypertarget{DwmConcurrentQueue_8hh_source}{}\label{DwmConcurrentQueue_8hh_source}\index{DwmConcurrentQueue.hh@{DwmConcurrentQueue.hh}}
+\mbox{\hyperlink{DwmConcurrentQueue_8hh}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ @(\#)\ \$DwmPath\$}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ \ Copyright\ (c)\ Daniel\ W.\ McRobb\ 2016}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ \ All\ rights\ reserved.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ \ Redistribution\ and\ use\ in\ source\ and\ binary\ forms,\ with\ or\ without}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ \ modification,\ are\ permitted\ provided\ that\ the\ following\ conditions}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ \ are\ met:}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ \ 1.\ Redistributions\ of\ source\ code\ must\ retain\ the\ above\ copyright}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ \ \ \ \ notice,\ this\ list\ of\ conditions\ and\ the\ following\ disclaimer.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ \ 2.\ Redistributions\ in\ binary\ form\ must\ reproduce\ the\ above\ copyright}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ \ \ \ \ notice,\ this\ list\ of\ conditions\ and\ the\ following\ disclaimer\ in\ the}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ \ \ \ \ documentation\ and/or\ other\ materials\ provided\ with\ the\ distribution.}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ \ 3.\ The\ names\ of\ the\ authors\ and\ copyright\ holders\ may\ not\ be\ used\ to}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ \ \ \ \ endorse\ or\ promote\ products\ derived\ from\ this\ software\ without}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ \ \ \ \ specific\ prior\ written\ permission.}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ \ IN\ NO\ EVENT\ SHALL\ DANIEL\ W.\ MCROBB\ BE\ LIABLE\ TO\ ANY\ PARTY\ FOR}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ \ DIRECT,\ INDIRECT,\ SPECIAL,\ INCIDENTAL,\ OR\ CONSEQUENTIAL\ DAMAGES,}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ \ INCLUDING\ LOST\ PROFITS,\ ARISING\ OUT\ OF\ THE\ USE\ OF\ THIS\ SOFTWARE,}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ \ EVEN\ IF\ DANIEL\ W.\ MCROBB\ HAS\ BEEN\ ADVISED\ OF\ THE\ POSSIBILITY\ OF\ SUCH}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ \ DAMAGE.}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ \ THE\ SOFTWARE\ PROVIDED\ HEREIN\ IS\ ON\ AN\ "{}AS\ IS"{}\ BASIS,\ AND}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ \ DANIEL\ W.\ MCROBB\ HAS\ NO\ OBLIGATION\ TO\ PROVIDE\ MAINTENANCE,\ SUPPORT,}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ \ UPDATES,\ ENHANCEMENTS,\ OR\ MODIFICATIONS.\ DANIEL\ W.\ MCROBB\ MAKES\ NO}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ \ REPRESENTATIONS\ AND\ EXTENDS\ NO\ WARRANTIES\ OF\ ANY\ KIND,\ EITHER}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ \ IMPLIED\ OR\ EXPRESS,\ INCLUDING,\ BUT\ NOT\ LIMITED\ TO,\ THE\ IMPLIED}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ \ WARRANTIES\ OF\ MERCHANTABILITY\ OR\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE,}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ \ OR\ THAT\ THE\ USE\ OF\ THIS\ SOFTWARE\ WILL\ NOT\ INFRINGE\ ANY\ PATENT,}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ \ TRADEMARK\ OR\ OTHER\ RIGHTS.}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#ifndef\ \_DWMCONCURRENTQUEUE\_HH\_}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ \_DWMCONCURRENTQUEUE\_HH\_}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\ \ \#include\ <unistd.h>}}
+\DoxyCodeLine{00046\ \}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#include\ <atomic>}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#include\ <thread>}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{keyword}{namespace\ }Dwm\ \{}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{namespace\ }Thread\ \{}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classDwm_1_1Thread_1_1ConcurrentQueue}{ConcurrentQueue}}}
+\DoxyCodeLine{00092\ \ \ \ \ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1Thread_1_1ConcurrentQueue_a873b6b00b360a2bcd63fa2e72c1854ce}{ConcurrentQueue}}(uint64\_t\ maxLength\ =\ 10000,}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ useconds\_t\ pushSleepUsecs\ =\ 1000)}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ :\ \ \_length(0),\ \_maxLength(maxLength),}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \_pushSleepUsecs(pushSleepUsecs)}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \_front\ =\ \_back\ =\ \textcolor{keyword}{new}\ Entry(T());}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \_pushingLocked\ =\ \_poppingLocked\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ }
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1Thread_1_1ConcurrentQueue_a0023f301cbb0e967a8a0b40af1f79b28}{\string~ConcurrentQueue}}()}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\_front\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ Entry\ *tmp\ =\ \_front;}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \_front\ =\ tmp-\/>next;}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ tmp;}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ }
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1Thread_1_1ConcurrentQueue_a302e27db22c94e04396c6c37956b8e24}{PopFront}}(T\ \&\ result)}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\_poppingLocked.exchange(\textcolor{keyword}{true}));}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_front-\/>next\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ queue\ is\ not\ empty.}}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ Entry\ \ *oldFirst\ =\ \_front;}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \_front\ =\ \_front-\/>next;}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ result\ =\ \_front-\/>value;}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \_poppingLocked\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ delete\ the\ old\ front\ Entry.}}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ oldFirst;}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ decrement\ the\ queue\ length.}}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ -\/-\/\_length;}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \_poppingLocked\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1Thread_1_1ConcurrentQueue_a302e27db22c94e04396c6c37956b8e24}{PopFront}}(std::vector<T>\ \&\ result)}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ std::vector<T>::size\_type\ \ numEntries\ =\ 0;}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ lcok\ against\ others\ popping\ from\ the\ queue}}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\_poppingLocked.exchange(\textcolor{keyword}{true}));}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_front-\/>next\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ queue\ is\ not\ empty.\ \ Save\ the\ existing\ front.}}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \ \ Entry\ \ *oldFront\ =\ \_front;}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ Move\ front\ to\ the\ end\ of\ the\ queue\ since\ we're\ going\ to\ take}}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ all\ entries\ from\ the\ queue.\ \ Keep\ track\ of\ how\ many\ entries}}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ we'll\ take,\ and\ adjust\ \_length\ at\ end.}}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\_front-\/>next\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ \_front\ =\ \_front-\/>next;}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \ \ ++numEntries;}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ \_length\ -\/=\ numEntries;}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ Save\ the\ new\ location\ of\ \_front.\ \ This\ is\ where\ we'll\ stop}}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ popping\ entries.\ \ Once\ we\ unlock\ popping,\ another\ thread}}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ could\ come\ in\ and\ move\ \_front.}}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \ \ Entry\ \ *newFront\ =\ \_front;}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ Unlock\ popping\ so\ other\ threads\ can\ pop\ entries.}}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \ \ \_poppingLocked\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ Resize\ the\ output\ vector\ to\ hold\ the\ popped\ entries.}}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ result.resize(numEntries);}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ Populate\ the\ output\ vector\ and\ delete\ the\ old\ entries.}}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ std::vector<T>::size\_type\ \ i\ =\ 0;}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ Entry\ \ *entry\ =\ oldFront-\/>next;}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (entry\ !=\ newFront)\ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ \ \ Entry\ \ *delEntry\ =\ entry;}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \ \ result[i]\ =\ entry-\/>value;}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ entry\ =\ entry-\/>next;}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ \ \ ++i;}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ delEntry;}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ Delete\ the\ old\ front\ entry.}}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ oldFront;}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \_poppingLocked\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1Thread_1_1ConcurrentQueue_a97f1b0f6ff6ca6080f079fbbedfa2b66}{PushBack}}(\textcolor{keyword}{const}\ T\ \&\ t)}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\_length\ >\ \_maxLength)\ \{\ usleep(\_pushSleepUsecs);\ \};}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ Entry\ *tmp\ =\ \textcolor{keyword}{new}\ Entry(t);}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\_pushingLocked.exchange(\textcolor{keyword}{true}));}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \_back-\/>next\ =\ tmp;}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \_back\ =\ tmp;}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \_pushingLocked\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ ++\_length;}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1Thread_1_1ConcurrentQueue_a97f1b0f6ff6ca6080f079fbbedfa2b66}{PushBack}}(\textcolor{keyword}{const}\ std::vector<T>\ \&\ t)}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\_length\ >\ \_maxLength)\ \{\ usleep(\_pushSleepUsecs);\ \}}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ std::vector<Entry\ *>\ newEntries(t.size());}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ std::vector<T>::size\_type\ i\ =\ 0;}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ newEntries[i]\ =\ \textcolor{keyword}{new}\ Entry(t[i]);}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ ++i;}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ i\ <\ t.size();\ ++i)\ \{}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \ \ newEntries[i]\ =\ \textcolor{keyword}{new}\ Entry(t[i]);}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ newEntries[i-\/1]-\/>next\ =\ newEntries[i];}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\_pushingLocked.exchange(\textcolor{keyword}{true}));}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \_back-\/>next\ =\ newEntries[0];}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \_back\ =\ newEntries[t.size()\ -\/\ 1];}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \_pushingLocked\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \_length\ +=\ t.size();}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \textcolor{keyword}{class\ }Entry}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ Entry(\textcolor{keyword}{const}\ T\ \&\ val)\ }
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \ \ \ \ :\ value(val),\ next(nullptr)\ }
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ T\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ value;}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ std::atomic<Entry\ *>\ \ \ next;}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00241\ }
+\DoxyCodeLine{00242\ \ \ \ \ \ \ Entry\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\_front;}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ std::atomic<bool>\ \ \ \ \ \ \ \_poppingLocked;}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ Entry\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\_back;}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ std::atomic<bool>\ \ \ \ \ \ \ \_pushingLocked;}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ std::atomic<uint64\_t>\ \ \ \_length;}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ uint64\_t\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_maxLength;}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ useconds\_t\ \ \ \ \ \ \ \ \ \ \ \ \ \ \_pushSleepUsecs;}
+\DoxyCodeLine{00249\ \ \ \ \ \};}
+\DoxyCodeLine{00250\ \ \ \ \ }
+\DoxyCodeLine{00251\ }
+\DoxyCodeLine{00252\ \ \ \}\ \ \textcolor{comment}{//\ namespace\ Thread}}
+\DoxyCodeLine{00253\ \ \ }
+\DoxyCodeLine{00254\ \}\ \ \textcolor{comment}{//\ namespace\ Dwm}}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00256\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ \_DWMCONCURRENTQUEUE\_HH\_}}
+\DoxyCodeLine{00257\ }
+\DoxyCodeLine{00258\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ emacs\ settings\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00259\ \textcolor{comment}{//\ \ Local\ Variables:}}
+\DoxyCodeLine{00260\ \textcolor{comment}{//\ \ mode:\ C++}}
+\DoxyCodeLine{00261\ \textcolor{comment}{//\ \ tab-\/width:\ 2}}
+\DoxyCodeLine{00262\ \textcolor{comment}{//\ \ indent-\/tabs-\/mode:\ nil}}
+\DoxyCodeLine{00263\ \textcolor{comment}{//\ \ c-\/basic-\/offset:\ 2}}
+\DoxyCodeLine{00264\ \textcolor{comment}{//\ \ End:}}
+\DoxyCodeLine{00265\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+
+\end{DoxyCode}

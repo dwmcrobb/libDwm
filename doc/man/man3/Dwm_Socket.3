@@ -1,0 +1,443 @@
+.TH "Dwm::Socket" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::Socket \- This class abstracts a UNIX socket descriptor\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmSocket\&.hh>\fP
+.PP
+Inherits \fBDwm::Descriptor\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBSocket\fP ()"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "\fBSocket\fP (const \fBSocket\fP &sock)"
+.br
+.RI "Copy constructor\&. "
+.ti -1c
+.RI "\fBSocket\fP & \fBoperator=\fP (const \fBSocket\fP &sock)"
+.br
+.RI "operator = (assignment operator)\&. "
+.ti -1c
+.RI "\fBoperator bool\fP () const"
+.br
+.ti -1c
+.RI "bool \fBOpen\fP (int domain, int type, int protocol)"
+.br
+.RI "Opens the socket\&. "
+.ti -1c
+.RI "int \fBType\fP () const"
+.br
+.ti -1c
+.RI "\fBSocket\fP \fBAccept\fP (struct sockaddr_in &addr)"
+.br
+.RI "Calls the UNIX accept(2) function\&. Returns the resulting socket\&. "
+.ti -1c
+.RI "\fBSocket\fP \fBAccept\fP (struct sockaddr_in6 &addr)"
+.br
+.RI "Calls the UNIX accept(2) function\&. Returns the resulting socket\&. "
+.ti -1c
+.RI "\fBSocket\fP \fBAccept\fP (\fBIpv4Address\fP &addr, uint16_t &port)"
+.br
+.RI "Calls accept() on the socket and returns the resulting socket\&. "
+.ti -1c
+.RI "\fBSocket\fP \fBAccept\fP (\fBIpv6Address\fP &addr, uint16_t &port)"
+.br
+.RI "Calls accept() on the socket and returns the resulting socket\&. "
+.ti -1c
+.RI "bool \fBAccept\fP (\fBSocket\fP &s, struct sockaddr_in &addr)"
+.br
+.RI "Calls the UNIX accept() function for the given socket \fRs\fP and attaches *this to the return if successful\&. "
+.ti -1c
+.RI "bool \fBAccept\fP (\fBSocket\fP &s, struct sockaddr_in6 &addr)"
+.br
+.RI "Calls the UNIX accept() function for the given socket \fRs\fP and attaches *this to the return if successful\&. "
+.ti -1c
+.RI "bool \fBAccept\fP (\fBSocket\fP &s, \fBIpv4Address\fP &addr, uint16_t &port)"
+.br
+.RI "Calls the UNIX accept() function for the given socket \fRs\fP and attaches *this to the return if successful\&. "
+.ti -1c
+.RI "bool \fBAccept\fP (\fBSocket\fP &s, \fBIpv6Address\fP &addr, uint16_t &port)"
+.br
+.RI "Calls the UNIX accept() function for the given socket \fRs\fP and attaches *this to the return if successful\&. "
+.ti -1c
+.RI "\fBSocket\fP \fBAccept\fP (struct sockaddr_un &addr)"
+.br
+.RI "Calls the UNIX accept(2) function\&. Returns the resulting socket\&. "
+.ti -1c
+.RI "bool \fBAccept\fP (\fBSocket\fP &s, struct sockaddr_un &addr)"
+.br
+.ti -1c
+.RI "bool \fBListen\fP (int backlog)"
+.br
+.RI "Calls the UNIX listen(2) function\&. "
+.ti -1c
+.RI "bool \fBBind\fP (const struct sockaddr_in &addr)"
+.br
+.RI "Calls the UNIX bind(2) function\&. "
+.ti -1c
+.RI "bool \fBBind\fP (const struct sockaddr_in6 &addr)"
+.br
+.RI "Calls the UNIX bind(2) function\&. "
+.ti -1c
+.RI "bool \fBBind\fP (const \fBIpv4Address\fP &addr, uint16_t port)"
+.br
+.RI "Bind to the given IPv4 address \fRaddr\fP and \fRport\fP\&. "
+.ti -1c
+.RI "bool \fBBind\fP (const \fBIpv6Address\fP &addr, uint16_t port)"
+.br
+.RI "Bind to the given IPv6 address \fRaddr\fP and \fRport\fP\&. "
+.ti -1c
+.RI "bool \fBBind\fP (const struct sockaddr_un &addr)"
+.br
+.RI "Calls the UNIX bind(2) function\&. "
+.ti -1c
+.RI "bool \fBConnect\fP (const struct sockaddr_in &name)"
+.br
+.RI "Calls the UNIX connect(2) function\&. "
+.ti -1c
+.RI "bool \fBConnect\fP (const struct sockaddr_in6 &name)"
+.br
+.RI "Calls the UNIX connect(2) function\&. "
+.ti -1c
+.RI "bool \fBConnect\fP (const \fBIpv4Address\fP &dstAddr, uint16_t port)"
+.br
+.RI "Connect to the given IPv4 address \fRdstAddr\fP at the given \fRport\fP\&. "
+.ti -1c
+.RI "bool \fBConnect\fP (const \fBIpv6Address\fP &dstAddr, uint16_t port)"
+.br
+.RI "Connect to the given IPv6 address \fRdstAddr\fP at the given \fRport\fP\&. "
+.ti -1c
+.RI "bool \fBConnect\fP (const struct sockaddr_un &name)"
+.br
+.RI "Calls the UNIX connect(2) function\&. "
+.ti -1c
+.RI "bool \fBGetpeername\fP (struct sockaddr *name, socklen_t &namelen)"
+.br
+.RI "Calls the UNIX getpeername(2) function\&. Returns true on success,\&. "
+.ti -1c
+.RI "bool \fBGetpeername\fP (\fBIpv4Address\fP &addr, uint16_t &port)"
+.br
+.RI "Calls getpeername() on the socket\&. "
+.ti -1c
+.RI "bool \fBGetpeername\fP (\fBIpv6Address\fP &addr, uint16_t &port)"
+.br
+.RI "Calls getpeername() on the socket\&. "
+.ti -1c
+.RI "bool \fBGetsockname\fP (struct sockaddr *name, socklen_t &namelen)"
+.br
+.RI "Calls the UNIX getsockname(2) function\&. Returns true on success,\&. "
+.ti -1c
+.RI "bool \fBGetsockname\fP (\fBIpv4Address\fP &addr, uint16_t &port)"
+.br
+.RI "Calls getsockname() on the socket\&. "
+.ti -1c
+.RI "bool \fBGetsockname\fP (\fBIpv6Address\fP &addr, uint16_t &port)"
+.br
+.RI "Calls getsockname() on the socket\&. "
+.ti -1c
+.RI "bool \fBSetsockopt\fP (int level, int optname, const void *optval, socklen_t optlen)"
+.br
+.RI "Calls the UNIX setsockopt(2) function\&. Returns true on success,\&. "
+.ti -1c
+.RI "bool \fBGetsockopt\fP (int level, int optname, void *optval, socklen_t &optlen)"
+.br
+.RI "Calls the UNIX setsockopt(2) function\&. Returns true on success,\&. "
+.ti -1c
+.RI "ssize_t \fBRecvFrom\fP (void *buf, size_t len, int flags, struct sockaddr_in &from)"
+.br
+.RI "Calls the UNIX recvfrom(2) function\&. "
+.ti -1c
+.RI "ssize_t \fBRecvFrom\fP (void *buf, size_t len, int flags, struct sockaddr_in6 &from)"
+.br
+.RI "Calls the UNIX recvfrom(2) function\&. "
+.ti -1c
+.RI "ssize_t \fBRecvFrom\fP (void *buf, size_t len, int flags, \fBIpv4Address\fP &srcAddr, uint16_t &srcPort)"
+.br
+.RI "Calls recvfrom() on the socket\&. "
+.ti -1c
+.RI "ssize_t \fBRecvFrom\fP (void *buf, size_t len, int flags, \fBIpv6Address\fP &srcAddr, uint16_t &srcPort)"
+.br
+.RI "Calls recvfrom() on the socket\&. "
+.ti -1c
+.RI "ssize_t \fBRecvFrom\fP (std::string &s, int flags, \fBIpv4Address\fP &srcAddr, uint16_t &srcPort)"
+.br
+.RI "Calls recvfrom() on the socket\&. "
+.ti -1c
+.RI "ssize_t \fBRecvFrom\fP (std::string &s, int flags, \fBIpv6Address\fP &srcAddr, uint16_t &srcPort)"
+.br
+.RI "Calls recvfrom() on the socket\&. "
+.ti -1c
+.RI "ssize_t \fBSendTo\fP (const void *buf, size_t len, int flags, const struct sockaddr_in &to)"
+.br
+.RI "Calls the UNIX sendto(2) function\&. "
+.ti -1c
+.RI "ssize_t \fBSendTo\fP (const void *buf, size_t len, int flags, const struct sockaddr_in6 &to)"
+.br
+.RI "Calls the UNIX sendto(2) function\&. "
+.ti -1c
+.RI "ssize_t \fBSendTo\fP (const void *buf, size_t len, int flags, const \fBIpv4Address\fP &dstAddr, uint16_t dstPort)"
+.br
+.RI "Calls sendto() on the socket, sending the given buffer \fRbuf\fP of length \fRlen\fP to the given destination address and port\&. "
+.ti -1c
+.RI "ssize_t \fBSendTo\fP (const void *buf, size_t len, int flags, const \fBIpv6Address\fP &dstAddr, uint16_t dstPort)"
+.br
+.RI "Calls sendto() on the socket, sending the given buffer \fRbuf\fP of length \fRlen\fP to the given destination address and port\&. "
+.ti -1c
+.RI "ssize_t \fBSendTo\fP (const std::string &s, int flags, const \fBIpv4Address\fP &dstAddr, uint16_t dstPort)"
+.br
+.RI "Calls sendto() on the socket, sending the given string \fRs\fP to the given destination and port\&. "
+.ti -1c
+.RI "ssize_t \fBSendTo\fP (const std::string &s, int flags, const \fBIpv6Address\fP &dstAddr, uint16_t dstPort)"
+.br
+.RI "Calls sendto() on the socket, sending the given string \fRs\fP to the given destination and port\&. "
+.ti -1c
+.RI "bool \fBJoinMulticastGroup\fP (const \fBIpv4Address\fP &groupAddr, const \fBIpv4Address\fP &intfAddr)"
+.br
+.RI "Join the given multicast group \fRgroupAddr\fP on the given interface address \fRintfAddr\fP\&. "
+.ti -1c
+.RI "bool \fBJoinMulticastGroup\fP (const \fBIpv6Address\fP &groupAddr, unsigned int ifIndex)"
+.br
+.RI "Join the given multicast group \fRgroupAddr\fP on the given interface \fRifIndex\fP\&. "
+.ti -1c
+.RI "bool \fBJoinMulticastGroup\fP (const \fBIpv6Address\fP &groupAddr, const std::string &ifName)"
+.br
+.RI "Join the given multicast group \fRgroupAddr\fP on the interface with the given name \fRifName\fP\&. "
+.ti -1c
+.RI "bool \fBHeaderIncluded\fP () const"
+.br
+.in -1c
+
+Public Member Functions inherited from \fBDwm::Descriptor\fP
+.in +1c
+.ti -1c
+.RI "\fBDescriptor\fP ()"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "\fBDescriptor\fP (const \fBDescriptor\fP &d)"
+.br
+.RI "Copy constructor\&. Will dup() the descriptor of \fRd\fP\&. "
+.ti -1c
+.RI "\fBDescriptor\fP (int d)"
+.br
+.ti -1c
+.RI "\fBDescriptor\fP & \fBoperator=\fP (const \fBDescriptor\fP &d)"
+.br
+.RI "operator = (assignment operator)\&. "
+.ti -1c
+.RI "virtual \fB~Descriptor\fP ()"
+.br
+.RI "Destructor\&. Note this will close the underlying UNIX descriptor\&. "
+.ti -1c
+.RI "virtual bool \fBClose\fP ()"
+.br
+.RI "Closes the \fBDescriptor\fP\&. Returns true on success, false on failure\&. "
+.ti -1c
+.RI "virtual bool \fBAttach\fP (int fd)"
+.br
+.RI "Associates the \fBDescriptor\fP with an existing UNIX descriptor \fRfd\fP\&. "
+.ti -1c
+.RI "virtual bool \fBDetach\fP ()"
+.br
+.RI "Disassociates the \fBDescriptor\fP from the underlying UNIX descriptor\&. "
+.ti -1c
+.RI "virtual bool \fBSetNonBlocking\fP ()"
+.br
+.RI "Sets the \fBDescriptor\fP to non-blocking\&. "
+.ti -1c
+.RI "virtual bool \fBSetBlocking\fP ()"
+.br
+.RI "Sets the soccket to blocking\&. "
+.ti -1c
+.RI "virtual \fBoperator int\fP () const"
+.br
+.RI "This completely blows encapsulation, but is needed so that \fBDescriptor\fP may be used in place of a UNIX descriptor in retrofitted code\&. "
+.ti -1c
+.RI "virtual bool \fBFdSet\fP (fd_set &fdSet)"
+.br
+.RI "If \fBDescriptor\fP is valid, sets it in \fRfdSet\fP and returns true\&. "
+.ti -1c
+.RI "virtual bool \fBFdClr\fP (fd_set &fdSet)"
+.br
+.RI "If \fBDescriptor\fP is valid, clears it in \fRfdSet\fP and returns true\&. "
+.ti -1c
+.RI "virtual bool \fBFdIsSet\fP (fd_set &fdSet)"
+.br
+.RI "If \fBDescriptor\fP is valid and is set in \fRfdSet\fP, returns true\&. "
+.ti -1c
+.RI "virtual bool \fBReadWouldBlock\fP ()"
+.br
+.in -1c
+.SS "Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "int \fB_type\fP"
+.br
+.ti -1c
+.RI "bool \fB_headerIncluded\fP"
+.br
+.in -1c
+
+Protected Attributes inherited from \fBDwm::Descriptor\fP
+.in +1c
+.ti -1c
+.RI "int \fB_fd\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+This class abstracts a UNIX socket descriptor\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Dwm::Socket::Socket (const \fBSocket\fP & sock)"
+
+.PP
+Copy constructor\&. Note we use dup() to duplicate the underlying UNIX socket descriptor, which allows us to close the underlying UNIX socket descriptor in our destructor\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "\fBSocket\fP Dwm::Socket::Accept (\fBIpv4Address\fP & addr, uint16_t & port)"
+
+.PP
+Calls accept() on the socket and returns the resulting socket\&. If successful, \fRaddr\fP will be set to the peer's address and \fRport\fP will be set to the peer's port\&. 
+.SS "\fBSocket\fP Dwm::Socket::Accept (\fBIpv6Address\fP & addr, uint16_t & port)"
+
+.PP
+Calls accept() on the socket and returns the resulting socket\&. If successful, \fRaddr\fP will be set to the peer's address and \fRport\fP will be set to the peer's port\&. 
+.SS "bool Dwm::Socket::Accept (\fBSocket\fP & s, \fBIpv4Address\fP & addr, uint16_t & port)"
+
+.PP
+Calls the UNIX accept() function for the given socket \fRs\fP and attaches *this to the return if successful\&. Returns true on success, false on failure\&. \fRaddr\fP and \fRport\fP are result parameters and will contain the address and port of the remote connection on success\&. 
+.SS "bool Dwm::Socket::Accept (\fBSocket\fP & s, \fBIpv6Address\fP & addr, uint16_t & port)"
+
+.PP
+Calls the UNIX accept() function for the given socket \fRs\fP and attaches *this to the return if successful\&. Returns true on success, false on failure\&. \fRaddr\fP and \fRport\fP are result parameters and will contain the address and port of the remote connection on success\&. 
+.SS "bool Dwm::Socket::Accept (\fBSocket\fP & s, struct sockaddr_in & addr)"
+
+.PP
+Calls the UNIX accept() function for the given socket \fRs\fP and attaches *this to the return if successful\&. Returns true on success, false on failure\&. \fRaddr\fP is a result parameter and will contain the address of the remote connection on success\&. 
+.SS "bool Dwm::Socket::Accept (\fBSocket\fP & s, struct sockaddr_in6 & addr)"
+
+.PP
+Calls the UNIX accept() function for the given socket \fRs\fP and attaches *this to the return if successful\&. Returns true on success, false on failure\&. \fRaddr\fP is a result parameter and will contain the address of the remote connection on success\&. 
+.SS "bool Dwm::Socket::Bind (const \fBIpv4Address\fP & addr, uint16_t port)"
+
+.PP
+Bind to the given IPv4 address \fRaddr\fP and \fRport\fP\&. Returns true on success, false on failure\&. 
+.SS "bool Dwm::Socket::Bind (const \fBIpv6Address\fP & addr, uint16_t port)"
+
+.PP
+Bind to the given IPv6 address \fRaddr\fP and \fRport\fP\&. Returns true on success, false on failure\&. 
+.SS "bool Dwm::Socket::Bind (const struct sockaddr_in & addr)"
+
+.PP
+Calls the UNIX bind(2) function\&. Returns true on success, false on failure\&. 
+.SS "bool Dwm::Socket::Bind (const struct sockaddr_in6 & addr)"
+
+.PP
+Calls the UNIX bind(2) function\&. Returns true on success, false on failure\&. 
+.SS "bool Dwm::Socket::Bind (const struct sockaddr_un & addr)"
+
+.PP
+Calls the UNIX bind(2) function\&. Returns true on success, false on failure\&. 
+.SS "bool Dwm::Socket::Connect (const \fBIpv4Address\fP & dstAddr, uint16_t port)"
+
+.PP
+Connect to the given IPv4 address \fRdstAddr\fP at the given \fRport\fP\&. Returns true on success, false on failure\&. 
+.SS "bool Dwm::Socket::Connect (const \fBIpv6Address\fP & dstAddr, uint16_t port)"
+
+.PP
+Connect to the given IPv6 address \fRdstAddr\fP at the given \fRport\fP\&. Returns true on success, false on failure\&. 
+.SS "bool Dwm::Socket::Connect (const struct sockaddr_in & name)"
+
+.PP
+Calls the UNIX connect(2) function\&. Returns true on success, false on failure\&. 
+.SS "bool Dwm::Socket::Connect (const struct sockaddr_in6 & name)"
+
+.PP
+Calls the UNIX connect(2) function\&. Returns true on success, false on failure\&. 
+.SS "bool Dwm::Socket::Connect (const struct sockaddr_un & name)"
+
+.PP
+Calls the UNIX connect(2) function\&. Returns true on success, false on failure\&. 
+.SS "bool Dwm::Socket::Getpeername (\fBIpv4Address\fP & addr, uint16_t & port)"
+
+.PP
+Calls getpeername() on the socket\&. Returns true on success, false on failure\&. \fRaddr\fP and \fRport\fP are result parameters, and will contain the address and port of the peer on success\&. 
+.SS "bool Dwm::Socket::Getpeername (\fBIpv6Address\fP & addr, uint16_t & port)"
+
+.PP
+Calls getpeername() on the socket\&. Returns true on success, false on failure\&. \fRaddr\fP and \fRport\fP are result parameters, and will contain the address and port of the peer on success\&. 
+.SS "bool Dwm::Socket::Getsockname (\fBIpv4Address\fP & addr, uint16_t & port)"
+
+.PP
+Calls getsockname() on the socket\&. Returns true on success, false on failure\&. \fRaddr\fP and \fRport\fP are result parameters and will contain the address and port of the socket on success\&. Note this only works on IPv4 sockets, not UNIX domain sockets\&. 
+.SS "bool Dwm::Socket::Getsockname (\fBIpv6Address\fP & addr, uint16_t & port)"
+
+.PP
+Calls getsockname() on the socket\&. Returns true on success, false on failure\&. \fRaddr\fP and \fRport\fP are result parameters and will contain the address and port of the socket on success\&. Note this only works on IPv6 sockets\&. 
+.SS "bool Dwm::Socket::JoinMulticastGroup (const \fBIpv4Address\fP & groupAddr, const \fBIpv4Address\fP & intfAddr)"
+
+.PP
+Join the given multicast group \fRgroupAddr\fP on the given interface address \fRintfAddr\fP\&. Returns true on success, false on failure\&. 
+.SS "bool Dwm::Socket::JoinMulticastGroup (const \fBIpv6Address\fP & groupAddr, const std::string & ifName)"
+
+.PP
+Join the given multicast group \fRgroupAddr\fP on the interface with the given name \fRifName\fP\&. Returns true on success, false on failure\&. 
+.SS "bool Dwm::Socket::JoinMulticastGroup (const \fBIpv6Address\fP & groupAddr, unsigned int ifIndex)"
+
+.PP
+Join the given multicast group \fRgroupAddr\fP on the given interface \fRifIndex\fP\&. Returns true on success, false on failure\&. 
+.SS "bool Dwm::Socket::Listen (int backlog)"
+
+.PP
+Calls the UNIX listen(2) function\&. Returns true on success, false on failure\&. 
+.SS "bool Dwm::Socket::Open (int domain, int type, int protocol)"
+
+.PP
+Opens the socket\&. Note this just calls the UNIX socket(2) function, and takes the same arguments\&. Returns true on success, false on failure\&. 
+.SS "ssize_t Dwm::Socket::RecvFrom (std::string & s, int flags, \fBIpv4Address\fP & srcAddr, uint16_t & srcPort)"
+
+.PP
+Calls recvfrom() on the socket\&. On success, stores the received data in \fRs\fP, the source address in \fRsrcAddr\fP and the source port in \fRsrcPort\fP and returns the number of bytes received\&. On failure, returns -1\&. Note that \fRmay\fP contain embedded nulls and should NOT be treated like a C string; use s\&.size() to determine how much data was stored\&. 
+.SS "ssize_t Dwm::Socket::RecvFrom (std::string & s, int flags, \fBIpv6Address\fP & srcAddr, uint16_t & srcPort)"
+
+.PP
+Calls recvfrom() on the socket\&. On success, stores the received data in \fRs\fP, the source address in \fRsrcAddr\fP and the source port in \fRsrcPort\fP and returns the number of bytes received\&. On failure, returns -1\&. Note that \fRmay\fP contain embedded nulls and should NOT be treated like a C string; use s\&.size() to determine how much data was stored\&. 
+.SS "ssize_t Dwm::Socket::RecvFrom (void * buf, size_t len, int flags, \fBIpv4Address\fP & srcAddr, uint16_t & srcPort)"
+
+.PP
+Calls recvfrom() on the socket\&. A buffer \fRbuf\fP of length \fRlen\fP must be provided by the caller to receive the data\&. \fRflags\fP is passed to the recvfrom() function (see the recvfrom manpage)\&. On success, returns the number of bytes received and sets \fRsrcAddr\fP and \fRsrcPort\fP to the source address and port of the received packet\&. 
+.SS "ssize_t Dwm::Socket::RecvFrom (void * buf, size_t len, int flags, \fBIpv6Address\fP & srcAddr, uint16_t & srcPort)"
+
+.PP
+Calls recvfrom() on the socket\&. A buffer \fRbuf\fP of length \fRlen\fP must be provided by the caller to receive the data\&. \fRflags\fP is passed to the recvfrom() function (see the recvfrom manpage)\&. On success, returns the number of bytes received and sets \fRsrcAddr\fP and \fRsrcPort\fP to the source address and port of the received packet\&. 
+.SS "ssize_t Dwm::Socket::SendTo (const std::string & s, int flags, const \fBIpv4Address\fP & dstAddr, uint16_t dstPort)"
+
+.PP
+Calls sendto() on the socket, sending the given string \fRs\fP to the given destination and port\&. \fRflags\fP is passed on to sendto() (see the sendto() manpage)\&. On success, returns the number of bytes sent which should be the same as \fRs\&.size()\fP\&. On failure, returns -1\&. Note that \fRs\fP can contain binary data, including nulls, but can not be longer than 65535 bytes (the maximum size of an IP packet) minus the length of the transport header and any IP header options\&. 
+.SS "ssize_t Dwm::Socket::SendTo (const std::string & s, int flags, const \fBIpv6Address\fP & dstAddr, uint16_t dstPort)"
+
+.PP
+Calls sendto() on the socket, sending the given string \fRs\fP to the given destination and port\&. \fRflags\fP is passed on to sendto() (see the sendto() manpage)\&. On success, returns the number of bytes sent which should be the same as \fRs\&.size()\fP\&. On failure, returns -1\&. Note that \fRs\fP can contain binary data, including nulls, but can not be longer than 65535 bytes (the maximum size of an IP packet) minus the length of the transport header and any IP header options\&. 
+.SS "ssize_t Dwm::Socket::SendTo (const void * buf, size_t len, int flags, const \fBIpv4Address\fP & dstAddr, uint16_t dstPort)"
+
+.PP
+Calls sendto() on the socket, sending the given buffer \fRbuf\fP of length \fRlen\fP to the given destination address and port\&. Returns the number of bytes sent on success, -1 on failure\&. 
+.SS "ssize_t Dwm::Socket::SendTo (const void * buf, size_t len, int flags, const \fBIpv6Address\fP & dstAddr, uint16_t dstPort)"
+
+.PP
+Calls sendto() on the socket, sending the given buffer \fRbuf\fP of length \fRlen\fP to the given destination address and port\&. Returns the number of bytes sent on success, -1 on failure\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

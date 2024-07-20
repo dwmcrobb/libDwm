@@ -1,0 +1,5 @@
+<map id="Dwm::Ipv4Routes::SortByValue" name="Dwm::Ipv4Routes::SortByValue">
+<area shape="rect" id="Node000001" title="Sorts the contained pair&lt;Ipv4Prefix,_valueT&gt; values into a vector, in descending order by the value s..." alt="" coords="5,5,213,31"/>
+<area shape="rect" id="Node000002" href="$classDwm_1_1Ipv4Routes.html#ad61ffed1c519bba2d7b4b505117d2d6e" title="Returns the number of routes." alt="" coords="261,5,422,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="213,16,245,16,245,21,213,21"/>
+</map>

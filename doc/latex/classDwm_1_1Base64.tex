@@ -1,0 +1,57 @@
+\doxysection{Dwm\+::Base64 Class Reference}
+\hypertarget{classDwm_1_1Base64}{}\label{classDwm_1_1Base64}\index{Dwm::Base64@{Dwm::Base64}}
+
+
+RFC 4648 base64 encoding and decoding functions.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Base64.\+hh$>$}
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Base64_ad08f5f38f08fb20af27af12d301f9a34}\label{classDwm_1_1Base64_ad08f5f38f08fb20af27af12d301f9a34} 
+static std\+::string {\bfseries Encode} (const std\+::string \&s)
+\begin{DoxyCompactList}\small\item\em Returns a base64 encoded version of {\ttfamily s}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Base64_aba63e03185bd2974a3af6492c4b41d84}\label{classDwm_1_1Base64_aba63e03185bd2974a3af6492c4b41d84} 
+static std\+::string {\bfseries Decode} (const std\+::string \&s)
+\begin{DoxyCompactList}\small\item\em Returns a decoded string for the base64-\/encoded string {\ttfamily s} on success, an empty string on failure. \end{DoxyCompactList}\item 
+static std\+::ostream \& \mbox{\hyperlink{classDwm_1_1Base64_a5c0293668b284664a46d97ebbf49b632}{Encode}} (std\+::istream \&is, std\+::ostream \&os)
+\begin{DoxyCompactList}\small\item\em \doxylink{classDwm_1_1Base64}{Base64} encodes the contents of istream {\ttfamily is} into the ostream @ c os. \end{DoxyCompactList}\item 
+static std\+::ostream \& \mbox{\hyperlink{classDwm_1_1Base64_a04a72f3f542a5c50b17f642405f44e8a}{Decode}} (std\+::istream \&is, std\+::ostream \&os)
+\begin{DoxyCompactList}\small\item\em Decodes the base64 encoded contents of istream {\ttfamily is} into the ostream {\ttfamily os}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+RFC 4648 base64 encoding and decoding functions. 
+
+Uses the alphabet from Table 1 of RFC 4648. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1Base64_a04a72f3f542a5c50b17f642405f44e8a}\index{Dwm::Base64@{Dwm::Base64}!Decode@{Decode}}
+\index{Decode@{Decode}!Dwm::Base64@{Dwm::Base64}}
+\doxysubsubsection{\texorpdfstring{Decode()}{Decode()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Base64_a04a72f3f542a5c50b17f642405f44e8a} 
+static std\+::ostream \& Dwm\+::\+Base64\+::\+Decode (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{is}{, }\item[{std\+::ostream \&}]{os}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Decodes the base64 encoded contents of istream {\ttfamily is} into the ostream {\ttfamily os}. 
+
+Returns the ostream {\ttfamily os}. Note that the failbit will be set on both streams on failure. A typical cause of failure would be an invalid character in the input stream {\ttfamily is}. \Hypertarget{classDwm_1_1Base64_a5c0293668b284664a46d97ebbf49b632}\index{Dwm::Base64@{Dwm::Base64}!Encode@{Encode}}
+\index{Encode@{Encode}!Dwm::Base64@{Dwm::Base64}}
+\doxysubsubsection{\texorpdfstring{Encode()}{Encode()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Base64_a5c0293668b284664a46d97ebbf49b632} 
+static std\+::ostream \& Dwm\+::\+Base64\+::\+Encode (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{is}{, }\item[{std\+::ostream \&}]{os}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+\doxylink{classDwm_1_1Base64}{Base64} encodes the contents of istream {\ttfamily is} into the ostream @ c os. 
+
+Returns the ostream {\ttfamily os}. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmBase64_8hh}{Dwm\+Base64.\+hh}}\end{DoxyCompactItemize}

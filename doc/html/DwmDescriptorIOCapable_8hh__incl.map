@@ -1,0 +1,7 @@
+<map id="DwmDescriptorIOCapable.hh" name="DwmDescriptorIOCapable.hh">
+<area shape="rect" id="Node000001" title="Dwm::DescriptorReadable, Dwm::DescriptorWritable and Dwm::DescriptorIOCapable pure virtual class decl..." alt="" coords="5,5,198,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="6,79,96,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,33,70,68,66,65,91,30"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="120,79,184,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="112,30,137,65,133,68,108,33"/>
+</map>

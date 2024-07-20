@@ -1,0 +1,66 @@
+\doxysection{Dwm\+Portability.\+hh File Reference}
+\hypertarget{DwmPortability_8hh}{}\label{DwmPortability_8hh}\index{DwmPortability.hh@{DwmPortability.hh}}
+
+
+A configure target for dealing with OS differences.  
+
+
+{\ttfamily \#include $<$Core\+Foundation/\+CFByte\+Order.\+h$>$}\newline
+Include dependency graph for Dwm\+Portability.\+hh\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{DwmPortability_8hh__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{DwmPortability_8hh__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{DwmPortability_8hh_a2cc9bbf5884ebdf8913fbfa7aa846d1c}\label{DwmPortability_8hh_a2cc9bbf5884ebdf8913fbfa7aa846d1c} 
+\#define {\bfseries HAVE\+\_\+\+CFBYTE\+\_\+\+ORDER\+\_\+H}~1
+\item 
+\Hypertarget{DwmPortability_8hh_af94eb043f5be14b4f260fb9b4c89ca2e}\label{DwmPortability_8hh_af94eb043f5be14b4f260fb9b4c89ca2e} 
+\#define {\bfseries be64toh}(x)~OSSwap\+Big\+To\+Host\+Int64((x))
+\item 
+\Hypertarget{DwmPortability_8hh_a5c81b75e6da4507e0a90b6f6169c4787}\label{DwmPortability_8hh_a5c81b75e6da4507e0a90b6f6169c4787} 
+\#define {\bfseries htobe64}(x)~OSSwap\+Host\+To\+Big\+Int64((x))
+\item 
+\Hypertarget{DwmPortability_8hh_a6acac399720b3a57d9050420aa0aac41}\label{DwmPortability_8hh_a6acac399720b3a57d9050420aa0aac41} 
+\#define {\bfseries be32toh}(x)~OSSwap\+Big\+To\+Host\+Int32(x)
+\item 
+\Hypertarget{DwmPortability_8hh_aa65407014913309932b9a5ea3c16a86d}\label{DwmPortability_8hh_aa65407014913309932b9a5ea3c16a86d} 
+\#define {\bfseries htobe32}(x)~OSSwap\+Host\+To\+Big\+Int32(x)
+\item 
+\Hypertarget{DwmPortability_8hh_abb9b3120f6457dc04471c134fee1d221}\label{DwmPortability_8hh_abb9b3120f6457dc04471c134fee1d221} 
+\#define {\bfseries be16toh}(x)~OSSwap\+Big\+To\+Host\+Int16(x)
+\item 
+\Hypertarget{DwmPortability_8hh_a4b9167199621b390f82c3e5361ba6df6}\label{DwmPortability_8hh_a4b9167199621b390f82c3e5361ba6df6} 
+\#define {\bfseries htobe16}(x)~OSSwap\+Host\+To\+Big\+Int16(x)
+\item 
+\Hypertarget{DwmPortability_8hh_a740edf47bd521584cefc8583043ecc95}\label{DwmPortability_8hh_a740edf47bd521584cefc8583043ecc95} 
+\#define {\bfseries HAVE\+\_\+\+CPP11}~1
+\item 
+\Hypertarget{DwmPortability_8hh_ac469d4574664eb30e28a9aa1a8f80372}\label{DwmPortability_8hh_ac469d4574664eb30e28a9aa1a8f80372} 
+\#define {\bfseries HAVE\+\_\+\+CPP17}~1
+\item 
+\Hypertarget{DwmPortability_8hh_adc84d08c1e811e838f387f0da93f071e}\label{DwmPortability_8hh_adc84d08c1e811e838f387f0da93f071e} 
+\#define {\bfseries HAVE\+\_\+\+CPP20}~1
+\item 
+\Hypertarget{DwmPortability_8hh_a710cd5300f0de1104c38dd73cb166831}\label{DwmPortability_8hh_a710cd5300f0de1104c38dd73cb166831} 
+\#define {\bfseries HAVE\+\_\+\+GPLUSPLUS\+\_\+\+VERSION}(MAJOR,  MINOR)~  (\+\_\+\+\_\+\+GNUC\+\_\+\+\_\+ $>$ (MAJOR) \texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|} (\+\_\+\+\_\+\+GNUC\+\_\+\+\_\+ == (MAJOR) \&\& \+\_\+\+\_\+\+GNUC\+\_\+\+MINOR\+\_\+\+\_\+ $>$= (MINOR)))
+\item 
+\Hypertarget{DwmPortability_8hh_ab391c754c29c0ab167c2e5f201fd2ec4}\label{DwmPortability_8hh_ab391c754c29c0ab167c2e5f201fd2ec4} 
+\#define {\bfseries DWM\+\_\+\+HAVE\+\_\+\+STD\+\_\+\+FORMAT}~1
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A configure target for dealing with OS differences. 
+

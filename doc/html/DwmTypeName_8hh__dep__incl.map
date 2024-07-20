@@ -1,0 +1,9 @@
+<map id="DwmTypeName.hh" name="DwmTypeName.hh">
+<area shape="rect" id="Node000001" title="Hackish support for getting the name of a given object&#39;s type, since std::type_info::name() returns a..." alt="" coords="79,5,213,31"/>
+<area shape="rect" id="Node000002" href="$DwmStringUtils_8hh.html" title="Miscellaneous string utilities." alt="" coords="80,79,212,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,46,149,79,143,79,143,46"/>
+<area shape="rect" id="Node000003" href="$DwmOptArgs_8hh.html" title="Dwm::Argument, Dwm::OptArg and Dwm::OptArgs definitions." alt="" coords="5,153,124,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="122,117,80,154,76,150,119,113"/>
+<area shape="rect" id="Node000004" href="$DwmStringConverter_8hh.html" title="Dwm::StringConverter class definition." alt="" coords="148,153,309,178"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="173,113,216,150,213,154,170,117"/>
+</map>

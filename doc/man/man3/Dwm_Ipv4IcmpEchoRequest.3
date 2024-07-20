@@ -1,0 +1,226 @@
+.TH "Dwm::Ipv4IcmpEchoRequest" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::Ipv4IcmpEchoRequest \- Encapsulates an ICMP echo request\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmIpv4IcmpEchoRequest\&.hh>\fP
+.PP
+Inherits \fBDwm::Ipv4IcmpMessage\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBIpv4IcmpEchoRequest\fP ()"
+.br
+.RI "Default constructor\&. "
+.ti -1c
+.RI "\fBIpv4IcmpEchoRequest\fP (uint16_t id, uint16_t seq, const std::string &data)"
+.br
+.RI "Construct from the given identifier \fRid\fP, sequence number \fRseq\fP and \fRdata\fP\&. "
+.ti -1c
+.RI "\fBIpv4IcmpEchoRequest\fP (uint8_t *buf, uint16_t len)"
+.br
+.ti -1c
+.RI "uint16_t \fBIdentifier\fP () const"
+.br
+.RI "Returns the identifier\&. "
+.ti -1c
+.RI "uint16_t \fBIdentifier\fP (uint16_t id)"
+.br
+.RI "Sets and returns the identifier\&. "
+.ti -1c
+.RI "uint16_t \fBSequenceNumber\fP () const"
+.br
+.RI "Returns the sequence number\&. "
+.ti -1c
+.RI "uint16_t \fBSequenceNumber\fP (uint16_t seq)"
+.br
+.RI "Sets and returns the sequence number\&. "
+.ti -1c
+.RI "std::string \fBData\fP () const"
+.br
+.RI "Returns the data as a string\&. "
+.ti -1c
+.RI "std::string \fBData\fP (const std::string &data)"
+.br
+.RI "Sets the data to the given \fRdata\fP\&. Returns the data\&. "
+.ti -1c
+.RI "template<typename T > bool \fBSetData\fP (const T &data)"
+.br
+.RI "Sets the data to the given \fRdata\fP\&. "
+.ti -1c
+.RI "template<typename T > bool \fBGetData\fP (T &data) const"
+.br
+.RI "Copies the enacapsulated data into \fRdata\fP\&. "
+.ti -1c
+.RI "bool \fBSendTo\fP (\fBSocket\fP &s, const \fBIpv4Address\fP &destination)"
+.br
+.RI "Sends the echo request to the given \fRdestination\fP via the given \fBSocket\fP \fRs\fP\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::Ipv4IcmpMessage\fP
+.in +1c
+.ti -1c
+.RI "\fBIpv4IcmpMessage\fP ()"
+.br
+.RI "Default constructor\&. "
+.ti -1c
+.RI "\fB~Ipv4IcmpMessage\fP ()"
+.br
+.RI "Destructor\&. "
+.ti -1c
+.RI "uint8_t \fBType\fP () const"
+.br
+.RI "Returns the ICMP message type\&. "
+.ti -1c
+.RI "uint8_t \fBType\fP (uint8_t type)"
+.br
+.RI "Sets and returns the ICMP message type\&. "
+.ti -1c
+.RI "uint8_t \fBCode\fP () const"
+.br
+.RI "Returns the ICMP message code\&. "
+.ti -1c
+.RI "uint8_t \fBCode\fP (uint8_t code)"
+.br
+.RI "Sets and returns the ICMP message code\&. "
+.ti -1c
+.RI "uint16_t \fBChecksum\fP ()"
+.br
+.RI "Returns the ICMP checksum\&. "
+.ti -1c
+.RI "void \fBSetChecksum\fP ()"
+.br
+.RI "Computes and sets the checksum\&. "
+.ti -1c
+.RI "std::istream & \fBRead\fP (std::istream &is, uint16_t len)"
+.br
+.RI "Reads the message of length \fRlen\fP from an istream\&. "
+.ti -1c
+.RI "std::ostream & \fBWrite\fP (std::ostream &os) const override"
+.br
+.RI "Writes the message to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "ssize_t \fBRead\fP (int fd, uint16_t len)"
+.br
+.RI "Reads the message of length \fRlen\fP from a file descriptor\&. "
+.ti -1c
+.RI "ssize_t \fBWrite\fP (int fd) const override"
+.br
+.RI "Writes the message to a file descriptor\&. "
+.ti -1c
+.RI "size_t \fBRead\fP (FILE *f, uint16_t len)"
+.br
+.RI "Reads the message of length \fRlen\fP from a FILE\&. "
+.ti -1c
+.RI "size_t \fBWrite\fP (FILE *f) const override"
+.br
+.RI "Writes the message to a FILE\&. Returns 1 on success, 0 on failure\&. "
+.ti -1c
+.RI "int \fBRead\fP (gzFile gzf, uint16_t len)"
+.br
+.RI "Reads the message of length \fRlen\fP from a gzFile\&. "
+.ti -1c
+.RI "int \fBWrite\fP (gzFile gzf) const override"
+.br
+.RI "Writes the message to a gzFile\&. "
+.ti -1c
+.RI "int \fBBZRead\fP (BZFILE *bzf, uint16_t len)"
+.br
+.RI "Reads the message of length \fRlen\fP from a BZFILE\&. "
+.ti -1c
+.RI "int \fBBZWrite\fP (BZFILE *bzf) const override"
+.br
+.RI "Writes the message to a BZFILE\&. "
+.ti -1c
+.RI "uint64_t \fBStreamedLength\fP () const override"
+.br
+.RI "Returns the number of bytes that would be written if we called one of the \fBWrite()\fP members\&. "
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBIpv4IcmpMessage\fP &msg) const"
+.br
+.RI "operator == "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::DescriptorWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~DescriptorWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::FileWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~FileWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::StreamWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~StreamWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::GZWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~GZWritable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+.SS "Additional Inherited Members"
+
+
+Protected Member Functions inherited from \fBDwm::Ipv4IcmpMessage\fP
+.in +1c
+.ti -1c
+.RI "void \fBFree\fP ()"
+.br
+.ti -1c
+.RI "void \fBAllocate\fP (uint16_t len)"
+.br
+.ti -1c
+.RI "void \fBReallocate\fP (uint16_t len)"
+.br
+.in -1c
+
+Protected Attributes inherited from \fBDwm::Ipv4IcmpMessage\fP
+.in +1c
+.ti -1c
+.RI "std::pair< uint16_t, uint8_t * > \fB_data\fP"
+.br
+.ti -1c
+.RI "bool \fB_ownData\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Encapsulates an ICMP echo request\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "template<typename T > bool Dwm::Ipv4IcmpEchoRequest::GetData (T & data) const\fR [inline]\fP"
+
+.PP
+Copies the enacapsulated data into \fRdata\fP\&. Note that \fRdata\fP must be readable via \fBDwm::StreamIO\fP, which means it must be a type supported by \fBDwm::StreamIO\fP or a type derived from \fBDwm::StreamReadable\fP\&. Returns true on success, false on failure\&. 
+.SS "bool Dwm::Ipv4IcmpEchoRequest::SendTo (\fBSocket\fP & s, const \fBIpv4Address\fP & destination)"
+
+.PP
+Sends the echo request to the given \fRdestination\fP via the given \fBSocket\fP \fRs\fP\&. Returns true on success, false on failure\&. 
+.SS "template<typename T > bool Dwm::Ipv4IcmpEchoRequest::SetData (const T & data)\fR [inline]\fP"
+
+.PP
+Sets the data to the given \fRdata\fP\&. Note that \fRdata\fP must be writable via \fBDwm::StreamIO\fP, which means it must be a type supported by \fBDwm::StreamIO\fP or a type derived from \fBDwm::StreamWritable\fP\&. Returns true on success, false on failure\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

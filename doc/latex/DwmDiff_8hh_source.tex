@@ -1,0 +1,150 @@
+\doxysection{Dwm\+Diff.\+hh}
+\hypertarget{DwmDiff_8hh_source}{}\label{DwmDiff_8hh_source}\index{DwmDiff.hh@{DwmDiff.hh}}
+\mbox{\hyperlink{DwmDiff_8hh}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ @(\#)\ \$DwmPath:\ dwm/libDwm/trunk/include/DwmDiff.hh\ 10303\ \$}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ \ Copyright\ (c)\ Daniel\ W.\ McRobb\ 2016,\ 2019,\ 2020}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ \ All\ rights\ reserved.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ \ Redistribution\ and\ use\ in\ source\ and\ binary\ forms,\ with\ or\ without}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ \ modification,\ are\ permitted\ provided\ that\ the\ following\ conditions}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ \ are\ met:}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ \ 1.\ Redistributions\ of\ source\ code\ must\ retain\ the\ above\ copyright}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ \ \ \ \ notice,\ this\ list\ of\ conditions\ and\ the\ following\ disclaimer.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ \ 2.\ Redistributions\ in\ binary\ form\ must\ reproduce\ the\ above\ copyright}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ \ \ \ \ notice,\ this\ list\ of\ conditions\ and\ the\ following\ disclaimer\ in\ the}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ \ \ \ \ documentation\ and/or\ other\ materials\ provided\ with\ the\ distribution.}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ \ 3.\ The\ names\ of\ the\ authors\ and\ copyright\ holders\ may\ not\ be\ used\ to}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ \ \ \ \ endorse\ or\ promote\ products\ derived\ from\ this\ software\ without}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ \ \ \ \ specific\ prior\ written\ permission.}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ \ IN\ NO\ EVENT\ SHALL\ DANIEL\ W.\ MCROBB\ BE\ LIABLE\ TO\ ANY\ PARTY\ FOR}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ \ DIRECT,\ INDIRECT,\ SPECIAL,\ INCIDENTAL,\ OR\ CONSEQUENTIAL\ DAMAGES,}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ \ INCLUDING\ LOST\ PROFITS,\ ARISING\ OUT\ OF\ THE\ USE\ OF\ THIS\ SOFTWARE,}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ \ EVEN\ IF\ DANIEL\ W.\ MCROBB\ HAS\ BEEN\ ADVISED\ OF\ THE\ POSSIBILITY\ OF\ SUCH}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ \ DAMAGE.}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ \ THE\ SOFTWARE\ PROVIDED\ HEREIN\ IS\ ON\ AN\ "{}AS\ IS"{}\ BASIS,\ AND}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ \ DANIEL\ W.\ MCROBB\ HAS\ NO\ OBLIGATION\ TO\ PROVIDE\ MAINTENANCE,\ SUPPORT,}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ \ UPDATES,\ ENHANCEMENTS,\ OR\ MODIFICATIONS.\ DANIEL\ W.\ MCROBB\ MAKES\ NO}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ \ REPRESENTATIONS\ AND\ EXTENDS\ NO\ WARRANTIES\ OF\ ANY\ KIND,\ EITHER}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ \ IMPLIED\ OR\ EXPRESS,\ INCLUDING,\ BUT\ NOT\ LIMITED\ TO,\ THE\ IMPLIED}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ \ WARRANTIES\ OF\ MERCHANTABILITY\ OR\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE,}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ \ OR\ THAT\ THE\ USE\ OF\ THIS\ SOFTWARE\ WILL\ NOT\ INFRINGE\ ANY\ PATENT,}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ \ TRADEMARK\ OR\ OTHER\ RIGHTS.}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#ifndef\ \_DWMDIFF\_HH\_}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ \_DWMDIFF\_HH\_}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{keyword}{namespace\ }Dwm\ \{}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00057\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ InputIt1,\ \textcolor{keyword}{class}\ InputIt2,\ \textcolor{keyword}{class}\ OutputCont>}
+\DoxyCodeLine{00059\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{DwmDiff_8hh_aaa5e19838961d0364c65d89e488e2231}{Diff}}(InputIt1\ first1,\ InputIt1\ last1,}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ InputIt2\ first2,\ InputIt2\ last2,}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ OutputCont\ \&\ in1not2,\ OutputCont\ \&\ in2not1)}
+\DoxyCodeLine{00062\ \ \ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keyword}{using\ }in1ItCat\ =}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \textcolor{keyword}{typename}\ std::iterator\_traits<InputIt1>::iterator\_category;}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_convertible\_v<in1ItCat,\ std::input\_iterator\_tag>,}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}InputIt1\ must\ be\ an\ input\ iterator"{}});}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{using\ }in2ItCat\ =}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \textcolor{keyword}{typename}\ std::iterator\_traits<InputIt2>::iterator\_category;}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_convertible\_v<in2ItCat,\ std::input\_iterator\_tag>,}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}InputIt2\ must\ be\ an\ input\ iterator"{}});}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{comment}{//\ xxx:\ Until\ C++20\ Concepts,\ we\ don't\ have\ a\ great\ way\ to\ check}}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{comment}{//\ that\ OutputCont\ iterators\ meet\ the\ requirements\ of}}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{comment}{//\ LegacyOutputIterator.\ \ But\ since\ we're\ going\ to\ construct\ a}}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{comment}{//\ std::inserter,\ we\ can\ at\ least\ check\ that\ it\ is\ in\ output\ iterator.}}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{comment}{//\ This\ is\ really\ a\ placeholder\ 'til\ we\ have\ something\ more\ sane.}}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keyword}{using\ \ }outItCat\ =}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keyword}{typename}\ std::iterator\_traits<decltype(std::inserter<OutputCont>(in1not2,\ in1not2.end()))>::iterator\_category;}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_convertible\_v<outItCat,\ std::output\_iterator\_tag>,}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}OutputCont::iterator\ does\ not\ meet\ requirements\ of"{}}}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ LegacyOutputIterator"{}});}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{comment}{//\ \ Populate\ in1not2\ with\ elements\ from\ [first1,last1)\ that\ are\ not}}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{comment}{//\ \ found\ in\ [first2,last2)}}
+\DoxyCodeLine{00085\ \ \ \ \ set\_difference(first1,\ last1,\ first2,\ last2,}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::inserter(in1not2,\ in1not2.end()));}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{comment}{//\ \ Populate\ in2not1\ with\ elements\ from\ [first2,last2)\ that\ are\ not}}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{comment}{//\ \ found\ in\ [first1,last1)}}
+\DoxyCodeLine{00089\ \ \ \ \ set\_difference(first2,\ last2,\ first1,\ last1,}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::inserter(in2not1,\ in2not1.end()));}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00102\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ InputIt1,\ \textcolor{keyword}{class}\ InputIt2,\ \textcolor{keyword}{class}\ OutputCont,\ \textcolor{keyword}{class}\ Compare>}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{DwmDiff_8hh_aaa5e19838961d0364c65d89e488e2231}{Diff}}(InputIt1\ first1,\ InputIt1\ last1,}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ InputIt2\ first2,\ InputIt2\ last2,}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ OutputCont\ \&\ in1not2,\ OutputCont\ \&\ in2not1,\ Compare\ comp)}
+\DoxyCodeLine{00107\ \ \ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keyword}{using\ }in1ItCat\ =}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \textcolor{keyword}{typename}\ std::iterator\_traits<InputIt1>::iterator\_category;}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keyword}{using\ }in2ItCat\ =}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \textcolor{keyword}{typename}\ std::iterator\_traits<InputIt2>::iterator\_category;}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_convertible\_v<in1ItCat,\ std::input\_iterator\_tag>,}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}InputIt1\ must\ be\ an\ input\ iterator"{}});}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_convertible\_v<in2ItCat,\ std::input\_iterator\_tag>,}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}InputIt2\ must\ be\ an\ input\ iterator"{}});}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{comment}{//\ xxx:\ Until\ C++20\ Concepts,\ we\ don't\ have\ a\ great\ way\ to\ check}}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{comment}{//\ that\ OutputCont\ iterators\ meet\ the\ requirements\ of}}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{comment}{//\ LegacyOutputIterator.\ \ But\ since\ we're\ going\ to\ construct\ a}}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{comment}{//\ std::inserter,\ we\ can\ at\ least\ check\ that\ it\ is\ in\ output\ iterator.}}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{comment}{//\ This\ is\ really\ a\ placeholder\ 'til\ we\ have\ something\ more\ sane.}}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keyword}{using\ \ }outItCat\ =}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \textcolor{keyword}{typename}\ std::iterator\_traits<decltype(std::inserter<OutputCont>(in1not2,\ in1not2.end()))>::iterator\_category;}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_convertible\_v<outItCat,\ std::output\_iterator\_tag>,}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}OutputCont::iterator\ does\ not\ meet\ requirements\ of"{}}}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ LegacyOutputIterator"{}});}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{comment}{//\ \ Populate\ in1not2\ with\ elements\ from\ [first1,last1)\ that\ are\ not}}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{comment}{//\ \ found\ in\ [first2,last2)}}
+\DoxyCodeLine{00129\ \ \ \ \ set\_difference(first1,\ last1,\ first2,\ last2,}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::inserter(in1not2,\ in1not2.end()));}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{comment}{//\ \ Populate\ in2not1\ with\ elements\ from\ [first2,last2)\ that\ are\ not}}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{comment}{//\ \ found\ in\ [first1,last1)}}
+\DoxyCodeLine{00133\ \ \ \ \ set\_difference(first2,\ last2,\ first1,\ last1,}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::inserter(in2not1,\ in2not1.end()));}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00136\ \ \ \}}
+\DoxyCodeLine{00137\ \ \ }
+\DoxyCodeLine{00138\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00145\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00146\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ InputCont,\ \textcolor{keyword}{class}\ OutputCont>}
+\DoxyCodeLine{00147\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{DwmDiff_8hh_aaa5e19838961d0364c65d89e488e2231}{Diff}}(\textcolor{keyword}{const}\ InputCont\ \&\ in1,\ \textcolor{keyword}{const}\ InputCont\ \&\ in2,}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ OutputCont\ \&\ in1not2,\ OutputCont\ \&\ in2not1)}
+\DoxyCodeLine{00149\ \ \ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{DwmDiff_8hh_aaa5e19838961d0364c65d89e488e2231}{Diff}}(in1.begin(),\ in1.end(),\ in2.begin(),\ in2.end(),}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ in1not2,\ in2not1);}
+\DoxyCodeLine{00152\ \ \ \}}
+\DoxyCodeLine{00153\ \ \ }
+\DoxyCodeLine{00154\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00162\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ InputCont,\ \textcolor{keyword}{class}\ OutputCont,\ \textcolor{keyword}{class}\ Compare>}
+\DoxyCodeLine{00164\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{DwmDiff_8hh_aaa5e19838961d0364c65d89e488e2231}{Diff}}(\textcolor{keyword}{const}\ InputCont\ \&\ in1,\ \textcolor{keyword}{const}\ InputCont\ \&\ in2,}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ \ \ OutputCont\ \&\ in1not2,\ OutputCont\ \&\ in2not1,\ Compare\ comp)}
+\DoxyCodeLine{00166\ \ \ \{}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{DwmDiff_8hh_aaa5e19838961d0364c65d89e488e2231}{Diff}}(in1.begin(),\ in1.end(),\ in2.begin(),\ in2.end(),}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ in1not2,\ in2not1,\ comp);}
+\DoxyCodeLine{00169\ \ \ \}}
+\DoxyCodeLine{00170\ \ \ }
+\DoxyCodeLine{00171\ \}\ \ \textcolor{comment}{//\ namespace\ Dwm}}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ \_DWMDIFF\_HH\_}}
+
+\end{DoxyCode}

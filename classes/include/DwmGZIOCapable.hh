@@ -52,6 +52,22 @@ extern "C" {
 namespace Dwm {
 
   //--------------------------------------------------------------------------
+  //!  T has a Read(gzFile) member that returns int.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept HasGZRead = requires(T t, gzFile gzf) {
+    { t.Read(gzf) } -> std::same_as<int>;
+  };
+  
+  //--------------------------------------------------------------------------
+  //!  T has a Write(gzFile) const member that returns int.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept HasGZWrite = requires(T t, gzFile gzf) {
+    { ((const T)t).Write(gzf) } -> std::same_as<int>;
+  };
+      
+  //--------------------------------------------------------------------------
   //!  This class is a pure virtual class, defining an interface for
   //!  classes that can read their contents from a gzFile.
   //--------------------------------------------------------------------------

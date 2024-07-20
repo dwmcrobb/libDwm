@@ -52,10 +52,9 @@ static const char storeFile[] = "/tmp/Ipv4Address.store";
 #include <fstream>
 
 #include "DwmIpv4Address.hh"
-#include "DwmSvnTag.hh"
+#include "DwmFileIO.hh"
+#include "DwmStreamIO.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestIpv4Address.cc 8939 $");
 
 using namespace std;
 using namespace Dwm;
@@ -150,6 +149,65 @@ void TestOperators()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+void TestIOStreamConcept()
+{
+  Ipv4Address  addr1("192.168.168.1");
+  Ipv4Address  addr2("128.16.5.7");
+  Ipv4Address  addr3, addr4;
+
+  ofstream  os(storeFile);
+  if (UnitAssert(os)) {
+    if (UnitAssert(StreamIO::Write(os, addr1))) {
+      UnitAssert(StreamIO::Write(os, addr2));
+    }
+    os.close();
+    ifstream  is(storeFile);
+    if (UnitAssert(is)) {
+      if (UnitAssert(StreamIO::Read(is, addr3))) {
+        UnitAssert(StreamIO::Read(is, addr4));
+        UnitAssert(addr1 == addr3);
+        UnitAssert(addr2 == addr4);
+      }
+      is.close();
+    }
+    std::remove(storeFile);
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+void TestFileIOConcept()
+{
+  Ipv4Address  addr1("192.168.168.1");
+  Ipv4Address  addr2("128.16.5.7");
+  Ipv4Address  addr3, addr4;
+
+  FILE  *f = fopen(storeFile, "wb");
+  if (UnitAssert(f)) {
+    if (UnitAssert(FileIO::Write(f, addr1))) {
+      UnitAssert(FileIO::Write(f, addr2));
+    }
+    fclose(f);
+    f = fopen(storeFile, "rb");
+    if (UnitAssert(f)) {
+      if (UnitAssert(FileIO::Read(f, addr3))) {
+        if (UnitAssert(FileIO::Read(f, addr4))) {
+          UnitAssert(addr1 == addr3);
+          UnitAssert(addr2 == addr4);
+        }
+      }
+      fclose(f);
+    }
+    std::remove(storeFile);
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 void TestIO()
 {
   Ipv4Address  addr1("192.168.168.1");
@@ -221,7 +279,9 @@ int main(int argc, char *argv[])
 {
   TestOperators();
   TestIO();
-
+  TestIOStreamConcept();
+  TestFileIOConcept();
+  
   if (Assertions::Total().Failed()) {
     Assertions::Print(cerr, true);
   }

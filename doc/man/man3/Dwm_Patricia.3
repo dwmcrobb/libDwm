@@ -1,0 +1,168 @@
+.TH "Dwm::Patricia< KeyType, ValueType, KeyEqual >" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::Patricia< KeyType, ValueType, KeyEqual > \- Pre-declare the \fBPatricia\fP class template\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmPatricia\&.hh>\fP
+.PP
+Inherits \fBDwm::DescriptorIOCapable\fP, \fBDwm::StreamIOCapable\fP, and \fBDwm::StreamedLengthCapable\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBPatricia\fP ()"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "\fB~Patricia\fP ()"
+.br
+.RI "Destructor\&. "
+.ti -1c
+.RI "uint32_t \fBSize\fP () const"
+.br
+.ti -1c
+.RI "void \fBClear\fP ()"
+.br
+.ti -1c
+.RI "\fBPatriciaNode\fP< KeyType, ValueType > * \fBInsert\fP (const KeyType &key, const ValueType &data)"
+.br
+.RI "Inserts a new (key, data) pair in the \fBPatricia\fP trie, and returns the new node\&. "
+.ti -1c
+.RI "bool \fBLookup\fP (const KeyType &key, ValueType &value) const"
+.br
+.RI "Searches for the given key\&. "
+.ti -1c
+.RI "\fBPatriciaNode\fP< KeyType, ValueType > * \fBLookupNode\fP (const KeyType &key) const"
+.br
+.RI "Search for the given key, and returns the node that contains it (or NULL)\&. "
+.ti -1c
+.RI "\fBPatriciaNode\fP< KeyType, ValueType > * \fBLongestMatchNode\fP (const KeyType &key) const"
+.br
+.ti -1c
+.RI "\fBPatriciaNode\fP< KeyType, ValueType > * \fBLongestMatchNode2\fP (const KeyType &key) const"
+.br
+.RI "DOESN'T WORK PROPERLY\&. "
+.ti -1c
+.RI "bool \fBDelete\fP (const KeyType &key)"
+.br
+.RI "Remove the node containing the given key\&. "
+.ti -1c
+.RI "void \fBRecursivePrint\fP () const"
+.br
+.ti -1c
+.RI "uint64_t \fBStreamedLength\fP () const override"
+.br
+.RI "Return the number of bytes that would be written if the object's Write(ostream &), Write(FILE *) or Write(int) member were called\&. "
+.ti -1c
+.RI "std::istream & \fBRead\fP (std::istream &is) override"
+.br
+.RI "Read from an istream\&. Return the istream\&. "
+.ti -1c
+.RI "std::ostream & \fBWrite\fP (std::ostream &os) const override"
+.br
+.RI "Write to an ostream\&. Return the ostream\&. "
+.ti -1c
+.RI "ssize_t \fBRead\fP (int fd) override"
+.br
+.RI "Read from a file descriptor\&. "
+.ti -1c
+.RI "ssize_t \fBWrite\fP (int fd) const override"
+.br
+.RI "Write to a file descriptor\&. "
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBPatricia\fP< KeyType, ValueType > &pt) const"
+.br
+.in -1c
+
+Public Member Functions inherited from \fBDwm::DescriptorReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~DescriptorReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::DescriptorWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~DescriptorWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::StreamReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~StreamReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::StreamWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~StreamWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.SS "template<typename KeyType, typename ValueType, typename KeyEqual = std::equal_to<KeyType>>
+.br
+class Dwm::Patricia< KeyType, ValueType, KeyEqual >"Pre-declare the \fBPatricia\fP class template\&. 
+
+Implements a \fBPatricia\fP trie structure with keys of type KeyType\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "template<typename KeyType , typename ValueType , typename KeyEqual  = std::equal_to<KeyType>> bool \fBDwm::Patricia\fP< KeyType, ValueType, KeyEqual >::Delete (const KeyType & key)\fR [inline]\fP"
+
+.PP
+Remove the node containing the given key\&. Returns true if the operation succeeded, false otherwise\&. 
+.SS "template<typename KeyType , typename ValueType , typename KeyEqual  = std::equal_to<KeyType>> bool \fBDwm::Patricia\fP< KeyType, ValueType, KeyEqual >::Lookup (const KeyType & key, ValueType & value) const\fR [inline]\fP"
+
+.PP
+Searches for the given key\&. If the key is found, Copies the associated value into \fRvalue\fP and returns true\&. If the key is not found, returns false\&. 
+.SS "template<typename KeyType , typename ValueType , typename KeyEqual  = std::equal_to<KeyType>> \fBPatriciaNode\fP< KeyType, ValueType > * \fBDwm::Patricia\fP< KeyType, ValueType, KeyEqual >::LookupNode (const KeyType & key) const\fR [inline]\fP"
+
+.PP
+Search for the given key, and returns the node that contains it (or NULL)\&. XXX - does this work properly? 
+.SS "template<typename KeyType , typename ValueType , typename KeyEqual  = std::equal_to<KeyType>> ssize_t \fBDwm::Patricia\fP< KeyType, ValueType, KeyEqual >::Read (int fd)\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Read from a file descriptor\&. Returns the number of bytes read on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::DescriptorReadable\fP\&.
+.SS "template<typename KeyType , typename ValueType , typename KeyEqual  = std::equal_to<KeyType>> std::istream & \fBDwm::Patricia\fP< KeyType, ValueType, KeyEqual >::Read (std::istream & is)\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Read from an istream\&. Return the istream\&. 
+.PP
+Implements \fBDwm::StreamReadable\fP\&.
+.SS "template<typename KeyType , typename ValueType , typename KeyEqual  = std::equal_to<KeyType>> uint64_t \fBDwm::Patricia\fP< KeyType, ValueType, KeyEqual >::StreamedLength () const\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Return the number of bytes that would be written if the object's Write(ostream &), Write(FILE *) or Write(int) member were called\&. These members would be inherited from \fBStreamWritable\fP, \fBFileWritable\fP or \fBDescriptorWritable\fP, respectively\&. 
+.PP
+Implements \fBDwm::StreamedLengthCapable\fP\&.
+.SS "template<typename KeyType , typename ValueType , typename KeyEqual  = std::equal_to<KeyType>> ssize_t \fBDwm::Patricia\fP< KeyType, ValueType, KeyEqual >::Write (int fd) const\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Write to a file descriptor\&. Return the number of bytes written on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::DescriptorWritable\fP\&.
+.SS "template<typename KeyType , typename ValueType , typename KeyEqual  = std::equal_to<KeyType>> std::ostream & \fBDwm::Patricia\fP< KeyType, ValueType, KeyEqual >::Write (std::ostream & os) const\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Write to an ostream\&. Return the ostream\&. 
+.PP
+Implements \fBDwm::StreamWritable\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

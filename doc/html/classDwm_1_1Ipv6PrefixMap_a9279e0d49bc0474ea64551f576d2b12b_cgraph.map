@@ -1,0 +1,5 @@
+<map id="Dwm::Ipv6PrefixMap::Remove" name="Dwm::Ipv6PrefixMap::Remove">
+<area shape="rect" id="Node000001" title="Removes the entry for the given prefix pfx." alt="" coords="5,5,150,46"/>
+<area shape="rect" id="Node000002" href="$classDwm_1_1Ipv6Prefix.html#aebc8751134f5301a5fab4661978d687b" title="Returns the netmask length." alt="" coords="198,13,396,39"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,23,182,23,182,28,150,28"/>
+</map>

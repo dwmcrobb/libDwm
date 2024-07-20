@@ -1,0 +1,898 @@
+\doxysection{Dwm\+Patricia.\+hh}
+\hypertarget{DwmPatricia_8hh_source}{}\label{DwmPatricia_8hh_source}\index{DwmPatricia.hh@{DwmPatricia.hh}}
+\mbox{\hyperlink{DwmPatricia_8hh}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ @(\#)\ \$DwmPath\$}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ \ Copyright\ (c)\ Daniel\ W.\ McRobb\ 2006-\/2007,\ 2020}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ \ All\ rights\ reserved.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ \ Redistribution\ and\ use\ in\ source\ and\ binary\ forms,\ with\ or\ without}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ \ modification,\ are\ permitted\ provided\ that\ the\ following\ conditions}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ \ are\ met:}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ \ 1.\ Redistributions\ of\ source\ code\ must\ retain\ the\ above\ copyright}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ \ \ \ \ notice,\ this\ list\ of\ conditions\ and\ the\ following\ disclaimer.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ \ 2.\ Redistributions\ in\ binary\ form\ must\ reproduce\ the\ above\ copyright}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ \ \ \ \ notice,\ this\ list\ of\ conditions\ and\ the\ following\ disclaimer\ in\ the}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ \ \ \ \ documentation\ and/or\ other\ materials\ provided\ with\ the\ distribution.}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ \ 3.\ The\ names\ of\ the\ authors\ and\ copyright\ holders\ may\ not\ be\ used\ to}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ \ \ \ \ endorse\ or\ promote\ products\ derived\ from\ this\ software\ without}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ \ \ \ \ specific\ prior\ written\ permission.}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ \ IN\ NO\ EVENT\ SHALL\ DANIEL\ W.\ MCROBB\ BE\ LIABLE\ TO\ ANY\ PARTY\ FOR}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ \ DIRECT,\ INDIRECT,\ SPECIAL,\ INCIDENTAL,\ OR\ CONSEQUENTIAL\ DAMAGES,}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ \ INCLUDING\ LOST\ PROFITS,\ ARISING\ OUT\ OF\ THE\ USE\ OF\ THIS\ SOFTWARE,}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ \ EVEN\ IF\ DANIEL\ W.\ MCROBB\ HAS\ BEEN\ ADVISED\ OF\ THE\ POSSIBILITY\ OF\ SUCH}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ \ DAMAGE.}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ \ THE\ SOFTWARE\ PROVIDED\ HEREIN\ IS\ ON\ AN\ "{}AS\ IS"{}\ BASIS,\ AND}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ \ DANIEL\ W.\ MCROBB\ HAS\ NO\ OBLIGATION\ TO\ PROVIDE\ MAINTENANCE,\ SUPPORT,}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ \ UPDATES,\ ENHANCEMENTS,\ OR\ MODIFICATIONS.\ DANIEL\ W.\ MCROBB\ MAKES\ NO}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ \ REPRESENTATIONS\ AND\ EXTENDS\ NO\ WARRANTIES\ OF\ ANY\ KIND,\ EITHER}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ \ IMPLIED\ OR\ EXPRESS,\ INCLUDING,\ BUT\ NOT\ LIMITED\ TO,\ THE\ IMPLIED}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ \ WARRANTIES\ OF\ MERCHANTABILITY\ OR\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE,}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ \ OR\ THAT\ THE\ USE\ OF\ THIS\ SOFTWARE\ WILL\ NOT\ INFRINGE\ ANY\ PATENT,}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ \ TRADEMARK\ OR\ OTHER\ RIGHTS.}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#ifndef\ \_PATRICIA\_HH\_}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#define\ \_PATRICIA\_HH\_}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\ \ \#include\ <stdlib.h>}}
+\DoxyCodeLine{00047\ \}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{DwmIOUtils_8hh}{DwmIOUtils.hh}}"{}}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{DwmDescriptorIO_8hh}{DwmDescriptorIO.hh}}"{}}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{DwmStreamIO_8hh}{DwmStreamIO.hh}}"{}}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \textcolor{keyword}{namespace\ }Dwm\ \{}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00061\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ KeyType>}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ GetBit(\textcolor{keyword}{const}\ KeyType\ \&\ key,\ \textcolor{keywordtype}{int}\ bit)}
+\DoxyCodeLine{00064\ \ \ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{if}\ (bit\ <\ 0)}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(2);}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{if}\ ((\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int})bit\ <\ \textcolor{keyword}{sizeof}(KeyType)\ *\ 8)\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t\ *p\ =\ (\textcolor{keyword}{const}\ uint8\_t\ *)(\&key);}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(((p[bit\ >>\ 3])\ >>\ (7\ -\/\ (bit\ \&\ 0x7)))\ \&\ 0x1);}
+\DoxyCodeLine{00070\ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{return}(0);}
+\DoxyCodeLine{00072\ \ \ \}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00076\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ KeyType>}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ BitFirstDifferent(\textcolor{keyword}{const}\ KeyType\ \&\ key1,\ \textcolor{keyword}{const}\ KeyType\ \&\ key2)}
+\DoxyCodeLine{00079\ \ \ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ n\ =\ 0;}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordtype}{int}\ d\ =\ 0;}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t\ \ *p1\ =\ (\textcolor{keyword}{const}\ uint8\_t\ *)\&key1;}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t\ \ *p2\ =\ (\textcolor{keyword}{const}\ uint8\_t\ *)\&key2;}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{for}\ (\ ;\ n\ <\ \textcolor{keyword}{sizeof}(KeyType);\ ++n)\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p1[n]\ !=\ p2[n])}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00087\ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{if}\ (n\ ==\ \textcolor{keyword}{sizeof}(KeyType))\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{sizeof}(KeyType)\ *\ 8);}
+\DoxyCodeLine{00090\ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (GetBit<uint8\_t>(p1[n],\ d)\ ==\ GetBit<uint8\_t>(p2[n],\ d)\ \&\&\ d\ <\ 8)}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ d++;}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ((n\ <<\ 3)\ +\ d);}
+\DoxyCodeLine{00095\ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \}}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ KeyType>}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ IsMatch(\textcolor{keyword}{const}\ KeyType\ \&\ key1,\ \textcolor{keyword}{const}\ KeyType\ \&\ key2)}
+\DoxyCodeLine{00100\ \ \ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordflow}{return}(key2\ ==\ key1);}
+\DoxyCodeLine{00102\ \ \ \}}
+\DoxyCodeLine{00103\ \ \ }
+\DoxyCodeLine{00104\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00106\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ KeyType,\ \textcolor{keyword}{typename}\ ValueType,\ }
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ KeyEqual>\ \textcolor{keyword}{class\ }Patricia;}
+\DoxyCodeLine{00109\ \ \ }
+\DoxyCodeLine{00110\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00113\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ KeyType,\ \textcolor{keyword}{typename}\ ValueType>}
+\DoxyCodeLine{00115\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode}}}
+\DoxyCodeLine{00116\ \ \ \{}
+\DoxyCodeLine{00117\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00121\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode_aec7378fad570742e55dd0197ab43027e}{PatriciaNode}}()}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ :\ \ \_bitIndex(-\/1),\ \_key(),\ \_data()}
+\DoxyCodeLine{00123\ \ \ \ \ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \_left\ \ =\ \textcolor{keyword}{this};}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \_right\ =\ \textcolor{keyword}{this};}
+\DoxyCodeLine{00126\ \ \ \ \ \}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode_aec7378fad570742e55dd0197ab43027e}{PatriciaNode}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode}}\ \&\ pn)}
+\DoxyCodeLine{00129\ \ \ \ \ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \_key\ =\ pn.\_key;}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \_data\ =\ pn.\_data;}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \_bitIndex\ =\ pn.\_bitIndex;}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pn.\_left\ !=\ \&\ pn)}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \_left\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classDwm_1_1PatriciaNode_aec7378fad570742e55dd0197ab43027e}{PatriciaNode<KeyType,ValueType>}}(pn.\_left);}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \_left\ =\ \textcolor{keyword}{this};}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pn.right\ !=\ \&pn)}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \_right\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classDwm_1_1PatriciaNode_aec7378fad570742e55dd0197ab43027e}{PatriciaNode<KeyType,ValueType>}}(pn.\_right);}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \_right\ =\ \textcolor{keyword}{this};}
+\DoxyCodeLine{00141\ \ \ \ \ \}}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode_aec7378fad570742e55dd0197ab43027e}{PatriciaNode<KeyType,ValueType>}}\ \&\ operator\ =\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classDwm_1_1PatriciaNode_aec7378fad570742e55dd0197ab43027e}{PatriciaNode<KeyType,ValueType>}}\ \&\ pn)}
+\DoxyCodeLine{00144\ \ \ \ \ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\&pn\ !=\ \textcolor{keyword}{this})\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \_key\ =\ pn.\_key;}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \_data\ =\ pn.\_data;}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \_bitIndex\ =\ pn.\_bitIndex;}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pn.\_left\ !=\ \&\ pn)}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ \_left\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classDwm_1_1PatriciaNode_aec7378fad570742e55dd0197ab43027e}{PatriciaNode<KeyType,ValueType>}}(pn.\_left);}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ \_left\ =\ \textcolor{keyword}{this};}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pn.right\ !=\ \&pn)}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \_right\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classDwm_1_1PatriciaNode_aec7378fad570742e55dd0197ab43027e}{PatriciaNode<KeyType,ValueType>}}(pn.\_right);}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ \_right\ =\ \textcolor{keyword}{this};}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00159\ \ \ \ \ \}}
+\DoxyCodeLine{00160\ \ \ \ \ }
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00164\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode_aefdaab488bc74edc54439641273865c2}{PatriciaNode}}(\textcolor{keyword}{const}\ KeyType\ \&\ key,\ \textcolor{keyword}{const}\ ValueType\ \&\ data,\ \textcolor{keywordtype}{int}\ bitIdx,\ }
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ *left,}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ *right)}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ :\ \_bitIndex(bitIdx),\ \_key(key),\ \_data(data),\ \_left(left),\ \_right(right)}
+\DoxyCodeLine{00168\ \ \ \ \ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \}}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00174\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode_a4c2787082eba99123e6df62183b1a199}{\string~PatriciaNode}}()}
+\DoxyCodeLine{00175\ \ \ \ \ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \}}
+\DoxyCodeLine{00177\ \ \ \ \ }
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDwm_1_1PatriciaNode_a1896ad2e575467295928dfd515b1ef5b}{Initialize}}(\textcolor{keyword}{const}\ KeyType\ \&\ key,}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ ValueType\ \&\ data,}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ bitIdx,}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ *left,}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ *right)}
+\DoxyCodeLine{00186\ \ \ \ \ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \_key\ \ \ \ \ \ =\ key;}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \_data\ \ \ \ \ =\ data;}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \_bitIndex\ \ =\ bitIdx;}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \_left\ \ \ \ \ =\ left;}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \_right\ \ \ \ =\ right;}
+\DoxyCodeLine{00192\ \ \ \ \ \}}
+\DoxyCodeLine{00193\ \ \ \ \ }
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00197\ \ \ \ \ ValueType\ \&\ \mbox{\hyperlink{classDwm_1_1PatriciaNode_a169a4e545e2f3c8bb007feef19c058cb}{GetData}}()}
+\DoxyCodeLine{00198\ \ \ \ \ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\_data);}
+\DoxyCodeLine{00200\ \ \ \ \ \}}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1PatriciaNode_a4a41a8c87e54e9332f23d7a4eb182bc5}{SetData}}(\textcolor{keyword}{const}\ ValueType\ \&\ data)}
+\DoxyCodeLine{00206\ \ \ \ \ \{}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \_data\ =\ data;}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{true});}
+\DoxyCodeLine{00209\ \ \ \ \ \}}
+\DoxyCodeLine{00210\ \ \ \ \ }
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00213\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00214\ \ \ \ \ KeyType\ \mbox{\hyperlink{classDwm_1_1PatriciaNode_a88d6cd0a60e5abfd8e412c666f01a1e8}{GetKey}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00215\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\_key);}
+\DoxyCodeLine{00217\ \ \ \ \ \}}
+\DoxyCodeLine{00218\ \ \ \ \ }
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00222\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ *\ \mbox{\hyperlink{classDwm_1_1PatriciaNode_a9d0a4052f0e55a790ea90308b2924d6e}{GetLeft}}()}
+\DoxyCodeLine{00223\ \ \ \ \ \{}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\_left);}
+\DoxyCodeLine{00225\ \ \ \ \ \}}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00230\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ *\ \mbox{\hyperlink{classDwm_1_1PatriciaNode_adae6fbde6102a9151521ba9403896258}{GetRight}}()}
+\DoxyCodeLine{00231\ \ \ \ \ \{}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\_right);}
+\DoxyCodeLine{00233\ \ \ \ \ \}}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00238\ \ \ \ \ uint64\_t\ StreamedLength()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00239\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\mbox{\hyperlink{classDwm_1_1IOUtils_aabf83a333ade467a587f2e10a17c7b5f}{IOUtils::StreamedLength}}(\_key)\ +\ \mbox{\hyperlink{classDwm_1_1IOUtils_aabf83a333ade467a587f2e10a17c7b5f}{IOUtils::StreamedLength}}(\_data));}
+\DoxyCodeLine{00241\ \ \ \ \ \}}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classDwm_1_1PatriciaNode_aec7378fad570742e55dd0197ab43027e}{PatriciaNode<KeyType,ValueType>}}\ \&\ n)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00247\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \textcolor{keywordflow}{return}((\_key\ ==\ n.\_key)\ \&\&\ (\_data\ ==\ n.\_data));}
+\DoxyCodeLine{00249\ \ \ \ \ \}}
+\DoxyCodeLine{00250\ \ \ \ \ }
+\DoxyCodeLine{00251\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }Patricia<KeyType,\ ValueType,\ std::equal\_to<KeyType>\ >;}
+\DoxyCodeLine{00253\ \ \ \ \ int\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_bitIndex;}
+\DoxyCodeLine{00254\ \ \ \ \ KeyType\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_key;}
+\DoxyCodeLine{00255\ \ \ \ \ ValueType\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_data;}
+\DoxyCodeLine{00256\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode_aec7378fad570742e55dd0197ab43027e}{PatriciaNode}}<KeyType,ValueType>\ \ *\_left;}
+\DoxyCodeLine{00257\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode_aec7378fad570742e55dd0197ab43027e}{PatriciaNode}}<KeyType,ValueType>\ \ *\_right;}
+\DoxyCodeLine{00258\ \ \ \};}
+\DoxyCodeLine{00259\ }
+\DoxyCodeLine{00260\ \ \ }
+\DoxyCodeLine{00261\ \ \ class\ \_\_PatriciaIterator\_\_}
+\DoxyCodeLine{00262\ \ \ \{\};}
+\DoxyCodeLine{00263\ \ \ }
+\DoxyCodeLine{00264\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00267\ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00268\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ KeyType,\ \textcolor{keyword}{typename}\ ValueType,\ }
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ KeyEqual\ =\ std::equal\_to<KeyType>\ >}
+\DoxyCodeLine{00270\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classDwm_1_1Patricia}{Patricia}}\ }
+\DoxyCodeLine{00271\ \ \ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classDwm_1_1DescriptorIOCapable}{DescriptorIOCapable}},\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classDwm_1_1StreamIOCapable}{StreamIOCapable}},}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{classDwm_1_1StreamedLengthCapable}{StreamedLengthCapable}}}
+\DoxyCodeLine{00273\ \ \ \{}
+\DoxyCodeLine{00274\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00275\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00278\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1Patricia_af02458b0021ee0bc2c965313fd2bd940}{Patricia}}()\ }
+\DoxyCodeLine{00279\ \ \ \ \ \{}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \textcolor{comment}{//\ Create\ the\ head\ of\ the\ structure.\ The\ head\ is\ never\ moved}}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \textcolor{comment}{//\ around\ in\ the\ trie\ (i.e.\ it\ always\ stays\ at\ the\ top\ of\ the\ structure).}}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \textcolor{comment}{//\ This\ prevents\ further\ complications\ having\ to\ do\ with\ node\ removal.}}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \_head\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}();}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \_size\ =\ 0;}
+\DoxyCodeLine{00285\ \ \ \ \ \}}
+\DoxyCodeLine{00286\ }
+\DoxyCodeLine{00287\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00290\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1Patricia_ab9c78d2e828cb96f4304d2df5e0e3bcb}{\string~Patricia}}()}
+\DoxyCodeLine{00291\ \ \ \ \ \{}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ RecursiveRemove(\_head);}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \textcolor{keyword}{delete}(\_head);}
+\DoxyCodeLine{00294\ \ \ \ \ \}}
+\DoxyCodeLine{00295\ \ \ \ \ }
+\DoxyCodeLine{00296\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00298\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00299\ \ \ \ \ uint32\_t\ Size()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00300\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\_size);}
+\DoxyCodeLine{00302\ \ \ \ \ \}}
+\DoxyCodeLine{00303\ \ \ \ \ }
+\DoxyCodeLine{00304\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00307\ \ \ \ \ \textcolor{keywordtype}{void}\ Clear()}
+\DoxyCodeLine{00308\ \ \ \ \ \{}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ RecursiveRemove(\_head);}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \_head-\/>\_left\ =\ \_head;}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \_head-\/>\_right\ =\ \_head;}
+\DoxyCodeLine{00312\ \ \ \ \ \}}
+\DoxyCodeLine{00313\ \ \ \ \ }
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00317\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00318\ \ \ \ \ PatriciaNode<KeyType,ValueType>\ *}
+\DoxyCodeLine{00319\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1Patricia_a445dc0c0b0bbc8ff2cfbf3912647bb22}{Insert}}(\textcolor{keyword}{const}\ KeyType\ \&\ key,\ \textcolor{keyword}{const}\ ValueType\ \&\ data)}
+\DoxyCodeLine{00320\ \ \ \ \ \{}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \textcolor{comment}{//\ Start\ at\ the\ root\ of\ the\ trie}}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ \ *prev\ =\ \_head;}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ \ *last\ =\ \_head-\/>\_right;}
+\DoxyCodeLine{00324\ \ \ \ \ \ }
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \textcolor{comment}{//\ Navigate\ down\ the\ trie\ and\ look\ for\ the\ key}}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (prev-\/>\_bitIndex\ <\ last-\/>\_bitIndex)\ \{}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ prev\ =\ last;}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ last\ =\ (bit\_get(key,\ last-\/>\_bitIndex)\ ?\ last-\/>\_right\ :\ last-\/>\_left);}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00330\ \ \ \ \ \ }
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (key\_compare(key,\ last-\/>\_key))}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(last);\ \ \textcolor{comment}{//\ key\ is\ already\ in\ the\ trie}}
+\DoxyCodeLine{00333\ \ \ \ \ \ }
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \textcolor{comment}{//\ Find\ the\ first\ bit\ that\ does\ not\ match.}}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ i\ =\ BitFirstDifferent<KeyType>(key,\ last-\/>\_key);}
+\DoxyCodeLine{00336\ }
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \textcolor{comment}{//\ Find\ the\ place\ in\ the\ trie\ to\ insert\ the\ new\ node}}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ prev\ =\ \_head;}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ last\ =\ prev-\/>\_right;}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ ((prev-\/>\_bitIndex\ <\ last-\/>\_bitIndex)\ \&\&\ (last-\/>\_bitIndex\ <\ i))\ \{}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ prev\ =\ last;}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ last\ =\ (bit\_get(key,\ last-\/>\_bitIndex)\ ?\ last-\/>\_right\ :\ last-\/>\_left);}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00344\ \ \ \ \ \ }
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \textcolor{comment}{//\ create\ new\ node}}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ \ *node\ =\ }
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}();}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ node-\/>\mbox{\hyperlink{classDwm_1_1PatriciaNode_a1896ad2e575467295928dfd515b1ef5b}{Initialize}}(key,\ data,\ i,\ }
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (bit\_get(key,\ i)\ ?\ last\ :\ node),}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (bit\_get(key,\ i)\ ?\ node\ :\ last));}
+\DoxyCodeLine{00351\ }
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \textcolor{comment}{//\ Rewire\ the\ parent\ node's\ branch}}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bit\_get(key,\ prev-\/>\_bitIndex))}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ prev-\/>\_right\ =\ node;}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ prev-\/>\_left\ =\ node;}
+\DoxyCodeLine{00357\ \ \ \ \ \ }
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \_size\ +=\ 1;}
+\DoxyCodeLine{00359\ }
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(node);}
+\DoxyCodeLine{00361\ \ \ \ \ \}}
+\DoxyCodeLine{00362\ \ \ \ \ }
+\DoxyCodeLine{00363\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00367\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00368\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1Patricia_aa4de7b6fb68fe19c0e1eade8bfa383d9}{Lookup}}(\textcolor{keyword}{const}\ KeyType\ \&\ key,\ ValueType\ \&\ value)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00369\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \ rc\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ \ *node\ =\ LookupNode(key);}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (node)\ \{}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ value\ =\ node-\/>\_data;}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \ \ rc\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(rc);}
+\DoxyCodeLine{00377\ \ \ \ \ \}}
+\DoxyCodeLine{00378\ \ \ \ \ }
+\DoxyCodeLine{00379\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00382\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00383\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ *\ \mbox{\hyperlink{classDwm_1_1Patricia_a190574e3614b81654dd4735cb24a75bd}{LookupNode}}(\textcolor{keyword}{const}\ KeyType\ \&\ key)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00384\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \textcolor{comment}{//\ Traverse\ the\ Patricia\ (downward)\ until\ we\ find\ an\ upward\ link.}}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ node\ at\ the\ end\ of\ thu\ upward\ link\ has\ a\ key\ that\ exactly}}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \textcolor{comment}{//\ matches\ k,\ return\ the\ node.\ \ Else\ return\ 0.}}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ \ *prev\ =\ \_head;}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ \ *last\ =\ \_head-\/>\_right;}
+\DoxyCodeLine{00390\ \ \ \ \ \ }
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (prev-\/>\_bitIndex\ <\ last-\/>\_bitIndex)\ \{}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ prev\ =\ last;}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \ \ last\ =\ (bit\_get(key,\ last-\/>\_bitIndex)\ ?\ last-\/>\_right\ :\ last-\/>\_left);}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00395\ \ \ \ \ \ }
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (key\_compare(key,\ last-\/>\_key))}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(last);}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(0);}
+\DoxyCodeLine{00400\ \ \ \ \ \}}
+\DoxyCodeLine{00401\ }
+\DoxyCodeLine{00402\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ *}
+\DoxyCodeLine{00403\ \ \ \ \ LongestMatchNode(\textcolor{keyword}{const}\ KeyType\ \&\ key)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00404\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \textcolor{comment}{//\ Traverse\ the\ Patricia\ (downward)\ until\ we\ find\ an\ upward\ link.}}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ node\ at\ the\ end\ of\ thu\ upward\ link\ has\ a\ key\ that\ exactly}}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \textcolor{comment}{//\ matches\ k,\ return\ the\ node.\ \ Else\ return\ 0.}}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ \ *prev\ =\ \_head;}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ \ *last\ =\ \_head-\/>\_right;}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ \ *save\ =\ \_head;}
+\DoxyCodeLine{00411\ \ \ \ \ \ }
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (prev-\/>\_bitIndex\ <\ last-\/>\_bitIndex)\ \{}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (IsMatch<KeyType>(prev-\/>\_key,\ key))}
+\DoxyCodeLine{00414\ \ \ \ \ \ \ \ \ \ \ save\ =\ prev;}
+\DoxyCodeLine{00415\ \ \ \ \ \ \ \ \ prev\ =\ last;}
+\DoxyCodeLine{00416\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (IsMatch<KeyType>(prev-\/>\_key,\ key))}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ \ \ \ \ save\ =\ prev;}
+\DoxyCodeLine{00418\ \ \ \ \ \ \ \ \ last\ =\ (bit\_get(key,\ last-\/>\_bitIndex)\ ?\ last-\/>\_right\ :\ last-\/>\_left);}
+\DoxyCodeLine{00419\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00420\ \ \ \ \ \ }
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (IsMatch<KeyType>(last-\/>\_key,\ key))}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(last);}
+\DoxyCodeLine{00423\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (save\ !=\ \_head)}
+\DoxyCodeLine{00424\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(save);}
+\DoxyCodeLine{00425\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00426\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(0);}
+\DoxyCodeLine{00427\ \ \ \ \ \}}
+\DoxyCodeLine{00428\ }
+\DoxyCodeLine{00429\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00431\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00432\ \ \ \ \ PatriciaNode<KeyType,ValueType>\ *}
+\DoxyCodeLine{00433\ \ \ \ \ \mbox{\hyperlink{classDwm_1_1Patricia_a680ce86d3b478db1a4bbf31022617296}{LongestMatchNode2}}(\textcolor{keyword}{const}\ KeyType\ \&\ key)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00434\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00435\ \ \ \ \ \ \ \textcolor{comment}{//\ Traverse\ the\ Patricia\ (downward)\ until\ we\ find\ an\ upward\ link.}}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ node\ at\ the\ end\ of\ thu\ upward\ link\ has\ a\ key\ that\ exactly}}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \textcolor{comment}{//\ matches\ k,\ return\ the\ node.\ \ Else\ return\ 0.}}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ \ *prev\ =\ \_head;}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ \ *last\ =\ \_head-\/>\_right;}
+\DoxyCodeLine{00440\ \ \ \ \ \ }
+\DoxyCodeLine{00441\ \ \ \ \ \ \ \textcolor{comment}{//\ last\ =\ (bit\_get(key,\ prev-\/>\_bitIndex)\ ?\ last-\/>\_right\ :\ last-\/>\_left);}}
+\DoxyCodeLine{00442\ \ \ \ \ \ }
+\DoxyCodeLine{00443\ \ \ \ \ \ \ \textcolor{comment}{//\ Navigate\ down\ the\ trie\ and\ look\ for\ the\ key}}
+\DoxyCodeLine{00444\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (prev-\/>\_bitIndex\ <\ last-\/>\_bitIndex)\ \{}
+\DoxyCodeLine{00445\ \ \ \ \ \ \ \ \ prev\ =\ last;}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ \ \ last\ =\ (bit\_get(key,\ last-\/>\_bitIndex)\ ?\ last-\/>\_right\ :\ last-\/>\_left);}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00448\ \ \ \ \ \ }
+\DoxyCodeLine{00449\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (key\_compare(key,\ last-\/>\_key))}
+\DoxyCodeLine{00450\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(last);\ \ \textcolor{comment}{//\ key\ is\ already\ in\ the\ trie}}
+\DoxyCodeLine{00451\ \ \ \ \ \ }
+\DoxyCodeLine{00452\ \ \ \ \ \ \ \textcolor{comment}{//\ RecursivePrint(last);}}
+\DoxyCodeLine{00453\ \ \ \ \ \ }
+\DoxyCodeLine{00454\ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}last-\/>left:\ "{}}\ <<\ last-\/>\_left-\/>\_key\ }
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}\ last-\/>\_right:\ "{}}\ <<\ last-\/>\_right-\/>\_key}
+\DoxyCodeLine{00456\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ std::endl;}
+\DoxyCodeLine{00457\ \ \ \ \ \ }
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \textcolor{comment}{//\ Find\ the\ first\ bit\ that\ does\ not\ match.}}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ i\ =\ BitFirstDifferent<KeyType>(key,\ last-\/>\_key);}
+\DoxyCodeLine{00460\ }
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \textcolor{comment}{//\ Find\ the\ place\ in\ the\ trie\ to\ insert\ the\ new\ node}}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \textcolor{comment}{//\ prev\ =\ \_head;}}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ last\ =\ prev-\/>\_right;}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ last\ =\ (bit\_get(key,\ prev-\/>\_bitIndex)\ ?\ last-\/>\_right\ :\ last-\/>\_left);}
+\DoxyCodeLine{00465\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ ((prev-\/>\_bitIndex\ <\ last-\/>\_bitIndex)\ \&\&\ (last-\/>\_bitIndex\ <\ i))\ \{}
+\DoxyCodeLine{00466\ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}prev:\ "{}}\ <<\ prev-\/>\_key\ <<\ \textcolor{stringliteral}{"{}\ last:\ "{}}\ <<\ last-\/>\_key\ }
+\DoxyCodeLine{00467\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ std::endl;}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \ \ prev\ =\ last;}
+\DoxyCodeLine{00469\ \ \ \ \ \ \ \ \ last\ =\ (bit\_get(key,\ last-\/>\_bitIndex)\ ?\ last-\/>\_right\ :\ last-\/>\_left);}
+\DoxyCodeLine{00470\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00471\ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}last-\/>left:\ "{}}\ <<\ last-\/>\_left-\/>\_key\ }
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}\ last-\/>\_right:\ "{}}\ <<\ last-\/>\_right-\/>\_key}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ std::endl;}
+\DoxyCodeLine{00474\ \ \ \ \ \ }
+\DoxyCodeLine{00475\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (IsMatch<KeyType>(last-\/>\_key,\ key))}
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(last);}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (prev\ !=\ \_head)}
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(prev);}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00480\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(0);}
+\DoxyCodeLine{00481\ \ \ \ \ \}}
+\DoxyCodeLine{00482\ }
+\DoxyCodeLine{00483\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00486\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00487\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDwm_1_1Patricia_ab1fb36fb19b40abc5cc54f4c57eed4d7}{Delete}}(\textcolor{keyword}{const}\ KeyType\ \&\ key)}
+\DoxyCodeLine{00488\ \ \ \ \ \{}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ \ *x\ =\ 0;}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ \ *pp\ =\ 0;}
+\DoxyCodeLine{00491\ \ \ \ \ \ }
+\DoxyCodeLine{00492\ \ \ \ \ \ \ \textcolor{comment}{//\ Start\ at\ the\ root}}
+\DoxyCodeLine{00493\ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ \ *p\ =\ \_head;}
+\DoxyCodeLine{00494\ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ \ *t\ =\ (\mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}*)(p-\/>\_right);}
+\DoxyCodeLine{00495\ \ \ \ \ \ }
+\DoxyCodeLine{00496\ \ \ \ \ \ \ \textcolor{comment}{//\ Navigate\ down\ the\ tree\ and\ look\ for\ the\ key}}
+\DoxyCodeLine{00497\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (p-\/>\_bitIndex\ <\ t-\/>\_bitIndex)\ \{}
+\DoxyCodeLine{00498\ \ \ \ \ \ \ \ \ pp\ =\ p;}
+\DoxyCodeLine{00499\ \ \ \ \ \ \ \ \ p\ \ =\ t;}
+\DoxyCodeLine{00500\ \ \ \ \ \ \ \ \ t\ \ =\ bit\_get(key,\ t-\/>\_bitIndex)\ ?\ t-\/>\_right\ :\ t-\/>\_left;}
+\DoxyCodeLine{00501\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00502\ }
+\DoxyCodeLine{00503\ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00504\ \textcolor{comment}{\ \ \ \ \ \ \ \ int\ \ i;}}
+\DoxyCodeLine{00505\ \textcolor{comment}{\ \ \ \ \ \ \ \ do\ \{}}
+\DoxyCodeLine{00506\ \textcolor{comment}{\ \ \ \ \ \ \ \ i\ =\ t-\/>\_bitIndex;}}
+\DoxyCodeLine{00507\ \textcolor{comment}{\ \ \ \ \ \ \ \ pp\ =\ p;}}
+\DoxyCodeLine{00508\ \textcolor{comment}{\ \ \ \ \ \ \ \ p\ \ =\ t;}}
+\DoxyCodeLine{00509\ \textcolor{comment}{\ \ \ \ \ \ \ \ t\ \ =\ bit\_get(key,\ t-\/>\_bitIndex)\ ?\ t-\/>\_right\ :\ t-\/>\_left;}}
+\DoxyCodeLine{00510\ \textcolor{comment}{\ \ \ \ \ \ \ \ \}\ while\ (i\ <\ t-\/>\_bitIndex);}}
+\DoxyCodeLine{00511\ \textcolor{comment}{\ \ \ \ \ \ */}}
+\DoxyCodeLine{00512\ }
+\DoxyCodeLine{00513\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\ key\_compare(key,\ t-\/>\_key))\ \{}
+\DoxyCodeLine{00514\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ key\ not\ found}}
+\DoxyCodeLine{00515\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00516\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00517\ }
+\DoxyCodeLine{00518\ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ p's\ key\ to\ t}}
+\DoxyCodeLine{00519\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (t\ !=\ p)}
+\DoxyCodeLine{00520\ \ \ \ \ \ \ \ \ key\_copy(p,\ t);}
+\DoxyCodeLine{00521\ \ \ \ \ \ }
+\DoxyCodeLine{00522\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((p-\/>\_left-\/>\_bitIndex\ >\ p-\/>\_bitIndex)\ ||\ }
+\DoxyCodeLine{00523\ \ \ \ \ \ \ \ \ \ \ (p-\/>\_right-\/>\_bitIndex\ >\ p-\/>\_bitIndex))\ \{}
+\DoxyCodeLine{00524\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00525\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ There\ is\ at\ least\ one\ downward\ edge}}
+\DoxyCodeLine{00526\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00527\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p\ !=\ t)\ \{}
+\DoxyCodeLine{00528\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Look\ for\ a\ new\ (intermediate)\ key}}
+\DoxyCodeLine{00529\ \ \ \ \ \ \ \ \ \ \ KeyType\ \ newkey\ =\ p-\/>\_key;}
+\DoxyCodeLine{00530\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00531\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}\ \ *lp\ =\ p;}
+\DoxyCodeLine{00532\ \ \ \ \ \ \ \ \ \ \ x\ \ =\ bit\_get(newkey,\ p-\/>\_bitIndex)\ ?\ p-\/>\_right\ :\ p-\/>\_left;}
+\DoxyCodeLine{00533\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00534\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (lp-\/>\_bitIndex\ <\ x-\/>\_bitIndex)\ \{}
+\DoxyCodeLine{00535\ \ \ \ \ \ \ \ \ \ \ \ \ lp\ =\ x;}
+\DoxyCodeLine{00536\ \ \ \ \ \ \ \ \ \ \ \ \ x\ \ =\ bit\_get(newkey,\ x-\/>\_bitIndex)\ ?\ x-\/>\_right\ :\ x-\/>\_left;}
+\DoxyCodeLine{00537\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00538\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00539\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ intermediate\ key\ was\ not\ found,\ we\ have\ a\ problem..}}
+\DoxyCodeLine{00540\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\ key\_compare(newkey,\ x-\/>\_key))\ \{}
+\DoxyCodeLine{00541\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{false});\ \textcolor{comment}{//\ The\ key\ could\ not\ be\ found!}}
+\DoxyCodeLine{00542\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00543\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00544\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Rewire\ the\ leaf\ (lp)\ to\ point\ to\ t}}
+\DoxyCodeLine{00545\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bit\_get(newkey,\ lp-\/>\_bitIndex))}
+\DoxyCodeLine{00546\ \ \ \ \ \ \ \ \ \ \ \ \ lp-\/>\_right\ =\ t;}
+\DoxyCodeLine{00547\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00548\ \ \ \ \ \ \ \ \ \ \ \ \ lp-\/>\_left\ =\ t;}
+\DoxyCodeLine{00549\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00550\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00551\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00552\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Rewire\ the\ parent\ to\ point\ to\ the\ real\ child\ of\ p}}
+\DoxyCodeLine{00553\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pp\ !=\ p)\ \{}
+\DoxyCodeLine{00554\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classDwm_1_1PatriciaNode}{PatriciaNode<KeyType,ValueType>}}*\ ch\ =\ }
+\DoxyCodeLine{00555\ \ \ \ \ \ \ \ \ \ \ \ \ bit\_get(key,\ p-\/>\_bitIndex)\ ?\ p-\/>\_left\ :\ p-\/>\_right;}
+\DoxyCodeLine{00556\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bit\_get(key,\ pp-\/>\_bitIndex))}
+\DoxyCodeLine{00557\ \ \ \ \ \ \ \ \ \ \ \ \ pp-\/>\_right\ =\ ch;}
+\DoxyCodeLine{00558\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00559\ \ \ \ \ \ \ \ \ \ \ \ \ pp-\/>\_left\ =\ ch;}
+\DoxyCodeLine{00560\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00561\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00562\ \ \ \ \ \ \ \}\ }
+\DoxyCodeLine{00563\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00564\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Both\ edges\ (left,\ right)\ are\ pointing\ upwards\ or\ to\ the\ }}
+\DoxyCodeLine{00565\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ node\ (self-\/edges).}}
+\DoxyCodeLine{00566\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00567\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Rewire\ the\ parent}}
+\DoxyCodeLine{00568\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pp\ !=\ p)\ \{}
+\DoxyCodeLine{00569\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bit\_get(key,\ pp-\/>\_bitIndex))}
+\DoxyCodeLine{00570\ \ \ \ \ \ \ \ \ \ \ \ \ pp-\/>\_right\ =\ (((p-\/>\_left\ ==\ \ p-\/>\_right)\ \&\&\ (p-\/>\_left\ ==\ p))\ ?\ }
+\DoxyCodeLine{00571\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pp\ :\ ((p-\/>\_left\ ==\ p)\ ?\ p-\/>\_right\ :\ p-\/>\_left));}
+\DoxyCodeLine{00572\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00573\ \ \ \ \ \ \ \ \ \ \ \ \ pp-\/>\_left\ \ =\ (((p-\/>\_left\ ==\ p-\/>\_right)\ \&\&\ (p-\/>\_left\ ==\ p))\ ?}
+\DoxyCodeLine{00574\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pp\ :\ ((p-\/>\_left\ ==\ p)\ ?\ p-\/>\_right\ :\ p-\/>\_left));}
+\DoxyCodeLine{00575\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00576\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00577\ \ \ \ \ \ }
+\DoxyCodeLine{00578\ \ \ \ \ \ \ \textcolor{comment}{//\ Deallocate\ p\ (no\ longer\ needed)}}
+\DoxyCodeLine{00579\ \ \ \ \ \ \ \textcolor{keyword}{delete}(p);}
+\DoxyCodeLine{00580\ \ \ \ \ \ \ p\ =\ 0;}
+\DoxyCodeLine{00581\ }
+\DoxyCodeLine{00582\ \ \ \ \ \ \ \_size\ -\/=\ 1;}
+\DoxyCodeLine{00583\ \ \ \ \ \ }
+\DoxyCodeLine{00584\ \ \ \ \ \ \ \textcolor{comment}{//\ Success!}}
+\DoxyCodeLine{00585\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{true});}
+\DoxyCodeLine{00586\ \ \ \ \ \}}
+\DoxyCodeLine{00587\ }
+\DoxyCodeLine{00588\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00590\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00591\ \ \ \ \ \textcolor{keywordtype}{void}\ RecursivePrint()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00592\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00593\ \ \ \ \ \ \ RecursivePrint(\_head);}
+\DoxyCodeLine{00594\ \ \ \ \ \}}
+\DoxyCodeLine{00595\ }
+\DoxyCodeLine{00596\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00598\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00599\ \ \ \ \ uint64\_t\ \mbox{\hyperlink{classDwm_1_1Patricia_aaa39b1244f1c159fc0f4eaee62042331}{StreamedLength}}()\textcolor{keyword}{\ const\ override}}
+\DoxyCodeLine{00600\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00601\ \ \ \ \ \ \ uint64\_t\ \ rc\ =\ IOUtils::StreamedLength(\_size);}
+\DoxyCodeLine{00602\ \ \ \ \ \ \ RecursiveStreamedLength(\_head,\ rc);}
+\DoxyCodeLine{00603\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(rc);}
+\DoxyCodeLine{00604\ \ \ \ \ \}}
+\DoxyCodeLine{00605\ \ \ \ \ }
+\DoxyCodeLine{00606\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00608\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00609\ \ \ \ \ std::istream\ \&\ \mbox{\hyperlink{classDwm_1_1Patricia_a4e4ac24a3a699f6fd15d43119a937267}{Read}}(std::istream\ \&\ is)\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00610\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00611\ \ \ \ \ \ \ Clear();}
+\DoxyCodeLine{00612\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (is)\ \{}
+\DoxyCodeLine{00613\ \ \ \ \ \ \ \ \ uint32\_t\ \ numEntries;}
+\DoxyCodeLine{00614\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (StreamIO::Read(is,\ numEntries))\ \{}
+\DoxyCodeLine{00615\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint32\_t\ i\ =\ 0;\ i\ <\ numEntries;\ ++i)\ \{}
+\DoxyCodeLine{00616\ \ \ \ \ \ \ \ \ \ \ \ \ KeyType\ \ key;}
+\DoxyCodeLine{00617\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (StreamIO::Read(is,\ key))\ \{}
+\DoxyCodeLine{00618\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ValueType\ \ value;}
+\DoxyCodeLine{00619\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\ StreamIO::Read(is,\ value))}
+\DoxyCodeLine{00620\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00621\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Insert(key,\ value);}
+\DoxyCodeLine{00622\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00623\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00624\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00625\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00626\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00627\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00628\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00629\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(is);}
+\DoxyCodeLine{00630\ \ \ \ \ \}}
+\DoxyCodeLine{00631\ \ \ \ \ }
+\DoxyCodeLine{00632\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00634\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00635\ \ \ \ \ std::ostream\ \&\ \mbox{\hyperlink{classDwm_1_1Patricia_a51abfd6db808cacbe671ea2dd31b1946}{Write}}(std::ostream\ \&\ os)\textcolor{keyword}{\ const\ override}}
+\DoxyCodeLine{00636\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00637\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (os)\ \{}
+\DoxyCodeLine{00638\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (StreamIO::Write(os,\ \_size))\ \{}
+\DoxyCodeLine{00639\ \ \ \ \ \ \ \ \ \ \ RecursiveWrite(\_head,\ os);}
+\DoxyCodeLine{00640\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00641\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00642\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(os);}
+\DoxyCodeLine{00643\ \ \ \ \ \}}
+\DoxyCodeLine{00644\ \ \ \ \ }
+\DoxyCodeLine{00645\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00647\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00648\ \ \ \ \ ssize\_t\ \mbox{\hyperlink{classDwm_1_1Patricia_aa68e73647f6c0773542cf387f7784eb3}{Read}}(\textcolor{keywordtype}{int}\ fd)\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00649\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00650\ \ \ \ \ \ \ Clear();}
+\DoxyCodeLine{00651\ \ \ \ \ \ \ ssize\_t\ \ totalBytes\ =\ 0;}
+\DoxyCodeLine{00652\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (fd\ >=\ 0)\ \{}
+\DoxyCodeLine{00653\ \ \ \ \ \ \ \ \ uint32\_t\ \ numEntries;}
+\DoxyCodeLine{00654\ \ \ \ \ \ \ \ \ uint32\_t\ \ bytesRead\ =\ DescriptorIO::Read(fd,\ numEntries);}
+\DoxyCodeLine{00655\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bytesRead\ <=\ 0)}
+\DoxyCodeLine{00656\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(-\/1);}
+\DoxyCodeLine{00657\ \ \ \ \ \ \ \ \ totalBytes\ =\ bytesRead;}
+\DoxyCodeLine{00658\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint32\_t\ i\ =\ 0;\ i\ <\ numEntries;\ ++i)\ \{}
+\DoxyCodeLine{00659\ \ \ \ \ \ \ \ \ \ \ KeyType\ \ key;}
+\DoxyCodeLine{00660\ \ \ \ \ \ \ \ \ \ \ bytesRead\ =\ DescriptorIO::Read(fd,\ key);}
+\DoxyCodeLine{00661\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bytesRead\ >\ 0)\ \{}
+\DoxyCodeLine{00662\ \ \ \ \ \ \ \ \ \ \ \ \ totalBytes\ +=\ bytesRead;}
+\DoxyCodeLine{00663\ \ \ \ \ \ \ \ \ \ \ \ \ ValueType\ \ value;}
+\DoxyCodeLine{00664\ \ \ \ \ \ \ \ \ \ \ \ \ bytesRead\ =\ DescriptorIO::Read(fd,\ value);}
+\DoxyCodeLine{00665\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bytesRead\ >\ 0)\ \{}
+\DoxyCodeLine{00666\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ totalBytes\ +=\ bytesRead;}
+\DoxyCodeLine{00667\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00668\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00669\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(-\/1);}
+\DoxyCodeLine{00670\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00671\ \ \ \ \ \ \ \ \ \ \ \ \ Insert(key,\ value);}
+\DoxyCodeLine{00672\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00673\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00674\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(-\/1);}
+\DoxyCodeLine{00675\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00676\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00677\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00678\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(totalBytes);}
+\DoxyCodeLine{00679\ \ \ \ \ \}}
+\DoxyCodeLine{00680\ \ \ \ \ }
+\DoxyCodeLine{00681\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00683\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00684\ \ \ \ \ ssize\_t\ \mbox{\hyperlink{classDwm_1_1Patricia_ae2681603000b88f45b4d6a0c8bad3dca}{Write}}(\textcolor{keywordtype}{int}\ fd)\textcolor{keyword}{\ const\ override}}
+\DoxyCodeLine{00685\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00686\ \ \ \ \ \ \ ssize\_t\ \ totalBytes\ =\ 0;}
+\DoxyCodeLine{00687\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (fd\ >=\ 0)\ \{}
+\DoxyCodeLine{00688\ \ \ \ \ \ \ \ \ ssize\_t\ \ bytesWritten\ =\ DescriptorIO::Write(fd,\ \_size);}
+\DoxyCodeLine{00689\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bytesWritten\ >\ 0)\ \{}
+\DoxyCodeLine{00690\ \ \ \ \ \ \ \ \ \ \ totalBytes\ +=\ bytesWritten;}
+\DoxyCodeLine{00691\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_size\ >\ 0)\ \{}
+\DoxyCodeLine{00692\ \ \ \ \ \ \ \ \ \ \ \ \ bytesWritten\ =\ RecursiveWrite(\_head,\ fd);}
+\DoxyCodeLine{00693\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bytesWritten\ >\ 0)\ \{}
+\DoxyCodeLine{00694\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ totalBytes\ +=\ bytesWritten;}
+\DoxyCodeLine{00695\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00696\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00697\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(-\/1);}
+\DoxyCodeLine{00698\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00699\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00700\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00701\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00702\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(-\/1);}
+\DoxyCodeLine{00703\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00704\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00705\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(totalBytes);}
+\DoxyCodeLine{00706\ \ \ \ \ \}}
+\DoxyCodeLine{00707\ \ \ \ \ }
+\DoxyCodeLine{00708\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{DwmOperators_8hh_a26a6c7a3a040cdbc7336ba5dbe046cd4}{operator\ ==\ }}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classDwm_1_1Patricia}{Patricia<KeyType,ValueType>}}\ \&\ pt)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00709\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00710\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_size\ !=\ pt.\_size)}
+\DoxyCodeLine{00711\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00712\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(RecursiveEqual(\_head,\ pt));}
+\DoxyCodeLine{00713\ \ \ \ \ \}}
+\DoxyCodeLine{00714\ \ \ \ \ }
+\DoxyCodeLine{00715\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00716\ \ \ \ \ \textcolor{keywordtype}{bool}\ RecursiveEqual(PatriciaNode<KeyType,ValueType>\ *root,}
+\DoxyCodeLine{00717\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Patricia<KeyType,ValueType>\ \&\ pt)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00718\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00719\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \ rc\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00720\ \ \ \ \ \ \ PatriciaNode<KeyType,ValueType>\ *l\ =\ root-\/>\_left;}
+\DoxyCodeLine{00721\ \ \ \ \ \ \ PatriciaNode<KeyType,ValueType>\ *r\ =\ root-\/>\_right;}
+\DoxyCodeLine{00722\ \ \ \ \ \ \ \textcolor{comment}{//\ check\ the\ left\ branch}}
+\DoxyCodeLine{00723\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((l-\/>\_bitIndex\ >=\ root-\/>\_bitIndex)\ \&\&\ (l\ !=\ root)\ \&\&\ (l\ !=\ \_head))\ \{}
+\DoxyCodeLine{00724\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\ RecursiveEqual(l,\ pt))\ \{}
+\DoxyCodeLine{00725\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00726\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00727\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00728\ \ \ \ \ \ }
+\DoxyCodeLine{00729\ \ \ \ \ \ \ \textcolor{comment}{//\ check\ the\ right\ branch}}
+\DoxyCodeLine{00730\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((r-\/>\_bitIndex\ >=\ root-\/>\_bitIndex)\ \&\&\ (r\ !=\ root)\ \&\&\ (r\ !=\ \_head))\ \{}
+\DoxyCodeLine{00731\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\ RecursiveEqual(r,\ pt))\ \{}
+\DoxyCodeLine{00732\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00733\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00734\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00735\ \ \ \ \ \ }
+\DoxyCodeLine{00736\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (root\ !=\ \_head)\ \{}
+\DoxyCodeLine{00737\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\ pt.LookupNode(root-\/>GetKey()))\ \{}
+\DoxyCodeLine{00738\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00739\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00740\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00741\ \ \ \ \ \ }
+\DoxyCodeLine{00742\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{true});}
+\DoxyCodeLine{00743\ \ \ \ \ \}}
+\DoxyCodeLine{00744\ \ \ \ \ \ }
+\DoxyCodeLine{00745\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00747\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00748\ \ \ \ \ \textcolor{keywordtype}{void}\ RecursivePrint(PatriciaNode<KeyType,ValueType>\ *\ root)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00749\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00750\ \ \ \ \ \ \ PatriciaNode<KeyType,ValueType>\ *l\ =\ root-\/>\_left;}
+\DoxyCodeLine{00751\ \ \ \ \ \ \ PatriciaNode<KeyType,ValueType>\ *r\ =\ root-\/>\_right;}
+\DoxyCodeLine{00752\ \ \ \ \ \ }
+\DoxyCodeLine{00753\ \ \ \ \ \ \ \textcolor{comment}{//\ Print\ the\ right\ branch}}
+\DoxyCodeLine{00754\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((r-\/>\_bitIndex\ >\ root-\/>\_bitIndex)\ \&\&\ (r\ !=\ root)\ \&\&\ (r\ !=\ \_head))}
+\DoxyCodeLine{00755\ \ \ \ \ \ \ \ \ RecursivePrint(r);}
+\DoxyCodeLine{00756\ \ \ \ \ \ }
+\DoxyCodeLine{00757\ \ \ \ \ \ \ \textcolor{comment}{//\ Print\ the\ left\ branch}}
+\DoxyCodeLine{00758\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((l-\/>\_bitIndex\ >\ root-\/>\_bitIndex)\ \&\&\ (l\ !=\ root)\ \&\&\ (l\ !=\ \_head))}
+\DoxyCodeLine{00759\ \ \ \ \ \ \ \ \ RecursivePrint(l);}
+\DoxyCodeLine{00760\ \ \ \ \ \ }
+\DoxyCodeLine{00761\ \ \ \ \ \ \ \textcolor{comment}{//\ Print\ the\ root}}
+\DoxyCodeLine{00762\ \ \ \ \ \ \ std::cout\ <<\ root-\/>\_key\ <<\ \textcolor{stringliteral}{"{}\ "{}}\ <<\ root-\/>\_data\ <<\ std::endl;}
+\DoxyCodeLine{00763\ \ \ \ \ \}}
+\DoxyCodeLine{00764\ }
+\DoxyCodeLine{00765\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00767\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00768\ \ \ \ \ \textcolor{keywordtype}{void}\ RecursiveStreamedLength(PatriciaNode<KeyType,ValueType>\ *\ root,}
+\DoxyCodeLine{00769\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint64\_t\ \&\ len)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00770\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00771\ \ \ \ \ \ \ PatriciaNode<KeyType,ValueType>\ *l\ =\ root-\/>\_left;}
+\DoxyCodeLine{00772\ \ \ \ \ \ \ PatriciaNode<KeyType,ValueType>\ *r\ =\ root-\/>\_right;}
+\DoxyCodeLine{00773\ \ \ \ \ \ }
+\DoxyCodeLine{00774\ \ \ \ \ \ \ \textcolor{comment}{//\ count\ the\ left\ branch}}
+\DoxyCodeLine{00775\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\ (l-\/>\_bitIndex\ >=\ root-\/>\_bitIndex)\ \&\&\ (l\ !=\ root)\ \&\&\ (l\ !=\ \_head)\ )}
+\DoxyCodeLine{00776\ \ \ \ \ \ \ \ \ RecursiveStreamedLength(l,\ len);}
+\DoxyCodeLine{00777\ \ \ \ \ \ }
+\DoxyCodeLine{00778\ \ \ \ \ \ \ \textcolor{comment}{//\ count\ the\ right\ branch}}
+\DoxyCodeLine{00779\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\ (r-\/>\_bitIndex\ >=\ root-\/>\_bitIndex)\ \&\&\ (r\ !=\ root)\ \&\&\ (r\ !=\ \_head)\ )}
+\DoxyCodeLine{00780\ \ \ \ \ \ \ \ \ RecursiveStreamedLength(r,\ len);}
+\DoxyCodeLine{00781\ \ \ \ \ \ }
+\DoxyCodeLine{00782\ \ \ \ \ \ \ \textcolor{comment}{//\ count\ the\ root}}
+\DoxyCodeLine{00783\ \ \ \ \ \ \ len\ +=\ root-\/>StreamedLength();}
+\DoxyCodeLine{00784\ \ \ \ \ \}}
+\DoxyCodeLine{00785\ }
+\DoxyCodeLine{00786\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00788\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00789\ \ \ \ \ std::ostream\ \&\ RecursiveWrite(PatriciaNode<KeyType,ValueType>\ *\ root,}
+\DoxyCodeLine{00790\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::ostream\ \&\ os)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00791\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00792\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (os)\ \{}
+\DoxyCodeLine{00793\ \ \ \ \ \ \ \ \ PatriciaNode<KeyType,ValueType>\ *l\ =\ root-\/>\_left;}
+\DoxyCodeLine{00794\ \ \ \ \ \ \ \ \ PatriciaNode<KeyType,ValueType>\ *r\ =\ root-\/>\_right;}
+\DoxyCodeLine{00795\ \ \ \ \ \ }
+\DoxyCodeLine{00796\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ write\ the\ left\ branch}}
+\DoxyCodeLine{00797\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((l-\/>\_bitIndex\ >=\ root-\/>\_bitIndex)\ \&\&\ (l\ !=\ root)\ \&\&\ (l\ !=\ \_head))}
+\DoxyCodeLine{00798\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\ RecursiveWrite(l,\ os))}
+\DoxyCodeLine{00799\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(os);}
+\DoxyCodeLine{00800\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00801\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ write\ the\ right\ branch}}
+\DoxyCodeLine{00802\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((r-\/>\_bitIndex\ >=\ root-\/>\_bitIndex)\ \&\&\ (r\ !=\ root)\ \&\&\ (r\ !=\ \_head))}
+\DoxyCodeLine{00803\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\ RecursiveWrite(r,\ os))}
+\DoxyCodeLine{00804\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(os);}
+\DoxyCodeLine{00805\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00806\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ write\ the\ root}}
+\DoxyCodeLine{00807\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (StreamIO::Write(os,\ root-\/>\_key))}
+\DoxyCodeLine{00808\ \ \ \ \ \ \ \ \ \ \ StreamIO::Write(os,\ root-\/>\_data);}
+\DoxyCodeLine{00809\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00810\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(os);}
+\DoxyCodeLine{00811\ \ \ \ \ \}}
+\DoxyCodeLine{00812\ }
+\DoxyCodeLine{00813\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00815\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00816\ \ \ \ \ ssize\_t\ }
+\DoxyCodeLine{00817\ \ \ \ \ RecursiveWrite(PatriciaNode<KeyType,ValueType>\ *\ root,\ \textcolor{keywordtype}{int}\ fd)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00818\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00819\ \ \ \ \ \ \ ssize\_t\ \ rc\ =\ 0;}
+\DoxyCodeLine{00820\ \ \ \ \ \ }
+\DoxyCodeLine{00821\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (fd\ >=\ 0)\ \{}
+\DoxyCodeLine{00822\ \ \ \ \ \ \ \ \ PatriciaNode<KeyType,ValueType>\ *l\ =\ root-\/>\_left;}
+\DoxyCodeLine{00823\ \ \ \ \ \ \ \ \ PatriciaNode<KeyType,ValueType>\ *r\ =\ root-\/>\_right;}
+\DoxyCodeLine{00824\ \ \ \ \ \ }
+\DoxyCodeLine{00825\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ write\ the\ left\ branch}}
+\DoxyCodeLine{00826\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((l-\/>\_bitIndex\ >=\ root-\/>\_bitIndex)\ \&\&\ (l\ !=\ root)\ \&\&\ (l\ !=\ \_head))\ \{}
+\DoxyCodeLine{00827\ \ \ \ \ \ \ \ \ \ \ ssize\_t\ \ bytesWritten\ =\ RecursiveWrite(l,\ fd);}
+\DoxyCodeLine{00828\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bytesWritten\ <\ 0)}
+\DoxyCodeLine{00829\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(-\/1);}
+\DoxyCodeLine{00830\ \ \ \ \ \ \ \ \ \ \ rc\ +=\ bytesWritten;}
+\DoxyCodeLine{00831\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00832\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00833\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ write\ the\ right\ branch}}
+\DoxyCodeLine{00834\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((r-\/>\_bitIndex\ >=\ root-\/>\_bitIndex)\ \&\&\ (r\ !=\ root)\ \&\&\ (r\ !=\ \_head))\ \{}
+\DoxyCodeLine{00835\ \ \ \ \ \ \ \ \ \ \ ssize\_t\ \ bytesWritten\ =\ RecursiveWrite(r,\ fd);}
+\DoxyCodeLine{00836\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bytesWritten\ <\ 0)}
+\DoxyCodeLine{00837\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(-\/1);}
+\DoxyCodeLine{00838\ \ \ \ \ \ \ \ \ \ \ rc\ +=\ bytesWritten;}
+\DoxyCodeLine{00839\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00840\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00841\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ write\ the\ root}}
+\DoxyCodeLine{00842\ \ \ \ \ \ \ \ \ ssize\_t\ \ bytesWritten\ =\ DescriptorIO::Write(fd,\ root-\/>\_key);}
+\DoxyCodeLine{00843\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bytesWritten\ <=\ 0)}
+\DoxyCodeLine{00844\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(-\/1);}
+\DoxyCodeLine{00845\ \ \ \ \ \ \ \ \ rc\ +=\ bytesWritten;}
+\DoxyCodeLine{00846\ \ \ \ \ \ \ \ \ bytesWritten\ =\ DescriptorIO::Write(fd,\ root-\/>\_data);}
+\DoxyCodeLine{00847\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bytesWritten\ <=\ 0)}
+\DoxyCodeLine{00848\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(-\/1);}
+\DoxyCodeLine{00849\ \ \ \ \ \ \ \ \ rc\ +=\ bytesWritten;}
+\DoxyCodeLine{00850\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00851\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(rc);}
+\DoxyCodeLine{00852\ \ \ \ \ \}}
+\DoxyCodeLine{00853\ \ \ \ \ }
+\DoxyCodeLine{00854\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00856\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00857\ \ \ \ \ \textcolor{keywordtype}{void}\ RecursiveRemove(PatriciaNode<KeyType,ValueType>\ *node)}
+\DoxyCodeLine{00858\ \ \ \ \ \{}
+\DoxyCodeLine{00859\ \ \ \ \ \ \ PatriciaNode<KeyType,ValueType>\ \ *l\ =\ node-\/>\_left;}
+\DoxyCodeLine{00860\ \ \ \ \ \ \ PatriciaNode<KeyType,ValueType>\ \ *r\ =\ node-\/>\_right;}
+\DoxyCodeLine{00861\ \ \ \ \ \ }
+\DoxyCodeLine{00862\ \ \ \ \ \ \ \textcolor{comment}{//\ remove\ the\ left\ branch}}
+\DoxyCodeLine{00863\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (l\ }
+\DoxyCodeLine{00864\ \ \ \ \ \ \ \ \ \ \ \&\&\ (l-\/>\_bitIndex\ >=\ node-\/>\_bitIndex)\ }
+\DoxyCodeLine{00865\ \ \ \ \ \ \ \ \ \ \ \&\&\ (l\ !=\ node)\ }
+\DoxyCodeLine{00866\ \ \ \ \ \ \ \ \ \ \ \&\&\ (l\ !=\ \_head))\ \{}
+\DoxyCodeLine{00867\ \ \ \ \ \ \ \ \ RecursiveRemove(l);}
+\DoxyCodeLine{00868\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00869\ \ \ \ \ \ }
+\DoxyCodeLine{00870\ \ \ \ \ \ \ \textcolor{comment}{//\ remove\ the\ right\ branch}}
+\DoxyCodeLine{00871\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (r}
+\DoxyCodeLine{00872\ \ \ \ \ \ \ \ \ \ \ \&\&\ (r-\/>\_bitIndex\ >=\ node-\/>\_bitIndex)}
+\DoxyCodeLine{00873\ \ \ \ \ \ \ \ \ \ \ \&\&\ (r\ !=\ node)}
+\DoxyCodeLine{00874\ \ \ \ \ \ \ \ \ \ \ \&\&\ (r\ !=\ \_head))\ \{}
+\DoxyCodeLine{00875\ \ \ \ \ \ \ \ \ RecursiveRemove(r);}
+\DoxyCodeLine{00876\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00877\ \ \ \ \ \ }
+\DoxyCodeLine{00878\ \ \ \ \ \ \ \textcolor{comment}{//\ remove\ the\ node}}
+\DoxyCodeLine{00879\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (node\ \&\&\ (node\ !=\ \_head))\ \{}
+\DoxyCodeLine{00880\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ delete(node);}}
+\DoxyCodeLine{00881\ \ \ \ \ \ \ \ \ node\ =\ 0;}
+\DoxyCodeLine{00882\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00883\ \ \ \ \ \}}
+\DoxyCodeLine{00884\ \ \ }
+\DoxyCodeLine{00885\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00887\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00888\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ bit\_get(\textcolor{keyword}{const}\ KeyType\ \&\ k,\ \textcolor{keywordtype}{int}\ n)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00889\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00890\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \ rc\ =\ 2;\ \ \textcolor{comment}{//\ psuedo-\/value}}
+\DoxyCodeLine{00891\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n\ >=\ 0)}
+\DoxyCodeLine{00892\ \ \ \ \ \ \ \ \ rc\ =\ GetBit<KeyType>(k,\ n);}
+\DoxyCodeLine{00893\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(rc);}
+\DoxyCodeLine{00894\ \ \ \ \ \}}
+\DoxyCodeLine{00895\ }
+\DoxyCodeLine{00896\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00898\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00899\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ bit\_first\_different(\textcolor{keyword}{const}\ KeyType\ \&\ k1,\ \textcolor{keyword}{const}\ KeyType\ \&\ k2)}
+\DoxyCodeLine{00900\ \ \ \ \ \{}
+\DoxyCodeLine{00901\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(BitFirstDifferent<KeyType>(k1,\ k2));}
+\DoxyCodeLine{00902\ \ \ \ \ \}}
+\DoxyCodeLine{00903\ \ \ \ \ }
+\DoxyCodeLine{00904\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00906\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00907\ \ \ \ \ \textcolor{keywordtype}{void}\ key\_copy(PatriciaNode<KeyType,ValueType>\ *src,\ }
+\DoxyCodeLine{00908\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ PatriciaNode<KeyType,ValueType>\ *dest)}
+\DoxyCodeLine{00909\ \ \ \ \ \{}
+\DoxyCodeLine{00910\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (src\ ==\ dest)}
+\DoxyCodeLine{00911\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00912\ \ \ \ \ \ }
+\DoxyCodeLine{00913\ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ the\ key\ from\ src\ to\ dest}}
+\DoxyCodeLine{00914\ \ \ \ \ \ \ dest-\/>\_key\ =\ src-\/>\_key;}
+\DoxyCodeLine{00915\ \ \ \ \ \ }
+\DoxyCodeLine{00916\ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ the\ data\ from\ src\ to\ dest}}
+\DoxyCodeLine{00917\ \ \ \ \ \ \ dest-\/>\_data\ =\ src-\/>\_data;}
+\DoxyCodeLine{00918\ \ \ \ \ \ }
+\DoxyCodeLine{00919\ \ \ \ \ \ \ \textcolor{comment}{//\ How\ about\ the\ bit\ index?}}
+\DoxyCodeLine{00920\ \ \ \ \ \ \ \textcolor{comment}{//\ dest-\/>\_bitIndex\ =\ src-\/>\_bitIndex;}}
+\DoxyCodeLine{00921\ \ \ \ \ \}}
+\DoxyCodeLine{00922\ }
+\DoxyCodeLine{00923\ \ \ \ \ KeyEqual\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ key\_compare;}
+\DoxyCodeLine{00924\ \ \ \ \ PatriciaNode<KeyType,ValueType>\ \ *\_head;}
+\DoxyCodeLine{00925\ \ \ \ \ uint32\_t\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_size;}
+\DoxyCodeLine{00926\ \ \ \};}
+\DoxyCodeLine{00927\ \ \ }
+\DoxyCodeLine{00928\ }
+\DoxyCodeLine{00929\ \}\ \ \textcolor{comment}{//\ namespace\ Dwm}}
+\DoxyCodeLine{00930\ }
+\DoxyCodeLine{00931\ }
+\DoxyCodeLine{00932\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ \_PATRICIA\_HH\_}}
+\DoxyCodeLine{00933\ }
+\DoxyCodeLine{00934\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ emacs\ settings\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00935\ \textcolor{comment}{//\ \ Local\ Variables:}}
+\DoxyCodeLine{00936\ \textcolor{comment}{//\ \ mode:\ C++}}
+\DoxyCodeLine{00937\ \textcolor{comment}{//\ \ tab-\/width:\ 2}}
+\DoxyCodeLine{00938\ \textcolor{comment}{//\ \ indent-\/tabs-\/mode:\ nil}}
+\DoxyCodeLine{00939\ \textcolor{comment}{//\ \ c-\/basic-\/offset:\ 2}}
+\DoxyCodeLine{00940\ \textcolor{comment}{//\ \ End:}}
+\DoxyCodeLine{00941\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+
+\end{DoxyCode}

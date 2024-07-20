@@ -1,0 +1,55 @@
+.TH "Dwm::ASIOReadable" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::ASIOReadable \- Interface for classes that wish to be readable via \fBDwm::ASIO\fP\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmASIOCapable\&.hh>\fP
+.PP
+Inherited by \fBDwm::ASIOCapable\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "virtual bool \fBRead\fP (boost::asio::ip::tcp::socket &s, boost::system::error_code &ec)=0"
+.br
+.RI "Should read the class from the given socket \fRs\fP and return true on success, false on failure\&. "
+.ti -1c
+.RI "virtual bool \fBRead\fP (boost::asio::local::stream_protocol::socket &s, boost::system::error_code &ec)=0"
+.br
+.RI "Should read the class from the given socket \fRs\fP and return true on success, false on failure\&. "
+.ti -1c
+.RI "virtual bool \fBRead\fP (boost::asio::generic::stream_protocol::socket &s, boost::system::error_code &ec)=0"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Interface for classes that wish to be readable via \fBDwm::ASIO\fP\&. 
+
+Pure virtual\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "virtual bool Dwm::ASIOReadable::Read (boost::asio::generic::stream_protocol::socket & s, boost::system::error_code & ec)\fR [pure virtual]\fP"
+
+.PP
+Implemented in \fBDwm::Ipv4Prefix\fP, \fBDwm::Ipv6Address\fP, \fBDwm::Ipv6AddrMap< T, Hash >\fP, \fBDwm::Ipv6Prefix\fP, and \fBDwm::Ipv6PrefixMap< T, Hash >\fP\&.
+.SS "virtual bool Dwm::ASIOReadable::Read (boost::asio::ip::tcp::socket & s, boost::system::error_code & ec)\fR [pure virtual]\fP"
+
+.PP
+Should read the class from the given socket \fRs\fP and return true on success, false on failure\&. Should set \fRec\fP to the correct error code on failure\&. 
+.PP
+Implemented in \fBDwm::Ipv4Address\fP, \fBDwm::Ipv4Prefix\fP, \fBDwm::Ipv6Address\fP, \fBDwm::Ipv6AddrMap< T, Hash >\fP, \fBDwm::Ipv6Prefix\fP, and \fBDwm::Ipv6PrefixMap< T, Hash >\fP\&.
+.SS "virtual bool Dwm::ASIOReadable::Read (boost::asio::local::stream_protocol::socket & s, boost::system::error_code & ec)\fR [pure virtual]\fP"
+
+.PP
+Should read the class from the given socket \fRs\fP and return true on success, false on failure\&. Should set \fRec\fP to the correct error code on failure\&. 
+.PP
+Implemented in \fBDwm::Ipv4Address\fP, \fBDwm::Ipv4Prefix\fP, \fBDwm::Ipv6Address\fP, \fBDwm::Ipv6AddrMap< T, Hash >\fP, \fBDwm::Ipv6Prefix\fP, and \fBDwm::Ipv6PrefixMap< T, Hash >\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

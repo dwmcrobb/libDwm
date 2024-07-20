@@ -51,6 +51,7 @@ extern "C" {
 
 #include "DwmUnitAssert.hh"
 #include "DwmASIO.hh"
+#include "DwmIpv4Address.hh"
 #include "DwmSysLogger.hh"
 
 using namespace std;
@@ -904,6 +905,29 @@ static void TestDoubles()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void TestIpv4Addresses()
+{
+  vector<Dwm::Ipv4Address>  vs1({
+      Dwm::Ipv4Address("192.168.1.1"),
+      Dwm::Ipv4Address("127.0.0.1"),
+      Dwm::Ipv4Address("10.10.10.10")});
+  TestAsArray<Dwm::Ipv4Address,3>(vs1);
+  TestVectorOf(vs1);
+  TestAsVector(vs1);
+  TestAsDeque(vs1);
+  TestAsList(vs1);
+  TestAsMap(vs1);
+  TestAsMultimap(vs1);
+  TestAsSet(vs1);
+  TestAsMultiset(vs1);
+  // TestAsUnorderedMap(vs1);
+  // TestAsUnorderedSet(vs1);
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static void TestPairs()
 {
   vector<pair<int,string>>  v1 = {
@@ -979,6 +1003,7 @@ int main(int argc, char *argv[])
   TestInts();
   TestFloats();
   TestDoubles();
+  TestIpv4Addresses();
   TestPairs();
   TestTuples();
   TestVariants();

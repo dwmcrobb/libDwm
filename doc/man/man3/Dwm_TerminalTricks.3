@@ -1,0 +1,62 @@
+.TH "Dwm::TerminalTricks" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::TerminalTricks \- Encapsulate simple terminal tricks (bold and underscore)\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmTerminalTricks\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBTerminalTricks\fP ()"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "void \fBOn\fP (bool on)"
+.br
+.RI "If \fRon\fP is true, turns the terminal tricks on\&. "
+.ti -1c
+.RI "template<typename T > std::string \fBBold\fP (const T &t) const"
+.br
+.RI "Returns a string representation of \fRt\fP, wrapped with bold start and end strings for terminal output in bold\&. "
+.ti -1c
+.RI "template<typename T > std::string \fBUnderscore\fP (const T &t) const"
+.br
+.RI "Returns a string representation of \fRt\fP, wrapped with underscore start and end strings for terminal output with underscore\&. "
+.ti -1c
+.RI "void \fBBold\fP (std::ostream &os, bool on)"
+.br
+.ti -1c
+.RI "void \fBUnderscore\fP (std::ostream &os, bool on)"
+.br
+.ti -1c
+.RI "int \fBColumns\fP () const"
+.br
+.ti -1c
+.RI "int \fBRows\fP () const"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Encapsulate simple terminal tricks (bold and underscore)\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Dwm::TerminalTricks::TerminalTricks ()"
+
+.PP
+Constructor\&. Initializes bold and underscore start and stop strings according to TERM from the environment\&. Turns the terminal tricks on\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "void Dwm::TerminalTricks::On (bool on)"
+
+.PP
+If \fRon\fP is true, turns the terminal tricks on\&. If \fRon\fP is false, turns the terminal tricks off\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

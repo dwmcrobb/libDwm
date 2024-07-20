@@ -1,0 +1,27 @@
+\doxysection{Dwm\+::FFIVar\texorpdfstring{$<$}{<} T, Enable \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classDwm_1_1FFIVar}{}\label{classDwm_1_1FFIVar}\index{Dwm::FFIVar$<$ T, Enable $>$@{Dwm::FFIVar$<$ T, Enable $>$}}
+
+
+The main idea here is to encpasulate a scalar type to provide protection from interference.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+FFIVar.\+hh$>$}
+
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T, class Enable = void$>$\newline
+class Dwm\+::\+FFIVar$<$ T, Enable $>$}
+The main idea here is to encpasulate a scalar type to provide protection from interference. 
+
+We do this by keeping a copy of the scalar, possibly bitwise inverted, and checking that the scalar and its copy match. This can be done manually by calling Is\+FFI(), but various operators call it when a read occurs. At the moment, these are wrapped in assert(), but later I\textquotesingle{}ll provide a means of registering a callback or using a macro that can be redefined. On a fully hosted system we might still want abort() to get a core dump when desired, but in an embedded system we\textquotesingle{}ll want something else.
+
+It\textquotesingle{}s worth noting that throwing an exception could be an elegant solution on a hosted system. But in embedded environments, and some hosted environments, exceptions might be intentionally disabled. If I use a macro to define what happens, theoretically one could throw, or call a callback, etc. I haven\textquotesingle{}t done this work yet, saince the few times I\textquotesingle{}ve used this code, assert() has been what I wanted and the Is\+FFI() member of the class templates covered the cases where I needed a check in production code.
+
+I have 3 class templates, each specialized for specific types\+: integral types, floating point types and pointer types. I have some trivial concepts that are used for the binary operators defined outside of class templates. Top level template class, intentionally empty. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmFFIVar_8hh}{Dwm\+FFIVar.\+hh}}\end{DoxyCompactItemize}

@@ -233,6 +233,12 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    static std::istream & Read(std::istream & is, HasStreamRead auto & t)
+    { return t.Read(is); }
+     
+    //------------------------------------------------------------------------
     //!  Wrapper function to write a StreamWritable object to an ostream.
     //------------------------------------------------------------------------
     static std::ostream & Write(std::ostream & os, const StreamWritable & val)
@@ -240,6 +246,13 @@ namespace Dwm {
       return(val.Write(os));
     }
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    static std::ostream &
+    Write(std::ostream & os, const HasStreamWrite auto & t)
+    { return t.Write(os); }
+      
     //------------------------------------------------------------------------
     //!  Reads a pair<_firstT,_secondT> from an istream.  Returns the istream.
     //------------------------------------------------------------------------

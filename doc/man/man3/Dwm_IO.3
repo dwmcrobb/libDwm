@@ -1,0 +1,45 @@
+.TH "Dwm::IO" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::IO \- This class is now just a wrapper for \fBDescriptorIO\fP, \fBFileIO\fP, \fBStreamIO\fP and \fBIOUtils\fP\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmIO\&.hh>\fP
+.SS "Static Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "template<typename T > static std::istream & \fBRead\fP (std::istream &is, T &val)"
+.br
+.ti -1c
+.RI "template<typename T > static std::ostream & \fBWrite\fP (std::ostream &os, const T &val)"
+.br
+.ti -1c
+.RI "template<typename T > static ssize_t \fBRead\fP (int fd, T &val)"
+.br
+.ti -1c
+.RI "template<typename T > static ssize_t \fBWrite\fP (int fd, const T &val)"
+.br
+.ti -1c
+.RI "template<typename T > static size_t \fBRead\fP (FILE *f, T &val)"
+.br
+.ti -1c
+.RI "template<typename T > static size_t \fBWrite\fP (FILE *f, const T &val)"
+.br
+.ti -1c
+.RI "template<typename T > static uint64_t \fBStreamedLength\fP (const T &val)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+This class is now just a wrapper for \fBDescriptorIO\fP, \fBFileIO\fP, \fBStreamIO\fP and \fBIOUtils\fP\&. 
+
+It is essentially deprecated due to the introduction of theses classes, but was refactored as a simple bucket of wrapper function templates to allow older code to compile and work without source code changes\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

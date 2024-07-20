@@ -44,6 +44,8 @@
 
 extern "C" {
   #include <unistd.h>
+  #include <bzlib.h>
+  #include <zlib.h>
 }
 
 #include <cstdint>
@@ -51,19 +53,12 @@ extern "C" {
 #include <string>
 #include <nlohmann/json.hpp>
 
-#include "DwmStreamIOCapable.hh"
-#include "DwmStreamedLengthCapable.hh"
-#include "DwmGZIOCapable.hh"
-#include "DwmBZ2IOCapable.hh"
-
 namespace Dwm {
 
   //--------------------------------------------------------------------------
-  //!  
+  //!  Encapsulate information for a single process from the process table.
   //--------------------------------------------------------------------------
   class ProcessInfo
-    : public StreamIOCapable, public GZIOCapable, public BZ2IOCapable,
-      public StreamedLengthCapable
   {
   public:
     std::string  user {""};
@@ -85,24 +80,62 @@ namespace Dwm {
     std::string  tty {""};
     std::string  args {""};
 
-    std::istream & Read(std::istream & is) override;
-    std::ostream & Write(std::ostream & os) const override;
-    int Read(gzFile gzf) override;
-    int Write(gzFile gzf) const override;
-    int BZRead(BZFILE *bzf) override;
-    int BZWrite(BZFILE *bzf) const override;
-    uint64_t StreamedLength() const override;
+    //------------------------------------------------------------------------
+    //!  Reads the process info from an istream.  Returns the istream.
+    //------------------------------------------------------------------------
+    std::istream & Read(std::istream & is);
+    
+    //------------------------------------------------------------------------
+    //!  Writes the process info to an ostream.  Returns the ostream.
+    //------------------------------------------------------------------------
+    std::ostream & Write(std::ostream & os) const;
+    
+    //------------------------------------------------------------------------
+    //!  Reads the process info from a gzFile.  Returns the number of bytes
+    //!  read on success, -1 on failure.
+    //------------------------------------------------------------------------
+    int Read(gzFile gzf);
+    
+    //------------------------------------------------------------------------
+    //!  Writes the process info to a gzFile.  Returns the number of bytes
+    //!  written on success, -1 on failure.
+    //------------------------------------------------------------------------
+    int Write(gzFile gzf) const;
+    
+    //------------------------------------------------------------------------
+    //!  Reads the process info from a BZFILE.  Returns the number of bytes
+    //!  read on success, -1 on failure.
+    //------------------------------------------------------------------------
+    int BZRead(BZFILE *bzf);
+    
+    //------------------------------------------------------------------------
+    //!  Writes the process info to a BZFILE.  Returns the number of bytes
+    //!  written on success, -1 on failure.
+    //------------------------------------------------------------------------
+    int BZWrite(BZFILE *bzf) const;
+
+    //------------------------------------------------------------------------
+    //!  Returns the number of bytes that would be written if we called one
+    //!  of the non-compressing Write() members.
+    //------------------------------------------------------------------------
+    uint64_t StreamedLength() const;
     
     //------------------------------------------------------------------------
     //!  Returns a JSON representation of the ProcessInfo.
     //------------------------------------------------------------------------
     nlohmann::json ToJson() const;
     
+    //------------------------------------------------------------------------
+    //!  operator ==
+    //------------------------------------------------------------------------
     bool operator == (const ProcessInfo &) const;
   };
   
 }  // namespace Dwm
 
+//----------------------------------------------------------------------------
+//!  ostream output operator
+//----------------------------------------------------------------------------
 std::ostream & operator << (std::ostream & os, const Dwm::ProcessInfo & pi);
 
 #endif  // _DWMPROCESSINFO_HH_

@@ -1,0 +1,498 @@
+.TH "Dwm::GZIO" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::GZIO \- This class contains a collection of static functions for reading and writing simple types in network byte order (MSB first) from/to gzip files\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmGZIO\&.hh>\fP
+.SS "Static Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "static int \fBRead\fP (gzFile gzf, char &c)"
+.br
+.RI "Reads \fRfrom\fP \fRgzf\fP\&. "
+.ti -1c
+.RI "static int \fBWrite\fP (gzFile gzf, char c)"
+.br
+.RI "Writes \fRc\fP to \fRgzf\fP\&. "
+.ti -1c
+.RI "static int \fBRead\fP (gzFile gzf, uint8_t &c)"
+.br
+.RI "Reads \fRc\fP from \fRgzf\fP\&. "
+.ti -1c
+.RI "static int \fBWrite\fP (gzFile gzf, uint8_t c)"
+.br
+.RI "Writes \fRc\fP to \fRgzf\fP\&. "
+.ti -1c
+.RI "static int \fBRead\fP (gzFile gzf, bool &b)"
+.br
+.RI "Reads \fRb\fP from \fRgzf\fP\&. "
+.ti -1c
+.RI "static int \fBWrite\fP (gzFile gzf, bool b)"
+.br
+.RI "Writes \fRb\fP to \fRgzf\fP\&. "
+.ti -1c
+.RI "static int \fBRead\fP (gzFile gzf, int16_t &val)"
+.br
+.RI "Reads \fRval\fP from \fRgzf\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static int \fBWrite\fP (gzFile gzf, int16_t val)"
+.br
+.RI "Writes \fRval\fP to \fRgzf\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static int \fBRead\fP (gzFile gzf, uint16_t &val)"
+.br
+.RI "Reads \fRval\fP from \fRgzf\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static int \fBWrite\fP (gzFile gzf, uint16_t val)"
+.br
+.RI "Writes \fRval\fP to \fRgzf\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static int \fBRead\fP (gzFile gzf, int32_t &val)"
+.br
+.RI "Reads \fRval\fP from \fRgzf\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static int \fBWrite\fP (gzFile gzf, int32_t val)"
+.br
+.RI "Writes \fRval\fP to \fRgzf\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static int \fBRead\fP (gzFile gzf, uint32_t &val)"
+.br
+.RI "Reads \fRval\fP from \fRgzf\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static int \fBWrite\fP (gzFile gzf, uint32_t val)"
+.br
+.RI "Writes \fRval\fP to \fRgzf\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static int \fBRead\fP (gzFile gzf, int64_t &val)"
+.br
+.RI "Reads \fRval\fP from \fRgzf\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static int \fBWrite\fP (gzFile gzf, const int64_t &val)"
+.br
+.RI "Writes \fRval\fP to \fRgzf\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static int \fBRead\fP (gzFile gzf, uint64_t &val)"
+.br
+.RI "Reads \fRval\fP from \fRgzf\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static int \fBWrite\fP (gzFile gzf, const uint64_t &val)"
+.br
+.RI "Writes \fRval\fP to \fRgzf\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static int \fBRead\fP (gzFile gzf, float &val)"
+.br
+.RI "Reads \fRval\fP from \fRgzf\fP, in IEEE format (see RFC 1832 and/or ANSI/IEEE Standard 754-1985)\&. "
+.ti -1c
+.RI "static int \fBWrite\fP (gzFile gzf, float val)"
+.br
+.RI "Writes \fRval\fP tp \fRgzf\fP, in IEEE format (see RFC 1832 and/or ANSI/IEEE Standard 754-1985)\&. "
+.ti -1c
+.RI "static int \fBRead\fP (gzFile gzf, double &val)"
+.br
+.RI "Reads \fRval\fP from \fRgzf\fP, in IEEE format (see RFC 1832 and/or ANSI/IEEE Standard 754-1985)\&. "
+.ti -1c
+.RI "static int \fBWrite\fP (gzFile gzf, const double &val)"
+.br
+.RI "Writes \fRval\fP tp \fRgzf\fP, in IEEE format (see RFC 1832 and/or ANSI/IEEE Standard 754-1985)\&. "
+.ti -1c
+.RI "static int \fBRead\fP (gzFile gzf, std::string &s)"
+.br
+.RI "Reads \fRs\fP from \fRgzf\fP\&. "
+.ti -1c
+.RI "static int \fBWrite\fP (gzFile gzf, const std::string &s)"
+.br
+.RI "Writes \fRs\fP to \fRgzf\fP\&. "
+.ti -1c
+.RI "static int \fBRead\fP (gzFile gzf, \fBGZReadable\fP &val)"
+.br
+.RI "Wrapper function to read a \fBGZReadable\fP object from a gzFile\&. "
+.ti -1c
+.RI "static int \fBWrite\fP (gzFile gzf, const \fBGZWritable\fP &val)"
+.br
+.RI "Wrapper function to write a \fBGZWritable\fP object to a gzFile\&. "
+.ti -1c
+.RI "template<typename _firstT , typename _secondT > static int \fBRead\fP (gzFile gzf, std::pair< _firstT, _secondT > &p)"
+.br
+.RI "Reads a pair<_firstT,_secondT> from a gzFile\&. "
+.ti -1c
+.RI "template<typename _firstT , typename _secondT > static int \fBWrite\fP (gzFile gzf, const std::pair< _firstT, _secondT > &p)"
+.br
+.RI "Writes a pair<_firstT,_secondT> to a gzFile\&. "
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Compare , typename _Alloc > static int \fBRead\fP (gzFile gzf, std::map< _keyT, _valueT, _Compare, _Alloc > &m)"
+.br
+.RI "Reads a map<_keyT,_valueT> from a gzFile\&. "
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Compare , typename _Alloc > static int \fBWrite\fP (gzFile gzf, const std::map< _keyT, _valueT, _Compare, _Alloc > &m)"
+.br
+.RI "Writes a map<_keyT,_valueT> to a gzFile\&. "
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Compare , typename _Alloc > static int \fBRead\fP (gzFile gzf, std::multimap< _keyT, _valueT, _Compare, _Alloc > &m)"
+.br
+.RI "Reads a multimap<_keyT,_valueT> from a gzFile\&. "
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Compare , typename _Alloc > static int \fBWrite\fP (gzFile gzf, const std::multimap< _keyT, _valueT, _Compare, _Alloc > &m)"
+.br
+.RI "Writes a multimap<_keyT,_valueT> to a gzFile\&. "
+.ti -1c
+.RI "template<typename _valueT , size_t N> static int \fBRead\fP (gzFile gzf, std::array< _valueT, N > &a)"
+.br
+.RI "Reads an array<_valueT,N> from a gzFile\&. "
+.ti -1c
+.RI "template<typename _valueT , size_t N> static int \fBWrite\fP (gzFile gzf, const std::array< _valueT, N > &a)"
+.br
+.RI "Writes an array<_valueT,N> to a gzFile\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Alloc > static int \fBRead\fP (gzFile gzf, std::vector< _valueT, _Alloc > &v)"
+.br
+.RI "Reads a vector<_valueT> from a gzFile\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Alloc > static int \fBWrite\fP (gzFile gzf, const std::vector< _valueT, _Alloc > &v)"
+.br
+.RI "Writes a vector<_valueT> to a gzFile\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Alloc > static int \fBRead\fP (gzFile gzf, std::deque< _valueT, _Alloc > &d)"
+.br
+.RI "Reads a deque<_valueT> from a gzFile\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Alloc > static int \fBWrite\fP (gzFile gzf, const std::deque< _valueT, _Alloc > &d)"
+.br
+.RI "Writes a deque<_valueT> to a gzFile\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Alloc > static int \fBRead\fP (gzFile gzf, std::list< _valueT, _Alloc > &l)"
+.br
+.RI "Reads a list<_valueT> from a gzFile\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Alloc > static int \fBWrite\fP (gzFile gzf, const std::list< _valueT, _Alloc > &l)"
+.br
+.RI "Writes a list<_valueT> to a gzFile\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Compare , typename _Alloc > static int \fBRead\fP (gzFile gzf, std::set< _valueT, _Compare, _Alloc > &l)"
+.br
+.RI "Reads a set<_valueT> from a gzFile\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Compare , typename _Alloc > static int \fBWrite\fP (gzFile gzf, const std::set< _valueT, _Compare, _Alloc > &l)"
+.br
+.RI "Writes a set<_valueT> to a gzFile\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Compare , typename _Alloc > static int \fBRead\fP (gzFile gzf, std::multiset< _valueT, _Compare, _Alloc > &l)"
+.br
+.RI "Reads a multiset<_valueT> from a gzFile\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Compare , typename _Alloc > static int \fBWrite\fP (gzFile gzf, const std::multiset< _valueT, _Compare, _Alloc > &l)"
+.br
+.RI "Writes a multiset<_valueT> to a gzFile\&. "
+.ti -1c
+.RI "static int \fBRead\fP (gzFile gzf, std::monostate &sm)"
+.br
+.RI "Just a dummy helper function for std::variant instances that hold a std::monostate\&. "
+.ti -1c
+.RI "static int \fBWrite\fP (gzFile gzf, const std::monostate &sm)"
+.br
+.RI "Just a dummy helper function for std::variant instances that hold a std::monostate\&. "
+.ti -1c
+.RI "template<typename\&.\&.\&. Ts> static int \fBRead\fP (gzFile gzf, std::variant< Ts\&.\&.\&. > &v)"
+.br
+.RI "Reads a variant from a gzFile\&. "
+.ti -1c
+.RI "template<typename\&.\&.\&. Ts> static int \fBWrite\fP (gzFile gzf, const std::variant< Ts\&.\&.\&. > &v)"
+.br
+.RI "Writes a variant to a gzFile\&. "
+.ti -1c
+.RI "template<typename\&.\&.\&. Args> static int \fBRead\fP (gzFile gzf, std::tuple< Args\&.\&.\&. > &t)"
+.br
+.RI "Reads a tuple from a gzFile\&. "
+.ti -1c
+.RI "template<typename\&.\&.\&. Args> static int \fBWrite\fP (gzFile gzf, const std::tuple< Args\&.\&.\&. > &t)"
+.br
+.RI "Writes a tuple to a gzFile\&. "
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static int \fBRead\fP (gzFile gzf, std::unordered_map< _keyT, _valueT, _Hash, _Pred, _Alloc > &hm)"
+.br
+.RI "Reads an unordered_map from a gzFile\&. "
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static int \fBWrite\fP (gzFile gzf, const std::unordered_map< _keyT, _valueT, _Hash, _Pred, _Alloc > &hm)"
+.br
+.RI "Writes an unordered_map to a gzFile\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static int \fBRead\fP (gzFile gzf, std::unordered_set< _valueT, _Hash, _Pred, _Alloc > &hm)"
+.br
+.RI "Reads an unordered_set from a gzFile\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static int \fBWrite\fP (gzFile gzf, const std::unordered_set< _valueT, _Hash, _Pred, _Alloc > &hm)"
+.br
+.RI "Writes an unordered_set to a gzFile\&. "
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static int \fBRead\fP (gzFile gzf, std::unordered_multimap< _keyT, _valueT, _Hash, _Pred, _Alloc > &hm)"
+.br
+.RI "Reads an unordered_multimap from a gzFile\&. "
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static int \fBWrite\fP (gzFile gzf, const std::unordered_multimap< _keyT, _valueT, _Hash, _Pred, _Alloc > &hm)"
+.br
+.RI "Writes an unordered_multimap to a gzFile\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static int \fBRead\fP (gzFile gzf, std::unordered_multiset< _valueT, _Hash, _Pred, _Alloc > &hm)"
+.br
+.RI "Reads an unordered_multiset from a gzFile\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static int \fBWrite\fP (gzFile gzf, const std::unordered_multiset< _valueT, _Hash, _Pred, _Alloc > &hm)"
+.br
+.RI "Writes an unordered_multiset to a gzFile\&. "
+.ti -1c
+.RI "template<typename \&.\&.\&. Args> static int \fBReadV\fP (gzFile gzf, Args &\&.\&.\&.args)"
+.br
+.RI "Reads \fRargs\fP from \fRgzf\fP\&. "
+.ti -1c
+.RI "template<typename \&.\&.\&. Args> static int \fBWriteV\fP (gzFile gzf, const Args &\&.\&.\&.args)"
+.br
+.RI "Writes \fRargs\fP to \fRgzf\fP\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+This class contains a collection of static functions for reading and writing simple types in network byte order (MSB first) from/to gzip files\&. 
+
+It also contains functions to read and write strings from/to gzip files\&. It also contains function templates to read and write arrays, deques, lists, vectors, maps, multimaps, sets, multisets, unordered_maps, unordered_multimaps, unordered_sets, unordered_multisets, tuples and variants from/to gzip files\&. We use our member functions to handle reading and writing simple types in these containers, and function templates to handle reading and writing other class types\&. In the latter case, the class must implement the \fBGZReadable\fP and \fBGZWritable\fP interfaces, since our function templates simply call out to them\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "static int Dwm::GZIO::Read (gzFile gzf, bool & b)\fR [static]\fP"
+
+.PP
+Reads \fRb\fP from \fRgzf\fP\&. Returns the number of bytes read (1) on success, less on failure\&. 
+.SS "static int Dwm::GZIO::Read (gzFile gzf, char & c)\fR [static]\fP"
+
+.PP
+Reads \fRfrom\fP \fRgzf\fP\&. Returns the number of bytes read (1) on success, less on failure\&. 
+.SS "static int Dwm::GZIO::Read (gzFile gzf, double & val)\fR [static]\fP"
+
+.PP
+Reads \fRval\fP from \fRgzf\fP, in IEEE format (see RFC 1832 and/or ANSI/IEEE Standard 754-1985)\&. Returns number of bytes read (8) on success, less on failure\&. 
+.SS "static int Dwm::GZIO::Read (gzFile gzf, float & val)\fR [static]\fP"
+
+.PP
+Reads \fRval\fP from \fRgzf\fP, in IEEE format (see RFC 1832 and/or ANSI/IEEE Standard 754-1985)\&. Returns number of bytes read (4) on success, less on failure\&. 
+.SS "static int Dwm::GZIO::Read (gzFile gzf, int16_t & val)\fR [static]\fP"
+
+.PP
+Reads \fRval\fP from \fRgzf\fP, in network byte order (MSB first)\&. Returns number of bytes read (2) on success, less on failure\&. 
+.SS "static int Dwm::GZIO::Read (gzFile gzf, int32_t & val)\fR [static]\fP"
+
+.PP
+Reads \fRval\fP from \fRgzf\fP, in network byte order (MSB first)\&. Returns number of bytes read (4) on success, less on failure\&. 
+.SS "static int Dwm::GZIO::Read (gzFile gzf, int64_t & val)\fR [static]\fP"
+
+.PP
+Reads \fRval\fP from \fRgzf\fP, in network byte order (MSB first)\&. Returns number of bytes read (8) on success, less on failure\&. 
+.SS "template<typename _valueT , size_t N> static int Dwm::GZIO::Read (gzFile gzf, std::array< _valueT, N > & a)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads an array<_valueT,N> from a gzFile\&. Returns the number of bytes read on success, -1 on failure\&. 
+.SS "template<typename _valueT , typename _Alloc > static int Dwm::GZIO::Read (gzFile gzf, std::deque< _valueT, _Alloc > & d)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads a deque<_valueT> from a gzFile\&. Returns the number of bytes read on success, -1 on failure\&. 
+.SS "template<typename _valueT , typename _Alloc > static int Dwm::GZIO::Read (gzFile gzf, std::list< _valueT, _Alloc > & l)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads a list<_valueT> from a gzFile\&. Returns the number of bytes read on success, -1 on failure\&. 
+.SS "template<typename _keyT , typename _valueT , typename _Compare , typename _Alloc > static int Dwm::GZIO::Read (gzFile gzf, std::map< _keyT, _valueT, _Compare, _Alloc > & m)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads a map<_keyT,_valueT> from a gzFile\&. Returns the number of bytes read on success, -1 on failure\&. 
+.SS "static int Dwm::GZIO::Read (gzFile gzf, std::monostate & sm)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Just a dummy helper function for std::variant instances that hold a std::monostate\&. This should only be called from our \fBRead()\fP for std::variant (via std::visit()), and does nothing\&. Returns 0\&. 
+.SS "template<typename _keyT , typename _valueT , typename _Compare , typename _Alloc > static int Dwm::GZIO::Read (gzFile gzf, std::multimap< _keyT, _valueT, _Compare, _Alloc > & m)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads a multimap<_keyT,_valueT> from a gzFile\&. Returns the number of bytes read on success, -1 on failure\&. 
+.SS "template<typename _valueT , typename _Compare , typename _Alloc > static int Dwm::GZIO::Read (gzFile gzf, std::multiset< _valueT, _Compare, _Alloc > & l)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads a multiset<_valueT> from a gzFile\&. Returns the number of bytes read on success, -1 on failure\&. 
+.SS "template<typename _firstT , typename _secondT > static int Dwm::GZIO::Read (gzFile gzf, std::pair< _firstT, _secondT > & p)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads a pair<_firstT,_secondT> from a gzFile\&. Returns the number of bytes read on success, -1 on failure\&. 
+.SS "template<typename _valueT , typename _Compare , typename _Alloc > static int Dwm::GZIO::Read (gzFile gzf, std::set< _valueT, _Compare, _Alloc > & l)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads a set<_valueT> from a gzFile\&. Returns the number of bytes read on success, -1 on failure\&. 
+.SS "static int Dwm::GZIO::Read (gzFile gzf, std::string & s)\fR [static]\fP"
+
+.PP
+Reads \fRs\fP from \fRgzf\fP\&. Returns the number of bytes read on success, -1 on failure\&. Since we write strings with a 64-bit unsigned length value preceding the actual string, and always have a terminating NULL, this always reads at least 9 bytes on success\&. 
+.SS "template<typename\&.\&.\&. Args> static int Dwm::GZIO::Read (gzFile gzf, std::tuple< Args\&.\&.\&. > & t)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads a tuple from a gzFile\&. Returns the number of bytes read on success, -1 on failure\&. 
+.SS "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static int Dwm::GZIO::Read (gzFile gzf, std::unordered_map< _keyT, _valueT, _Hash, _Pred, _Alloc > & hm)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads an unordered_map from a gzFile\&. Returns the number of bytes read on success, -1 on failure\&. 
+.SS "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static int Dwm::GZIO::Read (gzFile gzf, std::unordered_multimap< _keyT, _valueT, _Hash, _Pred, _Alloc > & hm)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads an unordered_multimap from a gzFile\&. Returns the number of bytes read on success, -1 on failure\&. 
+.SS "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static int Dwm::GZIO::Read (gzFile gzf, std::unordered_multiset< _valueT, _Hash, _Pred, _Alloc > & hm)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads an unordered_multiset from a gzFile\&. Returns the number of bytes read on success, -1 on failure\&. 
+.SS "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static int Dwm::GZIO::Read (gzFile gzf, std::unordered_set< _valueT, _Hash, _Pred, _Alloc > & hm)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads an unordered_set from a gzFile\&. Returns the number of bytes read on success, -1 on failure\&. 
+.SS "template<typename\&.\&.\&. Ts> static int Dwm::GZIO::Read (gzFile gzf, std::variant< Ts\&.\&.\&. > & v)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads a variant from a gzFile\&. Returns the number of bytes read on success, -1 on failure\&. 
+.SS "template<typename _valueT , typename _Alloc > static int Dwm::GZIO::Read (gzFile gzf, std::vector< _valueT, _Alloc > & v)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads a vector<_valueT> from a gzFile\&. Returns the number of bytes read on success, -1 on failure\&. 
+.SS "static int Dwm::GZIO::Read (gzFile gzf, uint16_t & val)\fR [static]\fP"
+
+.PP
+Reads \fRval\fP from \fRgzf\fP, in network byte order (MSB first)\&. Returns number of bytes read (2) on success, less on failure\&. 
+.SS "static int Dwm::GZIO::Read (gzFile gzf, uint32_t & val)\fR [static]\fP"
+
+.PP
+Reads \fRval\fP from \fRgzf\fP, in network byte order (MSB first)\&. Returns number of bytes read (4) on success, less on failure\&. 
+.SS "static int Dwm::GZIO::Read (gzFile gzf, uint64_t & val)\fR [static]\fP"
+
+.PP
+Reads \fRval\fP from \fRgzf\fP, in network byte order (MSB first)\&. Returns number of bytes read (8) on success, less on failure\&. 
+.SS "static int Dwm::GZIO::Read (gzFile gzf, uint8_t & c)\fR [static]\fP"
+
+.PP
+Reads \fRc\fP from \fRgzf\fP\&. Returns the number of bytes read (1) on success, less on failure\&. 
+.SS "template<typename \&.\&.\&. Args> static int Dwm::GZIO::ReadV (gzFile gzf, Args &\&.\&.\&. args)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads \fRargs\fP from \fRgzf\fP\&. Returns the number of bytes read on success, -1 on failure\&. 
+.SS "static int Dwm::GZIO::Write (gzFile gzf, bool b)\fR [static]\fP"
+
+.PP
+Writes \fRb\fP to \fRgzf\fP\&. Returns the number of bytes written (1) on success, less on failure\&. 
+.SS "static int Dwm::GZIO::Write (gzFile gzf, char c)\fR [static]\fP"
+
+.PP
+Writes \fRc\fP to \fRgzf\fP\&. Returns the number of bytes written on success, -1 on failure\&. 
+.SS "static int Dwm::GZIO::Write (gzFile gzf, const double & val)\fR [static]\fP"
+
+.PP
+Writes \fRval\fP tp \fRgzf\fP, in IEEE format (see RFC 1832 and/or ANSI/IEEE Standard 754-1985)\&. Returns the number of bytes written (8) on success, less on failure\&. 
+.SS "static int Dwm::GZIO::Write (gzFile gzf, const int64_t & val)\fR [static]\fP"
+
+.PP
+Writes \fRval\fP to \fRgzf\fP, in network byte order (MSB first)\&. Returns the number of bytes written (8) on success, less on failure\&. 
+.SS "template<typename _valueT , size_t N> static int Dwm::GZIO::Write (gzFile gzf, const std::array< _valueT, N > & a)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes an array<_valueT,N> to a gzFile\&. Returns the number of bytes written on success, -1 on failure\&. 
+.SS "template<typename _valueT , typename _Alloc > static int Dwm::GZIO::Write (gzFile gzf, const std::deque< _valueT, _Alloc > & d)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes a deque<_valueT> to a gzFile\&. Returns the number of bytes written on success, -1 on failure\&. 
+.SS "template<typename _valueT , typename _Alloc > static int Dwm::GZIO::Write (gzFile gzf, const std::list< _valueT, _Alloc > & l)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes a list<_valueT> to a gzFile\&. Returns the number of bytes written on success, -1 on failure\&. 
+.SS "template<typename _keyT , typename _valueT , typename _Compare , typename _Alloc > static int Dwm::GZIO::Write (gzFile gzf, const std::map< _keyT, _valueT, _Compare, _Alloc > & m)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes a map<_keyT,_valueT> to a gzFile\&. Returns the number of bytes written on success, -1 on failure\&. 
+.SS "static int Dwm::GZIO::Write (gzFile gzf, const std::monostate & sm)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Just a dummy helper function for std::variant instances that hold a std::monostate\&. This should only be called from our \fBWrite()\fP for std::variant (via std::visit()), and does nothing\&. Returns 0\&. 
+.SS "template<typename _keyT , typename _valueT , typename _Compare , typename _Alloc > static int Dwm::GZIO::Write (gzFile gzf, const std::multimap< _keyT, _valueT, _Compare, _Alloc > & m)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes a multimap<_keyT,_valueT> to a gzFile\&. Returns the number of bytes written on success, -1 on failure\&. 
+.SS "template<typename _valueT , typename _Compare , typename _Alloc > static int Dwm::GZIO::Write (gzFile gzf, const std::multiset< _valueT, _Compare, _Alloc > & l)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes a multiset<_valueT> to a gzFile\&. Returns the number of bytes written on success, -1 on failure\&. 
+.SS "template<typename _firstT , typename _secondT > static int Dwm::GZIO::Write (gzFile gzf, const std::pair< _firstT, _secondT > & p)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes a pair<_firstT,_secondT> to a gzFile\&. Returns the number of bytes written on success, -1 on failure\&. 
+.SS "template<typename _valueT , typename _Compare , typename _Alloc > static int Dwm::GZIO::Write (gzFile gzf, const std::set< _valueT, _Compare, _Alloc > & l)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes a set<_valueT> to a gzFile\&. Returns the number of bytes written on success, -1 on failure\&. 
+.SS "static int Dwm::GZIO::Write (gzFile gzf, const std::string & s)\fR [static]\fP"
+
+.PP
+Writes \fRs\fP to \fRgzf\fP\&. Returns the number of bytes written on success, -1 on failure\&. Note that a 64-bit value is written first, holding the length of the string\&. The terminating NULL is also written\&. Hence, on success this will always return a value of 9 or greater\&. 
+.SS "template<typename\&.\&.\&. Args> static int Dwm::GZIO::Write (gzFile gzf, const std::tuple< Args\&.\&.\&. > & t)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes a tuple to a gzFile\&. Returns the number of bytes written on success, -1 on faiulure\&. 
+.SS "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static int Dwm::GZIO::Write (gzFile gzf, const std::unordered_map< _keyT, _valueT, _Hash, _Pred, _Alloc > & hm)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes an unordered_map to a gzFile\&. Returns the number of bytes written on success, -1 on failure\&. 
+.SS "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static int Dwm::GZIO::Write (gzFile gzf, const std::unordered_multimap< _keyT, _valueT, _Hash, _Pred, _Alloc > & hm)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes an unordered_multimap to a gzFile\&. Returns the number of bytes written on success, -1 on failure\&. 
+.SS "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static int Dwm::GZIO::Write (gzFile gzf, const std::unordered_multiset< _valueT, _Hash, _Pred, _Alloc > & hm)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes an unordered_multiset to a gzFile\&. Returns the number of bytes written on success, -1 on failure\&. 
+.SS "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static int Dwm::GZIO::Write (gzFile gzf, const std::unordered_set< _valueT, _Hash, _Pred, _Alloc > & hm)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes an unordered_set to a gzFile\&. Returns the number of bytes written on success, -1 on failure\&. 
+.SS "template<typename\&.\&.\&. Ts> static int Dwm::GZIO::Write (gzFile gzf, const std::variant< Ts\&.\&.\&. > & v)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes a variant to a gzFile\&. Returns the number of bytes written on success, -1 on failure\&. 
+.SS "template<typename _valueT , typename _Alloc > static int Dwm::GZIO::Write (gzFile gzf, const std::vector< _valueT, _Alloc > & v)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes a vector<_valueT> to a gzFile\&. Returns the number of bytes written on success, -1 on failure\&. 
+.SS "static int Dwm::GZIO::Write (gzFile gzf, const uint64_t & val)\fR [static]\fP"
+
+.PP
+Writes \fRval\fP to \fRgzf\fP, in network byte order (MSB first)\&. Returns the number of bytes written (8) on success, less on failure\&. 
+.SS "static int Dwm::GZIO::Write (gzFile gzf, float val)\fR [static]\fP"
+
+.PP
+Writes \fRval\fP tp \fRgzf\fP, in IEEE format (see RFC 1832 and/or ANSI/IEEE Standard 754-1985)\&. Returns the number of bytes written (4) on success, less on failure\&. 
+.SS "static int Dwm::GZIO::Write (gzFile gzf, int16_t val)\fR [static]\fP"
+
+.PP
+Writes \fRval\fP to \fRgzf\fP, in network byte order (MSB first)\&. Returns the number of bytes written (2) on success, less on failure\&. 
+.SS "static int Dwm::GZIO::Write (gzFile gzf, int32_t val)\fR [static]\fP"
+
+.PP
+Writes \fRval\fP to \fRgzf\fP, in network byte order (MSB first)\&. Returns the number of bytes written (4) on success, less on failure\&. 
+.SS "static int Dwm::GZIO::Write (gzFile gzf, uint16_t val)\fR [static]\fP"
+
+.PP
+Writes \fRval\fP to \fRgzf\fP, in network byte order (MSB first)\&. Returns the number of bytes written (2) on success, less on failure\&. 
+.SS "static int Dwm::GZIO::Write (gzFile gzf, uint32_t val)\fR [static]\fP"
+
+.PP
+Writes \fRval\fP to \fRgzf\fP, in network byte order (MSB first)\&. Returns the number of bytes written (4) on success, less on failure\&. 
+.SS "static int Dwm::GZIO::Write (gzFile gzf, uint8_t c)\fR [static]\fP"
+
+.PP
+Writes \fRc\fP to \fRgzf\fP\&. Returns the number of bytes written (1) on success, less on failure\&. 
+.SS "template<typename \&.\&.\&. Args> static int Dwm::GZIO::WriteV (gzFile gzf, const Args &\&.\&.\&. args)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes \fRargs\fP to \fRgzf\fP\&. Returns the number of bytes written on success, -1 on failure\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

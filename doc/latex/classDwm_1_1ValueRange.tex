@@ -1,0 +1,43 @@
+\doxysection{Dwm\+::Value\+Range\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classDwm_1_1ValueRange}{}\label{classDwm_1_1ValueRange}\index{Dwm::ValueRange$<$ T $>$@{Dwm::ValueRange$<$ T $>$}}
+
+
+This template encapsulates a range of values (low, high).  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Value\+Range.\+hh$>$}
+
+
+
+Inherits std\+::pair$<$ T1, T2 $>$.
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1ValueRange_a4335f408e7a12604f295c8aa03268cd5}\label{classDwm_1_1ValueRange_a4335f408e7a12604f295c8aa03268cd5} 
+{\bfseries Value\+Range} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1ValueRange_aee8cdb66c64694677d9ce8e2c01584f1}\label{classDwm_1_1ValueRange_aee8cdb66c64694677d9ce8e2c01584f1} 
+{\bfseries Value\+Range} (const T \&low, const T \&high)
+\begin{DoxyCompactList}\small\item\em Construct from given {\ttfamily low} and @ high values. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1ValueRange_a938b36db3b2559b9a6fb72461c668984}\label{classDwm_1_1ValueRange_a938b36db3b2559b9a6fb72461c668984} 
+bool {\bfseries Contains} (const T \&value) const
+\begin{DoxyCompactList}\small\item\em Returns true if the range contains {\ttfamily value}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1ValueRange_aaa37e05f041d0bb308255c292a055a0e}\label{classDwm_1_1ValueRange_aaa37e05f041d0bb308255c292a055a0e} 
+bool {\bfseries Contains} (const \mbox{\hyperlink{classDwm_1_1ValueRange}{Value\+Range}}$<$ T $>$ \&range) const
+\begin{DoxyCompactList}\small\item\em Returns true if the range contains the given {\ttfamily range}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1ValueRange_a49bae4249007b8de284fce56923b4fc7}\label{classDwm_1_1ValueRange_a49bae4249007b8de284fce56923b4fc7} 
+bool {\bfseries Overlaps} (const \mbox{\hyperlink{classDwm_1_1ValueRange}{Value\+Range}}$<$ T $>$ \&range) const
+\begin{DoxyCompactList}\small\item\em Returns true if the range overlaps the given {\ttfamily range}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class Dwm\+::\+Value\+Range$<$ T $>$}
+This template encapsulates a range of values (low, high). 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmValueRange_8hh}{Dwm\+Value\+Range.\+hh}}\end{DoxyCompactItemize}

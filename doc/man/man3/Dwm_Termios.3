@@ -1,0 +1,92 @@
+.TH "Dwm::Termios" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::Termios \- Encapsulates a struct termios\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmTermios\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBTermios\fP ()"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "\fBTermioInputFlags\fP & \fBInputFlags\fP ()"
+.br
+.RI "Returns a reference to the input flags\&. "
+.ti -1c
+.RI "\fBTermioOutputFlags\fP & \fBOutputFlags\fP ()"
+.br
+.RI "Returns a reference to the output flags\&. "
+.ti -1c
+.RI "\fBTermioControlFlags\fP & \fBControlFlags\fP ()"
+.br
+.RI "Returns a reference to the control flags\&. "
+.ti -1c
+.RI "\fBTermioLocalFlags\fP & \fBLocalFlags\fP ()"
+.br
+.RI "Returns a reference to the local flags\&. "
+.ti -1c
+.RI "long \fBInputSpeed\fP () const"
+.br
+.RI "Returns the input speed\&. "
+.ti -1c
+.RI "long \fBInputSpeed\fP (long inputSpeed)"
+.br
+.RI "Sets and returns the input speed\&. "
+.ti -1c
+.RI "long \fBOutputSpeed\fP () const"
+.br
+.RI "Returns the input speed\&. "
+.ti -1c
+.RI "long \fBOutputSpeed\fP (long outputSpeed)"
+.br
+.RI "Sets and returns the input speed\&. "
+.ti -1c
+.RI "cc_t \fBControlChar\fP (const std::string &ccName) const"
+.br
+.RI "Returns the control char value for the given control char named \fRccName\fP\&. "
+.ti -1c
+.RI "cc_t \fBControlChar\fP (const std::string &ccName, cc_t val)"
+.br
+.RI "Sets and returns the control char value for the given control char named \fRccName\fP\&. "
+.ti -1c
+.RI "bool \fBGet\fP (int fd)"
+.br
+.RI "Gets the termios for the given file descriptor\&. "
+.ti -1c
+.RI "bool \fBSet\fP (int fd, int action)"
+.br
+.RI "Applies the termios to the given file descriptor\&. "
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBTermios\fP &t) const"
+.br
+.RI "operator == "
+.in -1c
+.SS "Friends"
+
+.in +1c
+.ti -1c
+.RI "std::ostream & \fBoperator<<\fP (std::ostream &os, const \fBTermios\fP &t)"
+.br
+.RI "Prints to an ostream\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Encapsulates a struct termios\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "bool Dwm::Termios::Set (int fd, int action)"
+
+.PP
+Applies the termios to the given file descriptor\&. \fRaction\fP is TCSANOW, TCSADRAIN or TCSAFLUSH\&. TCSASOFT may be or'ed with any of these\&. See the tcsetattr(3) manpage\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

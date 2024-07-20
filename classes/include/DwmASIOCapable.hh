@@ -48,6 +48,92 @@
 namespace Dwm {
 
   //--------------------------------------------------------------------------
+  //!  T has a
+  //!  Read(boost::asio::ip::tcp::socket &, boost::system::error_code &)
+  //!  method that returns bool.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept HasAsioTcpRead = requires(T t, boost::asio::ip::tcp::socket & s,
+                                    boost::system::error_code & ec) {
+    { t.Read(s, ec) } -> std::same_as<bool>;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  T has a
+  //!  Write(boost::asio::ip::tcp::socket &, boost::system::error_code &)
+  //!  method that returns bool.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept HasAsioTcpWrite = requires(T t, boost::asio::ip::tcp::socket & s,
+                                     boost::system::error_code & ec) {
+    { ((const T)t).Write(s, ec) } -> std::same_as<bool>;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  T has a
+  //!  Read(boost::asio::local::stream_protocol::socket &,
+  //!       boost::system::error_code &)  method that returns bool.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept HasAsioLocalRead =
+  requires(T t, boost::asio::local::stream_protocol::socket & s,
+           boost::system::error_code & ec) {
+    { t.Read(s, ec) } -> std::same_as<bool>;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  T has a
+  //!  Write(boost::asio::local::stream_protocol::socket &,
+  //!        boost::system::error_code &) const method that returns bool.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept HasAsioLocalWrite =
+  requires(T t, boost::asio::local::stream_protocol::socket & s,
+           boost::system::error_code & ec) {
+    { ((const T)t).Write(s, ec) } -> std::same_as<bool>;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  T has a
+  //!  Read(boost::asio::generic::stream_protocol::socket &,
+  //!       boost::system::error_code &)  method that returns bool.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept HasAsioGenericStreamRead =
+  requires(T t, boost::asio::generic::stream_protocol::socket & s,
+           boost::system::error_code & ec) {
+    { t.Read(s, ec) } -> std::same_as<bool>;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  T has a
+  //!  Write(boost::asio::generic::stream_protocol::socket &,
+  //!        boost::system::error_code &) const method that returns bool.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept HasAsioGenericStreamWrite =
+  requires(T t, boost::asio::generic::stream_protocol::socket & s,
+           boost::system::error_code & ec) {
+    { ((const T)t).Write(s, ec) } -> std::same_as<bool>;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  T has asio read members
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept HasAsioRead = (HasAsioTcpRead<T>
+                         && HasAsioLocalRead<T>
+                         && HasAsioGenericStreamRead<T>);
+
+  //--------------------------------------------------------------------------
+  //!  T has asio write members
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept HasAsioWrite = (HasAsioTcpWrite<T>
+                         && HasAsioLocalWrite<T>
+                         && HasAsioGenericStreamWrite<T>);
+  
+  //--------------------------------------------------------------------------
   //!  Interface for classes that wish to be readable via Dwm::ASIO.  Pure
   //!  virtual.
   //--------------------------------------------------------------------------

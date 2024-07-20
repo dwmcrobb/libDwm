@@ -1,0 +1,73 @@
+.TH "Dwm::ThreadPool< N, F, Args >" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::ThreadPool< N, F, Args > \- Encapsulate a trivial thread pool\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmThreadPool\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBThreadPool\fP ()"
+.br
+.RI "Constructs the thread pool and starts the threads\&. "
+.ti -1c
+.RI "bool \fBStart\fP ()"
+.br
+.RI "Starts the threads\&. "
+.ti -1c
+.RI "void \fBAddTask\fP (F fn, Args \&.\&.\&.args)"
+.br
+.RI "Adds a task to be executed by the thread pool\&. "
+.ti -1c
+.RI "void \fBStop\fP ()"
+.br
+.RI "Stops the threads\&. "
+.ti -1c
+.RI "void \fBClearTasks\fP ()"
+.br
+.RI "Clears all the tasks from the task queue\&. "
+.ti -1c
+.RI "\fB~ThreadPool\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.SS "template<size_t N, typename F, typename\&.\&.\&. Args>
+.br
+requires (std::invocable<F,Args\&.\&.\&.> && std::is_copy_assignable_v<F> && (std::is_copy_assignable_v<Args> && \&.\&.\&.))
+.br
+class Dwm::ThreadPool< N, F, Args >"Encapsulate a trivial thread pool\&. 
+
+\fRN\fP is the number of threads and \fRF\fP is a functor type that takes \fRArgs\fP when invoked\&.
+.PP
+Work is added to the pool via \fBAddTask()\fP\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "template<size_t N, typename F , typename\&.\&.\&. Args> void \fBDwm::ThreadPool\fP< N, F, Args >::AddTask (F fn, Args \&.\&.\&. args)\fR [inline]\fP"
+
+.PP
+Adds a task to be executed by the thread pool\&. \fRfn\fP is a function object and \fRargs\fP are the arguments to the function\&. 
+.SS "template<size_t N, typename F , typename\&.\&.\&. Args> void \fBDwm::ThreadPool\fP< N, F, Args >::ClearTasks ()\fR [inline]\fP"
+
+.PP
+Clears all the tasks from the task queue\&. May be useful if you want to \fBStop()\fP without waiting for queued tasks to complete\&. 
+.SS "template<size_t N, typename F , typename\&.\&.\&. Args> bool \fBDwm::ThreadPool\fP< N, F, Args >::Start ()\fR [inline]\fP"
+
+.PP
+Starts the threads\&. Returns true on success, false on failure\&. A failure indicates that the threads had not been joined (i\&.e\&. \fBStop()\fP had not been called)\&. 
+.SS "template<size_t N, typename F , typename\&.\&.\&. Args> void \fBDwm::ThreadPool\fP< N, F, Args >::Stop ()\fR [inline]\fP"
+
+.PP
+Stops the threads\&. Note that we will wait for all remaining tasks to be completed\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

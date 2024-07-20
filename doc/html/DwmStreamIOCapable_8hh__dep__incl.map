@@ -1,0 +1,147 @@
+<map id="DwmStreamIOCapable.hh" name="DwmStreamIOCapable.hh">
+<area shape="rect" id="Node000001" title="Dwm::StreamReadable, Dwm::StreamWritable and Dwm::StreamIOCapable pure virtual class declarations." alt="" coords="2674,5,2849,31"/>
+<area shape="rect" id="Node000002" href="$DwmIpAddress_8hh.html" title="Dwm::IpAddress class definition." alt="" coords="1681,153,1810,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="2658,28,2423,48,2283,63,2144,82,1949,119,1794,155,1793,149,1948,113,2144,76,2283,57,2422,42,2658,23"/>
+<area shape="rect" id="Node000004" href="$DwmIpv4Address_8hh.html" title="Dwm::Ipv4Address class definition." alt="" coords="2156,79,2300,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="2659,36,2300,84,2300,78,2658,31"/>
+<area shape="rect" id="Node000010" href="$DwmIpv4PacketHeader_8hh.html" title="Dwm::Ipv4PacketHeader class definition." alt="" coords="725,153,902,178"/>
+<area shape="poly" id="edge47_Node000001_Node000010" title=" " alt="" coords="2659,21,2414,22,2073,30,1680,48,1479,63,1282,82,1165,97,1050,117,867,155,866,149,1049,112,1164,92,1281,76,1478,57,1680,43,2072,25,2414,17,2659,16"/>
+<area shape="rect" id="Node000015" href="$DwmIpv4TcpHeader_8hh.html" title="Dwm::Ipv4TcpHeader class definition." alt="" coords="43,226,200,252"/>
+<area shape="poly" id="edge49_Node000001_Node000015" title=" " alt="" coords="2659,21,2389,22,2005,30,1561,48,1332,63,1108,82,835,115,569,156,341,197,181,228,180,223,340,192,568,151,835,110,1108,76,1332,57,1560,43,2005,24,2389,17,2659,16"/>
+<area shape="rect" id="Node000016" href="$DwmIpv4TcpPacket_8hh.html" title="Dwm::Ipv4TcpPacket class definition." alt="" coords="159,374,316,399"/>
+<area shape="poly" id="edge50_Node000001_Node000016" title=" " alt="" coords="2659,22,2033,26,1599,32,1145,44,713,62,350,87,208,103,99,122,31,143,14,154,8,165,8,240,12,267,24,290,41,310,63,328,117,354,171,370,169,376,115,359,61,332,38,314,19,293,7,269,3,241,3,164,10,150,29,138,98,116,207,98,349,82,713,56,1144,38,1599,27,2033,20,2659,17"/>
+<area shape="rect" id="Node000018" href="$DwmIpv4UdpHeader_8hh.html" title="Dwm::Ipv4UdpHeader class definition." alt="" coords="1280,226,1440,252"/>
+<area shape="poly" id="edge51_Node000001_Node000018" title=" " alt="" coords="2659,21,2363,22,1989,29,1807,36,1649,47,1528,62,1487,71,1460,81,1440,96,1423,114,1395,155,1376,196,1366,227,1361,225,1371,194,1390,152,1419,110,1437,92,1457,77,1485,66,1527,56,1648,41,1807,31,1988,23,2363,16,2659,16"/>
+<area shape="rect" id="Node000019" href="$DwmIpv4UdpPacket_8hh.html" title="Dwm::Ipv4UdpPacket class definition." alt="" coords="1397,374,1558,399"/>
+<area shape="poly" id="edge52_Node000001_Node000019" title=" " alt="" coords="2659,23,2346,30,2151,39,1954,52,1771,70,1620,95,1561,110,1517,126,1489,145,1482,154,1480,164,1480,241,1480,373,1475,373,1475,241,1475,164,1477,152,1485,141,1514,122,1559,105,1619,90,1770,65,1954,47,2151,34,2346,25,2659,18"/>
+<area shape="rect" id="Node000021" href="$DwmIpv4Prefix_8hh.html" title="Dwm::Ipv4Prefix class definition." alt="" coords="1527,153,1657,178"/>
+<area shape="poly" id="edge48_Node000001_Node000021" title=" " alt="" coords="2659,26,2365,44,2186,60,2007,82,1803,118,1641,155,1640,149,1802,113,2006,76,2186,55,2365,39,2659,21"/>
+<area shape="rect" id="Node000028" href="$DwmIpv4IcmpMessage_8hh.html" title="Dwm::Ipv4IcmpMessage class definition." alt="" coords="1062,153,1239,178"/>
+<area shape="poly" id="edge40_Node000001_Node000028" title=" " alt="" coords="2659,22,2375,25,2005,33,1640,51,1489,65,1375,82,1318,97,1262,117,1176,154,1174,150,1260,112,1316,92,1374,76,1489,59,1639,46,2004,28,2375,20,2659,17"/>
+<area shape="rect" id="Node000029" href="$DwmIpv6Address_8hh.html" title="Dwm::Ipv6Address class definition." alt="" coords="2526,79,2669,105"/>
+<area shape="poly" id="edge53_Node000001_Node000029" title=" " alt="" coords="2720,40,2626,81,2624,76,2718,35"/>
+<area shape="rect" id="Node000031" href="$DwmIpv6Prefix_8hh.html" title="Dwm::Ipv6Prefix class definition." alt="" coords="2743,153,2873,178"/>
+<area shape="poly" id="edge61_Node000001_Node000031" title=" " alt="" coords="2745,45,2732,74,2731,89,2734,103,2756,131,2784,150,2781,154,2753,135,2730,106,2725,89,2727,73,2740,43"/>
+<area shape="rect" id="Node000033" href="$DwmMacAddress_8hh.html" title="Dwm::MacAddress class definition." alt="" coords="2744,79,2888,105"/>
+<area shape="poly" id="edge62_Node000001_Node000033" title=" " alt="" coords="2782,41,2809,77,2805,80,2777,45"/>
+<area shape="rect" id="Node000034" href="$DwmMplsLabel_8hh.html" title="Dwm::MplsLabel class definition." alt="" coords="2963,79,3093,105"/>
+<area shape="poly" id="edge63_Node000001_Node000034" title=" " alt="" coords="2822,33,2983,76,2982,81,2820,38"/>
+<area shape="rect" id="Node000036" href="$DwmProcessInfo_8hh.html" title="Dwm::ProcessInfo class declaration." alt="" coords="3267,79,3408,105"/>
+<area shape="poly" id="edge65_Node000001_Node000036" title=" " alt="" coords="2864,29,3255,76,3267,78,3266,83,3254,82,2863,34"/>
+<area shape="rect" id="Node000039" href="$DwmReadable_8hh.html" title="Dwm::Readable pure virtual class definition." alt="" coords="3117,79,3243,105"/>
+<area shape="poly" id="edge67_Node000001_Node000039" title=" " alt="" coords="2848,32,3117,77,3116,82,2847,37"/>
+<area shape="rect" id="Node000040" href="$DwmRusage_8hh.html" title="Dwm::Rusage class definition." alt="" coords="3445,153,3560,178"/>
+<area shape="poly" id="edge68_Node000001_Node000040" title=" " alt="" coords="2864,17,3005,21,3166,31,3316,48,3376,61,3421,77,3446,93,3468,113,3497,151,3493,154,3464,116,3443,97,3419,81,3374,66,3315,54,3166,36,3004,27,2864,23"/>
+<area shape="rect" id="Node000041" href="$DwmStreamIO_8hh.html" title="Dwm::StreamIO class declaration." alt="" coords="2912,153,3038,178"/>
+<area shape="poly" id="edge69_Node000001_Node000041" title=" " alt="" coords="2817,34,2860,52,2902,77,2942,115,2969,151,2965,154,2938,119,2898,81,2858,57,2815,39"/>
+<area shape="rect" id="Node000045" href="$DwmTimeInterval_8hh.html" title="Dwm::TimeInterval class definition." alt="" coords="4113,153,4255,178"/>
+<area shape="poly" id="edge80_Node000001_Node000045" title=" " alt="" coords="2864,20,3380,39,3659,56,3774,66,3862,76,3943,92,4023,112,4149,150,4147,155,4022,117,3942,97,3861,82,3773,71,3658,61,3380,45,2864,25"/>
+<area shape="rect" id="Node000046" href="$DwmTimeInterval64_8hh.html" title="Dwm::TimeInterval64 class definition." alt="" coords="4106,226,4262,252"/>
+<area shape="poly" id="edge82_Node000001_Node000046" title=" " alt="" coords="2864,18,3208,24,3427,32,3654,44,3870,61,4057,84,4133,98,4195,113,4241,131,4269,151,4275,163,4274,174,4261,196,4238,214,4212,228,4210,224,4235,209,4257,192,4269,173,4269,164,4265,154,4239,136,4194,118,4132,103,4056,89,3870,66,3654,49,3427,37,3208,30,2864,23"/>
+<area shape="rect" id="Node000047" href="$DwmTimeValue_8hh.html" title="Dwm::TimeValue class definition." alt="" coords="3661,79,3792,105"/>
+<area shape="poly" id="edge83_Node000001_Node000047" title=" " alt="" coords="2864,24,3661,83,3660,88,2864,30"/>
+<area shape="rect" id="Node000050" href="$DwmTimeValue64_8hh.html" title="Dwm::TimeValue64 class definition." alt="" coords="3943,153,4089,178"/>
+<area shape="poly" id="edge94_Node000001_Node000050" title=" " alt="" coords="2864,18,3082,24,3353,34,3615,51,3722,63,3805,76,3859,92,3912,112,3994,150,3992,155,3910,117,3858,97,3803,82,3722,68,3614,57,3353,40,3082,29,2864,24"/>
+<area shape="rect" id="Node000052" href="$DwmWritable_8hh.html" title="Dwm::Writable pure virtual class definition." alt="" coords="4329,79,4447,105"/>
+<area shape="poly" id="edge95_Node000001_Node000052" title=" " alt="" coords="2864,17,3119,19,3477,28,3890,46,4103,59,4311,76,4329,78,4329,84,4310,82,4102,65,3890,51,3477,33,3119,25,2864,22"/>
+<area shape="rect" id="Node000003" href="$DwmIpPrefix_8hh.html" title="Dwm::IpPrefix class declaration." alt="" coords="1693,226,1808,252"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1750,194,1752,226,1747,226,1745,194"/>
+<area shape="poly" id="edge6_Node000004_Node000002" title=" " alt="" coords="2141,109,1823,155,1811,157,1810,152,1822,150,2141,103"/>
+<area shape="rect" id="Node000005" href="$DwmGetAddrInfo_8hh.html" title="Dwm::GetAddrInfo function definition." alt="" coords="2527,153,2668,178"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="2306,106,2535,149,2534,155,2305,111"/>
+<area shape="rect" id="Node000006" href="$DwmHostPinger_8hh.html" title="Dwm::HostPinger class definition." alt="" coords="2488,374,2622,399"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="2222,120,2206,152,2194,168,2179,181,2155,193,2128,202,2068,210,2006,210,1947,207,1898,205,1866,208,1858,213,1856,221,1861,233,1873,250,1890,267,1914,282,1979,309,2059,330,2150,347,2336,369,2487,380,2487,385,2335,375,2149,352,2058,335,1977,314,1912,287,1887,271,1869,254,1856,235,1851,221,1854,210,1864,203,1898,199,1947,201,2006,205,2068,205,2127,197,2153,188,2176,176,2190,164,2201,149,2217,118"/>
+<area shape="rect" id="Node000007" href="$DwmIpv4AddrMap_8hh.html" title="Dwm::Ipv4AddrMap class template declaration." alt="" coords="1834,153,1982,178"/>
+<area shape="poly" id="edge7_Node000004_Node000007" title=" " alt="" coords="2159,111,1963,155,1962,149,2158,106"/>
+<area shape="rect" id="Node000008" href="$DwmIpv4IcmpEchoReply_8hh.html" title="Dwm::Ipv4IcmpEchoReply class definition." alt="" coords="2296,226,2483,252"/>
+<area shape="poly" id="edge8_Node000004_Node000008" title=" " alt="" coords="2254,113,2378,224,2374,228,2251,117"/>
+<area shape="rect" id="Node000009" href="$DwmIpv4IcmpEchoRequest_8hh.html" title="Dwm::Ipv4IcmpEchoRequest class definition." alt="" coords="2069,226,2272,252"/>
+<area shape="poly" id="edge9_Node000004_Node000009" title=" " alt="" coords="2255,114,2275,145,2279,162,2274,180,2262,196,2246,209,2211,228,2209,223,2243,205,2258,192,2270,177,2274,162,2270,147,2250,117"/>
+<area shape="poly" id="edge10_Node000004_Node000010" title=" " alt="" coords="2141,100,903,162,902,157,2141,95"/>
+<area shape="poly" id="edge25_Node000004_Node000021" title=" " alt="" coords="2141,104,1926,125,1668,155,1657,157,1657,151,1668,150,1925,120,2141,99"/>
+<area shape="rect" id="Node000024" href="$DwmLocalInterfaces_8hh.html" title="Dwm::LocalInterfaceAlias, Dwm::LocalInterface and Dwm::GetLocalInterfaces() definitions." alt="" coords="2006,153,2165,178"/>
+<area shape="poly" id="edge29_Node000004_Node000024" title=" " alt="" coords="2191,114,2111,154,2108,150,2189,110"/>
+<area shape="rect" id="Node000025" href="$DwmPingDestination_8hh.html" title="Dwm::PingDestination class definition." alt="" coords="1883,226,2045,252"/>
+<area shape="poly" id="edge30_Node000004_Node000025" title=" " alt="" coords="2236,120,2236,151,2232,166,2223,180,2198,192,2151,205,2036,228,2035,223,2150,200,2196,187,2220,176,2227,164,2231,150,2231,120"/>
+<area shape="rect" id="Node000027" href="$DwmSocket_8hh.html" title="Dwm::Socket class definition." alt="" coords="2392,153,2504,178"/>
+<area shape="poly" id="edge33_Node000004_Node000027" title=" " alt="" coords="2281,107,2411,150,2410,155,2279,112"/>
+<area shape="rect" id="Node000011" href="$DwmIpv4IcmpDestinationUnreachable_8hh.html" title="Dwm::Ipv4IcmpDestinationUnreachable class definition." alt="" coords="560,226,824,252"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="781,189,714,228,711,223,778,184"/>
+<area shape="rect" id="Node000012" href="$DwmIpv4IcmpRedirect_8hh.html" title="Dwm::Ipv4IcmpRedirect class definition." alt="" coords="848,226,1021,252"/>
+<area shape="poly" id="edge12_Node000010_Node000012" title=" " alt="" coords="848,184,915,223,913,228,846,189"/>
+<area shape="rect" id="Node000013" href="$DwmIpv4IcmpSourceQuench_8hh.html" title="Dwm::Ipv4IcmpSourceQuench class definition." alt="" coords="1046,226,1256,252"/>
+<area shape="poly" id="edge13_Node000010_Node000013" title=" " alt="" coords="886,179,1094,223,1093,228,885,185"/>
+<area shape="rect" id="Node000014" href="$DwmIpv4IcmpTimeExceeded_8hh.html" title="Dwm::Ipv4IcmpTimeExceeded class definition." alt="" coords="325,226,536,252"/>
+<area shape="poly" id="edge14_Node000010_Node000014" title=" " alt="" coords="733,184,496,228,495,223,733,179"/>
+<area shape="poly" id="edge15_Node000010_Node000015" title=" " alt="" coords="709,179,219,229,200,231,200,226,218,224,709,174"/>
+<area shape="poly" id="edge19_Node000010_Node000016" title=" " alt="" coords="710,174,446,194,331,209,292,218,271,228,258,244,248,262,238,304,236,343,238,373,233,374,231,343,232,303,243,261,253,241,268,224,290,213,330,204,445,188,709,169"/>
+<area shape="poly" id="edge20_Node000010_Node000018" title=" " alt="" coords="918,178,1280,225,1279,230,917,183"/>
+<area shape="poly" id="edge24_Node000010_Node000019" title=" " alt="" coords="709,171,571,178,430,192,372,203,330,216,317,224,310,232,310,241,315,250,336,264,371,278,478,302,622,323,788,341,1132,366,1397,379,1397,385,1131,371,788,346,621,329,477,308,370,283,333,269,311,254,304,242,306,230,314,220,328,212,371,198,429,187,571,173,709,166"/>
+<area shape="poly" id="edge16_Node000015_Node000016" title=" " alt="" coords="142,263,230,371,226,375,138,266"/>
+<area shape="rect" id="Node000017" href="$DwmIpv4TcpPayload_8hh.html" title="Dwm::Ipv4TcpPayload class definition." alt="" coords="275,300,437,326"/>
+<area shape="poly" id="edge17_Node000015_Node000017" title=" " alt="" coords="176,254,317,297,315,302,175,259"/>
+<area shape="poly" id="edge18_Node000017_Node000016" title=" " alt="" coords="324,336,259,375,256,371,322,332"/>
+<area shape="poly" id="edge21_Node000018_Node000019" title=" " alt="" coords="1381,263,1470,371,1466,375,1377,266"/>
+<area shape="rect" id="Node000020" href="$DwmIpv4UdpPayload_8hh.html" title="Dwm::Ipv4UdpPayload class definition." alt="" coords="1514,300,1681,326"/>
+<area shape="poly" id="edge22_Node000018_Node000020" title=" " alt="" coords="1416,254,1558,297,1556,302,1414,259"/>
+<area shape="poly" id="edge23_Node000020_Node000019" title=" " alt="" coords="1565,336,1499,375,1496,371,1563,332"/>
+<area shape="poly" id="edge26_Node000021_Node000003" title=" " alt="" coords="1634,183,1725,223,1723,228,1631,187"/>
+<area shape="rect" id="Node000022" href="$DwmIpv4PrefixMap_8hh.html" title="NOT YET DOCUMENTED." alt="" coords="1515,226,1669,252"/>
+<area shape="poly" id="edge27_Node000021_Node000022" title=" " alt="" coords="1595,194,1595,226,1589,226,1589,194"/>
+<area shape="rect" id="Node000023" href="$DwmIpv4Routes_8hh.html" title="Dwm::Ipv4Routes class template definition." alt="" coords="2659,226,2797,252"/>
+<area shape="poly" id="edge28_Node000021_Node000023" title=" " alt="" coords="1672,176,2141,204,2659,232,2659,237,2140,210,1672,181"/>
+<area shape="rect" id="Node000026" href="$DwmPingDestinationEntry_8hh.html" title="Dwm::PingDestinationEntry class definition." alt="" coords="2392,300,2584,326"/>
+<area shape="poly" id="edge31_Node000025_Node000026" title=" " alt="" coords="2061,251,2399,297,2398,302,2060,256"/>
+<area shape="poly" id="edge32_Node000026_Node000006" title=" " alt="" coords="2511,335,2545,371,2541,375,2507,339"/>
+<area shape="poly" id="edge34_Node000027_Node000006" title=" " alt="" coords="2520,178,2559,196,2577,209,2591,225,2606,250,2610,273,2607,298,2598,327,2585,354,2568,375,2564,372,2581,351,2594,325,2602,297,2605,274,2601,252,2587,228,2573,213,2556,200,2518,183"/>
+<area shape="poly" id="edge35_Node000027_Node000008" title=" " alt="" coords="2431,192,2401,228,2397,224,2426,189"/>
+<area shape="poly" id="edge36_Node000027_Node000009" title=" " alt="" coords="2387,185,2219,228,2217,223,2386,180"/>
+<area shape="poly" id="edge37_Node000027_Node000016" title=" " alt="" coords="2476,187,2490,203,2501,220,2504,237,2497,254,2479,262,2444,268,2332,279,2005,292,1503,303,816,347,316,382,316,377,815,341,1503,297,2005,287,2331,273,2443,263,2477,257,2493,250,2499,237,2496,222,2486,206,2472,191"/>
+<area shape="poly" id="edge38_Node000027_Node000019" title=" " alt="" coords="2493,183,2517,197,2538,214,2548,233,2547,244,2541,254,2526,262,2498,270,2406,287,2127,323,1809,357,1558,381,1558,375,1809,352,2127,318,2405,282,2497,265,2524,257,2537,250,2542,242,2542,234,2533,217,2514,201,2490,188"/>
+<area shape="poly" id="edge39_Node000027_Node000025" title=" " alt="" coords="2378,180,2046,228,2045,223,2377,175"/>
+<area shape="poly" id="edge42_Node000028_Node000008" title=" " alt="" coords="1255,168,1702,187,1992,203,2284,224,2296,225,2296,230,2284,229,1991,208,1702,192,1255,173"/>
+<area shape="poly" id="edge43_Node000028_Node000009" title=" " alt="" coords="1255,170,1611,191,2058,224,2069,225,2069,230,2057,229,1610,196,1255,175"/>
+<area shape="poly" id="edge41_Node000028_Node000011" title=" " alt="" coords="1058,184,771,228,770,223,1057,179"/>
+<area shape="poly" id="edge44_Node000028_Node000012" title=" " alt="" coords="1101,186,972,228,971,223,1099,181"/>
+<area shape="poly" id="edge45_Node000028_Node000013" title=" " alt="" coords="1153,194,1153,226,1148,226,1148,194"/>
+<area shape="poly" id="edge46_Node000028_Node000014" title=" " alt="" coords="1047,180,537,230,536,225,1047,174"/>
+<area shape="poly" id="edge55_Node000029_Node000002" title=" " alt="" coords="2510,101,2206,120,2015,136,1823,155,1811,157,1810,152,1822,150,2015,131,2205,115,2510,95"/>
+<area shape="poly" id="edge54_Node000029_Node000005" title=" " alt="" coords="2600,120,2600,152,2595,152,2595,120"/>
+<area shape="poly" id="edge60_Node000029_Node000027" title=" " alt="" coords="2560,114,2475,154,2472,150,2557,109"/>
+<area shape="rect" id="Node000030" href="$DwmIpv6AddrMap_8hh.html" title="Dwm::Ipv6AddrMap class template declaration." alt="" coords="2821,226,2968,252"/>
+<area shape="poly" id="edge56_Node000029_Node000030" title=" " alt="" coords="2627,112,2675,144,2732,176,2796,203,2854,223,2853,228,2794,208,2729,181,2672,148,2624,116"/>
+<area shape="poly" id="edge57_Node000029_Node000031" title=" " alt="" coords="2648,108,2773,150,2771,155,2647,113"/>
+<area shape="poly" id="edge58_Node000031_Node000003" title=" " alt="" coords="2728,177,2680,181,2453,196,2275,205,2098,214,1871,229,1809,235,1808,229,1870,224,2098,208,2275,199,2452,191,2680,176,2728,172"/>
+<area shape="rect" id="Node000032" href="$DwmIpv6PrefixMap_8hh.html" title="NOT YET DOCUMENTED." alt="" coords="2992,226,3147,252"/>
+<area shape="poly" id="edge59_Node000031_Node000032" title=" " alt="" coords="2867,180,3025,223,3024,228,2866,185"/>
+<area shape="rect" id="Node000035" href="$DwmMplsLabelStack_8hh.html" title="Dwm::MplsLabelStack class definition." alt="" coords="3062,153,3226,178"/>
+<area shape="poly" id="edge64_Node000034_Node000035" title=" " alt="" coords="3062,111,3126,150,3123,154,3059,115"/>
+<area shape="rect" id="Node000037" href="$DwmProcessTable_8hh.html" title="Dwm::ProcessTable typedef and utility function prototypes." alt="" coords="3263,153,3412,178"/>
+<area shape="poly" id="edge66_Node000036_Node000037" title=" " alt="" coords="3340,120,3340,152,3335,152,3335,120"/>
+<area shape="poly" id="edge72_Node000041_Node000008" title=" " alt="" coords="2897,179,2884,181,2483,229,2482,224,2884,176,2896,174"/>
+<area shape="poly" id="edge73_Node000041_Node000009" title=" " alt="" coords="2897,180,2884,181,2584,206,2284,229,2273,230,2272,225,2284,224,2584,201,2884,176,2896,174"/>
+<area shape="poly" id="edge75_Node000041_Node000017" title=" " alt="" coords="3053,180,3118,199,3144,211,3161,225,3167,240,3160,254,3129,259,3054,264,2788,274,1961,291,438,313,438,308,1961,286,2788,268,3053,259,3129,254,3157,250,3162,240,3157,228,3141,216,3116,204,3051,185"/>
+<area shape="poly" id="edge76_Node000041_Node000020" title=" " alt="" coords="3052,179,3148,202,3185,214,3205,225,3211,239,3204,254,3185,260,3143,265,3000,275,2554,292,1681,313,1681,307,2554,286,2999,269,3143,260,3184,255,3201,250,3206,239,3201,228,3183,218,3146,207,3051,185"/>
+<area shape="poly" id="edge74_Node000041_Node000023" title=" " alt="" coords="2919,186,2771,228,2769,223,2917,181"/>
+<area shape="poly" id="edge77_Node000041_Node000030" title=" " alt="" coords="2952,191,2910,228,2906,224,2948,187"/>
+<area shape="poly" id="edge78_Node000041_Node000032" title=" " alt="" coords="3005,186,3055,224,3052,228,3001,190"/>
+<area shape="rect" id="Node000042" href="$DwmDataLog_8hh.html" title="Dwm::DataLog and Dwm::DataLog::Entry class templates." alt="" coords="3519,226,3638,252"/>
+<area shape="poly" id="edge70_Node000041_Node000042" title=" " alt="" coords="3054,176,3283,199,3508,224,3519,225,3518,230,3508,229,3282,205,3053,181"/>
+<area shape="rect" id="Node000043" href="$DwmIO_8hh.html" title="Dwm::IO class definition." alt="" coords="3411,226,3496,252"/>
+<area shape="poly" id="edge71_Node000041_Node000043" title=" " alt="" coords="3053,176,3228,198,3399,224,3411,226,3411,231,3398,229,3228,204,3053,181"/>
+<area shape="rect" id="Node000044" href="$DwmPatricia_8hh.html" title="NOT YET DOCUMENTED." alt="" coords="3272,226,3387,252"/>
+<area shape="poly" id="edge79_Node000041_Node000044" title=" " alt="" coords="3051,179,3272,224,3271,229,3050,185"/>
+<area shape="poly" id="edge81_Node000045_Node000046" title=" " alt="" coords="4187,194,4187,226,4181,226,4181,194"/>
+<area shape="poly" id="edge86_Node000047_Node000006" title=" " alt="" coords="3730,121,3728,152,3720,189,3705,225,3680,254,3643,277,3595,297,3539,315,3474,330,3329,354,3170,370,3008,380,2856,386,2622,389,2622,383,2855,381,3008,375,3169,365,3328,348,3473,324,3537,309,3593,292,3641,272,3677,250,3701,222,3715,187,3722,152,3725,120"/>
+<area shape="poly" id="edge88_Node000047_Node000026" title=" " alt="" coords="3720,120,3690,196,3671,232,3652,254,3628,265,3591,274,3484,289,3344,300,3183,307,2849,314,2584,315,2584,309,2849,309,3183,302,3344,294,3484,284,3590,269,3626,260,3649,250,3667,229,3685,194,3715,118"/>
+<area shape="poly" id="edge89_Node000047_Node000040" title=" " alt="" coords="3675,112,3542,155,3540,150,3674,107"/>
+<area shape="poly" id="edge84_Node000047_Node000042" title=" " alt="" coords="3702,117,3659,155,3591,228,3587,224,3655,151,3698,113"/>
+<area shape="poly" id="edge90_Node000047_Node000045" title=" " alt="" coords="3808,103,4113,150,4112,156,3807,108"/>
+<area shape="rect" id="Node000048" href="$DwmDateTime_8hh.html" title="Dwm::DateTime class definition." alt="" coords="3898,226,4025,252"/>
+<area shape="poly" id="edge85_Node000047_Node000048" title=" " alt="" coords="3788,107,3835,125,3882,150,3925,188,3955,224,3951,227,3921,192,3878,155,3833,130,3786,112"/>
+<area shape="rect" id="Node000049" href="$DwmPacer_8hh.html" title="Dwm::Pacer class definition." alt="" coords="3764,153,3868,178"/>
+<area shape="poly" id="edge87_Node000047_Node000049" title=" " alt="" coords="3755,112,3803,150,3799,154,3752,116"/>
+<area shape="poly" id="edge91_Node000047_Node000050" title=" " alt="" coords="3791,106,3967,149,3966,155,3790,111"/>
+<area shape="poly" id="edge93_Node000050_Node000046" title=" " alt="" coords="4060,182,4156,223,4154,228,4057,187"/>
+<area shape="poly" id="edge92_Node000050_Node000048" title=" " alt="" coords="4000,192,3973,227,3968,224,3996,189"/>
+</map>

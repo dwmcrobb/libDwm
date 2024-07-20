@@ -1,0 +1,7 @@
+<map id="Dwm::GZIOCapable" name="Dwm::GZIOCapable">
+<area shape="rect" id="Node000001" title="Interface for classes with GZIO read and write capabilities." alt="" coords="78,79,218,105"/>
+<area shape="rect" id="Node000002" href="$classDwm_1_1GZReadable.html" title="This class is a pure virtual class, defining an interface for classes that can read their contents fr..." alt="" coords="5,5,139,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="98,40,137,77,133,81,94,44"/>
+<area shape="rect" id="Node000003" href="$classDwm_1_1GZWritable.html" title="This class is a pure virtual class, defining an interface for classes that can write their contents t..." alt="" coords="163,5,288,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="203,44,163,81,159,77,199,40"/>
+</map>

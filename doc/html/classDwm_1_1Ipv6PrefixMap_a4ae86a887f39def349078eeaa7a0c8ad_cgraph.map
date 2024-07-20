@@ -1,0 +1,5 @@
+<map id="Dwm::Ipv6PrefixMap::Add" name="Dwm::Ipv6PrefixMap::Add">
+<area shape="rect" id="Node000001" title="Adds the given value to the map at key pfx." alt="" coords="5,5,181,31"/>
+<area shape="rect" id="Node000002" href="$classDwm_1_1Ipv6Prefix.html#aebc8751134f5301a5fab4661978d687b" title="Returns the netmask length." alt="" coords="229,5,427,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,16,213,16,213,21,181,21"/>
+</map>

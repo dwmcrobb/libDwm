@@ -1,0 +1,60 @@
+.TH "Dwm::Group" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::Group \- Encapsulates an /etc/group entry\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmGroup\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBGroup\fP (gid_t gid)"
+.br
+.RI "Construct from a group ID\&. "
+.ti -1c
+.RI "\fBGroup\fP (const std::string &name)"
+.br
+.RI "Construct from a group name\&. "
+.ti -1c
+.RI "void \fBSet\fP (const struct group &group)"
+.br
+.RI "Use the contents of \fRgroup\fP to fill all of our members\&. "
+.ti -1c
+.RI "gid_t \fBId\fP () const"
+.br
+.RI "Returns the group ID\&. "
+.ti -1c
+.RI "const std::string & \fBName\fP () const"
+.br
+.RI "Returns the group name\&. "
+.ti -1c
+.RI "const std::string & \fBPassword\fP () const"
+.br
+.RI "Returns the group password\&. "
+.ti -1c
+.RI "const std::vector< std::string > & \fBMembers\fP () const"
+.br
+.RI "Returns the group members\&. "
+.in -1c
+.SS "Friends"
+
+.in +1c
+.ti -1c
+.RI "std::ostream & \fBoperator<<\fP (std::ostream &os, const \fBGroup\fP &group)"
+.br
+.RI "Prints to an ostream in /etc/group format\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Encapsulates an /etc/group entry\&. 
+
+The main reason for this class: some sub-par operating systems don't provide threadsafe versions of getgrgid() and getgrnam()\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

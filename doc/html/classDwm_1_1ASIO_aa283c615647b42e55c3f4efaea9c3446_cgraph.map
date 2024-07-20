@@ -1,0 +1,5 @@
+<map id="Dwm::ASIO::Read" name="Dwm::ASIO::Read">
+<area shape="rect" id="Node000001" title="Reads a tuple from s." alt="" coords="5,5,137,31"/>
+<area shape="rect" id="Node000002" href="$classDwm_1_1ASIO.html#aa7244083d6658ae54fc5df488ad29741" title="Reads value from the given socket s." alt="" coords="185,5,316,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="137,16,169,16,169,21,137,21"/>
+</map>

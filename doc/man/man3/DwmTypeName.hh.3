@@ -1,0 +1,56 @@
+.TH "DwmTypeName.hh" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+DwmTypeName.hh \- Hackish support for getting the name of a given object's type, since std::type_info::name() returns a mangled name (or a string of length 1 for builtin types)\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <cxxabi\&.h>\fP
+.br
+\fR#include <cstdlib>\fP
+.br
+\fR#include <string>\fP
+.br
+\fR#include <typeinfo>\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "std::string \fBDwm::BuiltinTypeName\fP (const std::type_info &typeInfo)"
+.br
+.RI "Returns a string holding the demangled name for the given \fRtypeInfo\fP\&. "
+.ti -1c
+.RI "template<typename T > std::string \fBDwm::BuiltinTypeName\fP ()"
+.br
+.RI "Returns the name of type \fRT\fP\&. "
+.ti -1c
+.RI "template<typename T > std::string \fBDwm::TypeName\fP (const T &x)"
+.br
+.RI "Returns the name of type \fRT\fP\&. "
+.ti -1c
+.RI "template<typename T > std::string \fBDwm::TypeNameNoNamespace\fP (const T &x)"
+.br
+.RI "Returns the name of type \fRT\fP, sans its namespace\&. "
+.ti -1c
+.RI "template<typename T > std::string \fBDwm::TypeName\fP ()"
+.br
+.RI "Returns the name of type \fRT\fP\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Hackish support for getting the name of a given object's type, since std::type_info::name() returns a mangled name (or a string of length 1 for builtin types)\&. 
+
+
+.SH "Function Documentation"
+.PP 
+.SS "std::string Dwm::BuiltinTypeName (const std::type_info & typeInfo)"
+
+.PP
+Returns a string holding the demangled name for the given \fRtypeInfo\fP\&. For builtin types, we return the literal name by doing a lookup in a map that's set up in this function\&. 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

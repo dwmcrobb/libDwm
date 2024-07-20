@@ -1,0 +1,428 @@
+.TH "Dwm::Ipv6PrefixMap< T, Hash >" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::Ipv6PrefixMap< T, Hash > \- A wrapper around an unordered_map of T keyed by \fBIpv6Prefix\fP using Hash as the hash function\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmIpv6PrefixMap\&.hh>\fP
+.PP
+Inherits \fBDwm::StreamIOCapable\fP, Dwm::FileIOCapable, \fBDwm::DescriptorIOCapable\fP, \fBDwm::StreamedLengthCapable\fP, \fBDwm::GZIOCapable\fP, \fBDwm::BZ2IOCapable\fP, and \fBDwm::ASIOCapable\fP\&.
+.SS "Public Types"
+
+.in +1c
+.ti -1c
+.RI "using \fBMapType\fP = std::unordered_map<\fBIpv6Prefix\fP,T,Hash>"
+.br
+.RI "The types of our encapsulated containers\&. "
+.ti -1c
+.RI "using \fBLengthMapType\fP = std::map<uint8_t,uint64_t>"
+.br
+.ti -1c
+.RI "using \fBMapPair\fP = std::pair<\fBMapType\fP,LengthMapType>"
+.br
+.RI "Internally we keep our maps in a pair\&. "
+.in -1c
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBIpv6PrefixMap\fP ()"
+.br
+.RI "Default constructor\&. "
+.ti -1c
+.RI "void \fBAdd\fP (const \fBIpv6Prefix\fP &pfx, const T &value)"
+.br
+.RI "Adds the given value to the map at key \fRpfx\fP\&. "
+.ti -1c
+.RI "void \fBAdd\fP (std::unique_lock< std::shared_mutex > &lck, const \fBIpv6Prefix\fP &pfx, const T &value)"
+.br
+.RI "Adds the given value to the map at key \fRpfx\fP\&. "
+.ti -1c
+.RI "bool \fBFind\fP (const \fBIpv6Prefix\fP &pfx, T &value) const"
+.br
+.RI "Find the entry with key \fRpfx\fP\&. "
+.ti -1c
+.RI "bool \fBFind\fP (std::shared_lock< std::shared_mutex > &lck, const \fBIpv6Prefix\fP &pfx, T &value) const"
+.br
+.RI "Find the entry with key \fRpfx\fP\&. "
+.ti -1c
+.RI "bool \fBFind\fP (std::unique_lock< std::shared_mutex > &lck, const \fBIpv6Prefix\fP &pfx, T &value) const"
+.br
+.RI "Find the entry with key \fRpfx\fP\&. "
+.ti -1c
+.RI "bool \fBFindLongest\fP (const \fBIpv6Address\fP &addr, std::pair< \fBIpv6Prefix\fP, T > &value) const"
+.br
+.RI "Find the longest match for the given IPv6 address \fRaddr\fP\&. "
+.ti -1c
+.RI "bool \fBFindLongest\fP (std::shared_lock< std::shared_mutex > &lck, const \fBIpv6Address\fP &addr, std::pair< \fBIpv6Prefix\fP, T > &value) const"
+.br
+.RI "Find the longest match for the given IPv6 address \fRaddr\fP\&. "
+.ti -1c
+.RI "bool \fBFindLongest\fP (std::unique_lock< std::shared_mutex > &lck, const \fBIpv6Address\fP &addr, std::pair< \fBIpv6Prefix\fP, T > &value) const"
+.br
+.RI "Find the longest match for the given IPv6 address \fRaddr\fP\&. "
+.ti -1c
+.RI "bool \fBFindMatches\fP (const \fBIpv6Address\fP &addr, std::vector< std::pair< \fBIpv6Prefix\fP, T > > &values) const"
+.br
+.RI "Find all matches for the given IPv6 address \fRaddr\fP\&. "
+.ti -1c
+.RI "bool \fBFindMatches\fP (std::shared_lock< std::shared_mutex > &lck, const \fBIpv6Address\fP &addr, std::vector< std::pair< \fBIpv6Prefix\fP, T > > &values) const"
+.br
+.RI "Find all matches for the given IPv6 address \fRaddr\fP\&. "
+.ti -1c
+.RI "bool \fBFindMatches\fP (std::unique_lock< std::shared_mutex > &lck, const \fBIpv6Address\fP &addr, std::vector< std::pair< \fBIpv6Prefix\fP, T > > &values) const"
+.br
+.RI "Find all matches for the given IPv6 address \fRaddr\fP\&. "
+.ti -1c
+.RI "bool \fBRemove\fP (const \fBIpv6Prefix\fP &pfx)"
+.br
+.RI "Removes the entry for the given prefix \fRpfx\fP\&. "
+.ti -1c
+.RI "bool \fBRemove\fP (std::unique_lock< std::shared_mutex > &lck, const \fBIpv6Prefix\fP &pfx)"
+.br
+.RI "Removes the entry for the given prefix \fRpfx\fP\&. "
+.ti -1c
+.RI "void \fBClear\fP ()"
+.br
+.RI "Clears the map\&. "
+.ti -1c
+.RI "void \fBClear\fP (std::unique_lock< std::shared_mutex > &lck)"
+.br
+.RI "Clears the map\&. "
+.ti -1c
+.RI "bool \fBEmpty\fP () const"
+.br
+.RI "Returns true if the map is empty\&. "
+.ti -1c
+.RI "bool \fBEmpty\fP (std::shared_lock< std::shared_mutex > &lck) const"
+.br
+.RI "Returns true if the map is empty\&. "
+.ti -1c
+.RI "bool \fBEmpty\fP (std::unique_lock< std::shared_mutex > &lck) const"
+.br
+.RI "Returns true if the map is empty\&. "
+.ti -1c
+.RI "std::istream & \fBRead\fP (std::istream &is) override"
+.br
+.RI "Reads the \fBIpv6PrefixMap\fP from an istream\&. Returns the istream\&. "
+.ti -1c
+.RI "std::ostream & \fBWrite\fP (std::ostream &os) const override"
+.br
+.RI "Writes the \fBIpv6PrefixMap\fP to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "size_t \fBRead\fP (FILE *f) override"
+.br
+.RI "Reads the \fBIpv6PrefixMap\fP from \fRf\fP\&. "
+.ti -1c
+.RI "size_t \fBWrite\fP (FILE *f) const override"
+.br
+.RI "Writes the \fBIpv6PrefixMap\fP to \fRf\fP\&. "
+.ti -1c
+.RI "ssize_t \fBRead\fP (int fd) override"
+.br
+.RI "Reads the \fBIpv6PrefixMap\fP from file descriptor \fRfd\fP\&. "
+.ti -1c
+.RI "ssize_t \fBWrite\fP (int fd) const override"
+.br
+.RI "Writes the \fBIpv6PrefixMap\fP to file descriptor \fRfd\fP\&. "
+.ti -1c
+.RI "int \fBRead\fP (gzFile gzf) override"
+.br
+.RI "Reads the \fBIpv6PrefixMap\fP from \fRgzf\fP\&. "
+.ti -1c
+.RI "int \fBWrite\fP (gzFile gzf) const override"
+.br
+.RI "Writes the \fBIpv6PrefixMap\fP to \fRgzf\fP\&. "
+.ti -1c
+.RI "int \fBBZRead\fP (BZFILE *bzf) override"
+.br
+.RI "Reads the \fBIpv6PrefixMap\fP from \fRbzf\fP\&. "
+.ti -1c
+.RI "int \fBBZWrite\fP (BZFILE *bzf) const override"
+.br
+.RI "Writes the \fBIpv6PrefixMap\fP to \fRbzf\fP\&. "
+.ti -1c
+.RI "uint64_t \fBStreamedLength\fP () const override"
+.br
+.RI "Returns the number of bytes that would be written if the \fBIpv6PrefixMap\fP was written to a FILE, file descriptor or ostream\&. "
+.ti -1c
+.RI "bool \fBRead\fP (boost::asio::ip::tcp::socket &s, boost::system::error_code &ec) override"
+.br
+.RI "Reads the \fBIpv6PrefixMap\fP from \fRs\fP\&. "
+.ti -1c
+.RI "bool \fBRead\fP (boost::asio::local::stream_protocol::socket &s, boost::system::error_code &ec) override"
+.br
+.RI "Reads the \fBIpv6PrefixMap\fP from \fRs\fP\&. "
+.ti -1c
+.RI "bool \fBRead\fP (boost::asio::generic::stream_protocol::socket &s, boost::system::error_code &ec) override"
+.br
+.RI "Reads the \fBIpv6PrefixMap\fP from \fRs\fP\&. "
+.ti -1c
+.RI "bool \fBWrite\fP (boost::asio::ip::tcp::socket &s, boost::system::error_code &ec) const override"
+.br
+.RI "Writes the \fBIpv6PrefixMap\fP to \fRs\fP\&. "
+.ti -1c
+.RI "bool \fBWrite\fP (boost::asio::local::stream_protocol::socket &s, boost::system::error_code &ec) const override"
+.br
+.RI "Writes the \fBIpv6PrefixMap\fP to \fRs\fP\&. "
+.ti -1c
+.RI "bool \fBWrite\fP (boost::asio::generic::stream_protocol::socket &s, boost::system::error_code &ec) const override"
+.br
+.RI "Writes the \fBIpv6PrefixMap\fP to \fRs\fP\&. "
+.ti -1c
+.RI "std::shared_lock< std::shared_mutex > \fBSharedLock\fP () const"
+.br
+.RI "Returns a shared lock of the \fBIpv6PrefixMap\fP, in the locked state\&. "
+.ti -1c
+.RI "std::unique_lock< std::shared_mutex > \fBUniqueLock\fP ()"
+.br
+.RI "Returns a unique lock of the \fBIpv6PrefixMap\fP, in the locked state\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::StreamReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~StreamReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::StreamWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~StreamWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::DescriptorReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~DescriptorReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::DescriptorWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~DescriptorWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::GZReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~GZReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::GZWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~GZWritable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.SS "template<typename T, typename Hash = OurIpv6PrefixHash>
+.br
+class Dwm::Ipv6PrefixMap< T, Hash >"A wrapper around an unordered_map of T keyed by \fBIpv6Prefix\fP using Hash as the hash function\&. 
+
+This isn't the fastest IPv6 prefix container, but\&.\&.\&. it's fast enough for my uses, and is very little code to maintain since it leverages the C++ standard library facilities\&.
+.PP
+Members are threadsafe (using a mutex)\&. 
+.SH "Member Typedef Documentation"
+.PP 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> using \fBDwm::Ipv6PrefixMap\fP< T, Hash >::MapPair = std::pair<\fBMapType\fP,LengthMapType>"
+
+.PP
+Internally we keep our maps in a pair\&. This simplifies the I/O functions\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> void \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Add (const \fBIpv6Prefix\fP & pfx, const T & value)\fR [inline]\fP"
+
+.PP
+Adds the given value to the map at key \fRpfx\fP\&. If the entry already exists, it will be replaced\&. 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> void \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Add (std::unique_lock< std::shared_mutex > & lck, const \fBIpv6Prefix\fP & pfx, const T & value)\fR [inline]\fP"
+
+.PP
+Adds the given value to the map at key \fRpfx\fP\&. If the entry already exists, it will be replaced\&. \fRlck\fP must be a lock created with \fBUniqueLock()\fP and must be locked\&. 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> int \fBDwm::Ipv6PrefixMap\fP< T, Hash >::BZRead (BZFILE * bzf)\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the \fBIpv6PrefixMap\fP from \fRbzf\fP\&. Returns the number of bytes read on success, -1 on failure\&. Be wary; the integer return is risky (could overflow) but it's what bzlib's BZ2_bzRead() returns and we trickled up the return type\&. 
+.PP
+Implements \fBDwm::BZ2Readable\fP\&.
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> int \fBDwm::Ipv6PrefixMap\fP< T, Hash >::BZWrite (BZFILE * bzf) const\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the \fBIpv6PrefixMap\fP to \fRbzf\fP\&. Returns the number of bytes written on success, -1 on failure\&. Be wary; the integer return is risky (could overflow) but it's what bzlib's BZ2_bzWrite() returns and we trickled up the return type\&. 
+.PP
+Implements \fBDwm::BZ2Writable\fP\&.
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> void \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Clear (std::unique_lock< std::shared_mutex > & lck)\fR [inline]\fP"
+
+.PP
+Clears the map\&. \fRlck\fP must be a lock created with \fBUniqueLock()\fP and must be locked\&. 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> bool \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Empty (std::shared_lock< std::shared_mutex > & lck) const\fR [inline]\fP"
+
+.PP
+Returns true if the map is empty\&. \fRlck\fP must be a lock created with \fBSharedLock()\fP and must be locked\&. 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> bool \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Empty (std::unique_lock< std::shared_mutex > & lck) const\fR [inline]\fP"
+
+.PP
+Returns true if the map is empty\&. \fRlck\fP must be a lock created with \fBUniqueLock()\fP and must be locked\&. 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> bool \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Find (const \fBIpv6Prefix\fP & pfx, T & value) const\fR [inline]\fP"
+
+.PP
+Find the entry with key \fRpfx\fP\&. If found, sets \fRvalue\fP to the value stored at \fRpfx\fP and returns true\&. If not found, returns false\&. 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> bool \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Find (std::shared_lock< std::shared_mutex > & lck, const \fBIpv6Prefix\fP & pfx, T & value) const\fR [inline]\fP"
+
+.PP
+Find the entry with key \fRpfx\fP\&. If found, sets \fRvalue\fP to the value stored at \fRpfx\fP and returns true\&. If not found, returns false\&. \fRlck\fP must be a lock created with \fBSharedLock()\fP and must be locked\&. 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> bool \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Find (std::unique_lock< std::shared_mutex > & lck, const \fBIpv6Prefix\fP & pfx, T & value) const\fR [inline]\fP"
+
+.PP
+Find the entry with key \fRpfx\fP\&. If found, sets \fRvalue\fP to the value stored at \fRpfx\fP and returns true\&. If not found, returns false\&. \fRlck\fP must be a lock created with \fBUniqueLock()\fP and must be locked\&. 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> bool \fBDwm::Ipv6PrefixMap\fP< T, Hash >::FindLongest (const \fBIpv6Address\fP & addr, std::pair< \fBIpv6Prefix\fP, T > & value) const\fR [inline]\fP"
+
+.PP
+Find the longest match for the given IPv6 address \fRaddr\fP\&. If a match is found, sets \fRvalue\&.first\fP to the matching prefix and \fRvalue\&.second\fP to the value stored at the matching prefix and returns true\&. If no match is found, returns false\&. 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> bool \fBDwm::Ipv6PrefixMap\fP< T, Hash >::FindLongest (std::shared_lock< std::shared_mutex > & lck, const \fBIpv6Address\fP & addr, std::pair< \fBIpv6Prefix\fP, T > & value) const\fR [inline]\fP"
+
+.PP
+Find the longest match for the given IPv6 address \fRaddr\fP\&. If a match is found, sets \fRvalue\&.first\fP to the matching prefix and \fRvalue\&.second\fP to the value stored at the matching prefix and returns true\&. If no match is found, returns false\&. \fRlck\fP must be a lock created with \fBSharedLock()\fP and must be locked\&. 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> bool \fBDwm::Ipv6PrefixMap\fP< T, Hash >::FindLongest (std::unique_lock< std::shared_mutex > & lck, const \fBIpv6Address\fP & addr, std::pair< \fBIpv6Prefix\fP, T > & value) const\fR [inline]\fP"
+
+.PP
+Find the longest match for the given IPv6 address \fRaddr\fP\&. If a match is found, sets \fRvalue\&.first\fP to the matching prefix and \fRvalue\&.second\fP to the value stored at the matching prefix and returns true\&. If no match is found, returns false\&. \fRlck\fP must be a lock created with \fBUniqueLock()\fP and must be locked\&. 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> bool \fBDwm::Ipv6PrefixMap\fP< T, Hash >::FindMatches (const \fBIpv6Address\fP & addr, std::vector< std::pair< \fBIpv6Prefix\fP, T > > & values) const\fR [inline]\fP"
+
+.PP
+Find all matches for the given IPv6 address \fRaddr\fP\&. If matches are found, they are placed in \fRvalues\fP, in most-specific (longest prefix length) to least-specific (shortest prefix length) order and true is returned\&. If no matches are found, returns false\&. 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> bool \fBDwm::Ipv6PrefixMap\fP< T, Hash >::FindMatches (std::shared_lock< std::shared_mutex > & lck, const \fBIpv6Address\fP & addr, std::vector< std::pair< \fBIpv6Prefix\fP, T > > & values) const\fR [inline]\fP"
+
+.PP
+Find all matches for the given IPv6 address \fRaddr\fP\&. If matches are found, they are placed in \fRvalues\fP, in most-specific (longest prefix length) to least-specific (shortest prefix length) order and true is returned\&. If no matches are found, returns false\&. \fRlck\fP must be a lock created with \fBSharedLock()\fP and must be locked\&. 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> bool \fBDwm::Ipv6PrefixMap\fP< T, Hash >::FindMatches (std::unique_lock< std::shared_mutex > & lck, const \fBIpv6Address\fP & addr, std::vector< std::pair< \fBIpv6Prefix\fP, T > > & values) const\fR [inline]\fP"
+
+.PP
+Find all matches for the given IPv6 address \fRaddr\fP\&. If matches are found, they are placed in \fRvalues\fP, in most-specific (longest prefix length) to least-specific (shortest prefix length) order and true is returned\&. If no matches are found, returns false\&. \fRlck\fP must be a lock created with \fBUniqueLock()\fP and must be locked\&. 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> bool \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Read (boost::asio::generic::stream_protocol::socket & s, boost::system::error_code & ec)\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the \fBIpv6PrefixMap\fP from \fRs\fP\&. Returns true on success, false on failure\&. 
+.PP
+Implements \fBDwm::ASIOReadable\fP\&.
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> bool \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Read (boost::asio::ip::tcp::socket & s, boost::system::error_code & ec)\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the \fBIpv6PrefixMap\fP from \fRs\fP\&. Returns true on success, false on failure\&. 
+.PP
+Implements \fBDwm::ASIOReadable\fP\&.
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> bool \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Read (boost::asio::local::stream_protocol::socket & s, boost::system::error_code & ec)\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the \fBIpv6PrefixMap\fP from \fRs\fP\&. Returns true on success, false on failure\&. 
+.PP
+Implements \fBDwm::ASIOReadable\fP\&.
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> size_t \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Read (FILE * f)\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the \fBIpv6PrefixMap\fP from \fRf\fP\&. Returns 1 on success, 0 on failure\&. 
+.PP
+Implements \fBDwm::FileReadable\fP\&.
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> int \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Read (gzFile gzf)\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the \fBIpv6PrefixMap\fP from \fRgzf\fP\&. Returns the number of bytes read on success, -1 on failure\&. Be wary; the integer return is risky (could overflow) but it's what zlib's gzread() returns and we trickled up the return type\&. 
+.PP
+Implements \fBDwm::GZReadable\fP\&.
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> ssize_t \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Read (int fd)\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the \fBIpv6PrefixMap\fP from file descriptor \fRfd\fP\&. Returns the number of bytes read on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::DescriptorReadable\fP\&.
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> std::istream & \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Read (std::istream & is)\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the \fBIpv6PrefixMap\fP from an istream\&. Returns the istream\&. 
+.PP
+Implements \fBDwm::StreamReadable\fP\&.
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> bool \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Remove (const \fBIpv6Prefix\fP & pfx)\fR [inline]\fP"
+
+.PP
+Removes the entry for the given prefix \fRpfx\fP\&. Returns true if an entry was removed, false if no entry was found for \fRpfx\fP\&. 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> bool \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Remove (std::unique_lock< std::shared_mutex > & lck, const \fBIpv6Prefix\fP & pfx)\fR [inline]\fP"
+
+.PP
+Removes the entry for the given prefix \fRpfx\fP\&. Returns true if an entry was removed, false if no entry was found for \fRpfx\fP\&. \fRlck\fP must be a lock created with \fBUniqueLock()\fP and must be locked\&. 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> std::shared_lock< std::shared_mutex > \fBDwm::Ipv6PrefixMap\fP< T, Hash >::SharedLock () const\fR [inline]\fP"
+
+.PP
+Returns a shared lock of the \fBIpv6PrefixMap\fP, in the locked state\&. This should be used with care to avoid deadlock\&. It is intended for scenarios where the caller needs to perform many read-only operations in quick succession and performance is paramount, since it allows one to call the members which accept a shared lock and hence do not lock and unlock on each call\&. Note that the only read-only member with significant locking overhead is \fBFind()\fP\&. \fBFindLongest()\fP's locking overhead is dwarfed by the cycles it needs for other activities\&. 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> uint64_t \fBDwm::Ipv6PrefixMap\fP< T, Hash >::StreamedLength () const\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Returns the number of bytes that would be written if the \fBIpv6PrefixMap\fP was written to a FILE, file descriptor or ostream\&. 
+.PP
+Implements \fBDwm::StreamedLengthCapable\fP\&.
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> std::unique_lock< std::shared_mutex > \fBDwm::Ipv6PrefixMap\fP< T, Hash >::UniqueLock ()\fR [inline]\fP"
+
+.PP
+Returns a unique lock of the \fBIpv6PrefixMap\fP, in the locked state\&. This (and the members that accept a unique lock as an argument) should be used with care to avoid deadlock\&. It is intended for scenarios where the caller needs to perform many operations in quick succession and performance is paramount, since it allows one to call the members which accept a unique lock and hence do not lock and unlock on each call\&. Note that the only read-only member with significant locking overhead is \fBFind()\fP; \fBFindLongest()\fP's locking overhead is dwarfed by the cycles it needs for other activities\&. \fBAdd()\fP is a little bit faster for repetitive operations using the pre-locked version (about 5%)\&. 
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> bool \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Write (boost::asio::generic::stream_protocol::socket & s, boost::system::error_code & ec) const\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the \fBIpv6PrefixMap\fP to \fRs\fP\&. Returns true on success, false on failure\&. 
+.PP
+Implements \fBDwm::ASIOWritable\fP\&.
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> bool \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Write (boost::asio::ip::tcp::socket & s, boost::system::error_code & ec) const\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the \fBIpv6PrefixMap\fP to \fRs\fP\&. Returns true on success, false on failure\&. 
+.PP
+Implements \fBDwm::ASIOWritable\fP\&.
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> bool \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Write (boost::asio::local::stream_protocol::socket & s, boost::system::error_code & ec) const\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the \fBIpv6PrefixMap\fP to \fRs\fP\&. Returns true on success, false on failure\&. 
+.PP
+Implements \fBDwm::ASIOWritable\fP\&.
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> size_t \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Write (FILE * f) const\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the \fBIpv6PrefixMap\fP to \fRf\fP\&. Returns 1 on success, 0 on failure\&. 
+.PP
+Implements \fBDwm::FileWritable\fP\&.
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> int \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Write (gzFile gzf) const\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the \fBIpv6PrefixMap\fP to \fRgzf\fP\&. Returns the number of bytes written on success, -1 on failure\&. Be wary; the integer return is risky (could overflow) but it's what zlib's gzread() returns and we trickled up the return type\&. 
+.PP
+Implements \fBDwm::GZWritable\fP\&.
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> ssize_t \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Write (int fd) const\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the \fBIpv6PrefixMap\fP to file descriptor \fRfd\fP\&. Returns the number of bytes written on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::DescriptorWritable\fP\&.
+.SS "template<typename T , typename Hash  = OurIpv6PrefixHash> std::ostream & \fBDwm::Ipv6PrefixMap\fP< T, Hash >::Write (std::ostream & os) const\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the \fBIpv6PrefixMap\fP to an ostream\&. Returns the ostream\&. 
+.PP
+Implements \fBDwm::StreamWritable\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

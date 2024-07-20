@@ -1,0 +1,91 @@
+.TH "Dwm::PingDestinationEntry" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::PingDestinationEntry \- Holds state information for a destination being pinged\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmPingDestinationEntry\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBPingDestinationEntry\fP ()"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "void \fBDestination\fP (const \fBPingDestination\fP &destination)"
+.br
+.RI "Sets the destination\&. "
+.ti -1c
+.RI "const \fBPingSequencesInFlight\fP & \fBSequences\fP () const"
+.br
+.RI "Returns a const reference to the contained sequences in flight\&. "
+.ti -1c
+.RI "\fBPingSequencesInFlight\fP & \fBSequences\fP ()"
+.br
+.RI "Returns a mutable reference to the contained sequences in flight\&. "
+.ti -1c
+.RI "uint64_t \fBPacketsSent\fP () const"
+.br
+.RI "Returns the number of packets sent to the destination\&. "
+.ti -1c
+.RI "uint64_t \fBPacketsSent\fP (uint64_t packetsSent)"
+.br
+.RI "Sets and returns the number of packets sent to the destination\&. "
+.ti -1c
+.RI "uint64_t \fBPacketsReceived\fP () const"
+.br
+.RI "Returns the number of packets received from the destination\&. "
+.ti -1c
+.RI "uint64_t \fBPacketsReceived\fP (uint64_t packetsReceived)"
+.br
+.RI "Sets and Returns the number of packets received from the destination\&. "
+.ti -1c
+.RI "bool \fBPrimed\fP () const"
+.br
+.RI "Returns true if the destination has been primed\&. "
+.ti -1c
+.RI "bool \fBPrimed\fP (bool primed)"
+.br
+.RI "Sets whether or not the destination has been primed\&. "
+.in -1c
+.SS "Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fBPingDestination\fP \fB_destination\fP"
+.br
+.ti -1c
+.RI "\fBPingSequencesInFlight\fP \fB_sequences\fP"
+.br
+.ti -1c
+.RI "uint64_t \fB_packetsSent\fP"
+.br
+.ti -1c
+.RI "uint64_t \fB_packetsReceived\fP"
+.br
+.ti -1c
+.RI "bool \fB_primed\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Holds state information for a destination being pinged\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "bool Dwm::PingDestinationEntry::Primed () const"
+
+.PP
+Returns true if the destination has been primed\&. When using TCP, we 'prime' the destination with a SYN packet\&. This lets us get through weak stateful firewall rules such as those typically used with ipfw and pf\&. 
+.SS "bool Dwm::PingDestinationEntry::Primed (bool primed)"
+
+.PP
+Sets whether or not the destination has been primed\&. When using TCP, we 'prime' the destination with a SYN packet\&. This lets us get through weak stateful firewall rules such as those typically used with ipfw and pf\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

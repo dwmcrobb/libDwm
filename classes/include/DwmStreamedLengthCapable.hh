@@ -47,6 +47,14 @@
 namespace Dwm {
 
   //--------------------------------------------------------------------------
+  //!  T has a StreamedLength() const member that returns uint64_t.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept HasStreamedLength = requires (const T & t) {
+    { t.StreamedLength() } -> std::same_as<uint64_t>;
+  };
+  
+  //--------------------------------------------------------------------------
   //!  Interface for classes which can return their streamed length.  This
   //!  is often an expensive operation on variable-length data structures,
   //!  but is useful when we want to store the length of a piece of data

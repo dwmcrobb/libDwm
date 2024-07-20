@@ -1,0 +1,52 @@
+\doxysection{Dwm\+::Data\+Log\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classDwm_1_1DataLog}{}\label{classDwm_1_1DataLog}\index{Dwm::DataLog$<$ T $>$@{Dwm::DataLog$<$ T $>$}}
+
+
+Simple class template for data logging.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Data\+Log.\+hh$>$}
+
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classDwm_1_1DataLog_1_1Entry}{Entry}}
+\begin{DoxyCompactList}\small\item\em Encapsulates a single data log entry. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1DataLog_ac3d9bc4eebdeb04ad3e2f9c86fe554ea}\label{classDwm_1_1DataLog_ac3d9bc4eebdeb04ad3e2f9c86fe554ea} 
+{\bfseries Data\+Log} (const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em Constructor. {\ttfamily filename} is the name of the file to use. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1DataLog_acefd81434e92672b437131f69a739642}\label{classDwm_1_1DataLog_acefd81434e92672b437131f69a739642} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Data\+Log} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1DataLog_a0615ca31745d5b6eec7a63e7b2ef144a}\label{classDwm_1_1DataLog_a0615ca31745d5b6eec7a63e7b2ef144a} 
+bool {\bfseries Open} (std\+::ios\+\_\+base\+::openmode mode)
+\begin{DoxyCompactList}\small\item\em Opens the log with the given {\ttfamily mode}. Returns true on success. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1DataLog_a18065eeda02c2556a112ea762103c95e}\label{classDwm_1_1DataLog_a18065eeda02c2556a112ea762103c95e} 
+bool {\bfseries Rewind} ()
+\begin{DoxyCompactList}\small\item\em Rewinds the log to the beginning. Returns true on success. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1DataLog_ac584b512e4dc157c9aa8227fd34c7aff}\label{classDwm_1_1DataLog_ac584b512e4dc157c9aa8227fd34c7aff} 
+bool {\bfseries Close} ()
+\begin{DoxyCompactList}\small\item\em Closes the log. Returns true on success. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1DataLog_a8475c0edf83ec7b58db9c453fb6c086a}\label{classDwm_1_1DataLog_a8475c0edf83ec7b58db9c453fb6c086a} 
+bool {\bfseries Get\+Next} (\mbox{\hyperlink{classDwm_1_1DataLog_1_1Entry}{Entry}} \&entry)
+\begin{DoxyCompactList}\small\item\em Fetches the next entry from the log. Returns true on succes. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1DataLog_ab5123fdc8a15f4d8083463aaff1d871b}\label{classDwm_1_1DataLog_ab5123fdc8a15f4d8083463aaff1d871b} 
+bool {\bfseries Record} (const T \&value)
+\begin{DoxyCompactList}\small\item\em Writes an entry to the log. Returns true on success. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class Dwm\+::\+Data\+Log$<$ T $>$}
+Simple class template for data logging. 
+
+Each log entry is represented by the \doxylink{classDwm_1_1DataLog_1_1Entry}{Data\+Log\+::\+Entry} class, which holds a timestamp and and instance of the parameterized type. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmDataLog_8hh}{Dwm\+Data\+Log.\+hh}}\end{DoxyCompactItemize}

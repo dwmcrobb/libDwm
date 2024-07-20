@@ -1,0 +1,195 @@
+\doxysection{Dwm\+::Host\+Pinger Class Reference}
+\hypertarget{classDwm_1_1HostPinger}{}\label{classDwm_1_1HostPinger}\index{Dwm::HostPinger@{Dwm::HostPinger}}
+
+
+Encapsulates a \textquotesingle{}pinger\textquotesingle{}, which can \textquotesingle{}ping\textquotesingle{} one or more hosts using TCP or ICMP.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Host\+Pinger.\+hh$>$}
+
+
+
+Collaboration diagram for Dwm\+::Host\+Pinger\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1HostPinger__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classDwm_1_1HostPinger_1_1Receiver}{Receiver}}
+\begin{DoxyCompactList}\small\item\em Data callback interface. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_a674de8820d0dc73fdade073d1f5f8bca}\label{classDwm_1_1HostPinger_a674de8820d0dc73fdade073d1f5f8bca} 
+{\bfseries Host\+Pinger} (uint16\+\_\+t identifier, const std\+::string \&device="{}lo0"{})
+\begin{DoxyCompactList}\small\item\em Construct with the given {\ttfamily identifier} (normally getpid() \& 0x\+FFFF). \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1HostPinger_a22602ca2c91039b4f70090c2f79224ac}\label{classDwm_1_1HostPinger_a22602ca2c91039b4f70090c2f79224ac} 
+bool {\bfseries Add\+Destination} (const \mbox{\hyperlink{classDwm_1_1PingDestination}{Ping\+Destination}} \&destination)
+\begin{DoxyCompactList}\small\item\em Adds a destination. Returns true on success. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{classDwm_1_1HostPinger_a6c1674ef95b5add2980c23ef8794491e}{Packet\+Rate}} () const
+\begin{DoxyCompactList}\small\item\em Returns the packet rate. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{classDwm_1_1HostPinger_af618bd27fdbb041f57b91ae7dc9e8941}{Packet\+Rate}} (uint16\+\_\+t pps)
+\begin{DoxyCompactList}\small\item\em Sets and returns the packet rate in packets/sec. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1HostPinger_ab11e634ed4400e211445225495de07b8}\label{classDwm_1_1HostPinger_ab11e634ed4400e211445225495de07b8} 
+uint32\+\_\+t {\bfseries Packets\+Sent} (const \mbox{\hyperlink{classDwm_1_1PingDestination}{Ping\+Destination}} \&destination) const
+\begin{DoxyCompactList}\small\item\em Returns the number of packets sent to the given {\ttfamily destination}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1HostPinger_afa8f96373f060f41fd6d1f1416991e35}\label{classDwm_1_1HostPinger_afa8f96373f060f41fd6d1f1416991e35} 
+uint32\+\_\+t {\bfseries Packets\+Received} (const \mbox{\hyperlink{classDwm_1_1PingDestination}{Ping\+Destination}} \&destination) const
+\begin{DoxyCompactList}\small\item\em Returns the number of packets received from the given {\ttfamily destination}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1HostPinger_a4d131659fce8fc0c51709e21932f1a11}\label{classDwm_1_1HostPinger_a4d131659fce8fc0c51709e21932f1a11} 
+float {\bfseries Packet\+Loss} (const \mbox{\hyperlink{classDwm_1_1PingDestination}{Ping\+Destination}} \&destination) const
+\begin{DoxyCompactList}\small\item\em Returns the percent packet loss for the given {\ttfamily destination}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1HostPinger_ab809fcaa2d12b7035a58d29da986db89}\label{classDwm_1_1HostPinger_ab809fcaa2d12b7035a58d29da986db89} 
+bool {\bfseries Start} (int count=0)
+\begin{DoxyCompactList}\small\item\em Starts the pinger. Returns true on success. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1HostPinger_a67418386f071307b7c418b36b475763f}\label{classDwm_1_1HostPinger_a67418386f071307b7c418b36b475763f} 
+bool {\bfseries Stop} ()
+\begin{DoxyCompactList}\small\item\em Stops the pinger. Returns true on success. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1HostPinger_a44ae247a1584238bb9932b642219b582}\label{classDwm_1_1HostPinger_a44ae247a1584238bb9932b642219b582} 
+bool {\bfseries Outstanding} ()
+\begin{DoxyCompactList}\small\item\em Returns true if we have not yet received replies for some of the packets we sent. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1HostPinger_a5a740b6ebad1f1431360a891144e6d9f}\label{classDwm_1_1HostPinger_a5a740b6ebad1f1431360a891144e6d9f} 
+bool {\bfseries Sender\+Done} () const
+\item 
+\Hypertarget{classDwm_1_1HostPinger_aa2cbe6377d4bfcf0fad56148180b85b1}\label{classDwm_1_1HostPinger_aa2cbe6377d4bfcf0fad56148180b85b1} 
+bool {\bfseries Stop\+Sender} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_af2713a0871addb892cdaa388f6b92511}\label{classDwm_1_1HostPinger_af2713a0871addb892cdaa388f6b92511} 
+static \mbox{\hyperlink{classDwm_1_1HostPinger_1_1Receiver}{Receiver}} \texorpdfstring{$\ast$}{*} {\bfseries Get\+Receiver} ()
+\begin{DoxyCompactList}\small\item\em Returns the \doxylink{classDwm_1_1HostPinger_1_1Receiver}{Receiver} registered to receive ping data. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1HostPinger_a75feec46b0e6cf13f28876b1dceb6690}\label{classDwm_1_1HostPinger_a75feec46b0e6cf13f28876b1dceb6690} 
+static \mbox{\hyperlink{classDwm_1_1HostPinger_1_1Receiver}{Receiver}} \texorpdfstring{$\ast$}{*} {\bfseries Set\+Receiver} (\mbox{\hyperlink{classDwm_1_1HostPinger_1_1Receiver}{Receiver}} \texorpdfstring{$\ast$}{*}receiver)
+\begin{DoxyCompactList}\small\item\em Registers {\ttfamily receiver} to receive ping data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_ad2e9dd809f988f5df4a8f5631c03cebe}\label{classDwm_1_1HostPinger_ad2e9dd809f988f5df4a8f5631c03cebe} 
+typedef std\+::map$<$ \mbox{\hyperlink{classDwm_1_1PingDestination}{Ping\+Destination}}, \mbox{\hyperlink{classDwm_1_1PingDestinationEntry}{Ping\+Destination\+Entry}} $>$ {\bfseries Destination\+Map}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_abef8784202a414ebc05704d5b37ef130}\label{classDwm_1_1HostPinger_abef8784202a414ebc05704d5b37ef130} 
+void {\bfseries Get\+Tcp\+Packet} (const \mbox{\hyperlink{classDwm_1_1PingDestination}{Ping\+Destination}} \&destination, uint16\+\_\+t seq, std\+::string \&s)
+\item 
+\Hypertarget{classDwm_1_1HostPinger_aac44e4aa5f1e419333e558f38297ed69}\label{classDwm_1_1HostPinger_aac44e4aa5f1e419333e558f38297ed69} 
+void {\bfseries Run\+Watcher} ()
+\item 
+\Hypertarget{classDwm_1_1HostPinger_a17e87772da6c1f25ba74bd6bb288fca5}\label{classDwm_1_1HostPinger_a17e87772da6c1f25ba74bd6bb288fca5} 
+void {\bfseries Run\+Sender} ()
+\item 
+\Hypertarget{classDwm_1_1HostPinger_a282f6898cab80d058bab1d74bce1dfa3}\label{classDwm_1_1HostPinger_a282f6898cab80d058bab1d74bce1dfa3} 
+bool {\bfseries Stop\+Watcher} ()
+\item 
+\Hypertarget{classDwm_1_1HostPinger_a35f4bcecfa89d9a2d9d6baaa3669e61e}\label{classDwm_1_1HostPinger_a35f4bcecfa89d9a2d9d6baaa3669e61e} 
+bool {\bfseries All\+Packets\+Sent} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_a5a8b576d4810ecdf54d0e12940736a2c}\label{classDwm_1_1HostPinger_a5a8b576d4810ecdf54d0e12940736a2c} 
+static void {\bfseries Pcap\+Callback} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}user, const struct pcap\+\_\+pkthdr \texorpdfstring{$\ast$}{*}pchdr, const uint8\+\_\+t \texorpdfstring{$\ast$}{*}pkt)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_a139de66c6391de4075fdeefa3c11e29d}\label{classDwm_1_1HostPinger_a139de66c6391de4075fdeefa3c11e29d} 
+std\+::string {\bfseries \+\_\+device}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_a08b08e71d084932ff722d8c054c5c655}\label{classDwm_1_1HostPinger_a08b08e71d084932ff722d8c054c5c655} 
+\mbox{\hyperlink{classDwm_1_1Ipv4Address}{Ipv4\+Address}} {\bfseries \+\_\+my\+Address}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_aa7f6efda2f24fe54689ae4b4106c2a6e}\label{classDwm_1_1HostPinger_aa7f6efda2f24fe54689ae4b4106c2a6e} 
+std\+::thread {\bfseries \+\_\+watcher\+Thread}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_a2cbc715e4c2e7ce01d445fdce92a4cef}\label{classDwm_1_1HostPinger_a2cbc715e4c2e7ce01d445fdce92a4cef} 
+std\+::thread {\bfseries \+\_\+sender\+Thread}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_a589debad1a69f68316193383f42959f5}\label{classDwm_1_1HostPinger_a589debad1a69f68316193383f42959f5} 
+std\+::atomic$<$ bool $>$ {\bfseries \+\_\+sender\+Done}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_aa916ad184a878023cd858861e3a57098}\label{classDwm_1_1HostPinger_aa916ad184a878023cd858861e3a57098} 
+std\+::mutex {\bfseries \+\_\+watcher\+Ready\+Mutex}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_ac9ddfe109521f4982dffce2062259682}\label{classDwm_1_1HostPinger_ac9ddfe109521f4982dffce2062259682} 
+std\+::unique\+\_\+lock$<$ std\+::mutex $>$ {\bfseries \+\_\+watcher\+Ready\+Lock}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_abcf77c19c9ad3d69062216712e76d63b}\label{classDwm_1_1HostPinger_abcf77c19c9ad3d69062216712e76d63b} 
+std\+::condition\+\_\+variable {\bfseries \+\_\+watcher\+Ready}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_a83a970ac9c426eb6e4e148ceb356c954}\label{classDwm_1_1HostPinger_a83a970ac9c426eb6e4e148ceb356c954} 
+std\+::atomic$<$ bool $>$ {\bfseries \+\_\+run\+Sender}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_a2e601e2fcf3e0fbbfc96bb200e5702c4}\label{classDwm_1_1HostPinger_a2e601e2fcf3e0fbbfc96bb200e5702c4} 
+std\+::atomic$<$ bool $>$ {\bfseries \+\_\+run\+Watcher}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_ab939111f442bd0c7a70e3d1cd5c47032}\label{classDwm_1_1HostPinger_ab939111f442bd0c7a70e3d1cd5c47032} 
+uint16\+\_\+t {\bfseries \+\_\+identifier}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_a628491878dd6ccc546a6a78c62f98f69}\label{classDwm_1_1HostPinger_a628491878dd6ccc546a6a78c62f98f69} 
+\mbox{\hyperlink{classDwm_1_1Socket}{Socket}} {\bfseries \+\_\+socket}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_abb0d3e12624b0cc470030dc9d9295841}\label{classDwm_1_1HostPinger_abb0d3e12624b0cc470030dc9d9295841} 
+uint16\+\_\+t {\bfseries \+\_\+packet\+Rate}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_a910c9af47b4dcfaa5636c0f55b6ffa4f}\label{classDwm_1_1HostPinger_a910c9af47b4dcfaa5636c0f55b6ffa4f} 
+\mbox{\hyperlink{classDwm_1_1Pcap}{Pcap}} {\bfseries \+\_\+pcap}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_a6061f1ea1a3e4adcc1b27946c31b30be}\label{classDwm_1_1HostPinger_a6061f1ea1a3e4adcc1b27946c31b30be} 
+int {\bfseries \+\_\+count}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_ab5427d4dc9c5f6d4c342434c6ab274e0}\label{classDwm_1_1HostPinger_ab5427d4dc9c5f6d4c342434c6ab274e0} 
+int {\bfseries \+\_\+packets\+Desired}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_a6b2104b6d5a75782acd7d67ef9ffa0ce}\label{classDwm_1_1HostPinger_a6b2104b6d5a75782acd7d67ef9ffa0ce} 
+bool {\bfseries \+\_\+forever}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_aac5d9437f8168858bd8bcb3f732eae77}\label{classDwm_1_1HostPinger_aac5d9437f8168858bd8bcb3f732eae77} 
+Destination\+Map {\bfseries \+\_\+destinations}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1HostPinger_a260489dd0a0d593def9dcf6c67aa5118}\label{classDwm_1_1HostPinger_a260489dd0a0d593def9dcf6c67aa5118} 
+static \mbox{\hyperlink{classDwm_1_1HostPinger_1_1Receiver}{Receiver}} \texorpdfstring{$\ast$}{*} {\bfseries \+\_\+receiver}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Encapsulates a \textquotesingle{}pinger\textquotesingle{}, which can \textquotesingle{}ping\textquotesingle{} one or more hosts using TCP or ICMP. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1HostPinger_a6c1674ef95b5add2980c23ef8794491e}\index{Dwm::HostPinger@{Dwm::HostPinger}!PacketRate@{PacketRate}}
+\index{PacketRate@{PacketRate}!Dwm::HostPinger@{Dwm::HostPinger}}
+\doxysubsubsection{\texorpdfstring{PacketRate()}{PacketRate()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classDwm_1_1HostPinger_a6c1674ef95b5add2980c23ef8794491e} 
+uint16\+\_\+t Dwm\+::\+Host\+Pinger\+::\+Packet\+Rate (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Returns the packet rate. 
+
+This is divided across all destinations; if the packet rate is 10 and there are 5 destinations, each destination will get 10/5 == 2 packets/sec. \Hypertarget{classDwm_1_1HostPinger_af618bd27fdbb041f57b91ae7dc9e8941}\index{Dwm::HostPinger@{Dwm::HostPinger}!PacketRate@{PacketRate}}
+\index{PacketRate@{PacketRate}!Dwm::HostPinger@{Dwm::HostPinger}}
+\doxysubsubsection{\texorpdfstring{PacketRate()}{PacketRate()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classDwm_1_1HostPinger_af618bd27fdbb041f57b91ae7dc9e8941} 
+uint16\+\_\+t Dwm\+::\+Host\+Pinger\+::\+Packet\+Rate (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{pps}{}\end{DoxyParamCaption})}
+
+
+
+Sets and returns the packet rate in packets/sec. 
+
+This is divided across all destinations; if the packet rate is 10 and there are 5 destinations, each destination will get 10/5 == 2 packets/sec. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmHostPinger_8hh}{Dwm\+Host\+Pinger.\+hh}}\end{DoxyCompactItemize}

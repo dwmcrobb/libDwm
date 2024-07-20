@@ -2,7 +2,7 @@ include ../Makefile.vars
 
 .PHONY : clean clean-install clean-tarprep install tarprep uninstall
 
-html/index.html: ../include/*.hh
+html/index.html: ../classes/include/*.hh
 	-doxygen Doxyfile
 	cp mcplex_net_blue_shadowed.svg html
 

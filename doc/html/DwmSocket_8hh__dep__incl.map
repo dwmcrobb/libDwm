@@ -1,0 +1,18 @@
+<map id="DwmSocket.hh" name="DwmSocket.hh">
+<area shape="rect" id="Node000001" title="Dwm::Socket class definition." alt="" coords="401,5,512,31"/>
+<area shape="rect" id="Node000002" href="$DwmHostPinger_8hh.html" title="Dwm::HostPinger class definition." alt="" coords="5,226,140,252"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="386,21,291,24,185,32,135,40,91,50,56,64,33,81,23,98,20,116,21,137,27,157,46,196,65,224,61,227,41,198,22,159,16,137,14,116,18,96,29,77,54,59,90,45,134,35,184,27,291,18,386,16"/>
+<area shape="rect" id="Node000003" href="$DwmIpv4IcmpEchoReply_8hh.html" title="Dwm::Ipv4IcmpEchoReply class definition." alt="" coords="43,79,230,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="388,38,191,81,190,76,386,32"/>
+<area shape="rect" id="Node000004" href="$DwmIpv4IcmpEchoRequest_8hh.html" title="Dwm::Ipv4IcmpEchoRequest class definition." alt="" coords="254,79,457,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="428,43,374,81,371,76,425,38"/>
+<area shape="rect" id="Node000005" href="$DwmIpv4TcpPacket_8hh.html" title="Dwm::Ipv4TcpPacket class definition." alt="" coords="481,79,637,105"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="488,38,543,76,540,81,485,42"/>
+<area shape="rect" id="Node000006" href="$DwmIpv4UdpPacket_8hh.html" title="Dwm::Ipv4UdpPacket class definition." alt="" coords="662,79,822,105"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="520,33,694,76,693,81,519,38"/>
+<area shape="rect" id="Node000007" href="$DwmPingDestination_8hh.html" title="Dwm::PingDestination class definition." alt="" coords="846,79,1008,105"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="528,28,847,76,846,81,527,33"/>
+<area shape="rect" id="Node000008" href="$DwmPingDestinationEntry_8hh.html" title="Dwm::PingDestinationEntry class definition." alt="" coords="437,153,628,178"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="845,111,600,155,599,149,844,105"/>
+<area shape="poly" id="edge8_Node000008_Node000002" title=" " alt="" coords="439,184,141,230,140,225,439,179"/>
+</map>

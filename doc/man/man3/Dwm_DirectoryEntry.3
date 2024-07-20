@@ -1,0 +1,142 @@
+.TH "Dwm::DirectoryEntry" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::DirectoryEntry \- Encapsulates a directory entry (file, directory, FIFO, et\&. al\&.)\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmDirectoryEntry\&.hh>\fP
+.SS "Public Types"
+
+.in +1c
+.ti -1c
+.RI "enum \fBTypeEnum\fP { \fBe_typeUnknown\fP = 0x00, \fBe_typeFifo\fP = 0x01, \fBe_typeCharacterSpecial\fP = 0x02, \fBe_typeDirectory\fP = 0x04, \fBe_typeBlockSpecial\fP = 0x08, \fBe_typeRegular\fP = 0x10, \fBe_typeSymbolicLink\fP = 0x20, \fBe_typeSocket\fP = 0x40 }"
+.br
+.RI "The types of \fBDirectoryEntry\fP objects\&. "
+.in -1c
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBDirectoryEntry\fP (const std::string &path)"
+.br
+.RI "Construct from a path\&. "
+.ti -1c
+.RI "\fBDirectoryEntry\fP (const std::string &path, const \fBDirectoryEntry\fP *parent)"
+.br
+.RI "Construct from a path and a parent\&. "
+.ti -1c
+.RI "\fBTypeEnum\fP \fBType\fP () const"
+.br
+.RI "Returns the \fBDirectoryEntry\fP's type\&. "
+.ti -1c
+.RI "const std::string & \fBPath\fP () const"
+.br
+.RI "Returns the \fBDirectoryEntry\fP's path\&. "
+.ti -1c
+.RI "std::string \fBRelativePath\fP () const"
+.br
+.ti -1c
+.RI "std::string \fBBaseName\fP () const"
+.br
+.RI "Returns the final component of the \fBDirectoryEntry\fP's path\&. "
+.ti -1c
+.RI "std::string \fBDirName\fP () const"
+.br
+.RI "Returns the name of the directory in which \fBDirectoryEntry\fP resides\&. "
+.ti -1c
+.RI "std::string \fBRealPath\fP () const"
+.br
+.RI "If the \fBDirectoryEntry\fP exists in the filesystem, returns its path with all symlinks, extra '/' characters and references to '/\&. "
+.ti -1c
+.RI "std::string \fBExtension\fP () const"
+.br
+.RI "If the \fBDirectoryEntry\fP has dots ('\&. "
+.ti -1c
+.RI "const \fBDirectoryEntry\fP * \fBParent\fP () const"
+.br
+.RI "If the \fBDirectoryEntry\fP has a parent, returns a pointer to it\&. "
+.ti -1c
+.RI "bool \fBExists\fP () const"
+.br
+.RI "Returns true if the \fBDirectoryEntry\fP exists in the filesystem\&. "
+.ti -1c
+.RI "bool \fBIsDirectory\fP () const"
+.br
+.RI "Returns true if the \fBDirectoryEntry\fP is a directory\&. "
+.ti -1c
+.RI "bool \fBGetChildren\fP (std::vector< \fBDirectoryEntry\fP > &children, uint8_t typeMask=0xFF) const"
+.br
+.RI "If the \fBDirectoryEntry\fP is a directory and has children, fills \fRchildren\fP with its direct children and returns true\&. "
+.ti -1c
+.RI "bool \fBGetChildren\fP (std::vector< \fBDirectoryEntry\fP > &children, DirectoryEntryFunctor &dirEntryFunc) const"
+.br
+.ti -1c
+.RI "uint32_t \fBRecurse\fP (DirectoryEntryFunctor &dirEntryFunc, bool depthFirst=false, int maxDepth=\-1)"
+.br
+.in -1c
+.SS "Protected Member Functions"
+
+.in +1c
+.ti -1c
+.RI "uint32_t \fBRecurse\fP (\fBDirectoryEntry\fP &de, DirectoryEntryFunctor &dirEntryFunc, int depth, bool depthFirst, int maxDepth)"
+.br
+.in -1c
+.SS "Static Protected Member Functions"
+
+.in +1c
+.ti -1c
+.RI "static \fBTypeEnum\fP \fBGetType\fP (const struct stat &statStruct)"
+.br
+.ti -1c
+.RI "static \fBTypeEnum\fP \fBGetType\fP (const struct dirent &dirEntry)"
+.br
+.in -1c
+.SS "Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "std::string \fB_path\fP"
+.br
+.ti -1c
+.RI "const \fBDirectoryEntry\fP * \fB_parent\fP"
+.br
+.ti -1c
+.RI "\fBTypeEnum\fP \fB_type\fP"
+.br
+.in -1c
+.SS "Static Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "static std::mutex \fB_readdirMtx\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Encapsulates a directory entry (file, directory, FIFO, et\&. al\&.)\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "std::string Dwm::DirectoryEntry::Extension () const"
+
+.PP
+If the \fBDirectoryEntry\fP has dots ('\&. ') followed by other characters in its \fBBaseName()\fP, returns the string of characters beyond the last dot ('\&.')\&. Else returns an empty string\&. 
+.SS "bool Dwm::DirectoryEntry::GetChildren (std::vector< \fBDirectoryEntry\fP > & children, uint8_t typeMask = \fR0xFF\fP) const"
+
+.PP
+If the \fBDirectoryEntry\fP is a directory and has children, fills \fRchildren\fP with its direct children and returns true\&. Else clears \fRchildren\fP and returns false\&. 
+.SS "const \fBDirectoryEntry\fP * Dwm::DirectoryEntry::Parent () const"
+
+.PP
+If the \fBDirectoryEntry\fP has a parent, returns a pointer to it\&. Else returns (\fBDirectoryEntry\fP *)0\&. 
+.SS "std::string Dwm::DirectoryEntry::RealPath () const"
+
+.PP
+If the \fBDirectoryEntry\fP exists in the filesystem, returns its path with all symlinks, extra '/' characters and references to '/\&. /' and '/\&.\&./' resolved\&. Else returns an empty string\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

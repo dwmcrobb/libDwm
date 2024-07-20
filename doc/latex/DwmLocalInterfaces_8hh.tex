@@ -1,0 +1,59 @@
+\doxysection{Dwm\+Local\+Interfaces.\+hh File Reference}
+\hypertarget{DwmLocalInterfaces_8hh}{}\label{DwmLocalInterfaces_8hh}\index{DwmLocalInterfaces.hh@{DwmLocalInterfaces.hh}}
+
+
+\doxylink{classDwm_1_1LocalInterfaceAlias}{Dwm\+::\+Local\+Interface\+Alias}, \doxylink{classDwm_1_1LocalInterface}{Dwm\+::\+Local\+Interface} and \doxylink{DwmLocalInterfaces_8hh_a6133076226b9c36e48d63219c705c81f}{Dwm\+::\+Get\+Local\+Interfaces()} definitions.  
+
+
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
+{\ttfamily \#include $<$netinet/in.\+h$>$}\newline
+{\ttfamily \#include $<$arpa/inet.\+h$>$}\newline
+{\ttfamily \#include $<$set$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$map$>$}\newline
+{\ttfamily \#include "{}Dwm\+Ipv4\+Address.\+hh"{}}\newline
+Include dependency graph for Dwm\+Local\+Interfaces.\+hh\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{DwmLocalInterfaces_8hh__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classDwm_1_1LocalInterfaceAlias}{Dwm\+::\+Local\+Interface\+Alias}}
+\begin{DoxyCompactList}\small\item\em Holds an interface alias, which is just IP address and netmask. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classDwm_1_1LocalInterface}{Dwm\+::\+Local\+Interface}}
+\begin{DoxyCompactList}\small\item\em Simple class to hold the name and IPv4 address of a local interface. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{DwmLocalInterfaces_8hh_a6133076226b9c36e48d63219c705c81f}{Dwm\+::\+Get\+Local\+Interfaces}} (std\+::map$<$ std\+::string, \mbox{\hyperlink{classDwm_1_1LocalInterface}{Local\+Interface}} $>$ \&interfaces)
+\begin{DoxyCompactList}\small\item\em Fetches local interfaces with IP addresses into {\ttfamily interfaces}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{classDwm_1_1LocalInterfaceAlias}{Dwm\+::\+Local\+Interface\+Alias}, \doxylink{classDwm_1_1LocalInterface}{Dwm\+::\+Local\+Interface} and \doxylink{DwmLocalInterfaces_8hh_a6133076226b9c36e48d63219c705c81f}{Dwm\+::\+Get\+Local\+Interfaces()} definitions. 
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{DwmLocalInterfaces_8hh_a6133076226b9c36e48d63219c705c81f}\index{DwmLocalInterfaces.hh@{DwmLocalInterfaces.hh}!GetLocalInterfaces@{GetLocalInterfaces}}
+\index{GetLocalInterfaces@{GetLocalInterfaces}!DwmLocalInterfaces.hh@{DwmLocalInterfaces.hh}}
+\doxysubsubsection{\texorpdfstring{GetLocalInterfaces()}{GetLocalInterfaces()}}
+{\footnotesize\ttfamily \label{DwmLocalInterfaces_8hh_a6133076226b9c36e48d63219c705c81f} 
+bool Dwm\+::\+Get\+Local\+Interfaces (\begin{DoxyParamCaption}\item[{std\+::map$<$ std\+::string, \mbox{\hyperlink{classDwm_1_1LocalInterface}{Local\+Interface}} $>$ \&}]{interfaces}{}\end{DoxyParamCaption})}
+
+
+
+Fetches local interfaces with IP addresses into {\ttfamily interfaces}. 
+
+Returns true on success (1 or more interfaces found). This {\itshape should} work on Open\+BSD, Free\+BSD and Linux. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{DwmLocalInterfaces_8hh_a6133076226b9c36e48d63219c705c81f_cgraph}
+\end{center}
+\end{figure}

@@ -1,0 +1,45 @@
+<map id="DwmIpv4Address.hh" name="DwmIpv4Address.hh">
+<area shape="rect" id="Node000001" title="Dwm::Ipv4Address class definition." alt="" coords="701,5,844,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,84,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="701,25,440,43,272,59,99,82,99,76,272,54,439,38,700,20"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="301,153,391,178"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="700,23,610,27,511,37,422,54,388,66,365,81,356,93,350,107,346,138,341,137,345,106,351,90,361,77,386,61,420,49,510,31,610,22,700,18"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="730,79,815,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="775,31,775,63,770,63,770,31"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="839,79,893,105"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="790,29,840,67,837,72,787,34"/>
+<area shape="rect" id="Node000006" href="$DwmASIOCapable_8hh.html" title="Dwm::ASIOReadable, Dwm::ASIOWritable, Dwm::ASIOCapable interface declarations." alt="" coords="916,79,1066,105"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="810,29,940,71,939,76,809,34"/>
+<area shape="rect" id="Node000008" href="$DwmDescriptorIOCapable_8hh.html" title="Dwm::DescriptorReadable, Dwm::DescriptorWritable and Dwm::DescriptorIOCapable pure virtual class decl..." alt="" coords="108,79,301,105"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="701,31,316,79,316,74,700,26"/>
+<area shape="rect" id="Node000010" href="$DwmFileIOCapable_8hh.html" title="Dwm::FileIOCapable pure virtual class declaration." alt="" coords="1091,79,1244,105"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="840,29,1086,73,1085,78,839,34"/>
+<area shape="rect" id="Node000012" href="$DwmStreamIOCapable_8hh.html" title="Dwm::StreamReadable, Dwm::StreamWritable and Dwm::StreamIOCapable pure virtual class declarations." alt="" coords="1268,79,1442,105"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="845,26,1253,75,1252,81,844,31"/>
+<area shape="rect" id="Node000014" href="$DwmStreamedLengthCapable_8hh.html" title="Dwm::StreamedLengthCapable pure virtual class declaration." alt="" coords="1466,79,1679,105"/>
+<area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="845,23,1451,76,1450,81,844,28"/>
+<area shape="rect" id="Node000016" href="$DwmGZIOCapable_8hh.html" title="Dwm::GZReadable, Dwm::GZWritable and Dwm::GZIOCapable pure virtual class declarations." alt="" coords="556,79,706,105"/>
+<area shape="poly" id="edge16_Node000001_Node000016" title=" " alt="" coords="750,34,670,74,668,69,747,29"/>
+<area shape="rect" id="Node000019" href="$DwmBZ2IOCapable_8hh.html" title="Dwm::BZ2Readable, Dwm::BZ2Writable and Dwm::BZ2IOCapable pure virtual interface declarations." alt="" coords="376,79,532,105"/>
+<area shape="poly" id="edge20_Node000001_Node000019" title=" " alt="" coords="719,34,523,78,522,73,718,29"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="938,153,1044,178"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="994,105,994,137,989,137,989,105"/>
+<area shape="poly" id="edge8_Node000008_Node000003" title=" " alt="" coords="230,103,309,143,307,148,227,108"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="172,153,237,178"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="207,105,207,137,202,137,202,105"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="1139,153,1195,178"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="1170,105,1170,137,1165,137,1165,105"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="1320,153,1391,178"/>
+<area shape="poly" id="edge13_Node000012_Node000013" title=" " alt="" coords="1358,105,1358,137,1353,137,1353,105"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="1542,153,1603,178"/>
+<area shape="poly" id="edge15_Node000014_Node000015" title=" " alt="" coords="1575,105,1575,137,1570,137,1570,105"/>
+<area shape="poly" id="edge17_Node000016_Node000003" title=" " alt="" coords="583,108,406,152,405,147,582,103"/>
+<area shape="rect" id="Node000017" title=" " alt="" coords="514,153,575,178"/>
+<area shape="poly" id="edge18_Node000016_Node000017" title=" " alt="" coords="618,107,572,145,569,141,615,103"/>
+<area shape="rect" id="Node000018" title=" " alt="" coords="605,153,657,178"/>
+<area shape="poly" id="edge19_Node000016_Node000018" title=" " alt="" coords="634,105,634,137,629,137,629,105"/>
+<area shape="poly" id="edge21_Node000019_Node000003" title=" " alt="" coords="437,107,379,146,376,141,434,103"/>
+<area shape="poly" id="edge22_Node000019_Node000017" title=" " alt="" coords="471,103,519,141,516,145,468,107"/>
+<area shape="rect" id="Node000020" title=" " alt="" coords="424,153,484,178"/>
+<area shape="poly" id="edge23_Node000019_Node000020" title=" " alt="" coords="457,105,457,137,451,137,451,105"/>
+</map>

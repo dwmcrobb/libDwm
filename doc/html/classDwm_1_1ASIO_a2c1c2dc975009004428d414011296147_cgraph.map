@@ -1,0 +1,8 @@
+<map id="Dwm::ASIO::Read" name="Dwm::ASIO::Read">
+<area shape="rect" id="Node000001" title="Reads a variant \C V from s." alt="" coords="5,43,137,68"/>
+<area shape="rect" id="Node000002" href="$classDwm_1_1ASIO.html#aa7244083d6658ae54fc5df488ad29741" title="Reads value from the given socket s." alt="" coords="200,5,332,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,40,184,31,185,36,137,46"/>
+<area shape="rect" id="Node000003" href="$DwmVariantFromIndex_8hh.html#a9fb6da3f1a2ddcca10da239e2b0e7079" title="Returns a variant type V whose contents are set to a default constructed value of the type at index i..." alt="" coords="185,79,347,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="137,65,178,73,177,78,136,70"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="233,80,227,70,231,60,244,54,266,52,290,55,302,62,299,66,288,60,266,57,245,59,234,64,232,69,238,77"/>
+</map>

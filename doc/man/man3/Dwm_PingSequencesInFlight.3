@@ -1,0 +1,78 @@
+.TH "Dwm::PingSequencesInFlight" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::PingSequencesInFlight \- Used to cache information about packets whose responses have not yet been received\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmPingDestinationEntry\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBPingSequencesInFlight\fP ()"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "void \fBDestination\fP (const \fBPingDestination\fP &destination)"
+.br
+.RI "Sets the destination\&. "
+.ti -1c
+.RI "bool \fBAddSent\fP (uint16_t seq, const \fBTimeValue\fP &sendTime)"
+.br
+.RI "Adds to the cache\&. "
+.ti -1c
+.RI "bool \fBProcessReceive\fP (uint16_t seq, const \fBTimeValue\fP &recvTime, \fBTimeValue\fP &rtt)"
+.br
+.RI "Process a received packet\&. "
+.ti -1c
+.RI "bool \fBOutstanding\fP ()"
+.br
+.RI "Returns true if we have sent packets for which we have not yet received a response\&. "
+.in -1c
+.SS "Static Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "static uint32_t \fBTimeoutSecs\fP ()"
+.br
+.ti -1c
+.RI "static uint32_t \fBTimeoutSecs\fP (uint32_t secs)"
+.br
+.in -1c
+.SS "Protected Member Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBCleanupOld\fP ()"
+.br
+.in -1c
+.SS "Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fBPingDestination\fP \fB_destination\fP"
+.br
+.ti -1c
+.RI "std::map< uint16_t, \fBTimeValue\fP > \fB_sequences\fP"
+.br
+.in -1c
+.SS "Static Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "static uint32_t \fB_timeoutSecs\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Used to cache information about packets whose responses have not yet been received\&. 
+
+We keep a map of send times keyed by identifiers\&. The identifier for a destination is incremented each time we send a packet to the destination, after which we insert a map entry with \fBAddSent()\fP\&. \fBProcessReceive()\fP is called when we receive a packet, to look up the time at which the request packet was sent and hence calculate a round-trip time\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

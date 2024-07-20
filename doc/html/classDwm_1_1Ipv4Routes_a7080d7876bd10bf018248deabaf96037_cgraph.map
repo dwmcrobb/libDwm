@@ -1,0 +1,5 @@
+<map id="Dwm::Ipv4Routes::Read" name="Dwm::Ipv4Routes::Read">
+<area shape="rect" id="Node000001" title="Reads the routes from an istream. Returns the istream." alt="" coords="5,5,172,31"/>
+<area shape="rect" id="Node000002" href="$classDwm_1_1StreamIO.html#a53f8175153c0a8a5da8d363cfa23c61a" title="Reads c from is. Returns is." alt="" coords="220,5,375,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,16,204,16,204,21,172,21"/>
+</map>

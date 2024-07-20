@@ -1,0 +1,67 @@
+\doxysection{Dwm\+Type\+Name.\+hh File Reference}
+\hypertarget{DwmTypeName_8hh}{}\label{DwmTypeName_8hh}\index{DwmTypeName.hh@{DwmTypeName.hh}}
+
+
+Hackish support for getting the name of a given object\textquotesingle{}s type, since std\+::type\+\_\+info\+::name() returns a mangled name (or a string of length 1 for builtin types).  
+
+
+{\ttfamily \#include $<$cxxabi.\+h$>$}\newline
+{\ttfamily \#include $<$cstdlib$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$typeinfo$>$}\newline
+Include dependency graph for Dwm\+Type\+Name.\+hh\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=322pt]{DwmTypeName_8hh__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=308pt]{DwmTypeName_8hh__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{DwmTypeName_8hh_a9fa719854d81e51446457d775a38864b}{Dwm\+::\+Builtin\+Type\+Name}} (const std\+::type\+\_\+info \&type\+Info)
+\begin{DoxyCompactList}\small\item\em Returns a string holding the demangled name for the given {\ttfamily type\+Info}. \end{DoxyCompactList}\item 
+\Hypertarget{DwmTypeName_8hh_ac6032999c18625f9bf157184256af343}\label{DwmTypeName_8hh_ac6032999c18625f9bf157184256af343} 
+{\footnotesize template$<$typename T $>$ }\\std\+::string {\bfseries Dwm\+::\+Builtin\+Type\+Name} ()
+\begin{DoxyCompactList}\small\item\em Returns the name of type {\ttfamily T}. \end{DoxyCompactList}\item 
+\Hypertarget{DwmTypeName_8hh_a2dcc052d6435ced58c7ffda571baaf18}\label{DwmTypeName_8hh_a2dcc052d6435ced58c7ffda571baaf18} 
+{\footnotesize template$<$typename T $>$ }\\std\+::string {\bfseries Dwm\+::\+Type\+Name} (const T \&x)
+\begin{DoxyCompactList}\small\item\em Returns the name of type {\ttfamily T}. \end{DoxyCompactList}\item 
+\Hypertarget{DwmTypeName_8hh_a88413a74bb68de3c10d6807638840104}\label{DwmTypeName_8hh_a88413a74bb68de3c10d6807638840104} 
+{\footnotesize template$<$typename T $>$ }\\std\+::string {\bfseries Dwm\+::\+Type\+Name\+No\+Namespace} (const T \&x)
+\begin{DoxyCompactList}\small\item\em Returns the name of type {\ttfamily T}, sans its namespace. \end{DoxyCompactList}\item 
+\Hypertarget{DwmTypeName_8hh_a6218de157104e02c627159bce1b72a98}\label{DwmTypeName_8hh_a6218de157104e02c627159bce1b72a98} 
+{\footnotesize template$<$typename T $>$ }\\std\+::string {\bfseries Dwm\+::\+Type\+Name} ()
+\begin{DoxyCompactList}\small\item\em Returns the name of type {\ttfamily T}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Hackish support for getting the name of a given object\textquotesingle{}s type, since std\+::type\+\_\+info\+::name() returns a mangled name (or a string of length 1 for builtin types). 
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{DwmTypeName_8hh_a9fa719854d81e51446457d775a38864b}\index{DwmTypeName.hh@{DwmTypeName.hh}!BuiltinTypeName@{BuiltinTypeName}}
+\index{BuiltinTypeName@{BuiltinTypeName}!DwmTypeName.hh@{DwmTypeName.hh}}
+\doxysubsubsection{\texorpdfstring{BuiltinTypeName()}{BuiltinTypeName()}}
+{\footnotesize\ttfamily \label{DwmTypeName_8hh_a9fa719854d81e51446457d775a38864b} 
+std\+::string Dwm\+::\+Builtin\+Type\+Name (\begin{DoxyParamCaption}\item[{const std\+::type\+\_\+info \&}]{type\+Info}{}\end{DoxyParamCaption})}
+
+
+
+Returns a string holding the demangled name for the given {\ttfamily type\+Info}. 
+
+For builtin types, we return the literal name by doing a lookup in a map that\textquotesingle{}s set up in this function. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=200pt]{DwmTypeName_8hh_a9fa719854d81e51446457d775a38864b_cgraph}
+\end{center}
+\end{figure}

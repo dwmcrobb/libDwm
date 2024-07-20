@@ -1,0 +1,79 @@
+\doxysection{Dwm\+::Opt\+Args Class Reference}
+\hypertarget{classDwm_1_1OptArgs}{}\label{classDwm_1_1OptArgs}\index{Dwm::OptArgs@{Dwm::OptArgs}}
+
+
+Class to encapsulate command line options and parse them.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Opt\+Args.\+hh$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1OptArgs_a6a8e8e5370ae709972894c073c27b870}\label{classDwm_1_1OptArgs_a6a8e8e5370ae709972894c073c27b870} 
+void {\bfseries Add\+Opt\+Arg} (const \mbox{\hyperlink{classDwm_1_1OptArg}{Opt\+Arg}} \&optarg)
+\begin{DoxyCompactList}\small\item\em Adds an optional argument. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1OptArgs_a95f84b7a8ef4a397f47e5a10a2de466c}\label{classDwm_1_1OptArgs_a95f84b7a8ef4a397f47e5a10a2de466c} 
+void {\bfseries Add\+Opt\+Arg} (const std\+::string \&name, const std\+::string \&long\+Name, bool is\+Required=false, const std\+::string \&def="{}"{}, const std\+::string \&help="{}"{})
+\begin{DoxyCompactList}\small\item\em Adds an optional argument. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1OptArgs_a7809dded1c62420dcad4e7d9505d4820}\label{classDwm_1_1OptArgs_a7809dded1c62420dcad4e7d9505d4820} 
+void {\bfseries Add\+Normal\+Arg} (const std\+::string \&name, bool required)
+\item 
+\Hypertarget{classDwm_1_1OptArgs_a049502f8c00d172c0378ad23b1b78938}\label{classDwm_1_1OptArgs_a049502f8c00d172c0378ad23b1b78938} 
+{\footnotesize template$<$typename T $>$ }\\T {\bfseries Get} (int c)
+\begin{DoxyCompactList}\small\item\em Fetches the value of an optional argument by its short name. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1OptArgs_aeb091b78bcc6c9fb42f7c940178be91c}\label{classDwm_1_1OptArgs_aeb091b78bcc6c9fb42f7c940178be91c} 
+{\footnotesize template$<$typename T $>$ }\\T {\bfseries Get} (const std\+::string \&s)
+\begin{DoxyCompactList}\small\item\em Fetches the value of an optional argument by its long name. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1OptArgs_a1d0cb901c6c9d6c440f04e75bc7b5f90}{Parse}} (int argc, const std\+::string argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Parses all optional arguments. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1OptArgs_a8de8036a14785031fa7f9fe80cc76bff}{Parse}} (int argc, char \texorpdfstring{$\ast$}{*}argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Parses all optional arguments. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1OptArgs_ac87f09044b71e477443662c8d728bd00}\label{classDwm_1_1OptArgs_ac87f09044b71e477443662c8d728bd00} 
+void {\bfseries Usage} (const std\+::string \&argv0) const
+\begin{DoxyCompactList}\small\item\em Prints the usage statement. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1OptArgs_ac87d4727deca197579322e0177760d8f}\label{classDwm_1_1OptArgs_ac87d4727deca197579322e0177760d8f} 
+std\+::map$<$ int, \mbox{\hyperlink{classDwm_1_1OptArg}{Opt\+Arg}} $>$ {\bfseries \+\_\+args}
+\item 
+\Hypertarget{classDwm_1_1OptArgs_a349525e81bf6198f67ec2ed730060c4f}\label{classDwm_1_1OptArgs_a349525e81bf6198f67ec2ed730060c4f} 
+std\+::map$<$ std\+::string, \mbox{\hyperlink{classDwm_1_1OptArg}{Opt\+Arg}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries \+\_\+long\+Args}
+\item 
+\Hypertarget{classDwm_1_1OptArgs_a2419ba56a7829541d752d6e70616db2b}\label{classDwm_1_1OptArgs_a2419ba56a7829541d752d6e70616db2b} 
+std\+::vector$<$ std\+::pair$<$ std\+::string, bool $>$ $>$ {\bfseries \+\_\+normal\+Args}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class to encapsulate command line options and parse them. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1OptArgs_a8de8036a14785031fa7f9fe80cc76bff}\index{Dwm::OptArgs@{Dwm::OptArgs}!Parse@{Parse}}
+\index{Parse@{Parse}!Dwm::OptArgs@{Dwm::OptArgs}}
+\doxysubsubsection{\texorpdfstring{Parse()}{Parse()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classDwm_1_1OptArgs_a8de8036a14785031fa7f9fe80cc76bff} 
+int Dwm\+::\+Opt\+Args\+::\+Parse (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{argv}{\mbox{[}$\,$\mbox{]}}\end{DoxyParamCaption})}
+
+
+
+Parses all optional arguments. 
+
+Returns the next argument index, which the caller should compare against argc. If parsing fails, will emit a usage statement and exit. \Hypertarget{classDwm_1_1OptArgs_a1d0cb901c6c9d6c440f04e75bc7b5f90}\index{Dwm::OptArgs@{Dwm::OptArgs}!Parse@{Parse}}
+\index{Parse@{Parse}!Dwm::OptArgs@{Dwm::OptArgs}}
+\doxysubsubsection{\texorpdfstring{Parse()}{Parse()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classDwm_1_1OptArgs_a1d0cb901c6c9d6c440f04e75bc7b5f90} 
+int Dwm\+::\+Opt\+Args\+::\+Parse (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{const std\+::string}]{argv}{\mbox{[}$\,$\mbox{]}}\end{DoxyParamCaption})}
+
+
+
+Parses all optional arguments. 
+
+Returns the next argument index, which the caller should compare against argc. If parsing fails, will emit a usage statement and exit. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmOptArgs_8hh}{Dwm\+Opt\+Args.\+hh}}\end{DoxyCompactItemize}

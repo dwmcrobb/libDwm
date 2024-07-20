@@ -1,0 +1,75 @@
+\doxysection{Dwm\+::Executor Class Reference}
+\hypertarget{classDwm_1_1Executor}{}\label{classDwm_1_1Executor}\index{Dwm::Executor@{Dwm::Executor}}
+
+
+Provides a simple interface to fork() + execvp().  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Executor.\+hh$>$}
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static pid\+\_\+t \mbox{\hyperlink{classDwm_1_1Executor_ab9658b3b423f68598a46d0d54dc4a6ba}{Execute}} (const std\+::string \&command\+String)
+\begin{DoxyCompactList}\small\item\em Executes the given {\ttfamily command\+String}, which may contain arguments. \end{DoxyCompactList}\item 
+static pid\+\_\+t \mbox{\hyperlink{classDwm_1_1Executor_aaa760d10461551ce848ab2861b63906f}{Execute}} (const std\+::string \&command, char \texorpdfstring{$\ast$}{*}const argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Executes the given {\ttfamily command} with arguments {\ttfamily argv}. \end{DoxyCompactList}\item 
+static pid\+\_\+t \mbox{\hyperlink{classDwm_1_1Executor_afaf216f8d6f6c91a35e46df582fb84df}{Execute}} (char \texorpdfstring{$\ast$}{*}const argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Executes the command with arguments that are combined in {\ttfamily argv}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Executor_afeffc73395e3efff16cc3d1c2d92e9c4}\label{classDwm_1_1Executor_afeffc73395e3efff16cc3d1c2d92e9c4} 
+static const int {\bfseries k\+\_\+\+COMMAND} = 260
+\begin{DoxyCompactList}\small\item\em Constant for the lexer. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Executor_ae08465f44accb05922409ce8d509209d}\label{classDwm_1_1Executor_ae08465f44accb05922409ce8d509209d} 
+static const int {\bfseries k\+\_\+\+ARGUMENT} = 261
+\begin{DoxyCompactList}\small\item\em Constant for the lexer. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Executor_a230b9633109e671839c7fb2db3d13d0e}\label{classDwm_1_1Executor_a230b9633109e671839c7fb2db3d13d0e} 
+static const int {\bfseries k\+\_\+\+WHITESPACE} = 262
+\begin{DoxyCompactList}\small\item\em Constant for the lexer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Provides a simple interface to fork() + execvp(). 
+
+I wanted a call that looked like system() in usage, but didn\textquotesingle{}t block for the exit of the child and returned a PID. This call is \doxylink{classDwm_1_1Executor_ab9658b3b423f68598a46d0d54dc4a6ba}{Execute(const std\+::string \&)}. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1Executor_afaf216f8d6f6c91a35e46df582fb84df}\index{Dwm::Executor@{Dwm::Executor}!Execute@{Execute}}
+\index{Execute@{Execute}!Dwm::Executor@{Dwm::Executor}}
+\doxysubsubsection{\texorpdfstring{Execute()}{Execute()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Executor_afaf216f8d6f6c91a35e46df582fb84df} 
+static pid\+\_\+t Dwm\+::\+Executor\+::\+Execute (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}const}]{argv}{\mbox{[}$\,$\mbox{]}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Executes the command with arguments that are combined in {\ttfamily argv}. 
+
+Returns the process ID. \Hypertarget{classDwm_1_1Executor_aaa760d10461551ce848ab2861b63906f}\index{Dwm::Executor@{Dwm::Executor}!Execute@{Execute}}
+\index{Execute@{Execute}!Dwm::Executor@{Dwm::Executor}}
+\doxysubsubsection{\texorpdfstring{Execute()}{Execute()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Executor_aaa760d10461551ce848ab2861b63906f} 
+static pid\+\_\+t Dwm\+::\+Executor\+::\+Execute (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{command}{, }\item[{char \texorpdfstring{$\ast$}{*}const}]{argv}{\mbox{[}$\,$\mbox{]}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Executes the given {\ttfamily command} with arguments {\ttfamily argv}. 
+
+Returns the process ID. \Hypertarget{classDwm_1_1Executor_ab9658b3b423f68598a46d0d54dc4a6ba}\index{Dwm::Executor@{Dwm::Executor}!Execute@{Execute}}
+\index{Execute@{Execute}!Dwm::Executor@{Dwm::Executor}}
+\doxysubsubsection{\texorpdfstring{Execute()}{Execute()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Executor_ab9658b3b423f68598a46d0d54dc4a6ba} 
+static pid\+\_\+t Dwm\+::\+Executor\+::\+Execute (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{command\+String}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Executes the given {\ttfamily command\+String}, which may contain arguments. 
+
+Returns the process ID. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmExecutor_8hh}{Dwm\+Executor.\+hh}}\end{DoxyCompactItemize}

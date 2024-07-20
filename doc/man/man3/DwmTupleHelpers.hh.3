@@ -1,0 +1,38 @@
+.TH "DwmTupleHelpers.hh" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+DwmTupleHelpers.hh \- tuple helper templates  
+
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <string>\fP
+.br
+\fR#include <tuple>\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "template<class Tuple , class Func , std::size_t\&.\&.\&. I> constexpr Func \fBDwm::TupleHelpers::ForEachImpl\fP (Tuple &&t, Func &&f, std::index_sequence< I\&.\&.\&. >)"
+.br
+.ti -1c
+.RI "template<class Tuple , class Func > constexpr Func \fBDwm::TupleHelpers::ForEach\fP (Tuple &&t, Func &&f)"
+.br
+.ti -1c
+.RI "template<typename Tuple , typename Pred > constexpr size_t \fBDwm::TupleHelpers::FindIf\fP (Tuple &&tuple, Pred pred)"
+.br
+.ti -1c
+.RI "template<typename Tuple , typename Action > void \fBDwm::TupleHelpers::Perform\fP (Tuple &&tpl, size_t index, Action action)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+tuple helper templates 
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

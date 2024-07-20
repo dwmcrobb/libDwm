@@ -1,0 +1,53 @@
+\doxysection{Dwm\+::Stream\+Readable Class Reference}
+\hypertarget{classDwm_1_1StreamReadable}{}\label{classDwm_1_1StreamReadable}\index{Dwm::StreamReadable@{Dwm::StreamReadable}}
+
+
+This class defines an interface for classes that can read their contents from an istream.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Stream\+IOCapable.\+hh$>$}
+
+
+
+Inheritance diagram for Dwm\+::Stream\+Readable\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{classDwm_1_1StreamReadable__inherit__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1StreamReadable_a698ba45749925f50dd3bb30473313097}\label{classDwm_1_1StreamReadable_a698ba45749925f50dd3bb30473313097} 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Stream\+Readable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\item 
+virtual std\+::istream \& \mbox{\hyperlink{classDwm_1_1StreamReadable_a8337a0949e0ce4458f18884d00eb5153}{Read}} (std\+::istream \&is)=0
+\begin{DoxyCompactList}\small\item\em Read from an istream. Return the istream. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class defines an interface for classes that can read their contents from an istream. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1StreamReadable_a8337a0949e0ce4458f18884d00eb5153}\index{Dwm::StreamReadable@{Dwm::StreamReadable}!Read@{Read}}
+\index{Read@{Read}!Dwm::StreamReadable@{Dwm::StreamReadable}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}}
+{\footnotesize\ttfamily \label{classDwm_1_1StreamReadable_a8337a0949e0ce4458f18884d00eb5153} 
+virtual std\+::istream \& Dwm\+::\+Stream\+Readable\+::\+Read (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{is}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Read from an istream. Return the istream. 
+
+
+
+Implemented in \mbox{\hyperlink{classDwm_1_1IpAddress_aa46905faf28a516368c900cd88fdd245}{Dwm\+::\+Ip\+Address}}, \mbox{\hyperlink{classDwm_1_1Ipv4Address_ad3c4b1912acd945a6115db8bfc85cbd9}{Dwm\+::\+Ipv4\+Address}}, \mbox{\hyperlink{classDwm_1_1Ipv4PacketHeader_a432175b8ba7bf0ae03a3f9754133e3fb}{Dwm\+::\+Ipv4\+Packet\+Header}}, \mbox{\hyperlink{classDwm_1_1Ipv4Prefix_a54bdd22503b84d3da81bfd2a99eee93f}{Dwm\+::\+Ipv4\+Prefix}}, \mbox{\hyperlink{classDwm_1_1Ipv4Routes_a7080d7876bd10bf018248deabaf96037}{Dwm\+::\+Ipv4\+Routes$<$ \+\_\+value\+T $>$}}, \mbox{\hyperlink{classDwm_1_1Ipv4TcpHeader_afe9db298bbbfa3068a98f0ee87c8570a}{Dwm\+::\+Ipv4\+Tcp\+Header}}, \mbox{\hyperlink{classDwm_1_1Ipv4TcpPacket_a729068998011414edef1aab9f208bb24}{Dwm\+::\+Ipv4\+Tcp\+Packet}}, \mbox{\hyperlink{classDwm_1_1Ipv4UdpHeader_a3364e74bce0f15dc374431ea4c0184ae}{Dwm\+::\+Ipv4\+Udp\+Header}}, \mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_ac9ce56372e689cbf3ad1a8dc840bb6c1}{Dwm\+::\+Ipv4\+Udp\+Packet}}, \mbox{\hyperlink{classDwm_1_1Ipv6Address_a71c9e07b14804c739d3a34d35092dbc6}{Dwm\+::\+Ipv6\+Address}}, \mbox{\hyperlink{classDwm_1_1Ipv6AddrMap_a229708c111d67735af64845905ca6072}{Dwm\+::\+Ipv6\+Addr\+Map$<$ T, Hash $>$}}, \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_aa60e625e50b59641be71f95145079a57}{Dwm\+::\+Ipv6\+Prefix}}, \mbox{\hyperlink{classDwm_1_1Ipv6PrefixMap_aeb680c75ed945b9ae6f48c1601869d30}{Dwm\+::\+Ipv6\+Prefix\+Map$<$ T, Hash $>$}}, \mbox{\hyperlink{classDwm_1_1MacAddress_a7c12513f39a62fc725189375f80f1f9c}{Dwm\+::\+Mac\+Address}}, \mbox{\hyperlink{classDwm_1_1MplsLabel_a57f0e02a9bc5cb9a91d922bf6331a756}{Dwm\+::\+Mpls\+Label}}, \mbox{\hyperlink{classDwm_1_1MplsLabelStack_a357d438ce13278ccd3a918f29b1f3dc4}{Dwm\+::\+Mpls\+Label\+Stack}}, \mbox{\hyperlink{classDwm_1_1Patricia_a4e4ac24a3a699f6fd15d43119a937267}{Dwm\+::\+Patricia$<$ Key\+Type, Value\+Type, Key\+Equal $>$}}, \mbox{\hyperlink{classDwm_1_1Rusage_a551fdb9a8fddf119f6179c5bb5febd45}{Dwm\+::\+Rusage}}, \mbox{\hyperlink{classDwm_1_1TimeInterval64_a94aa2121c1bb4c18f8acb740fd9aed1c}{Dwm\+::\+Time\+Interval64}}, \mbox{\hyperlink{classDwm_1_1TimeInterval_a8cdbce1c59495e419c4c22abef180dc4}{Dwm\+::\+Time\+Interval}}, \mbox{\hyperlink{classDwm_1_1TimeValue64_adffb1900700ce65d3f4b1cb9b03aebe2}{Dwm\+::\+Time\+Value64}}, and \mbox{\hyperlink{classDwm_1_1TimeValue_a4656910c9a63db82cc2bb79db0a26baf}{Dwm\+::\+Time\+Value}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmStreamIOCapable_8hh}{Dwm\+Stream\+IOCapable.\+hh}}\end{DoxyCompactItemize}

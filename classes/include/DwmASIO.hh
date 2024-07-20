@@ -989,7 +989,16 @@ namespace Dwm {
     static bool Read(S & s, ASIOReadable & val,
                      boost::system::error_code & ec)
     { return val.Read(s, ec); }
-    
+
+    //------------------------------------------------------------------------
+    //!  Reads @c val from @c s.  Returns true on success, false on failure.
+    //------------------------------------------------------------------------
+    template <typename S>
+    requires IsSupportedASIOSocket<S>
+    static bool Read(S & s, HasAsioRead auto & val,
+                     boost::system::error_code & ec)
+    { return val.Read(s, ec); }
+      
     //------------------------------------------------------------------------
     //!  Writes @c val to @c s.  Returns true on success, false on failure.
     //------------------------------------------------------------------------
@@ -999,6 +1008,15 @@ namespace Dwm {
                       boost::system::error_code & ec)
     { return val.Write(s, ec); }
 
+    //------------------------------------------------------------------------
+    //!  Writes @c val to @c s.  Returns true on success, false on failure.
+    //------------------------------------------------------------------------
+    template <typename S>
+    requires IsSupportedASIOSocket<S>
+    static bool Write(S & s, const HasAsioWrite auto & val,
+                      boost::system::error_code & ec)
+    { return val.Write(s, ec); }
+    
     //------------------------------------------------------------------------
     //!  Reads @c args from @c s.  Returns true on success, false on failure.
     //------------------------------------------------------------------------

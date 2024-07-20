@@ -1,0 +1,7 @@
+<map id="Dwm::Ipv4IcmpEchoReply::GetData" name="Dwm::Ipv4IcmpEchoReply::GetData">
+<area shape="rect" id="Node000001" title="Copies the encapsulated data into data." alt="" coords="5,23,184,64"/>
+<area shape="rect" id="Node000002" href="$classDwm_1_1StreamIO.html#a53f8175153c0a8a5da8d363cfa23c61a" title="Reads c from is. Returns is." alt="" coords="256,5,412,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="184,31,241,25,241,31,185,37"/>
+<area shape="rect" id="Node000003" href="$classDwm_1_1IOUtils.html#aabf83a333ade467a587f2e10a17c7b5f" title="Returns the number of bytes that would be written if we called Write() for a char." alt="" coords="232,55,436,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="185,50,216,53,216,58,184,55"/>
+</map>

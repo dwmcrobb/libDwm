@@ -1,0 +1,82 @@
+\doxysection{Dwm\+::Termios Class Reference}
+\hypertarget{classDwm_1_1Termios}{}\label{classDwm_1_1Termios}\index{Dwm::Termios@{Dwm::Termios}}
+
+
+Encapsulates a struct termios.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Termios.\+hh$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Termios_a53d563a1fcb652dbb83dae5ccf979bc8}\label{classDwm_1_1Termios_a53d563a1fcb652dbb83dae5ccf979bc8} 
+{\bfseries Termios} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Termios_ab7bafea64e8614225d4946688a538b50}\label{classDwm_1_1Termios_ab7bafea64e8614225d4946688a538b50} 
+\mbox{\hyperlink{classDwm_1_1TermioInputFlags}{Termio\+Input\+Flags}} \& {\bfseries Input\+Flags} ()
+\begin{DoxyCompactList}\small\item\em Returns a reference to the input flags. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Termios_a796536c6e5f3a998786d44372f8ced8d}\label{classDwm_1_1Termios_a796536c6e5f3a998786d44372f8ced8d} 
+\mbox{\hyperlink{classDwm_1_1TermioOutputFlags}{Termio\+Output\+Flags}} \& {\bfseries Output\+Flags} ()
+\begin{DoxyCompactList}\small\item\em Returns a reference to the output flags. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Termios_af9147bf22ed414a7bc3a9962616461b7}\label{classDwm_1_1Termios_af9147bf22ed414a7bc3a9962616461b7} 
+\mbox{\hyperlink{classDwm_1_1TermioControlFlags}{Termio\+Control\+Flags}} \& {\bfseries Control\+Flags} ()
+\begin{DoxyCompactList}\small\item\em Returns a reference to the control flags. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Termios_ae1046757aecb615a92e2a7ce10a6eca9}\label{classDwm_1_1Termios_ae1046757aecb615a92e2a7ce10a6eca9} 
+\mbox{\hyperlink{classDwm_1_1TermioLocalFlags}{Termio\+Local\+Flags}} \& {\bfseries Local\+Flags} ()
+\begin{DoxyCompactList}\small\item\em Returns a reference to the local flags. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Termios_a18952c95e071a20b8882162802521bdc}\label{classDwm_1_1Termios_a18952c95e071a20b8882162802521bdc} 
+long {\bfseries Input\+Speed} () const
+\begin{DoxyCompactList}\small\item\em Returns the input speed. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Termios_aa9315323f8d5edcf2258349989a7c543}\label{classDwm_1_1Termios_aa9315323f8d5edcf2258349989a7c543} 
+long {\bfseries Input\+Speed} (long input\+Speed)
+\begin{DoxyCompactList}\small\item\em Sets and returns the input speed. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Termios_aeb3f66a77e3e12489665dd204526492e}\label{classDwm_1_1Termios_aeb3f66a77e3e12489665dd204526492e} 
+long {\bfseries Output\+Speed} () const
+\begin{DoxyCompactList}\small\item\em Returns the input speed. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Termios_a3f80c89974eb69d60de733bc843b9d44}\label{classDwm_1_1Termios_a3f80c89974eb69d60de733bc843b9d44} 
+long {\bfseries Output\+Speed} (long output\+Speed)
+\begin{DoxyCompactList}\small\item\em Sets and returns the input speed. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Termios_a45a2e4bb9b203bac1b1da1433764a58e}\label{classDwm_1_1Termios_a45a2e4bb9b203bac1b1da1433764a58e} 
+cc\+\_\+t {\bfseries Control\+Char} (const std\+::string \&cc\+Name) const
+\begin{DoxyCompactList}\small\item\em Returns the control char value for the given control char named {\ttfamily cc\+Name}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Termios_aacdd7d28f49b044cddc1e6e3e30c36c6}\label{classDwm_1_1Termios_aacdd7d28f49b044cddc1e6e3e30c36c6} 
+cc\+\_\+t {\bfseries Control\+Char} (const std\+::string \&cc\+Name, cc\+\_\+t val)
+\begin{DoxyCompactList}\small\item\em Sets and returns the control char value for the given control char named {\ttfamily cc\+Name}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Termios_a40922841fa342a4ab8020aa41058daa1}\label{classDwm_1_1Termios_a40922841fa342a4ab8020aa41058daa1} 
+bool {\bfseries Get} (int fd)
+\begin{DoxyCompactList}\small\item\em Gets the termios for the given file descriptor. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1Termios_af5069e483a043faa0f9662debb6c7656}{Set}} (int fd, int action)
+\begin{DoxyCompactList}\small\item\em Applies the termios to the given file descriptor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Termios_a5b86bed2bc2b42df9449981914695f9c}\label{classDwm_1_1Termios_a5b86bed2bc2b42df9449981914695f9c} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classDwm_1_1Termios}{Termios}} \&t) const
+\begin{DoxyCompactList}\small\item\em operator == \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Termios_af84446a711f32cb51b989544cb10c912}\label{classDwm_1_1Termios_af84446a711f32cb51b989544cb10c912} 
+std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, const \mbox{\hyperlink{classDwm_1_1Termios}{Termios}} \&t)
+\begin{DoxyCompactList}\small\item\em Prints to an ostream. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Encapsulates a struct termios. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1Termios_af5069e483a043faa0f9662debb6c7656}\index{Dwm::Termios@{Dwm::Termios}!Set@{Set}}
+\index{Set@{Set}!Dwm::Termios@{Dwm::Termios}}
+\doxysubsubsection{\texorpdfstring{Set()}{Set()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Termios_af5069e483a043faa0f9662debb6c7656} 
+bool Dwm\+::\+Termios\+::\+Set (\begin{DoxyParamCaption}\item[{int}]{fd}{, }\item[{int}]{action}{}\end{DoxyParamCaption})}
+
+
+
+Applies the termios to the given file descriptor. 
+
+{\ttfamily action} is TCSANOW, TCSADRAIN or TCSAFLUSH. TCSASOFT may be or\textquotesingle{}ed with any of these. See the tcsetattr(3) manpage. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmTermios_8hh}{Dwm\+Termios.\+hh}}\end{DoxyCompactItemize}

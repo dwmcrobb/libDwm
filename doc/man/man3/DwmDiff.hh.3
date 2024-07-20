@@ -1,0 +1,62 @@
+.TH "DwmDiff.hh" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+DwmDiff.hh \- \fBDwm::Diff\fP function templates\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <algorithm>\fP
+.br
+\fR#include <type_traits>\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "template<class InputIt1 , class InputIt2 , class OutputCont > void \fBDwm::Diff\fP (InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2, OutputCont &in1not2, OutputCont &in2not1)"
+.br
+.RI "Copies elements from the sorted range \fR\fP[first1,last1) which are not found in the sorted range [first2,last2) to \fRin1not2\fP\&. "
+.ti -1c
+.RI "template<class InputIt1 , class InputIt2 , class OutputCont , class Compare > void \fBDwm::Diff\fP (InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2, OutputCont &in1not2, OutputCont &in2not1, Compare comp)"
+.br
+.RI "Copies elements from the sorted range \fR\fP[first1,last1) which are not found in the sorted range \fR\fP[first2,last2) to \fRin1not2\fP, using \fRcomp\fP to compare elements\&. "
+.ti -1c
+.RI "template<class InputCont , class OutputCont > void \fBDwm::Diff\fP (const InputCont &in1, const InputCont &in2, OutputCont &in1not2, OutputCont &in2not1)"
+.br
+.RI "Copies elements from the sorted container \fRin1\fP which are not found in the sorted container \fRin2\fP to \fRin1not2\fP\&. "
+.ti -1c
+.RI "template<class InputCont , class OutputCont , class Compare > void \fBDwm::Diff\fP (const InputCont &in1, const InputCont &in2, OutputCont &in1not2, OutputCont &in2not1, Compare comp)"
+.br
+.RI "Copies elements from the sorted container \fRin1\fP which are not found in the sorted container \fRin2\fP to \fRin1not2\fP, using \fRcomp\fP to compare elements\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+\fBDwm::Diff\fP function templates\&. 
+
+
+.SH "Function Documentation"
+.PP 
+.SS "template<class InputCont , class OutputCont > void Dwm::Diff (const InputCont & in1, const InputCont & in2, OutputCont & in1not2, OutputCont & in2not1)"
+
+.PP
+Copies elements from the sorted container \fRin1\fP which are not found in the sorted container \fRin2\fP to \fRin1not2\fP\&. Copies elements from the sorted container \fRin2\fP which are not found in the sorted container \fRin1\fP to \fRin2not1\fP\&. Note that I do not clear \fRin1not2\fP or \fRin2not1\fP on input, I simply append to the end of these containers\&. 
+.SS "template<class InputCont , class OutputCont , class Compare > void Dwm::Diff (const InputCont & in1, const InputCont & in2, OutputCont & in1not2, OutputCont & in2not1, Compare comp)"
+
+.PP
+Copies elements from the sorted container \fRin1\fP which are not found in the sorted container \fRin2\fP to \fRin1not2\fP, using \fRcomp\fP to compare elements\&. Copies elements from the sorted container \fRin2\fP which are not found in the sorted container \fRin1\fP to \fRin2not1\fP, using \fRcomp\fP to compare elements\&. Note that I do not clear \fRin1not2\fP or \fRin2not1\fP on input, I simply append to the end of these containers\&. 
+.SS "template<class InputIt1 , class InputIt2 , class OutputCont > void Dwm::Diff (InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2, OutputCont & in1not2, OutputCont & in2not1)"
+
+.PP
+Copies elements from the sorted range \fR\fP[first1,last1) which are not found in the sorted range [first2,last2) to \fRin1not2\fP\&. Copies elements from the sorted range \fR\fP[first2,last2) which are not 
+.br
+ found in the sorted range [first1,last1) to \fRin2not1\fP\&. Note that I don't clear \fRin1not2\fP or \fRin1not2\fP\&. Note that I do not clear \fRin1not2\fP or \fRin2not1\fP on input, I simply append to the end of these containers\&. 
+.SS "template<class InputIt1 , class InputIt2 , class OutputCont , class Compare > void Dwm::Diff (InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2, OutputCont & in1not2, OutputCont & in2not1, Compare comp)"
+
+.PP
+Copies elements from the sorted range \fR\fP[first1,last1) which are not found in the sorted range \fR\fP[first2,last2) to \fRin1not2\fP, using \fRcomp\fP to compare elements\&. Copies elements from the sorted range \fR\fP[first2,last2) which are not found in the sorted range \fR\fP[first1,last1) to \fRin2not1\fP, using \fRcomp\fP to compare elements\&. Note that I do not clear \fRin1not2\fP or \fRin2not1\fP on input, I simply append to the end of these containers\&. 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

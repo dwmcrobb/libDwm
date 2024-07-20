@@ -1,0 +1,5 @@
+<map id="Dwm::Ipv4Routes::BZRead" name="Dwm::Ipv4Routes::BZRead">
+<area shape="rect" id="Node000001" title="Reads the routes from a BZFILE pointer." alt="" coords="5,5,189,31"/>
+<area shape="rect" id="Node000002" href="$classDwm_1_1BZ2IO.html#a4727aecb37080cbb98a9a40b5d101aa4" title="Reads from bzf." alt="" coords="237,5,391,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="189,16,221,16,221,21,189,21"/>
+</map>

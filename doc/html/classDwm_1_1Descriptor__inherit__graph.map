@@ -1,0 +1,5 @@
+<map id="Dwm::Descriptor" name="Dwm::Descriptor">
+<area shape="rect" id="Node000001" title="This class encapsulates UNIX file and socket descriptors." alt="" coords="5,5,126,31"/>
+<area shape="rect" id="Node000002" href="$classDwm_1_1Socket.html" title="This class abstracts a UNIX socket descriptor." alt="" coords="15,79,116,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="68,46,68,79,63,79,63,46"/>
+</map>

@@ -1,0 +1,349 @@
+\doxysection{Dwm\+::Ipv4\+Udp\+Packet Class Reference}
+\hypertarget{classDwm_1_1Ipv4UdpPacket}{}\label{classDwm_1_1Ipv4UdpPacket}\index{Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}}
+
+
+Encapsulates a UDP packet, including the IP header.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Ipv4\+Udp\+Packet.\+hh$>$}
+
+
+
+Inheritance diagram for Dwm\+::Ipv4\+Udp\+Packet\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4UdpPacket__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Dwm\+::Ipv4\+Udp\+Packet\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4UdpPacket__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_ae0079f96d804213e63d7dc41676fc966}\label{classDwm_1_1Ipv4UdpPacket_ae0079f96d804213e63d7dc41676fc966} 
+{\bfseries Ipv4\+Udp\+Packet} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_ab5df94996c46cf4b38718aa46973d335}{Ipv4\+Udp\+Packet}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}ptr)
+\begin{DoxyCompactList}\small\item\em Construct from a pointer to the start of IP header in a UDP packet. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_a3c657d91803010d569128419285e6fc0}\label{classDwm_1_1Ipv4UdpPacket_a3c657d91803010d569128419285e6fc0} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Ipv4\+Udp\+Packet} ()
+\begin{DoxyCompactList}\small\item\em Destructor. If we own the underlying data, we free it. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_a68ece90c0f606bb8363ee2a59bafa152}\label{classDwm_1_1Ipv4UdpPacket_a68ece90c0f606bb8363ee2a59bafa152} 
+const \mbox{\hyperlink{classDwm_1_1Ipv4PacketHeader}{Ipv4\+Packet\+Header}} \& {\bfseries Ip\+Header} () const
+\begin{DoxyCompactList}\small\item\em Returns a const reference to the IP header. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_a6c0fe60a9907a3cf5c6d0013e90db746}\label{classDwm_1_1Ipv4UdpPacket_a6c0fe60a9907a3cf5c6d0013e90db746} 
+\mbox{\hyperlink{classDwm_1_1Ipv4PacketHeader}{Ipv4\+Packet\+Header}} \& {\bfseries Ip\+Header} ()
+\begin{DoxyCompactList}\small\item\em Returns a mutable reference to the IP header. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_aa0d43fe95380bf5a6f0f79965c03ca57}\label{classDwm_1_1Ipv4UdpPacket_aa0d43fe95380bf5a6f0f79965c03ca57} 
+const \mbox{\hyperlink{classDwm_1_1Ipv4UdpHeader}{Ipv4\+Udp\+Header}} \& {\bfseries Udp\+Header} () const
+\begin{DoxyCompactList}\small\item\em Returns a const refernece to the UDP header. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_a9ea5d8c08e374c74ae65dace7b361f62}\label{classDwm_1_1Ipv4UdpPacket_a9ea5d8c08e374c74ae65dace7b361f62} 
+\mbox{\hyperlink{classDwm_1_1Ipv4UdpHeader}{Ipv4\+Udp\+Header}} \& {\bfseries Udp\+Header} ()
+\begin{DoxyCompactList}\small\item\em Returns a mutable reference to the UDP header. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_a1dcd4d23dc074350871dc57395e67765}\label{classDwm_1_1Ipv4UdpPacket_a1dcd4d23dc074350871dc57395e67765} 
+std\+::string {\bfseries Payload} () const
+\begin{DoxyCompactList}\small\item\em Returns the payload as a string. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\bool \mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_adb55ad730bd21c361a94f419f2b6cdb8}{Get\+Payload}} (T \&payload) const
+\begin{DoxyCompactList}\small\item\em Copies the contained payload into {\ttfamily payload}. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\bool \mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_a70b048fd9734d3784b617777d8e5195c}{Set\+Payload}} (const T \&payload)
+\begin{DoxyCompactList}\small\item\em Sets the contained payload to {\ttfamily payload}. \end{DoxyCompactList}\item 
+std\+::istream \& \mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_ac9ce56372e689cbf3ad1a8dc840bb6c1}{Read}} (std\+::istream \&is) override
+\begin{DoxyCompactList}\small\item\em Reads from an istream. Returns the istream. \end{DoxyCompactList}\item 
+std\+::ostream \& \mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_a95dc299bb8f8ea264eea8541bef1dc87}{Write}} (std\+::ostream \&os) const override
+\begin{DoxyCompactList}\small\item\em Writes to an ostream. Returns the ostream. \end{DoxyCompactList}\item 
+ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_a459973506d37abec79d9cd7f7120b521}{Read}} (int fd) override
+\begin{DoxyCompactList}\small\item\em NOT IMPLEMENTED. \end{DoxyCompactList}\item 
+ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_a5a1707f70e96a654abd16498ec810ead}{Write}} (int fd) const override
+\begin{DoxyCompactList}\small\item\em Writes to a file descriptor. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_af6811eb0d9e084a69bf69c7a8857e257}{Read}} (FILE \texorpdfstring{$\ast$}{*}f) override
+\begin{DoxyCompactList}\small\item\em Reads the packet from the given FILE {\ttfamily f}. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_a9ea76622c359a890bd6fb4f747c8d2f7}{Write}} (FILE \texorpdfstring{$\ast$}{*}f) const override
+\begin{DoxyCompactList}\small\item\em Writes the packet to the given FILE {\ttfamily f}. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_a34bb7e2711c6b434a1ad2642121b434b}{Read}} (gz\+File gzf) override
+\begin{DoxyCompactList}\small\item\em Reads the packet from the given gz\+File {\ttfamily gzf}. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_a13bdb3b66aacc84ee297ac1f4fea5dfb}{Write}} (gz\+File gzf) const override
+\begin{DoxyCompactList}\small\item\em Writes the packet to the given gz\+File {\ttfamily gzf}. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_a6709014c83006d99559b0c8b93367395}{BZRead}} (BZFILE \texorpdfstring{$\ast$}{*}bzf) override
+\begin{DoxyCompactList}\small\item\em Reads the packet from the given BZFILE {\ttfamily bzf}. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_aa68ddbcde8468b2a98864ed5ec36adcc}{BZWrite}} (BZFILE \texorpdfstring{$\ast$}{*}bzf) const override
+\begin{DoxyCompactList}\small\item\em Writes the packet to the given BZFILE {\ttfamily bzf}. \end{DoxyCompactList}\item 
+uint64\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_adaa7f59fbe92e0ef661d700877ead255}{Streamed\+Length}} () const override
+\begin{DoxyCompactList}\small\item\em Returns the numbers of bytes that should be written if one of the \doxylink{classDwm_1_1Ipv4UdpPacket_a95dc299bb8f8ea264eea8541bef1dc87}{Write()} members is called. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_ab10ae42b75c0c577e7d56ec18c349431}{Send\+To}} (int fd) const
+\begin{DoxyCompactList}\small\item\em Sends the packet via the given descriptor {\ttfamily fd}. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_a028a7b3ce5653842b1a6f6c6126acbe2}{Send\+To}} (\mbox{\hyperlink{classDwm_1_1Socket}{Socket}} \&s) const
+\begin{DoxyCompactList}\small\item\em Sends the packet via the given \doxylink{classDwm_1_1Socket}{Socket} {\ttfamily s}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1DescriptorReadable}{Dwm\+::\+Descriptor\+Readable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Descriptor\+Readable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1DescriptorWritable}{Dwm\+::\+Descriptor\+Writable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Descriptor\+Writable} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1StreamReadable}{Dwm\+::\+Stream\+Readable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Stream\+Readable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1StreamWritable}{Dwm\+::\+Stream\+Writable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Stream\+Writable} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1GZReadable}{Dwm\+::\+GZReadable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+GZReadable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1GZWritable}{Dwm\+::\+GZWritable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+GZWritable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Encapsulates a UDP packet, including the IP header. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_ab5df94996c46cf4b38718aa46973d335}\index{Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}!Ipv4UdpPacket@{Ipv4UdpPacket}}
+\index{Ipv4UdpPacket@{Ipv4UdpPacket}!Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}}
+\doxysubsubsection{\texorpdfstring{Ipv4UdpPacket()}{Ipv4UdpPacket()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4UdpPacket_ab5df94996c46cf4b38718aa46973d335} 
+Dwm\+::\+Ipv4\+Udp\+Packet\+::\+Ipv4\+Udp\+Packet (\begin{DoxyParamCaption}\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{ptr}{}\end{DoxyParamCaption})}
+
+
+
+Construct from a pointer to the start of IP header in a UDP packet. 
+
+We don\textquotesingle{}t copy, so the caller still owns the memory at {\ttfamily ptr}. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_a6709014c83006d99559b0c8b93367395}\index{Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}!BZRead@{BZRead}}
+\index{BZRead@{BZRead}!Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}}
+\doxysubsubsection{\texorpdfstring{BZRead()}{BZRead()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4UdpPacket_a6709014c83006d99559b0c8b93367395} 
+int Dwm\+::\+Ipv4\+Udp\+Packet\+::\+BZRead (\begin{DoxyParamCaption}\item[{BZFILE \texorpdfstring{$\ast$}{*}}]{bzf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the packet from the given BZFILE {\ttfamily bzf}. 
+
+Returns the number of bytes read on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1BZ2Readable_a4b71c8697049e8e2e5df8ff22405f6b7}{Dwm\+::\+BZ2\+Readable}}.
+
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_aa68ddbcde8468b2a98864ed5ec36adcc}\index{Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}!BZWrite@{BZWrite}}
+\index{BZWrite@{BZWrite}!Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}}
+\doxysubsubsection{\texorpdfstring{BZWrite()}{BZWrite()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4UdpPacket_aa68ddbcde8468b2a98864ed5ec36adcc} 
+int Dwm\+::\+Ipv4\+Udp\+Packet\+::\+BZWrite (\begin{DoxyParamCaption}\item[{BZFILE \texorpdfstring{$\ast$}{*}}]{bzf}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the packet to the given BZFILE {\ttfamily bzf}. 
+
+Returns the number of bytes written on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1BZ2Writable_aa4481114d6865e31f0aa94f08c2b2e5d}{Dwm\+::\+BZ2\+Writable}}.
+
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_adb55ad730bd21c361a94f419f2b6cdb8}\index{Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}!GetPayload@{GetPayload}}
+\index{GetPayload@{GetPayload}!Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}}
+\doxysubsubsection{\texorpdfstring{GetPayload()}{GetPayload()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4UdpPacket_adb55ad730bd21c361a94f419f2b6cdb8} 
+template$<$typename T $>$ \\
+bool Dwm\+::\+Ipv4\+Udp\+Packet\+::\+Get\+Payload (\begin{DoxyParamCaption}\item[{T \&}]{payload}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Copies the contained payload into {\ttfamily payload}. 
+
+Returns true on success, false on failure. Note that {\ttfamily payload} must be of a type natively supported by \doxylink{classDwm_1_1IO}{Dwm\+::\+IO} or derived from \doxylink{classDwm_1_1Readable}{Dwm\+::\+Readable}. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4UdpPacket_adb55ad730bd21c361a94f419f2b6cdb8_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_af6811eb0d9e084a69bf69c7a8857e257}\index{Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}!Read@{Read}}
+\index{Read@{Read}!Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4UdpPacket_af6811eb0d9e084a69bf69c7a8857e257} 
+size\+\_\+t Dwm\+::\+Ipv4\+Udp\+Packet\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the packet from the given FILE {\ttfamily f}. 
+
+Returns 1 on success, 0 on failure (fread() semantics). 
+
+Implements \mbox{\hyperlink{classDwm_1_1FileReadable_a2e51685eb4fecc584ab48ca7609bba6f}{Dwm\+::\+File\+Readable}}.
+
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_a34bb7e2711c6b434a1ad2642121b434b}\index{Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}!Read@{Read}}
+\index{Read@{Read}!Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4UdpPacket_a34bb7e2711c6b434a1ad2642121b434b} 
+int Dwm\+::\+Ipv4\+Udp\+Packet\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the packet from the given gz\+File {\ttfamily gzf}. 
+
+Returns the number of bytes read on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1GZReadable_a4243984d9d8fb2f79997403824834dd2}{Dwm\+::\+GZReadable}}.
+
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_a459973506d37abec79d9cd7f7120b521}\index{Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}!Read@{Read}}
+\index{Read@{Read}!Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4UdpPacket_a459973506d37abec79d9cd7f7120b521} 
+ssize\+\_\+t Dwm\+::\+Ipv4\+Udp\+Packet\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+NOT IMPLEMENTED. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1DescriptorReadable_aec1a0c67dd53343e52be7a6728081b7f}{Dwm\+::\+Descriptor\+Readable}}.
+
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_ac9ce56372e689cbf3ad1a8dc840bb6c1}\index{Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}!Read@{Read}}
+\index{Read@{Read}!Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4UdpPacket_ac9ce56372e689cbf3ad1a8dc840bb6c1} 
+std\+::istream \& Dwm\+::\+Ipv4\+Udp\+Packet\+::\+Read (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{is}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads from an istream. Returns the istream. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamReadable_a8337a0949e0ce4458f18884d00eb5153}{Dwm\+::\+Stream\+Readable}}.
+
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_ab10ae42b75c0c577e7d56ec18c349431}\index{Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}!SendTo@{SendTo}}
+\index{SendTo@{SendTo}!Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}}
+\doxysubsubsection{\texorpdfstring{SendTo()}{SendTo()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4UdpPacket_ab10ae42b75c0c577e7d56ec18c349431} 
+bool Dwm\+::\+Ipv4\+Udp\+Packet\+::\+Send\+To (\begin{DoxyParamCaption}\item[{int}]{fd}{}\end{DoxyParamCaption}) const}
+
+
+
+Sends the packet via the given descriptor {\ttfamily fd}. 
+
+Returns true on success, false on failure. \Hypertarget{classDwm_1_1Ipv4UdpPacket_a028a7b3ce5653842b1a6f6c6126acbe2}\index{Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}!SendTo@{SendTo}}
+\index{SendTo@{SendTo}!Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}}
+\doxysubsubsection{\texorpdfstring{SendTo()}{SendTo()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4UdpPacket_a028a7b3ce5653842b1a6f6c6126acbe2} 
+bool Dwm\+::\+Ipv4\+Udp\+Packet\+::\+Send\+To (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classDwm_1_1Socket}{Socket}} \&}]{s}{}\end{DoxyParamCaption}) const}
+
+
+
+Sends the packet via the given \doxylink{classDwm_1_1Socket}{Socket} {\ttfamily s}. 
+
+Returns true on success, false on failure. \Hypertarget{classDwm_1_1Ipv4UdpPacket_a70b048fd9734d3784b617777d8e5195c}\index{Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}!SetPayload@{SetPayload}}
+\index{SetPayload@{SetPayload}!Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}}
+\doxysubsubsection{\texorpdfstring{SetPayload()}{SetPayload()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4UdpPacket_a70b048fd9734d3784b617777d8e5195c} 
+template$<$typename T $>$ \\
+bool Dwm\+::\+Ipv4\+Udp\+Packet\+::\+Set\+Payload (\begin{DoxyParamCaption}\item[{const T \&}]{payload}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Sets the contained payload to {\ttfamily payload}. 
+
+Returns true on success, false on failure. Note that {\ttfamily payload} must be of a type natively supported by \doxylink{classDwm_1_1IO}{Dwm\+::\+IO} or derived from \doxylink{classDwm_1_1Writable}{Dwm\+::\+Writable}. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4UdpPacket_a70b048fd9734d3784b617777d8e5195c_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_adaa7f59fbe92e0ef661d700877ead255}\index{Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}!StreamedLength@{StreamedLength}}
+\index{StreamedLength@{StreamedLength}!Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}}
+\doxysubsubsection{\texorpdfstring{StreamedLength()}{StreamedLength()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4UdpPacket_adaa7f59fbe92e0ef661d700877ead255} 
+uint64\+\_\+t Dwm\+::\+Ipv4\+Udp\+Packet\+::\+Streamed\+Length (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Returns the numbers of bytes that should be written if one of the \doxylink{classDwm_1_1Ipv4UdpPacket_a95dc299bb8f8ea264eea8541bef1dc87}{Write()} members is called. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamedLengthCapable_abe671443353ea6ed173005c6f515ca5d}{Dwm\+::\+Streamed\+Length\+Capable}}.
+
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_a9ea76622c359a890bd6fb4f747c8d2f7}\index{Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}!Write@{Write}}
+\index{Write@{Write}!Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4UdpPacket_a9ea76622c359a890bd6fb4f747c8d2f7} 
+size\+\_\+t Dwm\+::\+Ipv4\+Udp\+Packet\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the packet to the given FILE {\ttfamily f}. 
+
+Returns 1 on success, 0 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1FileWritable_ad46fa6f29a2fec8c8080f054c0a8febe}{Dwm\+::\+File\+Writable}}.
+
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_a13bdb3b66aacc84ee297ac1f4fea5dfb}\index{Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}!Write@{Write}}
+\index{Write@{Write}!Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4UdpPacket_a13bdb3b66aacc84ee297ac1f4fea5dfb} 
+int Dwm\+::\+Ipv4\+Udp\+Packet\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the packet to the given gz\+File {\ttfamily gzf}. 
+
+Returns the number of bytes written on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1GZWritable_a5f50bad679854f91bc5a67728a329681}{Dwm\+::\+GZWritable}}.
+
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_a5a1707f70e96a654abd16498ec810ead}\index{Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}!Write@{Write}}
+\index{Write@{Write}!Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4UdpPacket_a5a1707f70e96a654abd16498ec810ead} 
+ssize\+\_\+t Dwm\+::\+Ipv4\+Udp\+Packet\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes to a file descriptor. 
+
+Returns the number of bytes written on success, -\/1 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1DescriptorWritable_ae0b23058b0de909d4705c05507b10864}{Dwm\+::\+Descriptor\+Writable}}.
+
+\Hypertarget{classDwm_1_1Ipv4UdpPacket_a95dc299bb8f8ea264eea8541bef1dc87}\index{Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}!Write@{Write}}
+\index{Write@{Write}!Dwm::Ipv4UdpPacket@{Dwm::Ipv4UdpPacket}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv4UdpPacket_a95dc299bb8f8ea264eea8541bef1dc87} 
+std\+::ostream \& Dwm\+::\+Ipv4\+Udp\+Packet\+::\+Write (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes to an ostream. Returns the ostream. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamWritable_a66994f2c5fbf07308b6b766f9774d079}{Dwm\+::\+Stream\+Writable}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmIpv4UdpPacket_8hh}{Dwm\+Ipv4\+Udp\+Packet.\+hh}}\end{DoxyCompactItemize}

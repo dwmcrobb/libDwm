@@ -1,0 +1,125 @@
+.TH "Dwm::Descriptor" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::Descriptor \- This class encapsulates UNIX file and socket descriptors\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmDescriptor\&.hh>\fP
+.PP
+Inherited by \fBDwm::Socket\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBDescriptor\fP ()"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "\fBDescriptor\fP (const \fBDescriptor\fP &d)"
+.br
+.RI "Copy constructor\&. Will dup() the descriptor of \fRd\fP\&. "
+.ti -1c
+.RI "\fBDescriptor\fP (int d)"
+.br
+.ti -1c
+.RI "\fBDescriptor\fP & \fBoperator=\fP (const \fBDescriptor\fP &d)"
+.br
+.RI "operator = (assignment operator)\&. "
+.ti -1c
+.RI "virtual \fB~Descriptor\fP ()"
+.br
+.RI "Destructor\&. Note this will close the underlying UNIX descriptor\&. "
+.ti -1c
+.RI "virtual bool \fBClose\fP ()"
+.br
+.RI "Closes the \fBDescriptor\fP\&. Returns true on success, false on failure\&. "
+.ti -1c
+.RI "virtual bool \fBAttach\fP (int fd)"
+.br
+.RI "Associates the \fBDescriptor\fP with an existing UNIX descriptor \fRfd\fP\&. "
+.ti -1c
+.RI "virtual bool \fBDetach\fP ()"
+.br
+.RI "Disassociates the \fBDescriptor\fP from the underlying UNIX descriptor\&. "
+.ti -1c
+.RI "virtual bool \fBSetNonBlocking\fP ()"
+.br
+.RI "Sets the \fBDescriptor\fP to non-blocking\&. "
+.ti -1c
+.RI "virtual bool \fBSetBlocking\fP ()"
+.br
+.RI "Sets the soccket to blocking\&. "
+.ti -1c
+.RI "virtual \fBoperator int\fP () const"
+.br
+.RI "This completely blows encapsulation, but is needed so that \fBDescriptor\fP may be used in place of a UNIX descriptor in retrofitted code\&. "
+.ti -1c
+.RI "virtual bool \fBFdSet\fP (fd_set &fdSet)"
+.br
+.RI "If \fBDescriptor\fP is valid, sets it in \fRfdSet\fP and returns true\&. "
+.ti -1c
+.RI "virtual bool \fBFdClr\fP (fd_set &fdSet)"
+.br
+.RI "If \fBDescriptor\fP is valid, clears it in \fRfdSet\fP and returns true\&. "
+.ti -1c
+.RI "virtual bool \fBFdIsSet\fP (fd_set &fdSet)"
+.br
+.RI "If \fBDescriptor\fP is valid and is set in \fRfdSet\fP, returns true\&. "
+.ti -1c
+.RI "virtual bool \fBReadWouldBlock\fP ()"
+.br
+.in -1c
+.SS "Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "int \fB_fd\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+This class encapsulates UNIX file and socket descriptors\&. 
+
+It only abstracts those functions which have common interfaces, so that applications may use this interface to handle both file and socket descriptor I/O in the same place\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "virtual bool Dwm::Descriptor::Attach (int fd)\fR [virtual]\fP"
+
+.PP
+Associates the \fBDescriptor\fP with an existing UNIX descriptor \fRfd\fP\&. Note this will cause the \fBDescriptor\fP to automatically close \fRfd\fP when destructed\&. Returns true if \fRfd\fP is a valid descriptor, else returns false\&. 
+.SS "virtual bool Dwm::Descriptor::Detach ()\fR [virtual]\fP"
+
+.PP
+Disassociates the \fBDescriptor\fP from the underlying UNIX descriptor\&. Returns true on success, false on failure\&. 
+.SS "virtual bool Dwm::Descriptor::FdClr (fd_set & fdSet)\fR [virtual]\fP"
+
+.PP
+If \fBDescriptor\fP is valid, clears it in \fRfdSet\fP and returns true\&. Else returns false\&. 
+.SS "virtual bool Dwm::Descriptor::FdIsSet (fd_set & fdSet)\fR [virtual]\fP"
+
+.PP
+If \fBDescriptor\fP is valid and is set in \fRfdSet\fP, returns true\&. Else returns false\&. 
+.SS "virtual bool Dwm::Descriptor::FdSet (fd_set & fdSet)\fR [virtual]\fP"
+
+.PP
+If \fBDescriptor\fP is valid, sets it in \fRfdSet\fP and returns true\&. Else returns false\&. 
+.SS "\fBDescriptor\fP & Dwm::Descriptor::operator= (const \fBDescriptor\fP & d)"
+
+.PP
+operator = (assignment operator)\&. Will close \fRthis\fP and then dup() the descriptor of \fRd\fP\&. 
+.SS "virtual bool Dwm::Descriptor::SetBlocking ()\fR [virtual]\fP"
+
+.PP
+Sets the soccket to blocking\&. Returns true on success, false on failure\&. 
+.SS "virtual bool Dwm::Descriptor::SetNonBlocking ()\fR [virtual]\fP"
+
+.PP
+Sets the \fBDescriptor\fP to non-blocking\&. Returns true on success, false on failure\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

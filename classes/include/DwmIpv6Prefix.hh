@@ -41,21 +41,7 @@
 #ifndef _DWMIPV6PREFIX_HH_
 #define _DWMIPV6PREFIX_HH_
 
-extern "C" {
-  #include <inttypes.h>
-  #include <stdio.h>
-}
-
-#define XXH_INLINE_ALL
-#include <xxhash.h>
-
-#include "DwmASIO.hh"
 #include "DwmIpv6Address.hh"
-#include "DwmDescriptorIOCapable.hh"
-#include "DwmFileIOCapable.hh"
-#include "DwmStreamIOCapable.hh"
-#include "DwmGZIOCapable.hh"
-#include "DwmBZ2IOCapable.hh"
 
 namespace Dwm {
 
@@ -63,9 +49,6 @@ namespace Dwm {
   //!  This class encapsulates an IPv6 network prefix.
   //--------------------------------------------------------------------------
   class Ipv6Prefix
-    : public ASIOCapable, public DescriptorIOCapable, public FileIOCapable,
-      public StreamIOCapable, public GZIOCapable, public BZ2IOCapable, 
-      public StreamedLengthCapable
   {
   public:
     //------------------------------------------------------------------------
@@ -151,101 +134,101 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Reads the prefix from a file descriptor.
     //------------------------------------------------------------------------
-    ssize_t Read(int fd) override;
+    ssize_t Read(int fd);
 
     //------------------------------------------------------------------------
     //!  Writes the prefix to a file descriptor.
     //------------------------------------------------------------------------
-    ssize_t Write(int fd) const override;
+    ssize_t Write(int fd) const;
 
     //------------------------------------------------------------------------
     //!  Reads the prefix from a FILE pointer.  Returns 1 on success,
     //!  0 on failure.
     //------------------------------------------------------------------------
-    size_t Read(FILE *f) override;
+    size_t Read(FILE *f);
     
     //------------------------------------------------------------------------
     //!  Writes the prefix to a FILE pointer.  Returns 1 on success,
     //!  0 on failure.
     //------------------------------------------------------------------------
-    size_t Write(FILE *f) const override;
+    size_t Write(FILE *f) const;
     
     //------------------------------------------------------------------------
     //!  Reads the prefix from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    std::istream & Read(std::istream & is) override;
+    std::istream & Read(std::istream & is);
 
     //------------------------------------------------------------------------
     //!  Writes the prefix to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const override;
+    std::ostream & Write(std::ostream & os) const;
 
     //------------------------------------------------------------------------
     //!  Reads the prefix from a gzFile.
     //------------------------------------------------------------------------
-    int Read(gzFile gzf) override;
+    int Read(gzFile gzf);
 
     //------------------------------------------------------------------------
     //!  Writes the prefix to a gzFile.
     //------------------------------------------------------------------------
-    int Write(gzFile gzf) const override;
+    int Write(gzFile gzf) const;
 
     //------------------------------------------------------------------------
     //!  Reads the prefix from a BZFILE pointer.
     //------------------------------------------------------------------------
-    int BZRead(BZFILE *bzf) override;
+    int BZRead(BZFILE *bzf);
 
     //------------------------------------------------------------------------
     //!  Writes the prefix to a BZFILE pointer.
     //------------------------------------------------------------------------
-    int BZWrite(BZFILE *bzf) const override;
+    int BZWrite(BZFILE *bzf) const;
 
     //------------------------------------------------------------------------
     //!  Reads the prefix from @c s.  Returns true on success, false on
     //!  failure.
     //------------------------------------------------------------------------
     bool Read(boost::asio::ip::tcp::socket & s,
-              boost::system::error_code & ec) override;
+              boost::system::error_code & ec);
     
     //------------------------------------------------------------------------
     //!  Writes the prefix to @c s.  Returns true on success, false on
     //!  failure.
     //------------------------------------------------------------------------
     bool Write(boost::asio::ip::tcp::socket & s,
-               boost::system::error_code & ec) const override;
+               boost::system::error_code & ec) const;
 
     //------------------------------------------------------------------------
     //!  Reads the prefix from @c s.  Returns true on success, false on
     //!  failure.
     //------------------------------------------------------------------------
     bool Read(boost::asio::local::stream_protocol::socket & s,
-              boost::system::error_code & ec) override;
+              boost::system::error_code & ec);
     
     //------------------------------------------------------------------------
     //!  Writes the prefix to @c s.  Returns true on success, false on
     //!  failure.
     //------------------------------------------------------------------------
     bool Write(boost::asio::local::stream_protocol::socket & s,
-               boost::system::error_code & ec) const override;
+               boost::system::error_code & ec) const;
     
     //------------------------------------------------------------------------
     //!  Reads the prefix from @c s.  Returns true on success, false on
     //!  failure.
     //------------------------------------------------------------------------
     bool Read(boost::asio::generic::stream_protocol::socket & s,
-              boost::system::error_code & ec) override;
+              boost::system::error_code & ec);
     
     //------------------------------------------------------------------------
     //!  Writes the prefix to @c s.  Returns true on success, false on
     //!  failure.
     //------------------------------------------------------------------------
     bool Write(boost::asio::generic::stream_protocol::socket & s,
-               boost::system::error_code & ec) const override;
+               boost::system::error_code & ec) const;
     
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const override
+    uint64_t StreamedLength() const
     { return (sizeof(_length) + ((_length + 7) >> 3)); }
     
     //------------------------------------------------------------------------

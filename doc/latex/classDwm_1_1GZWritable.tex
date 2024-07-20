@@ -1,0 +1,53 @@
+\doxysection{Dwm\+::GZWritable Class Reference}
+\hypertarget{classDwm_1_1GZWritable}{}\label{classDwm_1_1GZWritable}\index{Dwm::GZWritable@{Dwm::GZWritable}}
+
+
+This class is a pure virtual class, defining an interface for classes that can write their contents to a gz\+File.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+GZIOCapable.\+hh$>$}
+
+
+
+Inheritance diagram for Dwm\+::GZWritable\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{classDwm_1_1GZWritable__inherit__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1GZWritable_aeb828992471c27bdbf61b3ab3e3d7463}\label{classDwm_1_1GZWritable_aeb828992471c27bdbf61b3ab3e3d7463} 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+GZWritable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\item 
+virtual int \mbox{\hyperlink{classDwm_1_1GZWritable_a5f50bad679854f91bc5a67728a329681}{Write}} (gz\+File gzf) const =0
+\begin{DoxyCompactList}\small\item\em Write to a gz\+File. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class is a pure virtual class, defining an interface for classes that can write their contents to a gz\+File. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1GZWritable_a5f50bad679854f91bc5a67728a329681}\index{Dwm::GZWritable@{Dwm::GZWritable}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZWritable@{Dwm::GZWritable}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZWritable_a5f50bad679854f91bc5a67728a329681} 
+virtual int Dwm\+::\+GZWritable\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Write to a gz\+File. 
+
+Should return the number of bytes written on success (-\/1 on failure?) 
+
+Implemented in \mbox{\hyperlink{classDwm_1_1IpAddress_a62781a2991656a2b4bef629f8c900808}{Dwm\+::\+Ip\+Address}}, \mbox{\hyperlink{classDwm_1_1Ipv4Address_a8620368e41e62e82d359182f7551430a}{Dwm\+::\+Ipv4\+Address}}, \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_a3d35ae766103617bf2a054f742bb9e10}{Dwm\+::\+Ipv4\+Icmp\+Message}}, \mbox{\hyperlink{classDwm_1_1Ipv4PacketHeader_a08213e18dfc05e983219142a69ab6bd0}{Dwm\+::\+Ipv4\+Packet\+Header}}, \mbox{\hyperlink{classDwm_1_1Ipv4Prefix_ab8b3c5e535b8424d925de70411565afe}{Dwm\+::\+Ipv4\+Prefix}}, \mbox{\hyperlink{classDwm_1_1Ipv4Routes_a4382e47ec377977552a44198d2894a50}{Dwm\+::\+Ipv4\+Routes$<$ \+\_\+value\+T $>$}}, \mbox{\hyperlink{classDwm_1_1Ipv4TcpHeader_a4d6f5fb0cd57425944049043d8f02167}{Dwm\+::\+Ipv4\+Tcp\+Header}}, \mbox{\hyperlink{classDwm_1_1Ipv4TcpPacket_aabed24b89dff0edc4b1f65813435dafc}{Dwm\+::\+Ipv4\+Tcp\+Packet}}, \mbox{\hyperlink{classDwm_1_1Ipv4TcpPayload_a701abf9393cdfa13c636d262d51717a6}{Dwm\+::\+Ipv4\+Tcp\+Payload}}, \mbox{\hyperlink{classDwm_1_1Ipv4UdpHeader_a4117234eab953710dee19ac511025241}{Dwm\+::\+Ipv4\+Udp\+Header}}, \mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_a13bdb3b66aacc84ee297ac1f4fea5dfb}{Dwm\+::\+Ipv4\+Udp\+Packet}}, \mbox{\hyperlink{classDwm_1_1Ipv4UdpPayload_a737e2ed6ffbbe600b3e78168021aa4a5}{Dwm\+::\+Ipv4\+Udp\+Payload}}, \mbox{\hyperlink{classDwm_1_1Ipv6Address_afb0dd58d50471274667d533b13cd94f2}{Dwm\+::\+Ipv6\+Address}}, \mbox{\hyperlink{classDwm_1_1Ipv6AddrMap_afc5fd8b7a35a02eaa7ca5176edfc8f9a}{Dwm\+::\+Ipv6\+Addr\+Map$<$ T, Hash $>$}}, \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_aacbec81e62c2883a98573b0d0f63c34d}{Dwm\+::\+Ipv6\+Prefix}}, \mbox{\hyperlink{classDwm_1_1Ipv6PrefixMap_a981c4263b83eb8b76bf0f28057ae627c}{Dwm\+::\+Ipv6\+Prefix\+Map$<$ T, Hash $>$}}, \mbox{\hyperlink{classDwm_1_1MacAddress_ae11fcfe4d747854235a9883a2d3338ab}{Dwm\+::\+Mac\+Address}}, \mbox{\hyperlink{classDwm_1_1MplsLabel_aed55e1e05eecbbc7f589ca86dce8cd58}{Dwm\+::\+Mpls\+Label}}, \mbox{\hyperlink{classDwm_1_1MplsLabelStack_a892439cb10074674f3178b59eed53e5c}{Dwm\+::\+Mpls\+Label\+Stack}}, \mbox{\hyperlink{classDwm_1_1Rusage_a9005abd14dcdd77b36e012279656ae87}{Dwm\+::\+Rusage}}, \mbox{\hyperlink{classDwm_1_1TimeInterval64_a23c313879ed7b3989ca702cb60ae5d50}{Dwm\+::\+Time\+Interval64}}, \mbox{\hyperlink{classDwm_1_1TimeInterval_ae5efe8c90a55bd3c55967f1a19db6a45}{Dwm\+::\+Time\+Interval}}, \mbox{\hyperlink{classDwm_1_1TimeValue64_aba64eccc8b9dce42ea5bf5d4a2d2df63}{Dwm\+::\+Time\+Value64}}, and \mbox{\hyperlink{classDwm_1_1TimeValue_ad8504b5221cd9af117a239764ff0d59b}{Dwm\+::\+Time\+Value}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmGZIOCapable_8hh}{Dwm\+GZIOCapable.\+hh}}\end{DoxyCompactItemize}

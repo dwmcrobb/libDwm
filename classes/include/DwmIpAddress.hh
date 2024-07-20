@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004
+//  Copyright (c) Daniel W. McRobb 2004, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -42,19 +42,12 @@
 #define _DWMIPADDRESS_HH_
 
 extern "C" {
-  #include <inttypes.h>
   #include <sys/socket.h>
 }
 
+#include <cstdint>
 #include <string>
 #include <variant>
-
-#include "DwmDescriptorIOCapable.hh"
-#include "DwmFileIOCapable.hh"
-#include "DwmStreamIOCapable.hh"
-#include "DwmStreamedLengthCapable.hh"
-#include "DwmGZIOCapable.hh"
-#include "DwmBZ2IOCapable.hh"
 
 #include "DwmIpv4Address.hh"
 #include "DwmIpv6Address.hh"
@@ -65,8 +58,6 @@ namespace Dwm {
   //!  This class encapsulates an IP address.
   //--------------------------------------------------------------------------
   class IpAddress
-    : public StreamIOCapable, public FileIOCapable, public DescriptorIOCapable,
-      public StreamedLengthCapable, public GZIOCapable, public BZ2IOCapable
   {
   public:
     //------------------------------------------------------------------------
@@ -151,13 +142,13 @@ namespace Dwm {
 
     //------------------------------------------------------------------------
     //!  Reads from a file descriptor.  Returns the number of bytes read
-    //!  (4 on success).
+    //!  on success, -1 on failure.
     //------------------------------------------------------------------------
     ssize_t Read(int fd);
     
     //------------------------------------------------------------------------
     //!  Writes to a file descriptor.  Returns the number of bytes written
-    //!  (4 on success).
+    //!  on success, -1 on failure.
     //------------------------------------------------------------------------
     ssize_t Write(int fd) const;
 
@@ -173,25 +164,25 @@ namespace Dwm {
 
     //------------------------------------------------------------------------
     //!  Reads from a gzFile.  Returns the number of bytes read
-    //!  (4 on success).
+    //!  on success, -1 on failure.
     //------------------------------------------------------------------------
     int Read(gzFile gzf);
     
     //------------------------------------------------------------------------
     //!  Writes to a gzFile.  Returns the number of bytes written
-    //!  (4 on success).
+    //!  on success, -1 on failure.
     //------------------------------------------------------------------------
     int Write(gzFile gzf) const;
     
     //------------------------------------------------------------------------
     //!  Reads from a BZFILE pointer.  Returns the number of bytes read
-    //!  (4 on success).
+    //!  on success, -1 on failure.
     //------------------------------------------------------------------------
     int BZRead(BZFILE *bzf);
     
     //------------------------------------------------------------------------
     //!  Writes to a BZFILE pointer.  Returns the number of bytes written
-    //!  (4 on success).
+    //!  on success, -1 on failure.
     //------------------------------------------------------------------------
     int BZWrite(BZFILE *bzf) const;
     

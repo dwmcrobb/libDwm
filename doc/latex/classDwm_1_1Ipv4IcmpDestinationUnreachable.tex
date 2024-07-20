@@ -1,0 +1,170 @@
+\doxysection{Dwm\+::Ipv4\+Icmp\+Destination\+Unreachable Class Reference}
+\hypertarget{classDwm_1_1Ipv4IcmpDestinationUnreachable}{}\label{classDwm_1_1Ipv4IcmpDestinationUnreachable}\index{Dwm::Ipv4IcmpDestinationUnreachable@{Dwm::Ipv4IcmpDestinationUnreachable}}
+
+
+Encapsulates an ICMP destination unreachable message.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Ipv4\+Icmp\+Destination\+Unreachable.\+hh$>$}
+
+
+
+Inheritance diagram for Dwm\+::Ipv4\+Icmp\+Destination\+Unreachable\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4IcmpDestinationUnreachable__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Dwm\+::Ipv4\+Icmp\+Destination\+Unreachable\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv4IcmpDestinationUnreachable__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpDestinationUnreachable_a5d4b7842f0b77b45df14812718264d75}\label{classDwm_1_1Ipv4IcmpDestinationUnreachable_a5d4b7842f0b77b45df14812718264d75} 
+enum \mbox{\hyperlink{classDwm_1_1Ipv4IcmpDestinationUnreachable_a5d4b7842f0b77b45df14812718264d75}{Code\+Enum}} \{ \newline
+{\bfseries e\+\_\+network\+Unreachable} = 0
+, {\bfseries e\+\_\+host\+Unreachable} = 1
+, {\bfseries e\+\_\+protocol\+Unreachable} = 2
+, {\bfseries e\+\_\+port\+Unreachable} = 3
+, \newline
+{\bfseries e\+\_\+too\+Big} = 4
+, {\bfseries e\+\_\+source\+Route\+Failed} = 5
+, {\bfseries e\+\_\+network\+Unknown} = 6
+, {\bfseries e\+\_\+host\+Unknown} = 7
+, \newline
+{\bfseries e\+\_\+source\+Host\+Isolated} = 8
+, {\bfseries e\+\_\+network\+Prohibited} = 9
+, {\bfseries e\+\_\+host\+Prohibited} = 10
+, {\bfseries e\+\_\+tos\+Network\+Unreachable} = 11
+, \newline
+{\bfseries e\+\_\+tos\+Host\+Unreachable} = 12
+, {\bfseries e\+\_\+communicaton\+Prohibited} = 13
+, {\bfseries e\+\_\+host\+Precedence\+Violation} = 14
+, {\bfseries e\+\_\+precedence\+Cutoff\+In\+Effect} = 15
+ \}
+\begin{DoxyCompactList}\small\item\em Known destination unreachable codes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpDestinationUnreachable_a769b3f57edab7fbe2bce0a437e2b38a1}\label{classDwm_1_1Ipv4IcmpDestinationUnreachable_a769b3f57edab7fbe2bce0a437e2b38a1} 
+{\bfseries Ipv4\+Icmp\+Destination\+Unreachable} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpDestinationUnreachable_a0302f54484ba5f844ad00e631c168c9d}\label{classDwm_1_1Ipv4IcmpDestinationUnreachable_a0302f54484ba5f844ad00e631c168c9d} 
+{\bfseries Ipv4\+Icmp\+Destination\+Unreachable} (uint8\+\_\+t code, uint16\+\_\+t nexthop\+MTU, const \mbox{\hyperlink{classDwm_1_1Ipv4PacketHeader}{Ipv4\+Packet\+Header}} \&ip\+Header, const std\+::string \&data)
+\begin{DoxyCompactList}\small\item\em Constrct from the given {\ttfamily code}, {\ttfamily nexthop\+MTU}, {\ttfamily ip\+Header} and {\ttfamily data}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpDestinationUnreachable_af5f5e3b5bbcf7bc9927f650504b6d283}\label{classDwm_1_1Ipv4IcmpDestinationUnreachable_af5f5e3b5bbcf7bc9927f650504b6d283} 
+{\bfseries Ipv4\+Icmp\+Destination\+Unreachable} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}buf, uint16\+\_\+t len)
+\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpDestinationUnreachable_a11cc1cf80d9ff1c805d374b1bd77907b}\label{classDwm_1_1Ipv4IcmpDestinationUnreachable_a11cc1cf80d9ff1c805d374b1bd77907b} 
+uint16\+\_\+t {\bfseries Nexthop\+MTU} () const
+\begin{DoxyCompactList}\small\item\em Returns the next hop MTU. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpDestinationUnreachable_ae158dd7c9ac62d4f771c59a29d47d3de}\label{classDwm_1_1Ipv4IcmpDestinationUnreachable_ae158dd7c9ac62d4f771c59a29d47d3de} 
+uint16\+\_\+t {\bfseries Nexthop\+MTU} (uint16\+\_\+t nexthop\+MTU)
+\begin{DoxyCompactList}\small\item\em Sets and returns the next hop MTU. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpDestinationUnreachable_a8aecd5b276528ed328d16a61ff17c771}\label{classDwm_1_1Ipv4IcmpDestinationUnreachable_a8aecd5b276528ed328d16a61ff17c771} 
+\mbox{\hyperlink{classDwm_1_1Ipv4PacketHeader}{Ipv4\+Packet\+Header}} {\bfseries Ip\+Header} () const
+\begin{DoxyCompactList}\small\item\em Returns a copy of the IPv4 packet header. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpDestinationUnreachable_a66b16915d0eead5cd222155741251885}\label{classDwm_1_1Ipv4IcmpDestinationUnreachable_a66b16915d0eead5cd222155741251885} 
+\mbox{\hyperlink{classDwm_1_1Ipv4PacketHeader}{Ipv4\+Packet\+Header}} {\bfseries Ip\+Header} (const \mbox{\hyperlink{classDwm_1_1Ipv4PacketHeader}{Ipv4\+Packet\+Header}} \&ip\+Header)
+\begin{DoxyCompactList}\small\item\em Sets the IPv4 packet header and returns a copy of it. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv4IcmpDestinationUnreachable_a24aec42d5c80fe43320c9c71f62ee952}\label{classDwm_1_1Ipv4IcmpDestinationUnreachable_a24aec42d5c80fe43320c9c71f62ee952} 
+std\+::string {\bfseries Data} () const
+\begin{DoxyCompactList}\small\item\em Returns the data as a string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage}{Dwm\+::\+Ipv4\+Icmp\+Message}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Ipv4\+Icmp\+Message} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Ipv4\+Icmp\+Message} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+uint8\+\_\+t {\bfseries Type} () const
+\begin{DoxyCompactList}\small\item\em Returns the ICMP message type. \end{DoxyCompactList}\item 
+uint8\+\_\+t {\bfseries Type} (uint8\+\_\+t type)
+\begin{DoxyCompactList}\small\item\em Sets and returns the ICMP message type. \end{DoxyCompactList}\item 
+uint8\+\_\+t {\bfseries Code} () const
+\begin{DoxyCompactList}\small\item\em Returns the ICMP message code. \end{DoxyCompactList}\item 
+uint8\+\_\+t {\bfseries Code} (uint8\+\_\+t code)
+\begin{DoxyCompactList}\small\item\em Sets and returns the ICMP message code. \end{DoxyCompactList}\item 
+uint16\+\_\+t {\bfseries Checksum} ()
+\begin{DoxyCompactList}\small\item\em Returns the ICMP checksum. \end{DoxyCompactList}\item 
+void {\bfseries Set\+Checksum} ()
+\begin{DoxyCompactList}\small\item\em Computes and sets the checksum. \end{DoxyCompactList}\item 
+std\+::istream \& \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_aeff698ca190a7a0bf4e42c516ccdf932}{Read}} (std\+::istream \&is, uint16\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Reads the message of length {\ttfamily len} from an istream. \end{DoxyCompactList}\item 
+std\+::ostream \& \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_aa34acca71bd2486b14c4fd68bbdcc7a7}{Write}} (std\+::ostream \&os) const override
+\begin{DoxyCompactList}\small\item\em Writes the message to an ostream. Returns the ostream. \end{DoxyCompactList}\item 
+ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_a5c9227029e1a619a022ed059897b447f}{Read}} (int fd, uint16\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Reads the message of length {\ttfamily len} from a file descriptor. \end{DoxyCompactList}\item 
+ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_ae091fd6b27c4c4d5024b921b89885a87}{Write}} (int fd) const override
+\begin{DoxyCompactList}\small\item\em Writes the message to a file descriptor. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_a6ebd166fd58244f2ea6caf494ab6e326}{Read}} (FILE \texorpdfstring{$\ast$}{*}f, uint16\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Reads the message of length {\ttfamily len} from a FILE. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_af6c12d482a7a34254eda82b1f310aabf}{Write}} (FILE \texorpdfstring{$\ast$}{*}f) const override
+\begin{DoxyCompactList}\small\item\em Writes the message to a FILE. Returns 1 on success, 0 on failure. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_a3ec6a13d10986155449635470e00239f}{Read}} (gz\+File gzf, uint16\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Reads the message of length {\ttfamily len} from a gz\+File. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_a3d35ae766103617bf2a054f742bb9e10}{Write}} (gz\+File gzf) const override
+\begin{DoxyCompactList}\small\item\em Writes the message to a gz\+File. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_a41d1f32092535ccbbf84786298ef4db9}{BZRead}} (BZFILE \texorpdfstring{$\ast$}{*}bzf, uint16\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Reads the message of length {\ttfamily len} from a BZFILE. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_ace035305406ff25acb43821497982f03}{BZWrite}} (BZFILE \texorpdfstring{$\ast$}{*}bzf) const override
+\begin{DoxyCompactList}\small\item\em Writes the message to a BZFILE. \end{DoxyCompactList}\item 
+uint64\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_a5a0a1e2abd5fa4fd63e8ddb001ccfc87}{Streamed\+Length}} () const override
+\begin{DoxyCompactList}\small\item\em Returns the number of bytes that would be written if we called one of the \doxylink{classDwm_1_1Ipv4IcmpMessage_aa34acca71bd2486b14c4fd68bbdcc7a7}{Write()} members. \end{DoxyCompactList}\item 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage}{Ipv4\+Icmp\+Message}} \&msg) const
+\begin{DoxyCompactList}\small\item\em operator == \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1DescriptorWritable}{Dwm\+::\+Descriptor\+Writable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Descriptor\+Writable} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1FileWritable}{Dwm\+::\+File\+Writable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+File\+Writable} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1StreamWritable}{Dwm\+::\+Stream\+Writable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Stream\+Writable} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1GZWritable}{Dwm\+::\+GZWritable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+GZWritable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage}{Dwm\+::\+Ipv4\+Icmp\+Message}}}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries Free} ()
+\item 
+void {\bfseries Allocate} (uint16\+\_\+t len)
+\item 
+void {\bfseries Reallocate} (uint16\+\_\+t len)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage}{Dwm\+::\+Ipv4\+Icmp\+Message}}}
+\begin{DoxyCompactItemize}
+\item 
+std\+::pair$<$ uint16\+\_\+t, uint8\+\_\+t \texorpdfstring{$\ast$}{*} $>$ {\bfseries \+\_\+data}
+\item 
+bool {\bfseries \+\_\+own\+Data}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Encapsulates an ICMP destination unreachable message. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmIpv4IcmpDestinationUnreachable_8hh}{Dwm\+Ipv4\+Icmp\+Destination\+Unreachable.\+hh}}\end{DoxyCompactItemize}

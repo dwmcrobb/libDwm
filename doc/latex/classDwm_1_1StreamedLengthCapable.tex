@@ -1,0 +1,52 @@
+\doxysection{Dwm\+::Streamed\+Length\+Capable Class Reference}
+\hypertarget{classDwm_1_1StreamedLengthCapable}{}\label{classDwm_1_1StreamedLengthCapable}\index{Dwm::StreamedLengthCapable@{Dwm::StreamedLengthCapable}}
+
+
+Interface for classes which can return their streamed length.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Streamed\+Length\+Capable.\+hh$>$}
+
+
+
+Inheritance diagram for Dwm\+::Streamed\+Length\+Capable\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{classDwm_1_1StreamedLengthCapable__inherit__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual uint64\+\_\+t \mbox{\hyperlink{classDwm_1_1StreamedLengthCapable_abe671443353ea6ed173005c6f515ca5d}{Streamed\+Length}} () const =0
+\begin{DoxyCompactList}\small\item\em Return the number of bytes that would be written if the object\textquotesingle{}s Write(ostream \&), Write(\+FILE \texorpdfstring{$\ast$}{*}) or Write(int) member were called. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Interface for classes which can return their streamed length. 
+
+This is often an expensive operation on variable-\/length data structures, but is useful when we want to store the length of a piece of data before the data itself, since it allows us to skip over the data (or just treeat it as an opaque blob) without interpreting it. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1StreamedLengthCapable_abe671443353ea6ed173005c6f515ca5d}\index{Dwm::StreamedLengthCapable@{Dwm::StreamedLengthCapable}!StreamedLength@{StreamedLength}}
+\index{StreamedLength@{StreamedLength}!Dwm::StreamedLengthCapable@{Dwm::StreamedLengthCapable}}
+\doxysubsubsection{\texorpdfstring{StreamedLength()}{StreamedLength()}}
+{\footnotesize\ttfamily \label{classDwm_1_1StreamedLengthCapable_abe671443353ea6ed173005c6f515ca5d} 
+virtual uint64\+\_\+t Dwm\+::\+Streamed\+Length\+Capable\+::\+Streamed\+Length (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Return the number of bytes that would be written if the object\textquotesingle{}s Write(ostream \&), Write(\+FILE \texorpdfstring{$\ast$}{*}) or Write(int) member were called. 
+
+These members would be inherited from \doxylink{classDwm_1_1StreamWritable}{Stream\+Writable}, \doxylink{classDwm_1_1FileWritable}{File\+Writable} or \doxylink{classDwm_1_1DescriptorWritable}{Descriptor\+Writable}, respectively. 
+
+Implemented in \mbox{\hyperlink{classDwm_1_1IpAddress_a380939cb5b76521204a1b634f7ac99fd}{Dwm\+::\+Ip\+Address}}, \mbox{\hyperlink{classDwm_1_1Ipv4Address_a7f70f1c631d393ece2e847f72b249415}{Dwm\+::\+Ipv4\+Address}}, \mbox{\hyperlink{classDwm_1_1Ipv4IcmpMessage_a5a0a1e2abd5fa4fd63e8ddb001ccfc87}{Dwm\+::\+Ipv4\+Icmp\+Message}}, \mbox{\hyperlink{classDwm_1_1Ipv4PacketHeader_a801640ab1e72e1aa2991d5626df42e03}{Dwm\+::\+Ipv4\+Packet\+Header}}, \mbox{\hyperlink{classDwm_1_1Ipv4Prefix_a29440d10e32f2282a7e07d1122985b3f}{Dwm\+::\+Ipv4\+Prefix}}, \mbox{\hyperlink{classDwm_1_1Ipv4Routes_a404910d4d98e5c9b9023e3d21880a0ba}{Dwm\+::\+Ipv4\+Routes$<$ \+\_\+value\+T $>$}}, \mbox{\hyperlink{classDwm_1_1Ipv4TcpHeader_a71aa24d95566dd2027d5f834dd1f5899}{Dwm\+::\+Ipv4\+Tcp\+Header}}, \mbox{\hyperlink{classDwm_1_1Ipv4TcpPacket_ab1993f31fac525dda9c760eea4fff24b}{Dwm\+::\+Ipv4\+Tcp\+Packet}}, \mbox{\hyperlink{classDwm_1_1Ipv4TcpPayload_a6d720d905728f62dbd5319fca15ec500}{Dwm\+::\+Ipv4\+Tcp\+Payload}}, \mbox{\hyperlink{classDwm_1_1Ipv4UdpHeader_a09fc92697518092af47f8f55a1d0ef1e}{Dwm\+::\+Ipv4\+Udp\+Header}}, \mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_adaa7f59fbe92e0ef661d700877ead255}{Dwm\+::\+Ipv4\+Udp\+Packet}}, \mbox{\hyperlink{classDwm_1_1Ipv4UdpPayload_aa2e26f22c24250f300f3ff8272a51f78}{Dwm\+::\+Ipv4\+Udp\+Payload}}, \mbox{\hyperlink{classDwm_1_1Ipv6Address_ace35866c9e92865fc4a0b09726a17ab4}{Dwm\+::\+Ipv6\+Address}}, \mbox{\hyperlink{classDwm_1_1Ipv6AddrMap_a1df81149dddd45c0004278d4d57f2ffa}{Dwm\+::\+Ipv6\+Addr\+Map$<$ T, Hash $>$}}, \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_a8773fe6dfd483157b320ed6164e8a112}{Dwm\+::\+Ipv6\+Prefix}}, \mbox{\hyperlink{classDwm_1_1Ipv6PrefixMap_aaf4605b7ccee5743850846a53b81d901}{Dwm\+::\+Ipv6\+Prefix\+Map$<$ T, Hash $>$}}, \mbox{\hyperlink{classDwm_1_1MacAddress_aadb12a154d862f502c189edfd93a8a9d}{Dwm\+::\+Mac\+Address}}, \mbox{\hyperlink{classDwm_1_1MplsLabel_ae63d8a4bd3e6ee5365909951b162f648}{Dwm\+::\+Mpls\+Label}}, \mbox{\hyperlink{classDwm_1_1MplsLabelStack_ad39a51f9b48cfe61e707f9f8e5e256b4}{Dwm\+::\+Mpls\+Label\+Stack}}, \mbox{\hyperlink{classDwm_1_1Patricia_aaa39b1244f1c159fc0f4eaee62042331}{Dwm\+::\+Patricia$<$ Key\+Type, Value\+Type, Key\+Equal $>$}}, \mbox{\hyperlink{classDwm_1_1Rusage_a050f72faca6f4ec5192e8d06ac3913ca}{Dwm\+::\+Rusage}}, \mbox{\hyperlink{classDwm_1_1TimeInterval64_a979cd8a3fbb7e98c5e977724e1061977}{Dwm\+::\+Time\+Interval64}}, \mbox{\hyperlink{classDwm_1_1TimeInterval_abe9ebf0a3628fd1de35338b0cd229263}{Dwm\+::\+Time\+Interval}}, \mbox{\hyperlink{classDwm_1_1TimeValue64_a72f54553951291352a4008dac254a470}{Dwm\+::\+Time\+Value64}}, and \mbox{\hyperlink{classDwm_1_1TimeValue_aee57d82587f779ca63068c600140d094}{Dwm\+::\+Time\+Value}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmStreamedLengthCapable_8hh}{Dwm\+Streamed\+Length\+Capable.\+hh}}\end{DoxyCompactItemize}

@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 1999-2005, 2016
+//  Copyright (c) Daniel W. McRobb 1999-2005, 2016, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -41,11 +41,8 @@
 #ifndef _DWMIPV4ROUTES_HH_
 #define _DWMIPV4ROUTES_HH_
 
-extern "C" {
-#include <assert.h>
-}
-
 #include <algorithm>
+#include <cassert>
 #include <future>
 #include <unordered_map>
 
@@ -127,8 +124,6 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   template <typename _valueT>
   class Ipv4Routes
-    : public DescriptorIOCapable, public FileIOCapable, public StreamIOCapable,
-      public StreamedLengthCapable, public GZIOCapable, public BZ2IOCapable
   {
   public:
     typedef std::unordered_map<Ipv4Address, _valueT, 
@@ -437,7 +432,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const override
+    uint64_t StreamedLength() const
     {
       return(IOUtils::StreamedLength(_hashMaps));
     }
@@ -445,7 +440,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Reads the routes from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    std::istream & Read(std::istream & is) override
+    std::istream & Read(std::istream & is)
     {
       return(StreamIO::Read(is, _hashMaps));
     }
@@ -453,7 +448,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Writes the routes to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const override
+    std::ostream & Write(std::ostream & os) const
     {
       return(StreamIO::Write(os, _hashMaps));
     }
@@ -462,7 +457,7 @@ namespace Dwm {
     //!  Reades the routes from a FILE pointer.  Returns 1 on success,
     //!  0 on failure.
     //------------------------------------------------------------------------
-    size_t Read(FILE *f) override
+    size_t Read(FILE *f)
     {
       return(FileIO::Read(f, _hashMaps));
     }
@@ -471,7 +466,7 @@ namespace Dwm {
     //!  Writes the routes to a FILE pointer.  Returns 1 on success,
     //!  0 on failure.
     //------------------------------------------------------------------------
-    size_t Write(FILE *f) const override
+    size_t Write(FILE *f) const
     {
       return(FileIO::Write(f, _hashMaps));
     }
@@ -480,7 +475,7 @@ namespace Dwm {
     //!  Reads the routes from a file descriptor.  Returns the number of
     //!  bytes read on success, -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Read(int fd) override
+    ssize_t Read(int fd)
     {
       return(DescriptorIO::Read(fd, _hashMaps));
     }
@@ -489,7 +484,7 @@ namespace Dwm {
     //!  Writes the routes to a file descriptor.  Returns the number of
     //!  bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Write(int fd) const override
+    ssize_t Write(int fd) const
     {
       return(DescriptorIO::Write(fd, _hashMaps));
     }
@@ -498,7 +493,7 @@ namespace Dwm {
     //!  Reads the routes from a gzFile.  Returns the number of
     //!  bytes read on success, -1 on failure.
     //------------------------------------------------------------------------
-    int Read(gzFile gzf) override
+    int Read(gzFile gzf)
     {
       return(GZIO::Read(gzf, _hashMaps));
     }
@@ -507,7 +502,7 @@ namespace Dwm {
     //!  Writes the routes to a gzFile.  Returns the number of bytes
     //!  written on success, -1 on failure.
     //------------------------------------------------------------------------
-    int Write(gzFile gzf) const override
+    int Write(gzFile gzf) const
     {
       return(GZIO::Write(gzf, _hashMaps));
     }
@@ -516,7 +511,7 @@ namespace Dwm {
     //!  Reads the routes from a BZFILE pointer.  Returns the number of
     //!  bytes read on success, -1 on failure.
     //------------------------------------------------------------------------
-    int BZRead(BZFILE *bzf) override
+    int BZRead(BZFILE *bzf)
     {
       return(BZ2IO::BZRead(bzf, _hashMaps));
     }
@@ -525,7 +520,7 @@ namespace Dwm {
     //!  Writes the routes to a BZFILE pointer.  Returns the number of bytes
     //!  written on success, -1 on failure.
     //------------------------------------------------------------------------
-    int BZWrite(BZFILE *bzf) const override
+    int BZWrite(BZFILE *bzf) const
     {
       return(BZ2IO::BZWrite(bzf, _hashMaps));
     }

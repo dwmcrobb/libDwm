@@ -1,0 +1,73 @@
+.TH "DwmIpv4Prefix.hh" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+DwmIpv4Prefix.hh \- \fBDwm::Ipv4Prefix\fP class definition\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <inttypes\&.h>\fP
+.br
+\fR#include <cstring>\fP
+.br
+\fR#include <iostream>\fP
+.br
+\fR#include <utility>\fP
+.br
+\fR#include <vector>\fP
+.br
+\fR#include 'DwmIpv4Address\&.hh'\fP
+.br
+\fR#include 'DwmASIO\&.hh'\fP
+.br
+\fR#include 'DwmStreamIOCapable\&.hh'\fP
+.br
+\fR#include 'DwmFileIOCapable\&.hh'\fP
+.br
+\fR#include 'DwmDescriptorIOCapable\&.hh'\fP
+.br
+\fR#include 'DwmStreamedLengthCapable\&.hh'\fP
+.br
+\fR#include 'DwmGZIOCapable\&.hh'\fP
+.br
+\fR#include 'DwmBZ2IOCapable\&.hh'\fP
+.br
+
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "class \fBDwm::Ipv4Prefix\fP"
+.br
+.RI "This class encapsulates an IPv4 address and netmask\&. "
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef uint32_t \fBipv4addr_t\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "std::vector< \fBIpv4Prefix\fP > \fBDwm::Ipv4RangePrefixes\fP (const \fBIpv4Address\fP &addr1, const \fBIpv4Address\fP &addr2)"
+.br
+.RI "Returns the minimal set of IPv4 prefixes that cover the entire range between \fRaddr1\fP and \fRaddr2\fP\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+\fBDwm::Ipv4Prefix\fP class definition\&. 
+
+
+.SH "Function Documentation"
+.PP 
+.SS "std::vector< Ipv4Prefix > Dwm::Ipv4RangePrefixes (const \fBIpv4Address\fP & addr1, const \fBIpv4Address\fP & addr2)"
+
+.PP
+Returns the minimal set of IPv4 prefixes that cover the entire range between \fRaddr1\fP and \fRaddr2\fP\&. This is mainly used for IDS/IPS types of applications which want to map from registry ranges to pf filters\&. 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

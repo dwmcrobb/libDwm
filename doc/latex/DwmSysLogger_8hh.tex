@@ -1,0 +1,71 @@
+\doxysection{Dwm\+Sys\+Logger.\+hh File Reference}
+\hypertarget{DwmSysLogger_8hh}{}\label{DwmSysLogger_8hh}\index{DwmSysLogger.hh@{DwmSysLogger.hh}}
+
+
+\doxylink{classDwm_1_1SysLogger}{Dwm\+::\+Sys\+Logger} class definition and \doxylink{DwmSysLogger_8hh_a7fd0cf2c423c73ded4f5e1332b570ea7}{Syslog()} macro.  
+
+
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$stdarg.\+h$>$}\newline
+{\ttfamily \#include $<$syslog.\+h$>$}\newline
+{\ttfamily \#include $<$cstdio$>$}\newline
+{\ttfamily \#include $<$version$>$}\newline
+{\ttfamily \#include $<$mutex$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include "{}Dwm\+Portability.\+hh"{}}\newline
+{\ttfamily \#include $<$format$>$}\newline
+Include dependency graph for Dwm\+Sys\+Logger.\+hh\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{DwmSysLogger_8hh__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=179pt]{DwmSysLogger_8hh__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classDwm_1_1SysLogger}{Dwm\+::\+Sys\+Logger}}
+\begin{DoxyCompactList}\small\item\em This class encapsulates syslog logging in global scope (all members are static). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{DwmSysLogger_8hh_a7fd0cf2c423c73ded4f5e1332b570ea7}{Syslog}}(...)~  \mbox{\hyperlink{classDwm_1_1SysLogger_ac0795468099ebb19ce19d554f54c9bcc}{Dwm\+::\+Sys\+Logger\+::\+Log}}(\+\_\+\+\_\+\+FILE\+\_\+\+\_\+,\+\_\+\+\_\+\+LINE\+\_\+\+\_\+,\+\_\+\+\_\+\+PRETTY\+\_\+\+FUNCTION\+\_\+\+\_\+,\+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\begin{DoxyCompactList}\small\item\em Used just like syslog(), but calls \doxylink{classDwm_1_1SysLogger_ac0795468099ebb19ce19d554f54c9bcc}{Dwm\+::\+Sys\+Logger\+::\+Log()} to allow the filename, line number and function name to be logged automatically and the priority tag text provided by \doxylink{classDwm_1_1SysLogger}{Dwm\+::\+Sys\+Logger}. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{DwmSysLogger_8hh_a78bab58abb777fa9443c9c5247266b7b}{FSyslog}}(...)~    Dwm\+::\+Sys\+Logger\+::\+Fmt\+Log(\+\_\+\+\_\+\+FILE\+\_\+\+\_\+,\+\_\+\+\_\+\+LINE\+\_\+\+\_\+,\+\_\+\+\_\+\+PRETTY\+\_\+\+FUNCTION\+\_\+\+\_\+,\+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\begin{DoxyCompactList}\small\item\em Like \doxylink{DwmSysLogger_8hh_a7fd0cf2c423c73ded4f5e1332b570ea7}{Syslog()} but the format string (second argument) is a std\+::format format string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{classDwm_1_1SysLogger}{Dwm\+::\+Sys\+Logger} class definition and \doxylink{DwmSysLogger_8hh_a7fd0cf2c423c73ded4f5e1332b570ea7}{Syslog()} macro. 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{DwmSysLogger_8hh_a78bab58abb777fa9443c9c5247266b7b}\index{DwmSysLogger.hh@{DwmSysLogger.hh}!FSyslog@{FSyslog}}
+\index{FSyslog@{FSyslog}!DwmSysLogger.hh@{DwmSysLogger.hh}}
+\doxysubsubsection{\texorpdfstring{FSyslog}{FSyslog}}
+{\footnotesize\ttfamily \label{DwmSysLogger_8hh_a78bab58abb777fa9443c9c5247266b7b} 
+\#define FSyslog(\begin{DoxyParamCaption}\item[{}]{}...{}\end{DoxyParamCaption})~    Dwm\+::\+Sys\+Logger\+::\+Fmt\+Log(\+\_\+\+\_\+\+FILE\+\_\+\+\_\+,\+\_\+\+\_\+\+LINE\+\_\+\+\_\+,\+\_\+\+\_\+\+PRETTY\+\_\+\+FUNCTION\+\_\+\+\_\+,\+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)}
+
+
+
+Like \doxylink{DwmSysLogger_8hh_a7fd0cf2c423c73ded4f5e1332b570ea7}{Syslog()} but the format string (second argument) is a std\+::format format string. 
+
+Unfortunately some of the popular Linux distributions are way behind on a libstdc++ that has $<$format$>$. It\textquotesingle{}s May 26, 2024 and Ubuntu 24.\+04 and Raspberry Pi 12 (bookwork) don\textquotesingle{}t have the C++20 features that are needed. On such platforms, I use libfmt instead. \Hypertarget{DwmSysLogger_8hh_a7fd0cf2c423c73ded4f5e1332b570ea7}\index{DwmSysLogger.hh@{DwmSysLogger.hh}!Syslog@{Syslog}}
+\index{Syslog@{Syslog}!DwmSysLogger.hh@{DwmSysLogger.hh}}
+\doxysubsubsection{\texorpdfstring{Syslog}{Syslog}}
+{\footnotesize\ttfamily \label{DwmSysLogger_8hh_a7fd0cf2c423c73ded4f5e1332b570ea7} 
+\#define Syslog(\begin{DoxyParamCaption}\item[{}]{}...{}\end{DoxyParamCaption})~  \mbox{\hyperlink{classDwm_1_1SysLogger_ac0795468099ebb19ce19d554f54c9bcc}{Dwm\+::\+Sys\+Logger\+::\+Log}}(\+\_\+\+\_\+\+FILE\+\_\+\+\_\+,\+\_\+\+\_\+\+LINE\+\_\+\+\_\+,\+\_\+\+\_\+\+PRETTY\+\_\+\+FUNCTION\+\_\+\+\_\+,\+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)}
+
+
+
+Used just like syslog(), but calls \doxylink{classDwm_1_1SysLogger_ac0795468099ebb19ce19d554f54c9bcc}{Dwm\+::\+Sys\+Logger\+::\+Log()} to allow the filename, line number and function name to be logged automatically and the priority tag text provided by \doxylink{classDwm_1_1SysLogger}{Dwm\+::\+Sys\+Logger}. 
+
+Note this requires variadic macros, but g++ and clang++ support them. 

@@ -1,0 +1,49 @@
+<map id="Dwm::GZIOCapable" name="Dwm::GZIOCapable">
+<area shape="rect" id="Node000001" title="Interface for classes with GZIO read and write capabilities." alt="" coords="187,515,327,540"/>
+<area shape="rect" id="Node000004" href="$classDwm_1_1IpAddress.html" title="This class encapsulates an IP address." alt="" coords="414,5,533,31"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="258,499,271,397,295,260,310,191,328,127,349,76,373,40,392,27,413,20,414,25,394,32,377,44,354,78,333,129,315,192,300,261,277,398,264,500"/>
+<area shape="rect" id="Node000005" href="$classDwm_1_1Ipv4Address.html" title="This class encapsulates an IPv4 address." alt="" coords="407,55,540,80"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="259,499,274,407,298,284,331,167,351,121,373,90,388,78,406,71,408,76,391,83,377,93,356,124,336,169,303,285,279,408,265,500"/>
+<area shape="rect" id="Node000006" href="$classDwm_1_1Ipv4PacketHeader.html" title="Encapsulates an IPv4 packet header." alt="" coords="390,104,558,130"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="255,499,259,426,275,330,290,278,311,227,338,180,373,139,388,128,391,132,377,143,342,183,315,230,295,280,280,331,264,427,260,499"/>
+<area shape="rect" id="Node000007" href="$classDwm_1_1Ipv4Prefix.html" title="This class encapsulates an IPv4 address and netmask." alt="" coords="414,153,533,179"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="257,499,264,435,282,351,297,307,316,263,342,223,373,188,392,176,413,168,415,173,394,181,377,192,346,226,321,266,302,309,287,353,269,436,262,499"/>
+<area shape="rect" id="Node000008" href="$classDwm_1_1Ipv4Routes.html" title="This template class provides an associative container keyed by IPv4 addresses, with longest&#45;match sea..." alt="" coords="375,203,572,228"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="259,499,268,443,288,373,303,336,322,300,345,266,373,237,390,227,393,231,377,242,350,270,327,303,308,338,294,374,274,444,264,499"/>
+<area shape="rect" id="Node000009" href="$classDwm_1_1Ipv4TcpHeader.html" title="Encapsulates a TCP header." alt="" coords="400,252,547,278"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="261,499,274,452,296,395,328,336,349,310,373,287,399,273,401,277,377,291,353,313,333,339,300,397,279,454,266,500"/>
+<area shape="rect" id="Node000010" href="$classDwm_1_1Ipv4TcpPacket.html" title="Encapsulates a TCP packet, including the IP header." alt="" coords="401,301,547,327"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="265,499,280,462,303,418,334,373,373,336,399,323,401,328,377,340,338,377,308,420,285,464,270,501"/>
+<area shape="rect" id="Node000011" href="$classDwm_1_1Ipv4UdpHeader.html" title="Encapsulates an IPv4 UDP header." alt="" coords="398,351,549,376"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="271,500,312,442,341,411,374,385,396,374,399,379,376,390,344,415,316,445,275,503"/>
+<area shape="rect" id="Node000012" href="$classDwm_1_1Ipv4UdpPacket.html" title="Encapsulates a UDP packet, including the IP header." alt="" coords="399,400,549,426"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="281,502,323,468,374,436,405,424,407,429,376,441,326,472,284,506"/>
+<area shape="rect" id="Node000013" href="$classDwm_1_1Ipv6AddrMap.html" title="A thin wrapper around std::unordered_map&lt;Ipv6Address,T,Hash&gt;." alt="" coords="394,450,553,491"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="322,508,393,489,395,494,323,513"/>
+<area shape="rect" id="Node000014" href="$classDwm_1_1Ipv6Address.html" title="This class encapsulates an IPv6 address." alt="" coords="407,515,540,540"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="342,525,406,525,406,530,342,530"/>
+<area shape="rect" id="Node000015" href="$classDwm_1_1Ipv6Prefix.html" title="This class encapsulates an IPv6 network prefix." alt="" coords="414,564,533,590"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="332,542,414,561,413,566,331,547"/>
+<area shape="rect" id="Node000016" href="$classDwm_1_1Ipv6PrefixMap.html" title="A wrapper around an unordered_map of T keyed by Ipv6Prefix using Hash as the hash function." alt="" coords="402,614,546,655"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="290,547,330,574,376,600,403,611,401,616,374,605,327,579,287,552"/>
+<area shape="rect" id="Node000017" href="$classDwm_1_1MacAddress.html" title="Encapsulates a 6&#45;byte MAC address." alt="" coords="407,679,540,704"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="275,552,316,609,344,639,376,664,408,678,406,683,374,668,341,643,312,613,271,555"/>
+<area shape="rect" id="Node000018" href="$classDwm_1_1MplsLabel.html" title="Encapsulates an MPLS label." alt="" coords="414,728,533,754"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="270,554,285,591,308,635,338,678,377,715,394,725,414,732,413,737,392,730,373,719,334,682,303,637,280,593,265,556"/>
+<area shape="rect" id="Node000019" href="$classDwm_1_1MplsLabelStack.html" title="Encapsulates an MPLS label stack." alt="" coords="397,777,550,803"/>
+<area shape="poly" id="edge18_Node000001_Node000019" title=" " alt="" coords="266,555,279,601,300,658,333,716,353,742,377,764,398,776,395,781,373,768,349,745,328,719,296,660,274,603,261,556"/>
+<area shape="rect" id="Node000020" href="$classDwm_1_1Rusage.html" title="This class encapsulates struct rusage and getrusage() functionality." alt="" coords="421,827,526,852"/>
+<area shape="poly" id="edge19_Node000001_Node000020" title=" " alt="" coords="264,556,274,611,294,681,308,717,327,752,350,785,377,813,398,826,421,833,420,838,395,831,373,818,345,789,322,755,303,719,288,682,268,612,259,556"/>
+<area shape="rect" id="Node000021" href="$classDwm_1_1TimeInterval.html" title="This class encapsulates a time interval." alt="" coords="408,876,540,902"/>
+<area shape="poly" id="edge20_Node000001_Node000021" title=" " alt="" coords="262,556,269,619,287,702,302,746,321,789,346,829,377,863,391,873,408,880,406,885,389,878,373,867,342,832,316,792,297,748,282,704,264,620,257,556"/>
+<area shape="rect" id="Node000022" href="$classDwm_1_1TimeInterval64.html" title="This class encapsulates a time interval." alt="" coords="401,925,547,951"/>
+<area shape="poly" id="edge21_Node000001_Node000022" title=" " alt="" coords="260,556,264,628,280,724,295,775,315,825,342,872,377,912,401,927,398,932,373,916,338,875,311,828,290,777,275,725,259,629,255,556"/>
+<area shape="rect" id="Node000023" href="$classDwm_1_1TimeValue.html" title="This class encapsulates a time value beyond the UNIX epoch, with microsecond granularity." alt="" coords="413,975,534,1000"/>
+<area shape="poly" id="edge22_Node000001_Node000023" title=" " alt="" coords="265,555,279,647,303,770,336,886,356,931,377,962,394,973,414,981,412,986,391,978,373,965,351,934,331,888,298,771,274,648,259,556"/>
+<area shape="rect" id="Node000024" href="$classDwm_1_1TimeValue64.html" title="This class encapsulates a time value beyond the UNIX epoch, with microsecond granularity." alt="" coords="406,1024,541,1050"/>
+<area shape="poly" id="edge23_Node000001_Node000024" title=" " alt="" coords="264,555,277,657,300,794,315,863,333,926,354,977,377,1011,390,1021,407,1028,404,1033,388,1026,373,1015,349,979,328,928,310,864,295,795,271,658,258,556"/>
+<area shape="rect" id="Node000002" href="$classDwm_1_1GZReadable.html" title="This class is a pure virtual class, defining an interface for classes that can read their contents fr..." alt="" coords="5,489,139,515"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,511,187,515,186,520,154,516"/>
+<area shape="rect" id="Node000003" href="$classDwm_1_1GZWritable.html" title="This class is a pure virtual class, defining an interface for classes that can write their contents t..." alt="" coords="9,539,135,564"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="150,539,186,534,187,539,150,544"/>
+</map>

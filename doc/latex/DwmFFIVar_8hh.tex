@@ -1,0 +1,81 @@
+\doxysection{Dwm\+FFIVar.\+hh File Reference}
+\hypertarget{DwmFFIVar_8hh}{}\label{DwmFFIVar_8hh}\index{DwmFFIVar.hh@{DwmFFIVar.hh}}
+
+
+Class templates for simple Freedom From Interference (FFI) Note that this implementation uses C++20 constraints and concepts.  
+
+
+{\ttfamily \#include $<$cassert$>$}\newline
+{\ttfamily \#include $<$type\+\_\+traits$>$}\newline
+Include dependency graph for Dwm\+FFIVar.\+hh\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{DwmFFIVar_8hh__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classDwm_1_1FFIVar}{Dwm\+::\+FFIVar$<$ T, Enable $>$}}
+\begin{DoxyCompactList}\small\item\em The main idea here is to encpasulate a scalar type to provide protection from interference. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classDwm_1_1FFIVar_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__integral_3_01T_01_4_1_1value_01_4_1_1type_01_4}{Dwm\+::\+FFIVar$<$ T, typename std\+::enable\+\_\+if$<$ std\+::is\+\_\+integral$<$ T $>$\+::value $>$\+::type $>$}}
+\begin{DoxyCompactList}\small\item\em Specialization for integral types. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classDwm_1_1FFIVar_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__floating__point_3_01T_01_4_1_1value_01_4_1_1type_01_4}{Dwm\+::\+FFIVar$<$ T, typename std\+::enable\+\_\+if$<$ std\+::is\+\_\+floating\+\_\+point$<$ T $>$\+::value $>$\+::type $>$}}
+\begin{DoxyCompactList}\small\item\em Specialization for floating point types. No bitwise operators. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classDwm_1_1FFIVar_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__pointer_3_01T_01_4_1_1value_01_4_1_1type_01_4}{Dwm\+::\+FFIVar$<$ T, typename std\+::enable\+\_\+if$<$ std\+::is\+\_\+pointer$<$ T $>$\+::value $>$\+::type $>$}}
+\begin{DoxyCompactList}\small\item\em Specialization for pointers. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Concepts}
+\begin{DoxyCompactItemize}
+\item 
+concept \mbox{\hyperlink{conceptDwm_1_1AreFFI__Addable}{Dwm\+::\+Are\+FFI\+\_\+\+Addable}}
+\begin{DoxyCompactList}\small\item\em Concepts to apply to binary operators. \end{DoxyCompactList}\item 
+concept \mbox{\hyperlink{conceptDwm_1_1AreFFI__Subtractable}{Dwm\+::\+Are\+FFI\+\_\+\+Subtractable}}
+\begin{DoxyCompactList}\small\item\em T2 can be subtracted from T1 and yield a T1. i.\+e. \{ T1 -\/ T2 \} -\/\texorpdfstring{$>$}{>} T1. \end{DoxyCompactList}\item 
+concept \mbox{\hyperlink{conceptDwm_1_1AreFFI__Dividable}{Dwm\+::\+Are\+FFI\+\_\+\+Dividable}}
+\begin{DoxyCompactList}\small\item\em T1 can be divided by T2 and yield a T1. i.\+e. \{ T1 / T2 \} -\/\texorpdfstring{$>$}{>} T1. \end{DoxyCompactList}\item 
+concept \mbox{\hyperlink{conceptDwm_1_1AreFFI__Moduloable}{Dwm\+::\+Are\+FFI\+\_\+\+Moduloable}}
+\begin{DoxyCompactList}\small\item\em T1 modulo T2 yields a T1. i.\+e. \{ T1 \% T2 \} -\/\texorpdfstring{$>$}{>} T1. \end{DoxyCompactList}\item 
+concept \mbox{\hyperlink{conceptDwm_1_1AreFFI__Multipliable}{Dwm\+::\+Are\+FFI\+\_\+\+Multipliable}}
+\begin{DoxyCompactList}\small\item\em T1 can be multiplied by T2 and yield a T1. i.\+e. \{ T1 \texorpdfstring{$\ast$}{*} T2 \} -\/\texorpdfstring{$>$}{>} T1. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{DwmFFIVar_8hh_abb80fbc4e303f14df18fbc5549f13467}\label{DwmFFIVar_8hh_abb80fbc4e303f14df18fbc5549f13467} 
+{\footnotesize template$<$typename T1 , typename T2 , typename std\+::enable\+\_\+if$<$ Are\+FFI\+\_\+\+Addable$<$ T1, T2 $>$ $>$ $>$ }\\\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T1 $>$ {\bfseries Dwm\+::operator+} (\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T1 $>$ lhs, \mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T2 $>$ rhs)
+\begin{DoxyCompactList}\small\item\em Binary operators. \end{DoxyCompactList}\item 
+\Hypertarget{DwmFFIVar_8hh_aeaa0dd4d3fba58c9c7d8b67ef0e10732}\label{DwmFFIVar_8hh_aeaa0dd4d3fba58c9c7d8b67ef0e10732} 
+{\footnotesize template$<$typename T1 , typename T2 , typename std\+::enable\+\_\+if$<$ Are\+FFI\+\_\+\+Subtractable$<$ T1, T2 $>$ $>$ $>$ }\\\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T1 $>$ {\bfseries Dwm\+::operator-\/} (\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T1 $>$ lhs, \mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T2 $>$ rhs)
+\item 
+\Hypertarget{DwmFFIVar_8hh_a40ad5d9c88dfca7d50e68f6d72ff608e}\label{DwmFFIVar_8hh_a40ad5d9c88dfca7d50e68f6d72ff608e} 
+{\footnotesize template$<$typename T1 , typename T2 , typename std\+::enable\+\_\+if$<$ Are\+FFI\+\_\+\+Multipliable$<$ T1, T2 $>$ $>$ $>$ }\\\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T1 $>$ {\bfseries Dwm\+::operator\texorpdfstring{$\ast$}{*}} (\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T1 $>$ lhs, \mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T2 $>$ rhs)
+\item 
+\Hypertarget{DwmFFIVar_8hh_a80477bf3aab609b739c93bc3fa4d3dad}\label{DwmFFIVar_8hh_a80477bf3aab609b739c93bc3fa4d3dad} 
+{\footnotesize template$<$typename T1 , typename T2 , typename std\+::enable\+\_\+if$<$ Are\+FFI\+\_\+\+Dividable$<$ T1, T2 $>$ $>$ $>$ }\\\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T1 $>$ {\bfseries Dwm\+::operator/} (\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T1 $>$ lhs, \mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T2 $>$ rhs)
+\item 
+\Hypertarget{DwmFFIVar_8hh_a4a632d9bf732377903b7b21149a08261}\label{DwmFFIVar_8hh_a4a632d9bf732377903b7b21149a08261} 
+{\footnotesize template$<$typename T1 , typename T2 , typename std\+::enable\+\_\+if$<$ Are\+FFI\+\_\+\+Moduloable$<$ T1, T2 $>$ $>$ $>$ }\\\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T1 $>$ {\bfseries Dwm\+::operator\%} (\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T1 $>$ lhs, \mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T2 $>$ rhs)
+\item 
+\Hypertarget{DwmFFIVar_8hh_a5cf57a260ac11db78b2b46cac9a6bccb}\label{DwmFFIVar_8hh_a5cf57a260ac11db78b2b46cac9a6bccb} 
+{\footnotesize template$<$typename T , typename std\+::enable\+\_\+if$<$ std\+::is\+\_\+integral$<$ T $>$\+::value $>$\+::type $>$ }\\\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T $>$ {\bfseries Dwm\+::operator$>$$>$} (\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T $>$ lhs, \mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T $>$ rhs)
+\item 
+\Hypertarget{DwmFFIVar_8hh_afcff7b1b44646921eb8f2e340b8ffda2}\label{DwmFFIVar_8hh_afcff7b1b44646921eb8f2e340b8ffda2} 
+{\footnotesize template$<$typename T , typename std\+::enable\+\_\+if$<$ std\+::is\+\_\+integral$<$ T $>$\+::value $>$\+::type $>$ }\\\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T $>$ {\bfseries Dwm\+::operator$<$$<$} (\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T $>$ lhs, \mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T $>$ rhs)
+\item 
+\Hypertarget{DwmFFIVar_8hh_a9b5b8cd9d1bdacdb73c50a61383fc6d5}\label{DwmFFIVar_8hh_a9b5b8cd9d1bdacdb73c50a61383fc6d5} 
+{\footnotesize template$<$typename T , typename std\+::enable\+\_\+if$<$ std\+::is\+\_\+integral$<$ T $>$\+::value $>$\+::type $>$ }\\\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T $>$ {\bfseries Dwm\+::operator\&} (\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T $>$ lhs, \mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T $>$ rhs)
+\item 
+\Hypertarget{DwmFFIVar_8hh_ab3d568ddff16b43e01696e61b97b95d9}\label{DwmFFIVar_8hh_ab3d568ddff16b43e01696e61b97b95d9} 
+{\footnotesize template$<$typename T , typename std\+::enable\+\_\+if$<$ std\+::is\+\_\+integral$<$ T $>$\+::value $>$\+::type $>$ }\\\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T $>$ {\bfseries Dwm\+::operator\texorpdfstring{$\vert$}{|}} (\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T $>$ lhs, \mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T $>$ rhs)
+\item 
+\Hypertarget{DwmFFIVar_8hh_a8ef1d2c570e21780118c153351a9705a}\label{DwmFFIVar_8hh_a8ef1d2c570e21780118c153351a9705a} 
+{\footnotesize template$<$typename T , typename std\+::enable\+\_\+if$<$ std\+::is\+\_\+integral$<$ T $>$\+::value $>$\+::type $>$ }\\\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T $>$ {\bfseries Dwm\+::operator\texorpdfstring{$^\wedge$}{\string^}} (\mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T $>$ lhs, \mbox{\hyperlink{classDwm_1_1FFIVar}{FFIVar}}$<$ T $>$ rhs)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class templates for simple Freedom From Interference (FFI) Note that this implementation uses C++20 constraints and concepts. 
+
+\begin{DoxyAuthor}{Author}
+Daniel W. Mc\+Robb 
+\end{DoxyAuthor}

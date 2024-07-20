@@ -1,0 +1,80 @@
+\doxysection{Dwm\+::ASIOReadable Class Reference}
+\hypertarget{classDwm_1_1ASIOReadable}{}\label{classDwm_1_1ASIOReadable}\index{Dwm::ASIOReadable@{Dwm::ASIOReadable}}
+
+
+Interface for classes that wish to be readable via \doxylink{classDwm_1_1ASIO}{Dwm\+::\+ASIO}.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+ASIOCapable.\+hh$>$}
+
+
+
+Inheritance diagram for Dwm\+::ASIOReadable\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1ASIOReadable__inherit__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool \mbox{\hyperlink{classDwm_1_1ASIOReadable_a65830c7e919d26ce0c5a650ce5a53de1}{Read}} (boost\+::asio\+::ip\+::tcp\+::socket \&s, boost\+::system\+::error\+\_\+code \&ec)=0
+\begin{DoxyCompactList}\small\item\em Should read the class from the given socket {\ttfamily s} and return true on success, false on failure. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classDwm_1_1ASIOReadable_abe578512f89ada0c4a5b5b528dee0db9}{Read}} (boost\+::asio\+::local\+::stream\+\_\+protocol\+::socket \&s, boost\+::system\+::error\+\_\+code \&ec)=0
+\begin{DoxyCompactList}\small\item\em Should read the class from the given socket {\ttfamily s} and return true on success, false on failure. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classDwm_1_1ASIOReadable_a171beb81be47e9b5c8d6dacad897a631}{Read}} (boost\+::asio\+::generic\+::stream\+\_\+protocol\+::socket \&s, boost\+::system\+::error\+\_\+code \&ec)=0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Interface for classes that wish to be readable via \doxylink{classDwm_1_1ASIO}{Dwm\+::\+ASIO}. 
+
+Pure virtual. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1ASIOReadable_a171beb81be47e9b5c8d6dacad897a631}\index{Dwm::ASIOReadable@{Dwm::ASIOReadable}!Read@{Read}}
+\index{Read@{Read}!Dwm::ASIOReadable@{Dwm::ASIOReadable}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \label{classDwm_1_1ASIOReadable_a171beb81be47e9b5c8d6dacad897a631} 
+virtual bool Dwm\+::\+ASIOReadable\+::\+Read (\begin{DoxyParamCaption}\item[{boost\+::asio\+::generic\+::stream\+\_\+protocol\+::socket \&}]{s}{, }\item[{boost\+::system\+::error\+\_\+code \&}]{ec}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classDwm_1_1Ipv4Prefix_a3f31c994e9b9384211ddee6e7e824e2c}{Dwm\+::\+Ipv4\+Prefix}}, \mbox{\hyperlink{classDwm_1_1Ipv6Address_a0ed3b83e41768fb2c65b422cb27b538d}{Dwm\+::\+Ipv6\+Address}}, \mbox{\hyperlink{classDwm_1_1Ipv6AddrMap_a2aa77b6c8d45fa0cc4623ca26218b701}{Dwm\+::\+Ipv6\+Addr\+Map$<$ T, Hash $>$}}, \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_a262f35da97d498cebe7e91af358f3090}{Dwm\+::\+Ipv6\+Prefix}}, and \mbox{\hyperlink{classDwm_1_1Ipv6PrefixMap_a681395e8eca881dbf86c91d3035ab02a}{Dwm\+::\+Ipv6\+Prefix\+Map$<$ T, Hash $>$}}.
+
+\Hypertarget{classDwm_1_1ASIOReadable_a65830c7e919d26ce0c5a650ce5a53de1}\index{Dwm::ASIOReadable@{Dwm::ASIOReadable}!Read@{Read}}
+\index{Read@{Read}!Dwm::ASIOReadable@{Dwm::ASIOReadable}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \label{classDwm_1_1ASIOReadable_a65830c7e919d26ce0c5a650ce5a53de1} 
+virtual bool Dwm\+::\+ASIOReadable\+::\+Read (\begin{DoxyParamCaption}\item[{boost\+::asio\+::ip\+::tcp\+::socket \&}]{s}{, }\item[{boost\+::system\+::error\+\_\+code \&}]{ec}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Should read the class from the given socket {\ttfamily s} and return true on success, false on failure. 
+
+Should set {\ttfamily ec} to the correct error code on failure. 
+
+Implemented in \mbox{\hyperlink{classDwm_1_1Ipv4Address_acfd467633e8f2a313e68d3b3a6853dd1}{Dwm\+::\+Ipv4\+Address}}, \mbox{\hyperlink{classDwm_1_1Ipv4Prefix_afc461189f0318085c510bb9704656256}{Dwm\+::\+Ipv4\+Prefix}}, \mbox{\hyperlink{classDwm_1_1Ipv6Address_a8e1561a0792740f2b67933f85f267681}{Dwm\+::\+Ipv6\+Address}}, \mbox{\hyperlink{classDwm_1_1Ipv6AddrMap_ae2cfe89150b8e0bae861a21876fb4fe9}{Dwm\+::\+Ipv6\+Addr\+Map$<$ T, Hash $>$}}, \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_ab1a27cbebc98af890fc04d61d69e6c68}{Dwm\+::\+Ipv6\+Prefix}}, and \mbox{\hyperlink{classDwm_1_1Ipv6PrefixMap_a618e5f5cc9ba5d902bc159012571ec56}{Dwm\+::\+Ipv6\+Prefix\+Map$<$ T, Hash $>$}}.
+
+\Hypertarget{classDwm_1_1ASIOReadable_abe578512f89ada0c4a5b5b528dee0db9}\index{Dwm::ASIOReadable@{Dwm::ASIOReadable}!Read@{Read}}
+\index{Read@{Read}!Dwm::ASIOReadable@{Dwm::ASIOReadable}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \label{classDwm_1_1ASIOReadable_abe578512f89ada0c4a5b5b528dee0db9} 
+virtual bool Dwm\+::\+ASIOReadable\+::\+Read (\begin{DoxyParamCaption}\item[{boost\+::asio\+::local\+::stream\+\_\+protocol\+::socket \&}]{s}{, }\item[{boost\+::system\+::error\+\_\+code \&}]{ec}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Should read the class from the given socket {\ttfamily s} and return true on success, false on failure. 
+
+Should set {\ttfamily ec} to the correct error code on failure. 
+
+Implemented in \mbox{\hyperlink{classDwm_1_1Ipv4Address_a7064865ce2336c3d6287099baf70ee71}{Dwm\+::\+Ipv4\+Address}}, \mbox{\hyperlink{classDwm_1_1Ipv4Prefix_a979e901da30767f85e9fbc3ab6bfcc4e}{Dwm\+::\+Ipv4\+Prefix}}, \mbox{\hyperlink{classDwm_1_1Ipv6Address_a4fdede695db4dac7d1dba0a126bd9de1}{Dwm\+::\+Ipv6\+Address}}, \mbox{\hyperlink{classDwm_1_1Ipv6AddrMap_a44ecd3f339a4d9fdf0df3c6119a733c9}{Dwm\+::\+Ipv6\+Addr\+Map$<$ T, Hash $>$}}, \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_ad3dec2d5180005c5052e74bec5a70dd8}{Dwm\+::\+Ipv6\+Prefix}}, and \mbox{\hyperlink{classDwm_1_1Ipv6PrefixMap_ac077bea310529783802f92d2c7f36021}{Dwm\+::\+Ipv6\+Prefix\+Map$<$ T, Hash $>$}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmASIOCapable_8hh}{Dwm\+ASIOCapable.\+hh}}\end{DoxyCompactItemize}

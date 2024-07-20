@@ -1,0 +1,46 @@
+\doxysection{Dwm\+::Assertion Class Reference}
+\hypertarget{classDwm_1_1Assertion}{}\label{classDwm_1_1Assertion}\index{Dwm::Assertion@{Dwm::Assertion}}
+
+
+Holds assertion information.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Unit\+Assert.\+hh$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Assertion_ae46314f6d88d2150826fdd85d2215007}\label{classDwm_1_1Assertion_ae46314f6d88d2150826fdd85d2215007} 
+{\bfseries Assertion} (const std\+::string \&filename, const std\+::string \&function, int line, const std\+::string \&expression)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Assertion_a0241963d53f4246498155a90c3e592d2}\label{classDwm_1_1Assertion_a0241963d53f4246498155a90c3e592d2} 
+const std\+::string \& {\bfseries Filename} ()
+\begin{DoxyCompactList}\small\item\em Returns the name of the file where the assertion is located. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Assertion_ab663b626a2a27a43acdb310148fff883}\label{classDwm_1_1Assertion_ab663b626a2a27a43acdb310148fff883} 
+const std\+::string \& {\bfseries Function} ()
+\begin{DoxyCompactList}\small\item\em Returns the function where the assertion is located. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Assertion_ab6f697f6119d01a6965d0e666e0cd3f0}\label{classDwm_1_1Assertion_ab6f697f6119d01a6965d0e666e0cd3f0} 
+int {\bfseries Line} () const
+\begin{DoxyCompactList}\small\item\em Returns the line number where the assertion is located. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Assertion_a9060821b4b53e84e341a466fee994149}\label{classDwm_1_1Assertion_a9060821b4b53e84e341a466fee994149} 
+const std\+::string \& {\bfseries Expression} () const
+\begin{DoxyCompactList}\small\item\em Returns the assertion test expression. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Assertion_aec57c8705449a5ddc1f8aef2ba977a23}\label{classDwm_1_1Assertion_aec57c8705449a5ddc1f8aef2ba977a23} 
+bool {\bfseries operator$<$} (const \mbox{\hyperlink{classDwm_1_1Assertion}{Assertion}} \&assertion) const
+\begin{DoxyCompactList}\small\item\em operator \texorpdfstring{$<$}{<} \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Assertion_a0f53fde04c3d7d734c68b53aa0a59165}\label{classDwm_1_1Assertion_a0f53fde04c3d7d734c68b53aa0a59165} 
+std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, const \mbox{\hyperlink{classDwm_1_1Assertion}{Assertion}} \&assertion)
+\begin{DoxyCompactList}\small\item\em Prints to an ostream. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Holds assertion information. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmUnitAssert_8hh}{Dwm\+Unit\+Assert.\+hh}}\end{DoxyCompactItemize}

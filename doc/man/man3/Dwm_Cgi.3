@@ -1,0 +1,94 @@
+.TH "Dwm::Cgi" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::Cgi \- This class encapsulates CGI input\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmCgi\&.hh>\fP
+.SS "Public Types"
+
+.in +1c
+.ti -1c
+.RI "typedef std::map< std::string, std::string > \fBvalueMap_t\fP"
+.br
+.ti -1c
+.RI "typedef valueMap_t::iterator \fBiterator\fP"
+.br
+.ti -1c
+.RI "typedef valueMap_t::const_iterator \fBconst_iterator\fP"
+.br
+.in -1c
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBCgi\fP ()"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "\fB~Cgi\fP ()"
+.br
+.RI "destructor "
+.ti -1c
+.RI "const std::string & \fBRequestMethod\fP () const"
+.br
+.RI "Returns the HTTP request method\&. "
+.ti -1c
+.RI "const std::string & \fBRequestMethod\fP (const std::string &requestMethod)"
+.br
+.RI "Sets and returns the HTTP request method\&. "
+.ti -1c
+.RI "valueMap_t & \fBQueryValues\fP ()"
+.br
+.RI "Returns a reference to the query values sent by the client\&. "
+.ti -1c
+.RI "valueMap_t & \fBEnvValues\fP ()"
+.br
+.in -1c
+.SS "Static Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "static void \fBUrlEncode\fP (const std::string &src, std::string &dst)"
+.br
+.RI "Encodes a URL string \fRsrc\fP into a string \fRdst\fP, with special characters escaped\&. "
+.ti -1c
+.RI "static std::string \fBUrlEncode\fP (const std::string &src)"
+.br
+.RI "Returns a URL-escaped version of \fRsrc\fP\&. "
+.ti -1c
+.RI "static void \fBHtmlEncode\fP (const std::string &src, std::string &dst)"
+.br
+.RI "Encodes a string \fRsrc\fP into an HTML string \fRdst\fP, with special characters escaped\&. "
+.ti -1c
+.RI "static std::string \fBHtmlEncode\fP (const std::string &src)"
+.br
+.RI "Returns an HTML-escaped version of \fRsrc\fP\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+This class encapsulates CGI input\&. 
+
+It is used for storing name/value pairs from CGI input (usually HTML forms) sent via an HTTP POST or GET operation\&. The constructor does the work of getting the data, hence you should likely only have a single \fBCgi\fP object in a program\&. I haven't made this class a true singleton, but may do so in the future\&.
+.PP
+Under the hood\&.\&.\&. the implementation uses a trivial flex lexer to get CGI data from the environment (in the case of a GET operation) or stdin (in the case of a POST operation)\&. It also unescapes any escape codes in the input values\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Dwm::Cgi::Cgi ()"
+
+.PP
+Constructor\&. Retrieves data from CGI and stores name/value pairs (as strings) in a map<string,string,less<string> >\&. The map is accessible via the QueryStrings() method\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "valueMap_t & Dwm::Cgi::QueryValues ()"
+
+.PP
+Returns a reference to the query values sent by the client\&. These are the name/value pairs from CGI, typically from HTML form fields\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

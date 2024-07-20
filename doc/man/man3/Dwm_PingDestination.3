@@ -1,0 +1,122 @@
+.TH "Dwm::PingDestination" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::PingDestination \- Common interface for an IPv4 destination we wish to ping with ICMP or TCP\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmPingDestination\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBPingDestination\fP ()"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "\fBPingDestination\fP (const std::string &destination)"
+.br
+.RI "Construct from a string of the form 'a\&.b\&.c\&.d:n' where a\&.b\&.c\&.d is the IP address and n is the port number\&. "
+.ti -1c
+.RI "\fBPingDestination\fP (const \fBIpv4Address\fP &addr, uint16_t port=0)"
+.br
+.RI "Construct from an IP address (for an ICMP destination), or an IP address and port number (for a TCP destination)\&. "
+.ti -1c
+.RI "const \fBIpv4Address\fP & \fBAddress\fP () const"
+.br
+.RI "Returns the destination IP address\&. "
+.ti -1c
+.RI "const \fBIpv4Address\fP & \fBAddress\fP (const \fBIpv4Address\fP &address)"
+.br
+.RI "Sets and returns the destination IP address\&. "
+.ti -1c
+.RI "uint16_t \fBPort\fP () const"
+.br
+.RI "Returns the port number (0 for ICMP)\&. "
+.ti -1c
+.RI "const std::string & \fBHostname\fP () const"
+.br
+.RI "Returns the hostname (an empty string if it was not set)\&. "
+.ti -1c
+.RI "const std::string & \fBHostname\fP (const std::string &hostname)"
+.br
+.RI "Sets and returns the hostname\&. "
+.ti -1c
+.RI "bool \fBSendTo\fP (\fBSocket\fP &socket, const \fBIpv4Address\fP &myAddress, uint16_t identifier) const"
+.br
+.RI "Sends a 'ping' to the destination\&. "
+.ti -1c
+.RI "bool \fBoperator<\fP (const \fBPingDestination\fP &pd) const"
+.br
+.RI "operator < "
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBPingDestination\fP &pd) const"
+.br
+.RI "operator == "
+.ti -1c
+.RI "virtual \fBoperator std::string\fP () const"
+.br
+.RI "Returns the destination as a string (IP address in dotted-decimal for an ICMP destination, IP address and port separated by a ':' for a TCP destination)\&. "
+.in -1c
+.SS "Protected Member Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBGetPacket\fP (std::string &packet, const \fBIpv4Address\fP &myAddress, uint16_t identifier) const"
+.br
+.ti -1c
+.RI "void \fBGetIcmpPacket\fP (std::string &packet, const \fBIpv4Address\fP &myAddress, uint16_t identifier) const"
+.br
+.ti -1c
+.RI "void \fBGetTcpPacket\fP (std::string &packet, const \fBIpv4Address\fP &myAddress, uint16_t identifier) const"
+.br
+.in -1c
+.SS "Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fBIpv4Address\fP \fB_addr\fP"
+.br
+.ti -1c
+.RI "uint16_t \fB_port\fP"
+.br
+.ti -1c
+.RI "std::string \fB_hostname\fP"
+.br
+.ti -1c
+.RI "bool \fB_primed\fP"
+.br
+.ti -1c
+.RI "uint16_t \fB_sequenceNumber\fP"
+.br
+.in -1c
+.SS "Friends"
+
+.in +1c
+.ti -1c
+.RI "std::ostream & \fBoperator<<\fP (std::ostream &os, const \fBPingDestination\fP &pd)"
+.br
+.RI "Prints a \fBPingDestination\fP to an ostream in human-readable form\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Common interface for an IPv4 destination we wish to ping with ICMP or TCP\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Dwm::PingDestination::PingDestination (const std::string & destination)"
+
+.PP
+Construct from a string of the form 'a\&.b\&.c\&.d:n' where a\&.b\&.c\&.d is the IP address and n is the port number\&. If only an IP address is given, we will use ICMP to probe the destination\&. If a non-zero port number is given, we will use TCP to probe the destination\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "bool Dwm::PingDestination::SendTo (\fBSocket\fP & socket, const \fBIpv4Address\fP & myAddress, uint16_t identifier) const"
+
+.PP
+Sends a 'ping' to the destination\&. For ICMP, sends an echo request\&. For TCP, sends a pure ACK\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

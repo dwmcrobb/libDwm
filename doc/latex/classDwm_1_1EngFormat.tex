@@ -1,0 +1,64 @@
+\doxysection{Dwm\+::Eng\+Format Class Reference}
+\hypertarget{classDwm_1_1EngFormat}{}\label{classDwm_1_1EngFormat}\index{Dwm::EngFormat@{Dwm::EngFormat}}
+
+
+Class to format numbers in an engineering-\/type form.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Eng\+Format.\+hh$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1EngFormat_a49a2200eca3e20ce634c472aa71c38ea}\label{classDwm_1_1EngFormat_a49a2200eca3e20ce634c472aa71c38ea} 
+{\bfseries Eng\+Format} (const uint64\+\_\+t \&val, uint8\+\_\+t precision=4, uint8\+\_\+t width=5)
+\item 
+\Hypertarget{classDwm_1_1EngFormat_acc98e09c1150f40f987a99b2e8dd9bc9}\label{classDwm_1_1EngFormat_acc98e09c1150f40f987a99b2e8dd9bc9} 
+{\bfseries Eng\+Format} (const uint32\+\_\+t \&val, uint8\+\_\+t precision=4, uint8\+\_\+t width=5)
+\item 
+\Hypertarget{classDwm_1_1EngFormat_a830a056160bcb409a5151eb181333c32}\label{classDwm_1_1EngFormat_a830a056160bcb409a5151eb181333c32} 
+{\bfseries Eng\+Format} (const uint16\+\_\+t \&val, uint8\+\_\+t precision=4, uint8\+\_\+t width=5)
+\item 
+\Hypertarget{classDwm_1_1EngFormat_ac0d70fbe241f1a9ae8dfe9d58b36f3c9}\label{classDwm_1_1EngFormat_ac0d70fbe241f1a9ae8dfe9d58b36f3c9} 
+{\bfseries Eng\+Format} (const int64\+\_\+t \&val, uint8\+\_\+t precision=4, uint8\+\_\+t width=5)
+\item 
+\Hypertarget{classDwm_1_1EngFormat_a1c5383cc901f92d2370a859893403e6d}\label{classDwm_1_1EngFormat_a1c5383cc901f92d2370a859893403e6d} 
+{\bfseries Eng\+Format} (const int32\+\_\+t \&val, uint8\+\_\+t precision=4, uint8\+\_\+t width=5)
+\item 
+\Hypertarget{classDwm_1_1EngFormat_a5efede9868f0a18f16df771436e53afa}\label{classDwm_1_1EngFormat_a5efede9868f0a18f16df771436e53afa} 
+{\bfseries Eng\+Format} (const int16\+\_\+t \&val, uint8\+\_\+t precision=4, uint8\+\_\+t width=5)
+\item 
+\Hypertarget{classDwm_1_1EngFormat_af41cbf9c740e358e2274a1ecaeb78eb2}\label{classDwm_1_1EngFormat_af41cbf9c740e358e2274a1ecaeb78eb2} 
+{\bfseries Eng\+Format} (const float \&val, uint8\+\_\+t precision=4, uint8\+\_\+t width=5)
+\item 
+\Hypertarget{classDwm_1_1EngFormat_a863da7c5fd7662c46e5bf2c6f50ecc24}\label{classDwm_1_1EngFormat_a863da7c5fd7662c46e5bf2c6f50ecc24} 
+{\bfseries Eng\+Format} (const double \&val, uint8\+\_\+t precision=4, uint8\+\_\+t width=5)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1EngFormat_afa59e66cce372b610159c85e75ccc928}\label{classDwm_1_1EngFormat_afa59e66cce372b610159c85e75ccc928} 
+std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, const \mbox{\hyperlink{classDwm_1_1EngFormat}{Eng\+Format}} \&ef)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class to format numbers in an engineering-\/type form. 
+
+Instead of printing numerical powers of 10, we print \textquotesingle{}K\textquotesingle{} (kilo), \textquotesingle{}M\textquotesingle{} (mega), \textquotesingle{}m\textquotesingle{} (milli), \textquotesingle{}u\textquotesingle{} (micro), et. al.
+
+Example\+:
+
+uint32\+\_\+t v = 123456; std\+::cout \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} \doxylink{classDwm_1_1EngFormat}{Dwm\+::\+Eng\+Format(v)} \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} std\+::endl;
+
+would print\+:
+
+123.\+5K
+
+{\ttfamily precision} is the maximum precision (places including those to the left of the decimal point) to print. {\ttfamily width} is the minimum field width to print; we right-\/justify and fill with spaces. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmEngFormat_8hh}{Dwm\+Eng\+Format.\+hh}}\end{DoxyCompactItemize}

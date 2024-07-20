@@ -1,0 +1,47 @@
+.TH "Dwm::ValueRange< T >" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::ValueRange< T > \- This template encapsulates a range of values (low, high)\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmValueRange\&.hh>\fP
+.PP
+Inherits std::pair< T1, T2 >\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBValueRange\fP ()"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "\fBValueRange\fP (const T &low, const T &high)"
+.br
+.RI "Construct from given \fRlow\fP and @ high values\&. "
+.ti -1c
+.RI "bool \fBContains\fP (const T &value) const"
+.br
+.RI "Returns true if the range contains \fRvalue\fP\&. "
+.ti -1c
+.RI "bool \fBContains\fP (const \fBValueRange\fP< T > &range) const"
+.br
+.RI "Returns true if the range contains the given \fRrange\fP\&. "
+.ti -1c
+.RI "bool \fBOverlaps\fP (const \fBValueRange\fP< T > &range) const"
+.br
+.RI "Returns true if the range overlaps the given \fRrange\fP\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.SS "template<typename T>
+.br
+class Dwm::ValueRange< T >"This template encapsulates a range of values (low, high)\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

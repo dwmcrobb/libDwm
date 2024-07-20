@@ -45,29 +45,21 @@ extern "C" {
   #include <inttypes.h>
   #include <sys/types.h>
   #include <netinet/in.h>
+  #include <bzlib.h>
+  #include <zlib.h>
 }
 
 #include <string>
-
-#include "DwmASIOCapable.hh"
-#include "DwmDescriptorIOCapable.hh"
-#include "DwmFileIOCapable.hh"
-#include "DwmStreamIOCapable.hh"
-#include "DwmStreamedLengthCapable.hh"
-#include "DwmGZIOCapable.hh"
-#include "DwmBZ2IOCapable.hh"
-
-typedef uint32_t  ipv4addr_t;
+#include <boost/asio.hpp>
 
 namespace Dwm {
 
+  using ipv4addr_t = uint32_t;
+  
   //--------------------------------------------------------------------------
   //!  This class encapsulates an IPv4 address.
   //--------------------------------------------------------------------------
   class Ipv4Address
-    : public ASIOCapable, public StreamIOCapable, public FileIOCapable,
-      public DescriptorIOCapable, public StreamedLengthCapable,
-      public GZIOCapable, public BZ2IOCapable
   {
   public:
     //------------------------------------------------------------------------
@@ -92,9 +84,7 @@ namespace Dwm {
     //!  byte order).
     //------------------------------------------------------------------------
     inline ipv4addr_t Raw() const
-    {
-      return(_addr);
-    }
+    { return(_addr); }
     
     //------------------------------------------------------------------------
     //!  Returns a dotted-decimal string representation.
@@ -105,25 +95,21 @@ namespace Dwm {
     //!  less-than operator.
     //------------------------------------------------------------------------
     inline bool operator < (const Ipv4Address & addr) const
-    {
-      return(ntohl(_addr) < ntohl(addr._addr));
-    }
+    { return (ntohl(_addr) < ntohl(addr._addr)); }
 
     //------------------------------------------------------------------------
     //!  Greater-than operator.
     //------------------------------------------------------------------------
     inline bool operator > (const Ipv4Address & addr) const
-    {
-      return(ntohl(_addr) > ntohl(addr._addr));
-    }
+    { return (ntohl(_addr) > ntohl(addr._addr)); }
 
     //------------------------------------------------------------------------
     //!  Greater than or equal-to operator.
     //------------------------------------------------------------------------
     inline bool operator >= (const Ipv4Address & addr) const
     {
-      return((ntohl(_addr) > ntohl(addr._addr))
-             || (_addr == addr._addr));
+      return ((ntohl(_addr) > ntohl(addr._addr))
+              || (_addr == addr._addr));
     }
     
     //------------------------------------------------------------------------
@@ -131,25 +117,21 @@ namespace Dwm {
     //------------------------------------------------------------------------
     inline bool operator <= (const Ipv4Address & addr) const
     {
-      return((ntohl(_addr) < ntohl(addr._addr))
-             || (_addr == addr._addr));
+      return ((ntohl(_addr) < ntohl(addr._addr))
+              || (_addr == addr._addr));
     }
 
     //------------------------------------------------------------------------
     //!  Equal-to operator.
     //------------------------------------------------------------------------
     inline bool operator == (const Ipv4Address & addr) const
-    {
-      return(_addr == addr._addr);
-    }
+    { return (_addr == addr._addr); }
 
     //------------------------------------------------------------------------
     //!  Not-equal-to operator.
     //------------------------------------------------------------------------
     inline bool operator != (const Ipv4Address & addr) const
-    {
-      return(_addr != addr._addr);
-    }
+    { return (_addr != addr._addr); }
     
     //------------------------------------------------------------------------
     //!  Mask operator.
@@ -157,7 +139,7 @@ namespace Dwm {
     inline Ipv4Address & operator &= (const Ipv4Address & mask)
     {
       _addr &= mask._addr;
-      return(*this);
+      return *this;
     }
 
     //------------------------------------------------------------------------
@@ -243,128 +225,129 @@ namespace Dwm {
       return *this;
     }
     
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
     inline bool BitIsSet(int8_t bit) const
-    {
-      return(((ntohl(_addr) >> bit) & 1) != 0);
-    }
+    { return (((ntohl(_addr) >> bit) & 1) != 0); }
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
     inline int GetBit(int bit) const
-    {
-      // return (((const char *)(&_addr))[bit >> 3] >> (7 - (bit & 0x7))) & 0x1;
-      // const uint8_t  *p = ((const uint8_t *)(&_addr)) + (bit >> 3);
-      // return (*p >> (7 - (bit & 0x7))) & 0x1;
-      
-      return (ntohl(_addr) >> (31 - bit)) & 1;
-      /*
-      const uint8_t  *p = (const uint8_t *)(&_addr);
-      return ((p[bit >> 3]) >> (7 - (bit & 0x7))) & 0x1;
-      */
-    }
+    { return (ntohl(_addr) >> (31 - bit)) & 1; }
     
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
     static inline uint8_t MaxKeyBits()
-    {
-      return(32);
-    }
+    { return 32; }
     
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if we called
     //!  one of the non-compressing Write() members.
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const override;
+    uint64_t StreamedLength() const;
     
     //------------------------------------------------------------------------
     //!  Reads from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    std::istream & Read(std::istream & is) override;
+    std::istream & Read(std::istream & is);
 
     //------------------------------------------------------------------------
     //!  Writes to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const override;
+    std::ostream & Write(std::ostream & os) const;
 
     //------------------------------------------------------------------------
     //!  Reads from a file descriptor.  Returns the number of bytes read
     //!  (4 on success).
     //------------------------------------------------------------------------
-    ssize_t Read(int fd) override;
+    ssize_t Read(int fd);
     
     //------------------------------------------------------------------------
     //!  Writes to a file descriptor.  Returns the number of bytes written
     //!  (4 on success).
     //------------------------------------------------------------------------
-    ssize_t Write(int fd) const override;
+    ssize_t Write(int fd) const;
 
     //------------------------------------------------------------------------
     //!  Reads from a FILE pointer.  Returns 1 on success, 0 on failure.
     //------------------------------------------------------------------------
-    size_t Read(FILE * f) override;
+    size_t Read(FILE * f);
     
     //------------------------------------------------------------------------
     //!  Writes to a FILE pointer.  Returns 1 on success, 0 on failure.
     //------------------------------------------------------------------------
-    size_t Write(FILE * f) const override;
+    size_t Write(FILE * f) const;
 
     //------------------------------------------------------------------------
     //!  Reads from a gzFile.  Returns the number of bytes read
     //!  (4 on success).
     //------------------------------------------------------------------------
-    int Read(gzFile gzf) override;
+    int Read(gzFile gzf);
     
     //------------------------------------------------------------------------
     //!  Writes to a gzFile.  Returns the number of bytes written
     //!  (4 on success).
     //------------------------------------------------------------------------
-    int Write(gzFile gzf) const override;
+    int Write(gzFile gzf) const;
     
     //------------------------------------------------------------------------
     //!  Reads from a BZFILE pointer.  Returns the number of bytes read
     //!  (4 on success).
     //------------------------------------------------------------------------
-    int BZRead(BZFILE *bzf) override;
+    int BZRead(BZFILE *bzf);
     
     //------------------------------------------------------------------------
     //!  Writes to a BZFILE pointer.  Returns the number of bytes written
     //!  (4 on success).
     //------------------------------------------------------------------------
-    int BZWrite(BZFILE *bzf) const override;
+    int BZWrite(BZFILE *bzf) const;
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Reads from a boost::asio::ip::tcp::socket.  Returns true on success.
+    //!  Returns false and sets @c ec on failure.
     //------------------------------------------------------------------------
     bool Read(boost::asio::ip::tcp::socket & s,
-              boost::system::error_code & ec) override
+              boost::system::error_code & ec)
     { return ASIO_Read(s, ec); }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Writes to a boost::asio::ip::tcp::socket.  Returns true on success.
+    //!  Returns false and sets @c ec on failure.
     //------------------------------------------------------------------------
     bool Write(boost::asio::ip::tcp::socket & s,
-               boost::system::error_code & ec) const override;
+               boost::system::error_code & ec) const;
     
     //------------------------------------------------------------------------
-    //!  
+    //!  Reads from a boost::asio::local::stream_protocol::socket.  Returns
+    //!  true on success.  Returns false and sets @c ec on failure.
     //------------------------------------------------------------------------
     bool Read(boost::asio::local::stream_protocol::socket & s,
-              boost::system::error_code & ec) override;
+              boost::system::error_code & ec);
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Writes to a boost::asio::local::stream_protocol::socket.  Returns
+    //!  true on success.  Returns false and sets @c ec on failure.
     //------------------------------------------------------------------------
     bool Write(boost::asio::local::stream_protocol::socket & s,
-               boost::system::error_code & ec) const override;
+               boost::system::error_code & ec) const;
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Reads from a boost::asio::generic::stream_protocol::socket.  Returns
+    //!  true on success.  Returns false and sets @c ec on failure.
     //------------------------------------------------------------------------
     bool Read(boost::asio::generic::stream_protocol::socket & s,
-              boost::system::error_code & ec) override
+              boost::system::error_code & ec)
     { return ASIO_Read(s, ec); }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Writes to a boost::asio::generic::stream_protocol::socket.  Returns
+    //!  true on success.  Returns false and sets @c ec on failure.
     //------------------------------------------------------------------------
     bool Write(boost::asio::generic::stream_protocol::socket & s,       
-               boost::system::error_code & ec) const override;
+               boost::system::error_code & ec) const;
 
     //------------------------------------------------------------------------
     //!  Prints an Ipv4Address to an ostream in human-readable form.

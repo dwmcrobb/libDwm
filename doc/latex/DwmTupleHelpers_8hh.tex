@@ -1,0 +1,43 @@
+\doxysection{Dwm\+Tuple\+Helpers.\+hh File Reference}
+\hypertarget{DwmTupleHelpers_8hh}{}\label{DwmTupleHelpers_8hh}\index{DwmTupleHelpers.hh@{DwmTupleHelpers.hh}}
+
+
+tuple helper templates  
+
+
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$tuple$>$}\newline
+Include dependency graph for Dwm\+Tuple\+Helpers.\+hh\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=191pt]{DwmTupleHelpers_8hh__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=191pt]{DwmTupleHelpers_8hh__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{DwmTupleHelpers_8hh_a1fc77d0d2ee08e6deee9aa81f4db6b12}\label{DwmTupleHelpers_8hh_a1fc77d0d2ee08e6deee9aa81f4db6b12} 
+{\footnotesize template$<$class Tuple , class Func , std\+::size\+\_\+t... I$>$ }\\constexpr Func {\bfseries Dwm\+::\+Tuple\+Helpers\+::\+For\+Each\+Impl} (Tuple \&\&t, Func \&\&f, std\+::index\+\_\+sequence$<$ I... $>$)
+\item 
+\Hypertarget{DwmTupleHelpers_8hh_ae543ac5619447207bdfe67ea98221f93}\label{DwmTupleHelpers_8hh_ae543ac5619447207bdfe67ea98221f93} 
+{\footnotesize template$<$class Tuple , class Func $>$ }\\constexpr Func {\bfseries Dwm\+::\+Tuple\+Helpers\+::\+For\+Each} (Tuple \&\&t, Func \&\&f)
+\item 
+\Hypertarget{DwmTupleHelpers_8hh_a738b74457ed0abd6e1afc04d94247609}\label{DwmTupleHelpers_8hh_a738b74457ed0abd6e1afc04d94247609} 
+{\footnotesize template$<$typename Tuple , typename Pred $>$ }\\constexpr size\+\_\+t {\bfseries Dwm\+::\+Tuple\+Helpers\+::\+Find\+If} (Tuple \&\&tuple, Pred pred)
+\item 
+\Hypertarget{DwmTupleHelpers_8hh_a30d628f09884723f599fabbd19175e19}\label{DwmTupleHelpers_8hh_a30d628f09884723f599fabbd19175e19} 
+{\footnotesize template$<$typename Tuple , typename Action $>$ }\\void {\bfseries Dwm\+::\+Tuple\+Helpers\+::\+Perform} (Tuple \&\&tpl, size\+\_\+t index, Action action)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+tuple helper templates 
+

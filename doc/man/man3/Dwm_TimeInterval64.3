@@ -1,0 +1,246 @@
+.TH "Dwm::TimeInterval64" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::TimeInterval64 \- This class encapsulates a time interval\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmTimeInterval64\&.hh>\fP
+.PP
+Inherits \fBDwm::DescriptorIOCapable\fP, Dwm::FileIOCapable, \fBDwm::StreamIOCapable\fP, \fBDwm::StreamedLengthCapable\fP, \fBDwm::GZIOCapable\fP, and \fBDwm::BZ2IOCapable\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBTimeInterval64\fP ()"
+.br
+.RI "Contructor\&. "
+.ti -1c
+.RI "\fBTimeInterval64\fP (const \fBTimeValue64\fP &start, const \fBTimeValue64\fP &end)"
+.br
+.RI "Construct from a start and end time\&. "
+.ti -1c
+.RI "\fBTimeInterval64\fP (const \fBTimeInterval64\fP &timeInterval)"
+.br
+.RI "Copy constructor\&. "
+.ti -1c
+.RI "\fBTimeInterval64\fP (const \fBTimeInterval\fP &timeInterval)"
+.br
+.ti -1c
+.RI "const \fBTimeValue64\fP & \fBStart\fP () const"
+.br
+.RI "Returns the start time\&. "
+.ti -1c
+.RI "const \fBTimeValue64\fP & \fBStart\fP (const \fBTimeValue64\fP &start)"
+.br
+.RI "Sets and returns the start time\&. "
+.ti -1c
+.RI "const \fBTimeValue64\fP & \fBEnd\fP () const"
+.br
+.RI "Returns the end time\&. "
+.ti -1c
+.RI "const \fBTimeValue64\fP & \fBEnd\fP (const \fBTimeValue64\fP &end)"
+.br
+.RI "Sets and returns the end time\&. "
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBTimeInterval64\fP &ti) const"
+.br
+.RI "operator == "
+.ti -1c
+.RI "\fBTimeValue64\fP \fBDuration\fP () const"
+.br
+.ti -1c
+.RI "bool \fBContains\fP (const \fBTimeValue64\fP &tv) const"
+.br
+.RI "Returns true if the \fBTimeValue64\fP \fRtv\fP falls within the time interval, i\&.e\&. "
+.ti -1c
+.RI "bool \fBContains\fP (const \fBTimeInterval64\fP &ti) const"
+.br
+.RI "Returns true if the \fBTimeInterval\fP \fRti\fP is completely contained within our time interval\&. "
+.ti -1c
+.RI "bool \fBOverlaps\fP (const \fBTimeInterval64\fP &ti) const"
+.br
+.RI "Returns true if \fRti\fP overlaps the time interval\&. "
+.ti -1c
+.RI "bool \fBAdjacent\fP (const \fBTimeInterval64\fP &ti) const"
+.br
+.RI "Returns true if \fRti\fP is immediately adjacent our time interval, i\&.e\&. "
+.ti -1c
+.RI "uint64_t \fBStreamedLength\fP () const override"
+.br
+.RI "Returns the length of the time insterval, in bytes\&. "
+.ti -1c
+.RI "std::istream & \fBRead\fP (std::istream &is) override"
+.br
+.RI "Reads the time interval from an istream\&. Returns the istream\&. "
+.ti -1c
+.RI "std::ostream & \fBWrite\fP (std::ostream &os) const override"
+.br
+.RI "Writes the time interval to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "size_t \fBRead\fP (FILE *f) override"
+.br
+.RI "Reads the time interval from a FILE pointer\&. "
+.ti -1c
+.RI "size_t \fBWrite\fP (FILE *f) const override"
+.br
+.RI "Writes the time interval to a FILE pointer\&. "
+.ti -1c
+.RI "ssize_t \fBRead\fP (int fd) override"
+.br
+.RI "Reads the time interval from a file descriptor\&. "
+.ti -1c
+.RI "ssize_t \fBWrite\fP (int fd) const override"
+.br
+.RI "Wries the time interval to a file descriptor\&. "
+.ti -1c
+.RI "int \fBRead\fP (gzFile gzf) override"
+.br
+.RI "Reads the time interval from a gzFile\&. "
+.ti -1c
+.RI "int \fBWrite\fP (gzFile gzf) const override"
+.br
+.RI "Writes the time interval to a gzFile\&. "
+.ti -1c
+.RI "int \fBBZRead\fP (BZFILE *bzf) override"
+.br
+.RI "Reads the time interval from a BZFILE pointer\&. "
+.ti -1c
+.RI "int \fBBZWrite\fP (BZFILE *bzf) const override"
+.br
+.RI "Writes the time interval to a BZFILE pointer\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::DescriptorReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~DescriptorReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::DescriptorWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~DescriptorWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::StreamReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~StreamReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::StreamWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~StreamWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::GZReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~GZReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::GZWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~GZWritable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+.SH "Detailed Description"
+.PP 
+This class encapsulates a time interval\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "bool Dwm::TimeInterval64::Adjacent (const \fBTimeInterval64\fP & ti) const"
+
+.PP
+Returns true if \fRti\fP is immediately adjacent our time interval, i\&.e\&. our start is equal to \fRti\&.End()\fP or our end is equal to \fRti\&.Start()\fP 
+.SS "int Dwm::TimeInterval64::BZRead (BZFILE * bzf)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the time interval from a BZFILE pointer\&. Returns the number of bytes read on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::BZ2Readable\fP\&.
+.SS "int Dwm::TimeInterval64::BZWrite (BZFILE * bzf) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the time interval to a BZFILE pointer\&. Returns the number of bytes written on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::BZ2Writable\fP\&.
+.SS "bool Dwm::TimeInterval64::Contains (const \fBTimeValue64\fP & tv) const"
+
+.PP
+Returns true if the \fBTimeValue64\fP \fRtv\fP falls within the time interval, i\&.e\&. \\tv is greater than or equal to the start and less than or equal to the end\&. 
+.SS "size_t Dwm::TimeInterval64::Read (FILE * f)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the time interval from a FILE pointer\&. Returns 1 on success, 0 on failure\&. 
+.PP
+Implements \fBDwm::FileReadable\fP\&.
+.SS "int Dwm::TimeInterval64::Read (gzFile gzf)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the time interval from a gzFile\&. Returns the number of bytes read on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::GZReadable\fP\&.
+.SS "ssize_t Dwm::TimeInterval64::Read (int fd)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the time interval from a file descriptor\&. Returns the number of bytes read on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::DescriptorReadable\fP\&.
+.SS "std::istream & Dwm::TimeInterval64::Read (std::istream & is)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the time interval from an istream\&. Returns the istream\&. 
+.PP
+Implements \fBDwm::StreamReadable\fP\&.
+.SS "uint64_t Dwm::TimeInterval64::StreamedLength () const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Returns the length of the time insterval, in bytes\&. This is used for some I/O functions\&. 
+.PP
+Implements \fBDwm::StreamedLengthCapable\fP\&.
+.SS "size_t Dwm::TimeInterval64::Write (FILE * f) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the time interval to a FILE pointer\&. Returns 1 on success, 0 on failure\&. 
+.PP
+Implements \fBDwm::FileWritable\fP\&.
+.SS "int Dwm::TimeInterval64::Write (gzFile gzf) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the time interval to a gzFile\&. Returns the number of bytes written on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::GZWritable\fP\&.
+.SS "ssize_t Dwm::TimeInterval64::Write (int fd) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Wries the time interval to a file descriptor\&. Returns the number of bytes written on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::DescriptorWritable\fP\&.
+.SS "std::ostream & Dwm::TimeInterval64::Write (std::ostream & os) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the time interval to an ostream\&. Returns the ostream\&. 
+.PP
+Implements \fBDwm::StreamWritable\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

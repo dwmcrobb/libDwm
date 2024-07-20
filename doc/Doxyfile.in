@@ -276,7 +276,7 @@ HTML_FOOTER          = footer.html
 
 HTML_STYLESHEET      = 
 
-HTML_EXTRA_STYLESHEET = doxygenDocs.css
+# HTML_EXTRA_STYLESHEET = doxygenDocs.css
 
 # If the HTML_ALIGN_MEMBERS tag is set to YES, the members of classes,
 # files or namespaces will be aligned in HTML using tables. If set to

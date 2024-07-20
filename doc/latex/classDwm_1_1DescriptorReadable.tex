@@ -1,0 +1,53 @@
+\doxysection{Dwm\+::Descriptor\+Readable Class Reference}
+\hypertarget{classDwm_1_1DescriptorReadable}{}\label{classDwm_1_1DescriptorReadable}\index{Dwm::DescriptorReadable@{Dwm::DescriptorReadable}}
+
+
+This class defines an interface for classes that can read their contents from a file descriptor.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Descriptor\+IOCapable.\+hh$>$}
+
+
+
+Inheritance diagram for Dwm\+::Descriptor\+Readable\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{classDwm_1_1DescriptorReadable__inherit__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1DescriptorReadable_a968d6a77c60dd3d0316858bc73725656}\label{classDwm_1_1DescriptorReadable_a968d6a77c60dd3d0316858bc73725656} 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Descriptor\+Readable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\item 
+virtual ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1DescriptorReadable_aec1a0c67dd53343e52be7a6728081b7f}{Read}} (int fd)=0
+\begin{DoxyCompactList}\small\item\em Read from a file descriptor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class defines an interface for classes that can read their contents from a file descriptor. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1DescriptorReadable_aec1a0c67dd53343e52be7a6728081b7f}\index{Dwm::DescriptorReadable@{Dwm::DescriptorReadable}!Read@{Read}}
+\index{Read@{Read}!Dwm::DescriptorReadable@{Dwm::DescriptorReadable}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}}
+{\footnotesize\ttfamily \label{classDwm_1_1DescriptorReadable_aec1a0c67dd53343e52be7a6728081b7f} 
+virtual ssize\+\_\+t Dwm\+::\+Descriptor\+Readable\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Read from a file descriptor. 
+
+Returns the number of bytes read on success, -\/1 on failure. 
+
+Implemented in \mbox{\hyperlink{classDwm_1_1IpAddress_a35457635b4f90d10e173b8b74cfad368}{Dwm\+::\+Ip\+Address}}, \mbox{\hyperlink{classDwm_1_1Ipv4Address_ae161342bd9299d392b8b7e34fd8d8b3c}{Dwm\+::\+Ipv4\+Address}}, \mbox{\hyperlink{classDwm_1_1Ipv4PacketHeader_a42c1e348aaf61e7397a1a11f8788556d}{Dwm\+::\+Ipv4\+Packet\+Header}}, \mbox{\hyperlink{classDwm_1_1Ipv4Prefix_ac0f825f21a76601eea1434616c74a902}{Dwm\+::\+Ipv4\+Prefix}}, \mbox{\hyperlink{classDwm_1_1Ipv4Routes_a5ebc10ca6e1a7b4bda031ef3bfed534e}{Dwm\+::\+Ipv4\+Routes$<$ \+\_\+value\+T $>$}}, \mbox{\hyperlink{classDwm_1_1Ipv4TcpHeader_a400c967fdeba4aa9e7f4ca687c2a7d7f}{Dwm\+::\+Ipv4\+Tcp\+Header}}, \mbox{\hyperlink{classDwm_1_1Ipv4TcpPacket_a2d6dce3c624d6c1f7ca3ac874176334e}{Dwm\+::\+Ipv4\+Tcp\+Packet}}, \mbox{\hyperlink{classDwm_1_1Ipv4UdpHeader_ab4feec94e81bd2b6863efd13519a7d06}{Dwm\+::\+Ipv4\+Udp\+Header}}, \mbox{\hyperlink{classDwm_1_1Ipv4UdpPacket_a459973506d37abec79d9cd7f7120b521}{Dwm\+::\+Ipv4\+Udp\+Packet}}, \mbox{\hyperlink{classDwm_1_1Ipv6Address_a98420ec433066e92e1bba43ec9b1ef11}{Dwm\+::\+Ipv6\+Address}}, \mbox{\hyperlink{classDwm_1_1Ipv6AddrMap_ae442820a873c69fa770f4835b459006f}{Dwm\+::\+Ipv6\+Addr\+Map$<$ T, Hash $>$}}, \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_a7c2ccc55dc9d20021e3c637650ae7e25}{Dwm\+::\+Ipv6\+Prefix}}, \mbox{\hyperlink{classDwm_1_1Ipv6PrefixMap_a3feb5faeca2545fe8c049b2f28c81856}{Dwm\+::\+Ipv6\+Prefix\+Map$<$ T, Hash $>$}}, \mbox{\hyperlink{classDwm_1_1MacAddress_a9b20a60538147b6f5718beb9ff41e6fd}{Dwm\+::\+Mac\+Address}}, \mbox{\hyperlink{classDwm_1_1MplsLabel_a20556b035b923e2cda85de3dbacb16bf}{Dwm\+::\+Mpls\+Label}}, \mbox{\hyperlink{classDwm_1_1MplsLabelStack_a09c139fc8dda5f7452f7ba531f6b600b}{Dwm\+::\+Mpls\+Label\+Stack}}, \mbox{\hyperlink{classDwm_1_1Patricia_aa68e73647f6c0773542cf387f7784eb3}{Dwm\+::\+Patricia$<$ Key\+Type, Value\+Type, Key\+Equal $>$}}, \mbox{\hyperlink{classDwm_1_1Rusage_a6c43659648c08de48ee295004113df59}{Dwm\+::\+Rusage}}, \mbox{\hyperlink{classDwm_1_1TimeInterval64_a3a2df9f6d813c47424aa22f696323e9b}{Dwm\+::\+Time\+Interval64}}, \mbox{\hyperlink{classDwm_1_1TimeInterval_a57998e4fe238433a831ab43078a7fd0e}{Dwm\+::\+Time\+Interval}}, \mbox{\hyperlink{classDwm_1_1TimeValue64_a4d26c22511a42e2baa4b666ff44dc34a}{Dwm\+::\+Time\+Value64}}, and \mbox{\hyperlink{classDwm_1_1TimeValue_ae33a26eb3edb0014b0035163aa0c4938}{Dwm\+::\+Time\+Value}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmDescriptorIOCapable_8hh}{Dwm\+Descriptor\+IOCapable.\+hh}}\end{DoxyCompactItemize}

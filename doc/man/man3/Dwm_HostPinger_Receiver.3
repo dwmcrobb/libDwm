@@ -1,0 +1,28 @@
+.TH "Dwm::HostPinger::Receiver" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::HostPinger::Receiver \- Data callback interface\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmHostPinger\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "virtual void \fBoperator()\fP (const \fBPingDestination\fP &destination, const \fBTimeValue\fP &recvTime, const \fBTimeValue\fP &rtt)=0"
+.br
+.RI "Operator ()\&. Must be implemented in a derived class\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Data callback interface\&. 
+
+\fRdestination\fP is the destination being pinged\&. \fRrecvTime\fP is the time of reception (or the time at which we timed out the ping)\&. \fRrtt\fP is the round trip time\&. If rtt\&.Secs() is 0xFFFFFFFF, we did not receive a response to the ping\&. To use this interface, you must derive from this class and implement the () operator, then register it via \fBSetReceiver()\fP\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

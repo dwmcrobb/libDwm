@@ -1,0 +1,103 @@
+\doxysection{Dwm\+::XDRUtils Class Reference}
+\hypertarget{classDwm_1_1XDRUtils}{}\label{classDwm_1_1XDRUtils}\index{Dwm::XDRUtils@{Dwm::XDRUtils}}
+
+
+Wrapper for XDR encode/decode functions.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+XDRUtils.\+hh$>$}
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static bool \mbox{\hyperlink{classDwm_1_1XDRUtils_a243886c57913452874db24e4b333c093}{Encode}} (float val, std\+::array$<$ char, 4 $>$ \&buf)
+\begin{DoxyCompactList}\small\item\em Encode the given float {\ttfamily val} into the given buffer {\ttfamily buf}. \end{DoxyCompactList}\item 
+static bool \mbox{\hyperlink{classDwm_1_1XDRUtils_a64cb43c781ac2d2eb692b49c90da07a3}{Decode}} (const std\+::array$<$ char, 4 $>$ \&buf, float \&val)
+\begin{DoxyCompactList}\small\item\em Decodes the given buffer {\ttfamily buf} into the given value {\ttfamily val}. \end{DoxyCompactList}\item 
+static bool \mbox{\hyperlink{classDwm_1_1XDRUtils_a22eafa5dc2ac942632423534da6b52c6}{Encode}} (double val, std\+::array$<$ char, 8 $>$ \&buf)
+\begin{DoxyCompactList}\small\item\em Encode the given double {\ttfamily val} into the given buffer {\ttfamily buf}. \end{DoxyCompactList}\item 
+static bool \mbox{\hyperlink{classDwm_1_1XDRUtils_a784e7a5347e5add727bf6b52e94e2add}{Decode}} (const std\+::array$<$ char, 8 $>$ \&buf, double \&val)
+\begin{DoxyCompactList}\small\item\em Decodes the given buffer {\ttfamily buf} into the given double value {\ttfamily val}. \end{DoxyCompactList}\item 
+static uint32\+\_\+t \mbox{\hyperlink{classDwm_1_1XDRUtils_a420300bac2efefedc99a688e6a230b2b}{Encode}} (float val, char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}buf)
+\begin{DoxyCompactList}\small\item\em Encodes the given float {\ttfamily val} into {\ttfamily \texorpdfstring{$\ast$}{*}buf}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1XDRUtils_a786938810c380e24b7dcb04c5c7ae942}\label{classDwm_1_1XDRUtils_a786938810c380e24b7dcb04c5c7ae942} 
+static void {\bfseries Decode} (char \texorpdfstring{$\ast$}{*}buf, float \&val)
+\begin{DoxyCompactList}\small\item\em Decodes the given {\ttfamily buf} into the given float value {\ttfamily val}. \end{DoxyCompactList}\item 
+static uint32\+\_\+t \mbox{\hyperlink{classDwm_1_1XDRUtils_afb98f0bb01c6a7d743b8cfd9085853c0}{Encode}} (double val, char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}buf)
+\begin{DoxyCompactList}\small\item\em Encodes the given double {\ttfamily val} into {\ttfamily \texorpdfstring{$\ast$}{*}buf}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1XDRUtils_ac9eb877743855f96ddd62f45b51bc908}\label{classDwm_1_1XDRUtils_ac9eb877743855f96ddd62f45b51bc908} 
+static void {\bfseries Decode} (char \texorpdfstring{$\ast$}{*}buf, double \&val)
+\begin{DoxyCompactList}\small\item\em Decodes the given {\ttfamily buf} into the given double value {\ttfamily val}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Wrapper for XDR encode/decode functions. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1XDRUtils_a64cb43c781ac2d2eb692b49c90da07a3}\index{Dwm::XDRUtils@{Dwm::XDRUtils}!Decode@{Decode}}
+\index{Decode@{Decode}!Dwm::XDRUtils@{Dwm::XDRUtils}}
+\doxysubsubsection{\texorpdfstring{Decode()}{Decode()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classDwm_1_1XDRUtils_a64cb43c781ac2d2eb692b49c90da07a3} 
+static bool Dwm\+::\+XDRUtils\+::\+Decode (\begin{DoxyParamCaption}\item[{const std\+::array$<$ char, 4 $>$ \&}]{buf}{, }\item[{float \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Decodes the given buffer {\ttfamily buf} into the given value {\ttfamily val}. 
+
+Returns true on success, false on failure. \Hypertarget{classDwm_1_1XDRUtils_a784e7a5347e5add727bf6b52e94e2add}\index{Dwm::XDRUtils@{Dwm::XDRUtils}!Decode@{Decode}}
+\index{Decode@{Decode}!Dwm::XDRUtils@{Dwm::XDRUtils}}
+\doxysubsubsection{\texorpdfstring{Decode()}{Decode()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classDwm_1_1XDRUtils_a784e7a5347e5add727bf6b52e94e2add} 
+static bool Dwm\+::\+XDRUtils\+::\+Decode (\begin{DoxyParamCaption}\item[{const std\+::array$<$ char, 8 $>$ \&}]{buf}{, }\item[{double \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Decodes the given buffer {\ttfamily buf} into the given double value {\ttfamily val}. 
+
+Returns true on success, false on failure. \Hypertarget{classDwm_1_1XDRUtils_afb98f0bb01c6a7d743b8cfd9085853c0}\index{Dwm::XDRUtils@{Dwm::XDRUtils}!Encode@{Encode}}
+\index{Encode@{Encode}!Dwm::XDRUtils@{Dwm::XDRUtils}}
+\doxysubsubsection{\texorpdfstring{Encode()}{Encode()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1XDRUtils_afb98f0bb01c6a7d743b8cfd9085853c0} 
+static uint32\+\_\+t Dwm\+::\+XDRUtils\+::\+Encode (\begin{DoxyParamCaption}\item[{double}]{val}{, }\item[{char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{buf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Encodes the given double {\ttfamily val} into {\ttfamily \texorpdfstring{$\ast$}{*}buf}. 
+
+If {\ttfamily \texorpdfstring{$\ast$}{*}buf} is non-\/null on entry, it will be freed. {\ttfamily \texorpdfstring{$\ast$}{*}buf} will be allocated to hold the encoded value. Returns the size of \texorpdfstring{$\ast$}{*}buf. \Hypertarget{classDwm_1_1XDRUtils_a22eafa5dc2ac942632423534da6b52c6}\index{Dwm::XDRUtils@{Dwm::XDRUtils}!Encode@{Encode}}
+\index{Encode@{Encode}!Dwm::XDRUtils@{Dwm::XDRUtils}}
+\doxysubsubsection{\texorpdfstring{Encode()}{Encode()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1XDRUtils_a22eafa5dc2ac942632423534da6b52c6} 
+static bool Dwm\+::\+XDRUtils\+::\+Encode (\begin{DoxyParamCaption}\item[{double}]{val}{, }\item[{std\+::array$<$ char, 8 $>$ \&}]{buf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Encode the given double {\ttfamily val} into the given buffer {\ttfamily buf}. 
+
+Returns true on success, false on failure. \Hypertarget{classDwm_1_1XDRUtils_a420300bac2efefedc99a688e6a230b2b}\index{Dwm::XDRUtils@{Dwm::XDRUtils}!Encode@{Encode}}
+\index{Encode@{Encode}!Dwm::XDRUtils@{Dwm::XDRUtils}}
+\doxysubsubsection{\texorpdfstring{Encode()}{Encode()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1XDRUtils_a420300bac2efefedc99a688e6a230b2b} 
+static uint32\+\_\+t Dwm\+::\+XDRUtils\+::\+Encode (\begin{DoxyParamCaption}\item[{float}]{val}{, }\item[{char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{buf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Encodes the given float {\ttfamily val} into {\ttfamily \texorpdfstring{$\ast$}{*}buf}. 
+
+If {\ttfamily \texorpdfstring{$\ast$}{*}buf} is non-\/null on entry, it will be freed. {\ttfamily \texorpdfstring{$\ast$}{*}buf} will be allocated to hold the encoded value. Returns the size of \texorpdfstring{$\ast$}{*}buf. \Hypertarget{classDwm_1_1XDRUtils_a243886c57913452874db24e4b333c093}\index{Dwm::XDRUtils@{Dwm::XDRUtils}!Encode@{Encode}}
+\index{Encode@{Encode}!Dwm::XDRUtils@{Dwm::XDRUtils}}
+\doxysubsubsection{\texorpdfstring{Encode()}{Encode()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{classDwm_1_1XDRUtils_a243886c57913452874db24e4b333c093} 
+static bool Dwm\+::\+XDRUtils\+::\+Encode (\begin{DoxyParamCaption}\item[{float}]{val}{, }\item[{std\+::array$<$ char, 4 $>$ \&}]{buf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Encode the given float {\ttfamily val} into the given buffer {\ttfamily buf}. 
+
+Returns true on success, false on failure. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmXDRUtils_8hh}{Dwm\+XDRUtils.\+hh}}\end{DoxyCompactItemize}

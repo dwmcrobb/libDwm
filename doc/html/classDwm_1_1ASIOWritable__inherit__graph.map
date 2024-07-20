@@ -1,0 +1,17 @@
+<map id="Dwm::ASIOWritable" name="Dwm::ASIOWritable">
+<area shape="rect" id="Node000001" title="Interface for classes that wish to be writable via Dwm::ASIO." alt="" coords="5,141,145,167"/>
+<area shape="rect" id="Node000002" href="$classDwm_1_1ASIOCapable.html" title="Interface for classes that can read/write their contents from/to a boost::asio::ip::tcp::socket." alt="" coords="193,141,333,167"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,152,192,152,192,157,160,157"/>
+<area shape="rect" id="Node000003" href="$classDwm_1_1Ipv4Address.html" title="This class encapsulates an IPv4 address." alt="" coords="394,5,527,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="282,127,324,83,351,60,380,40,403,29,405,34,382,44,354,64,328,87,286,131"/>
+<area shape="rect" id="Node000004" href="$classDwm_1_1Ipv4Prefix.html" title="This class encapsulates an IPv4 address and netmask." alt="" coords="401,55,520,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="299,131,380,90,412,78,414,83,382,95,301,136"/>
+<area shape="rect" id="Node000005" href="$classDwm_1_1Ipv6AddrMap.html" title="A thin wrapper around std::unordered_map&lt;Ipv6Address,T,Hash&gt;." alt="" coords="381,105,540,145"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="348,139,380,134,381,139,349,144"/>
+<area shape="rect" id="Node000006" href="$classDwm_1_1Ipv6Address.html" title="This class encapsulates an IPv6 address." alt="" coords="394,169,527,195"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="349,164,394,170,393,175,348,169"/>
+<area shape="rect" id="Node000007" href="$classDwm_1_1Ipv6Prefix.html" title="This class encapsulates an IPv6 network prefix." alt="" coords="401,219,520,244"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="305,172,382,205,413,215,411,221,380,210,303,177"/>
+<area shape="rect" id="Node000008" href="$classDwm_1_1Ipv6PrefixMap.html" title="A wrapper around an unordered_map of T keyed by Ipv6Prefix using Hash as the hash function." alt="" coords="389,269,533,309"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="288,176,330,216,382,255,403,266,400,270,380,259,327,220,285,180"/>
+</map>

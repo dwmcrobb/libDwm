@@ -1,0 +1,256 @@
+\doxysection{Dwm\+Operators.\+hh}
+\hypertarget{DwmOperators_8hh_source}{}\label{DwmOperators_8hh_source}\index{DwmOperators.hh@{DwmOperators.hh}}
+\mbox{\hyperlink{DwmOperators_8hh}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ @(\#)\ \$DwmPath\$}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ \ Copyright\ (c)\ Daniel\ W.\ McRobb\ 2007,\ 2016}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ \ All\ rights\ reserved.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ \ Redistribution\ and\ use\ in\ source\ and\ binary\ forms,\ with\ or\ without}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ \ modification,\ are\ permitted\ provided\ that\ the\ following\ conditions}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ \ are\ met:}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ \ 1.\ Redistributions\ of\ source\ code\ must\ retain\ the\ above\ copyright}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ \ \ \ \ notice,\ this\ list\ of\ conditions\ and\ the\ following\ disclaimer.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ \ 2.\ Redistributions\ in\ binary\ form\ must\ reproduce\ the\ above\ copyright}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ \ \ \ \ notice,\ this\ list\ of\ conditions\ and\ the\ following\ disclaimer\ in\ the}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ \ \ \ \ documentation\ and/or\ other\ materials\ provided\ with\ the\ distribution.}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ \ 3.\ The\ names\ of\ the\ authors\ and\ copyright\ holders\ may\ not\ be\ used\ to}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ \ \ \ \ endorse\ or\ promote\ products\ derived\ from\ this\ software\ without}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ \ \ \ \ specific\ prior\ written\ permission.}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ \ IN\ NO\ EVENT\ SHALL\ DANIEL\ W.\ MCROBB\ BE\ LIABLE\ TO\ ANY\ PARTY\ FOR}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ \ DIRECT,\ INDIRECT,\ SPECIAL,\ INCIDENTAL,\ OR\ CONSEQUENTIAL\ DAMAGES,}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ \ INCLUDING\ LOST\ PROFITS,\ ARISING\ OUT\ OF\ THE\ USE\ OF\ THIS\ SOFTWARE,}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ \ EVEN\ IF\ DANIEL\ W.\ MCROBB\ HAS\ BEEN\ ADVISED\ OF\ THE\ POSSIBILITY\ OF\ SUCH}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ \ DAMAGE.}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ \ THE\ SOFTWARE\ PROVIDED\ HEREIN\ IS\ ON\ AN\ "{}AS\ IS"{}\ BASIS,\ AND}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ \ DANIEL\ W.\ MCROBB\ HAS\ NO\ OBLIGATION\ TO\ PROVIDE\ MAINTENANCE,\ SUPPORT,}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ \ UPDATES,\ ENHANCEMENTS,\ OR\ MODIFICATIONS.\ DANIEL\ W.\ MCROBB\ MAKES\ NO}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ \ REPRESENTATIONS\ AND\ EXTENDS\ NO\ WARRANTIES\ OF\ ANY\ KIND,\ EITHER}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ \ IMPLIED\ OR\ EXPRESS,\ INCLUDING,\ BUT\ NOT\ LIMITED\ TO,\ THE\ IMPLIED}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ \ WARRANTIES\ OF\ MERCHANTABILITY\ OR\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE,}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ \ OR\ THAT\ THE\ USE\ OF\ THIS\ SOFTWARE\ WILL\ NOT\ INFRINGE\ ANY\ PATENT,}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ \ TRADEMARK\ OR\ OTHER\ RIGHTS.}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//===========================================================================}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#ifndef\ \_DWMOPERATORS\_HH\_}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ \_DWMOPERATORS\_HH\_}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#include\ <unordered\_set>}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{DwmPortability_8hh}{DwmPortability.hh}}"{}}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00051\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#if\ (!\ defined(\_\_clang\_\_))}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#if\ (!\ HAVE\_GPLUSPLUS\_VERSION(4,6))}}
+\DoxyCodeLine{00054\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \_keyT,\ \textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Hash,}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_Pred,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00056\ \textcolor{keywordtype}{bool}\ \textcolor{keyword}{operator}\ ==}
+\DoxyCodeLine{00057\ (\textcolor{keyword}{const}\ std::unordered\_map<\_keyT,\ \_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ a,}
+\DoxyCodeLine{00058\ \ \textcolor{keyword}{const}\ std::unordered\_map<\_keyT,\ \_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ b)}
+\DoxyCodeLine{00059\ \{}
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordflow}{if}\ (a.size()\ !=\ b.size())}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{typename}\ std::unordered\_map<\_keyT,\ \_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>::const\_iterator}
+\DoxyCodeLine{00063\ \ \ \ \ ai,\ bi;}
+\DoxyCodeLine{00064\ \ \ \textcolor{keywordflow}{for}\ (ai\ =\ a.begin();\ ai\ !=\ a.end();\ ++ai)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ bi\ =\ b.find(ai-\/>first);}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{if}\ (bi\ ==\ b.end())}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordflow}{if}\ (bi-\/>second\ !=\ ai-\/>second)}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00070\ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{true});}
+\DoxyCodeLine{00072\ \}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00078\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#if\ (!\ defined(\_\_clang\_\_))}}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#if\ (!\ HAVE\_GPLUSPLUS\_VERSION(4,6))}}
+\DoxyCodeLine{00081\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \_keyT,\ \textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Hash,}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_Pred,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00083\ \textcolor{keywordtype}{bool}\ \textcolor{keyword}{operator}\ !=}
+\DoxyCodeLine{00084\ (\textcolor{keyword}{const}\ std::unordered\_map<\_keyT,\ \_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ a,}
+\DoxyCodeLine{00085\ \ \textcolor{keyword}{const}\ std::unordered\_map<\_keyT,\ \_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ b)}
+\DoxyCodeLine{00086\ \{}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordflow}{return}(!\ (a\ ==\ b));}
+\DoxyCodeLine{00088\ \}}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00094\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#if\ (!\ defined(\_\_clang\_\_))}}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\#if\ (!\ HAVE\_GPLUSPLUS\_VERSION(4,6))}}
+\DoxyCodeLine{00097\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \_keyT,\ \textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Hash,}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_Pred,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00099\ \textcolor{keywordtype}{bool}\ \textcolor{keyword}{operator}\ ==}
+\DoxyCodeLine{00100\ (\textcolor{keyword}{const}\ std::unordered\_multimap<\_keyT,\ \_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ a,}
+\DoxyCodeLine{00101\ \ \textcolor{keyword}{const}\ std::unordered\_multimap<\_keyT,\ \_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ b)}
+\DoxyCodeLine{00102\ \{}
+\DoxyCodeLine{00103\ \ \ \textcolor{comment}{//\ \ Are\ the\ multimaps\ the\ same\ size?}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordflow}{if}\ (a.size()\ !=\ b.size())}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ std::unordered\_multimap<\_keyT,\ \_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>::const\_iterator\ \ ConstIterator;}
+\DoxyCodeLine{00107\ \ \ ConstIterator\ \ ai;}
+\DoxyCodeLine{00108\ \ \ \textcolor{keywordflow}{for}\ (ai\ =\ a.begin();\ ai\ !=\ a.end();\ ++ai)\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ std::pair<ConstIterator,ConstIterator>\ \ aiRange\ =\ }
+\DoxyCodeLine{00110\ \ \ \ \ \ \ a.equal\_range(ai-\/>first);}
+\DoxyCodeLine{00111\ \ \ \ \ std::pair<ConstIterator,ConstIterator>\ \ biRange\ =}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ b.equal\_range(ai-\/>first);}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{comment}{//\ \ Do\ we\ have\ the\ same\ number\ of\ entries\ for\ the\ given\ key\ in}}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{comment}{//\ \ each\ multimap?}}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{if}\ (std::distance(aiRange.first,\ aiRange.second)}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ !=\ std::distance(biRange.first,\ biRange.second))\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00118\ \ \ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \ \ }
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{comment}{//\ \ Do\ we\ have\ the\ same\ number\ of\ each\ value\ for\ the\ given\ key?}}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \ aCount\ =\ 0,\ bCount\ =\ 0;}
+\DoxyCodeLine{00122\ \ \ \ \ ConstIterator\ \ ari\ =\ aiRange.first;}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordflow}{for}\ (\ ;\ ari\ !=\ aiRange.second;\ ++ari)\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ ConstIterator\ \ ri;}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (ri\ =\ aiRange.first;\ ri\ !=\ aiRange.second;\ ++ri)\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ri-\/>second\ ==\ ari-\/>second)\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ ++aCount;}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (ri\ =\ biRange.first\ ;\ ri\ !=\ biRange.second;\ ++ri)\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ri-\/>second\ ==\ ari-\/>second)\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ ++bCount;}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \ \ \}}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordflow}{if}\ (aCount\ !=\ bCount)\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00138\ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \}}
+\DoxyCodeLine{00140\ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{true});}
+\DoxyCodeLine{00141\ \}}
+\DoxyCodeLine{00142\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \textcolor{preprocessor}{\#if\ (!\ defined(\_\_clang\_\_))}}
+\DoxyCodeLine{00146\ \textcolor{preprocessor}{\#if\ (!\ HAVE\_GPLUSPLUS\_VERSION(4,6))}}
+\DoxyCodeLine{00147\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00149\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00150\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \_keyT,\ \textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Hash,}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_Pred,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00152\ \textcolor{keywordtype}{bool}\ \textcolor{keyword}{operator}\ !=}
+\DoxyCodeLine{00153\ (\textcolor{keyword}{const}\ std::unordered\_multimap<\_keyT,\ \_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ a,}
+\DoxyCodeLine{00154\ \ \textcolor{keyword}{const}\ std::unordered\_multimap<\_keyT,\ \_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ b)}
+\DoxyCodeLine{00155\ \{}
+\DoxyCodeLine{00156\ \ \ \textcolor{keywordflow}{return}(!\ (a\ ==\ b));}
+\DoxyCodeLine{00157\ \}}
+\DoxyCodeLine{00158\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00159\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00163\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00164\ \textcolor{preprocessor}{\#if\ (!\ defined(\_\_clang\_\_))}}
+\DoxyCodeLine{00165\ \textcolor{preprocessor}{\#if\ (!\ HAVE\_GPLUSPLUS\_VERSION(4,6))}}
+\DoxyCodeLine{00166\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Hash,}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_Pred,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00168\ \textcolor{keywordtype}{bool}\ \textcolor{keyword}{operator}\ ==}
+\DoxyCodeLine{00169\ (\textcolor{keyword}{const}\ std::unordered\_set<\_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ a,}
+\DoxyCodeLine{00170\ \ \textcolor{keyword}{const}\ std::unordered\_set<\_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ b)}
+\DoxyCodeLine{00171\ \{}
+\DoxyCodeLine{00172\ \ \ \textcolor{keywordflow}{if}\ (a.size()\ !=\ b.size())}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00174\ \ \ \textcolor{keyword}{typename}\ std::unordered\_set<\_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>::const\_iterator}
+\DoxyCodeLine{00175\ \ \ \ \ ai,\ bi;}
+\DoxyCodeLine{00176\ \ \ \textcolor{keywordflow}{for}\ (ai\ =\ a.begin();\ ai\ !=\ a.end();\ ++ai)\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ bi\ =\ b.find(*ai);}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordflow}{if}\ (bi\ ==\ b.end())}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{keywordflow}{if}\ (*bi\ !=\ *ai)}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00182\ \ \ \}}
+\DoxyCodeLine{00183\ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{true});}
+\DoxyCodeLine{00184\ \}}
+\DoxyCodeLine{00185\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00186\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00190\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00191\ \textcolor{preprocessor}{\#if\ (!\ defined(\_\_clang\_\_))}}
+\DoxyCodeLine{00192\ \textcolor{preprocessor}{\#if\ (!\ HAVE\_GPLUSPLUS\_VERSION(4,6))}}
+\DoxyCodeLine{00193\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Hash,}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_Pred,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00195\ \textcolor{keywordtype}{bool}\ \textcolor{keyword}{operator}\ !=}
+\DoxyCodeLine{00196\ (\textcolor{keyword}{const}\ std::unordered\_set<\_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ a,}
+\DoxyCodeLine{00197\ \ \textcolor{keyword}{const}\ std::unordered\_set<\_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ b)}
+\DoxyCodeLine{00198\ \{}
+\DoxyCodeLine{00199\ \ \ \textcolor{keywordflow}{return}(!\ (a\ ==\ b));}
+\DoxyCodeLine{00200\ \}}
+\DoxyCodeLine{00201\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00202\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00204\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00206\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00207\ \textcolor{preprocessor}{\#if\ (!\ defined(\_\_clang\_\_))}}
+\DoxyCodeLine{00208\ \textcolor{preprocessor}{\#if\ (!\ HAVE\_GPLUSPLUS\_VERSION(4,6))}}
+\DoxyCodeLine{00209\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Hash,}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_Pred,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00211\ \textcolor{keywordtype}{bool}\ \textcolor{keyword}{operator}\ ==}
+\DoxyCodeLine{00212\ (\textcolor{keyword}{const}\ std::unordered\_multiset<\_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ a,}
+\DoxyCodeLine{00213\ \ \textcolor{keyword}{const}\ std::unordered\_multiset<\_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ b)}
+\DoxyCodeLine{00214\ \{}
+\DoxyCodeLine{00215\ \ \ \textcolor{comment}{//\ \ Are\ the\ multisets\ the\ same\ size?}}
+\DoxyCodeLine{00216\ \ \ \textcolor{keywordflow}{if}\ (a.size()\ !=\ b.size())}
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00218\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ std::unordered\_multiset<\_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>::const\_iterator\ \ ConstIterator;}
+\DoxyCodeLine{00219\ \ \ ConstIterator\ \ ai;}
+\DoxyCodeLine{00220\ \ \ \textcolor{keywordflow}{for}\ (ai\ =\ a.begin();\ ai\ !=\ a.end();\ ++ai)\ \{}
+\DoxyCodeLine{00221\ \ \ \ \ std::pair<ConstIterator,ConstIterator>\ \ aiRange\ =\ a.equal\_range(*ai);}
+\DoxyCodeLine{00222\ \ \ \ \ std::pair<ConstIterator,ConstIterator>\ \ biRange\ =\ b.equal\_range(*ai);}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{comment}{//\ \ Do\ we\ have\ the\ same\ number\ of\ entries\ for\ the\ given\ key\ in}}
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{comment}{//\ \ each\ multiset?}}
+\DoxyCodeLine{00225\ \ \ \ \ \textcolor{keywordflow}{if}\ (std::distance(aiRange.first,\ aiRange.second)}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ !=\ std::distance(biRange.first,\ biRange.second))\ \{}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00228\ \ \ \ \ \}}
+\DoxyCodeLine{00229\ \ \ \}}
+\DoxyCodeLine{00230\ \ \ \textcolor{keywordflow}{return}(\textcolor{keyword}{true});}
+\DoxyCodeLine{00231\ \}}
+\DoxyCodeLine{00232\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00233\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00235\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00237\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00238\ \textcolor{preprocessor}{\#if\ (!\ defined(\_\_clang\_\_))}}
+\DoxyCodeLine{00239\ \textcolor{preprocessor}{\#if\ (!\ HAVE\_GPLUSPLUS\_VERSION(4,6))}}
+\DoxyCodeLine{00240\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \_valueT,\ \textcolor{keyword}{typename}\ \_Hash,}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_Pred,\ \textcolor{keyword}{typename}\ \_Alloc>}
+\DoxyCodeLine{00242\ \textcolor{keywordtype}{bool}\ \textcolor{keyword}{operator}\ !=}
+\DoxyCodeLine{00243\ (\textcolor{keyword}{const}\ std::unordered\_multiset<\_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ a,}
+\DoxyCodeLine{00244\ \ \textcolor{keyword}{const}\ std::unordered\_multiset<\_valueT,\ \_Hash,\ \_Pred,\ \_Alloc>\ \&\ b)}
+\DoxyCodeLine{00245\ \{}
+\DoxyCodeLine{00246\ \ \ \textcolor{keywordflow}{return}(!\ (a\ ==\ b));}
+\DoxyCodeLine{00247\ \}}
+\DoxyCodeLine{00248\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00249\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ \_DWMOPERATORS\_HH\_}}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ emacs\ settings\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00254\ \textcolor{comment}{//\ \ Local\ Variables:}}
+\DoxyCodeLine{00255\ \textcolor{comment}{//\ \ mode:\ C++}}
+\DoxyCodeLine{00256\ \textcolor{comment}{//\ \ tab-\/width:\ 2}}
+\DoxyCodeLine{00257\ \textcolor{comment}{//\ \ indent-\/tabs-\/mode:\ nil}}
+\DoxyCodeLine{00258\ \textcolor{comment}{//\ \ c-\/basic-\/offset:\ 2}}
+\DoxyCodeLine{00259\ \textcolor{comment}{//\ \ End:}}
+\DoxyCodeLine{00260\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+
+\end{DoxyCode}

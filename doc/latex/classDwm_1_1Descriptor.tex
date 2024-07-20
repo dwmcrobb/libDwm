@@ -1,0 +1,159 @@
+\doxysection{Dwm\+::Descriptor Class Reference}
+\hypertarget{classDwm_1_1Descriptor}{}\label{classDwm_1_1Descriptor}\index{Dwm::Descriptor@{Dwm::Descriptor}}
+
+
+This class encapsulates UNIX file and socket descriptors.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Descriptor.\+hh$>$}
+
+
+
+Inheritance diagram for Dwm\+::Descriptor\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=170pt]{classDwm_1_1Descriptor__inherit__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Descriptor_a8b4c3944f59ffee4e5438095a9c42171}\label{classDwm_1_1Descriptor_a8b4c3944f59ffee4e5438095a9c42171} 
+{\bfseries Descriptor} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Descriptor_afc5c1fdd510323be5ccd30353f7de5cc}\label{classDwm_1_1Descriptor_afc5c1fdd510323be5ccd30353f7de5cc} 
+{\bfseries Descriptor} (const \mbox{\hyperlink{classDwm_1_1Descriptor}{Descriptor}} \&d)
+\begin{DoxyCompactList}\small\item\em Copy constructor. Will dup() the descriptor of {\ttfamily d}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Descriptor_a31fa600c9848273396268113b98d0e85}\label{classDwm_1_1Descriptor_a31fa600c9848273396268113b98d0e85} 
+{\bfseries Descriptor} (int d)
+\item 
+\mbox{\hyperlink{classDwm_1_1Descriptor}{Descriptor}} \& \mbox{\hyperlink{classDwm_1_1Descriptor_a5e9592846723fa12da41469f10ca935d}{operator=}} (const \mbox{\hyperlink{classDwm_1_1Descriptor}{Descriptor}} \&d)
+\begin{DoxyCompactList}\small\item\em operator = (assignment operator). \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Descriptor_ac93825075116acbeda33cbd94aaa8cb7}\label{classDwm_1_1Descriptor_ac93825075116acbeda33cbd94aaa8cb7} 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Descriptor} ()
+\begin{DoxyCompactList}\small\item\em Destructor. Note this will close the underlying UNIX descriptor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Descriptor_a3fae2dc921f251fee43c7e04588e3787}\label{classDwm_1_1Descriptor_a3fae2dc921f251fee43c7e04588e3787} 
+virtual bool {\bfseries Close} ()
+\begin{DoxyCompactList}\small\item\em Closes the \doxylink{classDwm_1_1Descriptor}{Descriptor}. Returns true on success, false on failure. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classDwm_1_1Descriptor_aca6c2668ebd96f7e8b6e61d9c8be041c}{Attach}} (int fd)
+\begin{DoxyCompactList}\small\item\em Associates the \doxylink{classDwm_1_1Descriptor}{Descriptor} with an existing UNIX descriptor {\ttfamily fd}. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classDwm_1_1Descriptor_a879e7503f944f28cd9e0c59cdc1066e5}{Detach}} ()
+\begin{DoxyCompactList}\small\item\em Disassociates the \doxylink{classDwm_1_1Descriptor}{Descriptor} from the underlying UNIX descriptor. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classDwm_1_1Descriptor_ab777c2b3e41082592f4f1d6c3728fad9}{Set\+Non\+Blocking}} ()
+\begin{DoxyCompactList}\small\item\em Sets the \doxylink{classDwm_1_1Descriptor}{Descriptor} to non-\/blocking. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classDwm_1_1Descriptor_a441b83b212d7ff887603d654b0f54e1b}{Set\+Blocking}} ()
+\begin{DoxyCompactList}\small\item\em Sets the soccket to blocking. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Descriptor_a1311cd834aa2da4f4b9ed5e8eb613cc7}\label{classDwm_1_1Descriptor_a1311cd834aa2da4f4b9ed5e8eb613cc7} 
+virtual {\bfseries operator int} () const
+\begin{DoxyCompactList}\small\item\em This completely blows encapsulation, but is needed so that \doxylink{classDwm_1_1Descriptor}{Descriptor} may be used in place of a UNIX descriptor in retrofitted code. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classDwm_1_1Descriptor_a4a8da71f7d116a741b28698a0b2e42bd}{Fd\+Set}} (fd\+\_\+set \&fd\+Set)
+\begin{DoxyCompactList}\small\item\em If \doxylink{classDwm_1_1Descriptor}{Descriptor} is valid, sets it in {\ttfamily fd\+Set} and returns true. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classDwm_1_1Descriptor_ad55978f4722ab91e49e3f63fb0bd6005}{Fd\+Clr}} (fd\+\_\+set \&fd\+Set)
+\begin{DoxyCompactList}\small\item\em If \doxylink{classDwm_1_1Descriptor}{Descriptor} is valid, clears it in {\ttfamily fd\+Set} and returns true. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classDwm_1_1Descriptor_a57a0f16cd6ac82e2b8ab09c7ec57eb5a}{Fd\+Is\+Set}} (fd\+\_\+set \&fd\+Set)
+\begin{DoxyCompactList}\small\item\em If \doxylink{classDwm_1_1Descriptor}{Descriptor} is valid and is set in {\ttfamily fd\+Set}, returns true. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Descriptor_accff887726611976964c93cf0a1f8a41}\label{classDwm_1_1Descriptor_accff887726611976964c93cf0a1f8a41} 
+virtual bool {\bfseries Read\+Would\+Block} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Descriptor_a2133ba81685fbfde74147e2c416b9260}\label{classDwm_1_1Descriptor_a2133ba81685fbfde74147e2c416b9260} 
+int {\bfseries \+\_\+fd}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class encapsulates UNIX file and socket descriptors. 
+
+It only abstracts those functions which have common interfaces, so that applications may use this interface to handle both file and socket descriptor I/O in the same place. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1Descriptor_aca6c2668ebd96f7e8b6e61d9c8be041c}\index{Dwm::Descriptor@{Dwm::Descriptor}!Attach@{Attach}}
+\index{Attach@{Attach}!Dwm::Descriptor@{Dwm::Descriptor}}
+\doxysubsubsection{\texorpdfstring{Attach()}{Attach()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Descriptor_aca6c2668ebd96f7e8b6e61d9c8be041c} 
+virtual bool Dwm\+::\+Descriptor\+::\+Attach (\begin{DoxyParamCaption}\item[{int}]{fd}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Associates the \doxylink{classDwm_1_1Descriptor}{Descriptor} with an existing UNIX descriptor {\ttfamily fd}. 
+
+Note this will cause the \doxylink{classDwm_1_1Descriptor}{Descriptor} to automatically close {\ttfamily fd} when destructed. Returns true if {\ttfamily fd} is a valid descriptor, else returns false. \Hypertarget{classDwm_1_1Descriptor_a879e7503f944f28cd9e0c59cdc1066e5}\index{Dwm::Descriptor@{Dwm::Descriptor}!Detach@{Detach}}
+\index{Detach@{Detach}!Dwm::Descriptor@{Dwm::Descriptor}}
+\doxysubsubsection{\texorpdfstring{Detach()}{Detach()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Descriptor_a879e7503f944f28cd9e0c59cdc1066e5} 
+virtual bool Dwm\+::\+Descriptor\+::\+Detach (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Disassociates the \doxylink{classDwm_1_1Descriptor}{Descriptor} from the underlying UNIX descriptor. 
+
+Returns true on success, false on failure. \Hypertarget{classDwm_1_1Descriptor_ad55978f4722ab91e49e3f63fb0bd6005}\index{Dwm::Descriptor@{Dwm::Descriptor}!FdClr@{FdClr}}
+\index{FdClr@{FdClr}!Dwm::Descriptor@{Dwm::Descriptor}}
+\doxysubsubsection{\texorpdfstring{FdClr()}{FdClr()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Descriptor_ad55978f4722ab91e49e3f63fb0bd6005} 
+virtual bool Dwm\+::\+Descriptor\+::\+Fd\+Clr (\begin{DoxyParamCaption}\item[{fd\+\_\+set \&}]{fd\+Set}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+If \doxylink{classDwm_1_1Descriptor}{Descriptor} is valid, clears it in {\ttfamily fd\+Set} and returns true. 
+
+Else returns false. \Hypertarget{classDwm_1_1Descriptor_a57a0f16cd6ac82e2b8ab09c7ec57eb5a}\index{Dwm::Descriptor@{Dwm::Descriptor}!FdIsSet@{FdIsSet}}
+\index{FdIsSet@{FdIsSet}!Dwm::Descriptor@{Dwm::Descriptor}}
+\doxysubsubsection{\texorpdfstring{FdIsSet()}{FdIsSet()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Descriptor_a57a0f16cd6ac82e2b8ab09c7ec57eb5a} 
+virtual bool Dwm\+::\+Descriptor\+::\+Fd\+Is\+Set (\begin{DoxyParamCaption}\item[{fd\+\_\+set \&}]{fd\+Set}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+If \doxylink{classDwm_1_1Descriptor}{Descriptor} is valid and is set in {\ttfamily fd\+Set}, returns true. 
+
+Else returns false. \Hypertarget{classDwm_1_1Descriptor_a4a8da71f7d116a741b28698a0b2e42bd}\index{Dwm::Descriptor@{Dwm::Descriptor}!FdSet@{FdSet}}
+\index{FdSet@{FdSet}!Dwm::Descriptor@{Dwm::Descriptor}}
+\doxysubsubsection{\texorpdfstring{FdSet()}{FdSet()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Descriptor_a4a8da71f7d116a741b28698a0b2e42bd} 
+virtual bool Dwm\+::\+Descriptor\+::\+Fd\+Set (\begin{DoxyParamCaption}\item[{fd\+\_\+set \&}]{fd\+Set}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+If \doxylink{classDwm_1_1Descriptor}{Descriptor} is valid, sets it in {\ttfamily fd\+Set} and returns true. 
+
+Else returns false. \Hypertarget{classDwm_1_1Descriptor_a5e9592846723fa12da41469f10ca935d}\index{Dwm::Descriptor@{Dwm::Descriptor}!operator=@{operator=}}
+\index{operator=@{operator=}!Dwm::Descriptor@{Dwm::Descriptor}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Descriptor_a5e9592846723fa12da41469f10ca935d} 
+\mbox{\hyperlink{classDwm_1_1Descriptor}{Descriptor}} \& Dwm\+::\+Descriptor\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classDwm_1_1Descriptor}{Descriptor}} \&}]{d}{}\end{DoxyParamCaption})}
+
+
+
+operator = (assignment operator). 
+
+Will close {\ttfamily this} and then dup() the descriptor of {\ttfamily d}. \Hypertarget{classDwm_1_1Descriptor_a441b83b212d7ff887603d654b0f54e1b}\index{Dwm::Descriptor@{Dwm::Descriptor}!SetBlocking@{SetBlocking}}
+\index{SetBlocking@{SetBlocking}!Dwm::Descriptor@{Dwm::Descriptor}}
+\doxysubsubsection{\texorpdfstring{SetBlocking()}{SetBlocking()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Descriptor_a441b83b212d7ff887603d654b0f54e1b} 
+virtual bool Dwm\+::\+Descriptor\+::\+Set\+Blocking (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Sets the soccket to blocking. 
+
+Returns true on success, false on failure. \Hypertarget{classDwm_1_1Descriptor_ab777c2b3e41082592f4f1d6c3728fad9}\index{Dwm::Descriptor@{Dwm::Descriptor}!SetNonBlocking@{SetNonBlocking}}
+\index{SetNonBlocking@{SetNonBlocking}!Dwm::Descriptor@{Dwm::Descriptor}}
+\doxysubsubsection{\texorpdfstring{SetNonBlocking()}{SetNonBlocking()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Descriptor_ab777c2b3e41082592f4f1d6c3728fad9} 
+virtual bool Dwm\+::\+Descriptor\+::\+Set\+Non\+Blocking (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Sets the \doxylink{classDwm_1_1Descriptor}{Descriptor} to non-\/blocking. 
+
+Returns true on success, false on failure. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmDescriptor_8hh}{Dwm\+Descriptor.\+hh}}\end{DoxyCompactItemize}

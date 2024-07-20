@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2005-2007, 2020
+//  Copyright (c) Daniel W. McRobb 2005-2007, 2020, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -42,19 +42,10 @@
 #ifndef _DWMTIMEINTERVAL_HH_
 #define _DWMTIMEINTERVAL_HH_
 
-extern "C" {
-  #include <assert.h>
-}
-
+#include <cassert>
 #include <utility>
 
 #include "DwmTimeValue.hh"
-#include "DwmDescriptorIOCapable.hh"
-#include "DwmFileIOCapable.hh"
-#include "DwmStreamIOCapable.hh"
-#include "DwmStreamedLengthCapable.hh"
-#include "DwmGZIOCapable.hh"
-#include "DwmBZ2IOCapable.hh"
 
 namespace Dwm {
 
@@ -62,8 +53,6 @@ namespace Dwm {
   //!  This class encapsulates a time interval.
   //--------------------------------------------------------------------------
   class TimeInterval
-    : public DescriptorIOCapable, public FileIOCapable, public StreamIOCapable,
-      public StreamedLengthCapable, public GZIOCapable, public BZ2IOCapable
   {
   public:
     //------------------------------------------------------------------------
@@ -157,65 +146,65 @@ namespace Dwm {
     //!  Returns the length of the time insterval, in bytes.  This is
     //!  used for some I/O functions.
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const override;
+    uint64_t StreamedLength() const;
 
     //------------------------------------------------------------------------
     //!  Reads the time interval from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    std::istream & Read(std::istream & is) override;
+    std::istream & Read(std::istream & is);
 
     //------------------------------------------------------------------------
     //!  Writes the time interval to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const override;
+    std::ostream & Write(std::ostream & os) const;
 
     //------------------------------------------------------------------------
     //!  Reads the time interval from a FILE pointer.  Returns 1 on success,
     //!  0 on failure.
     //------------------------------------------------------------------------
-    size_t Read(FILE *f) override;
+    size_t Read(FILE *f);
 
     //------------------------------------------------------------------------
     //!  Writes the time interval to a FILE pointer.  Returns 1 on success,
     //!  0 on failure.
     //------------------------------------------------------------------------
-    size_t Write(FILE *f) const override;
+    size_t Write(FILE *f) const;
 
     //------------------------------------------------------------------------
     //!  Reads the time interval from a file descriptor.  Returns the number
     //!  of bytes read on success, -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Read(int fd) override;
+    ssize_t Read(int fd);
 
     //------------------------------------------------------------------------
     //!  Wries the time interval to a file descriptor.  Returns the number
     //!  of bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Write(int fd) const override;
+    ssize_t Write(int fd) const;
 
     //------------------------------------------------------------------------
     //!  Reads the time interval from a gzFile.  Returns the number of
     //!  bytes read on success, -1 on failure.
     //------------------------------------------------------------------------
-    int Read(gzFile gzf) override;
+    int Read(gzFile gzf);
 
     //------------------------------------------------------------------------
     //!  Writes the time interval to a gzFile.  Returns the number of bytes
     //!  written on success, -1 on failure.
     //------------------------------------------------------------------------
-    int Write(gzFile gzf) const override;
+    int Write(gzFile gzf) const;
 
     //------------------------------------------------------------------------
     //!  Reads the time interval from a BZFILE pointer.  Returns the number
     //!  of bytes read on success, -1 on failure.
     //------------------------------------------------------------------------
-    int BZRead(BZFILE *bzf) override;
+    int BZRead(BZFILE *bzf);
 
     //------------------------------------------------------------------------
     //!  Writes the time interval to a BZFILE pointer.  Returns the number
     //!  of bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
-    int BZWrite(BZFILE *bzf) const override;
+    int BZWrite(BZFILE *bzf) const;
     
   private:
     std::pair<TimeValue, TimeValue>  _data;

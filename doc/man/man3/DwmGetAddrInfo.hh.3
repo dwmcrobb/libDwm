@@ -1,0 +1,39 @@
+.TH "DwmGetAddrInfo.hh" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+DwmGetAddrInfo.hh \- Dwm::GetAddrInfo function definition\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <sys/types\&.h>\fP
+.br
+\fR#include <sys/socket\&.h>\fP
+.br
+\fR#include <netdb\&.h>\fP
+.br
+\fR#include <set>\fP
+.br
+\fR#include <string>\fP
+.br
+\fR#include 'DwmIpv4Address\&.hh'\fP
+.br
+\fR#include 'DwmIpv6Address\&.hh'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "bool \fBDwm::GetAddrInfo\fP (const std::string &hostName, std::set< \fBIpv4Address\fP > &ip4Addrs, std::set< \fBIpv6Address\fP > &ip6Addrs, int flags=AI_ADDRCONFIG)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Dwm::GetAddrInfo function definition\&. 
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

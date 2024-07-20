@@ -1,0 +1,60 @@
+.TH "DwmOperators.hh" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+DwmOperators.hh \- Miscellaneous operators\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <unordered_map>\fP
+.br
+\fR#include <unordered_set>\fP
+.br
+\fR#include 'DwmPortability\&.hh'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > bool \fBoperator==\fP (const std::unordered_map< _keyT, _valueT, _Hash, _Pred, _Alloc > &a, const std::unordered_map< _keyT, _valueT, _Hash, _Pred, _Alloc > &b)"
+.br
+.RI "operator == for unordered_map\&. "
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > bool \fBoperator!=\fP (const std::unordered_map< _keyT, _valueT, _Hash, _Pred, _Alloc > &a, const std::unordered_map< _keyT, _valueT, _Hash, _Pred, _Alloc > &b)"
+.br
+.RI "operator != for unordered_map\&. "
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > bool \fBoperator==\fP (const std::unordered_multimap< _keyT, _valueT, _Hash, _Pred, _Alloc > &a, const std::unordered_multimap< _keyT, _valueT, _Hash, _Pred, _Alloc > &b)"
+.br
+.RI "operator == for unordered_multimap\&. "
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > bool \fBoperator!=\fP (const std::unordered_multimap< _keyT, _valueT, _Hash, _Pred, _Alloc > &a, const std::unordered_multimap< _keyT, _valueT, _Hash, _Pred, _Alloc > &b)"
+.br
+.RI "operator != for unordered_multimap\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > bool \fBoperator==\fP (const std::unordered_set< _valueT, _Hash, _Pred, _Alloc > &a, const std::unordered_set< _valueT, _Hash, _Pred, _Alloc > &b)"
+.br
+.RI "operator == for unordered_set\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > bool \fBoperator!=\fP (const std::unordered_set< _valueT, _Hash, _Pred, _Alloc > &a, const std::unordered_set< _valueT, _Hash, _Pred, _Alloc > &b)"
+.br
+.RI "operator != for unordered_set\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > bool \fBoperator==\fP (const std::unordered_multiset< _valueT, _Hash, _Pred, _Alloc > &a, const std::unordered_multiset< _valueT, _Hash, _Pred, _Alloc > &b)"
+.br
+.RI "operator == for unordered_multiset\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > bool \fBoperator!=\fP (const std::unordered_multiset< _valueT, _Hash, _Pred, _Alloc > &a, const std::unordered_multiset< _valueT, _Hash, _Pred, _Alloc > &b)"
+.br
+.RI "operator != for unordered_multiset\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Miscellaneous operators\&. 
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

@@ -1,0 +1,70 @@
+.TH "Dwm::ProcessTree" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::ProcessTree \- Encapsulates a process tree, i\&.e\&. a process and its descendants\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmProcessTree\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBProcessTree\fP ()=default"
+.br
+.RI "Defaulted constructors and assignment operators\&. "
+.ti -1c
+.RI "\fBProcessTree\fP (const \fBProcessTree\fP &)=default"
+.br
+.ti -1c
+.RI "\fBProcessTree\fP (\fBProcessTree\fP &&)=default"
+.br
+.ti -1c
+.RI "\fBProcessTree\fP & \fBoperator=\fP (const \fBProcessTree\fP &)=default"
+.br
+.ti -1c
+.RI "\fBProcessTree\fP & \fBoperator=\fP (\fBProcessTree\fP &&)=default"
+.br
+.ti -1c
+.RI "\fBProcessTree\fP (pid_t pid)"
+.br
+.RI "Create a process tree rooted at the given process ID \fRpid\fP\&. "
+.ti -1c
+.RI "const ProcessInfo & \fBProcInfo\fP () const"
+.br
+.RI "Returns the process info for the process\&. "
+.ti -1c
+.RI "const std::map< pid_t, \fBProcessTree\fP > & \fBChildren\fP () const"
+.br
+.RI "Returns the children of the process\&. "
+.ti -1c
+.RI "nlohmann::json \fBToJson\fP () const"
+.br
+.in -1c
+.SS "Friends"
+
+.in +1c
+.ti -1c
+.RI "std::ostream & \fBoperator<<\fP (std::ostream &os, const \fBProcessTree\fP &pt)"
+.br
+.RI "Prints the process tree to an ostream\&. "
+.ti -1c
+.RI "bool \fBToJson\fP (const \fBProcessTree\fP &processTree, nlohmann::json &json)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Encapsulates a process tree, i\&.e\&. a process and its descendants\&. 
+.SH "Friends And Related Symbol Documentation"
+.PP 
+.SS "std::ostream & operator<< (std::ostream & os, const \fBProcessTree\fP & pt)\fR [friend]\fP"
+
+.PP
+Prints the process tree to an ostream\&. This isn't very useful, it's mostly for debugging\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

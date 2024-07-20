@@ -7,7 +7,7 @@
  *
  *  This class library is just a (somewhat random) collection of classes
  *  I've developed over the years for various applications.  Since these
- *  are used in a variety of places, they're collected here to make re-use
+ *  are used in a variety of places, they're collected here to make reuse
  *  easy.
  *
  *  There are a few classes herein that I've used on nearly every
@@ -37,7 +37,7 @@
  *  \section platforms_sec Platforms
  *
  *  I really only maintain support for 4 platforms: FreeBSD, macOS,
- *  desktop linux and Raspbian.
+ *  desktop linux and Raspberry Pi OS.
  *  FreeBSD is my operating system of choice for servers and macOS is my
  *  operating system of choice for desktops and laptops.  I have
  *  several Raspberry Pis I utilize for simple small tasks, and Ubuntu
@@ -71,7 +71,11 @@
  *  However, I wrote most of this functionality in 2004 when we didn't
  *  have a lot of options to support serialization and finalized most of
  *  it in 2007 with the addition of cleaner code for std::tuple.  I
- *  couldn't do this effectively until the compilers were up to speed.
+ *  couldn't do this effectively until the compilers and standard libraries
+ *  were up to speed.  With C++11 and beyond, I was able to simplify some
+ *  of the code thanks to things like variadic templates.  Given that
+ *  we now have C++23 and still no reflection, this work has paid big
+ *  dividends for me.
  *
  *  Why did I spend time on this functionality?  I frequently need to do
  *  things like this (error checking absent for the sake of brevity):
@@ -147,29 +151,5 @@
  *  Dwm::SysLogger::MinimumPriority(const std::string &).  This is handy
  *  when you want to toggle debug logging while a program is running,
  *  perhaps via a signal.
- *
- *  \subsection dwm_pacer_sec Dwm::Pacer - pacing repetitive calls
- *
- *  Documentation forthcoming
- *
- *  \subsection dwm_networking_sec Networking classes
- *  Documentation forthcoming for Dwm::HostPinger, ICMP classes, TCP
- *  classes, Dwm::Pcap, etc.
- *
- *  \subsubsection dwm_pcap_sec Dwm::Pcap - simple pcap wrapper class
- *  Dwm::Pcap is a simple wrapper class for pcap (packet capture library).
- *  It doesn't do anything beyond what libpcap provides, it simply wraps
- *  in in a C++ interface.
- *
- *  \subsubsection dwm_hostpinger_sec Dwm::HostPinger - pinging IP hosts
- *  Dwm::HostPinger is a class that allows the 'pinging' of one or more
- *  IP hosts using ICMP or TCP.  The overall packet rate may be controlled,
- *  and an object may be registered for the reception of responding host,
- *  receive time and round-trip time.
- *
- *  \subsubsection dwm_icmpclasses_sec ICMP classes
- *
- *  \subsection dwm_threadqueue_sec Dwm::ThreadQueue - inter-thread communication
- *  Documentation forthcoming.
  *
 */

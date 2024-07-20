@@ -1,0 +1,76 @@
+.TH "Dwm::OptArgs" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::OptArgs \- Class to encapsulate command line options and parse them\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmOptArgs\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBAddOptArg\fP (const \fBOptArg\fP &optarg)"
+.br
+.RI "Adds an optional argument\&. "
+.ti -1c
+.RI "void \fBAddOptArg\fP (const std::string &name, const std::string &longName, bool isRequired=false, const std::string &def='', const std::string &help='')"
+.br
+.RI "Adds an optional argument\&. "
+.ti -1c
+.RI "void \fBAddNormalArg\fP (const std::string &name, bool required)"
+.br
+.ti -1c
+.RI "template<typename T > T \fBGet\fP (int c)"
+.br
+.RI "Fetches the value of an optional argument by its short name\&. "
+.ti -1c
+.RI "template<typename T > T \fBGet\fP (const std::string &s)"
+.br
+.RI "Fetches the value of an optional argument by its long name\&. "
+.ti -1c
+.RI "int \fBParse\fP (int argc, const std::string argv[])"
+.br
+.RI "Parses all optional arguments\&. "
+.ti -1c
+.RI "int \fBParse\fP (int argc, char *argv[])"
+.br
+.RI "Parses all optional arguments\&. "
+.ti -1c
+.RI "void \fBUsage\fP (const std::string &argv0) const"
+.br
+.RI "Prints the usage statement\&. "
+.in -1c
+.SS "Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "std::map< int, \fBOptArg\fP > \fB_args\fP"
+.br
+.ti -1c
+.RI "std::map< std::string, \fBOptArg\fP * > \fB_longArgs\fP"
+.br
+.ti -1c
+.RI "std::vector< std::pair< std::string, bool > > \fB_normalArgs\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Class to encapsulate command line options and parse them\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "int Dwm::OptArgs::Parse (int argc, char * argv[])"
+
+.PP
+Parses all optional arguments\&. Returns the next argument index, which the caller should compare against argc\&. If parsing fails, will emit a usage statement and exit\&. 
+.SS "int Dwm::OptArgs::Parse (int argc, const std::string argv[])"
+
+.PP
+Parses all optional arguments\&. Returns the next argument index, which the caller should compare against argc\&. If parsing fails, will emit a usage statement and exit\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

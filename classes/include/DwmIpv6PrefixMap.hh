@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2021, 2023
+//  Copyright (c) Daniel W. McRobb 2021, 2023, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -102,10 +102,6 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   template <typename T, typename Hash = OurIpv6PrefixHash>
   class Ipv6PrefixMap
-    : public StreamIOCapable, public FileIOCapable,
-      public DescriptorIOCapable, public StreamedLengthCapable,
-      public GZIOCapable, public BZ2IOCapable,
-      public ASIOCapable
   {
   public:
     //------------------------------------------------------------------------
@@ -363,7 +359,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Reads the Ipv6PrefixMap from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    std::istream & Read(std::istream & is) override
+    std::istream & Read(std::istream & is)
     {
       std::unique_lock  lck(_mtx);
       return StreamIO::Read(is, _maps);
@@ -372,7 +368,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Writes the Ipv6PrefixMap to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const override
+    std::ostream & Write(std::ostream & os) const
     {
       std::shared_lock  lck(_mtx);
       return StreamIO::Write(os, _maps);
@@ -382,7 +378,7 @@ namespace Dwm {
     //!  Reads the Ipv6PrefixMap from @c f.  Returns 1 on success, 0 on
     //!  failure.
     //------------------------------------------------------------------------
-    size_t Read(FILE *f) override
+    size_t Read(FILE *f)
     {
       std::unique_lock  lck(_mtx);
       return FileIO::Read(f, _maps);
@@ -392,7 +388,7 @@ namespace Dwm {
     //!  Writes the Ipv6PrefixMap to @c f.  Returns 1 on success, 0 on
     //!  failure.
     //------------------------------------------------------------------------
-    size_t Write(FILE *f) const override
+    size_t Write(FILE *f) const
     {
       std::shared_lock  lck(_mtx);
       return FileIO::Write(f, _maps);
@@ -402,7 +398,7 @@ namespace Dwm {
     //!  Reads the Ipv6PrefixMap from file descriptor @c fd.  Returns the
     //!  number of bytes read on success, -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Read(int fd) override
+    ssize_t Read(int fd)
     {
       std::unique_lock  lck(_mtx);
       return DescriptorIO::Read(fd, _maps);
@@ -412,7 +408,7 @@ namespace Dwm {
     //!  Writes the Ipv6PrefixMap to file descriptor @c fd.  Returns the
     //!  number of bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Write(int fd) const override
+    ssize_t Write(int fd) const
     {
       std::shared_lock  lck(_mtx);
       return DescriptorIO::Write(fd, _maps);
@@ -424,7 +420,7 @@ namespace Dwm {
     //!  risky (could overflow) but it's what zlib's gzread() returns and
     //!  we trickled up the return type.
     //------------------------------------------------------------------------
-    int Read(gzFile gzf) override
+    int Read(gzFile gzf)
     {
       std::unique_lock  lck(_mtx);
       return GZIO::Read(gzf, _maps);
@@ -436,7 +432,7 @@ namespace Dwm {
     //!  risky (could overflow) but it's what zlib's gzread() returns and
     //!  we trickled up the return type.
     //------------------------------------------------------------------------
-    int Write(gzFile gzf) const override
+    int Write(gzFile gzf) const
     {
       std::shared_lock  lck(_mtx);
       return GZIO::Write(gzf, _maps);
@@ -448,7 +444,7 @@ namespace Dwm {
     //!  risky (could overflow) but it's what bzlib's BZ2_bzRead() returns
     //!  and we trickled up the return type.
     //------------------------------------------------------------------------
-    int BZRead(BZFILE *bzf) override
+    int BZRead(BZFILE *bzf)
     {
       std::unique_lock  lck(_mtx);
       return BZ2IO::BZRead(bzf, _maps);
@@ -460,7 +456,7 @@ namespace Dwm {
     //!  risky (could overflow) but it's what bzlib's BZ2_bzWrite() returns
     //!  and we trickled up the return type.
     //------------------------------------------------------------------------
-    int BZWrite(BZFILE *bzf) const override
+    int BZWrite(BZFILE *bzf) const
     {
       std::shared_lock  lck(_mtx);
       return BZ2IO::BZWrite(bzf, _maps);
@@ -470,7 +466,7 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if the
     //!  Ipv6PrefixMap was written to a FILE, file descriptor or ostream.
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const override
+    uint64_t StreamedLength() const
     {
       std::shared_lock  lck(_mtx);
       return IOUtils::StreamedLength(_maps);
@@ -481,7 +477,7 @@ namespace Dwm {
     //!  on failure.
     //------------------------------------------------------------------------
     bool Read(boost::asio::ip::tcp::socket & s,
-              boost::system::error_code & ec) override
+              boost::system::error_code & ec)
     {
       std::unique_lock  lck(_mtx);
       return ASIO::Read(s, _maps, ec);
@@ -492,7 +488,7 @@ namespace Dwm {
     //!  on failure.
     //------------------------------------------------------------------------
     bool Read(boost::asio::local::stream_protocol::socket & s,
-              boost::system::error_code & ec) override
+              boost::system::error_code & ec)
     {
       std::unique_lock  lck(_mtx);
       return ASIO::Read(s, _maps, ec);
@@ -503,7 +499,7 @@ namespace Dwm {
     //!  on failure.
     //------------------------------------------------------------------------
     bool Read(boost::asio::generic::stream_protocol::socket & s,
-              boost::system::error_code & ec) override
+              boost::system::error_code & ec)
     {
       std::unique_lock  lck(_mtx);
       return ASIO::Read(s, _maps, ec);
@@ -514,7 +510,7 @@ namespace Dwm {
     //!  on failure.
     //------------------------------------------------------------------------
     bool Write(boost::asio::ip::tcp::socket & s,
-               boost::system::error_code & ec) const override
+               boost::system::error_code & ec) const
     {
       std::shared_lock  lck(_mtx);
       return ASIO::Write(s, _maps, ec);
@@ -525,7 +521,7 @@ namespace Dwm {
     //!  on failure.
     //------------------------------------------------------------------------
     bool Write(boost::asio::local::stream_protocol::socket & s,
-               boost::system::error_code & ec) const override
+               boost::system::error_code & ec) const
     {
       std::shared_lock  lck(_mtx);
       return ASIO::Write(s, _maps, ec);
@@ -536,7 +532,7 @@ namespace Dwm {
     //!  on failure.
     //------------------------------------------------------------------------
     bool Write(boost::asio::generic::stream_protocol::socket & s,
-               boost::system::error_code & ec) const override
+               boost::system::error_code & ec) const
     {
       std::shared_lock  lck(_mtx);
       return ASIO::Write(s, _maps, ec);

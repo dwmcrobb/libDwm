@@ -1,0 +1,390 @@
+.TH "Dwm::StreamIO" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::StreamIO \- This class contains a collection of static functions for reading and writing simple types, in network byte order (MSB first)\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmStreamIO\&.hh>\fP
+.SS "Static Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "static std::istream & \fBRead\fP (std::istream &is, char &c)"
+.br
+.RI "Reads \fRc\fP from \fRis\fP\&. Returns \fRis\fP\&. "
+.ti -1c
+.RI "static std::ostream & \fBWrite\fP (std::ostream &os, char c)"
+.br
+.RI "Writes \fRc\fP to \fRos\fP\&. Returns \fRos\fP\&. "
+.ti -1c
+.RI "static std::istream & \fBRead\fP (std::istream &is, uint8_t &c)"
+.br
+.RI "Reads \fRc\fP from \fRis\fP\&. Returns \fRis\fP\&. "
+.ti -1c
+.RI "static std::ostream & \fBWrite\fP (std::ostream &os, uint8_t c)"
+.br
+.RI "Writes \fRc\fP to \fRos\fP\&. Returns \fRos\fP\&. "
+.ti -1c
+.RI "static std::istream & \fBRead\fP (std::istream &is, bool &b)"
+.br
+.RI "Reads \fRb\fP from \fRis\fP\&. Returns \fRis\fP\&. "
+.ti -1c
+.RI "static std::ostream & \fBWrite\fP (std::ostream &os, bool b)"
+.br
+.RI "Writes a bool \fRb\fP to an ostream \fRos\fP\&. Returns \fRos\fP\&. "
+.ti -1c
+.RI "static std::istream & \fBRead\fP (std::istream &is, int16_t &val)"
+.br
+.RI "Reads \fRval\fP from \fRis\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static std::ostream & \fBWrite\fP (std::ostream &os, int16_t val)"
+.br
+.RI "Writes \fRval\fP to \fRos\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static std::istream & \fBRead\fP (std::istream &is, uint16_t &val)"
+.br
+.RI "Reads \fRval\fP from \fRis\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static std::ostream & \fBWrite\fP (std::ostream &os, uint16_t val)"
+.br
+.RI "Writes \fRval\fP to \fRos\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static std::istream & \fBRead\fP (std::istream &is, int32_t &val)"
+.br
+.RI "Reads \fRval\fP from \fRis\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static std::ostream & \fBWrite\fP (std::ostream &os, int32_t val)"
+.br
+.RI "Writes \fRval\fP to \fRos\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static std::istream & \fBRead\fP (std::istream &is, uint32_t &val)"
+.br
+.RI "Reads \fRval\fP from \fRis\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static std::ostream & \fBWrite\fP (std::ostream &os, uint32_t val)"
+.br
+.RI "Writes \fRval\fP to \fRos\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static std::istream & \fBRead\fP (std::istream &is, int64_t &val)"
+.br
+.RI "Reads \fRval\fP from \fRis\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static std::ostream & \fBWrite\fP (std::ostream &os, const int64_t &val)"
+.br
+.RI "Writes \fRval\fP to \fRos\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static std::istream & \fBRead\fP (std::istream &is, uint64_t &val)"
+.br
+.RI "Reads \fRval\fP from \fRis\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static std::ostream & \fBWrite\fP (std::ostream &os, const uint64_t &val)"
+.br
+.RI "Writes \fRval\fP to \fRos\fP, in network byte order (MSB first)\&. "
+.ti -1c
+.RI "static std::istream & \fBRead\fP (std::istream &is, float &val)"
+.br
+.RI "Reads \fRval\fP from \fRis\fP, in IEEE format (see RFC 1832 and/or ANSI/IEEE Standard 754-1985)\&. "
+.ti -1c
+.RI "static std::ostream & \fBWrite\fP (std::ostream &os, float val)"
+.br
+.RI "Writes \fRval\fP to \fRos\fP, in IEEE format (see RFC 1832 and/or ANSI/IEEE Standard 754-1985)\&. "
+.ti -1c
+.RI "static std::istream & \fBRead\fP (std::istream &is, double &val)"
+.br
+.RI "Reads \fRval\fP from \fRis\fP, in IEEE format (see RFC 1832 and/or ANSI/IEEE Standard 754-1985)\&. "
+.ti -1c
+.RI "static std::ostream & \fBWrite\fP (std::ostream &os, const double &val)"
+.br
+.RI "Writes \fRval\fP to \fRos\fP, in IEEE format (see RFC 1832 and/or ANSI/IEEE Standard 754-1985)\&. "
+.ti -1c
+.RI "static std::istream & \fBRead\fP (std::istream &is, std::string &s)"
+.br
+.RI "Reads string \fRs\fP from \fRis\fP\&. "
+.ti -1c
+.RI "static std::ostream & \fBWrite\fP (std::ostream &os, const std::string &s)"
+.br
+.RI "Writes \fRs\fP to \fRos\fP\&. "
+.ti -1c
+.RI "static std::istream & \fBRead\fP (std::istream &is, \fBStreamReadable\fP &val)"
+.br
+.RI "Wrapper function to read a \fBStreamReadable\fP object from an istream\&. "
+.ti -1c
+.RI "static std::ostream & \fBWrite\fP (std::ostream &os, const \fBStreamWritable\fP &val)"
+.br
+.RI "Wrapper function to write a \fBStreamWritable\fP object to an ostream\&. "
+.ti -1c
+.RI "template<typename _firstT , typename _secondT > static std::istream & \fBRead\fP (std::istream &is, std::pair< _firstT, _secondT > &p)"
+.br
+.RI "Reads a pair<_firstT,_secondT> from an istream\&. Returns the istream\&. "
+.ti -1c
+.RI "template<typename _firstT , typename _secondT > static std::ostream & \fBWrite\fP (std::ostream &os, const std::pair< _firstT, _secondT > &p)"
+.br
+.RI "Writes a pair<_firstT,_secondT> to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Compare , typename _Alloc > static std::istream & \fBRead\fP (std::istream &is, std::map< _keyT, _valueT, _Compare, _Alloc > &m)"
+.br
+.RI "Reads a map<_keyT,_valueT> from an istream\&. Returns the istream\&. "
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Compare , typename _Alloc > static std::ostream & \fBWrite\fP (std::ostream &os, const std::map< _keyT, _valueT, _Compare, _Alloc > &m)"
+.br
+.RI "Writes a map<_keyT,_valueT> to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Compare , typename _Alloc > static std::istream & \fBRead\fP (std::istream &is, std::multimap< _keyT, _valueT, _Compare, _Alloc > &m)"
+.br
+.RI "Reads a multimap<_keyT,_valueT> from an istream\&. "
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Compare , typename _Alloc > static std::ostream & \fBWrite\fP (std::ostream &os, const std::multimap< _keyT, _valueT, _Compare, _Alloc > &m)"
+.br
+.RI "Writes a multimap<_keyT,_valueT> to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "template<typename _valueT , size_t N> static std::istream & \fBRead\fP (std::istream &is, std::array< _valueT, N > &a)"
+.br
+.RI "Reads an array<_valueT,N> from an istream\&. Returns the istream\&. "
+.ti -1c
+.RI "template<typename _valueT , size_t N> static std::ostream & \fBWrite\fP (std::ostream &os, const std::array< _valueT, N > &a)"
+.br
+.RI "Writes an array<_valueT,N> to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Alloc > static std::istream & \fBRead\fP (std::istream &is, std::vector< _valueT, _Alloc > &v)"
+.br
+.RI "Reads a vector<_valueT> from an istream\&. Returns the istream\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Alloc > static std::ostream & \fBWrite\fP (std::ostream &os, const std::vector< _valueT, _Alloc > &v)"
+.br
+.RI "Writes a vector<_valueT> to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Alloc > static std::istream & \fBRead\fP (std::istream &is, std::deque< _valueT, _Alloc > &d)"
+.br
+.RI "Reads a deque<_valueT> from an istream\&. Returns the istream\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Alloc > static std::ostream & \fBWrite\fP (std::ostream &os, const std::deque< _valueT, _Alloc > &d)"
+.br
+.RI "Writes a deque<_valueT> to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Alloc > static std::istream & \fBRead\fP (std::istream &is, std::list< _valueT, _Alloc > &l)"
+.br
+.RI "Reads a list<_valueT> from an istream\&. Returns the istream\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Alloc > static std::ostream & \fBWrite\fP (std::ostream &os, const std::list< _valueT, _Alloc > &l)"
+.br
+.RI "Writes a list<_valueT> to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Compare , typename _Alloc > static std::istream & \fBRead\fP (std::istream &is, std::set< _valueT, _Compare, _Alloc > &l)"
+.br
+.RI "Reads a set<_valueT> from an istream\&. Returns the istream\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Compare , typename _Alloc > static std::ostream & \fBWrite\fP (std::ostream &os, const std::set< _valueT, _Compare, _Alloc > &l)"
+.br
+.RI "Writes a set<_valueT> to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Compare , typename _Alloc > static std::istream & \fBRead\fP (std::istream &is, std::multiset< _valueT, _Compare, _Alloc > &l)"
+.br
+.RI "Reads a multiset<_valueT> from an istream\&. Returns the istream\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Compare , typename _Alloc > static std::ostream & \fBWrite\fP (std::ostream &os, const std::multiset< _valueT, _Compare, _Alloc > &l)"
+.br
+.RI "Writes a multiset<_valueT> to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "template<typename\&.\&.\&. Args> static std::istream & \fBRead\fP (std::istream &is, std::tuple< Args\&.\&.\&. > &t)"
+.br
+.RI "Reads a tuple from an istream\&. Returns the istream\&. "
+.ti -1c
+.RI "template<typename\&.\&.\&. Args> static std::ostream & \fBWrite\fP (std::ostream &os, const std::tuple< Args\&.\&.\&. > &t)"
+.br
+.RI "Writes a tuple to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static std::istream & \fBRead\fP (std::istream &is, std::unordered_map< _keyT, _valueT, _Hash, _Pred, _Alloc > &m)"
+.br
+.RI "Reads an unordered_map<_keyT,_valueT> from an istream\&. "
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static std::ostream & \fBWrite\fP (std::ostream &os, const std::unordered_map< _keyT, _valueT, _Hash, _Pred, _Alloc > &m)"
+.br
+.RI "Writes a unordered_map<_keyT,_valueT> to an ostream\&. "
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static std::istream & \fBRead\fP (std::istream &is, std::unordered_multimap< _keyT, _valueT, _Hash, _Pred, _Alloc > &m)"
+.br
+.RI "Reads an unordered_multimap<_keyT,_valueT> from an istream\&. "
+.ti -1c
+.RI "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static std::ostream & \fBWrite\fP (std::ostream &os, const std::unordered_multimap< _keyT, _valueT, _Hash, _Pred, _Alloc > &m)"
+.br
+.RI "Writes a unordered_multimap<_keyT,_valueT> to an ostream\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static std::istream & \fBRead\fP (std::istream &is, std::unordered_set< _valueT, _Hash, _Pred, _Alloc > &m)"
+.br
+.RI "Reads an unordered_set<_valueT> from an istream\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static std::ostream & \fBWrite\fP (std::ostream &os, const std::unordered_set< _valueT, _Hash, _Pred, _Alloc > &m)"
+.br
+.RI "Writes a unordered_set<_valueT> to an ostream\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static std::istream & \fBRead\fP (std::istream &is, std::unordered_multiset< _valueT, _Hash, _Pred, _Alloc > &m)"
+.br
+.RI "Reads an unordered_multiset<_valueT> from an istream\&. "
+.ti -1c
+.RI "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static std::ostream & \fBWrite\fP (std::ostream &os, const std::unordered_multiset< _valueT, _Hash, _Pred, _Alloc > &m)"
+.br
+.RI "Writes a unordered_multiset<_valueT> to an ostream\&. "
+.ti -1c
+.RI "template<typename\&.\&.\&. Ts> static std::istream & \fBRead\fP (std::istream &is, std::variant< Ts\&.\&.\&. > &v)"
+.br
+.RI "Reads a variant from an istream\&. Returns the istream\&. "
+.ti -1c
+.RI "template<typename\&.\&.\&. Ts> static std::ostream & \fBWrite\fP (std::ostream &os, const std::variant< Ts\&.\&.\&. > &v)"
+.br
+.RI "Writes a variant to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "static std::istream & \fBRead\fP (std::istream &is, std::monostate &sm)"
+.br
+.RI "Just a dummy helper function for std::variant instances that hold a std::monostate\&. "
+.ti -1c
+.RI "static std::ostream & \fBWrite\fP (std::ostream &os, const std::monostate &sm)"
+.br
+.RI "Just a dummy helper function for std::variant instances that hold a std::monostate\&. "
+.ti -1c
+.RI "template<typename\&.\&.\&. Args> static std::istream & \fBReadV\fP (std::istream &is, Args &\&.\&.\&.args)"
+.br
+.RI "Reads multiple objects from an istream\&. "
+.ti -1c
+.RI "template<typename\&.\&.\&. Args> static std::ostream & \fBWriteV\fP (std::ostream &os, const Args &\&.\&.\&.args)"
+.br
+.RI "Writes multiple objects to an ostream\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+This class contains a collection of static functions for reading and writing simple types, in network byte order (MSB first)\&. 
+
+It also contains functions to read and write strings\&. It also contains function templates to read and write arrays, deques, lists, vectors, maps, multimaps, sets, multisets, unordered_maps, unordered_multimaps, unordered_sets, unordered_multisets, tuples and variants\&. We use our member functions to handle reading and writing simple types in the containers, and function templates to handle reading and writing other class types\&. For a user-defined class, the class must implement the \fBStreamReadable\fP and \fBStreamWritable\fP interfaces, since our function templates simply call out to them\&. Since templates are static polymorphism, you don't need to inherit from \fBStreamReadable\fP and \fBStreamWritable\fP, but you must implement the interfaces\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "static std::istream & Dwm::StreamIO::Read (std::istream & is, double & val)\fR [static]\fP"
+
+.PP
+Reads \fRval\fP from \fRis\fP, in IEEE format (see RFC 1832 and/or ANSI/IEEE Standard 754-1985)\&. Returns \fRis\fP\&. 
+.SS "static std::istream & Dwm::StreamIO::Read (std::istream & is, float & val)\fR [static]\fP"
+
+.PP
+Reads \fRval\fP from \fRis\fP, in IEEE format (see RFC 1832 and/or ANSI/IEEE Standard 754-1985)\&. Returns \fRis\fP\&. 
+.SS "static std::istream & Dwm::StreamIO::Read (std::istream & is, int16_t & val)\fR [static]\fP"
+
+.PP
+Reads \fRval\fP from \fRis\fP, in network byte order (MSB first)\&. Returns \fRis\fP\&. 
+.SS "static std::istream & Dwm::StreamIO::Read (std::istream & is, int32_t & val)\fR [static]\fP"
+
+.PP
+Reads \fRval\fP from \fRis\fP, in network byte order (MSB first)\&. Returns \fRis\fP\&. 
+.SS "static std::istream & Dwm::StreamIO::Read (std::istream & is, int64_t & val)\fR [static]\fP"
+
+.PP
+Reads \fRval\fP from \fRis\fP, in network byte order (MSB first)\&. Returns \fRis\fP\&. 
+.SS "static std::istream & Dwm::StreamIO::Read (std::istream & is, std::monostate & sm)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Just a dummy helper function for std::variant instances that hold a std::monostate\&. This should only be called from our \fBRead()\fP for std::variant (via std::visit()), and does nothing\&. Returns the given istream\&. 
+.SS "template<typename _keyT , typename _valueT , typename _Compare , typename _Alloc > static std::istream & Dwm::StreamIO::Read (std::istream & is, std::multimap< _keyT, _valueT, _Compare, _Alloc > & m)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads a multimap<_keyT,_valueT> from an istream\&. Returns the istream\&. 
+.SS "static std::istream & Dwm::StreamIO::Read (std::istream & is, std::string & s)\fR [static]\fP"
+
+.PP
+Reads string \fRs\fP from \fRis\fP\&. Since we write strings with a 64-bit length value preceding, and always write the terminating NULL, this function will always read at least 9 bytes on success\&. 
+.SS "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static std::istream & Dwm::StreamIO::Read (std::istream & is, std::unordered_map< _keyT, _valueT, _Hash, _Pred, _Alloc > & m)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads an unordered_map<_keyT,_valueT> from an istream\&. Returns the istream\&. 
+.SS "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static std::istream & Dwm::StreamIO::Read (std::istream & is, std::unordered_multimap< _keyT, _valueT, _Hash, _Pred, _Alloc > & m)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads an unordered_multimap<_keyT,_valueT> from an istream\&. Returns the istream\&. 
+.SS "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static std::istream & Dwm::StreamIO::Read (std::istream & is, std::unordered_multiset< _valueT, _Hash, _Pred, _Alloc > & m)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads an unordered_multiset<_valueT> from an istream\&. Returns the istream\&. 
+.SS "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static std::istream & Dwm::StreamIO::Read (std::istream & is, std::unordered_set< _valueT, _Hash, _Pred, _Alloc > & m)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads an unordered_set<_valueT> from an istream\&. Returns the istream\&. 
+.SS "static std::istream & Dwm::StreamIO::Read (std::istream & is, uint16_t & val)\fR [static]\fP"
+
+.PP
+Reads \fRval\fP from \fRis\fP, in network byte order (MSB first)\&. Returns \fRis\fP\&. 
+.SS "static std::istream & Dwm::StreamIO::Read (std::istream & is, uint32_t & val)\fR [static]\fP"
+
+.PP
+Reads \fRval\fP from \fRis\fP, in network byte order (MSB first)\&. Returns \fRis\fP\&. 
+.SS "static std::istream & Dwm::StreamIO::Read (std::istream & is, uint64_t & val)\fR [static]\fP"
+
+.PP
+Reads \fRval\fP from \fRis\fP, in network byte order (MSB first)\&. Returns \fRis\fP\&. 
+.SS "template<typename\&.\&.\&. Args> static std::istream & Dwm::StreamIO::ReadV (std::istream & is, Args &\&.\&.\&. args)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Reads multiple objects from an istream\&. Returns the istream\&. This is just a convenience function\&. 
+.SS "static std::ostream & Dwm::StreamIO::Write (std::ostream & os, const double & val)\fR [static]\fP"
+
+.PP
+Writes \fRval\fP to \fRos\fP, in IEEE format (see RFC 1832 and/or ANSI/IEEE Standard 754-1985)\&. Returns \fRos\fP\&. 
+.SS "static std::ostream & Dwm::StreamIO::Write (std::ostream & os, const int64_t & val)\fR [static]\fP"
+
+.PP
+Writes \fRval\fP to \fRos\fP, in network byte order (MSB first)\&. Returns \fRos\fP\&. 
+.SS "static std::ostream & Dwm::StreamIO::Write (std::ostream & os, const std::monostate & sm)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Just a dummy helper function for std::variant instances that hold a std::monostate\&. This should only be called from our \fBWrite()\fP for std::variant (via std::visit()), and does nothing\&. Returns the given ostream\&. 
+.SS "static std::ostream & Dwm::StreamIO::Write (std::ostream & os, const std::string & s)\fR [static]\fP"
+
+.PP
+Writes \fRs\fP to \fRos\fP\&. Note that the length of \fRs\fP is written first, as an unsigned 64-bit number in network byte order (MSB first)\&. Hence at least 9 bytes will always be written; 4 for the length and 1 for the terminating NULL character of an empty string\&. 
+.SS "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static std::ostream & Dwm::StreamIO::Write (std::ostream & os, const std::unordered_map< _keyT, _valueT, _Hash, _Pred, _Alloc > & m)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes a unordered_map<_keyT,_valueT> to an ostream\&. Returns the ostream\&. 
+.SS "template<typename _keyT , typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static std::ostream & Dwm::StreamIO::Write (std::ostream & os, const std::unordered_multimap< _keyT, _valueT, _Hash, _Pred, _Alloc > & m)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes a unordered_multimap<_keyT,_valueT> to an ostream\&. Returns the ostream\&. 
+.SS "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static std::ostream & Dwm::StreamIO::Write (std::ostream & os, const std::unordered_multiset< _valueT, _Hash, _Pred, _Alloc > & m)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes a unordered_multiset<_valueT> to an ostream\&. Returns the ostream\&. 
+.SS "template<typename _valueT , typename _Hash , typename _Pred , typename _Alloc > static std::ostream & Dwm::StreamIO::Write (std::ostream & os, const std::unordered_set< _valueT, _Hash, _Pred, _Alloc > & m)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes a unordered_set<_valueT> to an ostream\&. Returns the ostream\&. 
+.SS "static std::ostream & Dwm::StreamIO::Write (std::ostream & os, const uint64_t & val)\fR [static]\fP"
+
+.PP
+Writes \fRval\fP to \fRos\fP, in network byte order (MSB first)\&. Returns \fRos\fP\&. 
+.SS "static std::ostream & Dwm::StreamIO::Write (std::ostream & os, float val)\fR [static]\fP"
+
+.PP
+Writes \fRval\fP to \fRos\fP, in IEEE format (see RFC 1832 and/or ANSI/IEEE Standard 754-1985)\&. Returns \fRos\fP\&. 
+.SS "static std::ostream & Dwm::StreamIO::Write (std::ostream & os, int16_t val)\fR [static]\fP"
+
+.PP
+Writes \fRval\fP to \fRos\fP, in network byte order (MSB first)\&. Returns \fRos\fP\&. 
+.SS "static std::ostream & Dwm::StreamIO::Write (std::ostream & os, int32_t val)\fR [static]\fP"
+
+.PP
+Writes \fRval\fP to \fRos\fP, in network byte order (MSB first)\&. Returns \fRos\fP\&. 
+.SS "static std::ostream & Dwm::StreamIO::Write (std::ostream & os, uint16_t val)\fR [static]\fP"
+
+.PP
+Writes \fRval\fP to \fRos\fP, in network byte order (MSB first)\&. Returns \fRos\fP\&. 
+.SS "static std::ostream & Dwm::StreamIO::Write (std::ostream & os, uint32_t val)\fR [static]\fP"
+
+.PP
+Writes \fRval\fP to \fRos\fP, in network byte order (MSB first)\&. Returns \fRos\fP\&. 
+.SS "template<typename\&.\&.\&. Args> static std::ostream & Dwm::StreamIO::WriteV (std::ostream & os, const Args &\&.\&.\&. args)\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+Writes multiple objects to an ostream\&. Returns the ostream\&. This is just a convenience function\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

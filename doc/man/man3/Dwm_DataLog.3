@@ -1,0 +1,63 @@
+.TH "Dwm::DataLog< T >" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::DataLog< T > \- Simple class template for data logging\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmDataLog\&.hh>\fP
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "class \fBEntry\fP"
+.br
+.RI "Encapsulates a single data log entry\&. "
+.in -1c
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBDataLog\fP (const std::string &filename)"
+.br
+.RI "Constructor\&. \fRfilename\fP is the name of the file to use\&. "
+.ti -1c
+.RI "\fB~DataLog\fP ()"
+.br
+.RI "Destructor\&. "
+.ti -1c
+.RI "bool \fBOpen\fP (std::ios_base::openmode mode)"
+.br
+.RI "Opens the log with the given \fRmode\fP\&. Returns true on success\&. "
+.ti -1c
+.RI "bool \fBRewind\fP ()"
+.br
+.RI "Rewinds the log to the beginning\&. Returns true on success\&. "
+.ti -1c
+.RI "bool \fBClose\fP ()"
+.br
+.RI "Closes the log\&. Returns true on success\&. "
+.ti -1c
+.RI "bool \fBGetNext\fP (\fBEntry\fP &entry)"
+.br
+.RI "Fetches the next entry from the log\&. Returns true on succes\&. "
+.ti -1c
+.RI "bool \fBRecord\fP (const T &value)"
+.br
+.RI "Writes an entry to the log\&. Returns true on success\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.SS "template<typename T>
+.br
+class Dwm::DataLog< T >"Simple class template for data logging\&. 
+
+Each log entry is represented by the \fBDataLog::Entry\fP class, which holds a timestamp and and instance of the parameterized type\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

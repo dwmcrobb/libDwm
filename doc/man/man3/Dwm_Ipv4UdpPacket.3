@@ -1,0 +1,254 @@
+.TH "Dwm::Ipv4UdpPacket" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::Ipv4UdpPacket \- Encapsulates a UDP packet, including the IP header\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmIpv4UdpPacket\&.hh>\fP
+.PP
+Inherits \fBDwm::DescriptorIOCapable\fP, Dwm::FileIOCapable, \fBDwm::StreamIOCapable\fP, \fBDwm::StreamedLengthCapable\fP, \fBDwm::GZIOCapable\fP, and \fBDwm::BZ2IOCapable\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBIpv4UdpPacket\fP ()"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "\fBIpv4UdpPacket\fP (uint8_t *ptr)"
+.br
+.RI "Construct from a pointer to the start of IP header in a UDP packet\&. "
+.ti -1c
+.RI "\fB~Ipv4UdpPacket\fP ()"
+.br
+.RI "Destructor\&. If we own the underlying data, we free it\&. "
+.ti -1c
+.RI "const \fBIpv4PacketHeader\fP & \fBIpHeader\fP () const"
+.br
+.RI "Returns a const reference to the IP header\&. "
+.ti -1c
+.RI "\fBIpv4PacketHeader\fP & \fBIpHeader\fP ()"
+.br
+.RI "Returns a mutable reference to the IP header\&. "
+.ti -1c
+.RI "const \fBIpv4UdpHeader\fP & \fBUdpHeader\fP () const"
+.br
+.RI "Returns a const refernece to the UDP header\&. "
+.ti -1c
+.RI "\fBIpv4UdpHeader\fP & \fBUdpHeader\fP ()"
+.br
+.RI "Returns a mutable reference to the UDP header\&. "
+.ti -1c
+.RI "std::string \fBPayload\fP () const"
+.br
+.RI "Returns the payload as a string\&. "
+.ti -1c
+.RI "template<typename T > bool \fBGetPayload\fP (T &payload) const"
+.br
+.RI "Copies the contained payload into \fRpayload\fP\&. "
+.ti -1c
+.RI "template<typename T > bool \fBSetPayload\fP (const T &payload)"
+.br
+.RI "Sets the contained payload to \fRpayload\fP\&. "
+.ti -1c
+.RI "std::istream & \fBRead\fP (std::istream &is) override"
+.br
+.RI "Reads from an istream\&. Returns the istream\&. "
+.ti -1c
+.RI "std::ostream & \fBWrite\fP (std::ostream &os) const override"
+.br
+.RI "Writes to an ostream\&. Returns the ostream\&. "
+.ti -1c
+.RI "ssize_t \fBRead\fP (int fd) override"
+.br
+.RI "NOT IMPLEMENTED\&. "
+.ti -1c
+.RI "ssize_t \fBWrite\fP (int fd) const override"
+.br
+.RI "Writes to a file descriptor\&. "
+.ti -1c
+.RI "size_t \fBRead\fP (FILE *f) override"
+.br
+.RI "Reads the packet from the given FILE \fRf\fP\&. "
+.ti -1c
+.RI "size_t \fBWrite\fP (FILE *f) const override"
+.br
+.RI "Writes the packet to the given FILE \fRf\fP\&. "
+.ti -1c
+.RI "int \fBRead\fP (gzFile gzf) override"
+.br
+.RI "Reads the packet from the given gzFile \fRgzf\fP\&. "
+.ti -1c
+.RI "int \fBWrite\fP (gzFile gzf) const override"
+.br
+.RI "Writes the packet to the given gzFile \fRgzf\fP\&. "
+.ti -1c
+.RI "int \fBBZRead\fP (BZFILE *bzf) override"
+.br
+.RI "Reads the packet from the given BZFILE \fRbzf\fP\&. "
+.ti -1c
+.RI "int \fBBZWrite\fP (BZFILE *bzf) const override"
+.br
+.RI "Writes the packet to the given BZFILE \fRbzf\fP\&. "
+.ti -1c
+.RI "uint64_t \fBStreamedLength\fP () const override"
+.br
+.RI "Returns the numbers of bytes that should be written if one of the \fBWrite()\fP members is called\&. "
+.ti -1c
+.RI "bool \fBSendTo\fP (int fd) const"
+.br
+.RI "Sends the packet via the given descriptor \fRfd\fP\&. "
+.ti -1c
+.RI "bool \fBSendTo\fP (\fBSocket\fP &s) const"
+.br
+.RI "Sends the packet via the given \fBSocket\fP \fRs\fP\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::DescriptorReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~DescriptorReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::DescriptorWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~DescriptorWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::StreamReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~StreamReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::StreamWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~StreamWritable\fP ()"
+.br
+.RI "Destructor\&. "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::GZReadable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~GZReadable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+
+Public Member Functions inherited from \fBDwm::GZWritable\fP
+.in +1c
+.ti -1c
+.RI "virtual \fB~GZWritable\fP ()"
+.br
+.RI "destructor "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Encapsulates a UDP packet, including the IP header\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Dwm::Ipv4UdpPacket::Ipv4UdpPacket (uint8_t * ptr)"
+
+.PP
+Construct from a pointer to the start of IP header in a UDP packet\&. We don't copy, so the caller still owns the memory at \fRptr\fP\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "int Dwm::Ipv4UdpPacket::BZRead (BZFILE * bzf)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the packet from the given BZFILE \fRbzf\fP\&. Returns the number of bytes read on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::BZ2Readable\fP\&.
+.SS "int Dwm::Ipv4UdpPacket::BZWrite (BZFILE * bzf) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the packet to the given BZFILE \fRbzf\fP\&. Returns the number of bytes written on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::BZ2Writable\fP\&.
+.SS "template<typename T > bool Dwm::Ipv4UdpPacket::GetPayload (T & payload) const\fR [inline]\fP"
+
+.PP
+Copies the contained payload into \fRpayload\fP\&. Returns true on success, false on failure\&. Note that \fRpayload\fP must be of a type natively supported by \fBDwm::IO\fP or derived from \fBDwm::Readable\fP\&. 
+.SS "size_t Dwm::Ipv4UdpPacket::Read (FILE * f)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the packet from the given FILE \fRf\fP\&. Returns 1 on success, 0 on failure (fread() semantics)\&. 
+.PP
+Implements \fBDwm::FileReadable\fP\&.
+.SS "int Dwm::Ipv4UdpPacket::Read (gzFile gzf)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads the packet from the given gzFile \fRgzf\fP\&. Returns the number of bytes read on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::GZReadable\fP\&.
+.SS "ssize_t Dwm::Ipv4UdpPacket::Read (int fd)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+NOT IMPLEMENTED\&. 
+.PP
+Implements \fBDwm::DescriptorReadable\fP\&.
+.SS "std::istream & Dwm::Ipv4UdpPacket::Read (std::istream & is)\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reads from an istream\&. Returns the istream\&. 
+.PP
+Implements \fBDwm::StreamReadable\fP\&.
+.SS "bool Dwm::Ipv4UdpPacket::SendTo (int fd) const"
+
+.PP
+Sends the packet via the given descriptor \fRfd\fP\&. Returns true on success, false on failure\&. 
+.SS "bool Dwm::Ipv4UdpPacket::SendTo (\fBSocket\fP & s) const"
+
+.PP
+Sends the packet via the given \fBSocket\fP \fRs\fP\&. Returns true on success, false on failure\&. 
+.SS "template<typename T > bool Dwm::Ipv4UdpPacket::SetPayload (const T & payload)\fR [inline]\fP"
+
+.PP
+Sets the contained payload to \fRpayload\fP\&. Returns true on success, false on failure\&. Note that \fRpayload\fP must be of a type natively supported by \fBDwm::IO\fP or derived from \fBDwm::Writable\fP\&. 
+.SS "uint64_t Dwm::Ipv4UdpPacket::StreamedLength () const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Returns the numbers of bytes that should be written if one of the \fBWrite()\fP members is called\&. 
+.PP
+Implements \fBDwm::StreamedLengthCapable\fP\&.
+.SS "size_t Dwm::Ipv4UdpPacket::Write (FILE * f) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the packet to the given FILE \fRf\fP\&. Returns 1 on success, 0 on failure\&. 
+.PP
+Implements \fBDwm::FileWritable\fP\&.
+.SS "int Dwm::Ipv4UdpPacket::Write (gzFile gzf) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes the packet to the given gzFile \fRgzf\fP\&. Returns the number of bytes written on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::GZWritable\fP\&.
+.SS "ssize_t Dwm::Ipv4UdpPacket::Write (int fd) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes to a file descriptor\&. Returns the number of bytes written on success, -1 on failure\&. 
+.PP
+Implements \fBDwm::DescriptorWritable\fP\&.
+.SS "std::ostream & Dwm::Ipv4UdpPacket::Write (std::ostream & os) const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Writes to an ostream\&. Returns the ostream\&. 
+.PP
+Implements \fBDwm::StreamWritable\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

@@ -1,0 +1,27 @@
+.TH "Dwm::AreFFI_Moduloable" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::AreFFI_Moduloable \- T1 modulo T2 yields a T1\&. i\&.e\&. { T1 % T2 } -> T1\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmFFIVar\&.hh>\fP
+.SH "Concept definition"
+.PP 
+
+.nf
+template<typename T1, typename T2>
+concept Dwm::AreFFI_Moduloable =  requires(T1 a, T2 b) {
+    { a % b } \-> std::same_as<T1>;
+  }
+.PP
+.fi
+.SH "Detailed Description"
+.PP 
+T1 modulo T2 yields a T1\&. i\&.e\&. { T1 % T2 } -> T1\&. 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

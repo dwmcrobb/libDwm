@@ -1,0 +1,44 @@
+.TH "Dwm::SvnTag" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::SvnTag \- Trivial class used to fetch an assumed SVN tag name from a repository path (in a Subversion keyword)\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmSvnTag\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBSvnTag\fP (const std::string &keyword)"
+.br
+.RI "Construct from a Header keyword substitution or any custom keyword substition that includes P or u\&. "
+.ti -1c
+.RI "std::string \fBTagName\fP (const std::string &tagRegex=R'(\\/tags\\/([^\\/]+))', const std::string &branchRegex=R'(\\/branches\\/([^\\/]+))', const std::string &trunkRegex=R'(\\/(trunk)\\/)') const"
+.br
+.RI "Fetches the SVN tag name using a regular expression \fRtagRegex\fP\&. "
+.ti -1c
+.RI "std::string \fBFileName\fP () const"
+.br
+.RI "Returns the file name\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Trivial class used to fetch an assumed SVN tag name from a repository path (in a Subversion keyword)\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "std::string Dwm::SvnTag::FileName () const"
+
+.PP
+Returns the file name\&. This is shortened a bit to try to remove some of the path to the repository\&. 
+.SS "std::string Dwm::SvnTag::TagName (const std::string & tagRegex = \fRR'(\\/tags\\/([^\\/]+))'\fP, const std::string & branchRegex = \fRR'(\\/branches\\/([^\\/]+))'\fP, const std::string & trunkRegex = \fRR'(\\/(trunk)\\/)'\fP) const"
+
+.PP
+Fetches the SVN tag name using a regular expression \fRtagRegex\fP\&. The default regular expression covers the typical case where a tagged version of software is under a 'tags' directory in the repository\&. Ditto for fetching a branch name using the regular expression \fRbranchRegex\fP or the trunk using \fRtrunkRegex\fP\&. When the working copy is on a branch, we will add ' (branch)' to the end of the name to distinguish it from a tag with the same name\&. When the working copy is the trunk, we will add ' (revnum)' to the end of the name, where revnum is the revision number of the file's last modification\&. We can only add the revnum if the keyword in the constructor included Header, Id, Revision or a custom keyword substitution whose 3rd word was the revision\&. For example, '$DwmPath: dwm/libDwm/trunk/include/DwmSvnTag\&.hh 11210 $'\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

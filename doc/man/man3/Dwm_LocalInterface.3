@@ -1,0 +1,103 @@
+.TH "Dwm::LocalInterface" 3 "libDwm-0.0.20240716" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Dwm::LocalInterface \- Simple class to hold the name and IPv4 address of a local interface\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <DwmLocalInterfaces\&.hh>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBLocalInterface\fP ()"
+.br
+.RI "Constructor\&. "
+.ti -1c
+.RI "const std::string & \fBName\fP () const"
+.br
+.RI "Returns the interface name\&. "
+.ti -1c
+.RI "const std::string & \fBName\fP (const std::string &name)"
+.br
+.RI "Sets and returns the interface name\&. "
+.ti -1c
+.RI "const \fBIpv4Address\fP & \fBAddr\fP () const"
+.br
+.RI "Returns the interface address\&. "
+.ti -1c
+.RI "const \fBIpv4Address\fP & \fBAddr\fP (const \fBIpv4Address\fP &addr)"
+.br
+.RI "Sets and returns the interface address\&. "
+.ti -1c
+.RI "const \fBIpv4Address\fP & \fBMask\fP () const"
+.br
+.RI "Returns the interface netmask\&. "
+.ti -1c
+.RI "const \fBIpv4Address\fP & \fBMask\fP (const \fBIpv4Address\fP &mask)"
+.br
+.RI "Sets and returns the interface netmask\&. "
+.ti -1c
+.RI "int \fBMtu\fP () const"
+.br
+.RI "Returns the MTU\&. "
+.ti -1c
+.RI "int \fBMtu\fP (int mtu)"
+.br
+.RI "Sets and returns the MTU\&. "
+.ti -1c
+.RI "bool \fBIsUp\fP () const"
+.br
+.RI "Returns true if the interface is administratively 'up'\&. "
+.ti -1c
+.RI "bool \fBIsRunning\fP () const"
+.br
+.ti -1c
+.RI "bool \fBAddAlias\fP (const \fBIpv4Address\fP &address, const \fBIpv4Address\fP &netmask)"
+.br
+.RI "Adds an alias with the given \fRaddress\fP and \fRnetmask\fP\&. "
+.ti -1c
+.RI "bool \fBRemoveAlias\fP (const \fBIpv4Address\fP &address, const \fBIpv4Address\fP &netmask)"
+.br
+.RI "Removes an alias with the given \fRaddress\fP and \fRnetmask\fP\&. "
+.ti -1c
+.RI "const std::set< \fBLocalInterfaceAlias\fP > & \fBAliases\fP () const"
+.br
+.RI "Returns a const reference to the aliases\&. "
+.ti -1c
+.RI "std::set< \fBLocalInterfaceAlias\fP > & \fBAliases\fP ()"
+.br
+.RI "Returns a mutable reference to the aliases\&. "
+.in -1c
+.SS "Friends"
+
+.in +1c
+.ti -1c
+.RI "std::ostream & \fBoperator<<\fP (std::ostream &os, const \fBLocalInterface\fP &li)"
+.br
+.RI "Prints a \fBLocalInterface\fP to an ostream\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Simple class to hold the name and IPv4 address of a local interface\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "bool Dwm::LocalInterface::AddAlias (const \fBIpv4Address\fP & address, const \fBIpv4Address\fP & netmask)"
+
+.PP
+Adds an alias with the given \fRaddress\fP and \fRnetmask\fP\&. Returns true on success, false on failure\&. 
+.SS "bool Dwm::LocalInterface::IsUp () const"
+
+.PP
+Returns true if the interface is administratively 'up'\&. This says nothing about the link state\&. 
+.SS "bool Dwm::LocalInterface::RemoveAlias (const \fBIpv4Address\fP & address, const \fBIpv4Address\fP & netmask)"
+
+.PP
+Removes an alias with the given \fRaddress\fP and \fRnetmask\fP\&. Returns true on success, false on failure\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libDwm-0\&.0\&.20240716 from the source code\&.

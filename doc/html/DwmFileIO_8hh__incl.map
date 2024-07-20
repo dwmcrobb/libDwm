@@ -1,0 +1,45 @@
+<map id="DwmFileIO.hh" name="DwmFileIO.hh">
+<area shape="rect" id="Node000001" title="Dwm::FileIO class declaration." alt="" coords="741,5,847,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="6,153,57,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="741,22,563,24,333,32,222,40,125,50,53,64,30,72,16,81,9,93,9,108,19,139,14,141,3,109,4,92,12,77,27,67,52,59,124,45,221,34,333,27,563,19,741,17"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="102,153,166,178"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="741,21,651,23,535,31,406,49,341,63,279,81,215,111,163,145,160,141,212,107,277,77,340,58,405,44,534,25,651,17,741,16"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="325,79,386,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="741,29,590,50,405,82,401,82,400,77,404,76,589,45,741,24"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="453,153,509,178"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="741,23,664,28,576,37,498,54,470,66,451,81,445,94,446,109,463,140,458,142,441,111,440,93,447,77,467,62,497,49,575,32,663,22,741,18"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="639,79,696,105"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="774,34,703,73,701,69,771,29"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="720,79,791,105"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="790,32,772,66,767,64,785,30"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="815,79,853,105"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="803,30,822,64,818,67,798,33"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="878,79,924,105"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="814,29,871,68,868,72,811,34"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="948,79,987,105"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="824,29,934,74,932,79,822,34"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="1011,79,1065,105"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="837,29,997,76,996,81,835,34"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="1089,79,1139,105"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="847,27,949,47,1075,76,1074,81,948,52,846,32"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="1163,79,1273,105"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="848,26,1148,76,1147,81,847,31"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="1297,79,1400,105"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="847,22,1035,43,1282,76,1281,81,1034,49,847,28"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="213,153,274,178"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="741,24,638,29,513,39,395,56,348,68,314,81,297,94,282,109,259,141,254,138,278,105,293,89,311,77,347,63,394,51,513,34,638,24,741,18"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="1424,79,1481,105"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="847,19,1087,34,1246,51,1409,76,1408,81,1245,56,1087,39,847,24"/>
+<area shape="rect" id="Node000017" href="$DwmPortability_8hh.html" title="A configure target for dealing with OS differences." alt="" coords="1506,79,1632,105"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="847,20,1119,40,1490,76,1490,81,1118,45,847,25"/>
+<area shape="rect" id="Node000019" href="$DwmFileIOCapable_8hh.html" title="Dwm::FileIOCapable pure virtual class declaration." alt="" coords="461,79,615,105"/>
+<area shape="poly" id="edge18_Node000001_Node000019" title=" " alt="" coords="751,34,597,77,595,72,750,29"/>
+<area shape="rect" id="Node000020" href="$DwmVariantFromIndex_8hh.html" title="Dwm::VariantFromIndex function template." alt="" coords="27,79,199,105"/>
+<area shape="poly" id="edge20_Node000001_Node000020" title=" " alt="" coords="741,28,218,82,215,82,214,77,218,76,741,22"/>
+<area shape="rect" id="Node000018" title=" " alt="" coords="1467,153,1671,178"/>
+<area shape="poly" id="edge17_Node000017_Node000018" title=" " alt="" coords="1571,105,1571,137,1566,137,1566,105"/>
+<area shape="poly" id="edge19_Node000019_Node000005" title=" " alt="" coords="531,107,502,142,498,139,526,103"/>
+<area shape="poly" id="edge21_Node000020_Node000002" title=" " alt="" coords="101,107,58,144,55,140,97,103"/>
+<area shape="poly" id="edge22_Node000020_Node000003" title=" " alt="" coords="119,104,129,137,123,138,114,106"/>
+<area shape="poly" id="edge23_Node000020_Node000015" title=" " alt="" coords="136,103,209,143,207,147,134,108"/>
+</map>

@@ -1,0 +1,141 @@
+\doxysection{Dwm\+String\+Utils.\+hh File Reference}
+\hypertarget{DwmStringUtils_8hh}{}\label{DwmStringUtils_8hh}\index{DwmStringUtils.hh@{DwmStringUtils.hh}}
+
+
+Miscellaneous string utilities.  
+
+
+{\ttfamily \#include $<$cerrno$>$}\newline
+{\ttfamily \#include $<$cstdlib$>$}\newline
+{\ttfamily \#include $<$climits$>$}\newline
+{\ttfamily \#include $<$iomanip$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$limits$>$}\newline
+{\ttfamily \#include $<$sstream$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$typeinfo$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include "{}Dwm\+Type\+Name.\+hh"{}}\newline
+Include dependency graph for Dwm\+String\+Utils.\+hh\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{DwmStringUtils_8hh__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=308pt]{DwmStringUtils_8hh__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classDwm_1_1StringUtils_1_1BadStringConversion}{Dwm\+::\+String\+Utils\+::\+Bad\+String\+Conversion}}
+\begin{DoxyCompactList}\small\item\em Simple exception class for String\+To(). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{DwmStringUtils_8hh_a0c4d7bcd92dc6eace78794eaece2d3c0}{Dwm\+::\+String\+Utils\+::\+Has\+Suffix}} (const std\+::string \&str, const std\+::string \&suffix)
+\begin{DoxyCompactList}\small\item\em Returns true if {\ttfamily str} ends with {\ttfamily suffix}. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{DwmStringUtils_8hh_a5b5778df1c0c49292ecd353705f8dfb0}{Dwm\+::\+String\+Utils\+::\+String\+To\+Vector}} (const std\+::string \&s, char sep, std\+::vector$<$ std\+::string $>$ \&result, bool ignore\+Empty=true)
+\begin{DoxyCompactList}\small\item\em Populates {\ttfamily result} with substrings from {\ttfamily s}, where each substring is separated by {\ttfamily sep} in {\ttfamily s}. \end{DoxyCompactList}\item 
+\Hypertarget{DwmStringUtils_8hh_aa112ded980c574029e3f8b69b621693e}\label{DwmStringUtils_8hh_aa112ded980c574029e3f8b69b621693e} 
+{\footnotesize template$<$typename T $>$ }\\bool {\bfseries Dwm\+::\+String\+Utils\+::\+String\+To\+Integral} (const std\+::string \&s, T \&target, int base=0)
+\item 
+\Hypertarget{DwmStringUtils_8hh_a155cd6d51d914f665b7ca29a5e6df61f}\label{DwmStringUtils_8hh_a155cd6d51d914f665b7ca29a5e6df61f} 
+{\footnotesize template$<$typename T $>$ }\\bool {\bfseries Dwm\+::\+String\+Utils\+::\+String\+To} (const std\+::string \&s, T \&target)
+\item 
+\Hypertarget{DwmStringUtils_8hh_a3e67883e5ff1fda1e0d1b242f3825c40}\label{DwmStringUtils_8hh_a3e67883e5ff1fda1e0d1b242f3825c40} 
+bool {\bfseries Dwm\+::\+String\+Utils\+::\+String\+To} (const std\+::string \&s, std\+::string \&target)
+\begin{DoxyCompactList}\small\item\em why anyone would every call this, I don\textquotesingle{}t know. \end{DoxyCompactList}\item 
+\Hypertarget{DwmStringUtils_8hh_a44ef5926c22afc1cf6aa8ade168f5a44}\label{DwmStringUtils_8hh_a44ef5926c22afc1cf6aa8ade168f5a44} 
+bool {\bfseries Dwm\+::\+String\+Utils\+::\+String\+To} (const std\+::string \&s, char \&target, int base=0)
+\item 
+\Hypertarget{DwmStringUtils_8hh_ab68e8162cec7f6cfa1bc37351c447d03}\label{DwmStringUtils_8hh_ab68e8162cec7f6cfa1bc37351c447d03} 
+bool {\bfseries Dwm\+::\+String\+Utils\+::\+String\+To} (const std\+::string \&s, signed char \&target, int base=0)
+\item 
+\Hypertarget{DwmStringUtils_8hh_a18b0eda2f81e64af9967ebbfa3d7327b}\label{DwmStringUtils_8hh_a18b0eda2f81e64af9967ebbfa3d7327b} 
+bool {\bfseries Dwm\+::\+String\+Utils\+::\+String\+To} (const std\+::string \&s, unsigned char \&target, int base=0)
+\item 
+\Hypertarget{DwmStringUtils_8hh_a10a3a2846d86e107a186f7a7cbfed66e}\label{DwmStringUtils_8hh_a10a3a2846d86e107a186f7a7cbfed66e} 
+bool {\bfseries Dwm\+::\+String\+Utils\+::\+String\+To} (const std\+::string \&s, short \&target, int base=0)
+\item 
+\Hypertarget{DwmStringUtils_8hh_aaee6d1c46c489cea991947d41668fe02}\label{DwmStringUtils_8hh_aaee6d1c46c489cea991947d41668fe02} 
+bool {\bfseries Dwm\+::\+String\+Utils\+::\+String\+To} (const std\+::string \&s, unsigned short \&target, int base=0)
+\item 
+\Hypertarget{DwmStringUtils_8hh_af64a31317830c0aeb9b6e9653ad6afb5}\label{DwmStringUtils_8hh_af64a31317830c0aeb9b6e9653ad6afb5} 
+bool {\bfseries Dwm\+::\+String\+Utils\+::\+String\+To} (const std\+::string \&s, int \&target, int base=0)
+\item 
+\Hypertarget{DwmStringUtils_8hh_ad7b457f5edf689ec043448ef7a876213}\label{DwmStringUtils_8hh_ad7b457f5edf689ec043448ef7a876213} 
+bool {\bfseries Dwm\+::\+String\+Utils\+::\+String\+To} (const std\+::string \&s, unsigned int \&target, int base=0)
+\item 
+\Hypertarget{DwmStringUtils_8hh_a3a66cf4fd2080b3e999c17ea840cbee3}\label{DwmStringUtils_8hh_a3a66cf4fd2080b3e999c17ea840cbee3} 
+bool {\bfseries Dwm\+::\+String\+Utils\+::\+String\+To} (const std\+::string \&s, long \&target, int base=0)
+\item 
+\Hypertarget{DwmStringUtils_8hh_ac259528f9bd94cfab93908da7960e428}\label{DwmStringUtils_8hh_ac259528f9bd94cfab93908da7960e428} 
+bool {\bfseries Dwm\+::\+String\+Utils\+::\+String\+To} (const std\+::string \&s, unsigned long \&target, int base=0)
+\item 
+\Hypertarget{DwmStringUtils_8hh_a3568472dbb1e297995c32318021d20d3}\label{DwmStringUtils_8hh_a3568472dbb1e297995c32318021d20d3} 
+bool {\bfseries Dwm\+::\+String\+Utils\+::\+String\+To} (const std\+::string \&s, long long \&target, int base=0)
+\item 
+\Hypertarget{DwmStringUtils_8hh_a54287b983db52904e392b47a0df80f02}\label{DwmStringUtils_8hh_a54287b983db52904e392b47a0df80f02} 
+bool {\bfseries Dwm\+::\+String\+Utils\+::\+String\+To} (const std\+::string \&s, unsigned long long \&target, int base=0)
+\item 
+\Hypertarget{DwmStringUtils_8hh_a7d73136f0a23224d26f12f9bc93d699d}\label{DwmStringUtils_8hh_a7d73136f0a23224d26f12f9bc93d699d} 
+bool {\bfseries Dwm\+::\+String\+Utils\+::\+String\+To} (const std\+::string \&s, float \&target)
+\item 
+\Hypertarget{DwmStringUtils_8hh_a69c0a9e887000d7f17a7151a3ab69fd4}\label{DwmStringUtils_8hh_a69c0a9e887000d7f17a7151a3ab69fd4} 
+bool {\bfseries Dwm\+::\+String\+Utils\+::\+String\+To} (const std\+::string \&s, double \&target)
+\item 
+\Hypertarget{DwmStringUtils_8hh_a9eb40e69002aeb2cce6f4601f4844f42}\label{DwmStringUtils_8hh_a9eb40e69002aeb2cce6f4601f4844f42} 
+bool {\bfseries Dwm\+::\+String\+Utils\+::\+String\+To} (const std\+::string \&s, bool \&target)
+\item 
+\Hypertarget{DwmStringUtils_8hh_aa6b2730e5eaf30f4e73661c9f11a249f}\label{DwmStringUtils_8hh_aa6b2730e5eaf30f4e73661c9f11a249f} 
+{\footnotesize template$<$typename T $>$ }\\std\+::string {\bfseries Dwm\+::\+String\+Utils\+::\+To\+String} (const T \&x, std\+::ios\+\_\+base \&(\texorpdfstring{$\ast$}{*}iom)(std\+::ios\+\_\+base \&)=std\+::dec)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Miscellaneous string utilities. 
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{DwmStringUtils_8hh_a0c4d7bcd92dc6eace78794eaece2d3c0}\index{DwmStringUtils.hh@{DwmStringUtils.hh}!HasSuffix@{HasSuffix}}
+\index{HasSuffix@{HasSuffix}!DwmStringUtils.hh@{DwmStringUtils.hh}}
+\doxysubsubsection{\texorpdfstring{HasSuffix()}{HasSuffix()}}
+{\footnotesize\ttfamily \label{DwmStringUtils_8hh_a0c4d7bcd92dc6eace78794eaece2d3c0} 
+bool Dwm\+::\+String\+Utils\+::\+Has\+Suffix (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str}{, }\item[{const std\+::string \&}]{suffix}{}\end{DoxyParamCaption})}
+
+
+
+Returns true if {\ttfamily str} ends with {\ttfamily suffix}. 
+
+For example, Has\+Suffix("{}foo.\+cc"{},"{}.\+cc"{}) would return true. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=221pt]{DwmStringUtils_8hh_a0c4d7bcd92dc6eace78794eaece2d3c0_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{DwmStringUtils_8hh_a5b5778df1c0c49292ecd353705f8dfb0}\index{DwmStringUtils.hh@{DwmStringUtils.hh}!StringToVector@{StringToVector}}
+\index{StringToVector@{StringToVector}!DwmStringUtils.hh@{DwmStringUtils.hh}}
+\doxysubsubsection{\texorpdfstring{StringToVector()}{StringToVector()}}
+{\footnotesize\ttfamily \label{DwmStringUtils_8hh_a5b5778df1c0c49292ecd353705f8dfb0} 
+bool Dwm\+::\+String\+Utils\+::\+String\+To\+Vector (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s}{, }\item[{char}]{sep}{, }\item[{std\+::vector$<$ std\+::string $>$ \&}]{result}{, }\item[{bool}]{ignore\+Empty}{ = {\ttfamily true}}\end{DoxyParamCaption})}
+
+
+
+Populates {\ttfamily result} with substrings from {\ttfamily s}, where each substring is separated by {\ttfamily sep} in {\ttfamily s}. 
+
+If {\ttfamily ignore\+Empty} is true, all empty substrings (a result of immediately adjacent instances of {\ttfamily sep} or trailing instance(s) of {\ttfamily sep}) are excluded from {\ttfamily result}. Returns true if any substrings were placed in {\ttfamily result}. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=203pt]{DwmStringUtils_8hh_a5b5778df1c0c49292ecd353705f8dfb0_cgraph}
+\end{center}
+\end{figure}

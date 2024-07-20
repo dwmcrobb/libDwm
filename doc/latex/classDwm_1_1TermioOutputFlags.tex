@@ -1,0 +1,84 @@
+\doxysection{Dwm\+::Termio\+Output\+Flags Class Reference}
+\hypertarget{classDwm_1_1TermioOutputFlags}{}\label{classDwm_1_1TermioOutputFlags}\index{Dwm::TermioOutputFlags@{Dwm::TermioOutputFlags}}
+
+
+Encapsulates termios output flags.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Termios.\+hh$>$}
+
+
+
+Inheritance diagram for Dwm\+::Termio\+Output\+Flags\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{classDwm_1_1TermioOutputFlags__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Dwm\+::Termio\+Output\+Flags\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{classDwm_1_1TermioOutputFlags__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1TermioOutputFlags_ae73d8e84aa4a9e6f71c42a7d8d03d0e7}\label{classDwm_1_1TermioOutputFlags_ae73d8e84aa4a9e6f71c42a7d8d03d0e7} 
+{\bfseries Termio\+Output\+Flags} (struct termios \&t)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{structDwm_1_1TermioFlagInfo__t}{Termio\+Flag\+Info\+\_\+t}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classDwm_1_1TermioOutputFlags_a8805213cddd3f8823ecbed7e963f703a}{Known\+Flags}} () const
+\begin{DoxyCompactList}\small\item\em Returns the known output flags. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1TermioFlags}{Dwm\+::\+Termio\+Flags}}}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries Is\+Set} (const std\+::string \&flag\+Name) const
+\begin{DoxyCompactList}\small\item\em Returns true if the given {\ttfamily flag\+Name} is set, else returns false. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1TermioFlags_a4fdffa848fcc68b6277282a50e2d7109}{Set}} (const std\+::string \&flag\+Name)
+\begin{DoxyCompactList}\small\item\em Sets the flag for the given {\ttfamily flag\+Name}. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1TermioFlags_ae90971cd8ac3c093f12318ede12ea444}{Unset}} (const std\+::string \&flag\+Name)
+\begin{DoxyCompactList}\small\item\em Unsets the flag for the given {\ttfamily flag\+Name}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classDwm_1_1TermioFlags}{Dwm\+::\+Termio\+Flags}}}
+\begin{DoxyCompactItemize}
+\item 
+const \mbox{\hyperlink{structDwm_1_1TermioFlagInfo__t}{Termio\+Flag\+Info\+\_\+t}} \texorpdfstring{$\ast$}{*} {\bfseries Find\+Flag} (const std\+::string \&flag\+Name) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{classDwm_1_1TermioFlags}{Dwm\+::\+Termio\+Flags}}}
+\begin{DoxyCompactItemize}
+\item 
+tcflag\+\_\+t \texorpdfstring{$\ast$}{*} {\bfseries \+\_\+flag\+Ptr}
+\item 
+const \mbox{\hyperlink{structDwm_1_1TermioFlagInfo__t}{Termio\+Flag\+Info\+\_\+t}} \texorpdfstring{$\ast$}{*} {\bfseries \+\_\+flag\+Info}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Encapsulates termios output flags. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1TermioOutputFlags_a8805213cddd3f8823ecbed7e963f703a}\index{Dwm::TermioOutputFlags@{Dwm::TermioOutputFlags}!KnownFlags@{KnownFlags}}
+\index{KnownFlags@{KnownFlags}!Dwm::TermioOutputFlags@{Dwm::TermioOutputFlags}}
+\doxysubsubsection{\texorpdfstring{KnownFlags()}{KnownFlags()}}
+{\footnotesize\ttfamily \label{classDwm_1_1TermioOutputFlags_a8805213cddd3f8823ecbed7e963f703a} 
+const \mbox{\hyperlink{structDwm_1_1TermioFlagInfo__t}{Termio\+Flag\+Info\+\_\+t}} \texorpdfstring{$\ast$}{*} Dwm\+::\+Termio\+Output\+Flags\+::\+Known\+Flags (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Returns the known output flags. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1TermioFlags_abb33f12ce2a198f266ab243ba051dff7}{Dwm\+::\+Termio\+Flags}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmTermios_8hh}{Dwm\+Termios.\+hh}}\end{DoxyCompactItemize}

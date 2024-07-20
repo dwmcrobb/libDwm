@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2007, 2016, 2020
+//  Copyright (c) Daniel W. McRobb 2007, 2016, 2020, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -41,12 +41,13 @@
 #ifndef _DWMMPLSLABEL_HH_
 #define _DWMMPLSLABEL_HH_
 
-#include "DwmDescriptorIOCapable.hh"
-#include "DwmFileIOCapable.hh"
-#include "DwmStreamIOCapable.hh"
-#include "DwmStreamedLengthCapable.hh"
-#include "DwmGZIOCapable.hh"
-#include "DwmBZ2IOCapable.hh"
+extern "C" {
+  #include <bzlib.h>
+  #include <zlib.h>
+}
+
+#include <cstdio>
+#include <iostream>
 
 namespace Dwm {
 
@@ -54,8 +55,6 @@ namespace Dwm {
   //!  Encapsulates an MPLS label.
   //--------------------------------------------------------------------------
   class MplsLabel
-    : public DescriptorIOCapable, public FileIOCapable, public StreamIOCapable,
-      public StreamedLengthCapable, public GZIOCapable, public BZ2IOCapable
   {
   public:
     //------------------------------------------------------------------------
@@ -116,66 +115,66 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Reads the MPLS label from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    std::istream & Read(std::istream & is) override;
+    std::istream & Read(std::istream & is);
 
     //------------------------------------------------------------------------
     //!  Writes the MPLS label to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const override;
+    std::ostream & Write(std::ostream & os) const;
 
     //------------------------------------------------------------------------
     //!  Reads the MPLS label from a file descriptor.  Returns the number
     //!  of bytes read on success (should be 4), -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Read(int fd) override;
+    ssize_t Read(int fd);
 
     //------------------------------------------------------------------------
     //!  Writes the MPLS label to a file descriptor.  Returns the number of
     //!  bytes written on success (should be 4), -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Write(int fd) const override;
+    ssize_t Write(int fd) const;
 
     //------------------------------------------------------------------------
     //!  Reads the MPLS label from a FILE.  Returns 1 on success, 0 on
     //!  failure (fread() semantics).
     //------------------------------------------------------------------------
-    size_t Read(FILE *f) override;
+    size_t Read(FILE *f);
 
     //------------------------------------------------------------------------
     //!  Writes the MPLS label to a FILE.  Returns 1 on success, 0 on 
     //!  failure (fwrite() semantics).
     //------------------------------------------------------------------------
-    size_t Write(FILE *f) const override;
+    size_t Write(FILE *f) const;
 
     //------------------------------------------------------------------------
     //!  Reads the MPLS label from the given gzFile @c gzf.  Return the
     //!  number of bytes read on success, -1 on failure.
     //------------------------------------------------------------------------
-    int Read(gzFile gzf) override;
+    int Read(gzFile gzf);
     
     //------------------------------------------------------------------------
     //!  Writes the MPLS lable to the given gzFile @c gzf.  Returns the
     //!  number of bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
-    int Write(gzFile gzf) const override;
+    int Write(gzFile gzf) const;
     
     //------------------------------------------------------------------------
     //!  Reads the MPLS label from the given BZFILE @c bzf.  Return the
     //!  number of bytes read on success, -1 on failure.
     //------------------------------------------------------------------------
-    int BZRead(BZFILE *bzf) override;
+    int BZRead(BZFILE *bzf);
     
     //------------------------------------------------------------------------
     //!  Writes the MPLS lable to the given BZFILE @c bzf.  Returns the
     //!  number of bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
-    int BZWrite(BZFILE *bzf) const override;
+    int BZWrite(BZFILE *bzf) const;
     
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that should be written if we call one
     //!  of the Write() members.  Should always return 4.
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const override;
+    uint64_t StreamedLength() const;
     
     //------------------------------------------------------------------------
     //!  Prints to an ostream in 'label:exp:s:ttl' format.

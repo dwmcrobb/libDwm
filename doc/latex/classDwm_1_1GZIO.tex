@@ -1,0 +1,831 @@
+\doxysection{Dwm\+::GZIO Class Reference}
+\hypertarget{classDwm_1_1GZIO}{}\label{classDwm_1_1GZIO}\index{Dwm::GZIO@{Dwm::GZIO}}
+
+
+This class contains a collection of static functions for reading and writing simple types in network byte order (MSB first) from/to gzip files.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+GZIO.\+hh$>$}
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_ad46c5c5eee867687d1cd341eed872992}{Read}} (gz\+File gzf, char \&c)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily from} {\ttfamily gzf}. \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_a37ce028baae59e0e487482472615560f}{Write}} (gz\+File gzf, char c)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily c} to {\ttfamily gzf}. \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_a9a29bee37f5c41bf36a506263ef785e0}{Read}} (gz\+File gzf, uint8\+\_\+t \&c)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily c} from {\ttfamily gzf}. \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_a7ae6a39ada554718ccec0d6e43e2a57e}{Write}} (gz\+File gzf, uint8\+\_\+t c)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily c} to {\ttfamily gzf}. \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_a431e7f02520ed3a84b941a8ef6cf897e}{Read}} (gz\+File gzf, bool \&b)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily b} from {\ttfamily gzf}. \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_a620e1a976e3b86e5a2063734dc9552d4}{Write}} (gz\+File gzf, bool b)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily b} to {\ttfamily gzf}. \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_a38a255aa2bc0b59b001293269e425b78}{Read}} (gz\+File gzf, int16\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily gzf}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_aad4eeeefec03d6e225aba65fb2a10b5d}{Write}} (gz\+File gzf, int16\+\_\+t val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily gzf}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_ab49d7db7b6dd7d6e5bac7704aaeda676}{Read}} (gz\+File gzf, uint16\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily gzf}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_a19f11833e26ea301e15509e123d53b45}{Write}} (gz\+File gzf, uint16\+\_\+t val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily gzf}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_a45c09eb385512acd3f48c60d34f4c490}{Read}} (gz\+File gzf, int32\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily gzf}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_ae3863b3032e1bb4a859eec686fda06bf}{Write}} (gz\+File gzf, int32\+\_\+t val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily gzf}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_a4e9074d7695f657a9b2d9a068004f80f}{Read}} (gz\+File gzf, uint32\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily gzf}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_ad0a630095ee7690af27243bec1984950}{Write}} (gz\+File gzf, uint32\+\_\+t val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily gzf}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_a9f714eb7bc0a832db7c8137197b32c3c}{Read}} (gz\+File gzf, int64\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily gzf}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_a39b6d431e4a1e7e096ee067311ae8f3f}{Write}} (gz\+File gzf, const int64\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily gzf}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_acc5958564a296de230259f190982d749}{Read}} (gz\+File gzf, uint64\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily gzf}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_a6e71ccaf3941b277bc76aebff9d5508e}{Write}} (gz\+File gzf, const uint64\+\_\+t \&val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} to {\ttfamily gzf}, in network byte order (MSB first). \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_a54ce3dddce2a26ba311688494a6541ec}{Read}} (gz\+File gzf, float \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily gzf}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_af51411834ac0f4a50e4b9a8ea4522ea1}{Write}} (gz\+File gzf, float val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} tp {\ttfamily gzf}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_a39ef17f68eaa74829699aa9e4b922ef8}{Read}} (gz\+File gzf, double \&val)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily val} from {\ttfamily gzf}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_a0570d7fd1c10c83248f0886e33cfe4b2}{Write}} (gz\+File gzf, const double \&val)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily val} tp {\ttfamily gzf}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_a0092850d094f6e95f07ae60ab0813023}{Read}} (gz\+File gzf, std\+::string \&s)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily s} from {\ttfamily gzf}. \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_ab41db45d13eb640092ce20b115ef6cec}{Write}} (gz\+File gzf, const std\+::string \&s)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily s} to {\ttfamily gzf}. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1GZIO_a24162587ff557556aa9ed31d34a56020}\label{classDwm_1_1GZIO_a24162587ff557556aa9ed31d34a56020} 
+static int {\bfseries Read} (gz\+File gzf, \mbox{\hyperlink{classDwm_1_1GZReadable}{GZReadable}} \&val)
+\begin{DoxyCompactList}\small\item\em Wrapper function to read a \doxylink{classDwm_1_1GZReadable}{GZReadable} object from a gz\+File. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1GZIO_a74d395a92f968f66d44edc7df0db88dc}\label{classDwm_1_1GZIO_a74d395a92f968f66d44edc7df0db88dc} 
+static int {\bfseries Write} (gz\+File gzf, const \mbox{\hyperlink{classDwm_1_1GZWritable}{GZWritable}} \&val)
+\begin{DoxyCompactList}\small\item\em Wrapper function to write a \doxylink{classDwm_1_1GZWritable}{GZWritable} object to a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+firstT , typename \+\_\+secondT $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_af7907bf8ec52bd9779b3ac75ece437bf}{Read}} (gz\+File gzf, std\+::pair$<$ \+\_\+firstT, \+\_\+secondT $>$ \&p)
+\begin{DoxyCompactList}\small\item\em Reads a pair$<$\+\_\+first\+T,\+\_\+second\+T$>$ from a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+firstT , typename \+\_\+secondT $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_acb33e3eaebf9ed1f5b0d0c5264c0d933}{Write}} (gz\+File gzf, const std\+::pair$<$ \+\_\+firstT, \+\_\+secondT $>$ \&p)
+\begin{DoxyCompactList}\small\item\em Writes a pair$<$\+\_\+first\+T,\+\_\+second\+T$>$ to a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a8cac4831804a29d1cf4c12ad8b1de7fe}{Read}} (gz\+File gzf, std\+::map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Reads a map$<$\+\_\+key\+T,\+\_\+value\+T$>$ from a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a8bbf1d28f85f8d5295d4f9ab944bbf8b}{Write}} (gz\+File gzf, const std\+::map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Writes a map$<$\+\_\+key\+T,\+\_\+value\+T$>$ to a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a2bd33f3a822d3e3631351db1265e137b}{Read}} (gz\+File gzf, std\+::multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Reads a multimap$<$\+\_\+key\+T,\+\_\+value\+T$>$ from a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_aa4b72124081768f44db5e7fe912efd12}{Write}} (gz\+File gzf, const std\+::multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Writes a multimap$<$\+\_\+key\+T,\+\_\+value\+T$>$ to a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , size\+\_\+t N$>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a996db0cc5893c92e7bce50ede88c1410}{Read}} (gz\+File gzf, std\+::array$<$ \+\_\+valueT, N $>$ \&a)
+\begin{DoxyCompactList}\small\item\em Reads an array$<$\+\_\+value\+T,\+N$>$ from a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , size\+\_\+t N$>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a57a8984f2f1bf61671d39624ce4749f9}{Write}} (gz\+File gzf, const std\+::array$<$ \+\_\+valueT, N $>$ \&a)
+\begin{DoxyCompactList}\small\item\em Writes an array$<$\+\_\+value\+T,\+N$>$ to a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a482d0fcab0cacb1fa98ebe40f5a6c0da}{Read}} (gz\+File gzf, std\+::vector$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&v)
+\begin{DoxyCompactList}\small\item\em Reads a vector$<$\+\_\+value\+T$>$ from a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a76afe5c9e87d3e8ca158f8d0d699bd9d}{Write}} (gz\+File gzf, const std\+::vector$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&v)
+\begin{DoxyCompactList}\small\item\em Writes a vector$<$\+\_\+value\+T$>$ to a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a46139a1257784dd7ef6c8d65f766a15e}{Read}} (gz\+File gzf, std\+::deque$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&d)
+\begin{DoxyCompactList}\small\item\em Reads a deque$<$\+\_\+value\+T$>$ from a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_add25639177cb71f31098eaaf72b3241d}{Write}} (gz\+File gzf, const std\+::deque$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&d)
+\begin{DoxyCompactList}\small\item\em Writes a deque$<$\+\_\+value\+T$>$ to a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a96f22766fa6524fbbbc33fa8304eafd3}{Read}} (gz\+File gzf, std\+::list$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&l)
+\begin{DoxyCompactList}\small\item\em Reads a list$<$\+\_\+value\+T$>$ from a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a80852fe3bc65955f556b931c9ad978c2}{Write}} (gz\+File gzf, const std\+::list$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&l)
+\begin{DoxyCompactList}\small\item\em Writes a list$<$\+\_\+value\+T$>$ to a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a5f2bad57141f81162427728b5efa29be}{Read}} (gz\+File gzf, std\+::set$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&l)
+\begin{DoxyCompactList}\small\item\em Reads a set$<$\+\_\+value\+T$>$ from a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_acc2858aa0fe4eee8443e8d4410326f43}{Write}} (gz\+File gzf, const std\+::set$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&l)
+\begin{DoxyCompactList}\small\item\em Writes a set$<$\+\_\+value\+T$>$ to a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a5cd8c81f1e3a486f336bed2c61635327}{Read}} (gz\+File gzf, std\+::multiset$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&l)
+\begin{DoxyCompactList}\small\item\em Reads a multiset$<$\+\_\+value\+T$>$ from a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_acac2039121997f5acc456776eb5c4a19}{Write}} (gz\+File gzf, const std\+::multiset$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&l)
+\begin{DoxyCompactList}\small\item\em Writes a multiset$<$\+\_\+value\+T$>$ to a gz\+File. \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_a65af40be03e4399fd0fed4ec50cb454b}{Read}} (gz\+File gzf, std\+::monostate \&sm)
+\begin{DoxyCompactList}\small\item\em Just a dummy helper function for std\+::variant instances that hold a std\+::monostate. \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{classDwm_1_1GZIO_a9d024e32f929f43859844481cbc826e5}{Write}} (gz\+File gzf, const std\+::monostate \&sm)
+\begin{DoxyCompactList}\small\item\em Just a dummy helper function for std\+::variant instances that hold a std\+::monostate. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename... Ts$>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a6811080bce7a526247b89e3a79a10dd9}{Read}} (gz\+File gzf, std\+::variant$<$ Ts... $>$ \&v)
+\begin{DoxyCompactList}\small\item\em Reads a variant from a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename... Ts$>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a9f224472bfee84bf051b1f8411ff937a}{Write}} (gz\+File gzf, const std\+::variant$<$ Ts... $>$ \&v)
+\begin{DoxyCompactList}\small\item\em Writes a variant to a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename... Args$>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a059fae82f8655c38a170399f47a7c70e}{Read}} (gz\+File gzf, std\+::tuple$<$ Args... $>$ \&t)
+\begin{DoxyCompactList}\small\item\em Reads a tuple from a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename... Args$>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_aaaa7f4cf2e317c4578863df971dc694f}{Write}} (gz\+File gzf, const std\+::tuple$<$ Args... $>$ \&t)
+\begin{DoxyCompactList}\small\item\em Writes a tuple to a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_ad82592c01a33be01621a507c4fc78fc6}{Read}} (gz\+File gzf, std\+::unordered\+\_\+map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&hm)
+\begin{DoxyCompactList}\small\item\em Reads an unordered\+\_\+map from a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a82882021d1de24ef24f51bb3112e3969}{Write}} (gz\+File gzf, const std\+::unordered\+\_\+map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&hm)
+\begin{DoxyCompactList}\small\item\em Writes an unordered\+\_\+map to a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a7a1a7d97a8180431e78c99c6364eada4}{Read}} (gz\+File gzf, std\+::unordered\+\_\+set$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&hm)
+\begin{DoxyCompactList}\small\item\em Reads an unordered\+\_\+set from a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_aad5a74f187a162b6215546b1113a7fdd}{Write}} (gz\+File gzf, const std\+::unordered\+\_\+set$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&hm)
+\begin{DoxyCompactList}\small\item\em Writes an unordered\+\_\+set to a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a9567509218ab4017e80c8a4abf387ff5}{Read}} (gz\+File gzf, std\+::unordered\+\_\+multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&hm)
+\begin{DoxyCompactList}\small\item\em Reads an unordered\+\_\+multimap from a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a0f1bf0b48633804929b560464bdb7c0e}{Write}} (gz\+File gzf, const std\+::unordered\+\_\+multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&hm)
+\begin{DoxyCompactList}\small\item\em Writes an unordered\+\_\+multimap to a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_ad2bfb707bb73efd78a8bc180ac8a855f}{Read}} (gz\+File gzf, std\+::unordered\+\_\+multiset$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&hm)
+\begin{DoxyCompactList}\small\item\em Reads an unordered\+\_\+multiset from a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_aca790f628093baaca419d2cb693aee69}{Write}} (gz\+File gzf, const std\+::unordered\+\_\+multiset$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&hm)
+\begin{DoxyCompactList}\small\item\em Writes an unordered\+\_\+multiset to a gz\+File. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename ... Args$>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_a1e03b018a1308a1bc3cc3c5d253b8b1c}{ReadV}} (gz\+File gzf, Args \&...args)
+\begin{DoxyCompactList}\small\item\em Reads {\ttfamily args} from {\ttfamily gzf}. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename ... Args$>$ }\\static int \mbox{\hyperlink{classDwm_1_1GZIO_acfb8cae15b637d72ef9a4cbcee0df41f}{WriteV}} (gz\+File gzf, const Args \&...args)
+\begin{DoxyCompactList}\small\item\em Writes {\ttfamily args} to {\ttfamily gzf}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class contains a collection of static functions for reading and writing simple types in network byte order (MSB first) from/to gzip files. 
+
+It also contains functions to read and write strings from/to gzip files. It also contains function templates to read and write arrays, deques, lists, vectors, maps, multimaps, sets, multisets, unordered\+\_\+maps, unordered\+\_\+multimaps, unordered\+\_\+sets, unordered\+\_\+multisets, tuples and variants from/to gzip files. We use our member functions to handle reading and writing simple types in these containers, and function templates to handle reading and writing other class types. In the latter case, the class must implement the \doxylink{classDwm_1_1GZReadable}{GZReadable} and \doxylink{classDwm_1_1GZWritable}{GZWritable} interfaces, since our function templates simply call out to them. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1GZIO_a431e7f02520ed3a84b941a8ef6cf897e}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [1/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a431e7f02520ed3a84b941a8ef6cf897e} 
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{bool \&}]{b}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily b} from {\ttfamily gzf}. 
+
+Returns the number of bytes read (1) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_ad46c5c5eee867687d1cd341eed872992}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [2/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_ad46c5c5eee867687d1cd341eed872992} 
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{char \&}]{c}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily from} {\ttfamily gzf}. 
+
+Returns the number of bytes read (1) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_a39ef17f68eaa74829699aa9e4b922ef8}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [3/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a39ef17f68eaa74829699aa9e4b922ef8} 
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{double \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily gzf}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). 
+
+Returns number of bytes read (8) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_a54ce3dddce2a26ba311688494a6541ec}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [4/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a54ce3dddce2a26ba311688494a6541ec} 
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{float \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily gzf}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). 
+
+Returns number of bytes read (4) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_a38a255aa2bc0b59b001293269e425b78}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [5/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a38a255aa2bc0b59b001293269e425b78} 
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{int16\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily gzf}, in network byte order (MSB first). 
+
+Returns number of bytes read (2) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_a45c09eb385512acd3f48c60d34f4c490}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [6/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a45c09eb385512acd3f48c60d34f4c490} 
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{int32\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily gzf}, in network byte order (MSB first). 
+
+Returns number of bytes read (4) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_a9f714eb7bc0a832db7c8137197b32c3c}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [7/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a9f714eb7bc0a832db7c8137197b32c3c} 
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{int64\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily gzf}, in network byte order (MSB first). 
+
+Returns number of bytes read (8) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_a996db0cc5893c92e7bce50ede88c1410}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [8/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a996db0cc5893c92e7bce50ede88c1410} 
+template$<$typename \+\_\+valueT , size\+\_\+t N$>$ \\
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{std\+::array$<$ \+\_\+valueT, N $>$ \&}]{a}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads an array$<$\+\_\+value\+T,\+N$>$ from a gz\+File. 
+
+Returns the number of bytes read on success, -\/1 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=313pt]{classDwm_1_1GZIO_a996db0cc5893c92e7bce50ede88c1410_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1GZIO_a46139a1257784dd7ef6c8d65f766a15e}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [9/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a46139a1257784dd7ef6c8d65f766a15e} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{std\+::deque$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&}]{d}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a deque$<$\+\_\+value\+T$>$ from a gz\+File. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_a96f22766fa6524fbbbc33fa8304eafd3}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [10/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a96f22766fa6524fbbbc33fa8304eafd3} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{std\+::list$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&}]{l}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a list$<$\+\_\+value\+T$>$ from a gz\+File. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_a8cac4831804a29d1cf4c12ad8b1de7fe}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [11/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a8cac4831804a29d1cf4c12ad8b1de7fe} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{std\+::map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a map$<$\+\_\+key\+T,\+\_\+value\+T$>$ from a gz\+File. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_a65af40be03e4399fd0fed4ec50cb454b}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [12/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a65af40be03e4399fd0fed4ec50cb454b} 
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{std\+::monostate \&}]{sm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Just a dummy helper function for std\+::variant instances that hold a std\+::monostate. 
+
+This should only be called from our \doxylink{classDwm_1_1GZIO_ad46c5c5eee867687d1cd341eed872992}{Read()} for std\+::variant (via std\+::visit()), and does nothing. Returns 0. \Hypertarget{classDwm_1_1GZIO_a2bd33f3a822d3e3631351db1265e137b}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [13/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a2bd33f3a822d3e3631351db1265e137b} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{std\+::multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a multimap$<$\+\_\+key\+T,\+\_\+value\+T$>$ from a gz\+File. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_a5cd8c81f1e3a486f336bed2c61635327}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [14/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a5cd8c81f1e3a486f336bed2c61635327} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{std\+::multiset$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{l}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a multiset$<$\+\_\+value\+T$>$ from a gz\+File. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_af7907bf8ec52bd9779b3ac75ece437bf}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [15/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_af7907bf8ec52bd9779b3ac75ece437bf} 
+template$<$typename \+\_\+firstT , typename \+\_\+secondT $>$ \\
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{std\+::pair$<$ \+\_\+firstT, \+\_\+secondT $>$ \&}]{p}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a pair$<$\+\_\+first\+T,\+\_\+second\+T$>$ from a gz\+File. 
+
+Returns the number of bytes read on success, -\/1 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=313pt]{classDwm_1_1GZIO_af7907bf8ec52bd9779b3ac75ece437bf_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1GZIO_a5f2bad57141f81162427728b5efa29be}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [16/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a5f2bad57141f81162427728b5efa29be} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{std\+::set$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{l}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a set$<$\+\_\+value\+T$>$ from a gz\+File. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_a0092850d094f6e95f07ae60ab0813023}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [17/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a0092850d094f6e95f07ae60ab0813023} 
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{std\+::string \&}]{s}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily s} from {\ttfamily gzf}. 
+
+Returns the number of bytes read on success, -\/1 on failure. Since we write strings with a 64-\/bit unsigned length value preceding the actual string, and always have a terminating NULL, this always reads at least 9 bytes on success. \Hypertarget{classDwm_1_1GZIO_a059fae82f8655c38a170399f47a7c70e}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [18/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a059fae82f8655c38a170399f47a7c70e} 
+template$<$typename... Args$>$ \\
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{std\+::tuple$<$ Args... $>$ \&}]{t}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a tuple from a gz\+File. 
+
+Returns the number of bytes read on success, -\/1 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=313pt]{classDwm_1_1GZIO_a059fae82f8655c38a170399f47a7c70e_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1GZIO_ad82592c01a33be01621a507c4fc78fc6}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [19/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_ad82592c01a33be01621a507c4fc78fc6} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{std\+::unordered\+\_\+map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{hm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads an unordered\+\_\+map from a gz\+File. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_a9567509218ab4017e80c8a4abf387ff5}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [20/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a9567509218ab4017e80c8a4abf387ff5} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{std\+::unordered\+\_\+multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{hm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads an unordered\+\_\+multimap from a gz\+File. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_ad2bfb707bb73efd78a8bc180ac8a855f}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [21/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_ad2bfb707bb73efd78a8bc180ac8a855f} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{std\+::unordered\+\_\+multiset$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{hm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads an unordered\+\_\+multiset from a gz\+File. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_a7a1a7d97a8180431e78c99c6364eada4}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [22/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a7a1a7d97a8180431e78c99c6364eada4} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{std\+::unordered\+\_\+set$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{hm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads an unordered\+\_\+set from a gz\+File. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_a6811080bce7a526247b89e3a79a10dd9}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [23/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a6811080bce7a526247b89e3a79a10dd9} 
+template$<$typename... Ts$>$ \\
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{std\+::variant$<$ Ts... $>$ \&}]{v}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a variant from a gz\+File. 
+
+Returns the number of bytes read on success, -\/1 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=336pt]{classDwm_1_1GZIO_a6811080bce7a526247b89e3a79a10dd9_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1GZIO_a482d0fcab0cacb1fa98ebe40f5a6c0da}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [24/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a482d0fcab0cacb1fa98ebe40f5a6c0da} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{std\+::vector$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&}]{v}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads a vector$<$\+\_\+value\+T$>$ from a gz\+File. 
+
+Returns the number of bytes read on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_ab49d7db7b6dd7d6e5bac7704aaeda676}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [25/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_ab49d7db7b6dd7d6e5bac7704aaeda676} 
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{uint16\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily gzf}, in network byte order (MSB first). 
+
+Returns number of bytes read (2) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_a4e9074d7695f657a9b2d9a068004f80f}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [26/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a4e9074d7695f657a9b2d9a068004f80f} 
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{uint32\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily gzf}, in network byte order (MSB first). 
+
+Returns number of bytes read (4) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_acc5958564a296de230259f190982d749}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [27/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_acc5958564a296de230259f190982d749} 
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{uint64\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily val} from {\ttfamily gzf}, in network byte order (MSB first). 
+
+Returns number of bytes read (8) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_a9a29bee37f5c41bf36a506263ef785e0}\index{Dwm::GZIO@{Dwm::GZIO}!Read@{Read}}
+\index{Read@{Read}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [28/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a9a29bee37f5c41bf36a506263ef785e0} 
+static int Dwm\+::\+GZIO\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{uint8\+\_\+t \&}]{c}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads {\ttfamily c} from {\ttfamily gzf}. 
+
+Returns the number of bytes read (1) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_a1e03b018a1308a1bc3cc3c5d253b8b1c}\index{Dwm::GZIO@{Dwm::GZIO}!ReadV@{ReadV}}
+\index{ReadV@{ReadV}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{ReadV()}{ReadV()}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a1e03b018a1308a1bc3cc3c5d253b8b1c} 
+template$<$typename ... Args$>$ \\
+static int Dwm\+::\+GZIO\+::\+ReadV (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{Args \&...}]{args}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Reads {\ttfamily args} from {\ttfamily gzf}. 
+
+Returns the number of bytes read on success, -\/1 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=320pt]{classDwm_1_1GZIO_a1e03b018a1308a1bc3cc3c5d253b8b1c_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1GZIO_a620e1a976e3b86e5a2063734dc9552d4}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [1/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a620e1a976e3b86e5a2063734dc9552d4} 
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{bool}]{b}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily b} to {\ttfamily gzf}. 
+
+Returns the number of bytes written (1) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_a37ce028baae59e0e487482472615560f}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [2/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a37ce028baae59e0e487482472615560f} 
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{char}]{c}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily c} to {\ttfamily gzf}. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_a0570d7fd1c10c83248f0886e33cfe4b2}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [3/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a0570d7fd1c10c83248f0886e33cfe4b2} 
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const double \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} tp {\ttfamily gzf}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). 
+
+Returns the number of bytes written (8) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_a39b6d431e4a1e7e096ee067311ae8f3f}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [4/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a39b6d431e4a1e7e096ee067311ae8f3f} 
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const int64\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily gzf}, in network byte order (MSB first). 
+
+Returns the number of bytes written (8) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_a57a8984f2f1bf61671d39624ce4749f9}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [5/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a57a8984f2f1bf61671d39624ce4749f9} 
+template$<$typename \+\_\+valueT , size\+\_\+t N$>$ \\
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const std\+::array$<$ \+\_\+valueT, N $>$ \&}]{a}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes an array$<$\+\_\+value\+T,\+N$>$ to a gz\+File. 
+
+Returns the number of bytes written on success, -\/1 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=312pt]{classDwm_1_1GZIO_a57a8984f2f1bf61671d39624ce4749f9_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1GZIO_add25639177cb71f31098eaaf72b3241d}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [6/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_add25639177cb71f31098eaaf72b3241d} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const std\+::deque$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&}]{d}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a deque$<$\+\_\+value\+T$>$ to a gz\+File. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_a80852fe3bc65955f556b931c9ad978c2}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [7/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a80852fe3bc65955f556b931c9ad978c2} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const std\+::list$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&}]{l}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a list$<$\+\_\+value\+T$>$ to a gz\+File. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_a8bbf1d28f85f8d5295d4f9ab944bbf8b}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [8/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a8bbf1d28f85f8d5295d4f9ab944bbf8b} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const std\+::map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a map$<$\+\_\+key\+T,\+\_\+value\+T$>$ to a gz\+File. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_a9d024e32f929f43859844481cbc826e5}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [9/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a9d024e32f929f43859844481cbc826e5} 
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const std\+::monostate \&}]{sm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Just a dummy helper function for std\+::variant instances that hold a std\+::monostate. 
+
+This should only be called from our \doxylink{classDwm_1_1GZIO_a37ce028baae59e0e487482472615560f}{Write()} for std\+::variant (via std\+::visit()), and does nothing. Returns 0. \Hypertarget{classDwm_1_1GZIO_aa4b72124081768f44db5e7fe912efd12}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [10/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_aa4b72124081768f44db5e7fe912efd12} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const std\+::multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a multimap$<$\+\_\+key\+T,\+\_\+value\+T$>$ to a gz\+File. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_acac2039121997f5acc456776eb5c4a19}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [11/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_acac2039121997f5acc456776eb5c4a19} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const std\+::multiset$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{l}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a multiset$<$\+\_\+value\+T$>$ to a gz\+File. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_acb33e3eaebf9ed1f5b0d0c5264c0d933}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [12/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_acb33e3eaebf9ed1f5b0d0c5264c0d933} 
+template$<$typename \+\_\+firstT , typename \+\_\+secondT $>$ \\
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const std\+::pair$<$ \+\_\+firstT, \+\_\+secondT $>$ \&}]{p}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a pair$<$\+\_\+first\+T,\+\_\+second\+T$>$ to a gz\+File. 
+
+Returns the number of bytes written on success, -\/1 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=312pt]{classDwm_1_1GZIO_acb33e3eaebf9ed1f5b0d0c5264c0d933_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1GZIO_acc2858aa0fe4eee8443e8d4410326f43}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [13/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_acc2858aa0fe4eee8443e8d4410326f43} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Compare , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const std\+::set$<$ \+\_\+valueT, \+\_\+\+Compare, \+\_\+\+Alloc $>$ \&}]{l}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a set$<$\+\_\+value\+T$>$ to a gz\+File. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_ab41db45d13eb640092ce20b115ef6cec}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [14/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_ab41db45d13eb640092ce20b115ef6cec} 
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const std\+::string \&}]{s}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily s} to {\ttfamily gzf}. 
+
+Returns the number of bytes written on success, -\/1 on failure. Note that a 64-\/bit value is written first, holding the length of the string. The terminating NULL is also written. Hence, on success this will always return a value of 9 or greater. \Hypertarget{classDwm_1_1GZIO_aaaa7f4cf2e317c4578863df971dc694f}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [15/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_aaaa7f4cf2e317c4578863df971dc694f} 
+template$<$typename... Args$>$ \\
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const std\+::tuple$<$ Args... $>$ \&}]{t}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a tuple to a gz\+File. 
+
+Returns the number of bytes written on success, -\/1 on faiulure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=312pt]{classDwm_1_1GZIO_aaaa7f4cf2e317c4578863df971dc694f_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1GZIO_a82882021d1de24ef24f51bb3112e3969}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [16/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a82882021d1de24ef24f51bb3112e3969} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const std\+::unordered\+\_\+map$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{hm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes an unordered\+\_\+map to a gz\+File. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_a0f1bf0b48633804929b560464bdb7c0e}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [17/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a0f1bf0b48633804929b560464bdb7c0e} 
+template$<$typename \+\_\+keyT , typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const std\+::unordered\+\_\+multimap$<$ \+\_\+keyT, \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{hm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes an unordered\+\_\+multimap to a gz\+File. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_aca790f628093baaca419d2cb693aee69}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [18/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_aca790f628093baaca419d2cb693aee69} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const std\+::unordered\+\_\+multiset$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{hm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes an unordered\+\_\+multiset to a gz\+File. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_aad5a74f187a162b6215546b1113a7fdd}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [19/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_aad5a74f187a162b6215546b1113a7fdd} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Hash , typename \+\_\+\+Pred , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const std\+::unordered\+\_\+set$<$ \+\_\+valueT, \+\_\+\+Hash, \+\_\+\+Pred, \+\_\+\+Alloc $>$ \&}]{hm}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes an unordered\+\_\+set to a gz\+File. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_a9f224472bfee84bf051b1f8411ff937a}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [20/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a9f224472bfee84bf051b1f8411ff937a} 
+template$<$typename... Ts$>$ \\
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const std\+::variant$<$ Ts... $>$ \&}]{v}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a variant to a gz\+File. 
+
+Returns the number of bytes written on success, -\/1 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=312pt]{classDwm_1_1GZIO_a9f224472bfee84bf051b1f8411ff937a_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classDwm_1_1GZIO_a76afe5c9e87d3e8ca158f8d0d699bd9d}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [21/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a76afe5c9e87d3e8ca158f8d0d699bd9d} 
+template$<$typename \+\_\+valueT , typename \+\_\+\+Alloc $>$ \\
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const std\+::vector$<$ \+\_\+valueT, \+\_\+\+Alloc $>$ \&}]{v}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes a vector$<$\+\_\+value\+T$>$ to a gz\+File. 
+
+Returns the number of bytes written on success, -\/1 on failure. \Hypertarget{classDwm_1_1GZIO_a6e71ccaf3941b277bc76aebff9d5508e}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [22/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a6e71ccaf3941b277bc76aebff9d5508e} 
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const uint64\+\_\+t \&}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily gzf}, in network byte order (MSB first). 
+
+Returns the number of bytes written (8) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_af51411834ac0f4a50e4b9a8ea4522ea1}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [23/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_af51411834ac0f4a50e4b9a8ea4522ea1} 
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{float}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} tp {\ttfamily gzf}, in IEEE format (see RFC 1832 and/or ANSI/\+IEEE Standard 754-\/1985). 
+
+Returns the number of bytes written (4) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_aad4eeeefec03d6e225aba65fb2a10b5d}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [24/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_aad4eeeefec03d6e225aba65fb2a10b5d} 
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{int16\+\_\+t}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily gzf}, in network byte order (MSB first). 
+
+Returns the number of bytes written (2) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_ae3863b3032e1bb4a859eec686fda06bf}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [25/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_ae3863b3032e1bb4a859eec686fda06bf} 
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{int32\+\_\+t}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily gzf}, in network byte order (MSB first). 
+
+Returns the number of bytes written (4) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_a19f11833e26ea301e15509e123d53b45}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [26/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a19f11833e26ea301e15509e123d53b45} 
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{uint16\+\_\+t}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily gzf}, in network byte order (MSB first). 
+
+Returns the number of bytes written (2) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_ad0a630095ee7690af27243bec1984950}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [27/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_ad0a630095ee7690af27243bec1984950} 
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{uint32\+\_\+t}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily val} to {\ttfamily gzf}, in network byte order (MSB first). 
+
+Returns the number of bytes written (4) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_a7ae6a39ada554718ccec0d6e43e2a57e}\index{Dwm::GZIO@{Dwm::GZIO}!Write@{Write}}
+\index{Write@{Write}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [28/28]}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_a7ae6a39ada554718ccec0d6e43e2a57e} 
+static int Dwm\+::\+GZIO\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{uint8\+\_\+t}]{c}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes {\ttfamily c} to {\ttfamily gzf}. 
+
+Returns the number of bytes written (1) on success, less on failure. \Hypertarget{classDwm_1_1GZIO_acfb8cae15b637d72ef9a4cbcee0df41f}\index{Dwm::GZIO@{Dwm::GZIO}!WriteV@{WriteV}}
+\index{WriteV@{WriteV}!Dwm::GZIO@{Dwm::GZIO}}
+\doxysubsubsection{\texorpdfstring{WriteV()}{WriteV()}}
+{\footnotesize\ttfamily \label{classDwm_1_1GZIO_acfb8cae15b637d72ef9a4cbcee0df41f} 
+template$<$typename ... Args$>$ \\
+static int Dwm\+::\+GZIO\+::\+WriteV (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{, }\item[{const Args \&...}]{args}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Writes {\ttfamily args} to {\ttfamily gzf}. 
+
+Returns the number of bytes written on success, -\/1 on failure. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=318pt]{classDwm_1_1GZIO_acfb8cae15b637d72ef9a4cbcee0df41f_cgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmGZIO_8hh}{Dwm\+GZIO.\+hh}}\end{DoxyCompactItemize}

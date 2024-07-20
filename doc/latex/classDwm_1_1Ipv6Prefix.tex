@@ -1,0 +1,432 @@
+\doxysection{Dwm\+::Ipv6\+Prefix Class Reference}
+\hypertarget{classDwm_1_1Ipv6Prefix}{}\label{classDwm_1_1Ipv6Prefix}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+
+
+This class encapsulates an IPv6 network prefix.  
+
+
+
+
+{\ttfamily \#include $<$Dwm\+Ipv6\+Prefix.\+hh$>$}
+
+
+
+Inheritance diagram for Dwm\+::Ipv6\+Prefix\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv6Prefix__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Dwm\+::Ipv6\+Prefix\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDwm_1_1Ipv6Prefix__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Ipv6Prefix_a15e4b39622c0012a624a0f6865270a1b}\label{classDwm_1_1Ipv6Prefix_a15e4b39622c0012a624a0f6865270a1b} 
+{\bfseries Ipv6\+Prefix} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv6Prefix_a5a44aff72ca638241175aa04270bcd60}\label{classDwm_1_1Ipv6Prefix_a5a44aff72ca638241175aa04270bcd60} 
+{\bfseries Ipv6\+Prefix} (const std\+::string \&prefix)
+\begin{DoxyCompactList}\small\item\em Construct from a string. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classDwm_1_1Ipv6Prefix_a3f7da88934827a8a61b403d81ea6f4c2}{Ipv6\+Prefix}} (const \mbox{\hyperlink{classDwm_1_1Ipv6Address}{Ipv6\+Address}} \&network, uint8\+\_\+t mask\+Length)
+\begin{DoxyCompactList}\small\item\em Construct from an IPv6 network address and netmask length. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv6Prefix_a35239b332dcaceda3dad5b75431a7be2}\label{classDwm_1_1Ipv6Prefix_a35239b332dcaceda3dad5b75431a7be2} 
+{\bfseries Ipv6\+Prefix} (const \mbox{\hyperlink{classDwm_1_1Ipv6Prefix}{Ipv6\+Prefix}} \&prefix)
+\begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv6Prefix_a1d7cc6362b7f4a90e49167a538612762}\label{classDwm_1_1Ipv6Prefix_a1d7cc6362b7f4a90e49167a538612762} 
+\mbox{\hyperlink{classDwm_1_1Ipv6Address}{Ipv6\+Address}} {\bfseries Network} () const
+\begin{DoxyCompactList}\small\item\em Returns the network address. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv6Prefix_a1d72713c434006ce845a9b37f7587e00}\label{classDwm_1_1Ipv6Prefix_a1d72713c434006ce845a9b37f7587e00} 
+const in6\+\_\+addr \& {\bfseries In6\+Addr} () const
+\item 
+\Hypertarget{classDwm_1_1Ipv6Prefix_af7eb09ef2767e9108c186a6c21eb5561}\label{classDwm_1_1Ipv6Prefix_af7eb09ef2767e9108c186a6c21eb5561} 
+\mbox{\hyperlink{classDwm_1_1Ipv6Address}{Ipv6\+Address}} {\bfseries Netmask} () const
+\begin{DoxyCompactList}\small\item\em Returns the netmask. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv6Prefix_aebc8751134f5301a5fab4661978d687b}\label{classDwm_1_1Ipv6Prefix_aebc8751134f5301a5fab4661978d687b} 
+uint8\+\_\+t {\bfseries Mask\+Length} () const
+\begin{DoxyCompactList}\small\item\em Returns the netmask length. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv6Prefix_ac3e364c0107cf0f36f534c3bd438d229}\label{classDwm_1_1Ipv6Prefix_ac3e364c0107cf0f36f534c3bd438d229} 
+uint8\+\_\+t {\bfseries Mask\+Length} (uint8\+\_\+t mask\+Len)
+\begin{DoxyCompactList}\small\item\em Sets and returns the netmask length. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_a6815b41a50089876788794f37b010f96}{Set}} (const \mbox{\hyperlink{classDwm_1_1Ipv6Address}{Ipv6\+Address}} \&network, uint8\+\_\+t mask\+Length)
+\begin{DoxyCompactList}\small\item\em Set the prefix using a network address and netmask length. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv6Prefix_a20f3cbfa27a462edb55559b64f1e9e5c}\label{classDwm_1_1Ipv6Prefix_a20f3cbfa27a462edb55559b64f1e9e5c} 
+bool {\bfseries operator$<$} (const \mbox{\hyperlink{classDwm_1_1Ipv6Prefix}{Ipv6\+Prefix}} \&prefix) const
+\begin{DoxyCompactList}\small\item\em Less-\/than operator. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv6Prefix_a51948f925a41be5c499daa1694da293e}\label{classDwm_1_1Ipv6Prefix_a51948f925a41be5c499daa1694da293e} 
+bool {\bfseries operator$>$} (const \mbox{\hyperlink{classDwm_1_1Ipv6Prefix}{Ipv6\+Prefix}} \&prefix) const
+\begin{DoxyCompactList}\small\item\em Greater-\/than operator. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv6Prefix_a0a9433eb9855158d223e3ab8d7f2ce39}\label{classDwm_1_1Ipv6Prefix_a0a9433eb9855158d223e3ab8d7f2ce39} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classDwm_1_1Ipv6Prefix}{Ipv6\+Prefix}} \&prefix) const
+\begin{DoxyCompactList}\small\item\em Equal-\/to operator. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv6Prefix_a974015ae862c3b1722d351c4c0fd212b}\label{classDwm_1_1Ipv6Prefix_a974015ae862c3b1722d351c4c0fd212b} 
+bool {\bfseries operator!=} (const \mbox{\hyperlink{classDwm_1_1Ipv6Prefix}{Ipv6\+Prefix}} \&prefix) const
+\begin{DoxyCompactList}\small\item\em Not-\/equal-\/to operator. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv6Prefix_af6df53f5169fa3bd75076f197512ad65}\label{classDwm_1_1Ipv6Prefix_af6df53f5169fa3bd75076f197512ad65} 
+bool {\bfseries Contains} (const \mbox{\hyperlink{classDwm_1_1Ipv6Address}{Ipv6\+Address}} \&addr) const
+\begin{DoxyCompactList}\small\item\em Returns true if {\ttfamily addr} falls within the prefix. \end{DoxyCompactList}\item 
+ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_a7c2ccc55dc9d20021e3c637650ae7e25}{Read}} (int fd) override
+\begin{DoxyCompactList}\small\item\em Reads the prefix from a file descriptor. \end{DoxyCompactList}\item 
+ssize\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_a18fcc462631edd5603758f4f3915891d}{Write}} (int fd) const override
+\begin{DoxyCompactList}\small\item\em Writes the prefix to a file descriptor. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_aacb08a2599ae681dc5f28c7e469819eb}{Read}} (FILE \texorpdfstring{$\ast$}{*}f) override
+\begin{DoxyCompactList}\small\item\em Reads the prefix from a FILE pointer. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_a8686406a240ed986a1c4f7aab1b43050}{Write}} (FILE \texorpdfstring{$\ast$}{*}f) const override
+\begin{DoxyCompactList}\small\item\em Writes the prefix to a FILE pointer. \end{DoxyCompactList}\item 
+std\+::istream \& \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_aa60e625e50b59641be71f95145079a57}{Read}} (std\+::istream \&is) override
+\begin{DoxyCompactList}\small\item\em Reads the prefix from an istream. Returns the istream. \end{DoxyCompactList}\item 
+std\+::ostream \& \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_aebdf6437d95c6a8e6f4e75077ccb00a9}{Write}} (std\+::ostream \&os) const override
+\begin{DoxyCompactList}\small\item\em Writes the prefix to an ostream. Returns the ostream. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_a27aae88066b9ff961334beefdad52586}{Read}} (gz\+File gzf) override
+\begin{DoxyCompactList}\small\item\em Reads the prefix from a gz\+File. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_aacbec81e62c2883a98573b0d0f63c34d}{Write}} (gz\+File gzf) const override
+\begin{DoxyCompactList}\small\item\em Writes the prefix to a gz\+File. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_ae14ababc03435d5ee8b8b5f44265740f}{BZRead}} (BZFILE \texorpdfstring{$\ast$}{*}bzf) override
+\begin{DoxyCompactList}\small\item\em Reads the prefix from a BZFILE pointer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_a57c80ca52514ba9aeae0cd358b10615e}{BZWrite}} (BZFILE \texorpdfstring{$\ast$}{*}bzf) const override
+\begin{DoxyCompactList}\small\item\em Writes the prefix to a BZFILE pointer. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_ab1a27cbebc98af890fc04d61d69e6c68}{Read}} (boost\+::asio\+::ip\+::tcp\+::socket \&s, boost\+::system\+::error\+\_\+code \&ec) override
+\begin{DoxyCompactList}\small\item\em Reads the prefix from {\ttfamily s}. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_ad014fe91e2cc5dfdf5cb1f9dd5058850}{Write}} (boost\+::asio\+::ip\+::tcp\+::socket \&s, boost\+::system\+::error\+\_\+code \&ec) const override
+\begin{DoxyCompactList}\small\item\em Writes the prefix to {\ttfamily s}. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_ad3dec2d5180005c5052e74bec5a70dd8}{Read}} (boost\+::asio\+::local\+::stream\+\_\+protocol\+::socket \&s, boost\+::system\+::error\+\_\+code \&ec) override
+\begin{DoxyCompactList}\small\item\em Reads the prefix from {\ttfamily s}. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_a57bcb2f7de27bbceef85314a2420871f}{Write}} (boost\+::asio\+::local\+::stream\+\_\+protocol\+::socket \&s, boost\+::system\+::error\+\_\+code \&ec) const override
+\begin{DoxyCompactList}\small\item\em Writes the prefix to {\ttfamily s}. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_a262f35da97d498cebe7e91af358f3090}{Read}} (boost\+::asio\+::generic\+::stream\+\_\+protocol\+::socket \&s, boost\+::system\+::error\+\_\+code \&ec) override
+\begin{DoxyCompactList}\small\item\em Reads the prefix from {\ttfamily s}. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_a1ee0572d5bdc4ee1188894e646eb033a}{Write}} (boost\+::asio\+::generic\+::stream\+\_\+protocol\+::socket \&s, boost\+::system\+::error\+\_\+code \&ec) const override
+\begin{DoxyCompactList}\small\item\em Writes the prefix to {\ttfamily s}. \end{DoxyCompactList}\item 
+uint64\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_a8773fe6dfd483157b320ed6164e8a112}{Streamed\+Length}} () const override
+\begin{DoxyCompactList}\small\item\em Return the number of bytes that would be written if the object\textquotesingle{}s Write(ostream \&), Write(\+FILE \texorpdfstring{$\ast$}{*}) or Write(int) member were called. \end{DoxyCompactList}\item 
+\Hypertarget{classDwm_1_1Ipv6Prefix_a342345871f2b6a81d83142eff2c9cacd}\label{classDwm_1_1Ipv6Prefix_a342345871f2b6a81d83142eff2c9cacd} 
+std\+::string {\bfseries To\+String} () const
+\begin{DoxyCompactList}\small\item\em Returns a string representation of the prefix in the usual form, for example "{}1234\+:5678\+::/32"{}. \end{DoxyCompactList}\item 
+uint64\+\_\+t \mbox{\hyperlink{classDwm_1_1Ipv6Prefix_a9bc322464b8edb1cca27e853e673b3dc}{Hash}} () const
+\begin{DoxyCompactList}\small\item\em Given that the number of IPv6 addresses I typically deal with is nowhere near 4 billion, a 32-\/bit hash is sufficient if its distribution is effective. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1DescriptorReadable}{Dwm\+::\+Descriptor\+Readable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Descriptor\+Readable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1DescriptorWritable}{Dwm\+::\+Descriptor\+Writable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Descriptor\+Writable} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1StreamReadable}{Dwm\+::\+Stream\+Readable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Stream\+Readable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1StreamWritable}{Dwm\+::\+Stream\+Writable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Stream\+Writable} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1GZReadable}{Dwm\+::\+GZReadable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+GZReadable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDwm_1_1GZWritable}{Dwm\+::\+GZWritable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+GZWritable} ()
+\begin{DoxyCompactList}\small\item\em destructor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDwm_1_1Ipv6Prefix_a6fcd691bbf747200e0b8a9ad0d899124}\label{classDwm_1_1Ipv6Prefix_a6fcd691bbf747200e0b8a9ad0d899124} 
+std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, const \mbox{\hyperlink{classDwm_1_1Ipv6Prefix}{Ipv6\+Prefix}} \&prefix)
+\begin{DoxyCompactList}\small\item\em Prints a prefix to an ostream in the usual colon-\/delimited form. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class encapsulates an IPv6 network prefix. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classDwm_1_1Ipv6Prefix_a3f7da88934827a8a61b403d81ea6f4c2}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!Ipv6Prefix@{Ipv6Prefix}}
+\index{Ipv6Prefix@{Ipv6Prefix}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{Ipv6Prefix()}{Ipv6Prefix()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_a3f7da88934827a8a61b403d81ea6f4c2} 
+Dwm\+::\+Ipv6\+Prefix\+::\+Ipv6\+Prefix (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classDwm_1_1Ipv6Address}{Ipv6\+Address}} \&}]{network}{, }\item[{uint8\+\_\+t}]{mask\+Length}{}\end{DoxyParamCaption})}
+
+
+
+Construct from an IPv6 network address and netmask length. 
+
+The network address may be a host address; this constructor will apply the netmask. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDwm_1_1Ipv6Prefix_ae14ababc03435d5ee8b8b5f44265740f}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!BZRead@{BZRead}}
+\index{BZRead@{BZRead}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{BZRead()}{BZRead()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_ae14ababc03435d5ee8b8b5f44265740f} 
+int Dwm\+::\+Ipv6\+Prefix\+::\+BZRead (\begin{DoxyParamCaption}\item[{BZFILE \texorpdfstring{$\ast$}{*}}]{bzf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the prefix from a BZFILE pointer. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1BZ2Readable_a4b71c8697049e8e2e5df8ff22405f6b7}{Dwm\+::\+BZ2\+Readable}}.
+
+\Hypertarget{classDwm_1_1Ipv6Prefix_a57c80ca52514ba9aeae0cd358b10615e}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!BZWrite@{BZWrite}}
+\index{BZWrite@{BZWrite}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{BZWrite()}{BZWrite()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_a57c80ca52514ba9aeae0cd358b10615e} 
+int Dwm\+::\+Ipv6\+Prefix\+::\+BZWrite (\begin{DoxyParamCaption}\item[{BZFILE \texorpdfstring{$\ast$}{*}}]{bzf}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the prefix to a BZFILE pointer. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1BZ2Writable_aa4481114d6865e31f0aa94f08c2b2e5d}{Dwm\+::\+BZ2\+Writable}}.
+
+\Hypertarget{classDwm_1_1Ipv6Prefix_a9bc322464b8edb1cca27e853e673b3dc}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!Hash@{Hash}}
+\index{Hash@{Hash}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{Hash()}{Hash()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_a9bc322464b8edb1cca27e853e673b3dc} 
+uint64\+\_\+t Dwm\+::\+Ipv6\+Prefix\+::\+Hash (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Given that the number of IPv6 addresses I typically deal with is nowhere near 4 billion, a 32-\/bit hash is sufficient if its distribution is effective. 
+
+And it\textquotesingle{}s faster on small 32-\/bit platforms. Hence I\textquotesingle{}m currently using XXH32(), and only on the non-\/zero bytes of the address. Yes, that means I\textquotesingle{}ll have collisions for some prefixes but it\textquotesingle{}s a small (near 0) number in my usage. I\textquotesingle{}m looking for average speed here. \Hypertarget{classDwm_1_1Ipv6Prefix_a262f35da97d498cebe7e91af358f3090}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!Read@{Read}}
+\index{Read@{Read}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [1/7]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_a262f35da97d498cebe7e91af358f3090} 
+bool Dwm\+::\+Ipv6\+Prefix\+::\+Read (\begin{DoxyParamCaption}\item[{boost\+::asio\+::generic\+::stream\+\_\+protocol\+::socket \&}]{s}{, }\item[{boost\+::system\+::error\+\_\+code \&}]{ec}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the prefix from {\ttfamily s}. 
+
+Returns true on success, false on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1ASIOReadable}{Dwm\+::\+ASIOReadable}}.
+
+\Hypertarget{classDwm_1_1Ipv6Prefix_ab1a27cbebc98af890fc04d61d69e6c68}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!Read@{Read}}
+\index{Read@{Read}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [2/7]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_ab1a27cbebc98af890fc04d61d69e6c68} 
+bool Dwm\+::\+Ipv6\+Prefix\+::\+Read (\begin{DoxyParamCaption}\item[{boost\+::asio\+::ip\+::tcp\+::socket \&}]{s}{, }\item[{boost\+::system\+::error\+\_\+code \&}]{ec}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the prefix from {\ttfamily s}. 
+
+Returns true on success, false on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1ASIOReadable_a65830c7e919d26ce0c5a650ce5a53de1}{Dwm\+::\+ASIOReadable}}.
+
+\Hypertarget{classDwm_1_1Ipv6Prefix_ad3dec2d5180005c5052e74bec5a70dd8}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!Read@{Read}}
+\index{Read@{Read}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [3/7]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_ad3dec2d5180005c5052e74bec5a70dd8} 
+bool Dwm\+::\+Ipv6\+Prefix\+::\+Read (\begin{DoxyParamCaption}\item[{boost\+::asio\+::local\+::stream\+\_\+protocol\+::socket \&}]{s}{, }\item[{boost\+::system\+::error\+\_\+code \&}]{ec}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the prefix from {\ttfamily s}. 
+
+Returns true on success, false on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1ASIOReadable_abe578512f89ada0c4a5b5b528dee0db9}{Dwm\+::\+ASIOReadable}}.
+
+\Hypertarget{classDwm_1_1Ipv6Prefix_aacb08a2599ae681dc5f28c7e469819eb}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!Read@{Read}}
+\index{Read@{Read}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [4/7]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_aacb08a2599ae681dc5f28c7e469819eb} 
+size\+\_\+t Dwm\+::\+Ipv6\+Prefix\+::\+Read (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the prefix from a FILE pointer. 
+
+Returns 1 on success, 0 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1FileReadable_a2e51685eb4fecc584ab48ca7609bba6f}{Dwm\+::\+File\+Readable}}.
+
+\Hypertarget{classDwm_1_1Ipv6Prefix_a27aae88066b9ff961334beefdad52586}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!Read@{Read}}
+\index{Read@{Read}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [5/7]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_a27aae88066b9ff961334beefdad52586} 
+int Dwm\+::\+Ipv6\+Prefix\+::\+Read (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the prefix from a gz\+File. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1GZReadable_a4243984d9d8fb2f79997403824834dd2}{Dwm\+::\+GZReadable}}.
+
+\Hypertarget{classDwm_1_1Ipv6Prefix_a7c2ccc55dc9d20021e3c637650ae7e25}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!Read@{Read}}
+\index{Read@{Read}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [6/7]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_a7c2ccc55dc9d20021e3c637650ae7e25} 
+ssize\+\_\+t Dwm\+::\+Ipv6\+Prefix\+::\+Read (\begin{DoxyParamCaption}\item[{int}]{fd}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the prefix from a file descriptor. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1DescriptorReadable_aec1a0c67dd53343e52be7a6728081b7f}{Dwm\+::\+Descriptor\+Readable}}.
+
+\Hypertarget{classDwm_1_1Ipv6Prefix_aa60e625e50b59641be71f95145079a57}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!Read@{Read}}
+\index{Read@{Read}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [7/7]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_aa60e625e50b59641be71f95145079a57} 
+std\+::istream \& Dwm\+::\+Ipv6\+Prefix\+::\+Read (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{is}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reads the prefix from an istream. Returns the istream. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamReadable_a8337a0949e0ce4458f18884d00eb5153}{Dwm\+::\+Stream\+Readable}}.
+
+\Hypertarget{classDwm_1_1Ipv6Prefix_a6815b41a50089876788794f37b010f96}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!Set@{Set}}
+\index{Set@{Set}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{Set()}{Set()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_a6815b41a50089876788794f37b010f96} 
+bool Dwm\+::\+Ipv6\+Prefix\+::\+Set (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classDwm_1_1Ipv6Address}{Ipv6\+Address}} \&}]{network}{, }\item[{uint8\+\_\+t}]{mask\+Length}{}\end{DoxyParamCaption})}
+
+
+
+Set the prefix using a network address and netmask length. 
+
+Returns true on success, false on failure. \Hypertarget{classDwm_1_1Ipv6Prefix_a8773fe6dfd483157b320ed6164e8a112}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!StreamedLength@{StreamedLength}}
+\index{StreamedLength@{StreamedLength}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{StreamedLength()}{StreamedLength()}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_a8773fe6dfd483157b320ed6164e8a112} 
+uint64\+\_\+t Dwm\+::\+Ipv6\+Prefix\+::\+Streamed\+Length (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Return the number of bytes that would be written if the object\textquotesingle{}s Write(ostream \&), Write(\+FILE \texorpdfstring{$\ast$}{*}) or Write(int) member were called. 
+
+These members would be inherited from \doxylink{classDwm_1_1StreamWritable}{Stream\+Writable}, \doxylink{classDwm_1_1FileWritable}{File\+Writable} or \doxylink{classDwm_1_1DescriptorWritable}{Descriptor\+Writable}, respectively. 
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamedLengthCapable_abe671443353ea6ed173005c6f515ca5d}{Dwm\+::\+Streamed\+Length\+Capable}}.
+
+\Hypertarget{classDwm_1_1Ipv6Prefix_a1ee0572d5bdc4ee1188894e646eb033a}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!Write@{Write}}
+\index{Write@{Write}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [1/7]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_a1ee0572d5bdc4ee1188894e646eb033a} 
+bool Dwm\+::\+Ipv6\+Prefix\+::\+Write (\begin{DoxyParamCaption}\item[{boost\+::asio\+::generic\+::stream\+\_\+protocol\+::socket \&}]{s}{, }\item[{boost\+::system\+::error\+\_\+code \&}]{ec}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the prefix to {\ttfamily s}. 
+
+Returns true on success, false on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1ASIOWritable}{Dwm\+::\+ASIOWritable}}.
+
+\Hypertarget{classDwm_1_1Ipv6Prefix_ad014fe91e2cc5dfdf5cb1f9dd5058850}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!Write@{Write}}
+\index{Write@{Write}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [2/7]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_ad014fe91e2cc5dfdf5cb1f9dd5058850} 
+bool Dwm\+::\+Ipv6\+Prefix\+::\+Write (\begin{DoxyParamCaption}\item[{boost\+::asio\+::ip\+::tcp\+::socket \&}]{s}{, }\item[{boost\+::system\+::error\+\_\+code \&}]{ec}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the prefix to {\ttfamily s}. 
+
+Returns true on success, false on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1ASIOWritable_a73a0aa7dc43f313e4032693f0d0f7651}{Dwm\+::\+ASIOWritable}}.
+
+\Hypertarget{classDwm_1_1Ipv6Prefix_a57bcb2f7de27bbceef85314a2420871f}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!Write@{Write}}
+\index{Write@{Write}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [3/7]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_a57bcb2f7de27bbceef85314a2420871f} 
+bool Dwm\+::\+Ipv6\+Prefix\+::\+Write (\begin{DoxyParamCaption}\item[{boost\+::asio\+::local\+::stream\+\_\+protocol\+::socket \&}]{s}{, }\item[{boost\+::system\+::error\+\_\+code \&}]{ec}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the prefix to {\ttfamily s}. 
+
+Returns true on success, false on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1ASIOWritable_a41aad4be237a07b5301a4fe78c9bfcff}{Dwm\+::\+ASIOWritable}}.
+
+\Hypertarget{classDwm_1_1Ipv6Prefix_a8686406a240ed986a1c4f7aab1b43050}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!Write@{Write}}
+\index{Write@{Write}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [4/7]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_a8686406a240ed986a1c4f7aab1b43050} 
+size\+\_\+t Dwm\+::\+Ipv6\+Prefix\+::\+Write (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the prefix to a FILE pointer. 
+
+Returns 1 on success, 0 on failure. 
+
+Implements \mbox{\hyperlink{classDwm_1_1FileWritable_ad46fa6f29a2fec8c8080f054c0a8febe}{Dwm\+::\+File\+Writable}}.
+
+\Hypertarget{classDwm_1_1Ipv6Prefix_aacbec81e62c2883a98573b0d0f63c34d}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!Write@{Write}}
+\index{Write@{Write}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [5/7]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_aacbec81e62c2883a98573b0d0f63c34d} 
+int Dwm\+::\+Ipv6\+Prefix\+::\+Write (\begin{DoxyParamCaption}\item[{gz\+File}]{gzf}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the prefix to a gz\+File. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1GZWritable_a5f50bad679854f91bc5a67728a329681}{Dwm\+::\+GZWritable}}.
+
+\Hypertarget{classDwm_1_1Ipv6Prefix_a18fcc462631edd5603758f4f3915891d}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!Write@{Write}}
+\index{Write@{Write}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [6/7]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_a18fcc462631edd5603758f4f3915891d} 
+ssize\+\_\+t Dwm\+::\+Ipv6\+Prefix\+::\+Write (\begin{DoxyParamCaption}\item[{int}]{fd}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the prefix to a file descriptor. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1DescriptorWritable_ae0b23058b0de909d4705c05507b10864}{Dwm\+::\+Descriptor\+Writable}}.
+
+\Hypertarget{classDwm_1_1Ipv6Prefix_aebdf6437d95c6a8e6f4e75077ccb00a9}\index{Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}!Write@{Write}}
+\index{Write@{Write}!Dwm::Ipv6Prefix@{Dwm::Ipv6Prefix}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [7/7]}}
+{\footnotesize\ttfamily \label{classDwm_1_1Ipv6Prefix_aebdf6437d95c6a8e6f4e75077ccb00a9} 
+std\+::ostream \& Dwm\+::\+Ipv6\+Prefix\+::\+Write (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Writes the prefix to an ostream. Returns the ostream. 
+
+
+
+Implements \mbox{\hyperlink{classDwm_1_1StreamWritable_a66994f2c5fbf07308b6b766f9774d079}{Dwm\+::\+Stream\+Writable}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DwmIpv6Prefix_8hh}{Dwm\+Ipv6\+Prefix.\+hh}}\end{DoxyCompactItemize}
