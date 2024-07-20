@@ -1,3 +1,19 @@
+2024-07-20  Daniel W. McRobb  <dwm@kiva.mcplex.net>
+
+	* classes/src/DwmProcessTableLex.lex,
+	classes/src/DwmProcessTableParse.y: 'ps' output on FreeBSD shows
+	a single hyphen ('-') instead of a ctime() string for lstart for
+	some processes.  Patch this by substituting the lstart from the
+	first ancestor of the process that has a valid lstart.
+
+	* classes/include/DwmBootTime.hh, classes/include/DwmUptime.hh
+	classes/src/DwmBootTime.cc, classes/src/DwmUptime.cc:
+	Simple implementations of uptime and boot time.  On FreeBSD
+	and macOS, we can get boot time from sysctl and derive uptime
+	from it by subtracting it from the current time.  On linux
+	we can get uptime from "/proc/uptime" and derive boot time
+	by subtracting the uptime from the current time.
+
 2024-07-19  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* Changes to various header files to start using concepts to
