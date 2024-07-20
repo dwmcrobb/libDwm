@@ -46,6 +46,7 @@
   #include <cstdint>
   #include <string>
 
+  #include "DwmBootTime.hh"
   #include "DwmProcessTable.hh"
     
   extern "C" {
@@ -167,7 +168,24 @@ ProcessCommand: STRING
 namespace Dwm {
 
   std::mutex     g_mtx;
-  
+
+  //-------------------------------------------------------------------------
+  //!  
+  //-------------------------------------------------------------------------
+  static int64_t AncestorLstart(const ProcessTable & pt, pid_t ppid)
+  {
+    auto  ppit = pt.find(ppid);
+    if (ppit != pt.end()) {
+      if (ppit->second.lstart) {
+        return ppit->second.lstart;
+      }
+      else {
+        return AncestorLstart(pt, ppit->second.ppid);
+      }
+    }
+    return BootTime();
+  }
+    
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
@@ -183,7 +201,15 @@ namespace Dwm {
       pclose(psparsein);
       psparselex_destroy();
     }
-    
+#if (defined(__FreeBSD__))
+    //  lstart isn't populated for some processes in 'ps' output.
+    //  For those processes, use an ancestor's lstart.
+    for (auto & p : pt) {
+      if (0 == p.second.lstart) {
+        p.second.lstart = AncestorLstart(pt, p.second.ppid);
+      }
+    }
+#endif
     return (! pt.empty());
   }
 
