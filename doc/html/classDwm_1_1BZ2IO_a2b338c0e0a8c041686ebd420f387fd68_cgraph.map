@@ -1,5 +1,0 @@
-<map id="Dwm::BZ2IO::BZWrite" name="Dwm::BZ2IO::BZWrite">
-<area shape="rect" id="Node000001" title="Writes a pair&lt;_firstT,_secondT&gt; to a BZFILE pointer." alt="" coords="5,5,159,31"/>
-<area shape="rect" id="Node000002" href="$classDwm_1_1BZ2IO.html#a58f74d4a5e526150b67c29b7f3744b6e" title="Writes c to bzf." alt="" coords="207,5,360,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="159,16,191,16,191,21,159,21"/>
-</map>

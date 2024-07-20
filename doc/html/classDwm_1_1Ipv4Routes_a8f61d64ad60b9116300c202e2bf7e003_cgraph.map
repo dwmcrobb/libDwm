@@ -1,5 +1,0 @@
-<map id="Dwm::Ipv4Routes::Read" name="Dwm::Ipv4Routes::Read">
-<area shape="rect" id="Node000001" title="Reades the routes from a FILE pointer." alt="" coords="5,5,172,31"/>
-<area shape="rect" id="Node000002" href="$classDwm_1_1FileIO.html#ab7126329d196524c0795783e38634f75" title="Reads c from f." alt="" coords="220,5,354,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,16,204,16,204,21,172,21"/>
-</map>

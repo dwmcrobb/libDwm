@@ -1,5 +1,0 @@
-<map id="Dwm::Ipv4Routes::Read" name="Dwm::Ipv4Routes::Read">
-<area shape="rect" id="Node000001" title="Reads the routes from a gzFile." alt="" coords="5,5,172,31"/>
-<area shape="rect" id="Node000002" href="$classDwm_1_1GZIO.html#ad46c5c5eee867687d1cd341eed872992" title="Reads from gzf." alt="" coords="220,5,351,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,16,204,16,204,21,172,21"/>
-</map>

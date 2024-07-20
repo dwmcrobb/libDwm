@@ -1,5 +1,0 @@
-<map id="Dwm::FileIO::Read" name="Dwm::FileIO::Read">
-<area shape="rect" id="Node000001" title="Reads an array&lt;_valueT,N&gt; from a FILE." alt="" coords="5,5,140,31"/>
-<area shape="rect" id="Node000002" href="$classDwm_1_1FileIO.html#ab7126329d196524c0795783e38634f75" title="Reads c from f." alt="" coords="188,5,322,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,16,172,16,172,21,140,21"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="Dwm::LoadBalancer::Worker::AddWork" name="Dwm::LoadBalancer::Worker::AddWork">
-<area shape="rect" id="Node000001" title="Adds a work item for the worker." alt="" coords="5,5,153,46"/>
-<area shape="rect" id="Node000002" href="$classDwm_1_1Thread_1_1Queue.html#ab299aa8a99b55ca3d8060318b3929cd3" title="Inserts value on the back of the queue." alt="" coords="201,5,347,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,23,185,23,185,28,153,28"/>
-</map>

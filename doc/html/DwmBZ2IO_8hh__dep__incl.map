@@ -1,9 +1,0 @@
-<map id="DwmBZ2IO.hh" name="DwmBZ2IO.hh">
-<area shape="rect" id="Node000001" title="Dwm::BZ2IO class declaration." alt="" coords="187,5,295,31"/>
-<area shape="rect" id="Node000002" href="$DwmIpv4Routes_8hh.html" title="Dwm::Ipv4Routes class template definition." alt="" coords="5,79,143,105"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,40,103,81,101,76,197,35"/>
-<area shape="rect" id="Node000003" href="$DwmIpv6AddrMap_8hh.html" title="Dwm::Ipv6AddrMap class template declaration." alt="" coords="167,79,314,105"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="243,46,243,79,238,79,238,46"/>
-<area shape="rect" id="Node000004" href="$DwmIpv6PrefixMap_8hh.html" title="NOT YET DOCUMENTED." alt="" coords="338,79,493,105"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="285,35,387,76,385,81,283,40"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="Dwm::Diff" name="Dwm::Diff">
-<area shape="rect" id="Node000001" title="Copies elements from the sorted range [first1,last1) which are not found in the sorted range [first2,..." alt="" coords="5,29,87,55"/>
-<area shape="rect" id="Node000002" href="$DwmDiff_8hh.html#aaa5e19838961d0364c65d89e488e2231" title="Copies elements from the sorted range [first1,last1) which are not found in the sorted range [first2,..." alt="" coords="135,29,216,55"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,40,119,40,119,45,87,45"/>
-<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="153,30,148,21,151,11,160,5,175,3,191,5,200,12,197,16,189,10,175,8,162,10,155,14,154,20,158,28"/>
-</map>

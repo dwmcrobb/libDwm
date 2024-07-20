@@ -1,9 +1,0 @@
-<map id="Dwm::Writable" name="Dwm::Writable">
-<area shape="rect" id="Node000001" title="This class defines an interface for classes that can write their contents to an ostream,..." alt="" coords="207,79,315,105"/>
-<area shape="rect" id="Node000002" href="$classDwm_1_1DescriptorWritable.html" title="This class defines an interface for classes that can write their contents to a file descriptor." alt="" coords="5,5,173,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,35,233,76,231,81,131,40"/>
-<area shape="rect" id="Node000003" href="$classDwm_1_1FileWritable.html" title="This class defines an interface for classes that can write their contents to a FILE pointer." alt="" coords="197,5,325,31"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="264,46,264,79,258,79,258,46"/>
-<area shape="rect" id="Node000004" href="$classDwm_1_1StreamWritable.html" title="This class defines an interface for classes that can write their contents to an ostream." alt="" coords="349,5,498,31"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="383,40,290,81,288,76,381,35"/>
-</map>

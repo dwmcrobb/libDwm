@@ -1,5 +1,0 @@
-<map id="Dwm::Ipv6PrefixMap::Read" name="Dwm::Ipv6PrefixMap::Read">
-<area shape="rect" id="Node000001" title="Reads the Ipv6PrefixMap from f." alt="" coords="5,5,150,46"/>
-<area shape="rect" id="Node000002" href="$classDwm_1_1FileIO.html#ab7126329d196524c0795783e38634f75" title="Reads c from f." alt="" coords="198,13,332,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,23,182,23,182,28,150,28"/>
-</map>

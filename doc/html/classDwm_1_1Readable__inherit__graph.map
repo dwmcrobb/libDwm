@@ -1,9 +1,0 @@
-<map id="Dwm::Readable" name="Dwm::Readable">
-<area shape="rect" id="Node000001" title="This class defines an interface for classes that can read their contents from an istream,..." alt="" coords="215,79,331,105"/>
-<area shape="rect" id="Node000002" href="$classDwm_1_1DescriptorReadable.html" title="This class defines an interface for classes that can read their contents from a file descriptor." alt="" coords="5,5,181,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,35,243,76,241,81,137,40"/>
-<area shape="rect" id="Node000003" href="$classDwm_1_1FileReadable.html" title="This class defines an interface for classes that can read their contents from a FILE pointer." alt="" coords="205,5,341,31"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="276,46,276,79,270,79,270,46"/>
-<area shape="rect" id="Node000004" href="$classDwm_1_1StreamReadable.html" title="This class defines an interface for classes that can read their contents from an istream." alt="" coords="365,5,522,31"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="402,40,303,81,301,76,400,35"/>
-</map>

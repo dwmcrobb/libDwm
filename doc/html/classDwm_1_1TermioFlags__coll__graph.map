@@ -1,5 +1,0 @@
-<map id="Dwm::TermioFlags" name="Dwm::TermioFlags">
-<area shape="rect" id="Node000001" title="Base class for input, output, control and local termio flags." alt="" coords="18,94,150,120"/>
-<area shape="rect" id="Node000002" href="$structDwm_1_1TermioFlagInfo__t.html" title="Holds termios flag values and names." alt="" coords="5,5,163,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,47,87,94,81,94,81,47"/>
-</map>

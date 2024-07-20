@@ -1,5 +1,0 @@
-<map id="Dwm::ASIO::Write" name="Dwm::ASIO::Write">
-<area shape="rect" id="Node000001" title="Writes an array&lt;_valueT.N&gt; v to s." alt="" coords="5,5,136,31"/>
-<area shape="rect" id="Node000002" href="$classDwm_1_1ASIO.html#a4922b0689674c3088ea89975ec8d2dc4" title="Write value to the given socket s." alt="" coords="184,5,314,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,16,168,16,168,21,136,21"/>
-</map>

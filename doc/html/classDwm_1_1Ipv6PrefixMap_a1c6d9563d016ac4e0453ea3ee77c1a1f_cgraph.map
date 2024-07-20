@@ -1,5 +1,0 @@
-<map id="Dwm::Ipv6PrefixMap::Write" name="Dwm::Ipv6PrefixMap::Write">
-<area shape="rect" id="Node000001" title="Writes the Ipv6PrefixMap to file descriptor fd." alt="" coords="5,5,150,46"/>
-<area shape="rect" id="Node000002" href="$classDwm_1_1DescriptorIO.html#a6e3889dd0928fe283cbfa2f5eedcc5be" title="Writes c to fd." alt="" coords="198,5,340,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,23,182,23,182,28,150,28"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="Dwm::StreamIO::WriteV" name="Dwm::StreamIO::WriteV">
-<area shape="rect" id="Node000001" title="Writes multiple objects to an ostream." alt="" coords="5,5,169,31"/>
-<area shape="rect" id="Node000002" href="$classDwm_1_1StreamIO.html#ab4d6d54d455ae181137fb10597b2dfd9" title="Writes c to os. Returns os." alt="" coords="217,5,371,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,16,201,16,201,21,169,21"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="Dwm::Ipv6PrefixMap::Read" name="Dwm::Ipv6PrefixMap::Read">
-<area shape="rect" id="Node000001" title="Reads the Ipv6PrefixMap from an istream. Returns the istream." alt="" coords="5,5,150,46"/>
-<area shape="rect" id="Node000002" href="$classDwm_1_1StreamIO.html#a53f8175153c0a8a5da8d363cfa23c61a" title="Reads c from is. Returns is." alt="" coords="198,13,353,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,23,182,23,182,28,150,28"/>
-</map>

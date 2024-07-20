@@ -1,9 +1,0 @@
-<map id="DwmBZ2IOCapable.hh" name="DwmBZ2IOCapable.hh">
-<area shape="rect" id="Node000001" title="Dwm::BZ2Readable, Dwm::BZ2Writable and Dwm::BZ2IOCapable pure virtual interface declarations." alt="" coords="71,5,227,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,95,105"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,34,80,72,77,68,130,29"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="119,79,179,105"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="151,31,151,63,146,63,146,31"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="203,79,262,105"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="165,30,209,67,205,71,161,34"/>
-</map>

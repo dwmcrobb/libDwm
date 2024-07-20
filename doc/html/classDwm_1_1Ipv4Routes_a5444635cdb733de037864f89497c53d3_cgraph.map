@@ -1,7 +1,0 @@
-<map id="Dwm::Ipv4Routes::Coalesce" name="Dwm::Ipv4Routes::Coalesce">
-<area shape="rect" id="Node000001" title="Combines adjacent prefixes that can be combined (same value and prefixes can be represented by a pref..." alt="" coords="5,31,196,56"/>
-<area shape="rect" id="Node000002" href="$classDwm_1_1Ipv4Prefix.html#a81a5abf12e28fd0520edc9d194c605c8" title="If the given prefix can be combined with this prefix to form a single prefix, returns [true,..." alt="" coords="244,5,423,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,30,228,27,228,32,196,36"/>
-<area shape="rect" id="Node000003" href="$classDwm_1_1Ipv4Prefix.html#ad0b7b38d673c99e6135d5b5ee84216bf" title="Returns the network portion of the prefix." alt="" coords="245,55,422,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="196,51,230,54,229,59,196,56"/>
-</map>

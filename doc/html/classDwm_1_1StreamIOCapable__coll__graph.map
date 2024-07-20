@@ -1,7 +1,0 @@
-<map id="Dwm::StreamIOCapable" name="Dwm::StreamIOCapable">
-<area shape="rect" id="Node000001" title="Interface for classes with iostream read and write capabilities." alt="" coords="90,79,254,105"/>
-<area shape="rect" id="Node000002" href="$classDwm_1_1StreamReadable.html" title="This class defines an interface for classes that can read their contents from an istream." alt="" coords="5,5,163,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,39,159,77,156,81,109,43"/>
-<area shape="rect" id="Node000003" href="$classDwm_1_1StreamWritable.html" title="This class defines an interface for classes that can write their contents to an ostream." alt="" coords="187,5,336,31"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="236,43,189,81,185,77,233,39"/>
-</map>

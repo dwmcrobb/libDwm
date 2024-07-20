@@ -1,5 +1,0 @@
-<map id="Dwm::Ipv4Routes::BZWrite" name="Dwm::Ipv4Routes::BZWrite">
-<area shape="rect" id="Node000001" title="Writes the routes to a BZFILE pointer." alt="" coords="5,5,188,31"/>
-<area shape="rect" id="Node000002" href="$classDwm_1_1BZ2IO.html#a58f74d4a5e526150b67c29b7f3744b6e" title="Writes c to bzf." alt="" coords="236,5,389,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="188,16,220,16,220,21,188,21"/>
-</map>

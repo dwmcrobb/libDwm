@@ -1,5 +1,0 @@
-<map id="Dwm::Ipv6AddrMap::Read" name="Dwm::Ipv6AddrMap::Read">
-<area shape="rect" id="Node000001" title="Reads the Ipv6AddrMap from s." alt="" coords="5,5,182,31"/>
-<area shape="rect" id="Node000002" href="$classDwm_1_1ASIO.html#aa7244083d6658ae54fc5df488ad29741" title="Reads value from the given socket s." alt="" coords="230,5,361,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="182,16,214,16,214,21,182,21"/>
-</map>

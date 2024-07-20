@@ -1,5 +1,0 @@
-<map id="Dwm::GZIO::Write" name="Dwm::GZIO::Write">
-<area shape="rect" id="Node000001" title="Writes a tuple to a gzFile." alt="" coords="5,5,136,31"/>
-<area shape="rect" id="Node000002" href="$classDwm_1_1GZIO.html#a37ce028baae59e0e487482472615560f" title="Writes c to gzf." alt="" coords="184,5,314,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,16,168,16,168,21,136,21"/>
-</map>

@@ -1,7 +1,0 @@
-<map id="Dwm::ASIOCapable" name="Dwm::ASIOCapable">
-<area shape="rect" id="Node000001" title="Interface for classes that can read/write their contents from/to a boost::asio::ip::tcp::socket." alt="" coords="93,79,233,105"/>
-<area shape="rect" id="Node000002" href="$classDwm_1_1ASIOReadable.html" title="Interface for classes that wish to be readable via Dwm::ASIO." alt="" coords="5,5,153,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,39,151,77,147,81,103,43"/>
-<area shape="rect" id="Node000003" href="$classDwm_1_1ASIOWritable.html" title="Interface for classes that wish to be writable via Dwm::ASIO." alt="" coords="177,5,317,31"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="223,43,179,81,175,77,220,39"/>
-</map>

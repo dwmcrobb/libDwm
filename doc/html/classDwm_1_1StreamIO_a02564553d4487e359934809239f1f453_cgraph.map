@@ -1,5 +1,0 @@
-<map id="Dwm::StreamIO::ReadV" name="Dwm::StreamIO::ReadV">
-<area shape="rect" id="Node000001" title="Reads multiple objects from an istream." alt="" coords="5,5,170,31"/>
-<area shape="rect" id="Node000002" href="$classDwm_1_1StreamIO.html#a53f8175153c0a8a5da8d363cfa23c61a" title="Reads c from is. Returns is." alt="" coords="218,5,373,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="170,16,202,16,202,21,170,21"/>
-</map>
