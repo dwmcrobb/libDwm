@@ -36,14 +36,11 @@
 //---------------------------------------------------------------------------
 //!  \file DwmUptime.cc
 //!  \author Daniel W. McRobb
-//!  \brief NOT YET DOCUMENTED
+//!  \brief Dwm::Uptime implementation
 //---------------------------------------------------------------------------
 
 #if (defined(__FreeBSD__) || defined(__APPLE__))
-  extern "C" {
-    #include <sys/types.h>
-    #include <sys/sysctl.h>
-  }
+  #include "DwmBootTime.hh"
 #elif (defined(__linux__))
   #include <fstream>  
 #endif
@@ -59,16 +56,10 @@ namespace Dwm {
   {
     time_t  rc = 0;
 #if (defined(__FreeBSD__) || defined(__APPLE__))
-    struct timeval  tv = { .tv_sec = 0, .tv_usec = 0 };
-    int mib[2];
-    size_t len = sizeof(tv);
-    mib[0] = CTL_KERN;
-    mib[1] = KERN_BOOTTIME;
-    if (sysctl(mib, 2, &tv, &len, NULL, 0) == 0) {
-      time_t  now = time((time_t *)0);
-      if (now >= tv.tv_sec) {
-        rc = now - tv.tv_sec;
-      }
+    time_t  bootTime = BootTime();
+    time_t  now = time((time_t *)0);
+    if (now > bootTime) {
+      rc = now - bootTime;
     }
 #elif (defined(__linux__))
     std::ifstream  is("/proc/uptime");

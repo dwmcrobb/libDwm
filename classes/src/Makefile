@@ -4,6 +4,7 @@ ALLINC          = -I../include ${EXTINCS}
 CXXFLAGS	+= -g -Wno-deprecated-register -Wno-register
 OBJFILESNP =	DwmASIO.o \
 		DwmBZ2IO.o \
+                DwmBootTime.o \
 		DwmBase64.o \
 		DwmCgi.o \
 		DwmCvsTag.o \
@@ -72,6 +73,7 @@ OBJFILESNP =	DwmASIO.o \
 		DwmTimeValue64.o \
 		DwmTypeName.o \
 		DwmUnitAssert.o \
+                DwmUptime.o \
 		DwmXDRUtils.o \
 		DwmXmlAttribute.o \
 		DwmXmlElement.o
