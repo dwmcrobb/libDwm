@@ -3,6 +3,7 @@
 core
 TestASIO
 TestBase64
+TestBootTime
 TestConcurrentQueue
 TestDwmBZ2IO
 TestDwmDataLog
@@ -84,6 +85,7 @@ TestUnorderedMapIO
 TestUnorderedMultimapIO
 TestUnorderedMultisetIO
 TestUnorderedSetIO
+TestUptime
 TestValueRange
 TestVariantIO
 TestXDRUtils

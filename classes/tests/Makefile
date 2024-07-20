@@ -2,6 +2,7 @@ include ../../Makefile.vars
 
 OBJFILES = TestASIO.o \
 	   TestBase64.o \
+           TestBootTime.o \
 	   TestConcurrentQueue.o \
 	   TestDwmBZ2IO.o \
 	   TestDwmDataLog.o \
@@ -76,6 +77,7 @@ OBJFILES = TestASIO.o \
 	   TestUnorderedMultimapIO.o \
 	   TestUnorderedMultisetIO.o \
 	   TestUnorderedSetIO.o \
+           TestUptime.o \
 	   TestValueRange.o \
 	   TestVariantIO.o \
 	   TestXDRUtils.o
