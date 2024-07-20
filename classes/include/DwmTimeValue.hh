@@ -53,6 +53,7 @@ extern "C" {
   #include <zlib.h>
 }
 
+#include <cstdint>
 #include <cstdio>
 #include <ctime>
 #include <iostream>

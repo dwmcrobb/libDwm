@@ -52,6 +52,7 @@ extern "C" {
   #include <unistd.h>
 }
 
+#include <cstdint>
 #include <iostream>
 
 #include "DwmTimeValue.hh"

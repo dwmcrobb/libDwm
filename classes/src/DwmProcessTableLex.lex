@@ -40,7 +40,7 @@
   //!  \brief lexer for 'ps' output
   //---------------------------------------------------------------------------
 
-
+  #include <cstring>
   #include <ctime>
   #include <unordered_map>
   
@@ -140,6 +140,7 @@ m_tod  ([01][0-9]|2[0-3])[:]([0-5][0-9])[:]([0-5][0-9])
   //------------------------------------------------------------------------%}
 <x_startTime>{m_wkdy}[ ]{m_mon}[ ]+{m_mday}[ ]{m_tod}[ ][0-9]{4,4} {
   struct tm  tm;
+  memset(&tm, 0, sizeof(tm));
   if (strptime(yytext, "%c", &tm)) {
     psparselval.timeVal = mktime(&tm);
     BEGIN(x_tty);
