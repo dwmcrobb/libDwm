@@ -42,10 +42,12 @@
 #ifndef _DWMBOOTTIME_HH_
 #define _DWMBOOTTIME_HH_
 
+#include <ctime>
+
 namespace Dwm {
 
   //--------------------------------------------------------------------------
-  //!  
+  //!  Returns the time at which the host system was last started.
   //--------------------------------------------------------------------------
   time_t BootTime();
   

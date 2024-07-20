@@ -36,7 +36,7 @@
 //---------------------------------------------------------------------------
 //!  \file DwmUptime.hh
 //!  \author Daniel W. McRobb
-//!  \brief NOT YET DOCUMENTED
+//!  \brief Dwm::Uptime declaration
 //---------------------------------------------------------------------------
 
 #include <ctime>
@@ -46,6 +46,9 @@
 
 namespace Dwm {
 
+  //--------------------------------------------------------------------------
+  //!  Returns the current system uptime, in seconds.
+  //--------------------------------------------------------------------------
   time_t Uptime();
   
 }  // namespace Dwm
