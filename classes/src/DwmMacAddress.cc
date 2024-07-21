@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2007
+//  Copyright (c) Daniel W. McRobb 2007, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,6 @@ extern "C" {
 #include <cstdlib>
 #include <iomanip>
 #include <sstream>
-#include <string>
 
 #include "DwmMacAddress.hh"
 #include "DwmSysLogger.hh"
