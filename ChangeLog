@@ -1,10 +1,14 @@
+2024-07-20  Daniel McRobb  <dwm@toto.mcplex.net>
+
+	* tagged as libDwm-0.9.37
+
 2024-07-20  Daniel W. McRobb  <dwm@kiva.mcplex.net>
 
 	* classes/src/DwmProcessTableLex.lex,
 	classes/src/DwmProcessTableParse.y: 'ps' output on FreeBSD shows
 	a single hyphen ('-') instead of a ctime() string for lstart for
 	some processes.  Patch this by substituting the lstart from the
-	first ancestor of the process that has a valid lstart.
+	nearest ancestor of the process that has a valid lstart.
 
 	* classes/include/DwmBootTime.hh, classes/include/DwmUptime.hh
 	classes/src/DwmBootTime.cc, classes/src/DwmUptime.cc:
