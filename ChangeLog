@@ -2,6 +2,8 @@
 
 	* doc/footer.html: Tweak to point at my web site.
 
+	* classes/src/DwmMacAddress.cc: Use sizeof() where appropriate.
+
 2024-07-20  Daniel McRobb  <dwm@toto.mcplex.net>
 
 	* tagged as libDwm-0.9.37
