@@ -70,7 +70,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   MacAddress::MacAddress(const std::string & s)
   {
-    memset(_addr, 0, 6);
+    memset(_addr, 0, sizeof(_addr));
     istringstream  is(s);
     string         c;
     uint8_t        i = 0;
@@ -78,8 +78,10 @@ namespace Dwm {
       if (! c.empty()) {
         _addr[i] = strtoul(c.c_str(), 0, 16);
       }
-      if (++i > 5)
+      if (++i > (sizeof(_addr) / sizeof(_addr[0])) - 1)
+      {
         break;
+      }
     }
   }
   
@@ -88,7 +90,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   MacAddress::MacAddress(const MacAddress & addr)
   {
-    memcpy(_addr, addr._addr, 6);
+    memcpy(_addr, addr._addr, sizeof(_addr));
   }
   
   //--------------------------------------------------------------------------
@@ -97,7 +99,7 @@ namespace Dwm {
   MacAddress & MacAddress::operator = (const MacAddress & addr)
   {
     if (&addr != this) {
-      memcpy(_addr, addr._addr, 6);
+      memcpy(_addr, addr._addr, sizeof(_addr));
     }
     return(*this);
   }
@@ -107,7 +109,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   bool MacAddress::operator == (const MacAddress & addr) const
   {
-    return(memcmp(_addr, addr._addr, 6) == 0);
+    return(memcmp(_addr, addr._addr, sizeof(_addr)) == 0);
   }
 
   //--------------------------------------------------------------------------
@@ -115,7 +117,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   bool MacAddress::operator < (const MacAddress & addr) const
   {
-    return(memcmp(_addr, addr._addr, 6) < 0);
+    return(memcmp(_addr, addr._addr, sizeof(_addr)) < 0);
   }
 
   //--------------------------------------------------------------------------
@@ -134,7 +136,7 @@ namespace Dwm {
   std::istream & MacAddress::Read(std::istream & is)
   {
     if (is) {
-      is.read((char *)_addr, 6);
+      is.read((char *)_addr, sizeof(_addr));
     }
     return(is);
   }
@@ -145,7 +147,7 @@ namespace Dwm {
   std::ostream & MacAddress::Write(std::ostream & os) const
   {
     if (os) {
-      os.write((char *)_addr, 6);
+      os.write((char *)_addr, sizeof(_addr));
     }
     return(os);
   }
@@ -157,8 +159,8 @@ namespace Dwm {
   {
     ssize_t  rc = -1;
     if (fd >= 0) {
-      rc = read(fd, _addr, 6);
-      if (rc != 6) {
+      rc = read(fd, _addr, sizeof(_addr));
+      if (rc != sizeof(_addr)) {
         Syslog(LOG_ERR, "MacAddress::Write(%d) failed: %m", fd);
         rc = -1;
       }
@@ -173,8 +175,8 @@ namespace Dwm {
   {
     ssize_t  rc = 6;
     if (fd >= 0) {
-      rc = write(fd, _addr, 6);
-      if (rc != 6) {
+      rc = write(fd, _addr, sizeof(_addr));
+      if (rc != sizeof(_addr)) {
         Syslog(LOG_ERR, "MacAddress::Write(%d) failed: %m", fd);
         rc = -1;
       }
@@ -189,8 +191,8 @@ namespace Dwm {
   {
     size_t  rc = 0;
     if (f) {
-      rc = fread(_addr, 6, 1, f);
-      if (rc != 6)
+      rc = fread(_addr, sizeof(_addr), 1, f);
+      if (rc != sizeof(_addr))
         Syslog(LOG_ERR, "MacAddress::Read(FILE %p) failed: %m", f);
     }
     return(rc);
@@ -203,8 +205,8 @@ namespace Dwm {
   {
     size_t  rc = 0;
     if (f) {
-      rc = fwrite(_addr, 6, 1, f);
-      if (rc != 6)
+      rc = fwrite(_addr, sizeof(_addr), 1, f);
+      if (rc != sizeof(_addr))
         Syslog(LOG_ERR, "MacAddress::Write(FILE %p) failed: %m", f);
     }
     return(rc);
@@ -217,8 +219,8 @@ namespace Dwm {
   {
     int  rc = -1;
     if (gzf) {
-      rc = gzread(gzf, _addr, 6);
-      if (rc != 6)
+      rc = gzread(gzf, _addr, sizeof(_addr));
+      if (rc != sizeof(_addr))
         Syslog(LOG_ERR, "MacAddress::Read(gzFile %p) failed: %m", gzf);
     }
     return(rc);
@@ -231,8 +233,8 @@ namespace Dwm {
   {
     int  rc = -1;
     if (gzf) {
-      rc = gzwrite(gzf, _addr, 6);
-      if (rc != 6)
+      rc = gzwrite(gzf, _addr, sizeof(_addr));
+      if (rc != sizeof(_addr))
         Syslog(LOG_ERR, "MacAddress::Write(gzFile %p) failed: %m", gzf);
     }
     return(rc);
@@ -245,8 +247,8 @@ namespace Dwm {
   {
     int  rc = -1;
     if (bzf) {
-      rc = BZ2_bzread(bzf, _addr, 6);
-      if (rc != 6)
+      rc = BZ2_bzread(bzf, _addr, sizeof(_addr));
+      if (rc != sizeof(_addr))
         Syslog(LOG_ERR, "MacAddress::BZRead(%p) failed: %m", bzf);
     }
     return(rc);
@@ -259,8 +261,8 @@ namespace Dwm {
   {
     int  rc = -1;
     if (bzf) {
-      rc = BZ2_bzwrite(bzf, (void *)_addr, 6);
-      if (rc != 6)
+      rc = BZ2_bzwrite(bzf, (void *)_addr, sizeof(_addr));
+      if (rc != sizeof(_addr))
         Syslog(LOG_ERR, "MacAddress::BZWrite(%p) failed: %m", bzf);
     }
     return(rc);
@@ -271,7 +273,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   uint64_t MacAddress::StreamedLength() const
   {
-    return(6);
+    return(sizeof(_addr));
   }
   
   //--------------------------------------------------------------------------
@@ -299,7 +301,7 @@ namespace Dwm {
   std::istream &
   operator >> (std::istream & is, MacAddress & addr)
   {
-    memset(addr._addr, 0, 6);
+    memset(addr._addr, 0, sizeof(addr._addr));
     if (is) {
       is.setf(ios::hex, ios::basefield);
       uint16_t  us;
