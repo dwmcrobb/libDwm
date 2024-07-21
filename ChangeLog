@@ -4,6 +4,9 @@
 
 	* classes/src/DwmMacAddress.cc: Use sizeof() where appropriate.
 
+	* Remove doxygen-generated documentation from repository; it's
+	build output that doesn't need to be in the repository.
+
 2024-07-20  Daniel McRobb  <dwm@toto.mcplex.net>
 
 	* tagged as libDwm-0.9.37
