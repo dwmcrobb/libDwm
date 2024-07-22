@@ -233,7 +233,8 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Reads an object @c t that meets the HasStreamRead requirement from
+    //!  an istream.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, HasStreamRead auto & t)
     { return t.Read(is); }
@@ -247,7 +248,8 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Writes an object that meets the HasStreamWrite requirement to an
+    //!  ostream.
     //------------------------------------------------------------------------
     static std::ostream &
     Write(std::ostream & os, const HasStreamWrite auto & t)
