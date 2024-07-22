@@ -250,7 +250,8 @@ namespace Dwm {
     { return(val.Read(fd)); }
 
     //------------------------------------------------------------------------
-    //!  Reads @c val from @c fd.
+    //!  Reads @c val from @c fd, where @c val meets the requirements of the
+    //!  HasDescriptorRead concept.
     //------------------------------------------------------------------------
     static ssize_t Read(int fd, HasDescriptorRead auto & val)
     { return val.Read(fd); }
@@ -263,9 +264,10 @@ namespace Dwm {
     { return(val.Write(fd)); }
 
     //------------------------------------------------------------------------
-    //!  Writes @c val to @c fd.
+    //!  Writes @c val to @c fd, where @c val meets the requirements of the
+    //!  HasDescriptorWrite concept.
     //------------------------------------------------------------------------
-    static ssize_t Write(int fd, const HasDescriptorRead auto & val)
+    static ssize_t Write(int fd, const HasDescriptorWrite auto & val)
     { return val.Write(fd); }
       
     //------------------------------------------------------------------------
