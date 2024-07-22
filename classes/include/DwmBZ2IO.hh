@@ -247,7 +247,8 @@ namespace Dwm {
     { return(val.BZRead(bzf)); }
 
     //------------------------------------------------------------------------
-    //!  Reads @c val from @c bzf.
+    //!  Reads @c val from @c bzf, where @c val meets the requirements of
+    //!  the HasBZRead concept.
     //------------------------------------------------------------------------
     static int BZRead(BZFILE *bzf, HasBZRead auto & val)
     { return val.BZRead(bzf); }
@@ -259,9 +260,10 @@ namespace Dwm {
     { return(val.BZWrite(bzf)); }
 
     //------------------------------------------------------------------------
-    //!  Writes @c val to @c bzf.
+    //!  Writes @c val to @c bzf, where @c val meets the requirements of
+    //!  the HasBZWrite concept.
     //------------------------------------------------------------------------
-    static int BZWrite(BZFILE *bzf, const HasBZRead auto & val)
+    static int BZWrite(BZFILE *bzf, const HasBZWrite auto & val)
     { return val.BZWrite(bzf); }
       
     //------------------------------------------------------------------------

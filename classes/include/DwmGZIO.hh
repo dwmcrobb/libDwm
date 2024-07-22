@@ -250,7 +250,8 @@ namespace Dwm {
     { return(val.Read(gzf)); }
 
     //------------------------------------------------------------------------
-    //!  Reads @c val from @c gzf.
+    //!  Reads @c val from @c gzf, where @c val meets the requirements of
+    //!  the HasGZRead concept.
     //------------------------------------------------------------------------
     static int Read(gzFile gzf, HasGZRead auto & val)
     { return val.Read(gzf); }
@@ -262,7 +263,8 @@ namespace Dwm {
     { return(val.Write(gzf)); }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Writes @c val to @c gzf, where @c val meets the requirements of the
+    //!  HasGZWrite concept.
     //------------------------------------------------------------------------
     static int Write(gzFile gzf, const HasGZWrite auto & val)
     { return val.Write(gzf); }

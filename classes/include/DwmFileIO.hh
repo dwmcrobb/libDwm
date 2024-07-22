@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2007, 2016, 2017, 2020
+//  Copyright (c) Daniel W. McRobb 2004-2007, 2016, 2017, 2020, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -239,7 +239,8 @@ namespace Dwm {
     { return val.Read(f); }
 
     //------------------------------------------------------------------------
-    //!  Reads @c t from FILE @c f.
+    //!  Reads @c val from FILE @c f, where @c val meets the requirements
+    //!  of the HasFileRead concept.
     //------------------------------------------------------------------------
     static size_t Read(FILE *f, HasFileRead auto & val)
     { return val.Read(f); }
@@ -251,9 +252,10 @@ namespace Dwm {
     { return(val.Write(f)); }
 
     //------------------------------------------------------------------------
-    //!  Writes @c t to FILE @c f.
+    //!  Writes @c val to FILE @c f, where @c val meets the requirements of
+    //!  the HasFileWrite concept.
     //------------------------------------------------------------------------
-    static size_t Write(FILE *f, const HasFileRead auto & val)
+    static size_t Write(FILE *f, const HasFileWrite auto & val)
     { return val.Write(f); }
     
     //------------------------------------------------------------------------
