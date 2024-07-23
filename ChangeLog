@@ -1,5 +1,7 @@
 2024-07-22  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* Removed IN-PROGRESS file.
+
 	* tagged as libDwm-0.9.39
 
 	* Added README.md for the github mirror.
