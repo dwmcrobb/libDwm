@@ -47,17 +47,11 @@ extern "C" {
     #define __FAVOR_BSD 1
   #endif
   #include <netinet/udp.h>
-  #include <inttypes.h>
 }
 
+#include <cstdint>
 #include <string>
 
-#include "DwmDescriptorIOCapable.hh"
-#include "DwmFileIOCapable.hh"
-#include "DwmStreamIOCapable.hh"
-#include "DwmStreamedLengthCapable.hh"
-#include "DwmBZ2IOCapable.hh"
-#include "DwmGZIOCapable.hh"
 #include "DwmIpv4PacketHeader.hh"
 
 namespace Dwm {
@@ -68,8 +62,6 @@ namespace Dwm {
   //!  Encapsulates an IPv4 UDP header.
   //--------------------------------------------------------------------------
   class Ipv4UdpHeader
-    : public DescriptorIOCapable, public FileIOCapable, public StreamIOCapable,
-      public StreamedLengthCapable, public GZIOCapable, public BZ2IOCapable
   {
   public:
     //------------------------------------------------------------------------
@@ -170,72 +162,72 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Reads the UDP header from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    std::istream & Read(std::istream & is) override;
+    std::istream & Read(std::istream & is);
 
     //------------------------------------------------------------------------
     //!  Writes the UDP header to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const override;
+    std::ostream & Write(std::ostream & os) const;
 
     //------------------------------------------------------------------------
     //!  Reads the UDP header from a file descriptor.  Returns the number of
     //!  bytes read on success (should be equal to StreamedLength()), -1 on 
     //!  failure.
     //------------------------------------------------------------------------
-    ssize_t Read(int fd) override;
+    ssize_t Read(int fd);
 
     //------------------------------------------------------------------------
     //!  Writes the UDP header to a file descriptor.  Returns the number of
     //!  bytes written on success (should be equal to StreamedLength()),
     //!  -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Write(int fd) const override;
+    ssize_t Write(int fd) const;
 
     //------------------------------------------------------------------------
     //!  Reads the UDP header from a FILE.  Returns 1 on success, 0 on 
     //!  failure.
     //------------------------------------------------------------------------
-    size_t Read(FILE * f) override;
+    size_t Read(FILE * f);
 
     //------------------------------------------------------------------------
     //!  Writes the UDP header to a FILE.  Returns 1 on success, 0 on
     //!  failure.
     //------------------------------------------------------------------------
-    size_t Write(FILE *f) const override;
+    size_t Write(FILE *f) const;
 
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if we called one
     //!  of the Write() members.
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const override;
+    uint64_t StreamedLength() const;
 
     //------------------------------------------------------------------------
     //!  Reads the UDP header from a gzFile.  Returns the number of bytes
     //!  read on success (should be equal to StreamedLength()), -1 on
     //!  failure.
     //------------------------------------------------------------------------
-    int Read(gzFile gzf) override;
+    int Read(gzFile gzf);
 
     //------------------------------------------------------------------------
     //!  Writes the UDP header to a gzFile.  Returns the number of bytes
     //!  written on success (should be equal to StreamedLength()), -1 on
     //!  failure.
     //------------------------------------------------------------------------
-    int Write(gzFile gzf) const override;
+    int Write(gzFile gzf) const;
 
     //------------------------------------------------------------------------
     //!  Reads the UDP header from a BZFILE.  Returns the number of bytes
     //!  read on success (should be equal to StreamedLength()), -1 on
     //!  failure.
     //------------------------------------------------------------------------
-    int BZRead(BZFILE *bzf) override;
+    int BZRead(BZFILE *bzf);
 
     //------------------------------------------------------------------------
     //!  Writes the UDP header to a BZFILE.  Returns the number of bytes
     //!  written on success (should be equal to StreamedLength()), -1 on
     //!  failure.
     //------------------------------------------------------------------------
-    int BZWrite(BZFILE *bzf) const override;
+    int BZWrite(BZFILE *bzf) const;
 
     //------------------------------------------------------------------------
     //!  operator ==

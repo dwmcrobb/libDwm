@@ -1,5 +1,15 @@
 2024-07-23  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* classes/include/DwmIpv4IcmpMessage.hh,
+	  classes/include/DwmIpv4PacketHeader.hh,
+	  classes/include/DwmIpv4TcpHeader.hh,
+	  classes/include/DwmIpv4TcpPacket.hh,
+	  classes/include/DwmIpv4TcpPayload.hh,
+	  classes/include/DwmIpv4UdpHeader.hh,
+	  classes/include/DwmIpv4UdpPacket.hh,
+	  classes/include/DwmIpv4UdpPayload.hh:
+	No longer need to inherit from *Readable and *Writable classes.
+
 	* classes/include/DwmASIOCapable.hh,
 	  classes/include/DwmBZ2IOCapable.hh,
 	  classes/include/DwmDescriptorIOCapable.hh,

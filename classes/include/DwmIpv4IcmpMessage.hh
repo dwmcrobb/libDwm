@@ -60,8 +60,6 @@ namespace Dwm {
   //!  Base class for ICMP messages.
   //--------------------------------------------------------------------------
   class Ipv4IcmpMessage
-    : public DescriptorWritable, public FileWritable, public StreamWritable,
-      public StreamedLengthCapable, public GZWritable, public BZ2Writable
   {
   public:
     //------------------------------------------------------------------------
@@ -113,7 +111,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Writes the message to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const override;
+    std::ostream & Write(std::ostream & os) const;
 
     //------------------------------------------------------------------------
     //!  Reads the message of length @c len from a file descriptor.  Returns
@@ -125,7 +123,7 @@ namespace Dwm {
     //!  Writes the message to a file descriptor.  Returns the number of
     //!  bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Write(int fd) const override;
+    ssize_t Write(int fd) const;
     
     //------------------------------------------------------------------------
     //!  Reads the message of length @c len from a FILE.  Returns 1 on
@@ -136,7 +134,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Writes the message to a FILE.  Returns 1 on success, 0 on failure.
     //------------------------------------------------------------------------
-    size_t Write(FILE *f) const override;
+    size_t Write(FILE *f) const;
 
     //------------------------------------------------------------------------
     //!  Reads the message of length @c len from a gzFile.  Returns the
@@ -148,7 +146,7 @@ namespace Dwm {
     //!  Writes the message to a gzFile.  Returns the number of
     //!  bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
-    int Write(gzFile gzf) const override;
+    int Write(gzFile gzf) const;
     
     //------------------------------------------------------------------------
     //!  Reads the message of length @c len from a BZFILE.  Returns the
@@ -160,13 +158,13 @@ namespace Dwm {
     //!  Writes the message to a BZFILE.  Returns the number of
     //!  bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
-    int BZWrite(BZFILE *bzf) const override;
+    int BZWrite(BZFILE *bzf) const;
     
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if we called one
     //!  of the Write() members.
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const override;
+    uint64_t StreamedLength() const;
     
     //------------------------------------------------------------------------
     //!  operator ==

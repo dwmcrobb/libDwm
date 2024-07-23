@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2006, 2016
+//  Copyright (c) Daniel W. McRobb 2006, 2016, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -42,18 +42,12 @@
 #define _DWMIPV4PACKETHEADER_HH_
 
 extern "C" {
-#include <sys/types.h>
-#include <netinet/in_systm.h>
-#include <netinet/in.h>
-#include <netinet/ip.h>
+  #include <sys/types.h>
+  #include <netinet/in_systm.h>
+  #include <netinet/in.h>
+  #include <netinet/ip.h>
 }
 
-#include "DwmDescriptorIOCapable.hh"
-#include "DwmFileIOCapable.hh"
-#include "DwmStreamIOCapable.hh"
-#include "DwmStreamedLengthCapable.hh"
-#include "DwmBZ2IOCapable.hh"
-#include "DwmGZIOCapable.hh"
 #include "DwmIpv4Address.hh"
 
 namespace Dwm {
@@ -62,8 +56,6 @@ namespace Dwm {
   //!  Encapsulates an IPv4 packet header.
   //--------------------------------------------------------------------------
   class Ipv4PacketHeader
-    : public DescriptorIOCapable, public FileIOCapable, public StreamIOCapable,
-      public StreamedLengthCapable, public GZIOCapable, public BZ2IOCapable
   {
   public:
     //------------------------------------------------------------------------
@@ -213,64 +205,64 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Reads the header from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    std::istream & Read(std::istream & is) override;
+    std::istream & Read(std::istream & is);
 
     //------------------------------------------------------------------------
     //!  Writes the header to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const override;
+    std::ostream & Write(std::ostream & os) const;
 
     //------------------------------------------------------------------------
     //!  Reads the header from a file descriptor.  Returns the number of
     //!  bytes read on success, -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Read(int fd) override;
+    ssize_t Read(int fd);
 
     //------------------------------------------------------------------------
     //!  Writes the header to a file descriptor.  Returns the number of
     //!  bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Write(int fd) const override;
+    ssize_t Write(int fd) const;
 
     //------------------------------------------------------------------------
     //!  Reads the header from a FILE.  Returns 1 on success, 0 on failure.
     //------------------------------------------------------------------------
-    size_t Read(FILE *f) override;
+    size_t Read(FILE *f);
 
     //------------------------------------------------------------------------
     //!  Writes the header to a FILE.  Returns 1 on success, 0 on failure.
     //------------------------------------------------------------------------
-    size_t Write(FILE *f) const override;
+    size_t Write(FILE *f) const;
 
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that should be written if we called one
     //!  of the Write() members.
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const override;
+    uint64_t StreamedLength() const;
 
     //------------------------------------------------------------------------
     //!  Reads the header from a gzFile.  Returns the number of bytes read on
     //!  success, -1 on failure.
     //------------------------------------------------------------------------
-    int Read(gzFile gzf) override;
+    int Read(gzFile gzf);
 
     //------------------------------------------------------------------------
     //!  Writes the header to a gzFile.  Returns the number of bytes written
     //!  on success, -1 on failure.
     //------------------------------------------------------------------------
-    int Write(gzFile gzf) const override;
+    int Write(gzFile gzf) const;
 
     //------------------------------------------------------------------------
     //!  Reads the header from a BZFILE.  Returns the number of bytes read on
     //!  success, -1 on failure.
     //------------------------------------------------------------------------
-    int BZRead(BZFILE *bzf) override;
+    int BZRead(BZFILE *bzf);
 
     //------------------------------------------------------------------------
     //!  Writes the header to a BZFILE.  Returns the number of bytes written
     //!  on success, -1 on failure.
     //------------------------------------------------------------------------
-    int BZWrite(BZFILE *bzf) const override;
+    int BZWrite(BZFILE *bzf) const;
 
     //------------------------------------------------------------------------
     //!  Prints the header is pseudo-XML.  Each line will be prefixed by

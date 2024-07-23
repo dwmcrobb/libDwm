@@ -48,12 +48,6 @@
 #include "DwmIpv4PacketHeader.hh"
 #include "DwmIpv4UdpHeader.hh"
 #include "DwmIpv4UdpPayload.hh"
-#include "DwmDescriptorIOCapable.hh"
-#include "DwmFileIOCapable.hh"
-#include "DwmStreamIOCapable.hh"
-#include "DwmStreamedLengthCapable.hh"
-#include "DwmGZIOCapable.hh"
-#include "DwmBZ2IOCapable.hh"
 #include "DwmSocket.hh"
 
 namespace Dwm {
@@ -62,8 +56,6 @@ namespace Dwm {
   //!  Encapsulates a UDP packet, including the IP header.
   //--------------------------------------------------------------------------
   class Ipv4UdpPacket
-    : public DescriptorIOCapable, public FileIOCapable, public StreamIOCapable,
-      public StreamedLengthCapable, public GZIOCapable, public BZ2IOCapable
   {
   public:
     //------------------------------------------------------------------------
@@ -142,65 +134,65 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Reads from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    std::istream & Read(std::istream & is) override;
+    std::istream & Read(std::istream & is);
 
     //------------------------------------------------------------------------
     //!  Writes to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const override;
+    std::ostream & Write(std::ostream & os) const;
 
     //------------------------------------------------------------------------
     //!  NOT IMPLEMENTED
     //------------------------------------------------------------------------
-    ssize_t Read(int fd) override;
+    ssize_t Read(int fd);
 
     //------------------------------------------------------------------------
     //!  Writes to a file descriptor.  Returns the number of bytes written
     //!  on success, -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Write(int fd) const override;
+    ssize_t Write(int fd) const;
 
     //------------------------------------------------------------------------
     //!  Reads the packet from the given FILE @c f.  Returns 1 on success,
     //!  0 on failure (fread() semantics).
     //------------------------------------------------------------------------
-    size_t Read(FILE * f) override;
+    size_t Read(FILE * f);
 
     //------------------------------------------------------------------------
     //!  Writes the packet to the given FILE @c f.  Returns 1 on success,
     //!  0 on failure.
     //------------------------------------------------------------------------
-    size_t Write(FILE *f) const override;
+    size_t Write(FILE *f) const;
 
     //------------------------------------------------------------------------
     //!  Reads the packet from the given gzFile @c gzf.  Returns the number
     //!  of bytes read on success, -1 on failure.
     //------------------------------------------------------------------------
-    int Read(gzFile gzf) override;
+    int Read(gzFile gzf);
 
     //------------------------------------------------------------------------
     //!  Writes the packet to the given gzFile @c gzf.  Returns the number
     //!  of bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
-    int Write(gzFile gzf) const override;
+    int Write(gzFile gzf) const;
     
     //------------------------------------------------------------------------
     //!  Reads the packet from the given BZFILE @c bzf.  Returns the number
     //!  of bytes read on success, -1 on failure.
     //------------------------------------------------------------------------
-    int BZRead(BZFILE *bzf) override;
+    int BZRead(BZFILE *bzf);
 
     //------------------------------------------------------------------------
     //!  Writes the packet to the given BZFILE @c bzf.  Returns the number
     //!  of bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
-    int BZWrite(BZFILE *bzf) const override;
+    int BZWrite(BZFILE *bzf) const;
     
     //------------------------------------------------------------------------
     //!  Returns the numbers of bytes that should be written if one
     //!  of the Write() members is called.
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const override;
+    uint64_t StreamedLength() const;
 
     //------------------------------------------------------------------------
     //!  Sends the packet via the given descriptor @c fd.  Returns true on

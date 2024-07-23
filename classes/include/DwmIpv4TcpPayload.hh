@@ -41,10 +41,6 @@
 #ifndef _DWMIPV4TCPPAYLOAD_HH_
 #define _DWMIPV4TCPPAYLOAD_HH_
 
-extern "C" {
-  #include <inttypes.h>
-}
-
 #include <cstdlib>
 #include <cstring>
 #include <sstream>
@@ -52,12 +48,7 @@ extern "C" {
 #include <utility>
 
 #include "DwmIpv4TcpHeader.hh"
-#include "DwmBZ2IOCapable.hh"
-#include "DwmDescriptorIOCapable.hh"
-#include "DwmFileIOCapable.hh"
-#include "DwmGZIOCapable.hh"
 #include "DwmIOUtils.hh"
-#include "DwmStreamedLengthCapable.hh"
 #include "DwmStreamIO.hh"
 
 namespace Dwm {
@@ -68,8 +59,6 @@ namespace Dwm {
   //!  because our read members need to be passed a length.
   //--------------------------------------------------------------------------
   class Ipv4TcpPayload
-    : public DescriptorWritable, public FileWritable, public StreamWritable,
-      public StreamedLengthCapable, public GZWritable, public BZ2Writable
   {
   public:
     //------------------------------------------------------------------------
@@ -177,7 +166,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Writes the payload to the given ostream @c os.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const override;
+    std::ostream & Write(std::ostream & os) const;
     
     //------------------------------------------------------------------------
     //!  Reads @c len bytes of the payload from the given descriptor @c fd.
@@ -189,7 +178,7 @@ namespace Dwm {
     //!  Writes the payload to the given descriptor @c fd.  Returns the
     //!  number of bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Write(int fd) const override;
+    ssize_t Write(int fd) const;
     
     //------------------------------------------------------------------------
     //!  Reads @c len bytes of the payload from the given FILE @c f.
@@ -201,7 +190,7 @@ namespace Dwm {
     //!  Writes the payload to the given FILE @c f.  Returns 1 on success,
     //!  0 on failure (fread() semantics).
     //------------------------------------------------------------------------
-    size_t Write(FILE *f) const override;
+    size_t Write(FILE *f) const;
     
     //------------------------------------------------------------------------
     //!  Reads @c len bytes of the payload from the given gzFile @c gzf.
@@ -213,7 +202,7 @@ namespace Dwm {
     //!  Writes the payload to the given gzFile @c gzf.  Returns the number
     //!  of bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
-    int Write(gzFile gzf) const override;
+    int Write(gzFile gzf) const;
     
     //------------------------------------------------------------------------
     //!  Reads @c len bytes of the payload from the given BZFILE @c bzf.
@@ -225,13 +214,13 @@ namespace Dwm {
     //!  Writes the payload to the given BZFILE @c bzf.  Returns the number
     //!  of bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
-    int BZWrite(BZFILE *bzf) const override;
+    int BZWrite(BZFILE *bzf) const;
     
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if we called one
     //!  of the Write() members.
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const override;
+    uint64_t StreamedLength() const;
     
   private:
     std::pair<uint16_t, uint8_t *>  _payload;

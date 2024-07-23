@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2007, 2016, 2020
+//  Copyright (c) Daniel W. McRobb 2007, 2016, 2020, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -42,23 +42,16 @@
 #ifndef _DWMIPV4UDPPAYLOAD_HH_
 #define _DWMIPV4UDPPAYLOAD_HH_
 
-extern "C" {
-  #include <inttypes.h>
-}
-
 #include <cassert>
+#include <cstdint>
 #include <cstdlib>
 #include <cstring>
 #include <sstream>
 #include <string>
 #include <utility>
 
-#include "DwmDescriptorIOCapable.hh"
-#include "DwmFileIOCapable.hh"
 #include "DwmIOUtils.hh"
 #include "DwmStreamIO.hh"
-#include "DwmGZIOCapable.hh"
-#include "DwmBZ2IOCapable.hh"
 #include "DwmIpv4UdpHeader.hh"
 
 namespace Dwm {
@@ -67,8 +60,6 @@ namespace Dwm {
   //!  Encapsulates a UDP payload.
   //--------------------------------------------------------------------------
   class Ipv4UdpPayload
-    : public DescriptorWritable, public FileWritable, public StreamWritable,
-      public StreamedLengthCapable, public GZWritable, public BZ2Writable
   {
   public:
     //------------------------------------------------------------------------
@@ -172,7 +163,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Writes the payload to the given ostream @c os.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const override;
+    std::ostream & Write(std::ostream & os) const;
     
     //------------------------------------------------------------------------
     //!  Reads len bytes of the payload from the given descriptor @c fd.
@@ -184,7 +175,7 @@ namespace Dwm {
     //!  Writes the payload to the given descriptor @c fd.  Returns the
     //!  number of bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Write(int fd) const override;
+    ssize_t Write(int fd) const;
     
     //------------------------------------------------------------------------
     //!  Reads len bytes of the payload from the given FILE @c f.
@@ -196,7 +187,7 @@ namespace Dwm {
     //!  Writes the payload to the given descriptor @c fd.  Returns 1 on
     //!  success, 0 on failure (fwrite() semantics).
     //------------------------------------------------------------------------
-    size_t Write(FILE *f) const override;
+    size_t Write(FILE *f) const;
     
     //------------------------------------------------------------------------
     //!  Reads len bytes of the payload from the given gzFile @c gzf.
@@ -208,7 +199,7 @@ namespace Dwm {
     //!  Writes the payload to the given gzFile @c gzf.  Returns the number
     //!  of bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
-    int Write(gzFile gzf) const override;
+    int Write(gzFile gzf) const;
     
     //------------------------------------------------------------------------
     //!  Reads len bytes of the payload from the given BZFILE @c bzf.
@@ -220,13 +211,13 @@ namespace Dwm {
     //!  Writes the payload to the given BZFILE @c bzf.  Returns the number
     //!  of bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
-    int BZWrite(BZFILE *bzf) const override;
+    int BZWrite(BZFILE *bzf) const;
     
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if one of the
     //!  Write() members were called.
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const override;
+    uint64_t StreamedLength() const;
     
   private:
     std::pair<uint16_t, uint8_t *>  _payload;
