@@ -232,7 +232,7 @@ A C++20 compiler is required.  I'm using these at the time of writing:
 - FreeBSD: clang++ 18.1.4
 - Ubuntu 24.04 LTS: g++ 13.2.0
 - macOS: Apple clang version 15.0.0 (clang-1500.3.9.4)
-- Raspberry Pi OS 12(bookwork): g++ 12.2.0
+- Raspberry Pi OS 12(bookworm): g++ 12.2.0
 #### GNU make
 - FreeBSD: `sudo pkg install gmake`
 - Linux: `sudo apt install make`
