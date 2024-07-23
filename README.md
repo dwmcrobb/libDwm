@@ -176,8 +176,19 @@ you'd add these public members to your class:
     //------------------------------------------------------------------
     bool Write(boost::asio::local::stream_protocol::socket & s,
                boost::system::error_code & ec) const;
-
-
+    //------------------------------------------------------------------------
+    //!  Reads from a boost::asio::generic::stream_protocol::socket.  Returns
+    //!  true on success.  Returns false and sets @c ec on failure.
+    //------------------------------------------------------------------------
+    bool Read(boost::asio::generic::stream_protocol::socket & s,
+              boost::system::error_code & ec);
+    //------------------------------------------------------------------------
+    //!  Writes to a boost::asio::generic::stream_protocol::socket.  Returns
+    //!  true on success.  Returns false and sets @c ec on failure.
+    //------------------------------------------------------------------------
+    bool Write(boost::asio::generic::stream_protocol::socket & s,
+               boost::system::error_code & ec) const;
+	
 ## SysLogger
 The [SysLogger](https://www.mcplex.net/Software/Documentation/libDwm/classDwm_1_1SysLogger.html)
 class wraps `syslog()` functionality in a singleton class.  A 
