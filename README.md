@@ -291,11 +291,11 @@ must use:
 Once a package is built, it may be installed using the native installation
 tools on your platform.
 #### FreeBSD
-    pkg install libDwm-0.9.39.pkg
+    pkg install libDwm-0.9.40.pkg
 #### Linux (Debian-based systems)
-    dpkg -i libDwm_0.9.39_amd64.deb
+    dpkg -i libDwm_0.9.40_amd64.deb
 #### macOS
-    open libDwm-0.9.39.pkg
+    open libDwm-0.9.40.pkg
 
 #### Other options
 You can stage all of the installation files without creating a package
