@@ -53,7 +53,7 @@ namespace Dwm {
   //!  method that returns bool.
   //--------------------------------------------------------------------------
   template <typename T>
-  concept HasAsioTcpRead = requires(T t, boost::asio::ip::tcp::socket & s,
+  concept HasAsioTcpRead = requires(T & t, boost::asio::ip::tcp::socket & s,
                                     boost::system::error_code & ec) {
     { t.Read(s, ec) } -> std::same_as<bool>;
   };
@@ -64,9 +64,10 @@ namespace Dwm {
   //!  method that returns bool.
   //--------------------------------------------------------------------------
   template <typename T>
-  concept HasAsioTcpWrite = requires(T t, boost::asio::ip::tcp::socket & s,
+  concept HasAsioTcpWrite = requires(const T & t,
+                                     boost::asio::ip::tcp::socket & s,
                                      boost::system::error_code & ec) {
-    { ((const T)t).Write(s, ec) } -> std::same_as<bool>;
+    { t.Write(s, ec) } -> std::same_as<bool>;
   };
 
   //--------------------------------------------------------------------------
@@ -76,7 +77,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   template <typename T>
   concept HasAsioLocalRead =
-  requires(T t, boost::asio::local::stream_protocol::socket & s,
+  requires(T & t, boost::asio::local::stream_protocol::socket & s,
            boost::system::error_code & ec) {
     { t.Read(s, ec) } -> std::same_as<bool>;
   };
@@ -88,9 +89,9 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   template <typename T>
   concept HasAsioLocalWrite =
-  requires(T t, boost::asio::local::stream_protocol::socket & s,
+  requires(const T & t, boost::asio::local::stream_protocol::socket & s,
            boost::system::error_code & ec) {
-    { ((const T)t).Write(s, ec) } -> std::same_as<bool>;
+    { t.Write(s, ec) } -> std::same_as<bool>;
   };
 
   //--------------------------------------------------------------------------
@@ -100,7 +101,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   template <typename T>
   concept HasAsioGenericStreamRead =
-  requires(T t, boost::asio::generic::stream_protocol::socket & s,
+  requires(T & t, boost::asio::generic::stream_protocol::socket & s,
            boost::system::error_code & ec) {
     { t.Read(s, ec) } -> std::same_as<bool>;
   };
@@ -112,9 +113,9 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   template <typename T>
   concept HasAsioGenericStreamWrite =
-  requires(T t, boost::asio::generic::stream_protocol::socket & s,
+  requires(const T & t, boost::asio::generic::stream_protocol::socket & s,
            boost::system::error_code & ec) {
-    { ((const T)t).Write(s, ec) } -> std::same_as<bool>;
+    { t.Write(s, ec) } -> std::same_as<bool>;
   };
 
   //--------------------------------------------------------------------------

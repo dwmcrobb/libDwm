@@ -50,7 +50,7 @@ namespace Dwm {
   //!  T has a Read(FILE *) member that returns size_t
   //--------------------------------------------------------------------------
   template <typename T>
-  concept HasFileRead = requires(T t, FILE *f) {
+  concept HasFileRead = requires(T & t, FILE *f) {
     { t.Read(f) } -> std::same_as<size_t>;
   };
 
@@ -58,8 +58,8 @@ namespace Dwm {
   //!  T has a Write(FILE *) const member that returns size_t
   //--------------------------------------------------------------------------
   template <typename T>
-  concept HasFileWrite = requires(T t, FILE *f) {
-    { ((const T)t).Write(f) } -> std::same_as<size_t>;
+  concept HasFileWrite = requires(const T & t, FILE *f) {
+    { t.Write(f) } -> std::same_as<size_t>;
   };
 
   //--------------------------------------------------------------------------

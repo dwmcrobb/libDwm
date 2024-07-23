@@ -55,7 +55,7 @@ namespace Dwm {
   //!  T has a BZRead(BZFILE *) member that returns int.
   //--------------------------------------------------------------------------
   template <typename T>
-  concept HasBZRead = requires(T t, BZFILE *bzf) {
+  concept HasBZRead = requires(T & t, BZFILE *bzf) {
     { t.BZRead(bzf) } -> std::same_as<int>;
   };
 
@@ -63,7 +63,7 @@ namespace Dwm {
   //!  T has a BZWrite(BZFILE *) const member that returns int.
   //--------------------------------------------------------------------------
   template <typename T>
-  concept HasBZWrite = requires(T t, BZFILE *bzf) {
+  concept HasBZWrite = requires(const T & t, BZFILE *bzf) {
     { ((const T)t).BZWrite(bzf) } -> std::same_as<int>;
   };
   

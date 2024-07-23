@@ -52,17 +52,17 @@ namespace Dwm {
   //!  reference.
   //--------------------------------------------------------------------------
   template <typename T>
-  concept HasStreamRead = requires(T t, std::istream & is) {
+  concept HasStreamRead = requires(T & t, std::istream & is) {
     { t.Read(is) } -> std::same_as<std::istream &>;
   };
 
   //--------------------------------------------------------------------------
   //!  T has a Write(std::ostream &) method that returns a std::ostream
-  //!  referencee.
+  //!  reference.
   //--------------------------------------------------------------------------
   template <typename T>
-  concept HasStreamWrite = requires(T t, std::ostream & os) {
-    { ((const T)t).Write(os) } -> std::same_as<std::ostream &>;
+  concept HasStreamWrite = requires(const T & t, std::ostream & os) {
+    { t.Write(os) } -> std::same_as<std::ostream &>;
   };
   
   //--------------------------------------------------------------------------

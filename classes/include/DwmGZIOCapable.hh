@@ -55,7 +55,7 @@ namespace Dwm {
   //!  T has a Read(gzFile) member that returns int.
   //--------------------------------------------------------------------------
   template <typename T>
-  concept HasGZRead = requires(T t, gzFile gzf) {
+  concept HasGZRead = requires(T & t, gzFile gzf) {
     { t.Read(gzf) } -> std::same_as<int>;
   };
   
@@ -63,8 +63,8 @@ namespace Dwm {
   //!  T has a Write(gzFile) const member that returns int.
   //--------------------------------------------------------------------------
   template <typename T>
-  concept HasGZWrite = requires(T t, gzFile gzf) {
-    { ((const T)t).Write(gzf) } -> std::same_as<int>;
+  concept HasGZWrite = requires(const T & t, gzFile gzf) {
+    { t.Write(gzf) } -> std::same_as<int>;
   };
       
   //--------------------------------------------------------------------------

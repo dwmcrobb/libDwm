@@ -55,7 +55,7 @@ namespace Dwm {
   //!  T has a Read(int) member that returns ssize_t.
   //--------------------------------------------------------------------------
   template <typename T>
-  concept HasDescriptorRead = requires (T t, int fd) {
+  concept HasDescriptorRead = requires (T & t, int fd) {
     { t.Read(fd) } -> std::same_as<ssize_t>;
   };
 
@@ -63,8 +63,8 @@ namespace Dwm {
   //!  T has a Write(int fd) const member that returns ssize_t.
   //--------------------------------------------------------------------------
   template <typename T>
-  concept HasDescriptorWrite = requires (T t, int fd) {
-    { ((const T)t).Write(fd) } -> std::same_as<ssize_t>;
+  concept HasDescriptorWrite = requires (const T & t, int fd) {
+    { t.Write(fd) } -> std::same_as<ssize_t>;
   };
 
   //--------------------------------------------------------------------------
