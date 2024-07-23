@@ -1,5 +1,8 @@
 2024-07-23  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* getvers.sh: bump shared library version to reflect ABI changes
+	(vtables changed from removal of inheritance).
+	
 	* README.md: Document Read and Write requirements for
 	ASIO with boost::asio::generic::stream_protocol::socket
 
