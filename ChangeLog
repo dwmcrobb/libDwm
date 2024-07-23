@@ -1,5 +1,8 @@
 2024-07-23  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* README.md: Document Read and Write requirements for
+	ASIO with boost::asio::generic::stream_protocol::socket
+
 	* classes/include/DwmIpv4IcmpMessage.hh,
 	  classes/include/DwmIpv4PacketHeader.hh,
 	  classes/include/DwmIpv4TcpHeader.hh,
