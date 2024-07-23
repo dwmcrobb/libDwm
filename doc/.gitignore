@@ -1,4 +1,5 @@
 Doxyfile
+libDwm.tag
 html/**
 latex/**
 man/**
