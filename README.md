@@ -243,6 +243,10 @@ A C++20 compiler is required.  I'm using these at the time of writing:
 - FreeBSD: `sudo pkg install bison`
 - Linux: `sudo apt install bison`
 - macOS: `sudo port install bison`
+#### [mkfbsdmnfst](https://github.com/dwmcrobb/mkfbsdmnfst)
+Needed to build a package on FreeBSD.
+#### [mkdebcontrol](https://github.com/dwmcrobb/mkdebcontrol)
+Needed to build a package on Debian, Ubuntu and Raspberry Pi OS.
 ### Libraries
 #### nlohmann_json
 - FreeBSD: `sudo pkg install nlohmann-json`
