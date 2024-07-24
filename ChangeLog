@@ -1,5 +1,7 @@
 2024-07-24  Daniel McRobb  <dwm@thrip.mcplex.net>
 
+	* tagged as libDwm-0.9.41
+
 	* classes/tests/TestThreadQueue.cc: Use max concurrency on
 	multicore systems when running performance tests, just to
 	add to the stress.  Also use C++14 digit separator (') in
