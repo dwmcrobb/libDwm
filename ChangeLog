@@ -1,5 +1,9 @@
 2024-07-24  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* classes/src/DwmSysLogger.cc, classes/include/DwmSysLogger.hh:
+	Allow use of std::source_location, and use them in the Syslog
+	and FSyslog macros.
+
 	* Removed the following files since I don't need them here:
 
 	classes/include/DwmHostPinger.hh
