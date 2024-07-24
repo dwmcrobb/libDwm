@@ -90,13 +90,14 @@ static bool TestTrivialLogMsg()
   string  outFileName = "/tmp/TestFSyslog_stderr." + to_string(getpid());
   int  fd, restorefd;
   if (UnitAssert(RedirectStderrToFile(outFileName, fd, restorefd))) {
-    FSyslog(LOG_INFO, "Hello user id {}", getuid());
+    FSyslog(LOG_INFO, "Hello user id {}", getuid());  int lineNum = __LINE__;
     RestoreStderr(fd, restorefd);
     ifstream  is(outFileName);
     if (UnitAssert(is)) {
       string  line;
       if (UnitAssert(std::getline(is, line))) {
-        regex  rgx(".*Hello user id [0-9]+.*",
+        regex  rgx(".*Hello user id [0-9]+ \\{TestFSyslog\\.cc\\:"
+                   + to_string(lineNum) + "\\}",
                    regex::ECMAScript|regex::optimize);
         smatch  sm;
         rc = UnitAssert(regex_match(line, sm, rgx));
