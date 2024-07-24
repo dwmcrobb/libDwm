@@ -1,5 +1,9 @@
 2024-07-24  dwm  <dwm@nomnom.mcplex.net>
 
+	* tagged as libDwm-0.9.43
+
+	* mkrelease.sh: 'push --tags' should be 'push --follow-tags'
+
 	* tagged as libDwm-0.9.42
 
 	* classes/include/DwmSysLogger.hh: Fix pasto on platforms where
