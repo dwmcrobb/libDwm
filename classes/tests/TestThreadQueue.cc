@@ -49,7 +49,7 @@ extern "C" {
 #include "DwmOptArgs.hh"
 #include "DwmSvnTag.hh"
 #include "DwmSysLogger.hh"
-#include "DwmTimeValue.hh"
+#include "DwmTimeValue64.hh"
 #include "DwmUnitAssert.hh"
 #include "DwmThreadQueue.hh"
 
@@ -63,7 +63,7 @@ using namespace Dwm;
 //----------------------------------------------------------------------------
 void PushPopProducer(Thread::Queue<int> & tq)
 {
-  for (int i = 0; i < 1000; ++i) {
+  for (int i = 0; i < 1'000; ++i) {
     UnitAssert(tq.PushBack(i));
   }
   return;
@@ -74,7 +74,7 @@ void PushPopProducer(Thread::Queue<int> & tq)
 //----------------------------------------------------------------------------
 void PushPopFrontProducer(Thread::Queue<int> & tq)
 {
-  for (int i = 0; i < 1000; ++i) {
+  for (int i = 0; i < 1'000; ++i) {
     UnitAssert(tq.PushFront(i));
   }
   return;
@@ -91,13 +91,13 @@ void PushPopConsumer(Thread::Queue<int> & tq)
   //  to consume if this thread gets more time than the producer thread.
   //  We only increment the loop termination condition when we actually
   //  consumed a member of the queue.
-  while (i < 1000) {
+  while (i < 1'000) {
     if (tq.PopFront(value)) {
       UnitAssert(value == i);
       ++i;
     }
   }
-  UnitAssert(i == 1000);
+  UnitAssert(i == 1'000);
   return;
 }
 
@@ -112,13 +112,13 @@ void PushPopBackConsumer(Thread::Queue<int> & tq)
   //  to consume if this thread gets more time than the producer thread.
   //  We only increment the loop termination condition when we actually
   //  consumed a member of the queue.
-  while (i < 1000) {
+  while (i < 1'000) {
     if (tq.PopBack(value)) {
       UnitAssert(value == i);
       ++i;
     }
   }
-  UnitAssert(i == 1000);
+  UnitAssert(i == 1'000);
   return;
 }
 
@@ -145,7 +145,7 @@ void WaitNotEmptyConsumer(Thread::Queue<int> & tq)
 {
   int  value;
   int  i = 0;
-  for ( ; i < 1000; ++i) {
+  for ( ; i < 1'000; ++i) {
     UnitAssert(tq.WaitForNotEmpty());
     UnitAssert(tq.PopFront(value));
     UnitAssert(value == i);
@@ -164,9 +164,9 @@ void WaitNotEmptyConsumer(Thread::Queue<int> & tq)
 //----------------------------------------------------------------------------
 void WaitNotEmptyProducer(Thread::Queue<int> & tq)
 {
-  for (int i = 0; i < 1000; ++i) {
+  for (int i = 0; i < 1'000; ++i) {
     UnitAssert(tq.PushBack(i));
-    usleep(1000);
+    usleep(1'000);
   }
   return;
 }
@@ -226,7 +226,7 @@ void SimplePopFn(Thread::Queue<uint64_t> * queue, const string & name)
 {
   uint64_t  i;
   uint64_t  processed = 0;
-  while (processed < 1000000) {
+  while (processed < 1'000'000) {
     if (queue->PopFront(i)) {
       ++processed;
     }
@@ -240,7 +240,7 @@ void SimplePopFn(Thread::Queue<uint64_t> * queue, const string & name)
 void SimplePushFn(Thread::Queue<uint64_t> * queue, const string & name)
 {
   uint64_t  pushed = 0;
-  while (pushed < 1000000) {
+  while (pushed < 1'000'000) {
     if (queue->PushBack(pushed)) {
       ++pushed;
     }
@@ -256,11 +256,11 @@ void BulkPopFn(Thread::Queue<uint64_t> * queue, const string & name)
   uint64_t  i;
   uint64_t  processed = 0;
   deque<uint64_t>  entries;
-  while (processed < 1000000) {
+  while (processed < 1'000'000) {
     processed += queue->Swap(entries);
     entries.clear();
   }
-  UnitAssert(1000000 == processed);
+  UnitAssert(1'000'000 == processed);
   return;
 }
 
@@ -270,8 +270,8 @@ void BulkPopFn(Thread::Queue<uint64_t> * queue, const string & name)
 void BulkPushFn(Thread::Queue<uint64_t> * queue, const string & name)
 {
   uint64_t  pushed = 0;
-  vector<uint64_t>  entries(1000);
-  while (pushed < 1000000) {
+  vector<uint64_t>  entries(1'000);
+  while (pushed < 1'000'000) {
     if (queue->PushBack(entries.begin(), entries.end())) {
       pushed += entries.size();
     }
@@ -285,8 +285,8 @@ void BulkPushFn(Thread::Queue<uint64_t> * queue, const string & name)
 void BulkPushFrontFn(Thread::Queue<uint64_t> * queue, const string & name)
 {
   uint64_t  pushed = 0;
-  vector<uint64_t>  entries(1000);
-  while (pushed < 1000000) {
+  vector<uint64_t>  entries(1'000);
+  while (pushed < 1'000'000) {
     if (queue->PushFront(entries.begin(), entries.end())) {
       pushed += entries.size();
     }
@@ -313,15 +313,16 @@ void TestBulkPushFront()
 //----------------------------------------------------------------------------
 void TestSimplePerformance()
 {
-  const uint64_t  numThreads = 4;
+  uint64_t  hwThreads = thread::hardware_concurrency();
+  const uint64_t  numThreads = (hwThreads / 2) ? (hwThreads / 2) : 1;
   thread  push_threads[numThreads];
   thread  pop_threads[numThreads];
   std::unique_ptr<Thread::Queue<uint64_t>>  queues[numThreads];
 
-  Dwm::TimeValue  startTime(true);
+  Dwm::TimeValue64  startTime(true);
   for (int i = 0; i < numThreads; ++i) {
     queues[i] = make_unique<Thread::Queue<uint64_t>>();
-    queues[i]->MaxLength(10000);
+    queues[i]->MaxLength(10'000);
     pop_threads[i] = thread(SimplePopFn, queues[i].get(),
                             string("popthr" + to_string(i)));
     push_threads[i] = thread(SimplePushFn, queues[i].get(),
@@ -331,10 +332,10 @@ void TestSimplePerformance()
     pop_threads[i].join();
     push_threads[i].join();
   }
-  Dwm::TimeValue runTime(true);
+  Dwm::TimeValue64 runTime(true);
 
   runTime -= startTime;
-  cout << "Processed " << (numThreads * 1000000) / (double)runTime
+  cout << "Processed " << (numThreads * 1'000'000) / (double)runTime
        << " per second\n";
   
   return;
@@ -345,15 +346,16 @@ void TestSimplePerformance()
 //----------------------------------------------------------------------------
 void TestBulkPerformance()
 {
-  const uint64_t  numThreads = 4;
+  uint64_t  hwThreads = thread::hardware_concurrency();
+  const uint64_t  numThreads = (hwThreads / 2) ? (hwThreads / 2) : 1;
   thread  push_threads[numThreads];
   thread  pop_threads[numThreads];
   std::unique_ptr<Thread::Queue<uint64_t>>  queues[numThreads];
 
-  Dwm::TimeValue  startTime(true);
+  Dwm::TimeValue64  startTime(true);
   for (int i = 0; i < numThreads; ++i) {
     queues[i] = make_unique<Thread::Queue<uint64_t>>();
-    queues[i]->MaxLength(10000);
+    queues[i]->MaxLength(10'000);
     pop_threads[i] = thread(SimplePopFn, queues[i].get(),
                             string("popthr" + to_string(i)));
     push_threads[i] = thread(SimplePushFn, queues[i].get(),
@@ -363,10 +365,10 @@ void TestBulkPerformance()
     pop_threads[i].join();
     push_threads[i].join();
   }
-  Dwm::TimeValue runTime(true);
+  Dwm::TimeValue64 runTime(true);
 
   runTime -= startTime;
-  cout << "Bulk processed " << (numThreads * 1000000) / (double)runTime
+  cout << "Bulk processed " << (numThreads * 1'000'000) / (double)runTime
        << " per second\n";
   
   return;
