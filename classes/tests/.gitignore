@@ -74,6 +74,7 @@ TestRegistry
 TestStringConverter
 TestStringUtils
 TestSvnTag
+TestSyslog
 TestThreadPool
 TestThreadQueue
 TestTimeInterval64
