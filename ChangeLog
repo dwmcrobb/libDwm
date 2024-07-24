@@ -1,3 +1,10 @@
+2024-07-24  dwm  <dwm@nomnom.mcplex.net>
+
+	* tagged as libDwm-0.9.42
+
+	* classes/include/DwmSysLogger.hh: Fix pasto on platforms where
+	we need libfmt (std:: should be fmt::), namely Raspberry Pi OS.
+
 2024-07-24  Daniel McRobb  <dwm@thrip.mcplex.net>
 
 	* tagged as libDwm-0.9.41
