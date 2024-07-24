@@ -21,6 +21,8 @@
 	classes/include/DwmPingDestination.hh
 	classes/include/DwmPingDestinationEntry.hh
 	classes/include/DwmSocket.hh
+	classes/include/DwmXmlAttribute.hh
+	classes/include/DwmXmlElement.hh
 	classes/src/DwmHostPinger.cc
 	classes/src/DwmIpv4IcmpDestinationUnreachable.cc
 	classes/src/DwmIpv4IcmpEchoReply.cc
@@ -39,6 +41,8 @@
 	classes/src/DwmPingDestination.cc
 	classes/src/DwmPingDestinationEntry.cc
 	classes/src/DwmSocket.cc
+	classes/src/DwmXmlAttribute.cc
+	classes/src/DwmXmlElement.cc
 	classes/src/Makefile
 	classes/tests/Makefile
 	classes/tests/TestDwmSocket.cc

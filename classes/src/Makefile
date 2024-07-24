@@ -59,9 +59,7 @@ OBJFILESNP =	DwmASIO.o \
 		DwmTypeName.o \
 		DwmUnitAssert.o \
                 DwmUptime.o \
-		DwmXDRUtils.o \
-		DwmXmlAttribute.o \
-		DwmXmlElement.o
+		DwmXDRUtils.o
 shlib_version = $(shell ../../getvers.sh -s)
 
 ifeq (,$(findstring iPhone,$(PLATFORM)))
