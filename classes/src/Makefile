@@ -25,21 +25,7 @@ OBJFILESNP =	DwmASIO.o \
 		DwmIpAddress.o \
 		DwmIpPrefix.o \
 		DwmIpv4Address.o \
-		DwmIpv4IcmpDestinationUnreachable.o \
-		DwmIpv4IcmpEchoReply.o \
-		DwmIpv4IcmpEchoRequest.o \
-		DwmIpv4IcmpMessage.o \
-		DwmIpv4IcmpRedirect.o \
-		DwmIpv4IcmpSourceQuench.o \
-		DwmIpv4IcmpTimeExceeded.o \
-		DwmIpv4PacketHeader.o \
 		DwmIpv4Prefix.o \
-		DwmIpv4TcpHeader.o \
-		DwmIpv4TcpPacket.o \
-		DwmIpv4TcpPayload.o \
-		DwmIpv4UdpHeader.o \
-		DwmIpv4UdpPacket.o \
-		DwmIpv4UdpPayload.o \
 		DwmIpv4Utils.o \
 		DwmIpv6Address.o \
 		DwmIpv6Prefix.o \
@@ -57,7 +43,6 @@ OBJFILESNP =	DwmASIO.o \
                 DwmProcessTableParse.o \
 		DwmRusage.o \
 		DwmSignal.o \
-		DwmSocket.o \
 		DwmStreamIO.o \
 		DwmStringUtils.o \
 		DwmStrptime.o \
@@ -80,8 +65,7 @@ OBJFILESNP =	DwmASIO.o \
 shlib_version = $(shell ../../getvers.sh -s)
 
 ifeq (,$(findstring iPhone,$(PLATFORM)))
-OBJFILESNP +=	DwmHostPinger.o DwmPcap.o
-OBJFILESNP +=	DwmPingDestination.o DwmPingDestinationEntry.o 
+OBJFILESNP +=	DwmPcap.o
 endif
 OBJFILES      = $(OBJFILESNP:%=../obj/%)
 SHARED_OBJFILES = $(OBJFILES:%.o=%.lo)

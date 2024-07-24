@@ -20,7 +20,6 @@ OBJFILES = TestASIO.o \
 	   TestDwmPassword.o \
 	   TestDwmRusage.o \
 	   TestDwmSignal.o \
-	   TestDwmSocket.o \
 	   TestDwmSunriseSunset.o \
 	   TestDwmTermios.o \
 	   TestEngFormat.o \
@@ -30,7 +29,6 @@ OBJFILES = TestASIO.o \
 	   TestGetAddrInfo.o \
 	   TestGitVersion.o \
 	   TestGroup.o \
-	   TestHostPinger.o \
 	   TestIODeque.o \
 	   TestIOList.o \
 	   TestIOMap.o \
@@ -40,20 +38,9 @@ OBJFILES = TestASIO.o \
 	   TestIOVector.o \
 	   TestIpv4Address.o \
 	   TestIpv4AddrMap.o \
-	   TestIpv4IcmpDestinationUnreachable.o \
-	   TestIpv4IcmpEchoReply.o \
-	   TestIpv4IcmpEchoRequest.o \
-	   TestIpv4IcmpRedirect.o \
-	   TestIpv4IcmpSourceQuench.o \
-	   TestIpv4IcmpTimeExceeded.o \
-	   TestIpv4PacketHeader.o \
 	   TestIpv4Prefix.o \
 	   TestIpv4PrefixMap.o \
 	   TestIpv4Routes.o \
-	   TestIpv4TcpHeader.o \
-	   TestIpv4TcpPacket.o \
-	   TestIpv4UdpHeader.o \
-	   TestIpv4UdpPacket.o \
 	   TestIpv6Address.o \
 	   TestIpv6AddrMap.o \
 	   TestIpv6Prefix.o \
@@ -61,7 +48,6 @@ OBJFILES = TestASIO.o \
 	   TestMacAddress.o \
 	   TestMplsLabel.o \
 	   TestMplsLabelStack.o \
-	   TestPatricia.o \
            TestProcessTable.o \
 	   TestStringConverter.o \
 	   TestStringUtils.o \

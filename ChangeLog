@@ -1,8 +1,69 @@
+2024-07-24  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* Removed the following files since I don't need them here:
+
+	classes/include/DwmHostPinger.hh
+	classes/include/DwmIpv4IcmpDestinationUnreachable.hh
+	classes/include/DwmIpv4IcmpEchoReply.hh
+	classes/include/DwmIpv4IcmpEchoRequest.hh
+	classes/include/DwmIpv4IcmpMessage.hh
+	classes/include/DwmIpv4IcmpRedirect.hh
+	classes/include/DwmIpv4IcmpSourceQuench.hh
+	classes/include/DwmIpv4IcmpTimeExceeded.hh
+	classes/include/DwmIpv4PacketHeader.hh
+	classes/include/DwmIpv4TcpHeader.hh
+	classes/include/DwmIpv4TcpPacket.hh
+	classes/include/DwmIpv4TcpPayload.hh
+	classes/include/DwmIpv4UdpHeader.hh
+	classes/include/DwmIpv4UdpPacket.hh
+	classes/include/DwmIpv4UdpPayload.hh
+	classes/include/DwmPatricia.hh
+	classes/include/DwmPingDestination.hh
+	classes/include/DwmPingDestinationEntry.hh
+	classes/include/DwmSocket.hh
+	classes/src/DwmHostPinger.cc
+	classes/src/DwmIpv4IcmpDestinationUnreachable.cc
+	classes/src/DwmIpv4IcmpEchoReply.cc
+	classes/src/DwmIpv4IcmpEchoRequest.cc
+	classes/src/DwmIpv4IcmpMessage.cc
+	classes/src/DwmIpv4IcmpRedirect.cc
+	classes/src/DwmIpv4IcmpSourceQuench.cc
+	classes/src/DwmIpv4IcmpTimeExceeded.cc
+	classes/src/DwmIpv4PacketHeader.cc
+	classes/src/DwmIpv4TcpHeader.cc
+	classes/src/DwmIpv4TcpPacket.cc
+	classes/src/DwmIpv4TcpPayload.cc
+	classes/src/DwmIpv4UdpHeader.cc
+	classes/src/DwmIpv4UdpPacket.cc
+	classes/src/DwmIpv4UdpPayload.cc
+	classes/src/DwmPingDestination.cc
+	classes/src/DwmPingDestinationEntry.cc
+	classes/src/DwmSocket.cc
+	classes/src/Makefile
+	classes/tests/Makefile
+	classes/tests/TestDwmSocket.cc
+	classes/tests/TestHostPinger.cc
+	classes/tests/TestIpv4IcmpDestinationUnreachable.cc
+	classes/tests/TestIpv4IcmpEchoReply.cc
+	classes/tests/TestIpv4IcmpEchoRequest.cc
+	classes/tests/TestIpv4IcmpRedirect.cc
+	classes/tests/TestIpv4IcmpSourceQuench.cc
+	classes/tests/TestIpv4IcmpTimeExceeded.cc
+	classes/tests/TestIpv4PacketHeader.cc
+	classes/tests/TestIpv4TcpHeader.cc
+	classes/tests/TestIpv4TcpPacket.cc
+	classes/tests/TestIpv4UdpHeader.cc
+	classes/tests/TestIpv4UdpPacket.cc
+	classes/tests/TestPatricia.cc
+	classes/tests/ip.pcap
+	classes/tests/tcp.pcap
+	classes/tests/udp.pcap
+
 2024-07-23  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* getvers.sh: bump shared library version to reflect ABI changes
 	(vtables changed from removal of inheritance).
-	
+
 	* README.md: Document Read and Write requirements for
 	ASIO with boost::asio::generic::stream_protocol::socket
 
