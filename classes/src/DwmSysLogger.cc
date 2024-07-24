@@ -214,6 +214,20 @@ namespace Dwm {
     va_end(vaList);
     return(rc);
   }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool SysLogger::Log(std::source_location loc, int priority,
+                      const char *message, ...)
+  {
+    va_list     vaList;
+    va_start(vaList,message);
+    bool rc = VaLog(loc.file_name(), loc.line(), loc.function_name(),
+                    priority, message, vaList);
+    va_end(vaList);
+    return(rc);
+  }
   
   //--------------------------------------------------------------------------
   //!  

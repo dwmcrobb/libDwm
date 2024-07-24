@@ -50,6 +50,7 @@ extern "C" {
 #include <cstdio>
 #include <version>
 #include <mutex>
+#include <source_location>
 #include <string>
 
 #include "DwmPortability.hh"
@@ -122,13 +123,19 @@ namespace Dwm {
                     const std::string & function, int priority,
                     const char *message, ...);
 
+    //------------------------------------------------------------------------
+    //!  Like syslog(), but takes a source_location argument that can be
+    //!  used to log the location of the caller.
+    //------------------------------------------------------------------------
+    static bool Log(std::source_location loc, int priority,
+                    const char *message, ...);
+    
 #if (defined DWM_HAVE_STD_FORMAT)
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
     template <typename ...Args>
-    static bool FmtLog(const std::string & filename, int lineno,
-                       const std::string & function, int priority,
+    static bool FmtLog(std::source_location loc, int priority,
                        std::format_string<Args...> fm,
                        Args&&... args)
     {
@@ -137,17 +144,17 @@ namespace Dwm {
       //  "%s": I want to be able to still use the convenient "%m" in
       //  a log message, and it must be in the format string for that
       //  to happen downstream.  This is likely to change at a later date.
-      return Log(filename, lineno, function, priority,
-                 std::format(fm,std::forward<Args>(args)...).c_str());
+      return Log(loc, priority,
+                 std::format(fm, std::forward<Args>(args)...).c_str());
     }
+
 #elif (defined DWM_HAVE_LIBFMT)
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
     template <typename ...Args>
-    static bool FmtLog(const std::string & filename, int lineno,
-                       const std::string & function, int priority,
-                       fmt::format_string<Args...> fm,
+    static bool FmtLog(std::source_location loc, int priority,
+                       std::format_string<Args...> fm,
                        Args&&... args)
     {
       //  The reason I put the formatted string into the format string
@@ -155,8 +162,8 @@ namespace Dwm {
       //  "%s": I want to be able to still use the convenient "%m" in
       //  a log message, and it must be in the format string for that
       //  to happen downstream.  This is likely to change at a later date.
-      return Log(filename, lineno, function, priority,
-                 fmt::format(fm,std::forward<Args>(args)...).c_str());
+      return Log(loc, priority,
+                 fmt::format(fm, std::forward<Args>(args)...).c_str());
     }
 #endif
 
@@ -276,7 +283,7 @@ namespace Dwm {
 //!  variadic macros, but g++ and clang++ support them.
 //----------------------------------------------------------------------------
 #define Syslog(...)                                                          \
-  Dwm::SysLogger::Log(__FILE__,__LINE__,__PRETTY_FUNCTION__,__VA_ARGS__)
+  Dwm::SysLogger::Log(std::source_location::current(),__VA_ARGS__)
 
 //----------------------------------------------------------------------------
 //!  Like Syslog() but the format string (second argument) is a std::format
@@ -287,7 +294,7 @@ namespace Dwm {
 //----------------------------------------------------------------------------
 #if (defined DWM_HAVE_STD_FORMAT || defined DWM_HAVE_LIBFMT)
   #define FSyslog(...)                                                       \
-    Dwm::SysLogger::FmtLog(__FILE__,__LINE__,__PRETTY_FUNCTION__,__VA_ARGS__)
+    Dwm::SysLogger::FmtLog(std::source_location::current(),__VA_ARGS__)
 #endif
 
 #endif  // _DWMSYSLOGGER_HH_
