@@ -154,7 +154,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <typename ...Args>
     static bool FmtLog(std::source_location loc, int priority,
-                       std::format_string<Args...> fm,
+                       fmt::format_string<Args...> fm,
                        Args&&... args)
     {
       //  The reason I put the formatted string into the format string
