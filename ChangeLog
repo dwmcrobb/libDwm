@@ -1,3 +1,14 @@
+2024-07-25  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* tagged as libDwm-0.9.44
+
+	* classes/include/DwmGZIOCapable.hh: Documentation updates.
+	* classes/include/DwmBZ2IOCapable.hh: Documentation updates.
+	* classes/include/DwmASIOCapable.hh: Documentation updates.
+	* classes/include/DwmDescriptorIOCapable.hh: Documentation updates.
+	* classes/include/DwmFileIOCapable.hh: Documentation updates.
+	* classes/include/DwmStreamIOCapable.hh: Documentation updates.
+
 2024-07-24  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* classes/include/DwmDocMainPage.hh, README.md,
