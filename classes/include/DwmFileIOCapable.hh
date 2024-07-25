@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2020
+//  Copyright (c) Daniel W. McRobb 2020, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,8 @@
 //---------------------------------------------------------------------------
 //!  \file DwmFileIOCapable.hh
 //!  \author Daniel W. McRobb
-//!  \brief Dwm::FileIOCapable pure virtual class declaration
+//!  \brief Dwm::HasFileRead and Dwm::HasFileWrite concepts.
+//!    Dwm::FileIOCapable pure virtual class declaration.
 //---------------------------------------------------------------------------
 
 #ifndef _DWMFILEIOCAPABLE_HH_
@@ -47,7 +48,8 @@
 namespace Dwm {
 
   //--------------------------------------------------------------------------
-  //!  T has a Read(FILE *) member that returns size_t
+  //!  T has a Read(FILE *) member that returns size_t (1 on success, 0
+  //!  on failure).
   //--------------------------------------------------------------------------
   template <typename T>
   concept HasFileRead = requires(T & t, FILE *f) {
@@ -55,7 +57,8 @@ namespace Dwm {
   };
 
   //--------------------------------------------------------------------------
-  //!  T has a Write(FILE *) const member that returns size_t
+  //!  T has a Write(FILE *) const member that returns size_t (1 on success,
+  //!  0 on failure).
   //--------------------------------------------------------------------------
   template <typename T>
   concept HasFileWrite = requires(const T & t, FILE *f) {
