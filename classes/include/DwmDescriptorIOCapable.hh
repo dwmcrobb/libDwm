@@ -36,8 +36,9 @@
 //---------------------------------------------------------------------------
 //!  \file DwmDescriptorIOCapable.hh
 //!  \author Daniel W. McRobb
-//!  \brief Dwm::DescriptorReadable, Dwm::DescriptorWritable and
-//!     Dwm::DescriptorIOCapable pure virtual class declarations
+//!  \brief Dwm::HasDescriptorRead and Dwm::HasDescriptorWrite concepts.
+//!     Dwm::DescriptorReadable, Dwm::DescriptorWritable and
+//!     Dwm::DescriptorIOCapable pure virtual class declarations.
 //---------------------------------------------------------------------------
 
 #ifndef _DWMDESCRIPTORIOCAPABLE_HH_
@@ -52,7 +53,8 @@ extern "C" {
 namespace Dwm {
 
   //--------------------------------------------------------------------------
-  //!  T has a Read(int) member that returns ssize_t.
+  //!  T has a Read(int) member that returns ssize_t (number of bytes read
+  //!  on success, -1 on failure).
   //--------------------------------------------------------------------------
   template <typename T>
   concept HasDescriptorRead = requires (T & t, int fd) {
@@ -60,7 +62,8 @@ namespace Dwm {
   };
 
   //--------------------------------------------------------------------------
-  //!  T has a Write(int fd) const member that returns ssize_t.
+  //!  T has a Write(int fd) const member that returns ssize_t (number of
+  //!  bytes read on success, -1 on failure).
   //--------------------------------------------------------------------------
   template <typename T>
   concept HasDescriptorWrite = requires (const T & t, int fd) {
