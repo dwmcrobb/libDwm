@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2021, 2023
+//  Copyright (c) Daniel W. McRobb 2021, 2023, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -36,8 +36,11 @@
 //---------------------------------------------------------------------------
 //!  \file DwmASIOCapable.hh
 //!  \author Daniel W. McRobb
-//!  \brief Dwm::ASIOReadable, Dwm::ASIOWritable, Dwm::ASIOCapable interface
-//!    declarations
+//!  \brief Dwm::HasAsioTcpRead, Dwm::HasAsioTcpWrite, Dwm::HasAsioLocalRead,
+//!    Dwm::HasAsioLocalWrite, Dwm::HasAsioGenericStreamRead,
+//!    Dwm::HasAsioGenericStreamWrite, Dwm::HasAsioRead and Dwm::HasAsioWrite
+//!    concepts.  Dwm::ASIOReadable, Dwm::ASIOWritable, Dwm::ASIOCapable
+//!    interface declarations.
 //---------------------------------------------------------------------------
 
 #ifndef _DWMASIOCAPABLE_HH_
