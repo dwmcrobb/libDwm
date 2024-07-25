@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2020
+//  Copyright (c) Daniel W. McRobb 2020, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -36,8 +36,9 @@
 //---------------------------------------------------------------------------
 //!  \file DwmStreamIOCapable.hh
 //!  \author Daniel W. McRobb
-//!  \brief Dwm::StreamReadable, Dwm::StreamWritable and Dwm::StreamIOCapable
-//!    pure virtual class declarations
+//!  \brief Dwm::HasStreamRead and Dwm::HasStreamWrite concepts.
+//!    Dwm::StreamReadable, Dwm::StreamWritable and Dwm::StreamIOCapable
+//!    pure virtual class declarations.
 //---------------------------------------------------------------------------
 
 #ifndef _DWMSTREAMIOCAPABLE_HH_
@@ -48,8 +49,8 @@
 namespace Dwm {
 
   //--------------------------------------------------------------------------
-  //!  T has a Read(std::istream &) method that returns a std::istream
-  //!  reference.
+  //!  T has a Read(std::istream &) method that returns the std::istream
+  //!  reference that was passed in as its only parameter.
   //--------------------------------------------------------------------------
   template <typename T>
   concept HasStreamRead = requires(T & t, std::istream & is) {
@@ -57,8 +58,8 @@ namespace Dwm {
   };
 
   //--------------------------------------------------------------------------
-  //!  T has a Write(std::ostream &) method that returns a std::ostream
-  //!  reference.
+  //!  T has a Write(std::ostream &) const method that returns the
+  //!  std::ostream reference that was passed in as its only parameter.
   //--------------------------------------------------------------------------
   template <typename T>
   concept HasStreamWrite = requires(const T & t, std::ostream & os) {
