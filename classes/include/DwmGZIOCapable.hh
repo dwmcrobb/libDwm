@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2020
+//  Copyright (c) Daniel W. McRobb 2020, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -36,8 +36,8 @@
 //---------------------------------------------------------------------------
 //!  \file DwmGZIOCapable.hh
 //!  \author Daniel W. McRobb
-//!  \brief Dwm::GZReadable, Dwm::GZWritable and Dwm::GZIOCapable pure
-//!    virtual class declarations
+//!  \brief Dwm::HasGZRead and Dwm::HasGZWrite concepts.  Dwm::GZReadable,
+//!    Dwm::GZWritable and Dwm::GZIOCapable pure virtual class declarations.
 //---------------------------------------------------------------------------
 
 #ifndef _DWMGZIOCAPABLE_HH_
@@ -45,14 +45,16 @@
 
 extern "C" {
   #include <sys/types.h>
-  #include <stdio.h>
   #include <zlib.h>
 }
+
+#include <cstdio>
 
 namespace Dwm {
 
   //--------------------------------------------------------------------------
-  //!  T has a Read(gzFile) member that returns int.
+  //!  T has a Read(gzFile) member that returns int (return value of gzread()
+  //!  on success, -1 on failure).
   //--------------------------------------------------------------------------
   template <typename T>
   concept HasGZRead = requires(T & t, gzFile gzf) {
@@ -60,7 +62,8 @@ namespace Dwm {
   };
   
   //--------------------------------------------------------------------------
-  //!  T has a Write(gzFile) const member that returns int.
+  //!  T has a Write(gzFile) const member that returns int (return value of
+  //!  gzwrite() on success, -1 on failure).
   //--------------------------------------------------------------------------
   template <typename T>
   concept HasGZWrite = requires(const T & t, gzFile gzf) {
