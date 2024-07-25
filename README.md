@@ -278,6 +278,10 @@ Needed to build a package on Debian, Ubuntu and Raspberry Pi OS.
 - macOS: `sudo port install boost181`
 #### libtirpc (needed on Linux for XDR routines)
 - Linux: `sudo apt install libtirpc-dev`
+#### libfmt (when std::format isn't available)
+- Linux: `sudo apt install libfmt-dev`
+- FreeBSD: `sudo pkg install libfmt`
+- macOS: `sudo port install libfmt10`
 
 ## Build
 The build requires GNU make (hence on FreeBSD, the make command below
