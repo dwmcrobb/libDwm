@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2020
+//  Copyright (c) Daniel W. McRobb 2020, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -36,8 +36,9 @@
 //---------------------------------------------------------------------------
 //!  \file DwmBZ2IOCapable.hh
 //!  \author Daniel W. McRobb
-//!  \brief Dwm::BZ2Readable, Dwm::BZ2Writable and Dwm::BZ2IOCapable
-//!    pure virtual interface declarations
+//!  \brief Dwm::HasBZRead and Dwm::HasBZWrite concepts.  Dwm::BZ2Readable,
+//!    Dwm::BZ2Writable and Dwm::BZ2IOCapable pure virtual interface
+//!    declarations.
 //---------------------------------------------------------------------------
 
 #ifndef _DWMBZ2IOCAPABLE_HH_
@@ -45,9 +46,10 @@
 
 extern "C" {
   #include <sys/types.h>
-  #include <stdio.h>
   #include <bzlib.h>
 }
+
+#include <cstdio>
 
 namespace Dwm {
 
