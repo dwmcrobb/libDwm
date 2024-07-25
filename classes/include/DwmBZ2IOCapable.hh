@@ -54,7 +54,8 @@ extern "C" {
 namespace Dwm {
 
   //--------------------------------------------------------------------------
-  //!  T has a BZRead(BZFILE *) member that returns int.
+  //!  T has a BZRead(BZFILE *) member that returns int (return value of
+  //!  BZ2_bzread() on success, -1 on failure).
   //--------------------------------------------------------------------------
   template <typename T>
   concept HasBZRead = requires(T & t, BZFILE *bzf) {
@@ -62,7 +63,8 @@ namespace Dwm {
   };
 
   //--------------------------------------------------------------------------
-  //!  T has a BZWrite(BZFILE *) const member that returns int.
+  //!  T has a BZWrite(BZFILE *) const member that returns int (return value
+  //!  of BZ2_bzwrite() on success, -1 on failure).
   //--------------------------------------------------------------------------
   template <typename T>
   concept HasBZWrite = requires(const T & t, BZFILE *bzf) {
