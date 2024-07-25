@@ -1,3 +1,8 @@
+2024-07-24  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* classes/include/DwmDocMainPage.hh, README.md,
+	doc/examples/DwmIOExample3.cc: Documentation updates.
+
 2024-07-24  dwm  <dwm@nomnom.mcplex.net>
 
 	* tagged as libDwm-0.9.43

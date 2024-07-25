@@ -7,9 +7,6 @@ using namespace std;
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
 class PhoneContact
-  : public Dwm::StreamReadable, public Dwm::StreamWritable,
-    public Dwm::FileReadable, public Dwm::FileWritable,
-    public Dwm::DescriptorReadable, public Dwm::DescriptorWritable
 {
 public:
   PhoneContact() : _data() { }
@@ -61,9 +58,6 @@ private:
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
 class PhoneContacts
-  : public Dwm::StreamReadable, public Dwm::StreamWritable,
-    public Dwm::FileReadable, public Dwm::FileWritable,
-    public Dwm::DescriptorReadable, public Dwm::DescriptorWritable
 {
 public:
   PhoneContacts() : _contacts() { }

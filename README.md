@@ -21,19 +21,19 @@ There are classes in the library which provide static functions and
 function templates for binary I/O for fundamental types as well as
 strings.  They also provide I/O for most of the containers in the C++
 standard library: array, deque, list, map, pair, set, tuple,
-unordered_map, unordered_set, variant and vector.  A big part of my
-motivation after C++03 was the lack of reflection or introspection
-in C++.  As it turns out, in 2024 we still don't have reflection,
-hence my technique has been useful for much longer than I expected.
-Having read the proposals still active for C++26, I suspect I'm
-going to continue using my technique even after we have reflection.
-At this point the inertia in my own code is significant.  The last
-proposal I read was
-[P2996R2](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p2996r2.html).  There's been a lot of good, hard work here and in other papers.  But
-using what's been proposed to replace what I have would be a very
-large effort in my own code simply because I have a lot of code using
-my existing technique.  If we get reflection in C++26, I'll experiment
-with a new library that uses it.
+unordered_map, unordered_set, variant and vector.
+
+The serialization here would likely be easier if we had reflection in
+C++.  But in 2024 we still don't have reflection, hence my technique has
+been useful for much longer than I expected.  Having read the proposals
+still active for C++26 (the last proposal I read was
+[P2996R2](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p2996r2.html)),
+I suspect I'm going to continue using my technique beyond C++26.  At this
+point the inertia in my own code is significant, and it doesn't look like
+it will be a small effort to switch to using reflection.
+
+If we get reflection in C++26, I'll experiment with a new library that
+uses it.
 
 The classes that implement the I/O:
 
@@ -71,8 +71,8 @@ be difficult to maintain.  Most C++ programmers understand pure
 virtual classes and inheritance.  The downside is that it leads to
 multiple inheritance, which creates headaches for some modern C++
 features like defaulted comparison operators.  Now that we have
-readable concepts for simple tasks, I can remove the inheritance
-requirement and one day remove these virtual classes (which I now
+readable concepts for simple tasks, I have removed the inheritance
+requirement and can one day remove these virtual classes (which I now
 consider deprecated but haven't yet marked them as such):
 
 - DescriptorIOCapable, DescriptorReadable and DescriptorWritable

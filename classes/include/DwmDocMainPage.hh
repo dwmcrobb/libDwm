@@ -1,6 +1,6 @@
 /*! \file DwmDocMainPage.hh
  *  \brief Documentation main page (no source code)
- * 
+ *
  * \mainpage Dwm Class Library
  *
  *  \section intro_sec Introduction
@@ -23,7 +23,7 @@
  *  been multithreaded, I have also made heavy use of the
  *  Dwm::Thread::Queue class for inter-thread communication (usually
  *  as 'work queues').
- *  
+ *
  *  \section history_sec History
  *
  *  I started this library in 1998.  I continue to maintain it for my
@@ -55,7 +55,7 @@
  *  and containers of these user types.
  *
  *  Intrinsic integer types are written in network byte order.  The
- *  library takes care of byte ordering so you need not be concerned 
+ *  library takes care of byte ordering so you need not be concerned
  *  with it.  Float and double types are written in IEEE 754-1985 form
  *  (see RFC 1832).  Some types are stored as (length,value)
  *  pairs, including the standard containers and C++ string objects.
@@ -66,10 +66,15 @@
  *  The required interfaces for Dwm::BZ2IO are Dwm::BZ2Readable and
  *  Dwm::BZ2Writable.
  *
- *  Today, the C++ programmer has several options for serialization,
- *  and the possibility of reflection in a future version of the standard.
- *  However, I wrote most of this functionality in 2004 when we didn't
- *  have a lot of options to support serialization and finalized most of
+ *  Note that inheritance from the aforementioned interface classes is
+ *  no longer required, and is in fact discouraged.  Today, the Dwm::*IO
+ *  classes use concepts instead.  You'll see these concepts at the top
+ *  of the various *IOCapable.hh header files, which just express the
+ *  same interface requirements as the pure virtual classes.  This allows
+ *  the library user to avoid inheriting from the pure virtual classes.
+ *
+ *  I wrote most of this functionality in 2004 when we didn't
+ *  have a lot of options to support serialization. I finalized most of
  *  it in 2007 with the addition of cleaner code for std::tuple.  I
  *  couldn't do this effectively until the compilers and standard libraries
  *  were up to speed.  With C++11 and beyond, I was able to simplify some
@@ -95,9 +100,9 @@
  *  classes and easily add serialization by keeping all of your class's
  *  data in a tuple.  Below is a trivial contrived example of a phone
  *  contact data store.  The serialization members required
- *  are lines 43 to 49 and 111 to 117.  These are easy to implement,
+ *  are lines 44 to 49 and 110 to 115.  These are easy to implement,
  *  since they each require only a single call to a member of an I/O class.
- *  Note that I never put <tt style="color: #00D;"> &nbsp;using
+ *  Note that I never put <tt style="color: #0DD;"> &nbsp;using
  *  namespace std </tt> in header files.  It's here just to reduce
  *  clutter on your screen.
  *
@@ -130,7 +135,7 @@
  *  UnitAssert() on lines 16, 21, 26, 27 and 28.  On line 30, we check
  *  if there were any failed tests via Dwm::Assertions::Total().Failed().
  *  If there were, we print them with Dwm::Assertions::Print().  If there
- *  were no failed tests, we pring the total number of tests (which all
+ *  were no failed tests, we print the total number of tests (which all
  *  passed).
  *
  *  \includelineno UnitAssertExample1.cc 
