@@ -1,5 +1,7 @@
 2024-07-25  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* tagged as libDwm-0.9.44
+
 	* README.md: mention libfmt dependency for the case where
 	std::format is not available.
 
