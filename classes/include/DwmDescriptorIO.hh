@@ -52,6 +52,8 @@
 #include <map>
 #include <set>
 #include <string>
+#include <sys/_types/_fd_def.h>
+#include <sys/_types/_ssize_t.h>
 #include <tuple>
 #include <unordered_map>
 #include <unordered_set>
@@ -912,6 +914,23 @@ namespace Dwm {
 
   };
 
+  //--------------------------------------------------------------------------
+  //!  Simple concept expressing that an instance of type T can be written to
+  //!  a file descriptor via a DescriptorIO::Write() member.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept IsDescriptorWritable = requires(const T & t, int fd) {
+    { DescriptorIO::Write(fd, t) } -> std::same_as<ssize_t>;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  Simple concept expressing that an instance of type T can be read from
+  //!  a file descriptor via a DescriptorIO::Read() member.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept IsDescriptorReadable = requires(T & t, int fd) {
+    { DescriptorIO::Read(fd, t) } -> std::same_as<ssize_t>;
+  };
 
 }  // namespace Dwm
 
