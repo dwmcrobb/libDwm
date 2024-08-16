@@ -774,6 +774,24 @@ namespace Dwm {
 
   };
 
+  //--------------------------------------------------------------------------
+  //!  Simple concept expressing that an instance of type T can be written to
+  //!  a FILE via a FileIO::Write() member.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept IsFileWritable = requires(const T & t, FILE *f) {
+    { FileIO::Write(f, t) } -> std::same_as<size_t>;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  Simple concept expressing that an instance of type T can be read from
+  //!  a FILE via a FileIO::Read() member.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept IsFileReadable = requires(T & t, FILE *f) {
+    { FileIO::Read(f, t) } -> std::same_as<size_t>;
+  };
+  
 
 }  // namespace Dwm
 
