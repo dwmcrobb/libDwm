@@ -903,6 +903,24 @@ namespace Dwm {
 
   };
 
+  //--------------------------------------------------------------------------
+  //!  Simple concept expressing that an instance of type T can be written to
+  //!  a BZFILE via a BZ2IO::BZWrite() member.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept IsBZ2Writable = requires(const T & t, BZFILE *bzf) {
+    { BZ2IO::BZWrite(bzf, t) } -> std::same_as<int>;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  Simple concept expressing that an instance of type T can be read from
+  //!  a BZFILE via a BZ2IO::BZRead() member.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept IsBZ2Readable = requires(T & t, BZFILE *bzf) {
+    { BZ2IO::BZRead(bzf, t) } -> std::same_as<int>;
+  };
+  
 }  // namespace Dwm
 
 #endif  // _DWMBZ2IO_HH_
