@@ -903,6 +903,26 @@ namespace Dwm {
 
   };
 
+  // GZWritable
+
+  //--------------------------------------------------------------------------
+  //!  Simple concept expressing that an instance of type T can be written to
+  //!  a gzFile via a GZIO::Write() member.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept IsGZWritable = requires(const T & t, gzFile gzf) {
+    { GZIO::Write(gzf, t) } -> std::same_as<int>;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  Simple concept expressing that an instance of type T can be read from
+  //!  a gzFile via a GZIO::Read() member.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept IsGZReadable = requires(T & t, gzFile gzf) {
+    { GZIO::Read(gzf, t) } -> std::same_as<int>;
+  };
+  
 }  // namespace Dwm
 
 #endif  // _DWMGZIO_HH_
