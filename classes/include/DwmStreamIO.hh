@@ -764,6 +764,23 @@ namespace Dwm {
     
   };
 
+  //--------------------------------------------------------------------------
+  //!  Simple concept expressing that an instance of type T can be written
+  //!  to an ostream via a StreamIO::Write() member.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept IsStreamWritable = requires(const T & t, std::ostream & os) {
+    { StreamIO::Write(os, t) } -> std::same_as<std::ostream &>;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  Simple concept expressing that an instance of type T can be read from
+  //!  an istream via a StreamIO::Read() member.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept IsStreamReadable = requires(T & t, std::istream & is) {
+    { StreamIO::Read(is, t) } -> std::same_as<std::istream &>;
+  };
 
 }  // namespace Dwm
 
