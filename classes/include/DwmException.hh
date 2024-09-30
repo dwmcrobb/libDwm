@@ -65,27 +65,28 @@ namespace Dwm {
     {}
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Returns mutable reference to 'what' string.
     //------------------------------------------------------------------------
     std::string & what()                                    { return _what; }
     
     //------------------------------------------------------------------------
-    //!  
+    //!  Returns const reference to 'what' string.
     //------------------------------------------------------------------------
     const std::string & what() const noexcept               { return _what; }
     
     //------------------------------------------------------------------------
-    //!  
+    //!  Returns const reference to the source location where the exception
+    //!  was constructed.
     //------------------------------------------------------------------------
     const std::source_location & where() const noexcept      { return _loc; }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Returns mutable reference to the contained data.
     //------------------------------------------------------------------------
     T & data()                                              { return _data; }
     
     //------------------------------------------------------------------------
-    //!  
+    //!  Returns const reference to the contained data.
     //------------------------------------------------------------------------
     const T & data() const noexcept                         { return _data; }
 
