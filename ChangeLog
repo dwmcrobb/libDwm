@@ -1,3 +1,11 @@
+2024-09-30  Daniel McRobb  <dwm@thrip.mcplex.net>
+
+	* tagged as libDwm-0.9.47
+
+	* classes/include/DwmException.hh: new class template for an
+	exception that records the location of its construction and
+	can contain data (of type from the template parameter).
+
 2024-08-16  Daniel McRobb  <dwm@toto.mcplex.net>
 
 	* tagged as libDwm-0.9.46
