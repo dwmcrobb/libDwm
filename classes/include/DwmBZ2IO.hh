@@ -97,6 +97,18 @@ namespace Dwm {
     //!  Reads \c c from \c bzf.  Returns the number of bytes read (1) on 
     //!  success, less on failure.
     //------------------------------------------------------------------------
+    static int BZRead(BZFILE *bzf, int8_t & c);
+
+    //------------------------------------------------------------------------
+    //!  Writes \c c to \c bzf.  Returns the number of bytes written (1) on
+    //!  success, less on failure.
+    //------------------------------------------------------------------------
+    static int BZWrite(BZFILE *bzf, int8_t c);
+
+    //------------------------------------------------------------------------
+    //!  Reads \c c from \c bzf.  Returns the number of bytes read (1) on 
+    //!  success, less on failure.
+    //------------------------------------------------------------------------
     static int BZRead(BZFILE *bzf, uint8_t & c);
 
     //------------------------------------------------------------------------
@@ -239,6 +251,40 @@ namespace Dwm {
     //!  9 or greater.
     //------------------------------------------------------------------------
     static int BZWrite(BZFILE *bzf, const std::string & s);
+
+    //------------------------------------------------------------------------
+    //!  Reads \c t from \c bzf, where \c t is an enumerated type.  Returns
+    //!  the number of bytes written on success, -1 on failure.  Note that
+    //!  this should only be used for enumerated types whose underlying type
+    //!  is of fixed size.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static int BZRead(BZFILE *bzf, T & t)
+      requires std::is_enum_v<T>
+    {
+      std::underlying_type_t<T>  cp;
+      int  rc = BZRead(bzf, cp);
+      if (sizeof(std::underlying_type_t<T>) == rc) {
+        t = static_cast<T>(cp);
+      }
+      else {
+        rc = -1;
+      }
+      return rc;
+    }
+    
+    //------------------------------------------------------------------------
+    //!  Writes \c t to \c bzf, where \c t is an enumerated type.  Returns the
+    //!  number of bytes written on success, -1 on failure.  Note that this
+    //!  should only be used for enumerated types whose underlying type is of
+    //!  fixed size.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static int BZWrite(BZFILE *bzf, const T & t)
+      requires std::is_enum_v<T>
+    {
+      return BZWrite(bzf, static_cast<std::underlying_type_t<T>>(t));
+    }
     
     //------------------------------------------------------------------------
     //!  Wrapper function to read a BZ2Readable object from a BZFILE pointer.
