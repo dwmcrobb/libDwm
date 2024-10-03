@@ -119,77 +119,117 @@ enum class S16ClassEnum : int16_t {
 };
 
 enum class U32ClassEnum : uint32_t {
+  e_zero = 0,
   e_val = 192813
 };
 
 enum class S32ClassEnum : int32_t {
+  e_zero = 0,
   e_val = -813192
 };
+
+static const BasicEnum         g_be1    = e_basicEnumVal;
+static const BasicU8Enum       g_bu8e1  = e_basicU8EnumVal;
+static const BasicU16Enum      g_bu16e1 = e_basicU16EnumVal;
+static const BasicU32Enum      g_bu32e1 = e_basicU32EnumVal;
+static const BasicS8Enum       g_bs8e1  = e_basicS8EnumVal;
+static const BasicS16Enum      g_bs16e1 = e_basicS16EnumVal;
+static const BasicS32Enum      g_bs32e1 = e_basicS32EnumVal;
+static const UntypedClassEnum  g_utce1  = UntypedClassEnum::e_val;
+static const U8ClassEnum       g_u8ce1  = U8ClassEnum::e_val;
+static const U16ClassEnum      g_u16ce1 = U16ClassEnum::e_val;
+static const U32ClassEnum      g_u32ce1 = U32ClassEnum::e_val;
+static const S8ClassEnum       g_s8ce1  = S8ClassEnum::e_val;
+static const S16ClassEnum      g_s16ce1 = S16ClassEnum::e_val;
+static const S32ClassEnum      g_s32ce1 = S32ClassEnum::e_val;
+
+static BasicEnum         g_be2;
+static BasicU8Enum       g_bu8e2;
+static BasicU16Enum      g_bu16e2;
+static BasicU32Enum      g_bu32e2;
+static BasicS8Enum       g_bs8e2;
+static BasicS16Enum      g_bs16e2;
+static BasicS32Enum      g_bs32e2;
+static UntypedClassEnum  g_utce2;
+static U8ClassEnum       g_u8ce2;
+static U16ClassEnum      g_u16ce2;
+static U32ClassEnum      g_u32ce2;
+static S8ClassEnum       g_s8ce2;
+static S16ClassEnum      g_s16ce2;
+static S32ClassEnum      g_s32ce2;
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void ResetEnums()
+{
+  g_be2    = e_basicEnum0;
+  g_bu8e2  = e_basicU8Enum0;
+  g_bu16e2 = e_basicU16Enum0;
+  g_bu32e2 = e_basicU32Enum0;
+  g_bs8e2  = e_basicS8Enum0;
+  g_bs16e2 = e_basicS16Enum0;
+  g_bs32e2 = e_basicS32Enum0;
+  g_utce2  = UntypedClassEnum::e_zero;
+  g_u8ce2  = U8ClassEnum::e_zero;
+  g_u16ce2 = U16ClassEnum::e_zero;
+  g_u32ce2 = U32ClassEnum::e_zero;
+  g_s8ce2  = S8ClassEnum::e_zero;
+  g_s16ce2 = S16ClassEnum::e_zero;
+  g_s32ce2 = S32ClassEnum::e_zero;
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void AssertEnumsMatch()
+{
+  UnitAssert(g_be2 == g_be1);
+  UnitAssert(g_bu8e2 == g_bu8e1);
+  UnitAssert(g_bu16e2 == g_bu16e1);
+  UnitAssert(g_bu32e2 == g_bu32e1);
+  UnitAssert(g_bs8e2 == g_bs8e1);
+  UnitAssert(g_bs16e2 == g_bs16e1);
+  UnitAssert(g_bs32e2 == g_bs32e1);
+  UnitAssert(g_utce2 == g_utce1);
+  UnitAssert(g_u8ce2 == g_u8ce1);
+  UnitAssert(g_u16ce2 == g_u16ce1);
+  UnitAssert(g_u32ce2 == g_u32ce1);
+  UnitAssert(g_s8ce2 == g_s8ce1);
+  UnitAssert(g_s16ce2 == g_s16ce1);
+  UnitAssert(g_s32ce2 == g_s32ce1);
+  return;
+}
 
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
 static void TestDescriptorIO()
 {
-  BasicEnum         be1    = e_basicEnumVal;
-  BasicU8Enum       bu8e1  = e_basicU8EnumVal;
-  BasicU16Enum      bu16e1 = e_basicU16EnumVal;
-  BasicU32Enum      bu32e1 = e_basicU32EnumVal;
-  BasicS8Enum       bs8e1  = e_basicS8EnumVal;
-  BasicS16Enum      bs16e1 = e_basicS16EnumVal;
-  BasicS32Enum      bs32e1 = e_basicS32EnumVal;
-  UntypedClassEnum  utce1  = UntypedClassEnum::e_val;
-  U8ClassEnum       u8ce1  = U8ClassEnum::e_val;
-  U16ClassEnum      u16ce1 = U16ClassEnum::e_val;
-  U32ClassEnum      u32ce1 = U32ClassEnum::e_val;
-  S8ClassEnum       s8ce1  = S8ClassEnum::e_val;
-  S16ClassEnum      s16ce1 = S16ClassEnum::e_val;
-  S32ClassEnum      s32ce1 = S32ClassEnum::e_val;
-
   int fd = open("./TestEnumIO.tmp", O_WRONLY|O_CREAT, 0600);
   if (UnitAssert(0 <= fd)) {
-    if (UnitAssert(DescriptorIO::WriteV(fd, be1, bu8e1, bu16e1, bu32e1, bs8e1,
-                                        bs16e1, bs32e1, utce1, u8ce1, u16ce1,
-                                        u32ce1, s8ce1, s16ce1, s32ce1))) {
-      BasicEnum         be2;
-      BasicU8Enum       bu8e2;
-      BasicU16Enum      bu16e2;
-      BasicU32Enum      bu32e2;
-      BasicS8Enum       bs8e2;
-      BasicS16Enum      bs16e2;
-      BasicS32Enum      bs32e2;
-      UntypedClassEnum  utce2;
-      U8ClassEnum       u8ce2;
-      U16ClassEnum      u16ce2;
-      U32ClassEnum      u32ce2;
-      S8ClassEnum       s8ce2;
-      S16ClassEnum      s16ce2;
-      S32ClassEnum      s32ce2;
+    if (UnitAssert(DescriptorIO::WriteV(fd, g_be1, g_bu8e1, g_bu16e1,
+                                        g_bu32e1, g_bs8e1, g_bs16e1, g_bs32e1,
+                                        g_utce1, g_u8ce1, g_u16ce1, g_u32ce1,
+                                        g_s8ce1, g_s16ce1, g_s32ce1))) {
       close(fd);
 
       fd = open("./TestEnumIO.tmp", O_RDONLY, 0600);
       if (UnitAssert(0 <= fd)) {
-        if (UnitAssert(DescriptorIO::ReadV(fd, be2, bu8e2, bu16e2, bu32e2,
-                                           bs8e2, bs16e2, bs32e2, utce2,
-                                           u8ce2, u16ce2, u32ce2, s8ce2,
-                                           s16ce2, s32ce2))) {
-          UnitAssert(be2 == be1);
-          UnitAssert(bu8e2 == bu8e1);
-          UnitAssert(bu16e2 == bu16e1);
-          UnitAssert(bu32e2 == bu32e1);
-          UnitAssert(bs8e2 == bs8e1);
-          UnitAssert(bs16e2 == bs16e1);
-          UnitAssert(bs32e2 == bs32e1);
-          UnitAssert(utce2 == utce1);
-          UnitAssert(u8ce2 == u8ce1);
-          UnitAssert(u16ce2 == u16ce1);
-          UnitAssert(u32ce2 == u32ce1);
-          UnitAssert(s8ce2 == s8ce1);
-          UnitAssert(s16ce2 == s16ce1);
-          UnitAssert(s32ce2 == s32ce1);
+        ResetEnums();
+        if (UnitAssert(DescriptorIO::ReadV(fd, g_be2, g_bu8e2, g_bu16e2,
+                                           g_bu32e2, g_bs8e2, g_bs16e2,
+                                           g_bs32e2, g_utce2, g_u8ce2,
+                                           g_u16ce2, g_u32ce2, g_s8ce2,
+                                           g_s16ce2, g_s32ce2))) {
+          AssertEnumsMatch();          
         }
         close(fd);
       }
+    }
+    else {
+      close(fd);
     }
     std::remove("./TestEnumIO.tmp");
   }
@@ -201,65 +241,27 @@ static void TestDescriptorIO()
 //----------------------------------------------------------------------------
 static void TestFileIO()
 {
-  BasicEnum         be1    = e_basicEnumVal;
-  BasicU8Enum       bu8e1  = e_basicU8EnumVal;
-  BasicU16Enum      bu16e1 = e_basicU16EnumVal;
-  BasicU32Enum      bu32e1 = e_basicU32EnumVal;
-  BasicS8Enum       bs8e1  = e_basicS8EnumVal;
-  BasicS16Enum      bs16e1 = e_basicS16EnumVal;
-  BasicS32Enum      bs32e1 = e_basicS32EnumVal;
-  UntypedClassEnum  utce1  = UntypedClassEnum::e_val;
-  U8ClassEnum       u8ce1  = U8ClassEnum::e_val;
-  U16ClassEnum      u16ce1 = U16ClassEnum::e_val;
-  U32ClassEnum      u32ce1 = U32ClassEnum::e_val;
-  S8ClassEnum       s8ce1  = S8ClassEnum::e_val;
-  S16ClassEnum      s16ce1 = S16ClassEnum::e_val;
-  S32ClassEnum      s32ce1 = S32ClassEnum::e_val;
-
   FILE *f = fopen("./TestEnumIO.tmp", "w");
   if (UnitAssert(f)) {
-    if (UnitAssert(FileIO::WriteV(f, be1, bu8e1, bu16e1, bu32e1, bs8e1,
-                                  bs16e1, bs32e1, utce1, u8ce1, u16ce1,
-                                  u32ce1, s8ce1, s16ce1, s32ce1))) {
-      BasicEnum         be2;
-      BasicU8Enum       bu8e2;
-      BasicU16Enum      bu16e2;
-      BasicU32Enum      bu32e2;
-      BasicS8Enum       bs8e2;
-      BasicS16Enum      bs16e2;
-      BasicS32Enum      bs32e2;
-      UntypedClassEnum  utce2;
-      U8ClassEnum       u8ce2;
-      U16ClassEnum      u16ce2;
-      U32ClassEnum      u32ce2;
-      S8ClassEnum       s8ce2;
-      S16ClassEnum      s16ce2;
-      S32ClassEnum      s32ce2;
+    if (UnitAssert(FileIO::WriteV(f, g_be1, g_bu8e1, g_bu16e1, g_bu32e1,
+                                  g_bs8e1, g_bs16e1, g_bs32e1, g_utce1,
+                                  g_u8ce1, g_u16ce1, g_u32ce1, g_s8ce1,
+                                  g_s16ce1, g_s32ce1))) {
       fclose(f);
-
       f = fopen("./TestEnumIO.tmp", "r");
       if (UnitAssert(f)) {
-        if (UnitAssert(FileIO::ReadV(f, be2, bu8e2, bu16e2, bu32e2,
-                                     bs8e2, bs16e2, bs32e2, utce2,
-                                     u8ce2, u16ce2, u32ce2, s8ce2,
-                                     s16ce2, s32ce2))) {
-          UnitAssert(be2 == be1);
-          UnitAssert(bu8e2 == bu8e1);
-          UnitAssert(bu16e2 == bu16e1);
-          UnitAssert(bu32e2 == bu32e1);
-          UnitAssert(bs8e2 == bs8e1);
-          UnitAssert(bs16e2 == bs16e1);
-          UnitAssert(bs32e2 == bs32e1);
-          UnitAssert(utce2 == utce1);
-          UnitAssert(u8ce2 == u8ce1);
-          UnitAssert(u16ce2 == u16ce1);
-          UnitAssert(u32ce2 == u32ce1);
-          UnitAssert(s8ce2 == s8ce1);
-          UnitAssert(s16ce2 == s16ce1);
-          UnitAssert(s32ce2 == s32ce1);
+        ResetEnums();
+        if (UnitAssert(FileIO::ReadV(f, g_be2, g_bu8e2, g_bu16e2, g_bu32e2,
+                                     g_bs8e2, g_bs16e2, g_bs32e2, g_utce2,
+                                     g_u8ce2, g_u16ce2, g_u32ce2, g_s8ce2,
+                                     g_s16ce2, g_s32ce2))) {
+          AssertEnumsMatch();
         }
         fclose(f);
       }
+    }
+    else {
+      fclose(f);
     }
     std::remove("./TestEnumIO.tmp");
   }
@@ -271,57 +273,17 @@ static void TestFileIO()
 //----------------------------------------------------------------------------
 static void TestStreamIO()
 {
-  BasicEnum         be1    = e_basicEnumVal;
-  BasicU8Enum       bu8e1  = e_basicU8EnumVal;
-  BasicU16Enum      bu16e1 = e_basicU16EnumVal;
-  BasicU32Enum      bu32e1 = e_basicU32EnumVal;
-  BasicS8Enum       bs8e1  = e_basicS8EnumVal;
-  BasicS16Enum      bs16e1 = e_basicS16EnumVal;
-  BasicS32Enum      bs32e1 = e_basicS32EnumVal;
-  UntypedClassEnum  utce1  = UntypedClassEnum::e_val;
-  U8ClassEnum       u8ce1  = U8ClassEnum::e_val;
-  U16ClassEnum      u16ce1 = U16ClassEnum::e_val;
-  U32ClassEnum      u32ce1 = U32ClassEnum::e_val;
-  S8ClassEnum       s8ce1  = S8ClassEnum::e_val;
-  S16ClassEnum      s16ce1 = S16ClassEnum::e_val;
-  S32ClassEnum      s32ce1 = S32ClassEnum::e_val;
-
   stringstream  ss;
-  if (UnitAssert(StreamIO::WriteV(ss, be1, bu8e1, bu16e1, bu32e1, bs8e1,
-                                  bs16e1, bs32e1, utce1, u8ce1, u16ce1,
-                                  u32ce1, s8ce1, s16ce1, s32ce1))) {
-    BasicEnum         be2;
-    BasicU8Enum       bu8e2;
-    BasicU16Enum      bu16e2;
-    BasicU32Enum      bu32e2;
-    BasicS8Enum       bs8e2;
-    BasicS16Enum      bs16e2;
-    BasicS32Enum      bs32e2;
-    UntypedClassEnum  utce2;
-    U8ClassEnum       u8ce2;
-    U16ClassEnum      u16ce2;
-    U32ClassEnum      u32ce2;
-    S8ClassEnum       s8ce2;
-    S16ClassEnum      s16ce2;
-    S32ClassEnum      s32ce2;
-    
-    if (UnitAssert(StreamIO::ReadV(ss, be2, bu8e2, bu16e2, bu32e2, bs8e2,
-                                   bs16e2, bs32e2, utce2, u8ce2, u16ce2,
-                                   u32ce2, s8ce2, s16ce2, s32ce2))) {
-      UnitAssert(be2 == be1);
-      UnitAssert(bu8e2 == bu8e1);
-      UnitAssert(bu16e2 == bu16e1);
-      UnitAssert(bu32e2 == bu32e1);
-      UnitAssert(bs8e2 == bs8e1);
-      UnitAssert(bs16e2 == bs16e1);
-      UnitAssert(bs32e2 == bs32e1);
-      UnitAssert(utce2 == utce1);
-      UnitAssert(u8ce2 == u8ce1);
-      UnitAssert(u16ce2 == u16ce1);
-      UnitAssert(u32ce2 == u32ce1);
-      UnitAssert(s8ce2 == s8ce1);
-      UnitAssert(s16ce2 == s16ce1);
-      UnitAssert(s32ce2 == s32ce1);
+  if (UnitAssert(StreamIO::WriteV(ss, g_be1, g_bu8e1, g_bu16e1, g_bu32e1,
+                                  g_bs8e1, g_bs16e1, g_bs32e1, g_utce1,
+                                  g_u8ce1, g_u16ce1, g_u32ce1, g_s8ce1,
+                                  g_s16ce1, g_s32ce1))) {
+    ResetEnums();
+    if (UnitAssert(StreamIO::ReadV(ss, g_be2, g_bu8e2, g_bu16e2, g_bu32e2,
+                                   g_bs8e2, g_bs16e2, g_bs32e2, g_utce2,
+                                   g_u8ce2, g_u16ce2, g_u32ce2, g_s8ce2,
+                                   g_s16ce2, g_s32ce2))) {
+      AssertEnumsMatch();
     }
   }
   return;
