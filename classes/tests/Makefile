@@ -23,6 +23,7 @@ OBJFILES = TestASIO.o \
 	   TestDwmSunriseSunset.o \
 	   TestDwmTermios.o \
 	   TestEngFormat.o \
+           TestEnumIO.o \
 	   TestFFIVar.o \
 	   TestFileRoller.o \
            TestFSyslog.o \

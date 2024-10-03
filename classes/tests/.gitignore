@@ -26,6 +26,7 @@ TestDwmSocket
 TestDwmSunriseSunset
 TestDwmTermios
 TestEngFormat
+TestEnumIO
 TestFFIVar
 TestFileRoller
 TestFSyslog
