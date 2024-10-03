@@ -65,8 +65,8 @@ namespace Dwm {
         Syslog(LOG_INFO, "EOF on socket");
       }
       else {
-        Syslog(LOG_ERR, "Incomplete read (%zu of %zu bytes) from socket, '%s'",
-               bytesRead, sizeof(value), ec.message().c_str());
+        FSyslog(LOG_ERR, "Incomplete read ({} of {} bytes) from socket, '{}'",
+                bytesRead, sizeof(value), ec.message());
       }
     }
     else {
@@ -92,7 +92,7 @@ namespace Dwm {
         Syslog(LOG_INFO, "EOF on socket");
       }
       else {
-        Syslog(LOG_ERR, "Failed to read %llu bytes from socket", len);
+        FSyslog(LOG_ERR, "Failed to read {} bytes from socket", len);
       }
     }
     else {
@@ -180,8 +180,7 @@ namespace Dwm {
         rc = true;
       }
       else {
-        Syslog(LOG_ERR, "Failed to write %zu bytes to socket",
-               sizeof(value));
+        FSyslog(LOG_ERR, "Failed to write {} bytes to socket", sizeof(value));
       }
     }
     else {
@@ -204,7 +203,7 @@ namespace Dwm {
           rc = true;
         }
         else {
-          Syslog(LOG_ERR, "Failed to write %llu bytes to socket", len);
+          FSyslog(LOG_ERR, "Failed to write {} bytes to socket", len);
         }
       }
       else {
@@ -224,6 +223,36 @@ namespace Dwm {
     return _asiowrite(s, wvalue, ec);
   }
   
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::ip::tcp::socket & s, char & value,
+                  boost::system::error_code & ec)
+  { return _asioread(s, value, ec); }
+  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::ip::tcp::socket & s, char value,
+                   boost::system::error_code & ec)
+  { return _asiowrite(s, value, ec); }
+
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::local::stream_protocol::socket & s,
+                  char & value, boost::system::error_code & ec)
+  { return _asioread(s, value, ec); }
+  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::local::stream_protocol::socket & s,
+                   char value, boost::system::error_code & ec)
+  { return _asiowrite(s, value, ec); }
+
+  //-------------------------------------------------------------------------
+  bool ASIO::Read(boost::asio::generic::stream_protocol::socket & s,
+                  char & value, boost::system::error_code & ec)
+  { return _asioread(s, value, ec); }
+  
+  //-------------------------------------------------------------------------
+  bool ASIO::Write(boost::asio::generic::stream_protocol::socket & s,
+                   char value, boost::system::error_code & ec)
+  { return _asiowrite(s, value, ec); }
+
   //-------------------------------------------------------------------------
   bool ASIO::Read(boost::asio::ip::tcp::socket & s, uint8_t & value,
                   boost::system::error_code & ec)
@@ -528,7 +557,7 @@ namespace Dwm {
         value.resize(len);
       }
       catch (...) {
-        Syslog(LOG_ERR, "Exception resizing string to %llu characters", len);
+        FSyslog(LOG_ERR, "Exception resizing string to {} characters", len);
         return false;
       }
       if (_asioread(s, value.data(), value.size(), ec)) {
