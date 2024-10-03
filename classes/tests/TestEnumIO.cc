@@ -50,6 +50,7 @@ extern "C" {
 #include "DwmBZ2IO.hh"
 #include "DwmDescriptorIO.hh"
 #include "DwmFileIO.hh"
+#include "DwmGZIO.hh"
 #include "DwmStreamIO.hh"
 #include "DwmSvnTag.hh"
 #include "DwmUnitAssert.hh"
@@ -306,6 +307,38 @@ static void TestBZ2IO()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void TestGZIO()
+{
+  gzFile  gzf = gzopen("./TestEnumIO.gz", "wb");
+  if (UnitAssert(gzf)) {
+    if (UnitAssert(GZIO::WriteV(gzf, g_be1, g_bu8e1, g_bu16e1, g_bu32e1,
+                                g_bs8e1, g_bs16e1, g_bs32e1, g_utce1,
+                                g_u8ce1, g_u16ce1, g_u32ce1, g_s8ce1,
+                                g_s16ce1, g_s32ce1))) {
+      gzclose(gzf);
+      gzf = gzopen("./TestEnumIO.gz", "rb");
+      if (UnitAssert(gzf)) {
+        ResetEnums();
+        if (UnitAssert(GZIO::ReadV(gzf, g_be2, g_bu8e2, g_bu16e2, g_bu32e2,
+                                   g_bs8e2, g_bs16e2, g_bs32e2, g_utce2,
+                                   g_u8ce2, g_u16ce2, g_u32ce2, g_s8ce2,
+                                   g_s16ce2, g_s32ce2))) {
+          AssertEnumsMatch();
+        }
+        gzclose(gzf);
+      }
+    }
+    else {
+      gzclose(gzf);
+    }
+    std::remove("./TestEnumIO.gz");
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static void TestStreamIO()
 {
   stringstream  ss;
@@ -333,6 +366,7 @@ int main(int argc, char *argv[])
   TestDescriptorIO();
   TestFileIO();
   TestBZ2IO();
+  TestGZIO();
   
   if (Assertions::Total().Failed()) {
     Assertions::Print(cerr, true);
