@@ -513,6 +513,99 @@ namespace Dwm {
     static uint64_t StreamedLength(const std::string & s);
 
     //------------------------------------------------------------------------
+    //!  Reads \c t from \c s, where \c t is an enumerated type.  Returns true
+    //!  on success, false on failure.  Should only be used for enumerated
+    //!  types with a fixed size underlying type.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static bool Read(boost::asio::ip::tcp::socket & s,
+                     T & t, boost::system::error_code & ec)
+      requires std::is_enum_v<T>
+    {
+      std::underlying_type_t<T>  cp;
+      bool  rc = Read(s, cp, ec);
+      if (rc) {
+        t = static_cast<T>(cp);
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes \c t to \c s, where \c t is an enumerated type.  Returns true
+    //!  on success, false on failure.  Should only be used for enumerated
+    //!  types with a fixed size underlying type.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static bool Write(boost::asio::ip::tcp::socket & s,
+                      const T & t, boost::system::error_code & ec)
+      requires std::is_enum_v<T>
+    {
+      return Write(s, static_cast<std::underlying_type_t<T>>(t), ec);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads \c t from \c s, where \c t is an enumerated type.  Returns true
+    //!  on success, false on failure.  Should only be used for enumerated
+    //!  types with a fixed size underlying type.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static bool Read(boost::asio::local::stream_protocol::socket & s,
+                     T & t, boost::system::error_code & ec)
+      requires std::is_enum_v<T>
+    {
+      std::underlying_type_t<T>  cp;
+      bool  rc = Read(s, cp, ec);
+      if (rc) {
+        t = static_cast<T>(cp);
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes \c t to \c s, where \c t is an enumerated type.  Returns true
+    //!  on success, false on failure.  Should only be used for enumerated
+    //!  types with a fixed size underlying type.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static bool Write(boost::asio::local::stream_protocol::socket & s,
+                      const T & t, boost::system::error_code & ec)
+      requires std::is_enum_v<T>
+    {
+      return Write(s, static_cast<std::underlying_type_t<T>>(t), ec);
+    }
+        
+    //------------------------------------------------------------------------
+    //!  Reads \c t from \c s, where \c t is an enumerated type.  Returns true
+    //!  on success, false on failure.  Should only be used for enumerated
+    //!  types with a fixed size underlying type.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static bool Read(boost::asio::generic::stream_protocol::socket & s,
+                     T & t, boost::system::error_code & ec)
+      requires std::is_enum_v<T>
+    {
+      std::underlying_type_t<T>  cp;
+      bool  rc = Read(s, cp, ec);
+      if (rc) {
+        t = static_cast<T>(cp);
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes \c t to \c s, where \c t is an enumerated type.  Returns true
+    //!  on success, false on failure.  Should only be used for enumerated
+    //!  types with a fixed size underlying type.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static bool Write(boost::asio::generic::stream_protocol::socket & s,
+                      const T & t, boost::system::error_code & ec)
+      requires std::is_enum_v<T>
+    {
+      return Write(s, static_cast<std::underlying_type_t<T>>(t), ec);
+    }
+    
+    //------------------------------------------------------------------------
     //!  Reads \c val from \c s, in IEEE format (see RFC 1832
     //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
     //!  \c false on failure.

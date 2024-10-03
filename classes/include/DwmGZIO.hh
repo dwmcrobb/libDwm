@@ -100,6 +100,18 @@ namespace Dwm {
     //!  Reads \c c from \c gzf.  Returns the number of bytes read (1) on 
     //!  success, less on failure.
     //------------------------------------------------------------------------
+    static int Read(gzFile gzf, int8_t & c);
+
+    //------------------------------------------------------------------------
+    //!  Writes \c c to \c gzf.  Returns the number of bytes written (1) on
+    //!  success, less on failure.
+    //------------------------------------------------------------------------
+    static int Write(gzFile gzf, int8_t c);
+
+    //------------------------------------------------------------------------
+    //!  Reads \c c from \c gzf.  Returns the number of bytes read (1) on 
+    //!  success, less on failure.
+    //------------------------------------------------------------------------
     static int Read(gzFile gzf, uint8_t & c);
 
     //------------------------------------------------------------------------
@@ -242,6 +254,40 @@ namespace Dwm {
     //!  9 or greater.
     //------------------------------------------------------------------------
     static int Write(gzFile gzf, const std::string & s);
+
+    //------------------------------------------------------------------------
+    //!  Reads \c t from \c gzf, where \c t is an enumerated type.  Returns
+    //!  the number of bytes read on success, -1 on failure.  Note this
+    //!  should only be used with enumerated types whose underlying type is
+    //!  of fixed size.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static int Read(gzFile gzf, T & t)
+      requires std::is_enum_v<T>
+    {
+      std::underlying_type_t<T>  cp;
+      int  rc = Read(gzf, cp);
+      if (sizeof(std::underlying_type_t<T>) == rc) {
+        t = static_cast<T>(cp);
+      }
+      else {
+        rc = -1;
+      }
+      return rc;
+    }
+    
+    //------------------------------------------------------------------------
+    //!  Writes \c t to \c gzf, where \c t is an enumerated type.  Returns
+    //!  the number of bytes written on success, -1 on failure.  Note this
+    //!  should only be used with enumerated types whose underlying type is
+    //!  of fixed size.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static int Write(gzFile gzf, const T & t)
+        requires std::is_enum_v<T>
+    {
+      return Write(gzf, static_cast<std::underlying_type_t<T>>(t));
+    }
     
     //------------------------------------------------------------------------
     //!  Wrapper function to read a GZReadable object from a gzFile.
