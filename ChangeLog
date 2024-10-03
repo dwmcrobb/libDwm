@@ -1,3 +1,17 @@
+2024-10-03  Daniel McRobb  <dwm@thrip.mcplex.net>
+
+	* classes/include/DwmDescriptorIO.hh,
+	  classes/include/DwmFileIO.hh,
+	  classes/include/DwmStreamIO.hh,
+	  classes/src/DwmDescriptorIO.cc,
+	  classes/src/DwmFileIO.cc,
+	  classes/src/DwmStreamIO.cc,
+	  classes/tests/Makefile:
+	Added I/O for enumerated types.  Note this only makes sense for
+	enumerated types whose underlying type is of fixed size.  Sadly
+	there doesn't appear to be a way to enforce this.
+	Added unit tests for enumerated type I/O.
+	
 2024-09-30  Daniel McRobb  <dwm@thrip.mcplex.net>
 
 	* tagged as libDwm-0.9.47
