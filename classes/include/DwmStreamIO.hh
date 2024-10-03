@@ -95,6 +95,16 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Reads \c c from \c is.  Returns \c is.
     //------------------------------------------------------------------------
+    static std::istream & Read(std::istream & is, int8_t & c);
+
+    //------------------------------------------------------------------------
+    //!  Writes \c c to \c os.  Returns \c os.
+    //------------------------------------------------------------------------
+    static std::ostream & Write(std::ostream & os, int8_t c);
+
+    //------------------------------------------------------------------------
+    //!  Reads \c c from \c is.  Returns \c is.
+    //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, uint8_t & c);
 
     //------------------------------------------------------------------------
@@ -223,6 +233,34 @@ namespace Dwm {
     //!  an empty string.
     //------------------------------------------------------------------------
     static std::ostream & Write(std::ostream & os, const std::string & s);
+
+    //------------------------------------------------------------------------
+    //!  Reads \c t from \c is, where \c t is an enumerated type.  Returns
+    //!  \c is.  Note that this is risky for enum types with an underlying
+    //!  type whose size is not fixed.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static std::istream & Read(std::istream & is, T & t)
+      requires std::is_enum_v<T>
+    {
+      std::underlying_type_t<T>  cp;
+      if (Read(is, cp)) {
+        t = static_cast<T>(cp);
+      }
+      return is;
+    }
+    
+    //------------------------------------------------------------------------
+    //!  Writes \c t to \c os, where \c t is an enumerated type.  Returns
+    //!  \c os.  Note that this is risky for enum types with an underlying
+    //!  type whose size is not fixed.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static std::ostream & Write(std::ostream & os, const T & t)
+      requires std::is_enum_v<T>
+    {
+      return Write(os, static_cast<std::underlying_type_t<T>>(t));
+    }
     
     //------------------------------------------------------------------------
     //!  Wrapper function to read a StreamReadable object from an istream.

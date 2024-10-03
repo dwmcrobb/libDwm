@@ -99,6 +99,18 @@ namespace Dwm {
     //!  Reads \c c from \c fd.  Returns the number of bytes read (1) on 
     //!  success, less on failure.
     //------------------------------------------------------------------------
+    static ssize_t Read(int fd, int8_t & c);
+
+    //------------------------------------------------------------------------
+    //!  Writes \c c to \c fd.  Returns the number of bytes written (1) on
+    //!  success, less on failure.
+    //------------------------------------------------------------------------
+    static ssize_t Write(int fd, int8_t c);
+
+    //------------------------------------------------------------------------
+    //!  Reads \c c from \c fd.  Returns the number of bytes read (1) on 
+    //!  success, less on failure.
+    //------------------------------------------------------------------------
     static ssize_t Read(int fd, uint8_t & c);
 
     //------------------------------------------------------------------------
@@ -241,6 +253,40 @@ namespace Dwm {
     //!  9 or greater.
     //------------------------------------------------------------------------
     static ssize_t Write(int fd, const std::string & s);
+
+    //------------------------------------------------------------------------
+    //!  Reads \c t from \c fd, where \c t is an enumerated type.  Returns
+    //!  the number of bytes read on success, -1 on failure.  Note that this
+    //!  is risky for enumerated types whose underlying type is not of fixed
+    //!  size.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static ssize_t Read(int fd, T & t)
+      requires std::is_enum_v<T>
+    {
+      ssize_t  rc = -1;
+      if (0 <= fd) {
+        std::underlying_type_t<T>  cp;
+        rc = Read(fd, cp);
+        if (0 < rc) {
+          t = static_cast<T>(cp);
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes \c t to \c fd, where \c t is an enumerated types.  Returns
+    //!  the number of bytes written on success, -1 on failure.  Note that
+    //!  this is risky for enumerated types whose underlying type is not
+    //!  of fixed size.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static ssize_t Write(int fd, const T & t)
+      requires std::is_enum_v<T>
+    {
+      return Write(fd, static_cast<std::underlying_type_t<T>>(t));
+    }
     
     //------------------------------------------------------------------------
     //!  Wrapper function to read a DescriptorReadable object from a

@@ -97,6 +97,18 @@ namespace Dwm {
     //!  Reads \c c from \c f.  Returns the number of bytes read (1 on
     //!  success).
     //------------------------------------------------------------------------
+    static size_t Read(FILE * f, int8_t & c);
+
+    //------------------------------------------------------------------------
+    //!  Writes \c c to \c f.  Returns the number of bytes written (1) on
+    //!  success.
+    //------------------------------------------------------------------------
+    static size_t Write(FILE * f, int8_t c);
+ 
+    //------------------------------------------------------------------------
+    //!  Reads \c c from \c f.  Returns the number of bytes read (1 on
+    //!  success).
+    //------------------------------------------------------------------------
     static size_t Read(FILE * f, uint8_t & c);
 
     //------------------------------------------------------------------------
@@ -231,7 +243,37 @@ namespace Dwm {
     //!  return a value of 8 + \c s.length() + 1.
     //------------------------------------------------------------------------
     static size_t Write(FILE * f, const std::string & s);
+
+    //------------------------------------------------------------------------
+    //!  Reads \c t from \c f, where \c t is an enumerated type.  Returns 1
+    //!  on success, 0 on failure.  Note this is risky for enumerated types
+    //!  whose underlying type is not of fixed size.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static size_t Read(FILE * f,  T & t)
+      requires std::is_enum_v<T>
+    {
+      size_t  rc = 0;
+      std::underlying_type_t<T>  cp;
+      if (Read(f, cp)) {
+        t = static_cast<T>(cp);
+        rc = 1;
+      }
+      return rc;
+    }
     
+    //------------------------------------------------------------------------
+    //!  Writes \c t to \c f, where \c t is an enumerated type.  Returns 1
+    //!  on success, 0 on failure.  Note this is risky for enumerated types
+    //!  whose underlying type is not of fixed size.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static size_t Write(FILE * f, const T & t)
+      requires std::is_enum_v<T>
+    {
+      return Write(f, static_cast<std::underlying_type_t<T>>(t));
+    }
+
     //------------------------------------------------------------------------
     //!  Wrapper function to read a FileReadable object from a FILE.
     //------------------------------------------------------------------------
