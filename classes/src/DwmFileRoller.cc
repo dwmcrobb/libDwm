@@ -51,6 +51,7 @@ extern "C" {
 #include "DwmBZ2IO.hh"
 #include "DwmFileRoller.hh"
 #include "DwmGZIO.hh"
+#include "DwmSysLogger.hh"
 
 using namespace std;
 
@@ -171,13 +172,18 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   bool FileRoller::RollFiles()
   {
+    bool  rc = true;
     for (size_t fileNum = _numFiles + 1; fileNum > 0; --fileNum) {
       string  filename;
       if (GetFilename(fileNum, filename)) {
         struct stat  statbuf;
         if (stat(filename.c_str(), &statbuf) == 0) {
           //  remove file
-          unlink(filename.c_str());
+          if (unlink(filename.c_str()) != 0) {
+            rc = false;
+            Syslog(LOG_ERR, "unlink(%s) failed: %m", filename.c_str());
+            break;
+          }
         }
 
         if ((fileNum != 1) || (_compression == e_compressionNone)) {
@@ -185,7 +191,12 @@ namespace Dwm {
           if (GetFilename(fileNum - 1, prevFilename)) {
             if (stat(prevFilename.c_str(), &statbuf) == 0) {
               //  link to the previous file
-              link(prevFilename.c_str(), filename.c_str());
+              if (link(prevFilename.c_str(), filename.c_str()) != 0) {
+                rc = false;
+                Syslog(LOG_ERR, "link(%s,%s) failed: %m",
+                       prevFilename.c_str(), filename.c_str());
+                break;
+              }
             }
           }
         }
@@ -214,16 +225,23 @@ namespace Dwm {
       struct stat  statbuf;
       if (stat(firstFile.c_str(), &statbuf) == 0) {
         //  remove the first file
-        unlink(firstFile.c_str());
-
-        //  create the first file
-        int  fd = open(firstFile.c_str(), O_WRONLY|O_CREAT, statbuf.st_mode);
-        if (fd >= 0) {
-          close(fd);
+        if (unlink(firstFile.c_str()) == 0) {
+          //  create the first file
+          int  fd = open(firstFile.c_str(), O_WRONLY|O_CREAT, statbuf.st_mode);
+          if (fd >= 0) {
+            close(fd);
+          }
+          else {
+            Syslog(LOG_ERR, "Failed to create '%s': %m", firstFile.c_str());
+          }
+        }
+        else {
+          Syslog(LOG_ERR, "unlink(%s) failed: %m", firstFile.c_str());
+          rc = false;
         }
       }
     }
-    return(true);
+    return(rc);
   }
 
   //--------------------------------------------------------------------------
