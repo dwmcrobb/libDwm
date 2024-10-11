@@ -109,13 +109,13 @@ DwmProcessTableLex.cc: DwmProcessTableLex.lex DwmProcessTableParse.hh
 	flex -f -o$@ $<
 
 clean:: clean-tarprep
-	${LIBTOOL} --mode=clean rm -f ../lib/libDwm.la ${OBJFILES} DwmCgi.cc \
-	 DwmExecutor.cc DwmTimeUtil.cc ${SHARED_OBJFILES}
+	@${LIBTOOL} --quiet --mode=clean rm -f ../lib/libDwm.la ${OBJFILES} \
+         DwmCgi.cc DwmExecutor.cc DwmTimeUtil.cc ${SHARED_OBJFILES}
 
 distclean:: clean
-	rm -f deps/*_deps
-	rm DwmPackageInfo.cc
+	@rm -f deps/*_deps
+	@rm DwmPackageInfo.cc
 
 clean-tarprep::
-	${LIBTOOL} --mode=clean rm -f ${TARDIR}/lib/libDwm.la
+	@${LIBTOOL} --quiet --mode=clean rm -f ${TARDIR}/lib/libDwm.la
 

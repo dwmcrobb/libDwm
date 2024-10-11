@@ -49,10 +49,10 @@ endif
 	${MAKE} -C ../../classes/src
 
 distclean:: clean
-	rm -f ${OBJDEPS}
+	@rm -f ${OBJDEPS}
 
 clean:: clean-tarprep
-	${LIBTOOL} --mode=clean rm -f dwmcflags ${OBJFILES}
+	@${LIBTOOL} --quiet --mode=clean rm -f dwmcflags ${OBJFILES}
 
 clean-tarprep::
-	${LIBTOOL} --mode=uninstall rm -f ${TARDIR}/bin/dwmcflags
+	@${LIBTOOL} --mode=uninstall rm -f ${TARDIR}/bin/dwmcflags

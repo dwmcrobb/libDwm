@@ -117,11 +117,11 @@ endif
 	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} -o $@ $^ ${EXTLIBS} ${PTHREADLDFLAGS}
 
 ../lib/libDwm.la::
-	${MAKE} -C ../src
+	${MAKE} -s -C ../src
 
 clean:
-	${LIBTOOL} --mode=clean rm -f ${TESTS} ${OBJFILES}
+	@${LIBTOOL} --mode=clean rm -f ${TESTS} ${OBJFILES} > /dev/null 2>&1
 
 distclean:: clean
-	rm -f deps/*
+	@rm -f deps/*
 

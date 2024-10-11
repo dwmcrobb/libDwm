@@ -49,10 +49,10 @@ endif
 	${MAKE} -C ../../classes/src
 
 distclean:: clean
-	rm -f ${OBJDEPS}
+	@rm -f ${OBJDEPS}
 
 clean:: clean-tarprep
-	${LIBTOOL} --mode=clean rm -f dwmwhat ${OBJFILES}
+	@${LIBTOOL} --quiet --mode=clean rm -f dwmwhat ${OBJFILES}
 
 clean-tarprep::
-	${LIBTOOL} --mode=uninstall rm -f ${TARDIR}/bin/dwmwhat
+	@${LIBTOOL} --quiet --mode=uninstall rm -f ${TARDIR}/bin/dwmwhat

@@ -34,11 +34,11 @@ dwmnet.o: dwmnet.cc
 	${MAKE} -C ../../classes/src
 
 distclean:: clean
-	rm -f ${OBJDEPS}
+	@rm -f ${OBJDEPS}
 
 clean:: clean-tarprep
-	${LIBTOOL} --mode=clean rm -f dwmnet ${OBJFILES}
+	@${LIBTOOL} --quiet --mode=clean rm -f dwmnet ${OBJFILES}
 
 clean-tarprep::
-	${LIBTOOL} --mode=uninstall rm -f ${TARDIR}/bin/dwmnet
+	@${LIBTOOL} --quiet --mode=uninstall rm -f ${TARDIR}/bin/dwmnet
 

@@ -35,10 +35,10 @@ endif
 	${MAKE} -C ../../classes/src
 
 distclean:: clean
-	rm -f ${OBJDEPS}
+	@rm -f ${OBJDEPS}
 
 clean:: clean-tarprep
-	${LIBTOOL} --mode=clean rm -f dwmspath ${OBJFILES}
+	@${LIBTOOL} --quiet --mode=clean rm -f dwmspath ${OBJFILES}
 
 clean-tarprep::
-	${LIBTOOL} --mode=uninstall rm -f ${TARDIR}/bin/dwmspath
+	@${LIBTOOL} --quiet --mode=uninstall rm -f ${TARDIR}/bin/dwmspath

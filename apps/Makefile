@@ -5,17 +5,23 @@ APPSCLEAN = $(APPS:%=%-clean)
 TARPREP   = $(APPS:%=%-tarprep)
 DISTCLEAN = $(APPS:%=%-distclean)
 
+.PHONY: all ${APPS}
+
 all:: ${APPS}
-${APPS}::
-	${MAKE} -C $@
+
+${APPS}:: ../classes/lib/libDwm.la
+	${MAKE} --no-print-directory -C $@ $(MAKECMDGOALS)
+
+../classes/lib/libDwm.la::
+	${MAKE} -s -C ../classes/src
 
 tarprep:: ${TARPREP}
 ${TARPREP}::
-	${MAKE} -C $(patsubst %-tarprep,%,$@) tarprep
+	${MAKE} --no-print-directory -C $(patsubst %-tarprep,%,$@) tarprep
 
 clean:: ${APPSCLEAN}
 ${APPSCLEAN}::
-	${MAKE} -C $(patsubst %-clean,%,$@) clean
+	${MAKE} --no-print-directory -C $(patsubst %-clean,%,$@) clean
 
 distclean:: ${DISTCLEAN}
 ${DISTCLEAN}::

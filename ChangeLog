@@ -1,3 +1,10 @@
+2024-10-11  Daniel McRobb  <dwm@thrip.mcplex.net>
+
+	* apps/Makefile, apps/dwmcflags/Makefile, apps/dwmnet/Makefile,
+	  apps/dwmspath/Makefile, apps/dwmwhat/Makefile, classes/src/Makefile,
+	  classes/tests/Makefile:
+	Tweaks to reduce noise in build.
+
 2024-10-03  dwm  <dwm@nomnom.mcplex.net>
 
 	* tagged as libDwm-0.9.48
