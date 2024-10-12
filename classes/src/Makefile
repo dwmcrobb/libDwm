@@ -68,17 +68,42 @@ OBJFILES      = $(OBJFILESNP:%=../obj/%)
 SHARED_OBJFILES = $(OBJFILES:%.o=%.lo)
 OBJDEPS         = $(OBJFILESNP:%.o=deps/%_deps)
 
+#-----------------------------------------------------------------------------
+define Compile
+ @echo compiling $(1)
+ @cxx_cmd="${LIBTOOL} --quiet --mode=compile --tag=CXX ${CXX} ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC} -c $(1) -o $(2)"; \
+ cxx_cmd_out=`$${cxx_cmd} 2>&1`; \
+ if [ $$? -ne 0 ]; then \
+   printf "%s\n%s\n" "$${cxx_cmd}" "$${cxx_cmd_out}"; \
+   exit 1; \
+ fi
+endef
+
+define LinkLibraries
+ @printf "creating %s ..." $(1)
+ @link_cmd="${LIBTOOL} --quiet --tag=CXX --mode=link ${CXX} -o $(1) ${SHARED_OBJFILES} -rpath ${INSTALLPREFIX}/lib ${EXTLIBS} -version-info ${shlib_version} ${LDFLAGS}"; \
+ link_cmd_out=`$${link_cmd} 2>&1`; \
+ if [ $$? -ne 0 ]; then \
+   printf "%s\n%s\n" "$${link_cmd}" "$${link_cmd_out}"; \
+   exit 1; \
+ fi
+ @printf "done\n"
+endef
+
+#-----------------------------------------------------------------------------
 all:: ../lib/libDwm.la
 
 ../lib/libDwm.la: ${SHARED_OBJFILES}
-	${LIBTOOL} --tag=CXX --mode=link ${CXX} -no-suppress -o $@ $^ -rpath ${INSTALLPREFIX}/lib ${EXTLIBS} -version-info ${shlib_version} ${LDFLAGS}
+	$(call LinkLibraries,$@)
+
+#	${LIBTOOL} --quiet --tag=CXX --mode=link ${CXX} -o $@ $^ -rpath ${INSTALLPREFIX}/lib ${EXTLIBS} -version-info ${shlib_version} ${LDFLAGS}
 
 #  dependency rule
 deps/%_deps: %.cc
 	@echo "making dependencies for $<"
 	@set -e; \
 	${CXX} -MM ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC} -c $< | \
-	 sed 's/\($*\)\.o[ :]*/\1.o $(@D)\/$(@F) : /g' > $@ ; [ -s $@ ] || \
+	 sed 's/\($*\)\.o[ :]*/..\/obj\/\1.o ..\/obj\/\1.lo $(@D)\/$(@F) : /g' > $@ ; [ -s $@ ] || \
 	 rm -f $@
 
 #  only include dependency makefiles if target is not 'clean' or 'distclean'
@@ -88,8 +113,11 @@ ifneq ($(MAKECMDGOALS),distclean)
 endif
 endif
 
+vpath %.o ../obj
+vpath %.lo ../obj
+
 ../obj/%.o ../obj/%.lo: %.cc deps/%_deps
-	${LIBTOOL} --mode=compile --tag=CXX ${CXX} -no-suppress ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC} -c $< -o $@
+	$(call Compile,$<,$@)
 
 %.cc: %.ll
 	flex -o$@ $<
@@ -109,7 +137,7 @@ DwmProcessTableLex.cc: DwmProcessTableLex.lex DwmProcessTableParse.hh
 
 clean:: clean-tarprep
 	@${LIBTOOL} --quiet --mode=clean rm -f ../lib/libDwm.la ${OBJFILES} \
-         DwmCgi.cc DwmExecutor.cc DwmTimeUtil.cc ${SHARED_OBJFILES}
+         DwmCgi.cc DwmExecutor.cc DwmTimeUtil.cc DwmProcessTableParse.cc DwmProcessTableParse.hh ${SHARED_OBJFILES}
 
 distclean:: clean
 	@rm -f deps/*_deps

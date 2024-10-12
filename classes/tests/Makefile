@@ -77,6 +77,23 @@ LDFLAGS  += -g
 # LDFLAGS += -fsanitize=address
 ALLINC   = -I../include ${EXTINCS}
 
+#-----------------------------------------------------------------------------
+define Compile
+ @echo compiling $(1)
+ @cxx_cmd="${CXX} ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC} -c $(1) -o $(2)"; \
+ cxx_cmd_out=`$${cxx_cmd} 2>&1`; \
+ if [ $$? -ne 0 ]; then \
+   printf "%s\n%s\n" "$${cxx_cmd}" "$${cxx_cmd_out}"; \
+   exit 1; \
+ fi
+endef
+
+define Link
+ @echo linking $(2)
+ @${LIBTOOL} --quiet --mode=link --tag=CXX ${CXX} ${LDFLAGS} -o $(2) $(1) ../lib/libDwm.la ${EXTLIBS} ${PTHREADLDFLAGS}
+endef
+#-----------------------------------------------------------------------------
+
 all: ${TESTS}
 
 runtests: all
@@ -106,15 +123,10 @@ endif
 endif
 
 %.o: %.cc
-	${CXX} ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC} -c $<
-
-ifneq ("${TARGET_VENDOR}","apple")
-TestProcessTable: TestProcessTable.o ../lib/libDwm.la
-	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} -o $@ $^ ${EXTLIBS} ${PTHREADLDFLAGS}
-endif
+	$(call Compile,$<,$@)
 
 %: %.o ../lib/libDwm.la
-	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} -o $@ $^ ${EXTLIBS} ${PTHREADLDFLAGS}
+	$(call Link,$<,$@)
 
 ../lib/libDwm.la::
 	${MAKE} -s -C ../src

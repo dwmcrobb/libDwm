@@ -13,7 +13,7 @@ ${APPS}:: ../classes/lib/libDwm.la
 	${MAKE} --no-print-directory -C $@ $(MAKECMDGOALS)
 
 ../classes/lib/libDwm.la::
-	${MAKE} -s -C ../classes/src
+	@${MAKE} -s -C ../classes/src
 
 tarprep:: ${TARPREP}
 ${TARPREP}::

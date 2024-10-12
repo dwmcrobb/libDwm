@@ -1,7 +1,7 @@
 include ../../Makefile.vars
 
 CXXFLAGS   += -g
-INCS        = -I../../classes/include ${EXTINCS}
+ALLINC      = -I../../classes/include ${EXTINCS}
 OBJFILES    = dwmwhat.o
 OBJDEPS	    = $(OBJFILES:%.o=deps/%_deps)
 TARTARGETS  = ${TARDIR}/bin/dwmwhat \
@@ -11,8 +11,27 @@ MANHTML = ${MANDOC} -Thtml -Ostyle=../mcplexman.css -Oman=../html%S/%N.%S.html
 TARTARGETS += ${TARDIR}/${HTMLMAN}/html1/dwmwhat.1.html
 endif
 
+#-----------------------------------------------------------------------------
+define Compile
+ @echo compiling $(1)
+ @cxx_cmd="${CXX} ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC} -c $(1) -o $(2)"; \
+ cxx_cmd_out=`$${cxx_cmd} 2>&1`; \
+ if [ $$? -ne 0 ]; then \
+   printf "%s\n%s\n" "$${cxx_cmd}" "$${cxx_cmd_out}"; \
+   exit 1; \
+ fi
+endef
+
+define Link
+ @echo linking $(1)
+ @${LIBTOOL} --quiet --mode=link --tag=CXX ${CXX} ${LDFLAGS} -rpath ${INSTALLPREFIX}/lib -o $(1) $(2) ${EXTLIBS} ${PTHREADLDFLAGS}
+endef
+#-----------------------------------------------------------------------------
+
 dwmwhat: ${OBJFILES} ../../classes/lib/libDwm.la
-	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${PTHREADLDFLAGS} ${LDFLAGS} -rpath ${INSTALLPREFIX}/lib -o $@ $^ ${EXTLIBS}
+	$(call Link,$@,$^)
+
+#	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${PTHREADLDFLAGS} ${LDFLAGS} -rpath ${INSTALLPREFIX}/lib -o $@ $^ ${EXTLIBS}
 
 tarprep: ${TARTARGETS}
 
@@ -31,7 +50,7 @@ ${TARDIR}/${HTMLMAN}/html1/dwmwhat.1.html: dwmwhat.1
 deps/%_deps: %.cc
 	@echo "making dependencies for $<"
 	@set -e; \
-	${CXX} -MM ${CXXFLAGS} ${PTHREADCXXFLAGS} ${INCS} -c $< | \
+	${CXX} -MM ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC} -c $< | \
 	 sed 's/\($*\)\.o[ :]*/\1.o $(@D)\/$(@F) : /g' > $@ ; [ -s $@ ] || \
 	 rm -f $@
 
@@ -43,10 +62,12 @@ endif
 endif
 
 %.o: %.cc
-	${CXX} ${CXXFLAGS} ${INCS} -c $<
+	$(call Compile,$<,$@)
+
+#	${CXX} ${CXXFLAGS} ${ALLINC} -c $<
 
 ../../classes/lib/libDwm.la::
-	${MAKE} -C ../../classes/src
+	@${MAKE} -s -C ../../classes/src
 
 distclean:: clean
 	@rm -f ${OBJDEPS}

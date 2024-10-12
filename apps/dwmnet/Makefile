@@ -1,11 +1,28 @@
 include ../../Makefile.vars
 
-INCS            = -I../../classes/include ${EXTINCS}
+ALLINC          = -I../../classes/include ${EXTINCS}
 OBJFILES	= dwmnet.o
 OBJDEPS		= $(OBJFILES:%.o=deps/%_deps)
 
+#-----------------------------------------------------------------------------
+define Compile
+ @echo compiling $(1)
+ @cxx_cmd="${CXX} ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC} -c $(1) -o $(2)"; \
+ cxx_cmd_out=`$${cxx_cmd} 2>&1`; \
+ if [ $$? -ne 0 ]; then \
+   printf "%s\n%s\n" "$${cxx_cmd}" "$${cxx_cmd_out}"; \
+   exit 1; \
+ fi
+endef
+
+define Link
+ @echo linking $(1)
+ @${LIBTOOL} --quiet --mode=link --tag=CXX ${CXX} ${LDFLAGS} -rpath ${INSTALLPREFIX}/lib -o $(1) $(2) ${EXTLIBS} ${PTHREADLDFLAGS}
+endef
+#-----------------------------------------------------------------------------
+
 dwmnet: ${OBJFILES} ../../classes/lib/libDwm.la
-	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${LDFLAGS} ${PTHREADLDFLAGS} -o $@ $^ -rpath ${INSTALLPREFIX}/lib ${EXTLIBS}
+	$(call Link,$@,$^)
 
 tarprep: ${TARDIR}/bin/dwmnet
 
@@ -16,7 +33,7 @@ ${TARDIR}/bin/dwmnet: dwmnet
 deps/%_deps: %.cc
 	@echo "making dependencies for $<"
 	@set -e; \
-	${CXX} -MM ${CXXFLAGS} ${PTHREADCXXFLAGS} ${INCS} -c $< | \
+	${CXX} -MM ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC} -c $< | \
 	 sed 's/\($*\)\.o[ :]*/\1.o $(@D)\/$(@F) : /g' > $@ ; [ -s $@ ] || \
 	 rm -f $@
 
@@ -27,11 +44,11 @@ ifneq ($(MAKECMDGOALS),distclean)
 endif
 endif
 
-dwmnet.o: dwmnet.cc
-	${CXX} ${CXXFLAGS} -c $< ${INCS}
+%.o: %.cc
+	$(call Compile,$<,$@)
 
 ../../classes/lib/libDwm.la::
-	${MAKE} -C ../../classes/src
+	@${MAKE} -s -C ../../classes/src
 
 distclean:: clean
 	@rm -f ${OBJDEPS}
