@@ -1,5 +1,10 @@
 2024-10-12  Daniel W. McRobb  <dwm@kiva.mcplex.net>
 
+	* apps/Makefile, apps/dwmcflags/Makefile, apps/dwmnet/Makefile:
+	  apps/dwmspath/Makefile, apps/dwmwhat/Makefile, classes/src/Makefile,
+	  classes/tests/Makefile:
+	Tweaks to reduce noise in build.
+
 	* classes/src/Makefile:
 	No longer need '-Wno-deprecated-register -Wno-register' in CXXFLAGS
 	since flex no longer generates code that uses registers.
