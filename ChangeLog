@@ -1,3 +1,9 @@
+2024-10-12  Daniel W. McRobb  <dwm@kiva.mcplex.net>
+
+	* classes/src/Makefile:
+	No longer need '-Wno-deprecated-register -Wno-register' in CXXFLAGS
+	since flex no longer generates code that uses registers.
+
 2024-10-11  Daniel McRobb  <dwm@thrip.mcplex.net>
 
 	* tagged as libDwm-0.9.49
