@@ -96,8 +96,6 @@ all:: ../lib/libDwm.la
 ../lib/libDwm.la: ${SHARED_OBJFILES}
 	$(call LinkLibraries,$@)
 
-#	${LIBTOOL} --quiet --tag=CXX --mode=link ${CXX} -o $@ $^ -rpath ${INSTALLPREFIX}/lib ${EXTLIBS} -version-info ${shlib_version} ${LDFLAGS}
-
 #  dependency rule
 deps/%_deps: %.cc
 	@echo "making dependencies for $<"
@@ -113,6 +111,8 @@ ifneq ($(MAKECMDGOALS),distclean)
 endif
 endif
 
+# Just for convenience to allow compiling a single object file from command
+# line without specifying object directory.
 vpath %.o ../obj
 vpath %.lo ../obj
 
