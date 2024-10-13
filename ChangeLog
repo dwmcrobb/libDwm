@@ -1,6 +1,6 @@
 2024-10-12  Daniel W. McRobb  <dwm@kiva.mcplex.net>
 
-	* apps/Makefile, apps/dwmcflags/Makefile, apps/dwmnet/Makefile:
+	* apps/Makefile, apps/dwmcflags/Makefile, apps/dwmnet/Makefile,
 	  apps/dwmspath/Makefile, apps/dwmwhat/Makefile, classes/src/Makefile,
 	  classes/tests/Makefile:
 	Tweaks to reduce noise in build.
