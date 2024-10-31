@@ -22,7 +22,7 @@ DEPSTARGETS      += $(my ObjDeps)
 CLEANTARGETS     += $(my Exes) $(my Objs)
 DISTCLEANTARGETS += $(my ObjDeps)
 
-$(dwm_include verbose,$(abspath $(my mydir)/../../Makefile.rules))
+# $(dwm_include verbose,$(abspath $(my mydir)/../../Makefile.rules))
 $(dwm_include verbose,$(abspath $(my mydir)/../src/Makefile))
 
 ifeq ("${CURDIR}","$(my tests.mydir)")
@@ -32,7 +32,8 @@ CLEANTARGETS     := $(my Exes) $(my Objs)
 DISTCLEANTARGETS := $(my ObjDeps)
 endif
 
-
+ifeq (,"$(_runtests_target_)")
+_runtests_target_ := defined
 .PHONY: runtests
 
 runtests: $(my Exes)
@@ -45,10 +46,11 @@ runtests: $(my Exes)
 		  printf "\n%s" "$$out" ; \
 		fi ; \
 	done
+endif
 
 #  generate dependency rule
-$(eval $(dwm_cppdeps $(my mydir)/deps,\
-$(my mydir),$(my mydir)/%.cc,\
+$(eval $(dwm_cppdeps $(my tests.mydir)/deps,\
+$(my tests.mydir),$(my tests.mydir)/%.cc,\
 ${CXX} -MM $(my tests.CxxFlags) $(my tests.Incs) -c $<))
 
 #  only include dependency makefiles if target is not 'clean' or 'distclean'

@@ -1,4 +1,4 @@
-topDir := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+.PHONY: all tarprep distclean clean clean-tarprep cleandeps
 
 all: $(sort ${TARGETS})
 
@@ -8,10 +8,11 @@ distclean:: clean
 	@${LIBTOOL} --quiet --mode=clean rm -f ${DISTCLEANTARGETS}
 
 clean:: clean-tarprep
-	@${LIBTOOL} --quiet --mode=clean rm -f ${CLEANTARGETS}
+	@${LIBTOOL} --mode=clean rm -f $(sort ${CLEANTARGETS})
 
 clean-tarprep::
-	@${LIBTOOL} --quiet --mode=uninstall rm -f ${TARTARGETS}
+	@${LIBTOOL} --quiet --mode=uninstall rm -f $(sort ${TARTARGETS})
 
 cleandeps::
 	@${LIBTOOL} --quiet --mode=clean rm -f ${DEPSTARGETS}
+

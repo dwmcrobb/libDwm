@@ -20,7 +20,7 @@ DISTCLEANTARGETS  += $(my ObjDeps)
 TARGETS           += $(my Targets)
 TARTARGETS        += ${TARDIR}/bin/dwmcflags ${TARDIR}/man/man1/dwmcflags.1
 
-$(dwm_include verbose,$(abspath $(my mydir)/../../Makefile.rules))
+# $(dwm_include verbose,$(abspath $(my mydir)/../../Makefile.rules))
 $(dwm_include verbose,$(abspath $(my mydir)/../../classes/src/Makefile))
 
 ifeq ("${CURDIR}","$(my mydir)")
