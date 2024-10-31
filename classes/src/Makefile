@@ -49,7 +49,7 @@ DISTCLEANTARGETS := $(my ObjDeps) $(my BisonSrcs) $(my FlexSrcs) \
 TARTARGETS       := ${TARDIR}/lib/libDwm.la
 endif
 
-$(dwm_include verbose,$(abspath $(my mydir)/../../Makefile.rules))
+# $(dwm_include verbose,$(abspath $(my mydir)/../../Makefile.rules))
 
 #-----------------------------------------------------------------------------
 
@@ -86,3 +86,4 @@ $(my mydir)/%Lex.cc: $(my mydir)/%Lex.lex $(my mydir)/%Parse.hh
 $(my mydir)/%.cc: $(my mydir)/%.ll
 	flex -o$@ $<
 
+$(dwm_include verbose,$(abspath $(my mydir)/../../Makefile.rules))
