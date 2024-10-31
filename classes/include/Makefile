@@ -1,31 +1,24 @@
-include ../../Makefile.vars
+load $(shell pkg-config --variable=libdir dwmgmk)/dwm_gmk.so(dwm_gmk_setup)
+libIncDir := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 
-HEADERS		= $(shell ls *.hh)
-TARPREPHEADERS	= $(HEADERS:%=${TARDIR}/include/libDwm/%)
-INSTALLHEADERS	= $(HEADERS:%=${INSTALLPREFIX}/include/libDwm/%)
+$(dwm_include $(abspath $(libIncDir)/../../Makefile.vars))
 
-all::
-	@echo "Nothing to be done for 'all'"
+libIncHdrNames    := $(dwm_files $(libIncDir),.+\.hh)
+libIncHdrs        := $(libIncHdrNames:%.hh=$(libIncDir)/%.hh)
+libIncTarPrepHdrs := $(libIncHdrNames:%=${TARDIR}/include/libDwm/%)
 
-tarprep: ${TARPREPHEADERS}
+TARTARGETS        += $(libIncTarPrepHdrs)
+DISTCLEANTARGETS  += $(libIncTarPrepHdrs)
 
-${TARDIR}/include/libDwm/%.hh: %.hh
+ifeq ("$(CURDIR)","$(libIncDir)")
+TARGETS           :=
+CLEANTARGETS      :=
+DEPSTARGETS       :=
+TARTARGETS        := $(libIncTarPrepHdrs)
+DISTCLEANTARGETS  := $(libIncTarPrepHdrs)
+endif
+
+${TARDIR}/include/libDwm/%.hh: $(libIncDir)/%.hh
 	../../install-sh -c -m 444 $< $@
 
-install: ${INSTALLHEADERS}
-
-${INSTALLPREFIX}/include/libDwm/%.hh: %.hh
-	../../install-sh -c -m 444 $< $@
-
-uninstall: clean-install
-
-clean: clean-tarprep
-
-clean-install::
-	rm -f ${INSTALLHEADERS}
-
-clean-tarprep::
-	rm -f ${TARPREPHEADERS}
-
-distclean: clean
-	rm -f DwmPortability.hh
+$(dwm_include $(abspath $(libIncDir)/../../Makefile.rules))

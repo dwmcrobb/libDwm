@@ -1,20 +1,15 @@
-include Makefile.vars
+load $(shell pkg-config --variable=libdir dwmgmk)/dwm_gmk.so(dwm_gmk_setup)
 
-all:: apps
+$(dwm_include Makefile.vars)
+$(dwm_include apps/Makefile)
 
-apps: classes/lib/libDwm.la
-	${MAKE} -C apps
+tarprep: otherTarpreps
 
-classes/lib/libDwm.la::
-	${MAKE} -C classes
-
-tarprep:: classes/lib/libDwm.la apps
-	${MAKE} -C classes $@
-	${MAKE} -C apps $@
+otherTarpreps::
 ifeq ("${BUILD_DOCS}", "yes")
-	${MAKE} -C doc $@
+	${MAKE} -C doc tarprep
 endif
-	${MAKE} -C packaging $@
+	${MAKE} -C packaging tarprep
 
 package: ${OSNAME}-pkg
 
@@ -31,16 +26,11 @@ linux-pkg: tarprep
 	dpkg-deb -b --root-owner-group staging
 	dpkg-name -o staging.deb
 
-clean::
-	${MAKE} -C apps $@
-	${MAKE} -C classes $@
+distclean:: otherDistclean
 
-distclean:: clean
-	${MAKE} -C apps $@
-	${MAKE} -C classes $@
-	${MAKE} -C doc $@
-	${MAKE} -C packaging $@
+otherDistclean::
+	${MAKE} -C doc distclean
+	${MAKE} -C packaging distclean
 	rm -Rf autom4te.cache staging
 	rm -f config.log config.status Makefile.vars
 	rm -f libDwm_*.deb
-

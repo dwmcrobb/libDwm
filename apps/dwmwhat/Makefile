@@ -1,79 +1,68 @@
-include ../../Makefile.vars
+load $(shell pkg-config --variable=libdir dwmgmk)/dwm_gmk.so(dwm_gmk_setup)
+myfile := $(abspath $(lastword $(MAKEFILE_LIST)))
+$(dwm_myns dwmwhat)
+$(dwm_aliasfn my,dwm_my)
+$(my mydir := $(abspath $(dir $(myfile))))
 
-CXXFLAGS   += -g
-ALLINC      = -I../../classes/include ${EXTINCS}
-OBJFILES    = dwmwhat.o
-OBJDEPS	    = $(OBJFILES:%.o=deps/%_deps)
-TARTARGETS  = ${TARDIR}/bin/dwmwhat \
-	      ${TARDIR}/man/man1/dwmwhat.1
-ifeq ("${MANDOC}", "mandoc")
+$(dwm_include $(abspath $(dir $(myfile))/../../Makefile.vars))
+
+$(my CxxFlags := ${CXXFLAGS} ${PTHREADCXXFLAGS})
+$(my Incs     := -I$(abspath $(my mydir)/../../classes/include))
+$(my Link     := ${LIBTOOL} --quiet --mode=link --tag=CXX ${CXX})
+$(my ObjNames := dwmwhat.o)
+$(my Objs     := $(patsubst %.o,$(my mydir)/%.o,$(my ObjNames)))
+$(my ObjDeps  := $(patsubst %.o,$(my mydir)/deps/%_deps,$(my ObjNames)))
+$(my Targets  := $(my mydir)/dwmwhat)
+
+DEPSTARGETS       += $(my ObjDeps)
+CLEANTARGETS      += $(my Targets) $(my Objs)
+DISTCLEANTARGETS  += $(my ObjDeps)
+TARGETS           += $(my Targets)
+TARTARGETS        += ${TARDIR}/bin/dwmwhat ${TARDIR}/man/man1/dwmwhat.1
+
+$(dwm_include verbose,$(abspath $(my mydir)/../../Makefile.rules))
+$(dwm_include verbose,$(abspath $(my mydir)/../../classes/src/Makefile))
+
+ifeq ("${CURDIR}","$(my mydir)")
+DEPSTARGETS       := $(my ObjDeps)
+CLEANTARGETS      := $(my Targets) $(my Objs)
+DISTCLEANTARGETS  := $(my ObjDeps)
+TARGETS           := $(my Targets)
+TARTARGETS        := ${TARDIR}/bin/dwmwhat ${TARDIR}/man/man1/dwmwhat.1
+endif
+
+ifeq ("${MANDOC}","mandoc")
 MANHTML = ${MANDOC} -Thtml -Ostyle=../mcplexman.css -Oman=../html%S/%N.%S.html
 TARTARGETS += ${TARDIR}/${HTMLMAN}/html1/dwmwhat.1.html
 endif
 
-#-----------------------------------------------------------------------------
-define Compile
- @echo compiling $(1)
- @cxx_cmd="${CXX} ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC} -c $(1) -o $(2)"; \
- cxx_cmd_out=`$${cxx_cmd} 2>&1`; \
- if [ $$? -ne 0 ]; then \
-   printf "%s\n%s\n" "$${cxx_cmd}" "$${cxx_cmd_out}"; \
-   exit 1; \
- fi
-endef
+$(my mydir)/dwmwhat: $(my Objs) $(abspath $(my mydir)/../../classes/lib/libDwm.la)
+	@dwmgmk_quiet "linking $(dwm_relpwd $@)" \
+	 $(my dwmwhat.Link) ${LDFLAGS} -rpath ${INSTALLPREFIX}/lib -o $@ $^ ${EXTLIBS} ${PTHREADLDFLAGS}
 
-define Link
- @echo linking $(1)
- @${LIBTOOL} --quiet --mode=link --tag=CXX ${CXX} ${LDFLAGS} -rpath ${INSTALLPREFIX}/lib -o $(1) $(2) ${EXTLIBS} ${PTHREADLDFLAGS}
-endef
-#-----------------------------------------------------------------------------
+${TARDIR}/bin/dwmwhat: $(my mydir)/dwmwhat
+	${INSTALL} -s -c -m 555 $< $@
 
-dwmwhat: ${OBJFILES} ../../classes/lib/libDwm.la
-	$(call Link,$@,$^)
+${TARDIR}/man/man1/dwmwhat.1: $(my mydir)/dwmwhat.1
+	${INSTALL} -c -m 644 $< $@
 
-#	${LIBTOOL} --mode=link --tag=CXX ${CXX} ${PTHREADLDFLAGS} ${LDFLAGS} -rpath ${INSTALLPREFIX}/lib -o $@ $^ ${EXTLIBS}
-
-tarprep: ${TARTARGETS}
-
-${TARDIR}/bin/dwmwhat: dwmwhat
-	${LIBTOOL} --mode=install ../../install-sh -s -c -m 555 $< $@
-
-${TARDIR}/man/man1/dwmwhat.1: dwmwhat.1
-	../../install-sh -c -m 644 $< $@
-
-${TARDIR}/${HTMLMAN}/html1/dwmwhat.1.html: dwmwhat.1
+${TARDIR}/${HTMLMAN}/html1/dwmwhat.1.html: $(my mydir)/dwmwhat.1
 	${MANHTML} $< > $<.html
-	../../install-sh -c -m 644 $<.html $@
+	.${INSTALL} -c -m 644 $<.html $@
 	rm $<.html
 
-#  dependency rule
-deps/%_deps: %.cc
-	@echo "making dependencies for $<"
-	@set -e; \
-	${CXX} -MM ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC} -c $< | \
-	 sed 's/\($*\)\.o[ :]*/\1.o $(@D)\/$(@F) : /g' > $@ ; [ -s $@ ] || \
-	 rm -f $@
+#  generate dependency rule
+$(eval $(dwm_cppdeps $(my dwmwhat.mydir)/deps,\
+$(my dwmwhat.mydir),$(my dwmwhat.mydir)/%.cc,\
+${CXX} -MM $(my dwmwhat.CxxFlags) $(my dwmwhat.Incs) -c $<))
 
 #  only include dependency makefiles if target is not 'clean' or 'distclean'
 ifneq ($(MAKECMDGOALS),clean)
 ifneq ($(MAKECMDGOALS),distclean)
--include ${OBJDEPS}
+$(dwm_include $(my ObjDeps))
 endif
 endif
 
-%.o: %.cc
-	$(call Compile,$<,$@)
-
-#	${CXX} ${CXXFLAGS} ${ALLINC} -c $<
-
-../../classes/lib/libDwm.la::
-	@${MAKE} -s -C ../../classes/src
-
-distclean:: clean
-	@rm -f ${OBJDEPS}
-
-clean:: clean-tarprep
-	@${LIBTOOL} --quiet --mode=clean rm -f dwmwhat ${OBJFILES}
-
-clean-tarprep::
-	@${LIBTOOL} --quiet --mode=uninstall rm -f ${TARDIR}/bin/dwmwhat
+$(my mydir)/%.o: $(my mydir)/%.cc $(my mydir)/deps/%_deps
+	@dwmgmk_quiet "compiling $(dwm_relpwd $<)" \
+	 ${CXX} $(my dwmwhat.CxxFlags) $(my dwmwhat.Incs) -c $< -o $@

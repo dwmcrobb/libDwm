@@ -1,61 +1,56 @@
-include ../../Makefile.vars
+load $(shell pkg-config --variable=libdir dwmgmk)/dwm_gmk.so(dwm_gmk_setup)
+myfile := $(abspath $(lastword $(MAKEFILE_LIST)))
+$(dwm_myns dwmnet)
+$(dwm_aliasfn my,dwm_my)
+$(my mydir := $(abspath $(dir $(myfile))))
 
-ALLINC          = -I../../classes/include ${EXTINCS}
-OBJFILES	= dwmnet.o
-OBJDEPS		= $(OBJFILES:%.o=deps/%_deps)
+$(dwm_include $(abspath $(dir $(myfile))/../../Makefile.vars))
 
-#-----------------------------------------------------------------------------
-define Compile
- @echo compiling $(1)
- @cxx_cmd="${CXX} ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC} -c $(1) -o $(2)"; \
- cxx_cmd_out=`$${cxx_cmd} 2>&1`; \
- if [ $$? -ne 0 ]; then \
-   printf "%s\n%s\n" "$${cxx_cmd}" "$${cxx_cmd_out}"; \
-   exit 1; \
- fi
-endef
+$(my CxxFlags := ${CXXFLAGS} ${PTHREADCXXFLAGS})
+$(my Incs     := -I$(abspath $(my mydir)/../../classes/include) ${EXTINCS})
+$(my Link     := ${LIBTOOL} --quiet --mode=link --tag=CXX ${CXX})
+$(my ObjNames := dwmnet.o)
+$(my Objs     := $(patsubst %.o,$(my mydir)/%.o,$(my ObjNames)))
+$(my ObjDeps  := $(patsubst %.o,$(my mydir)/deps/%_deps,$(my ObjNames)))
+$(my Targets  := $(my mydir)/dwmnet)
 
-define Link
- @echo linking $(1)
- @${LIBTOOL} --quiet --mode=link --tag=CXX ${CXX} ${LDFLAGS} -rpath ${INSTALLPREFIX}/lib -o $(1) $(2) ${EXTLIBS} ${PTHREADLDFLAGS}
-endef
-#-----------------------------------------------------------------------------
+DEPSTARGETS       += $(my ObjDeps)
+CLEANTARGETS      += $(my Targets) $(my Objs)
+DISTCLEANTARGETS  += $(my ObjDeps)
+TARGETS           += $(my Targets)
+TARTARGETS        += ${TARDIR}/bin/dwmnet
 
-dwmnet: ${OBJFILES} ../../classes/lib/libDwm.la
-	$(call Link,$@,$^)
+$(dwm_include verbose,$(abspath $(my mydir)/../../Makefile.rules))
+$(dwm_include verbose,$(abspath $(my mydir)/../../classes/src/Makefile))
 
-tarprep: ${TARDIR}/bin/dwmnet
+ifeq ("${CURDIR}","$(my mydir)")
+DEPSTARGETS       := $(my ObjDeps)
+CLEANTARGETS      := $(my Targets) $(my Objs)
+DISTCLEANTARGETS  := $(my ObjDeps)
+TARGETS           := $(my Targets)
+TARTARGETS        := ${TARDIR}/bin/dwmnet
+endif
 
-${TARDIR}/bin/dwmnet: dwmnet
-	${LIBTOOL} --mode=install ../../install-sh -s -c -m 555 $< $@
+$(my mydir)/dwmnet: $(my Objs) $(abspath $(my mydir)/../../classes/lib/libDwm.la)
+	@dwmgmk_quiet "linking $(dwm_relpwd $@)" \
+	 $(my dwmnet.Link) ${LDFLAGS} -rpath ${INSTALLPREFIX}/lib -o $@ $^ ${EXTLIBS} ${PTHREADLDFLAGS}
 
-#  dependency rule
-deps/%_deps: %.cc
-	@echo "making dependencies for $<"
-	@set -e; \
-	${CXX} -MM ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC} -c $< | \
-	 sed 's/\($*\)\.o[ :]*/\1.o $(@D)\/$(@F) : /g' > $@ ; [ -s $@ ] || \
-	 rm -f $@
+${TARDIR}/bin/dwmnet: $(my mydir)/dwmnet
+	${INSTALL} -s -c -m 555 $< $@
+
+#  generate dependency rule
+$(eval $(dwm_cppdeps $(my dwmnet.mydir)/deps,\
+$(my dwmnet.mydir),$(my dwmnet.mydir)/%.cc,\
+${CXX} -MM $(my dwmnet.CxxFlags) $(my dwmnet.Incs) -c $<))
 
 #  only include dependency makefiles if target is not 'clean' or 'distclean'
 ifneq ($(MAKECMDGOALS),clean)
 ifneq ($(MAKECMDGOALS),distclean)
--include ${OBJDEPS}
+$(dwm_include $(my ObjDeps))
 endif
 endif
 
-%.o: %.cc
-	$(call Compile,$<,$@)
-
-../../classes/lib/libDwm.la::
-	@${MAKE} -s -C ../../classes/src
-
-distclean:: clean
-	@rm -f ${OBJDEPS}
-
-clean:: clean-tarprep
-	@${LIBTOOL} --quiet --mode=clean rm -f dwmnet ${OBJFILES}
-
-clean-tarprep::
-	@${LIBTOOL} --quiet --mode=uninstall rm -f ${TARDIR}/bin/dwmnet
+$(my mydir)/%.o: $(my mydir)/%.cc $(my mydir)/deps/%_deps
+	@dwmgmk_quiet "compiling $(dwm_relpwd $<)" \
+	 ${CXX} $(my dwmnet.CxxFlags) $(my dwmnet.Incs) -c $< -o $@
 

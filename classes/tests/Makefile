@@ -1,104 +1,43 @@
-include ../../Makefile.vars
+load $(shell pkg-config --variable=libdir dwmgmk)/dwm_gmk.so(dwm_gmk_setup)
+testsMkFile := $(abspath $(lastword $(MAKEFILE_LIST)))
+$(dwm_aliasfn my,dwm_my)
+$(dwm_myns tests)
+$(my mydir := $(abspath $(dir $(testsMkFile))))
 
-OBJFILES = TestASIO.o \
-	   TestBase64.o \
-           TestBootTime.o \
-	   TestConcurrentQueue.o \
-	   TestDwmBZ2IO.o \
-	   TestDwmDataLog.o \
-	   TestDwmDateTime.o \
-	   TestDwmDescriptor.o \
-	   TestDwmDiff.o \
-	   TestDwmDirectoryEntry.o \
-	   TestDwmFileLogger.o \
-	   TestDwmGZIO.o \
-	   TestDwmIO.o \
-	   TestDwmLoadBalancer.o \
-	   TestDwmLocalInterfaces.o \
-	   TestDwmOptArgs.o \
-	   TestDwmPacer.o \
-	   TestDwmPassword.o \
-	   TestDwmRusage.o \
-	   TestDwmSignal.o \
-	   TestDwmSunriseSunset.o \
-	   TestDwmTermios.o \
-	   TestEngFormat.o \
-           TestEnumIO.o \
-	   TestFFIVar.o \
-	   TestFileRoller.o \
-           TestFSyslog.o \
-	   TestGetAddrInfo.o \
-	   TestGitVersion.o \
-	   TestGroup.o \
-	   TestIODeque.o \
-	   TestIOList.o \
-	   TestIOMap.o \
-	   TestIOMultiMap.o \
-	   TestIOMultiSet.o \
-	   TestIOSet.o \
-	   TestIOVector.o \
-	   TestIpv4Address.o \
-	   TestIpv4AddrMap.o \
-	   TestIpv4Prefix.o \
-	   TestIpv4PrefixMap.o \
-	   TestIpv4Routes.o \
-	   TestIpv6Address.o \
-	   TestIpv6AddrMap.o \
-	   TestIpv6Prefix.o \
-	   TestIpv6PrefixMap.o \
-	   TestMacAddress.o \
-	   TestMplsLabel.o \
-	   TestMplsLabelStack.o \
-           TestProcessTable.o \
-	   TestStringConverter.o \
-	   TestStringUtils.o \
-	   TestSvnTag.o \
-           TestSyslog.o \
-	   TestThreadPool.o \
-	   TestThreadQueue.o \
-	   TestTimeInterval64.o \
-	   TestTimeUtils.o \
-	   TestTupleIO.o \
-	   TestTypeName.o \
-	   TestUnitAssert.o \
-	   TestUnorderedMapIO.o \
-	   TestUnorderedMultimapIO.o \
-	   TestUnorderedMultisetIO.o \
-	   TestUnorderedSetIO.o \
-           TestUptime.o \
-	   TestValueRange.o \
-	   TestVariantIO.o \
-	   TestXDRUtils.o
-OBJDEPS	 = $(OBJFILES:%.o=deps/%_deps)
-TESTS	 = $(OBJFILES:%.o=%)
-CXXFLAGS += -g
-# CXXFLAGS += -fsanitize=address
-LDFLAGS  += -g
-# LDFLAGS += -fsanitize=address
-ALLINC   = -I../include ${EXTINCS}
+$(dwm_include verbose,$(abspath $(my mydir)/../../Makefile.vars))
 
-#-----------------------------------------------------------------------------
-define Compile
- @echo compiling $(1)
- @cxx_cmd="${CXX} ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC} -c $(1) -o $(2)"; \
- cxx_cmd_out=`$${cxx_cmd} 2>&1`; \
- if [ $$? -ne 0 ]; then \
-   printf "%s\n%s\n" "$${cxx_cmd}" "$${cxx_cmd_out}"; \
-   exit 1; \
- fi
-endef
+$(my CxxFlags   := ${CXXFLAGS} ${PTHREADCXXFLAGS})
+$(my Incs       := -I$(abspath $(my mydir)/../include) ${EXTINCS})
+$(my Link       := ${LIBTOOL} --quiet --mode=link --tag=CXX ${CXX})
+$(my Srcs       := $(dwm_files $(my mydir),Test.*\.cc))
+$(my ObjNames   := $(subst .cc,.o,$(my Srcs)))
+$(my ObjDir     := $(my mydir))
+$(my DepsDir    := $(my mydir)/deps)
+$(my Objs       := $(patsubst %,$(my ObjDir)/%,$(my ObjNames)))
+$(my ObjDeps    := $(patsubst %.o,$(my DepsDir)/%_deps,$(my ObjNames)))
+$(my Exes       := $(patsubst %.o,%,$(my Objs)))
 
-define Link
- @echo linking $(2)
- @${LIBTOOL} --quiet --mode=link --tag=CXX ${CXX} ${LDFLAGS} -o $(2) $(1) ../lib/libDwm.la ${EXTLIBS} ${PTHREADLDFLAGS}
-endef
-#-----------------------------------------------------------------------------
+TARGETS          += $(my Exes)
+DEPSTARGETS      += $(my ObjDeps)
+CLEANTARGETS     += $(my Exes) $(my Objs)
+DISTCLEANTARGETS += $(my ObjDeps)
 
-all: ${TESTS}
+$(dwm_include verbose,$(abspath $(my mydir)/../../Makefile.rules))
+$(dwm_include verbose,$(abspath $(my mydir)/../src/Makefile))
 
-runtests: all
-	@ for tp in ${TESTS} ; do \
-		printf "%-36s " $$tp ; \
+ifeq ("${CURDIR}","$(my tests.mydir)")
+TARGETS          := $(my Exes)
+DEPSTARGETS      := $(my ObjDeps)
+CLEANTARGETS     := $(my Exes) $(my Objs)
+DISTCLEANTARGETS := $(my ObjDeps)
+endif
+
+
+.PHONY: runtests
+
+runtests: $(my Exes)
+	@ for tp in $(my tests.Exes) ; do \
+		printf "%-36s " `basename $$tp` ; \
 		out=`./$$tp` ; \
 		if [ $$? -eq 0 ]; then \
 		  printf "%25s\n" "$$out" ; \
@@ -107,33 +46,22 @@ runtests: all
 		fi ; \
 	done
 
-#  dependency rule
-deps/%_deps: %.cc 
-	@echo "making dependencies for $<"
-	@set -e; \
-	${CXX} -MM ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC} -c $< | \
-	 sed 's/\($*\)\.o[ :]*/\1.o $(@D)\/$(@F) : /g' > $@ ; [ -s $@ ] || \
-	 rm -f $@
+#  generate dependency rule
+$(eval $(dwm_cppdeps $(my mydir)/deps,\
+$(my mydir),$(my mydir)/%.cc,\
+${CXX} -MM $(my tests.CxxFlags) $(my tests.Incs) -c $<))
 
 #  only include dependency makefiles if target is not 'clean' or 'distclean'
 ifneq ($(MAKECMDGOALS),clean)
 ifneq ($(MAKECMDGOALS),distclean)
--include ${OBJDEPS}
+$(dwm_include $(my tests.ObjDeps))
 endif
 endif
 
-%.o: %.cc
-	$(call Compile,$<,$@)
+$(my mydir)/Test%.o: $(my mydir)/Test%.cc $(my tests.DepsDir)/Test%_deps
+	@dwmgmk_quiet "compiling $(dwm_relpwd $<)" \
+	 ${CXX} $(my tests.CxxFlags) $(my tests.Incs) -c $< -o $@
 
-%: %.o ../lib/libDwm.la
-	$(call Link,$<,$@)
-
-../lib/libDwm.la::
-	${MAKE} -s -C ../src
-
-clean:
-	@${LIBTOOL} --mode=clean rm -f ${TESTS} ${OBJFILES} > /dev/null 2>&1
-
-distclean:: clean
-	@rm -f deps/*
-
+$(my mydir)/Test%: $(my mydir)/Test%.o $(abspath $(my mydir)/../lib/libDwm.la)
+	@dwmgmk_quiet "linking $(dwm_relpwd $@)" \
+	 $(my tests.Link) ${LDFLAGS} -o $@ $^ ${EXTLIBS} ${PTHREADLDFLAGS}

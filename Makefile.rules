@@ -1,0 +1,17 @@
+topDir := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+
+all: $(sort ${TARGETS})
+
+tarprep: $(sort ${TARTARGETS})
+
+distclean:: clean
+	@${LIBTOOL} --quiet --mode=clean rm -f ${DISTCLEANTARGETS}
+
+clean:: clean-tarprep
+	@${LIBTOOL} --quiet --mode=clean rm -f ${CLEANTARGETS}
+
+clean-tarprep::
+	@${LIBTOOL} --quiet --mode=uninstall rm -f ${TARTARGETS}
+
+cleandeps::
+	@${LIBTOOL} --quiet --mode=clean rm -f ${DEPSTARGETS}

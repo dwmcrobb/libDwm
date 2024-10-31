@@ -1,28 +1,8 @@
-include ../Makefile.vars
+load $(shell pkg-config --variable=libdir dwmgmk)/dwm_gmk.so(dwm_gmk_setup)
 
-APPS = dwmcflags dwmnet dwmspath dwmwhat
-APPSCLEAN = $(APPS:%=%-clean)
-TARPREP   = $(APPS:%=%-tarprep)
-DISTCLEAN = $(APPS:%=%-distclean)
+appsDir := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 
-.PHONY: all ${APPS}
-
-all:: ${APPS}
-
-${APPS}:: ../classes/lib/libDwm.la
-	${MAKE} --no-print-directory -C $@ $(MAKECMDGOALS)
-
-../classes/lib/libDwm.la::
-	@${MAKE} -s -C ../classes/src
-
-tarprep:: ${TARPREP}
-${TARPREP}::
-	${MAKE} --no-print-directory -C $(patsubst %-tarprep,%,$@) tarprep
-
-clean:: ${APPSCLEAN}
-${APPSCLEAN}::
-	${MAKE} --no-print-directory -C $(patsubst %-clean,%,$@) clean
-
-distclean:: ${DISTCLEAN}
-${DISTCLEAN}::
-	${MAKE} -C $(patsubst %-distclean,%,$@) distclean
+$(dwm_include $(abspath $(appsDir)/dwmcflags/Makefile))
+$(dwm_include $(abspath $(appsDir)/dwmnet/Makefile))
+$(dwm_include $(abspath $(appsDir)/dwmspath/Makefile))
+$(dwm_include $(abspath $(appsDir)/dwmwhat/Makefile))

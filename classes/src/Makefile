@@ -1,148 +1,88 @@
-include ../../Makefile.vars
+load $(shell pkg-config --variable=libdir dwmgmk)/dwm_gmk.so(dwm_gmk_setup)
+libSrcMkFile := $(abspath $(lastword $(MAKEFILE_LIST)))
+$(dwm_aliasfn my,dwm_my)
+$(dwm_myns lib)
+$(my mydir := $(abspath $(dir $(libSrcMkFile))))
 
-ALLINC          = -I../include ${EXTINCS}
-OBJFILESNP =	DwmASIO.o \
-		DwmBZ2IO.o \
-                DwmBootTime.o \
-		DwmBase64.o \
-		DwmCgi.o \
-		DwmCvsTag.o \
-		DwmDaemonUtils.o \
-		DwmDateTime.o \
-		DwmDescriptor.o \
-		DwmDescriptorIO.o \
-		DwmDirectoryEntry.o \
-		DwmEngFormat.o \
-		DwmExecutor.o \
-		DwmFileIO.o \
-		DwmFileLogger.o \
-		DwmFileRoller.o \
-		DwmGetAddrInfo.o \
-                DwmGitVersion.o \
-		DwmGZIO.o \
-		DwmGroup.o \
-		DwmIpAddress.o \
-		DwmIpPrefix.o \
-		DwmIpv4Address.o \
-		DwmIpv4Prefix.o \
-		DwmIpv4Utils.o \
-		DwmIpv6Address.o \
-		DwmIpv6Prefix.o \
-		DwmLocalInterfaces.o \
-		DwmMacAddress.o \
-		DwmMplsLabel.o \
-		DwmMplsLabelStack.o \
-		DwmOptArgs.o \
-		DwmPacer.o \
-		DwmPackageInfo.o \
-		DwmPassword.o \
-		DwmPathUtils.o \
-                DwmProcessInfo.o \
-                DwmProcessTableLex.o \
-                DwmProcessTableParse.o \
-		DwmRusage.o \
-		DwmSignal.o \
-		DwmStreamIO.o \
-		DwmStringUtils.o \
-		DwmStrptime.o \
-		DwmSunriseSunset.o \
-		DwmSvnTag.o \
-		DwmSysLogger.o \
-		DwmTerminalTricks.o \
-		DwmTermios.o \
-		DwmTimeInterval.o \
-		DwmTimeInterval64.o \
-		DwmTimeUtil.o \
-		DwmTimeValue.o \
-		DwmTimeValue64.o \
-		DwmTypeName.o \
-		DwmUnitAssert.o \
-                DwmUptime.o \
-		DwmXDRUtils.o
-shlib_version = $(shell ../../getvers.sh -s)
+$(dwm_include verbose,../../Makefile.vars)
+
+ALLINC          := -I$(abspath $(my mydir)/../include) ${EXTINCS}
+LINK            := ${LIBTOOL} --mode=link --tag=CXX ${CXX}
+
+$(my CppSrcs    := $(dwm_files $(my mydir),.*\.cc))
+$(my FlexSrcs   := $(subst .lex,.cc,$(dwm_files $(my mydir),.*\.lex)))
+$(my FlexSrcs   := $(my FlexSrcs) $(subst .ll,.cc,$(dwm_files $(my mydir),.*\.ll)))
+$(my BisonSrcs  := $(subst .y,.cc,$(dwm_files $(my mydir),.*\.y)))
+$(my Srcs       := $(sort $(my CppSrcs) $(my FlexSrcs) $(my BisonSrcs)))
+$(my ObjNames   := $(subst .cc,.o,$(my Srcs)))
 
 ifeq (,$(findstring iPhone,$(PLATFORM)))
-OBJFILESNP +=	DwmPcap.o
+$(my ObjNames   := $(sort $(my ObjNames) DwmPcap.o))
 endif
-OBJFILES      = $(OBJFILESNP:%=../obj/%)
-SHARED_OBJFILES = $(OBJFILES:%.o=%.lo)
-OBJDEPS         = $(OBJFILESNP:%.o=deps/%_deps)
+
+$(my CxxFlags   := ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC})
+$(my Compile    := ${LIBTOOL} --mode=compile --tag=CXX ${CXX} $(my CxxFlags))
+$(my ObjDir     := $(abspath $(my mydir)/../obj))
+$(my DepsDir    := $(my mydir)/deps)
+$(my Objs       := $(patsubst %,$(my ObjDir)/%,$(my ObjNames)))
+$(my SharedObjs := $(patsubst %.o,%.lo,$(my Objs)))
+$(my ObjDeps    := $(patsubst %.o,$(my mydir)/deps/%_deps,$(my ObjNames)))
+$(my LibDir     := $(abspath $(my mydir)/../lib))
+$(my Lib        := $(my LibDir)/libDwm.la)
+$(my Targets    := $(my Lib))
+
+shlib_version := $(shell $(my mydir)/../../getvers.sh -s)
+
+TARGETS          += $(my Targets)
+DEPSTARGETS      += $(my ObjDeps)
+CLEANTARGETS     += $(my Objs) $(my SharedObjs) $(my Lib)
+DISTCLEANTARGETS += $(my ObjDeps) $(my BisonSrcs) $(my FlexSrcs) \
+                    $(patsubst %.cc,%.hh,$(my BisonSrcs))
+TARTARGETS       += ${TARDIR}/lib/libDwm.la
+
+ifeq ("$(CURDIR)","$(my mydir)")
+TARGETS          := $(my Targets)
+DEPSTARGETS      := $(my ObjDeps)
+CLEANTARGETS     := $(my Objs) $(my SharedObjs) $(my Lib)
+DISTCLEANTARGETS := $(my ObjDeps) $(my BisonSrcs) $(my FlexSrcs) \
+                    $(patsubst %.cc,%.hh,$(my BisonSrcs))
+TARTARGETS       := ${TARDIR}/lib/libDwm.la
+endif
+
+$(dwm_include verbose,$(abspath $(my mydir)/../../Makefile.rules))
 
 #-----------------------------------------------------------------------------
-define Compile
- @echo compiling $(1)
- @cxx_cmd="${LIBTOOL} --quiet --mode=compile --tag=CXX ${CXX} ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC} -c $(1) -o $(2)"; \
- cxx_cmd_out=`$${cxx_cmd} 2>&1`; \
- if [ $$? -ne 0 ]; then \
-   printf "%s\n%s\n" "$${cxx_cmd}" "$${cxx_cmd_out}"; \
-   exit 1; \
- fi
-endef
 
-define LinkLibraries
- @printf "creating %s ..." $(1)
- @link_cmd="${LIBTOOL} --quiet --tag=CXX --mode=link ${CXX} -o $(1) ${SHARED_OBJFILES} -rpath ${INSTALLPREFIX}/lib ${EXTLIBS} -version-info ${shlib_version} ${LDFLAGS}"; \
- link_cmd_out=`$${link_cmd} 2>&1`; \
- if [ $$? -ne 0 ]; then \
-   printf "%s\n%s\n" "$${link_cmd}" "$${link_cmd_out}"; \
-   exit 1; \
- fi
- @printf "done\n"
-endef
+$(my LibDir)/%.la: $(my lib.SharedObjs) $(my lib.Objs)
+	@dwmgmk_quiet "creating $(dwm_relpwd $@)" \
+	 $(LINK) -o $@ $(my lib.SharedObjs) -rpath ${INSTALLPREFIX}/lib \
+          ${EXTLIBS} -version-info ${shlib_version} ${LDFLAGS}
 
-#-----------------------------------------------------------------------------
-all:: ../lib/libDwm.la
-
-../lib/libDwm.la: ${SHARED_OBJFILES}
-	$(call LinkLibraries,$@)
-
-#	${LIBTOOL} --quiet --tag=CXX --mode=link ${CXX} -o $@ $^ -rpath ${INSTALLPREFIX}/lib ${EXTLIBS} -version-info ${shlib_version} ${LDFLAGS}
-
-#  dependency rule
-deps/%_deps: %.cc
-	@echo "making dependencies for $<"
-	@set -e; \
-	${CXX} -MM ${CXXFLAGS} ${PTHREADCXXFLAGS} ${ALLINC} -c $< | \
-	 sed 's/\($*\)\.o[ :]*/..\/obj\/\1.o ..\/obj\/\1.lo $(@D)\/$(@F) : /g' > $@ ; [ -s $@ ] || \
-	 rm -f $@
+#  generate dependency rule
+$(eval $(dwm_cppdeps $(my lib.mydir)/deps,\
+$(abspath $(my lib.mydir)/../obj),$(my lib.mydir)/%.cc,\
+${CXX} -MM $(my CxxFlags) -c $<,.o .lo))
 
 #  only include dependency makefiles if target is not 'clean' or 'distclean'
 ifneq ($(MAKECMDGOALS),clean)
 ifneq ($(MAKECMDGOALS),distclean)
--include ${OBJDEPS}
+$(dwm_include $(my lib.ObjDeps))
 endif
 endif
 
-vpath %.o ../obj
-vpath %.lo ../obj
+$(my ObjDir)/%.o $(my ObjDir)/%.lo: $(my mydir)/%.cc $(my DepsDir)/%_deps
+	@dwmgmk_quiet "compiling $(dwm_relpwd $<)" \
+         $(my lib.Compile) -c $< -o $@
 
-../obj/%.o ../obj/%.lo: %.cc deps/%_deps
-	$(call Compile,$<,$@)
+${TARDIR}/lib/%.la: $(my lib.Lib)
+	${INSTALL} -s -c $< $@
 
-%.cc: %.ll
-	flex -o$@ $<
+$(my mydir)/%Parse.cc $(my mydir)/%Parse.hh &: $(my mydir)/%Parse.y
+	bison -d -o $(patsubst %.hh,%.cc,$@) $<
 
-tarprep: ${TARDIR}/lib/libDwm.la
-
-${TARDIR}/lib/libDwm.la: ../lib/libDwm.la
-	${LIBTOOL} --mode=install ../../install-sh -s -c $< ${TARDIR}/lib/libDwm.la
-
-DwmProcessTableParse.hh: DwmProcessTableParse.cc
-
-DwmProcessTableParse.cc: DwmProcessTableParse.y
-	bison -d -o$@ $<
-
-DwmProcessTableLex.cc: DwmProcessTableLex.lex DwmProcessTableParse.hh
+$(my mydir)/%Lex.cc: $(my mydir)/%Lex.lex $(my mydir)/%Parse.hh
 	flex -f -o$@ $<
 
-clean:: clean-tarprep
-	@${LIBTOOL} --quiet --mode=clean rm -f ../lib/libDwm.la ${OBJFILES} \
-         DwmCgi.cc DwmExecutor.cc DwmTimeUtil.cc DwmProcessTableParse.cc DwmProcessTableParse.hh ${SHARED_OBJFILES}
-
-distclean:: clean
-	@rm -f deps/*_deps
-	@rm DwmPackageInfo.cc
-
-clean-tarprep::
-	@${LIBTOOL} --quiet --mode=clean rm -f ${TARDIR}/lib/libDwm.la
+$(my mydir)/%.cc: $(my mydir)/%.ll
+	flex -o$@ $<
 
