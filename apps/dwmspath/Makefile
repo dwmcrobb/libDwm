@@ -14,13 +14,12 @@ $(my Objs     := $(patsubst %.o,$(my mydir)/%.o,$(my ObjNames)))
 $(my ObjDeps  := $(patsubst %.o,$(my mydir)/deps/%_deps,$(my ObjNames)))
 $(my Targets  := $(my mydir)/dwmspath)
 
-DEPSTARGETS       += $(my ObjDeps)
-CLEANTARGETS      += $(my Targets) $(my Objs)
-DISTCLEANTARGETS  += $(my ObjDeps)
-TARGETS           += $(my Targets)
+DEPSTARGETS       += $(my dwmspath.ObjDeps)
+CLEANTARGETS      += $(my dwmspath.Targets) $(my dwmspath.Objs)
+DISTCLEANTARGETS  += $(my dwmspath.ObjDeps)
+TARGETS           += $(my dwmspath.Targets)
 TARTARGETS        += ${TARDIR}/bin/dwmspath
 
-# $(dwm_include verbose,$(abspath $(my mydir)/../../Makefile.rules))
 $(dwm_include verbose,$(abspath $(my mydir)/../../classes/src/Makefile))
 
 ifeq ("${CURDIR}","$(my mydir)")

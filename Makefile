@@ -1,6 +1,7 @@
 load $(shell pkg-config --variable=libdir dwmgmk)/dwm_gmk.so(dwm_gmk_setup)
 
 $(dwm_include Makefile.vars)
+$(dwm_include classes/Makefile)
 $(dwm_include apps/Makefile)
 
 tarprep: otherTarpreps

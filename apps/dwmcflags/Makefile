@@ -14,10 +14,10 @@ $(my Objs     := $(patsubst %.o,$(my mydir)/%.o,$(my ObjNames)))
 $(my ObjDeps  := $(patsubst %.o,$(my mydir)/deps/%_deps,$(my ObjNames)))
 $(my Targets  := $(my mydir)/dwmcflags)
 
-DEPSTARGETS       += $(my ObjDeps)
-CLEANTARGETS      += $(my Targets) $(my Objs)
-DISTCLEANTARGETS  += $(my ObjDeps)
-TARGETS           += $(my Targets)
+DEPSTARGETS       += $(my dwmcflags.ObjDeps)
+CLEANTARGETS      += $(my dwmcflags.Targets) $(my dwmcflags.Objs)
+DISTCLEANTARGETS  += $(my dwmcflags.ObjDeps)
+TARGETS           += $(my dwmcflags.Targets)
 TARTARGETS        += ${TARDIR}/bin/dwmcflags ${TARDIR}/man/man1/dwmcflags.1
 
 $(dwm_include verbose,$(abspath $(my mydir)/../../classes/src/Makefile))
@@ -65,3 +65,5 @@ endif
 $(my mydir)/%.o: $(my mydir)/%.cc $(my mydir)/deps/%_deps
 	@dwmgmk_quiet "compiling $(dwm_relpwd $<)" \
 	 ${CXX} $(my dwmcflags.CxxFlags) $(my dwmcflags.Incs) -c $< -o $@
+
+

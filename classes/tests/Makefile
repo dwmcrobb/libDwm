@@ -17,12 +17,11 @@ $(my Objs       := $(patsubst %,$(my ObjDir)/%,$(my ObjNames)))
 $(my ObjDeps    := $(patsubst %.o,$(my DepsDir)/%_deps,$(my ObjNames)))
 $(my Exes       := $(patsubst %.o,%,$(my Objs)))
 
-TARGETS          += $(my Exes)
-DEPSTARGETS      += $(my ObjDeps)
-CLEANTARGETS     += $(my Exes) $(my Objs)
-DISTCLEANTARGETS += $(my ObjDeps)
+TARGETS          += $(my tests.Exes)
+DEPSTARGETS      += $(my tests.ObjDeps)
+CLEANTARGETS     += $(my tests.Exes) $(my tests.Objs)
+DISTCLEANTARGETS += $(my tests.ObjDeps)
 
-# $(dwm_include verbose,$(abspath $(my mydir)/../../Makefile.rules))
 $(dwm_include verbose,$(abspath $(my mydir)/../src/Makefile))
 
 ifeq ("${CURDIR}","$(my tests.mydir)")
@@ -31,6 +30,8 @@ DEPSTARGETS      := $(my ObjDeps)
 CLEANTARGETS     := $(my Exes) $(my Objs)
 DISTCLEANTARGETS := $(my ObjDeps)
 endif
+
+.SECONDARY: $(my tests.Objs)
 
 ifeq (,"$(_runtests_target_)")
 _runtests_target_ := defined
@@ -60,10 +61,11 @@ $(dwm_include $(my tests.ObjDeps))
 endif
 endif
 
-$(my mydir)/Test%.o: $(my mydir)/Test%.cc $(my tests.DepsDir)/Test%_deps
+$(my tests.mydir)/Test%.o: $(my tests.mydir)/Test%.cc $(my tests.DepsDir)/Test%_deps
 	@dwmgmk_quiet "compiling $(dwm_relpwd $<)" \
 	 ${CXX} $(my tests.CxxFlags) $(my tests.Incs) -c $< -o $@
 
-$(my mydir)/Test%: $(my mydir)/Test%.o $(abspath $(my mydir)/../lib/libDwm.la)
+$(my tests.mydir)/Test%: $(my tests.mydir)/Test%.o $(abspath $(my tests.mydir)/../lib/libDwm.la)
 	@dwmgmk_quiet "linking $(dwm_relpwd $@)" \
 	 $(my tests.Link) ${LDFLAGS} -o $@ $^ ${EXTLIBS} ${PTHREADLDFLAGS}
+

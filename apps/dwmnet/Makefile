@@ -12,15 +12,14 @@ $(my Link     := ${LIBTOOL} --quiet --mode=link --tag=CXX ${CXX})
 $(my ObjNames := dwmnet.o)
 $(my Objs     := $(patsubst %.o,$(my mydir)/%.o,$(my ObjNames)))
 $(my ObjDeps  := $(patsubst %.o,$(my mydir)/deps/%_deps,$(my ObjNames)))
-$(my Targets  := $(my mydir)/dwmnet)
+$(my Targets  := $(my dwmnet.mydir)/dwmnet)
 
-DEPSTARGETS       += $(my ObjDeps)
-CLEANTARGETS      += $(my Targets) $(my Objs)
-DISTCLEANTARGETS  += $(my ObjDeps)
-TARGETS           += $(my Targets)
+DEPSTARGETS       += $(my dwmnet.ObjDeps)
+CLEANTARGETS      += $(my dwmnet.Targets) $(my dwmnet.Objs)
+DISTCLEANTARGETS  += $(my dwmnet.ObjDeps)
+TARGETS           += $(my dwmnet.Targets)
 TARTARGETS        += ${TARDIR}/bin/dwmnet
 
-# $(dwm_include verbose,$(abspath $(my mydir)/../../Makefile.rules))
 $(dwm_include verbose,$(abspath $(my mydir)/../../classes/src/Makefile))
 
 ifeq ("${CURDIR}","$(my mydir)")

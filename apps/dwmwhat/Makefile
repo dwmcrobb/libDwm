@@ -14,13 +14,12 @@ $(my Objs     := $(patsubst %.o,$(my mydir)/%.o,$(my ObjNames)))
 $(my ObjDeps  := $(patsubst %.o,$(my mydir)/deps/%_deps,$(my ObjNames)))
 $(my Targets  := $(my mydir)/dwmwhat)
 
-DEPSTARGETS       += $(my ObjDeps)
-CLEANTARGETS      += $(my Targets) $(my Objs)
-DISTCLEANTARGETS  += $(my ObjDeps)
-TARGETS           += $(my Targets)
+DEPSTARGETS       += $(my dwmwhat.ObjDeps)
+CLEANTARGETS      += $(my dwmwhat.Targets) $(my dwmwhat.Objs)
+DISTCLEANTARGETS  += $(my dwmwhat.ObjDeps)
+TARGETS           += $(my dwmwhat.Targets)
 TARTARGETS        += ${TARDIR}/bin/dwmwhat ${TARDIR}/man/man1/dwmwhat.1
 
-# $(dwm_include verbose,$(abspath $(my mydir)/../../Makefile.rules))
 $(dwm_include verbose,$(abspath $(my mydir)/../../classes/src/Makefile))
 
 ifeq ("${CURDIR}","$(my mydir)")
@@ -66,3 +65,5 @@ endif
 $(my mydir)/%.o: $(my mydir)/%.cc $(my mydir)/deps/%_deps
 	@dwmgmk_quiet "compiling $(dwm_relpwd $<)" \
 	 ${CXX} $(my dwmwhat.CxxFlags) $(my dwmwhat.Incs) -c $< -o $@
+
+

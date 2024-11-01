@@ -33,11 +33,11 @@ $(my Targets    := $(my Lib))
 
 shlib_version := $(shell $(my mydir)/../../getvers.sh -s)
 
-TARGETS          += $(my Targets)
-DEPSTARGETS      += $(my ObjDeps)
-CLEANTARGETS     += $(my Objs) $(my SharedObjs) $(my Lib)
-DISTCLEANTARGETS += $(my ObjDeps) $(my BisonSrcs) $(my FlexSrcs) \
-                    $(patsubst %.cc,%.hh,$(my BisonSrcs))
+TARGETS          += $(my lib.Targets)
+DEPSTARGETS      += $(my lib.ObjDeps)
+CLEANTARGETS     += $(my lib.Objs) $(my lib.SharedObjs) $(my lib.Lib)
+DISTCLEANTARGETS += $(my lib.ObjDeps) $(my lib.BisonSrcs) $(my lib.FlexSrcs) \
+                    $(patsubst %.cc,%.hh,$(my lib.BisonSrcs))
 TARTARGETS       += ${TARDIR}/lib/libDwm.la
 
 ifeq ("$(CURDIR)","$(my mydir)")
