@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2021
+//  Copyright (c) Daniel W. McRobb 2021, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -44,6 +44,7 @@ extern "C" {
 }
 
 #include <cstring>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -55,7 +56,22 @@ extern "C" {
 using namespace std;
 using namespace Dwm;
 
-static bool  g_testPerformance = false;
+static bool    g_testPerformance = false;
+static string  g_myDir;
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void SetMyDir(const char *argv0)
+{
+  namespace  fs = std::filesystem;
+  
+  g_myDir = fs::path(argv0).parent_path();
+  if (fs::path(g_myDir).filename() == ".libs") {
+    g_myDir = fs::path(g_myDir).parent_path();
+  }
+  return;
+}
 
 //----------------------------------------------------------------------------
 //!  
@@ -63,7 +79,7 @@ static bool  g_testPerformance = false;
 static bool GetEntries(vector<Ipv4Prefix> & entries)
 {
   entries.clear();
-  ifstream is("./IPV4_prefixes.20210123");
+  ifstream is(g_myDir + "/IPV4_prefixes.20210123");
   if (UnitAssert(is)) {
     char  buf[512];
     memset(buf, 0, 512);
@@ -267,6 +283,8 @@ int main(int argc, char *argv[])
     }
   }
 
+  SetMyDir(argv[0]);
+  
   cout.imbue(std::locale(""));
 
   vector<Ipv4Prefix>  entries;

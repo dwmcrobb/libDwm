@@ -2,7 +2,7 @@
 // @(#) $DwmPath: dwm/libDwm/trunk/tests/TestIpv4Routes.cc 8389 $
 // @(#) $Id: TestIpv4Routes.cc 8389 2016-04-17 04:31:36Z dwm $
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2005-2007, 2016
+//  Copyright (c) Daniel W. McRobb 2005-2007, 2016, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -49,8 +49,9 @@ extern "C" {
 }
 
 #include <cstdio>
-#include <iostream>
+#include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <string>
 
 #include "DwmIpv4Routes.hh"
@@ -67,7 +68,22 @@ using namespace Dwm;
 
 #define STOREFILE "/tmp/DWMTestIpv4Routes.store"
 
-static bool  g_performanceTests = false;
+static bool    g_performanceTests = false;
+static string  g_myDir;
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void SetMyDir(const char *argv0)
+{
+  namespace  fs = std::filesystem;
+  
+  g_myDir = fs::path(argv0).parent_path();
+  if (fs::path(g_myDir).filename() == ".libs") {
+    g_myDir = fs::path(g_myDir).parent_path();
+  }
+  return;
+}
 
 //----------------------------------------------------------------------------
 //!  
@@ -76,7 +92,7 @@ void TestWithString()
 {
   Ipv4Routes<string>  r;
   vector<Ipv4Address>  ipVec;
-  ifstream is("./IPV4_prefixes.20210123");
+  ifstream is(g_myDir + "/IPV4_prefixes.20210123");
   if (is) {
     char  buf[512];
     memset(buf,0,512);
@@ -304,7 +320,7 @@ static void CheckDeletions(const vector<Ipv4Prefix> & pfxVec,
 static void TestInsertions(Ipv4Routes<uint32_t> & r, 
                            vector<Ipv4Prefix> & pfxVec)
 {
-  ifstream is("./IPV4_prefixes.20210123");
+  ifstream is(g_myDir + "/IPV4_prefixes.20210123");
   if (UnitAssert(is)) {
     string  s;
     while (getline(is, s, '\n')) {
@@ -432,6 +448,8 @@ int main(int argc, char *argv[])
                     "run performance tests");
   optargs.Parse(argc, argv);
   g_performanceTests = optargs.Get<bool>('p');
+
+  SetMyDir(argv[0]);
   
   Ipv4Routes<uint32_t>  r;
   

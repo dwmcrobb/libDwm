@@ -4,7 +4,7 @@ $(dwm_aliasfn my,dwm_my)
 $(dwm_myns tests)
 $(my mydir := $(abspath $(dir $(testsMkFile))))
 
-$(dwm_include verbose,$(abspath $(my mydir)/../../Makefile.vars))
+$(dwm_include $(abspath $(my mydir)/../../Makefile.vars))
 
 $(my CxxFlags   := ${CXXFLAGS} ${PTHREADCXXFLAGS})
 $(my Incs       := -I$(abspath $(my mydir)/../include) ${EXTINCS})
@@ -22,7 +22,7 @@ DEPSTARGETS      += $(my tests.ObjDeps)
 CLEANTARGETS     += $(my tests.Exes) $(my tests.Objs)
 DISTCLEANTARGETS += $(my tests.ObjDeps)
 
-$(dwm_include verbose,$(abspath $(my mydir)/../src/Makefile))
+$(dwm_include $(abspath $(my mydir)/../src/Makefile))
 
 ifeq ("${CURDIR}","$(my tests.mydir)")
 TARGETS          := $(my Exes)
@@ -33,21 +33,16 @@ endif
 
 .SECONDARY: $(my tests.Objs)
 
-ifeq (,"$(_runtests_target_)")
-_runtests_target_ := defined
-.PHONY: runtests
-
 runtests: $(my Exes)
 	@ for tp in $(my tests.Exes) ; do \
 		printf "%-36s " `basename $$tp` ; \
-		out=`./$$tp` ; \
+		out=`$$tp` ; \
 		if [ $$? -eq 0 ]; then \
 		  printf "%25s\n" "$$out" ; \
 		else \
 		  printf "\n%s" "$$out" ; \
 		fi ; \
 	done
-endif
 
 #  generate dependency rule
 $(eval $(dwm_cppdeps $(my tests.mydir)/deps,\

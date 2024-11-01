@@ -2,7 +2,7 @@
 // @(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmDirectoryEntry.cc 10621 $
 // @(#) $Id: TestDwmDirectoryEntry.cc 10621 2020-05-02 21:51:49Z dwm $
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2011, 2023
+//  Copyright (c) Daniel W. McRobb 2011, 2023, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -40,6 +40,7 @@
 //---------------------------------------------------------------------------
 
 #include <cstdlib>
+#include <filesystem>
 #include <memory>
 #include <string>
 
@@ -51,6 +52,22 @@ using namespace std;
 using Dwm::DirectoryEntry;
 
 static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmDirectoryEntry.cc 10621 $");
+
+static string  g_myDir;
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void SetMyDir(const char *argv0)
+{
+  namespace  fs = std::filesystem;
+  
+  g_myDir = fs::path(argv0).parent_path();
+  if (fs::path(g_myDir).filename() == ".libs") {
+    g_myDir = fs::path(g_myDir).parent_path();
+  }
+  return;
+}
 
 struct TestPathResult {
   string  orig;
@@ -316,7 +333,7 @@ static void TestRecurse()
 //----------------------------------------------------------------------------
 static void TestRecurseDepth()
 {
-  unique_ptr<DirectoryEntry>  de = make_unique<DirectoryEntry>("..");
+  unique_ptr<DirectoryEntry>  de = make_unique<DirectoryEntry>(g_myDir + "/..");
   DirectoryEntryTestFunc  detf(de->Path());
 
   UnitAssert(de->Recurse(detf, true, 0) == 1);
@@ -340,7 +357,8 @@ static void TestRecurseDepth()
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-
+  SetMyDir(argv[0]);
+  
   TestPaths();
   TestExists();
   TestDirNames();

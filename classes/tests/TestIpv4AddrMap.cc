@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2021
+//  Copyright (c) Daniel W. McRobb 2021, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -44,6 +44,7 @@ extern "C" {
 }
 
 #include <cstring>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -56,7 +57,22 @@ extern "C" {
 using namespace std;
 using namespace Dwm;
 
-static bool  g_testPerformance = false;
+static bool    g_testPerformance = false;
+static string  g_myDir;
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void SetMyDir(const char *argv0)
+{
+  namespace  fs = std::filesystem;
+  
+  g_myDir = fs::path(argv0).parent_path();
+  if (fs::path(g_myDir).filename() == ".libs") {
+    g_myDir = fs::path(g_myDir).parent_path();
+  }
+  return;
+}
 
 //----------------------------------------------------------------------------
 //!  
@@ -64,7 +80,7 @@ static bool  g_testPerformance = false;
 static bool GetEntries(vector<Ipv4Address> & entries)
 {
   entries.clear();
-  ifstream is("./IPV4_addrs.20210123");
+  ifstream is(g_myDir + "/IPV4_addrs.20210123");
   if (UnitAssert(is)) {
     char  buf[512];
     memset(buf, 0, 512);
@@ -82,7 +98,7 @@ static bool GetEntries(vector<Ipv4Address> & entries)
 //----------------------------------------------------------------------------
 static void TestStreamWrite(const Ipv4AddrMap<uint32_t> & addrMap)
 {
-  ofstream  os("./TestIpv4AddrMap_stream", ios::out|ios::binary);
+  ofstream  os(g_myDir + "/TestIpv4AddrMap_stream", ios::out|ios::binary);
   if (UnitAssert(os)) {
     auto  lck = addrMap.SharedLock();
     auto  & m = addrMap.Map(lck);
@@ -96,7 +112,7 @@ static void TestStreamWrite(const Ipv4AddrMap<uint32_t> & addrMap)
 //----------------------------------------------------------------------------
 static void TestStreamRead(Ipv4AddrMap<uint32_t> & addrMap)
 {
-  ifstream  is("./TestIpv4AddrMap_stream", ios::in|ios::binary);
+  ifstream  is(g_myDir + "/TestIpv4AddrMap_stream", ios::in|ios::binary);
   if (UnitAssert(is)) {
     auto  lck =	addrMap.UniqueLock();
     auto  & m = addrMap.Map(lck);
@@ -131,7 +147,7 @@ static void TestStreamIO(Ipv4AddrMap<uint32_t> & addrMap1)
       UnitAssert(rit->second == r2.second);
     }
   }
-  std::remove("./TestIpv4AddrMap_stream");
+  std::remove((g_myDir + "/TestIpv4AddrMap_stream").c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -278,6 +294,8 @@ int main(int argc, char *argv[])
         break;
     }
   }
+
+  SetMyDir(argv[0]);
   
   cout.imbue(std::locale(""));
   
