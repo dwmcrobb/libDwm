@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2006, 2007, 2009, 2015, 2020
+//  Copyright (c) Daniel W. McRobb 2006, 2007, 2009, 2015, 2020, 2024
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -39,6 +39,7 @@
 //!  \brief Implementation of unit testing support classes
 //---------------------------------------------------------------------------
 
+#include <filesystem>
 #include <iomanip>
 #include <string>
 
@@ -393,11 +394,13 @@ namespace Dwm {
   std::ostream &
   FileAssertions::Print(std::ostream & os, bool onlyFailed) const
   {
+    namespace fs = std::filesystem;
+    
     if (os && (! _assertions.empty())) {
       AssertionCounter  total;
       for (auto & i : _assertions) {
         if ((! onlyFailed) || (onlyFailed && i.second.Total().Failed())) {
-          os << "  " << i.first << ":" << std::endl;
+          os << "  " << fs::relative(i.first).string() << ":" << std::endl;
           i.second.Print(os, onlyFailed);
           total += i.second.Total();
         }
@@ -516,12 +519,14 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   std::ostream & Assertions::Print(std::ostream & os, bool onlyFailed) 
   {
+    namespace  fs = std::filesystem;
+    
     std::lock_guard<std::mutex>  lock(_mutex);
     if (os && (! _assertions.empty())) {
       AssertionCounter  total;
       for (auto i : _assertions) {
         if ((! onlyFailed) || (onlyFailed && i.second.Total().Failed())) {
-          os << i.first << ":" << std::endl;
+          os << fs::relative(i.first).string() << ":" << std::endl;
           i.second.Print(os, onlyFailed);
           total += i.second.Total();
         }
