@@ -4,10 +4,10 @@ $(dwm_aliasfn my,dwm_my)
 $(dwm_myns tests)
 $(my mydir := $(abspath $(dir $(testsMkFile))))
 
-$(dwm_include $(abspath $(my mydir)/../../Makefile.vars))
+$(dwm_include $(abspath $(my mydir)/../src/Makefile))
 
-$(my CxxFlags   := ${CXXFLAGS} ${PTHREADCXXFLAGS})
-$(my Incs       := -I$(abspath $(my mydir)/../include) ${EXTINCS})
+$(my CxxFlags   := ${CXXFLAGS} ${PTHREADCXXFLAGS} ${CLASSINC} ${EXTINCS})
+$(my Lib        := $(abspath $(my mydir)/../lib/libDwm.la))
 $(my Link       := ${LIBTOOL} --quiet --mode=link --tag=CXX ${CXX})
 $(my Srcs       := $(dwm_files $(my mydir),Test.*\.cc))
 $(my ObjNames   := $(subst .cc,.o,$(my Srcs)))
@@ -17,37 +17,29 @@ $(my Objs       := $(patsubst %,$(my ObjDir)/%,$(my ObjNames)))
 $(my ObjDeps    := $(patsubst %.o,$(my DepsDir)/%_deps,$(my ObjNames)))
 $(my Exes       := $(patsubst %.o,%,$(my Objs)))
 
-TARGETS          += $(my tests.Exes)
-DEPSTARGETS      += $(my tests.ObjDeps)
-CLEANTARGETS     += $(my tests.Exes) $(my tests.Objs)
-DISTCLEANTARGETS += $(my tests.ObjDeps)
+$(eval TARGETS $(dwm_ifcwd :=,+=) $(my tests.Exes))
+$(eval DEPSTARGETS $(dwm_ifcwd :=,+=) $(my tests.ObjDeps))
+$(eval CLEANTARGETS $(dwm_ifcwd :=,+=) $(my tests.Exes,tests.Objs))
+$(eval DISTCLEANTARGETS $(dwm_ifcwd :=,+=) $(my tests.ObjDeps))
 
-$(dwm_include $(abspath $(my mydir)/../src/Makefile))
-
-ifeq ("${CURDIR}","$(my tests.mydir)")
-TARGETS          := $(my Exes)
-DEPSTARGETS      := $(my ObjDeps)
-CLEANTARGETS     := $(my Exes) $(my Objs)
-DISTCLEANTARGETS := $(my ObjDeps)
-endif
+$(dwm_include $(abspath $(my mydir)/../../Makefile.rules))
 
 .SECONDARY: $(my tests.Objs)
 
 runtests: $(my Exes)
 	@ for tp in $(my tests.Exes) ; do \
 		printf "%-36s " `basename $$tp` ; \
-		out=`$$tp` ; \
+		out=`$$tp 2>&1` ; \
 		if [ $$? -eq 0 ]; then \
 		  printf "%25s\n" "$$out" ; \
 		else \
-		  printf "\n%s" "$$out" ; \
+		  printf '\n%s\n' "$$out" ; \
 		fi ; \
 	done
 
 #  generate dependency rule
-$(eval $(dwm_cppdeps $(my tests.mydir)/deps,\
-$(my tests.mydir),$(my tests.mydir)/%.cc,\
-${CXX} -MM $(my tests.CxxFlags) $(my tests.Incs) -c $<))
+$(eval $(dwm_cppdeps $(my tests.mydir)/deps,(my tests.mydir),\
+$(my tests.mydir)/%.cc,${CXX} -MM $(my tests.CxxFlags) -c $<))
 
 #  only include dependency makefiles if target is not 'clean' or 'distclean'
 ifneq ($(MAKECMDGOALS),clean)
@@ -56,11 +48,11 @@ $(dwm_include $(my tests.ObjDeps))
 endif
 endif
 
-$(my tests.mydir)/Test%.o: $(my tests.mydir)/Test%.cc $(my tests.DepsDir)/Test%_deps
+$(my mydir)/Test%.o: $(my mydir)/Test%.cc $(my DepsDir)/Test%_deps
 	@dwmgmk_quiet "compiling $(dwm_relpwd $<)" \
-	 ${CXX} $(my tests.CxxFlags) $(my tests.Incs) -c $< -o $@
+	 ${CXX} $(my tests.CxxFlags) -c $< -o $@
 
-$(my tests.mydir)/Test%: $(my tests.mydir)/Test%.o $(abspath $(my tests.mydir)/../lib/libDwm.la)
+$(my mydir)/Test%: $(my mydir)/Test%.o $(my Lib)
 	@dwmgmk_quiet "linking $(dwm_relpwd $@)" \
 	 $(my tests.Link) ${LDFLAGS} -o $@ $^ ${EXTLIBS} ${PTHREADLDFLAGS}
 

@@ -4,38 +4,33 @@ $(dwm_myns dwmwhat)
 $(dwm_aliasfn my,dwm_my)
 $(my mydir := $(abspath $(dir $(myfile))))
 
-$(dwm_include $(abspath $(dir $(myfile))/../../Makefile.vars))
+$(dwm_include $(abspath $(my mydir)/../../classes/src/Makefile))
 
-$(my CxxFlags := ${CXXFLAGS} ${PTHREADCXXFLAGS})
-$(my Incs     := -I$(abspath $(my mydir)/../../classes/include))
-$(my Link     := ${LIBTOOL} --quiet --mode=link --tag=CXX ${CXX})
-$(my ObjNames := dwmwhat.o)
-$(my Objs     := $(patsubst %.o,$(my mydir)/%.o,$(my ObjNames)))
-$(my ObjDeps  := $(patsubst %.o,$(my mydir)/deps/%_deps,$(my ObjNames)))
-$(my Targets  := $(my mydir)/dwmwhat)
+$(my CxxFlags   := ${CXXFLAGS} ${PTHREADCXXFLAGS})
+$(my Incs       := -I$(abspath $(my mydir)/../../classes/include))
+$(my Lib        := $(abspath $(my mydir)/../../classes/lib/libDwm.la))
+$(my Link       := ${LIBTOOL} --quiet --mode=link --tag=CXX ${CXX})
+$(my ObjNames   := dwmwhat.o)
+$(my Objs       := $(patsubst %.o,$(my mydir)/%.o,$(my ObjNames)))
+$(my ObjDeps    := $(patsubst %.o,$(my mydir)/deps/%_deps,$(my ObjNames)))
+$(my Targets    := $(my mydir)/dwmwhat)
+$(my TarTargets := ${TARDIR}/bin/dwmwhat ${TARDIR}/man/man1/dwmwhat.1)
 
-DEPSTARGETS       += $(my dwmwhat.ObjDeps)
-CLEANTARGETS      += $(my dwmwhat.Targets) $(my dwmwhat.Objs)
-DISTCLEANTARGETS  += $(my dwmwhat.ObjDeps)
-TARGETS           += $(my dwmwhat.Targets)
-TARTARGETS        += ${TARDIR}/bin/dwmwhat ${TARDIR}/man/man1/dwmwhat.1
+$(eval DEPSTARGETS $(dwm_ifcwd :=,+=) $(my dwmwhat.ObjDeps))
+$(eval CLEANTARGETS $(dwm_ifcwd :=,+=) $(my dwmwhat.Targets,dwmwhat.Objs))
+$(eval DISTCLEANTARGETS $(dwm_ifcwd :=,+=) $(my dwmwhat.ObjDeps))
+$(eval TARGETS $(dwm_ifcwd :=,+=) $(my dwmwhat.Targets))
+$(eval TARTARGETS $(dwm_ifcwd :=,+=) $(my dwmwhat.TarTargets))
 
-$(dwm_include verbose,$(abspath $(my mydir)/../../classes/src/Makefile))
+$(dwm_include $(abspath $(dir $(myfile))/../../Makefile.rules))
 
-ifeq ("${CURDIR}","$(my mydir)")
-DEPSTARGETS       := $(my ObjDeps)
-CLEANTARGETS      := $(my Targets) $(my Objs)
-DISTCLEANTARGETS  := $(my ObjDeps)
-TARGETS           := $(my Targets)
-TARTARGETS        := ${TARDIR}/bin/dwmwhat ${TARDIR}/man/man1/dwmwhat.1
-endif
 
 ifeq ("${MANDOC}","mandoc")
 MANHTML = ${MANDOC} -Thtml -Ostyle=../mcplexman.css -Oman=../html%S/%N.%S.html
 TARTARGETS += ${TARDIR}/${HTMLMAN}/html1/dwmwhat.1.html
 endif
 
-$(my mydir)/dwmwhat: $(my Objs) $(abspath $(my mydir)/../../classes/lib/libDwm.la)
+$(my mydir)/dwmwhat: $(my Objs) $(my Lib)
 	@dwmgmk_quiet "linking $(dwm_relpwd $@)" \
 	 $(my dwmwhat.Link) ${LDFLAGS} -rpath ${INSTALLPREFIX}/lib -o $@ $^ ${EXTLIBS} ${PTHREADLDFLAGS}
 

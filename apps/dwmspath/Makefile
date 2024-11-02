@@ -4,33 +4,28 @@ $(dwm_myns dwmspath)
 $(dwm_aliasfn my,dwm_my)
 $(my mydir := $(abspath $(dir $(myfile))))
 
-$(dwm_include $(abspath $(dir $(myfile))/../../Makefile.vars))
+$(dwm_include $(abspath $(my mydir)/../../classes/src/Makefile))
 
-$(my CxxFlags := ${CXXFLAGS} ${PTHREADCXXFLAGS})
-$(my Incs     := -I$(abspath $(my mydir)/../../classes/include) ${EXTINCS})
-$(my Link     := ${LIBTOOL} --quiet --mode=link --tag=CXX ${CXX})
-$(my ObjNames := dwmspath.o)
-$(my Objs     := $(patsubst %.o,$(my mydir)/%.o,$(my ObjNames)))
-$(my ObjDeps  := $(patsubst %.o,$(my mydir)/deps/%_deps,$(my ObjNames)))
-$(my Targets  := $(my mydir)/dwmspath)
+$(my CxxFlags   := ${CXXFLAGS} ${PTHREADCXXFLAGS})
+$(my Incs       := -I$(abspath $(my mydir)/../../classes/include) ${EXTINCS})
+$(my Lib        := $(abspath $(my mydir)/../../classes/lib/libDwm.la))
+$(my Link       := ${LIBTOOL} --quiet --mode=link --tag=CXX ${CXX})
+$(my ObjNames   := dwmspath.o)
+$(my Objs       := $(patsubst %.o,$(my mydir)/%.o,$(my ObjNames)))
+$(my ObjDeps    := $(patsubst %.o,$(my mydir)/deps/%_deps,$(my ObjNames)))
+$(my Targets    := $(my mydir)/dwmspath)
+$(my TarTargets := ${TARDIR}/bin/dwmspath)
 
-DEPSTARGETS       += $(my dwmspath.ObjDeps)
-CLEANTARGETS      += $(my dwmspath.Targets) $(my dwmspath.Objs)
-DISTCLEANTARGETS  += $(my dwmspath.ObjDeps)
-TARGETS           += $(my dwmspath.Targets)
-TARTARGETS        += ${TARDIR}/bin/dwmspath
+$(eval DEPSTARGETS $(dwm_ifcwd :=,+=) $(my dwmspath.ObjDeps))
+$(eval CLEANTARGETS $(dwm_ifcwd :=,+=) $(my dwmspath.Targets,dwmspath.Objs))
+$(eval DISTCLEANTARGETS $(dwm_ifcwd :=,+=) $(my dwmspath.ObjDeps))
+$(eval TARGETS $(dwm_ifcwd :=,+=) $(my dwmspath.Targets))
+$(eval TARTARGETS $(dwm_ifcwd :=,+=) $(my dwmspath.TarTargets))
 
-$(dwm_include verbose,$(abspath $(my mydir)/../../classes/src/Makefile))
+$(dwm_include $(abspath $(dir $(myfile))/../../Makefile.rules))
 
-ifeq ("${CURDIR}","$(my mydir)")
-DEPSTARGETS       := $(my ObjDeps)
-CLEANTARGETS      := $(my Targets) $(my Objs)
-DISTCLEANTARGETS  := $(my ObjDeps)
-TARGETS           := $(my Targets)
-TARTARGETS        := ${TARDIR}/bin/dwmspath
-endif
 
-$(my mydir)/dwmspath: $(my Objs) $(abspath $(my mydir)/../../classes/lib/libDwm.la)
+$(my mydir)/dwmspath: $(my Objs) $(my Lib)
 	@dwmgmk_quiet "linking $(dwm_relpwd $@)" \
 	 $(my dwmspath.Link) ${LDFLAGS} -rpath ${INSTALLPREFIX}/lib -o $@ $^ ${EXTLIBS} ${PTHREADLDFLAGS}
 

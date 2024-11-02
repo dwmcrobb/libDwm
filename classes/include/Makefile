@@ -19,6 +19,6 @@ DISTCLEANTARGETS  := $(libIncTarPrepHdrs)
 endif
 
 ${TARDIR}/include/libDwm/%.hh: $(libIncDir)/%.hh
-	../../install-sh -c -m 444 $< $@
+	$(abspath $(libIncDir)/../../install-sh) -c -m 444 $< $@
 
 $(dwm_include $(abspath $(libIncDir)/../../Makefile.rules))

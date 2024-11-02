@@ -1,5 +1,6 @@
 TOP   	      	 := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 BUILD_DOCS       := @BUILD_DOCS@
+CLASSINC         := -I${TOP}/classes/include
 CXX		 := @CXX@
 CXXFLAGS	 := @CXXFLAGS@
 CXX_SHARED_FLAGS := @CXX_SHARED_FLAGS@
@@ -9,6 +10,8 @@ HTMLMAN          := @htmlman@
 LDFLAGS		 := @LDFLAGS@
 LD_SHARED_FLAGS  := @LD_SHARED_FLAGS@
 LIBTOOL          := @LIBTOOL@
+LIBTOOLCOMPILE   := ${LIBTOOL} --mode=compile --tag=CXX ${CXX}
+LIBTOOLLINK      := ${LIBTOOL} --mode=link --tag=CXX ${CXX}
 MANDOC           := @MANDOC@
 OSNAME		 := @OSNAME@
 PTHREADCXXFLAGS	 := @PTHREADCXXFLAGS@
