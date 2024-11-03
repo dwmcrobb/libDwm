@@ -16,10 +16,12 @@ $(my DepsDir    := $(my mydir)/deps)
 $(my Objs       := $(patsubst %,$(my ObjDir)/%,$(my ObjNames)))
 $(my ObjDeps    := $(patsubst %.o,$(my DepsDir)/%_deps,$(my ObjNames)))
 $(my Exes       := $(patsubst %.o,%,$(my Objs)))
+$(my RmTargets  := $(my Exes))
+$(my RmTargets  += $(patsubst %.o,$(my ObjDir)/.libs/%,$(my ObjNames)))
 
 $(eval TARGETS $(dwm_ifcwd :=,+=) $(my tests.Exes))
 $(eval DEPSTARGETS $(dwm_ifcwd :=,+=) $(my tests.ObjDeps))
-$(eval CLEANTARGETS $(dwm_ifcwd :=,+=) $(my tests.Exes,tests.Objs))
+$(eval CLEANTARGETS $(dwm_ifcwd :=,+=) $(my RmTargets,tests.Objs))
 $(eval DISTCLEANTARGETS $(dwm_ifcwd :=,+=) $(my tests.ObjDeps))
 
 $(dwm_include $(abspath $(my mydir)/../../Makefile.rules))
@@ -41,10 +43,12 @@ runtests: $(my Exes)
 $(eval $(dwm_cppdeps $(my tests.mydir)/deps,(my tests.mydir),\
 $(my tests.mydir)/%.cc,${CXX} -MM $(my tests.CxxFlags) -c $<))
 
-#  only include dependency makefiles if target is not 'clean' or 'distclean'
+#  only include dependency makefiles if target is not a 'clean' target
 ifneq ($(MAKECMDGOALS),clean)
 ifneq ($(MAKECMDGOALS),distclean)
+ifneq ($(MAKECMDGOALS),clean-tests)
 $(dwm_include $(my tests.ObjDeps))
+endif
 endif
 endif
 
