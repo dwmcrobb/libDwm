@@ -45,6 +45,8 @@ $(eval TARTARGETS $(dwm_ifcwd :=,+=) ${TARDIR}/lib/libDwm.la)
 
 #-----------------------------------------------------------------------------
 
+.SECONDARY: $(my BisonSrcs) $(my BisonHdrs) $(my FlexSrcs)
+
 $(my LibDir)/%.la: $(my lib.SharedObjs) $(my lib.Objs)
 	@dwmgmk_quiet "creating $(dwm_relpwd $@)" \
 	 $(my lib.Link) -o $@ $(my lib.SharedObjs) $(my lib.LinkFlags)
