@@ -65,12 +65,15 @@ ${TARDIR}/lib/%.la: $(my lib.Lib)
 	${INSTALL} -s -c $< $@
 
 $(my mydir)/%Parse.cc $(my mydir)/%Parse.hh &: $(my mydir)/%Parse.y
-	bison -d -o $(patsubst %.hh,%.cc,$@) $<
+	@dwmgmk_quiet "generating parser from $(dwm_relpwd $<)" \
+	 bison -d -o $(patsubst %.hh,%.cc,$@) $<
 
 $(my mydir)/%Lex.cc: $(my mydir)/%Lex.lex $(my mydir)/%Parse.hh
-	flex -f -o$@ $<
+	@dwmgmk_quiet "generating lexer from $(dwm_relpwd $<)" \
+	 flex -f -o$@ $<
 
 $(my mydir)/%.cc: $(my mydir)/%.ll
-	flex -o$@ $<
+	@dwmgmk_quiet "generating lexer from $(dwm_relpwd $<)" \
+	 flex -o$@ $<
 
 $(dwm_include $(abspath $(my mydir)/../../Makefile.rules))
