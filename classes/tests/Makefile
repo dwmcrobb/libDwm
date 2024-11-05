@@ -26,7 +26,7 @@ $(eval DISTCLEANTARGETS $(dwm_ifcwd :=,+=) $(my tests.ObjDeps))
 
 $(dwm_include $(abspath $(my mydir)/../../Makefile.rules))
 
-.SECONDARY: $(my tests.Objs)
+.SECONDARY: $(my tests.Objs) $(my tests.ObjDeps)
 
 runtests: $(my Exes)
 	@ for tp in $(my tests.Exes) ; do \

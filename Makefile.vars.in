@@ -17,6 +17,7 @@ OSNAME		 := @OSNAME@
 PTHREADCXXFLAGS	 := @PTHREADCXXFLAGS@
 PTHREADLDFLAGS	 := @PTHREADLDFLAGS@
 SHARED_LIB_EXT   := @SHARED_LIB_EXT@
+SHLIB_VERSION    := $(shell ${TOP}/getvers.sh -s)
 TARDIR		 := @TARDIR@@prefix@
 VERSION		 := @DWM_VERSION@
 INSTALL          := @LIBTOOL@ --mode=install $(TOP)/install-sh
