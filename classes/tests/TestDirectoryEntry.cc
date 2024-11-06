@@ -90,7 +90,7 @@ public:
   bool operator () (DirectoryEntry & de)
   {
     bool  rc = UnitAssert(de.Path().find(_path) == 0);
-    if (de.BaseName() == "TestDwmDirectoryEntry") {
+    if (de.BaseName() == "TestDirectoryEntry") {
       _foundSelf = true;
     }
     return rc;
