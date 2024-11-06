@@ -6,7 +6,7 @@ $(dwm_aliasfn ifcwd,dwm_ifcwd)
 
 $(my mydir := $(abspath $(dir $(myfile))))
 
-$(dwm_include $(abspath $(my mydir)/../../classes/src/Makefile))
+$(dwm_include_once $(abspath $(my mydir)/../../classes/src/Makefile))
 
 $(my CxxFlags    := ${CXXFLAGS} ${PTHREADCXXFLAGS})
 $(my Incs        := -I$(abspath $(my mydir)/../../classes/include) ${EXTINCS})
@@ -17,19 +17,19 @@ $(my Objs        := $(patsubst %.o,$(my mydir)/%.o,$(my ObjNames)))
 $(my ObjDeps     := $(patsubst %.o,$(my mydir)/deps/%_deps,$(my ObjNames)))
 $(my Targets     := $(my dwmnet.mydir)/dwmnet)
 $(my TarTargets  := ${TARDIR}/bin/dwmnet)
-$(my RmTargets   := $(my dwmnet.Objs))
-$(my LtRmTargets := $(my dwmnet.Targets))
+$(my Clean       := $(my dwmnet.Objs))
+$(my LtClean     := $(my dwmnet.Targets))
 
 $(eval DEPSTARGETS      $(ifcwd :=,+=) $(my dwmnet.ObjDeps))
-$(eval CLEANTARGETS     $(ifcwd :=,+=) $(my dwmnet.RmTargets))
-$(eval LTCLEANTARGETS   $(ifcwd :=,+=) $(my dwmnet.LtRmTargets))
+$(eval CLEANTARGETS     $(ifcwd :=,+=) $(my dwmnet.Clean))
+$(eval LTCLEANTARGETS   $(ifcwd :=,+=) $(my dwmnet.LtClean))
 $(eval DISTCLEANTARGETS $(ifcwd :=,+=) $(my dwmnet.ObjDeps))
 $(eval TARGETS          $(ifcwd :=,+=) $(my dwmnet.Targets))
 $(eval TARTARGETS       $(ifcwd :=,+=) $(my dwmnet.TarTargets))
 
-$(dwm_include $(abspath $(dir $(myfile))/../../Makefile.rules))
+# $(dwm_include $(abspath $(dir $(myfile))/../../Makefile.rules))
 
-$(my mydir)/dwmnet: $(my Objs) $(my Lib)
+$(my mydir)/dwmnet: $(my dwmnet.Objs) $(my dwmnet.Lib)
 	@dwmgmk_quiet "linking $(dwm_relpwd $@)" \
 	 $(my dwmnet.Link) ${LDFLAGS} -rpath ${INSTALLPREFIX}/lib -o $@ $^ ${EXTLIBS} ${PTHREADLDFLAGS}
 

@@ -1,7 +1,5 @@
 load $(shell pkg-config --variable=libdir dwmgmk)/dwm_gmk.so(dwm_gmk_setup)
 $(dwm_aliasfn my,dwm_my)
-$(dwm_aliasfn myvrgx,dwm_myvrgx)
-$(dwm_aliasfn rgxreplace,dwm_rgxreplace)
 $(dwm_myns lib)
 $(my mydir := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))))
 
@@ -18,8 +16,8 @@ $(my LinkFlags  := $(my LinkRpath) ${EXTLIBS} $(my LibVersion) ${LDFLAGS})
 
 $(eval TARGETS          $(dwm_ifcwd :=,+=) $(my lib.Lib))
 $(eval DEPSTARGETS      $(dwm_ifcwd :=,+=) $(my lib.Deps))
-$(eval CLEANTARGETS     $(dwm_ifcwd :=,+=) $(my lib.RmTargets))
-$(eval LTCLEANTARGETS   $(dwm_ifcwd :=,+=) $(my lib.LtRmTargets))
+$(eval CLEANTARGETS     $(dwm_ifcwd :=,+=) $(my lib.Clean))
+$(eval LTCLEANTARGETS   $(dwm_ifcwd :=,+=) $(my lib.LtClean))
 $(eval DISTCLEANTARGETS $(dwm_ifcwd :=,+=) $(my lib.Deps))
 $(eval TARTARGETS       $(dwm_ifcwd :=,+=) ${TARDIR}/lib/libDwm.la)
 

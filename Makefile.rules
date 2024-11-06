@@ -1,7 +1,7 @@
 .PHONY: all tarprep distclean clean clean-tarprep cleandeps ltclean
 
-all: $(sort $(TARGETS))
-     
+all:: $(sort $(TARGETS))
+
 tarprep: $(sort ${TARTARGETS})
 
 distclean:: clean
