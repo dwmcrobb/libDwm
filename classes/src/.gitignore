@@ -1,8 +1,8 @@
-DwmCgi.cc
-DwmExecutor.cc
+DwmCgiLex.cc
+DwmExecutorLex.cc
 DwmPackageInfo.cc
 DwmProcessTableLex.cc
 DwmProcessTableParse.cc
 DwmProcessTableParse.hh
 DwmRegistry.cc
-DwmTimeUtil.cc
+DwmTimeUtilLex.cc
