@@ -1,5 +1,6 @@
 AC_INIT([libDwm],[m4_esyscmd_s(./getvers.sh -v)],[dwmcrobb@me.com],[libDwm],[http://www.mcplex.net])
 AC_CONFIG_HEADERS([classes/include/DwmPortability.hh])
+AC_PREFIX_DEFAULT(/usr/local)
 
 AC_PROG_CC
 AC_PROG_CXX
@@ -64,8 +65,8 @@ fi
 
 AC_SUBST(PC_REQ_PKGS)
 
-EXTINCS=`pkg-config --cflags-only-I ${PC_PKGS}`
-EXTLIBS=`pkg-config --libs ${PC_PKGS}`
+PKG_EXTINCS=`pkg-config --cflags-only-I ${PC_PKGS}`
+PKG_EXTLIBS=`pkg-config --libs ${PC_PKGS}`
 
 if [[ ${DWM_HAVE_libpcap_PKG} -ne 1 ]]; then
   DWM_CHECK_LIBPCAP
@@ -77,10 +78,24 @@ DWM_CHECK_NEED_LIBIBVERBS
 DWM_CHECK_LIBTERMCAP
 DWM_CHECK_LIBZ
 
+EXTINCS=`dwmgmk_uniqleft ${PKG_EXTINCS} ${EXTINCS}`
+
 AC_SUBST(EXTINCS)
 AC_SUBST(EXTLIBS)
 AC_SUBST(LDFLAGS)
 AC_SUBST(OSLIBS)
+AC_SUBST(PKG_EXTINCS)
+AC_SUBST(PKG_EXTLIBS)
+
+libDwmPrefix="${prefix}"
+if [[ -z "${libDwmPrefix}" ]] || [[ "${libDwmPrefix}" = "NONE" ]]; then
+  libDwmPrefix=/usr/local
+fi
+
+echo libDwmPrefix ${libDwmPrefix}
+
+PKG_CFLAGS=`dwmgmk_uniqleft ${PTHREADCXXFLAGS} -I${libDwmPrefix}/include/libDwm ${EXTINCS}`
+AC_SUBST(PKG_CFLAGS)
 
 DWM_PREREQ_PATH(htmlman,share/htmlman,[HTML manpage path])
 
