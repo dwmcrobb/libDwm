@@ -1,3 +1,10 @@
+2024-11-08  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* tagged as libDwm-0.9.50
+
+	* Finished first pass at migrating to non-recursive build, using
+	latest dwmgmk.
+
 2024-10-31  Daniel W. McRobb  <dwm@kiva.mcplex.net>
 
 	* Makefile, Makefile.rules, Makefile.vars.in, apps/Makefile,
