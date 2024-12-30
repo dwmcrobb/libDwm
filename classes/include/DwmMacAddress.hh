@@ -47,6 +47,7 @@ extern "C" {
   #include <zlib.h>
 }
 
+#include <array>
 #include <cstdint>
 #include <cstdio>
 #include <iostream>
@@ -80,6 +81,16 @@ namespace Dwm {
     //------------------------------------------------------------------------
     MacAddress & operator = (const MacAddress & addr);
 
+    //------------------------------------------------------------------------
+    //!  Returns a const reference to the raw representation.
+    //------------------------------------------------------------------------
+    const std::array<uint8_t,6> & Addr() const  { return _addr; }
+
+    //------------------------------------------------------------------------
+    //!  Returns a reference to the raw representation.
+    //------------------------------------------------------------------------
+    std::array<uint8_t,6> & Addr()  { return _addr; }
+    
     //------------------------------------------------------------------------
     //!  Returns a string representation of the MAC address.
     //------------------------------------------------------------------------
@@ -172,7 +183,7 @@ namespace Dwm {
     operator >> (std::istream & is, MacAddress & addr);
     
   protected:
-    uint8_t  _addr[6];
+    std::array<uint8_t,6>  _addr;
   };
   
 }  // namespace Dwm
