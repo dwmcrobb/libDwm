@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
         UnitAssert(iter->second.Mask() != Ipv4Address("0.0.0.0"));
       }
       if (show) {
-        cout << iter->second;
+        cout << iter->second.MacAddr() << ' ' << iter->second;
       }
     }
   }

@@ -175,7 +175,7 @@ namespace Dwm {
   //!  
   //--------------------------------------------------------------------------
   LocalInterface::LocalInterface()
-      : _name(), _addr(), _mask(), _mtu(), _aliases()
+      : _name(), _addr(), _mask(), _mtu(), _macAddr(), _aliases()
   {}
   
   //------------------------------------------------------------------------
@@ -244,6 +244,22 @@ namespace Dwm {
   {
     _mtu = mtu;
     return(_mtu);
+  }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  const MacAddress & LocalInterface::MacAddr() const
+  {
+    return _macAddr;
+  }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  const MacAddress & LocalInterface::MacAddr(const MacAddress & macAddr)
+  {
+    return (_macAddr = macAddr);
   }
   
 #if (defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__APPLE__))
@@ -575,9 +591,17 @@ namespace Dwm {
           }
           
           localIntf.Mtu(0);
-          if (ioctl(sockfd, SIOCGIFMTU, ifr) >= 0)
+          if (ioctl(sockfd, SIOCGIFMTU, ifr) >= 0) {
             localIntf.Mtu(ifr->ifr_mtu);
-            
+          }
+
+          if (ioctl(sockfd, SIOCGIFHWADDR, ifr) >= 0) {
+            MacAddress  macAddr;
+            memcpy(macAddr.Addr().data(), ifr->ifr_addr.sa_data,
+                   macAddr.Addr().size());
+            localIntf.MacAddr(macAddr);
+          }
+          
           interfaces[ifr->ifr_name] = localIntf;
         }
 
@@ -640,6 +664,14 @@ namespace Dwm {
               if (interfaces.find(ifAddr->ifa_name) != interfaces.end()) {
                 interfaces[ifAddr->ifa_name].Mtu(ifData->ifi_mtu);
               }
+            }
+            MacAddress  macAddr;
+            const struct sockaddr_dl *dl =
+              (const struct sockaddr_dl *)ifAddr->ifa_addr;
+            memcpy(macAddr.Addr().data(), LLADDR(dl),
+                   macAddr.Addr().size());
+            if (interfaces.find(ifAddr->ifa_name) != interfaces.end()) {
+              interfaces[ifAddr->ifa_name].MacAddr(macAddr);
             }
           }
         }

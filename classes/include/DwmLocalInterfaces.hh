@@ -54,6 +54,7 @@ extern "C" {
 #include <map>
 
 #include "DwmIpv4Address.hh"
+#include "DwmMacAddress.hh"
 
 namespace Dwm {
 
@@ -197,6 +198,16 @@ namespace Dwm {
     std::set<LocalInterfaceAlias> & Aliases();
 
     //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    const MacAddress & MacAddr() const;
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    const MacAddress & MacAddr(const MacAddress & macAddr);
+    
+    //------------------------------------------------------------------------
     //!  Prints a LocalInterface to an ostream.
     //------------------------------------------------------------------------
     friend std::ostream & operator << (std::ostream & os, 
@@ -207,6 +218,7 @@ namespace Dwm {
     Ipv4Address                    _addr;
     Ipv4Address                    _mask;
     int                            _mtu;
+    MacAddress                     _macAddr;
     std::set<LocalInterfaceAlias>  _aliases;
   };
 
