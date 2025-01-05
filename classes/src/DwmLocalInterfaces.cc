@@ -650,11 +650,7 @@ namespace Dwm {
         }
         ifAddr = ifAddr->ifa_next;
       }
-      freeifaddrs(ifAddrs);
-    }
-    
-    if (getifaddrs(&ifAddrs) == 0) {
-      struct ifaddrs  *ifAddr = ifAddrs;
+      ifAddr = ifAddrs;
       while (ifAddr) {
         if (ifAddr->ifa_addr) {
           if (ifAddr->ifa_addr->sa_family == AF_LINK) {
@@ -679,7 +675,7 @@ namespace Dwm {
       }
       freeifaddrs(ifAddrs);
     }
-    
+
     return (! interfaces.empty());
   }
       
