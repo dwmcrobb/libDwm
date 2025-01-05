@@ -1,3 +1,9 @@
+2025-01-04  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* classes/include/DwmLocalInterfaces.hh,
+	  classes/src/DwmLocalInterfaces.cc:
+	Added MAC address for each interface.
+
 2024-12-30  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* classes/include/DwmMacAddress.hh, classes/src/DwmMacAddress.cc:
