@@ -1,3 +1,7 @@
+2025-01-07  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* tagged as libDwm-0.9.51
+
 2025-01-04  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* classes/include/DwmLocalInterfaces.hh,
