@@ -389,7 +389,36 @@ namespace Dwm {
   {
     return pcap_breakloop(_pcap);
   }
-  
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool Pcap::SendPacket(const uint8_t *buf, int size)
+  {
+    bool  rc = false;
+    if (_pcap) {
+      int  pcrc = pcap_sendpacket(_pcap, buf, size);
+      switch (pcrc) {
+        case 0:
+          rc = true;
+          break;
+        case PCAP_ERROR_NOT_ACTIVATED:
+          FSyslog(LOG_ERR, "Pcap::SendPacket(): device not activated");
+          break;
+        case PCAP_ERROR:
+          FSyslog(LOG_ERR, "Pcap::SendPacket(): {}", pcap_geterr(_pcap));
+          break;
+        default:
+          FSyslog(LOG_ERR, "Pcap::SendPacket(): unknown error");
+          break;
+      }
+    }
+    else {
+      FSyslog(LOG_ERR, "Pcap::SendPacket(): device not open");
+    }
+    return rc;
+  }
+
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------

@@ -142,6 +142,8 @@ namespace Dwm {
     //!  A wrapper for pcap_breakloop().
     //------------------------------------------------------------------------
     void BreakLoop();
+
+    bool SendPacket(const uint8_t *buf, int size);
     
     //------------------------------------------------------------------------
     //!  Closes the capture device.  Returns true if the device was open,
