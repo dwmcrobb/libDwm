@@ -1,3 +1,10 @@
+2025-01-15  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* tagged as libDwm-0.9.53
+	
+	* classes/include/DwmPcap.hh, classes/src/DwmPcap.cc: Added
+	SendPacket().
+
 2025-01-14  Daniel W. McRobb  <dwm@nomnom.mcplex.net>
 
 	* tagged as libDwm-0.9.52
