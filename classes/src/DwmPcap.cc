@@ -65,7 +65,7 @@ namespace Dwm {
   //!  
   //--------------------------------------------------------------------------
   Pcap::Pcap()
-      : _pcap(0), _errbuf()
+      : _pcap(nullptr), _errbuf()
   { }
   
   //--------------------------------------------------------------------------
@@ -90,6 +90,172 @@ namespace Dwm {
     }
   }
 
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool Pcap::Create(const string & device)
+  {
+    bool  rc = false;
+    if (! _pcap) {
+      if (! device.empty()) {
+        char    errbuf[PCAP_ERRBUF_SIZE];
+        _pcap = pcap_create((char *)device.c_str(), errbuf);
+        if (_pcap) {
+          rc = true;
+        }
+        else {
+          FSyslog(LOG_ERR, "Pcap::Create({}) failed: {}",
+                  device, errbuf);
+          _errbuf = errbuf;
+        }
+      }
+      else {
+        FSyslog(LOG_ERR, "Pcap::Create() invalid (empty) device name");
+      }
+    }
+    else {
+      FSyslog(LOG_ERR, "Pcap::Create(): pcap handle already open!");
+    }
+    return rc;
+  }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool Pcap::Activate()
+  {
+    bool  rc = false;
+    if (_pcap) {
+      int  res = pcap_activate(_pcap);
+      if (0 == res) {
+        rc = true;
+      }
+      else if (0 < res) {
+        switch (res) {
+          case PCAP_WARNING_PROMISC_NOTSUP:
+            FSyslog(LOG_WARNING,
+                    "Pcap::Activate(): promiscuous mode not supported ({})",
+                    pcap_geterr(_pcap));
+            break;
+          case PCAP_WARNING_TSTAMP_TYPE_NOTSUP:
+            FSyslog(LOG_WARNING,
+                    "Pcap::Activate(): timestamp type not supported");
+            break;
+          case PCAP_WARNING:
+            FSyslog(LOG_WARNING,
+                    "");
+            break;
+          default:
+            break;
+        }
+        rc = true;
+      }
+      else {
+        switch (res) {
+          case PCAP_ERROR_ACTIVATED:
+            FSyslog(LOG_ERR, "Pcap::Activate(): device already activated");
+            break;
+          case PCAP_ERROR_NO_SUCH_DEVICE:
+            FSyslog(LOG_ERR, "Pcap::Activate(): no such device ({})",
+                    pcap_geterr(_pcap));
+            break;
+          case PCAP_ERROR_PERM_DENIED:
+            FSyslog(LOG_ERR, "Pcap::Activate(): permission denied ({})",
+                    pcap_geterr(_pcap));
+            break;
+          case PCAP_ERROR_PROMISC_PERM_DENIED:
+            FSyslog(LOG_ERR,
+                    "Pcap::Activate(): promiscuous permission denied");
+            break;
+          case PCAP_ERROR_RFMON_NOTSUP:
+            FSyslog(LOG_ERR, "Pcap::Activate(): monintor mode not supported");
+            break;
+          case PCAP_ERROR_IFACE_NOT_UP:
+            FSyslog(LOG_ERR, "Pcap::Activate(): interface not up");
+            break;
+          case PCAP_ERROR:
+            FSyslog(LOG_ERR, "Pcap::Activate(): {}", pcap_geterr(_pcap));
+            break;
+          default:
+            break;
+        }
+      }
+    }
+    else {
+      FSyslog(LOG_ERR, "Pcap::Activate(): device not open");
+    }
+    return rc;
+  }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool Pcap::SetImmediateMode(bool enable)
+  {
+    bool  rc = false;
+    if (_pcap) {
+      int  pcrc = pcap_set_immediate_mode(_pcap, enable ? 1 : 0);
+      switch (pcrc) {
+        case 0:
+          rc = true;
+          break;
+        case PCAP_ERROR_ACTIVATED:
+          FSyslog(LOG_ERR, "Pcap::SetImmediateMode(): device activated");
+          break;
+        default:
+          break;
+      }
+    }
+    else {
+      FSyslog(LOG_ERR, "Pcap::SetImmediateMode(): device not open");
+    }
+    return rc;
+  }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  int Pcap::GetSelectableFd()
+  {
+    int  rc = -1;
+    if (_pcap) {
+      rc = pcap_get_selectable_fd(_pcap);
+      if (0 > rc) {
+        FSyslog(LOG_ERR, "Pcap::GetSelectableFd() failed");
+      }
+    }
+    else {
+      FSyslog(LOG_ERR, "Pcap::GetSelectableFd(): device not open");
+    }
+    return rc;
+  }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  bool Pcap::SetSnaplen(int snaplen)
+  {
+    bool  rc = false;
+    if (_pcap) {
+      int pcrc = pcap_set_snaplen(_pcap, snaplen);
+      switch (pcrc) {
+        case 0:
+          rc = true;
+          break;
+        case PCAP_ERROR_ACTIVATED:
+          FSyslog(LOG_ERR, "Pcap::SetSnaplen(): device already activated");
+          break;
+        default:
+          FSyslog(LOG_ERR, "Pcap::SetSnaplen({}) failed", snaplen);
+          break;
+      }
+    }
+    else {
+      FSyslog(LOG_ERR, "Pcap::SetSnaplen(): device not open");
+    }
+    return rc;
+  }
+  
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------

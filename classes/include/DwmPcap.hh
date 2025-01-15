@@ -67,6 +67,35 @@ namespace Dwm {
     ~Pcap();
 
     int SetBufferSize(int bufferSize);
+
+    //------------------------------------------------------------------------
+    //!  Create for the given @c device (a network interface name).  Returns
+    //!  true on success, false on failure.
+    //------------------------------------------------------------------------
+    bool Create(const std::string & device);
+
+    //------------------------------------------------------------------------
+    //!  Activate.  Returns true on success, false on failure.
+    //------------------------------------------------------------------------
+    bool Activate();
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool SetImmediateMode(bool enable);
+
+    //------------------------------------------------------------------------
+    //!  On success, returns a file descriptor on which one can do select(2).
+    //!  On failure, reutrns -1.  Note that the device must be activated
+    //!  before calling this function.
+    //------------------------------------------------------------------------
+    int GetSelectableFd();
+
+    //------------------------------------------------------------------------
+    //!  Set the snapshot length for a not-yet-activated device.  Returns
+    //!  true on success, false on failure.
+    //------------------------------------------------------------------------
+    bool SetSnaplen(int snaplen);
     
     //------------------------------------------------------------------------
     //!  Open \c device for live packet capture.  Will capture no more than
