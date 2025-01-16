@@ -144,6 +144,12 @@ namespace Dwm {
     void BreakLoop();
 
     bool SendPacket(const uint8_t *buf, int size);
+
+    //------------------------------------------------------------------------
+    //!  Returns true if a packet is ready to be read within the given
+    //!  timeout.
+    //------------------------------------------------------------------------
+    bool RecvPacketReady(struct timeval timeout);
     
     //------------------------------------------------------------------------
     //!  Closes the capture device.  Returns true if the device was open,

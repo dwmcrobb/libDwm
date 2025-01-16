@@ -393,6 +393,35 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
+  bool Pcap::RecvPacketReady(struct timeval timeout)
+  {
+    bool rc = false;
+    if (_pcap) {
+      int  fd = pcap_get_selectable_fd(_pcap);
+      if (0 <= fd) {
+        fd_set  fds;
+        FD_ZERO(&fds);
+        FD_SET(fd, &fds);
+        int  selectrc = select(fd+1, &fds, nullptr, nullptr, &timeout);
+        if (selectrc > 0) {
+          if (FD_ISSET(fd, &fds)) {
+            rc = true;
+          }
+        }
+      }
+      else {
+        FSyslog(LOG_ERR, "pcap_get_selectable_fd() failed");
+      }
+    }
+    else {
+      FSyslog(LOG_ERR, "capture device not open");
+    }
+    return rc;
+  }
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
   bool Pcap::SendPacket(const uint8_t *buf, int size)
   {
     bool  rc = false;
