@@ -1,5 +1,8 @@
 2025-01-15  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* classes/include/DwmPcap.hh, classes/src/DwmPcap.cc:
+	Added RecvPacketReady().
+
 	* tagged as libDwm-0.9.53
 	
 	* classes/include/DwmPcap.hh, classes/src/DwmPcap.cc: Added
