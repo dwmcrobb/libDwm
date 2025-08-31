@@ -65,6 +65,36 @@
 namespace Dwm {
 
   //--------------------------------------------------------------------------
+  //!  Simple concept expressing that an instance of type T can be written
+  //!  to an ostream via an I::Write() member.  Note that we only need this
+  //!  for the StreamIO class (which is always used as the @c I template
+  //!  parameter), but we can't predeclare the StreamIO class because the
+  //!  concept needs the class definition since it tests for a class member.
+  //   Hence the @c I template parameter.
+  //--------------------------------------------------------------------------
+  namespace __iostream_detail {
+    template <typename T, typename I>
+    concept IsIOStreamWritable = requires(const T & t, std::ostream & os) {
+      { I::Write(os, t) } -> std::same_as<std::ostream &>;
+    };
+  }
+  
+  //--------------------------------------------------------------------------
+  //!  Simple concept expressing that an instance of type T can be read from
+  //!  an istream via an I::Read() member.  Note that we only need this
+  //!  for the StreamIO class (which is always used as the @c I template
+  //!  parameter), but we can't predeclare the StreamIO class because the
+  //!  concept needs the class definition since it tests for a class member.
+  //   Hence the @c I template parameter.
+  //--------------------------------------------------------------------------
+  namespace __iostream_detail {
+    template <typename T, typename I>
+    concept IsIOStreamReadable = requires(T & t, std::istream & is) {
+      { I::Read(is, t) } -> std::same_as<std::istream &>;
+    };
+  }
+  
+  //--------------------------------------------------------------------------
   //!  This class contains a collection of static functions for reading and
   //!  writing simple types, in network byte order (MSB first).  It also
   //!  contains functions to read and write strings.  It also contains
@@ -704,6 +734,49 @@ namespace Dwm {
     {
       (Write(os,args) &&...);
       return os;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes a bounded array @c v to an ostream @c os.  Returns @c os.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
+    static std::ostream & Write(std::ostream & os, T const & v)
+    {
+      static_assert(__iostream_detail::IsIOStreamWritable<decltype(v[0]),StreamIO>);
+      uint64_t  n = std::extent_v<T>;
+      if (StreamIO::Write(os, n)) {
+        for (size_t i = 0; i < std::extent_v<T>; ++i) {
+          if (! StreamIO::Write(os, v[i])) {
+            break;
+          }
+        }
+      }
+      return os;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads a bounded array @c v from an istream @c is.  Returns @c is.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
+    static std::istream & Read(std::istream & is, T & v)
+    {
+      static_assert(__iostream_detail::IsIOStreamReadable<decltype(v[0]),StreamIO>);
+      uint64_t  n;
+      if (StreamIO::Read(is, n)) {
+        if (std::extent_v<T> == n) {
+          for (size_t i = 0; i < std::extent_v<T>; ++i) {
+            if (! StreamIO::Read(is, v[i])) {
+              break;
+            }
+          }
+        }
+        else {
+          is.setstate(std::ios_base::failbit);
+        }
+      }
+      return is;
     }
     
   private:

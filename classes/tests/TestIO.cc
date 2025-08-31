@@ -1462,6 +1462,78 @@ static bool VarArgFileTestFail()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static bool BoundedArrayStreamTest()
+{
+  bool  rc = false;
+  
+  int  ia1[5] = { 1,2,3,4,5 };
+  static_assert(std::is_bounded_array_v<decltype(ia1)>);
+  stringstream  ss;
+  if (UnitAssert(StreamIO::Write(ss, ia1))) {
+    int  ia2[5];
+    if (UnitAssert(StreamIO::Read(ss, ia2))) {
+      rc = true;
+      for (size_t i = 0; i < 5; ++i) {
+        if (! UnitAssert(ia1[i] == ia2[i])) {
+          rc = false;
+          goto done;
+        }
+      }
+    }
+  }
+
+  if (rc) {
+    int  ib1[3][3] = { { 1,2,3 }, { 4,5,6 }, { 7,8,9 } };
+    static_assert(std::is_bounded_array_v<decltype(ib1)>);
+    if (UnitAssert(StreamIO::Write(ss, ib1))) {
+      int  ib2[3][3];
+      if (UnitAssert(StreamIO::Read(ss, ib2))) {
+        rc = true;
+        for (size_t i = 0; i < 3; ++i) {
+          for (size_t j = 0; j < 3; ++j) {
+            if (! UnitAssert(ib1[i][j] == ib2[i][j])) {
+              rc = false;
+              break;
+            }
+          }
+          if (! rc) {
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  if (rc) {
+    int  ic1[][3] = { {2,3,4}, {6,7,8}, {10,11,12} };
+    static_assert(std::is_bounded_array_v<decltype(ic1)>);
+    rc = false;
+    if (UnitAssert(StreamIO::Write(ss, ic1))) {
+      int  ic2[][3] = { {0,0,0}, {0,0,0}, {0,0,0} };
+      if (UnitAssert(StreamIO::Read(ss, ic2))) {
+        rc = true;
+        for (size_t i = 0; i < 3; ++i) {
+          for (size_t j = 0; j < 3; ++j) {
+            if (! UnitAssert(ic1[i][j] == ic2[i][j])) {
+              rc = false;
+              break;
+            }
+          }
+          if (! rc) {
+            break;
+          }
+        }
+      }
+    }
+  }
+  
+done:
+  return rc;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
   if (! StreamTest())
@@ -1512,7 +1584,10 @@ int main(int argc, char *argv[])
     goto testFailed;
   if (! VarArgDescriptorTest())
     goto testFailed;
-  VarArgDescriptorTestFail();
+  if (! VarArgDescriptorTestFail())
+    goto testFailed;
+  if (! BoundedArrayStreamTest())
+    goto testFailed;
   
   if (Assertions::Total().Failed())
     Assertions::Print(cerr, true);
