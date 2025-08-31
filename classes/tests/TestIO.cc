@@ -2,7 +2,7 @@
 // @(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmIO.cc 8389 $
 // @(#) $Id: TestDwmIO.cc 8389 2016-04-17 04:31:36Z dwm $
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2007, 2016
+//  Copyright (c) Daniel W. McRobb 2004-2007, 2016, 2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
