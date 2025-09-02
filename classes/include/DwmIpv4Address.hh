@@ -387,6 +387,16 @@ namespace Dwm {
 
 }  // namespace Dwm
 
+//----------------------------------------------------------------------------
+//!  Specialize std::hash for Dwm::Ipv4Address
+//----------------------------------------------------------------------------
+template <>
+struct std::hash<Dwm::Ipv4Address>
+{
+  inline std::size_t operator () (const Dwm::Ipv4Address & a) const noexcept
+  { return a.Raw(); }
+};
+
 #endif  // _DWMIPV4ADDRESS_HH_
 
 //---------------------------- emacs settings -----------------------------
