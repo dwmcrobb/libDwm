@@ -571,7 +571,7 @@ static void TestAsVector(const vector<T> & invec)
   unlink("./TestASIO.sock");
 
   local::stream_protocol::socket    lsck(ioContext);
-  GenericTestContainer(gsck, endPoint, invec);
+  GenericTestContainer(lsck, endPoint, invec);
   lsck.close();
   unlink("./TestASIO.sock");
 
@@ -920,8 +920,8 @@ static void TestIpv4Addresses()
   TestAsMultimap(vs1);
   TestAsSet(vs1);
   TestAsMultiset(vs1);
-  // TestAsUnorderedMap(vs1);
-  // TestAsUnorderedSet(vs1);
+  TestAsUnorderedMap(vs1);
+  TestAsUnorderedSet(vs1);
   return;
 }
 
@@ -995,6 +995,70 @@ static void TestVariants()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+template <typename valueT>
+static void ServerBoundedArrayReader(valueT & c,
+                                     std::atomic<bool> & ready)
+{
+  boost::asio::io_context  ioContext;
+  ip::tcp::acceptor        acc(ioContext,
+                               ip::tcp::endpoint(ip::address::from_string("127.0.0.1"), 7117),
+                               true);
+  boost::asio::socket_base::reuse_address option(true);
+  acc.set_option(option);
+  ip::tcp::socket            sck(ioContext);
+  ip::tcp::endpoint          endPoint;
+  boost::system::error_code  ec;
+  ready = true;
+  acc.accept(sck, endPoint, ec);
+  if (UnitAssert(! ec)) {
+    sck.non_blocking(false);
+    Dwm::ASIO::Read(sck, c, ec);
+    sck.close();
+  }
+  acc.close();
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestBoundedArray()
+{
+  typedef int  Int7BoundedArray[7];
+
+  Int7BoundedArray      ct = {1,2,3,4,5,6,7};
+  Int7BoundedArray      outct;
+  std::atomic<bool>     serverReady = false;
+
+  std::thread  serverthread =
+    std::thread(ServerBoundedArrayReader<Int7BoundedArray>,
+                std::ref(outct), std::ref(serverReady));
+  while (! serverReady) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  }
+  
+  boost::asio::io_context    ioContext;
+  ip::tcp::endpoint          endPoint(ip::address::from_string("127.0.0.1"),
+                                      7117);
+  ip::tcp::socket            sck(ioContext);
+  boost::system::error_code  ec;
+  sck.connect(endPoint, ec);
+  if (UnitAssert((! ec))) {
+    sck.non_blocking(false);
+    UnitAssert(Dwm::ASIO::Write(sck, ct, ec));
+    sck.close();
+  }
+  serverthread.join();
+  for (size_t i = 0; i < 7; ++i) {
+    UnitAssert(ct[i] == outct[i]);
+  }
+    
+  return;
+}
+    
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
   // Dwm::SysLogger::Open("TestASIO", LOG_PERROR, LOG_USER);
@@ -1008,6 +1072,7 @@ int main(int argc, char *argv[])
   TestTuples();
   TestVariants();
   TestVarArgs();
+  TestBoundedArray();
   
   if (Dwm::Assertions::Total().Failed()) {
     Dwm::Assertions::Print(cerr, true);
