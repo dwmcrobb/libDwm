@@ -1,5 +1,9 @@
 2025-09-03  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* dwm.m4, configure: Look for asio in /opt/local/libexec/boost/1.88
+	instead of /opt/local/libexec/boost/1.81.  Used on macOS to find
+	MacPorts version of Boost asio.
+
 	* classes/tests/TestASIO.cc: Use boost::asio::ip::make_address
 	instead of deprecated boost::asio::ip::address::from_string.
 

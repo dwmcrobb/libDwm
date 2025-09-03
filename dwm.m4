@@ -423,7 +423,7 @@ define(DWM_COMPILE_BOOSTASIO,[
 dnl #------------------------------------------------------------------------
 define(DWM_FIND_BOOST_DIR,[
   BOOSTDIR=""
-  for boost_dir in "/usr" "/usr/local" "/opt/local" "/opt/local/libexec/boost/1.81"; do
+  for boost_dir in "/usr" "/usr/local" "/opt/local" "/opt/local/libexec/boost/1.88"; do
     if [[ -f ${boost_dir}/include/boost/asio.hpp ]]; then
       BOOSTDIR="${boost_dir}"
       break
