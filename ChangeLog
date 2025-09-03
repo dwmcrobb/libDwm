@@ -1,5 +1,8 @@
 2025-09-03  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* classes/tests/TestASIO.cc: Use boost::asio::ip::make_address
+	instead of deprecated boost::asio::ip::address::from_string.
+
 	* classes/include/DwmASIO.hh: Added ability to read and write
 	bounded arrays.
 
