@@ -68,7 +68,7 @@ static void VarArgServerReader(std::atomic<bool> & ready, Args & ...args)
 {
   boost::asio::io_context  ioContext;
   ip::tcp::acceptor        acc(ioContext,
-                               ip::tcp::endpoint(ip::address::from_string("127.0.0.1"), 7117),
+                               ip::tcp::endpoint(ip::make_address("127.0.0.1"), 7117),
                                true);
   boost::asio::socket_base::reuse_address option(true);
   acc.set_option(option);
@@ -109,8 +109,7 @@ static void TestVarArgs()
   }
   
   boost::asio::io_context    ioContext;
-  ip::tcp::endpoint          endPoint(ip::address::from_string("127.0.0.1"),
-                                      7117);
+  ip::tcp::endpoint          endPoint(ip::make_address("127.0.0.1"), 7117);
   ip::tcp::socket            sck(ioContext);
   boost::system::error_code  ec;
   sck.connect(endPoint, ec);
@@ -136,7 +135,7 @@ static void ServerReader(std::vector<T> & entries, std::atomic<bool> & ready)
   entries.clear();
   boost::asio::io_context  ioContext;
   ip::tcp::acceptor        acc(ioContext,
-                               ip::tcp::endpoint(ip::address::from_string("127.0.0.1"), 7117),
+                               ip::tcp::endpoint(ip::make_address("127.0.0.1"), 7117),
                                true);
   boost::asio::socket_base::reuse_address option(true);
   acc.set_option(option);
@@ -192,7 +191,7 @@ static void ServerContainerReader(ContainerT & c, std::atomic<bool> & ready)
   c.clear();
   boost::asio::io_context  ioContext;
   ip::tcp::acceptor        acc(ioContext,
-                               ip::tcp::endpoint(ip::address::from_string("127.0.0.1"), 7117),
+                               ip::tcp::endpoint(ip::make_address("127.0.0.1"), 7117),
                                true);
   boost::asio::socket_base::reuse_address option(true);
   acc.set_option(option);
@@ -242,7 +241,7 @@ static void ServerArrayReader(std::array<valueT,N> & c,
 {
   boost::asio::io_context  ioContext;
   ip::tcp::acceptor        acc(ioContext,
-                               ip::tcp::endpoint(ip::address::from_string("127.0.0.1"), 7117),
+                               ip::tcp::endpoint(ip::make_address("127.0.0.1"), 7117),
                                true);
   boost::asio::socket_base::reuse_address option(true);
   acc.set_option(option);
@@ -298,8 +297,7 @@ static void TestVectorOf(const vector<T> & invec)
   }
   
   boost::asio::io_context    ioContext;
-  ip::tcp::endpoint          endPoint(ip::address::from_string("127.0.0.1"),
-                                      7117);
+  ip::tcp::endpoint          endPoint(ip::make_address("127.0.0.1"), 7117);
   ip::tcp::socket            sck(ioContext);
   boost::system::error_code  ec;
   sck.connect(endPoint, ec);
@@ -398,8 +396,7 @@ static void TestContainer(const ContainerT & ct)
   }
   
   boost::asio::io_context    ioContext;
-  ip::tcp::endpoint          endPoint(ip::address::from_string("127.0.0.1"),
-                                      7117);
+  ip::tcp::endpoint          endPoint(ip::make_address("127.0.0.1"), 7117);
   ip::tcp::socket            sck(ioContext);
   boost::system::error_code  ec;
   sck.connect(endPoint, ec);
@@ -490,8 +487,7 @@ static void TestArray(const std::array<valueT,N> & ct)
   }
   
   boost::asio::io_context    ioContext;
-  ip::tcp::endpoint          endPoint(ip::address::from_string("127.0.0.1"),
-                                      7117);
+  ip::tcp::endpoint          endPoint(ip::make_address("127.0.0.1"), 7117);
   ip::tcp::socket            sck(ioContext);
   boost::system::error_code  ec;
   sck.connect(endPoint, ec);
@@ -1001,7 +997,7 @@ static void ServerBoundedArrayReader(valueT & c,
 {
   boost::asio::io_context  ioContext;
   ip::tcp::acceptor        acc(ioContext,
-                               ip::tcp::endpoint(ip::address::from_string("127.0.0.1"), 7117),
+                               ip::tcp::endpoint(ip::make_address("127.0.0.1"), 7117),
                                true);
   boost::asio::socket_base::reuse_address option(true);
   acc.set_option(option);
@@ -1038,8 +1034,7 @@ static void TestBoundedArray()
   }
   
   boost::asio::io_context    ioContext;
-  ip::tcp::endpoint          endPoint(ip::address::from_string("127.0.0.1"),
-                                      7117);
+  ip::tcp::endpoint          endPoint(ip::make_address("127.0.0.1"), 7117);
   ip::tcp::socket            sck(ioContext);
   boost::system::error_code  ec;
   sck.connect(endPoint, ec);
