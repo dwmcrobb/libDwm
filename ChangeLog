@@ -1,3 +1,8 @@
+2025-09-03  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* classes/include/DwmASIO.hh: Added ability to read and write
+	bounded arrays.
+
 2025-09-02  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* classes/include/DwmIpv4Address.hh:  Add specialization of
