@@ -66,10 +66,44 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   template <typename S>
   concept IsSupportedASIOSocket =
-  std::is_same_v<S,boost::asio::ip::tcp::socket>
+    std::is_same_v<S,boost::asio::ip::tcp::socket>
     || std::is_same_v<S,boost::asio::local::stream_protocol::socket>
     || std::is_same_v<S,boost::asio::generic::stream_protocol::socket>;
 
+  //--------------------------------------------------------------------------
+  //!  Simple concept expressing that an instance of type T can be written
+  //!  to an asio stream via an I::Write() member.  Note that we only need
+  //!  this for the ASIO class (which is always used as the @c I template
+  //!  parameter), but we can't predeclare the ASIO class because the
+  //!  concept needs the class definition since it tests for a class member.
+  //   Hence the @c I template parameter.
+  //--------------------------------------------------------------------------
+  namespace __asio_detail {
+    template <typename T, typename I, typename S>
+    concept IsASIOStreamWritable =
+      requires (const T & t, S & s, boost::system::error_code & ec) {
+        { I::Write(s, t, ec) } -> std::same_as<bool>;
+      }
+      and IsSupportedASIOSocket<std::remove_cvref_t<S>>;
+  }
+
+  //--------------------------------------------------------------------------
+  //!  Simple concept expressing that an instance of type T can be read from
+  //!  an asio stream via an I::Read() member.  Note that we only need
+  //!  this for the ASIO class (which is always used as the @c I template
+  //!  parameter), but we can't predeclare the ASIO class because the
+  //!  concept needs the class definition since it tests for a class member.
+  //   Hence the @c I template parameter.
+  //--------------------------------------------------------------------------
+  namespace __asio_detail {
+    template <typename T, typename I, typename S>
+    concept IsASIOStreamReadable =
+      requires (T & t, S & s, boost::system::error_code & ec) {
+        { I::Read(s, t, ec) } -> std::same_as<bool>;
+      }
+      and IsSupportedASIOSocket<std::remove_cvref_t<S>>;
+  }
+  
   //--------------------------------------------------------------------------
   //!  A collection of functions for reading from and writing to
   //!  Boost ASIO stream sockets.
@@ -1171,6 +1205,56 @@ namespace Dwm {
                        const Args & ...args)
     {
       return (Write(s,args,ec) && ...);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes a bounded array @c v to @c s.  Returns true on success, false
+    //!  on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
+    static bool Write(IsSupportedASIOSocket auto & s, T const & v,
+                      boost::system::error_code & ec)
+    {
+      static_assert(__asio_detail::IsASIOStreamWritable<decltype(v[0]),ASIO,decltype(s)>);
+      bool      rc = false;
+      uint64_t  n = std::extent_v<T>;
+      if (ASIO::Write(s, n, ec)) {
+        size_t i = 0;
+        for ( ; i < std::extent_v<T>; ++i) {
+          if (! ASIO::Write(s, v[i], ec)) {
+            break;
+          }
+        }
+        rc = (std::extent_v<T> == i);
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads a bounded array @c v from @c s.  Returns true on success, false
+    //!  on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
+    static bool Read(IsSupportedASIOSocket auto & s, T & v,
+                      boost::system::error_code & ec)
+    {
+      static_assert(__asio_detail::IsASIOStreamReadable<decltype(v[0]),ASIO,decltype(s)>);
+      bool      rc = false;
+      uint64_t  n;
+      if (ASIO::Read(s, n, ec)) {
+        if (std::extent_v<T> == n) {
+          size_t i = 0;
+          for ( ; i < std::extent_v<T>; ++i) {
+            if (! ASIO::Read(s, v[i], ec)) {
+              break;
+            }
+          }
+          rc = (std::extent_v<T> == i);
+        }
+      }
+      return rc;
     }
     
   private:
