@@ -22,7 +22,7 @@ OSLIBS=""
 LIBTOOL="libtool"
 
 case $host_os in
-  freebsd1[[0123]]*)
+  freebsd1[[01234]]*)
     CXXFLAGS="-O2"
     LDFLAGS=""
     ;;
