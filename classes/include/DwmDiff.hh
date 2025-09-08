@@ -42,6 +42,7 @@
 #define _DWMDIFF_HH_
 
 #include <algorithm>
+#include <iterator>
 #include <type_traits>
 
 namespace Dwm {
