@@ -41,7 +41,7 @@ runtests: $(my Exes)
 
 #  generate dependency rule
 $(eval $(dwm_cppdeps $(my tests.mydir)/deps,(my tests.mydir),\
-$(my tests.mydir)/%.cc,${CXX} -MM $(my tests.CxxFlags) -c $<))
+$(my tests.mydir)/%.cc,${CXX} -MM $(my tests.CxxFlags) $<))
 
 #  only include dependency makefiles if target is not a 'clean' target
 ifneq ($(MAKECMDGOALS),clean)

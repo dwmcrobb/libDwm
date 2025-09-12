@@ -29,7 +29,7 @@ $(my lib.Lib):: $(my lib.SharedObjs)
 
 #  generate dependency rule
 $(eval $(dwm_cppdeps $(my lib.DepsDir),$(my lib.ObjDir),\
-$(my lib.mydir)/%.cc,${CXX} -MM $(my CxxFlags) -c $<,.o .lo))
+$(my lib.mydir)/%.cc,${CXX} -MM $(my CxxFlags) $<,.o .lo))
 
 $(my lib.ObjDir)/%.lo: $(my lib.mydir)/%.cc $(my lib.DepsDir)/%_deps
 	@dwmgmk_quiet "compiling $(dwm_relpwd $<)" \
