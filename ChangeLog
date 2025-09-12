@@ -1,3 +1,12 @@
+2025-09-12  Daniel McRobb  <dwm@thrip.mcplex.net>
+
+	* classes/src/Makefile, classes/tests/Makefile: remove extraneous
+	-c argument when making dependencies.
+
+2025-09-08  Daniel McRobb  <dwm@thrip.mcplex.net>
+
+	* classes/include/DwmDiff.hh: #include <iterator>
+
 2025-09-05  Daniel W. McRobb  <dwm@kiva.mcplex.net>
 
 	* tagged as libDwm-0.9.56
