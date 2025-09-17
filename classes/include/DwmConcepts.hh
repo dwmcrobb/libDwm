@@ -39,6 +39,10 @@
 //!  \brief NOT YET DOCUMENTED
 //---------------------------------------------------------------------------
 
+#ifndef _DWMCONCEPTS_HH_
+#define _DWMCONCEPTS_HH_
+
+
 #include <array>
 #include <deque>
 #include <list>
@@ -140,3 +144,5 @@ namespace Dwm {
   }  // namespace Concepts
   
 }  // namespace Dwm
+
+#endif  // _DWMCONCEPTS_HH_
