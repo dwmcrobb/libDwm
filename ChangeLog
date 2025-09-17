@@ -1,3 +1,9 @@
+2025-09-17  Daniel McRobb  <dwm@thrip.mcplex.net>
+
+	* classes/include/DwmConcepts.hh, classes/tests/TestConcepts.cc:
+	Add some concepts I will be using to refactor some of the I/O
+	classes	to accomodate C++26 reflection.
+
 2025-09-12  Daniel McRobb  <dwm@thrip.mcplex.net>
 
 	* classes/src/Makefile, classes/tests/Makefile: remove extraneous
