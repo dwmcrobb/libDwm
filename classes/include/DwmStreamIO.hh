@@ -43,6 +43,7 @@
 #define _DWMSTREAMIO_HH_
 
 #include <cassert>
+#include <condition_variable>
 #include <cstdint>
 #include <cstdio>
 #include <iostream>
