@@ -51,7 +51,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  This class is now just a wrapper for DescriptorIO, FileIO, StreamIO
   //!  and IOUtils.  It is essentially deprecated due to the introduction of
-  //!  theses classes, but was refactored as a simple bucket of wrapper
+  //!  these classes, but was refactored as a simple bucket of wrapper
   //!  function templates to allow older code to compile and work without
   //!  source code changes.
   //--------------------------------------------------------------------------
