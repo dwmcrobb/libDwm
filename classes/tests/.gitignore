@@ -4,6 +4,7 @@ core
 TestASIO
 TestBase64
 TestBootTime
+TestConcepts
 TestConcurrentQueue
 TestBZ2IO
 TestDataLog
