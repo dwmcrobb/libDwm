@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2007, 2016, 2017, 2020, 2024, 2025
+//  Copyright (c) Daniel W. McRobb 2004-2007, 2016-2017, 2020, 2024-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -42,58 +42,200 @@
 #ifndef _DWMSTREAMIO_HH_
 #define _DWMSTREAMIO_HH_
 
-#include <array>
 #include <cassert>
 #include <cstdint>
 #include <cstdio>
-#include <deque>
 #include <iostream>
-#include <list>
-#include <map>
-#include <set>
+#include <mutex>
 #include <string>
-#include <tuple>
-#include <unordered_map>
-#include <unordered_set>
 #include <variant>
-#include <vector>
 
 #include "DwmPortability.hh"
 #include "DwmStreamIOCapable.hh"
+#include "DwmConcepts.hh"
+#include "DwmSysLogger.hh"
+#include "DwmTypeName.hh"
 #include "DwmVariantFromIndex.hh"
 
 namespace Dwm {
 
-  //--------------------------------------------------------------------------
-  //!  Simple concept expressing that an instance of type T can be written
-  //!  to an ostream via an I::Write() member.  Note that we only need this
-  //!  for the StreamIO class (which is always used as the @c I template
-  //!  parameter), but we can't predeclare the StreamIO class because the
-  //!  concept needs the class definition since it tests for a class member.
-  //   Hence the @c I template parameter.
-  //--------------------------------------------------------------------------
   namespace __iostream_detail {
-    template <typename T, typename I>
-    concept IsIOStreamWritable = requires(const T & t, std::ostream & os) {
-      { I::Write(os, t) } -> std::same_as<std::ostream &>;
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept IsPair = requires(T t) {
+      typename T::first_type;
+      typename T::second_type;
+      { t.first } -> std::same_as<typename T::first_type &>;
+      { t.second } -> std::same_as<typename T::second_type &>;
     };
-  }
-  
-  //--------------------------------------------------------------------------
-  //!  Simple concept expressing that an instance of type T can be read from
-  //!  an istream via an I::Read() member.  Note that we only need this
-  //!  for the StreamIO class (which is always used as the @c I template
-  //!  parameter), but we can't predeclare the StreamIO class because the
-  //!  concept needs the class definition since it tests for a class member.
-  //   Hence the @c I template parameter.
-  //--------------------------------------------------------------------------
-  namespace __iostream_detail {
-    template <typename T, typename I>
-    concept IsIOStreamReadable = requires(T & t, std::istream & is) {
-      { I::Read(is, t) } -> std::same_as<std::istream &>;
-    };
-  }
-  
+
+    //------------------------------------------------------------------------
+    //!  Concept to match types we directly support (no reflection needed).
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept SpecificallySupported =
+      std::same_as<T,char>
+      or std::same_as<T,int8_t>
+      or std::same_as<T,uint8_t>
+      or std::same_as<T,int16_t>
+      or std::same_as<T,uint16_t>
+      or std::same_as<T,int32_t>
+      or std::same_as<T,uint32_t>
+      or std::same_as<T,int64_t>
+      or std::same_as<T,uint64_t>
+      or std::same_as<T,bool>
+      or std::same_as<T,float>
+      or std::same_as<T,double>
+      or std::same_as<T,std::string>
+      or std::is_enum_v<T>
+      or IsPair<T>
+      or (Dwm::HasStreamWrite<T> and Dwm::HasStreamRead<T>);
+
+    //------------------------------------------------------------------------
+    //!  Used for the cases where we try to use reflection for serialization
+    //!  and deserialization...
+    //!
+    //!  We explicitly deny serialization / deserialization of certain types
+    //!  (for example, std::mutex) as well as pointers (since there's no
+    //!  way to know whether they point to a single object or an array of
+    //!  objects of indeterminate length).  We deny serialization of const
+    //!  types simply because there isn't a clean way to deserialize them
+    //!  since they're declared immutable.
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept ExplicitlyDenied =
+      std::is_pointer_v<T>
+      or std::is_const_v<T>
+      or std::same_as<T,std::mutex>
+      or std::same_as<T,std::recursive_mutex>
+      or std::same_as<T,std::condition_variable>
+      or std::same_as<T,std::lock_guard<std::mutex>>
+      or std::same_as<T,std::unique_lock<std::mutex>>;
+    
+    //------------------------------------------------------------------------
+    //!  Concept to match STL containers.
+    //------------------------------------------------------------------------
+    template <class T>
+    concept SupportedContainer =
+      Concepts::is_std_associative_container<T>
+      or Concepts::is_std_pair_associative_container<T>
+      or Concepts::is_std_sequence_container<T>;
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T, std::size_t I = 0>
+    consteval bool Writable()
+    {
+      if constexpr (SpecificallySupported<T>) {
+        return true;
+      }
+      else if constexpr (ExplicitlyDenied<T>) {
+        return false;
+      }
+      else if constexpr (std::is_bounded_array_v<T>) {
+        return Writable<std::remove_all_extents_t<T>>();
+      }
+      else if constexpr (Concepts::is_std_sequence_container<T>) {
+        return Writable<typename T::value_type>();
+      }
+      else if constexpr (Concepts::is_std_pair<T>) {
+        if constexpr (Writable<typename T::first_type>()
+                      && Writable<typename T::second_type>()) {
+          return true;
+        }
+      }
+      else if constexpr (Concepts::is_std_tuple<T>) {
+        if constexpr (I < std::tuple_size_v<T>) {
+          if constexpr (Writable<std::tuple_element_t<I, T>>()) {
+            return Writable<T,I+1>();
+          }
+          else {
+            return false;
+          }
+        }
+        else {
+          return true;
+        }
+      }
+      else if constexpr (Concepts::is_std_variant<T>) {
+        if constexpr (I < std::variant_size_v<T>) {
+          if constexpr (Writable<std::variant_alternative_t<I,T>>()) {
+            return Writable<T,I+1>();
+          }
+          else {
+            return false;
+          }
+        }
+        else {
+          return true;
+        }
+      }
+      else if constexpr (Concepts::is_std_associative_container<T>) {
+        return Writable<typename T::value_type>();
+      }
+      else if constexpr (Concepts::is_std_pair_associative_container<T>) {
+        return (Writable<typename T::key_type>()
+                && Writable<typename T::mapped_type>());
+      }
+#if defined(DWMSTREAMIO_CAN_USE_REFLECTION)
+      else if constexpr (std::is_class_v<T>) {
+        constexpr auto ctx = std::meta::access_context::unchecked();
+        constexpr auto members =
+          define_static_array(nonstatic_data_members_of(^^T, ctx));
+        if constexpr (! members.size()) {
+          return false;
+        }
+        template for (constexpr auto mem : members) {
+          if constexpr (! Writable<typename[:std::meta::type_of(mem):]>()) {
+            return false;
+          }
+        }
+        return true;
+      }
+#endif
+      return false;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T, std::size_t I = 0>
+    consteval bool Readable()
+    {
+      if constexpr (std::is_const_v<T>) {
+        return false;
+      }
+      else {
+        return Writable<T,I>();
+      }
+    }
+
+    //------------------------------------------------------------------------
+    //!  Simple concept expressing that an instance of type T can be read from
+    //!  an istream via an I::Read() member.  Note that we only need this
+    //!  for the StreamIO class (which is always used as the @c I template
+    //!  parameter), but we can't predeclare the StreamIO class because the
+    //!  concept needs the class definition since it tests for a class member.
+    //   Hence the @c I template parameter.
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept IsReadable = (Readable<std::remove_reference_t<T>>() == true);
+
+    //------------------------------------------------------------------------
+    //!  Simple concept expressing that an instance of type T can be written
+    //!  to an ostream via a StreamIO::Write() member.
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept IsWritable =
+    (Readable<std::remove_cvref_t<T>>() == true)
+      and (Writable<std::remove_cvref_t<T>>() == true);
+    
+  }  // namespace __iostream_detail
+
   //--------------------------------------------------------------------------
   //!  This class contains a collection of static functions for reading and
   //!  writing simple types, in network byte order (MSB first).  It also
@@ -431,7 +573,7 @@ namespace Dwm {
       }
       return os;
     }
-    
+
     //------------------------------------------------------------------------
     //!  Reads a vector<_valueT> from an istream.  Returns the istream.
     //------------------------------------------------------------------------
@@ -741,9 +883,9 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <typename T>
     requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
-    static std::ostream & Write(std::ostream & os, T const & v)
+    static std::ostream & Write(std::ostream & os, const T & v)
     {
-      static_assert(__iostream_detail::IsIOStreamWritable<decltype(v[0]),StreamIO>);
+      static_assert(__iostream_detail::IsWritable<decltype(v[0])>);
       uint64_t  n = std::extent_v<T>;
       if (StreamIO::Write(os, n)) {
         for (size_t i = 0; i < std::extent_v<T>; ++i) {
@@ -762,7 +904,7 @@ namespace Dwm {
     requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
     static std::istream & Read(std::istream & is, T & v)
     {
-      static_assert(__iostream_detail::IsIOStreamReadable<decltype(v[0]),StreamIO>);
+      static_assert(__iostream_detail::IsReadable<decltype(v[0])>);
       uint64_t  n;
       if (StreamIO::Read(is, n)) {
         if (std::extent_v<T> == n) {
@@ -778,7 +920,68 @@ namespace Dwm {
       }
       return is;
     }
+
+#if defined(DWMSTREAMIO_CAN_USE_REFLECTION)
     
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <class T>
+    requires std::is_class_v<T>
+      and (not __iostream_detail::SpecificallySupported<T>)
+      and (not __iostream_detail::SupportedContainer<T>)
+      and (not __iostream_detail::ExplicitlyDenied<T>)
+    static std::ostream & Write(std::ostream & os, T const & v)
+    {
+      using __iostream_detail::IsWritable;
+      using __iostream_detail::ExplicitlyDenied;
+      constexpr auto ctx = std::meta::access_context::unchecked();
+      template for (constexpr auto mem :
+                    define_static_array(nonstatic_data_members_of(^^T, ctx))) {
+        if constexpr (IsWritable<decltype(v.[:mem:])>) {
+          Write(os, v.[:mem:]);
+        }
+        else {
+          os.setstate(std::ios_base::failbit);
+          FSyslog(LOG_ERR, "{}.{} of type '{}' is unwritable{}",
+                  TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                  std::meta::display_string_of(std::meta::type_of(mem)),
+                  ReflectFailReason<mem>());
+        }
+      }
+      return os;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <class T>
+    requires std::is_class_v<T>
+      and (not __iostream_detail::SpecificallySupported<T>)
+      and (not __iostream_detail::SupportedContainer<T>)
+      and (not __iostream_detail::ExplicitlyDenied<T>)
+    static std::istream & Read(std::istream & is, T & v)
+    {
+      using __iostream_detail::IsReadable;
+      constexpr auto ctx = std::meta::access_context::unchecked();
+      template for (constexpr auto mem :
+                      define_static_array(nonstatic_data_members_of(^^T, ctx))) {
+        if constexpr (IsReadable<decltype(v.[:mem:])>) {
+          Read(is, (v.[:mem:]));
+        }
+        else {
+          is.setstate(std::ios_base::failbit);
+          FSyslog(LOG_ERR, "{}.{} of type '{}' is unreadable{}",
+                  TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                  std::meta::display_string_of(std::meta::type_of(mem)),
+                  ReflectFailReason<mem>());
+        }
+      }
+      return is;
+    }
+    
+#endif  // defined(DWMSTREAMIO_CAN_USE_REFLECTION)
+
   private:
     //------------------------------------------------------------------------
     //!  
@@ -872,6 +1075,25 @@ namespace Dwm {
       }
       return(is);
     }
+
+#if defined(DWMSTREAMIO_CAN_USE_REFLECTION)
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <std::meta::info info>
+    static consteval std::string ReflectFailReason()
+    {
+      if (std::meta::is_const(info)) {
+        return " (immutable)";
+      }
+      if (__iostream_detail::ExplicitlyDenied<typename[:std::meta::type_of(info):]>) {
+        return " (explicitly denied)";
+      }
+      return "";
+    }
+
+#endif  // defined(DWMSTREAMIO_CAN_USE_REFLECTION)
     
   };
 
@@ -880,18 +1102,22 @@ namespace Dwm {
   //!  to an ostream via a StreamIO::Write() member.
   //--------------------------------------------------------------------------
   template <typename T>
-  concept IsStreamWritable = requires(const T & t, std::ostream & os) {
-    { StreamIO::Write(os, t) } -> std::same_as<std::ostream &>;
-  };
+  concept IsStreamWritable =
+    (__iostream_detail::IsWritable<T> == true)
+    and requires(const T & t, std::ostream & os) {
+      { StreamIO::Write(os, t) } -> std::same_as<std::ostream &>;
+    };
 
   //--------------------------------------------------------------------------
   //!  Simple concept expressing that an instance of type T can be read from
   //!  an istream via a StreamIO::Read() member.
   //--------------------------------------------------------------------------
   template <typename T>
-  concept IsStreamReadable = requires(T & t, std::istream & is) {
-    { StreamIO::Read(is, t) } -> std::same_as<std::istream &>;
-  };
+  concept IsStreamReadable =
+    (__iostream_detail::IsReadable<T> == true)
+    and requires(T & t, std::istream & is) {
+      { StreamIO::Read(is, t) } -> std::same_as<std::istream &>;
+    };
 
 }  // namespace Dwm
 

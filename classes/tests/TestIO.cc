@@ -51,15 +51,12 @@ extern "C" {
 #include <cstdlib>
 #include <fstream>
 
-#include "DwmSvnTag.hh"
 #include "DwmIpv4Prefix.hh"
 #include "DwmIO.hh"
 #include "DwmUnitAssert.hh"
 
 using namespace std;
 using namespace Dwm;
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmIO.cc 8389 $");
 
 static const char      k_charVal   = 'a';
 static const uint8_t   k_ucharVal  = 0xF0;
@@ -1531,73 +1528,167 @@ done:
   return rc;
 }
 
+#if defined(DWMSTREAMIO_CAN_USE_REFLECTION)
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static bool MembersWritableTest()
+{
+  bool  rc = true;
+
+  //  Not writable: contains a pointer
+  typedef struct {
+    int  *ip;
+  } UnwritableStruct1;
+  rc &= UnitAssert(! IsStreamWritable<UnwritableStruct1>);
+
+  //  Not writable: contains a std::mutex
+  typedef struct {
+    std::mutex  mtx;
+  } UnwritableStruct2;
+  rc &= UnitAssert(! IsStreamWritable<UnwritableStruct2>);
+
+  //  Not readable (contains a const member), hence not writable
+  typedef struct {
+    const int i;
+  } UnwritableStruct3;
+  rc &= UnitAssert(! IsStreamWritable<UnwritableStruct3>);
+
+  typedef struct {
+    UnwritableStruct1  us1;
+    UnwritableStruct2  us2;
+  } UnwritableStruct1_2;
+  rc &= UnitAssert(! IsStreamWritable<UnwritableStruct1_2>);
+
+  typedef struct {
+    int     a;
+    int     b;
+    string  c;
+  } WritableStruct1;
+  rc &= UnitAssert(IsStreamWritable<WritableStruct1>);
+
+  typedef struct {
+    string  a;
+    int     b;
+    string  c;
+  } WritableStruct2;
+  rc &= UnitAssert(IsStreamWritable<WritableStruct2>);
+
+  typedef struct {
+    WritableStruct1  s1;
+    WritableStruct2  s2;
+  } WritableStruct1_2;
+  rc &= UnitAssert(IsStreamWritable<WritableStruct1_2>);
+
+  WritableStruct1_2  ws1 = { { 42, 0xCCCC, "hello"}, { "hi", 99, "goodbye" } };
+  stringstream  ss;
+  rc &= UnitAssert(StreamIO::Write(ss, ws1));
+  WritableStruct1_2  ws2;
+  rc &= UnitAssert(StreamIO::Read(ss, ws2));
+  rc &= UnitAssert((ws1.s1.a == ws2.s1.a)
+                   && (ws1.s1.b == ws2.s1.b)
+                   && (ws1.s1.c == ws2.s1.c)
+                   && (ws1.s2.a == ws2.s2.a)
+                   && (ws1.s2.b == ws2.s2.b)
+                   && (ws1.s2.c == ws2.s2.c));
+
+  UnwritableStruct1  uws1_1, uws1_2;
+  rc &= UnitAssert(! StreamIO::Write(ss, uws1_1));
+  rc &= UnitAssert(! StreamIO::Read(ss, uws1_2));
+  UnwritableStruct2  uws2_1, uws2_2;
+  rc &= UnitAssert(! StreamIO::Write(ss, uws2_1));
+  rc &= UnitAssert(! StreamIO::Read(ss, uws2_2));
+  UnwritableStruct3  uws3_1 = {42}, uws3_2 = {0};
+  rc &= UnitAssert(! StreamIO::Write(ss, uws3_1));
+  rc &= UnitAssert(! StreamIO::Read(ss, uws3_2));
+  
+  return rc;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static bool ReflectionStreamTest()
+{
+  bool  rc = false;
+
+  typedef struct {
+    int     a;
+    int     b;
+    string  c;
+    // std::mutex  d;
+    struct timeval  tv;
+    std::vector<int>  vi;
+    std::map<int,int>  mi;
+    
+  } ReflTestStruct;
+
+  UnitAssert((__iostream_detail::Writable<ReflTestStruct>()));
+  
+  ReflTestStruct  rts1{9,42,"ReflectionStreamTest",{42,0xCCCC},{6,7,8},
+                       {{1,2},{3,4}}};
+  stringstream  ss;
+  if (UnitAssert(StreamIO::Write(ss, rts1))) {
+    ReflTestStruct  rts2;
+    if (UnitAssert(StreamIO::Read(ss, rts2))) {
+      if (UnitAssert(rts1.a == rts2.a)
+          && UnitAssert(rts1.b == rts2.b)
+          && UnitAssert(rts1.c == rts2.c)
+          && UnitAssert(rts1.tv.tv_sec == rts2.tv.tv_sec)
+          && UnitAssert(rts1.tv.tv_usec == rts2.tv.tv_usec)
+          && UnitAssert(rts1.vi == rts2.vi)) {
+        rc = true;
+      }
+    }
+  }
+    
+  return rc;
+}
+#endif  //  defined(DWMSTREAMIO_CAN_USE_REFLECTION)
+
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  if (! StreamTest())
-    goto testFailed;
-  if (! DescriptorTest())
-    goto testFailed;
-  if (! FileTest())
-    goto testFailed;
-  if (! MapStreamTestSimple())
-    goto testFailed;
-  if (! MapStreamTest())
-    goto testFailed;
-  if (! MapDescriptorTest())
-    goto testFailed;
-  if (! MapFileTest())
-    goto testFailed;
-  if (! VectorStreamTest())
-    goto testFailed;
-  if (! VectorFileTest())
-    goto testFailed;
-  if (! VectorDescriptorTest())
-    goto testFailed;
-  if (! ArrayStreamTest())
-    goto testFailed;
-  if (! ArrayFileTest())
-    goto testFailed;
-  if (! ArrayDescriptorTest())
-    goto testFailed;
-  if (! DequeStreamTest())
-    goto testFailed;
-  if (! DequeDescriptorTest())
-    goto testFailed;
-  if (! ListStreamTest())
-    goto testFailed;
-  if (! ListDescriptorTest())
-    goto testFailed;
-  if (! SetStreamTest())
-    goto testFailed;
-  if (! SetDescriptorTest())
-    goto testFailed;
-  if (!VarArgStreamTest())
-    goto testFailed;
-  if (! UnitAssert(VarArgStreamTestFail()))
-    goto testFailed;
-  if (! UnitAssert(VarArgFileTest()))
-    goto testFailed;
-  if (! UnitAssert(VarArgFileTestFail()))
-    goto testFailed;
-  if (! VarArgDescriptorTest())
-    goto testFailed;
-  if (! VarArgDescriptorTestFail())
-    goto testFailed;
-  if (! BoundedArrayStreamTest())
-    goto testFailed;
+  // SysLogger::Open("TestIO", LOG_PERROR, LOG_USER);
+  SysLogger::MinimumPriority(LOG_ERR);
   
-  if (Assertions::Total().Failed())
+  StreamTest();
+  DescriptorTest();
+  FileTest();
+  MapStreamTestSimple();
+  MapStreamTest();
+  MapDescriptorTest();
+  MapFileTest();
+  VectorStreamTest();
+  VectorFileTest();
+  VectorDescriptorTest();
+  ArrayStreamTest();
+  ArrayFileTest();
+  ArrayDescriptorTest();
+  DequeStreamTest();
+  DequeDescriptorTest();
+  ListStreamTest();
+  ListDescriptorTest();
+  SetStreamTest();
+  SetDescriptorTest();
+  VarArgStreamTest();
+  UnitAssert(VarArgStreamTestFail());
+  UnitAssert(VarArgFileTest());
+  UnitAssert(VarArgFileTestFail());
+  VarArgDescriptorTest();
+  VarArgDescriptorTestFail();
+  BoundedArrayStreamTest();
+#if defined(DWMSTREAMIO_CAN_USE_REFLECTION)
+  ReflectionStreamTest();
+  MembersWritableTest();
+#endif
+  
+  if (Assertions::Total().Failed()) {
     Assertions::Print(cerr, true);
-  else
-    cout << Assertions::Total() << " passed" << endl;
-  
+    exit(1);
+  }
+  cout << Assertions::Total() << " passed" << endl;
   exit(0);
-
- testFailed:
-
-  Assertions::Print(cerr, true);
-  exit(1);
 }
