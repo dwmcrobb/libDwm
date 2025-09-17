@@ -1,3 +1,7 @@
+2025-09-17  dwm  <dwm@nomnom.mcplex.net>
+
+	* classes/include/DwmStreamIO.hh: #include <condition_variable>
+
 2025-09-17  Daniel McRobb  <dwm@thrip.mcplex.net>
 
 	* classes/include/DwmStreamIO.hh, classes/tests/TestIO.cc:
