@@ -1,5 +1,9 @@
 2025-09-17  Daniel McRobb  <dwm@thrip.mcplex.net>
 
+	* classes/include/DwmStreamIO.hh, classes/tests/TestIO.cc:
+	Start adding limited support for C++26 reflection as last-resort
+	serialization/deserialization.
+
 	* classes/include/DwmConcepts.hh, classes/tests/TestConcepts.cc:
 	Add some concepts I will be using to refactor some of the I/O
 	classes	to accomodate C++26 reflection.
