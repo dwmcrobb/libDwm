@@ -93,6 +93,7 @@ namespace Dwm {
       or std::same_as<T,std::string>
       or std::is_enum_v<T>
       or IsPair<T>
+      or std::same_as<T,std::vector<bool>>
       or (Dwm::HasStreamWrite<T> and Dwm::HasStreamRead<T>);
 
     //------------------------------------------------------------------------
@@ -182,7 +183,7 @@ namespace Dwm {
         return (Writable<typename T::key_type>()
                 && Writable<typename T::mapped_type>());
       }
-#if defined(DWMSTREAMIO_CAN_USE_REFLECTION)
+#if defined(DWM_CAN_USE_REFLECTION)
       else if constexpr (std::is_class_v<T>) {
         constexpr auto ctx = std::meta::access_context::unchecked();
         constexpr auto members =
@@ -594,7 +595,58 @@ namespace Dwm {
     {
       return(ContainerWrite<std::vector<_valueT, _Alloc> >(os, v));
     }
+    
+    //------------------------------------------------------------------------
+    //!  Reads a vector<bool> from an istream.  Returns the istream.
+    //------------------------------------------------------------------------
+    template <typename _Alloc>
+    static std::istream & Read(std::istream & is,
+                               std::vector<bool, _Alloc> & v)
+    {
+      v.clear();
+      uint64_t  numEntries;
+      if (Read(is, numEntries)) {
+        try {
+          v.resize(numEntries);
+          for (size_t i = 0; i < numEntries; ++i) {
+            bool  b;
+            if (! Read(is, b)) {
+              v.clear();
+              break;
+            }
+            v[i] = b;
+          }
+        }
+        catch (const std::exception & ex) {
+          Syslog(LOG_ERR, "Exception: %s", ex.what());
+          is.setstate(std::ios_base::failbit);
+        }
+        catch (...) {
+          Syslog(LOG_ERR, "Exception");
+          is.setstate(std::ios_base::failbit);
+        }
+      }
+      return is;
+    }
 
+    //------------------------------------------------------------------------
+    //!  Writes a vector<bool> to an ostream.  Returns the ostream.
+    //------------------------------------------------------------------------
+    template <typename _Alloc>
+    static std::ostream & Write(std::ostream & os,
+                               const std::vector<bool, _Alloc> & v)
+    {
+      uint64_t  numEntries = v.size();
+      if (Write(os, numEntries)) {
+        for (bool entry : v) {
+          if (! Write(os, entry)) {
+            break;
+          }
+        }
+      }
+      return os;
+    }
+    
     //------------------------------------------------------------------------
     //!  Reads a deque<_valueT> from an istream.  Returns the istream.
     //------------------------------------------------------------------------
@@ -922,7 +974,7 @@ namespace Dwm {
       return is;
     }
 
-#if defined(DWMSTREAMIO_CAN_USE_REFLECTION)
+#if defined(DWM_CAN_USE_REFLECTION)
     
     //------------------------------------------------------------------------
     //!  
@@ -981,7 +1033,7 @@ namespace Dwm {
       return is;
     }
     
-#endif  // defined(DWMSTREAMIO_CAN_USE_REFLECTION)
+#endif  // defined(DWM_CAN_USE_REFLECTION)
 
   private:
     //------------------------------------------------------------------------
@@ -1006,6 +1058,7 @@ namespace Dwm {
     //!  We use this for deques, lists, vectors, sets and multisets.
     //------------------------------------------------------------------------
     template <typename _containerT>
+    requires std::is_default_constructible_v<typename _containerT::value_type>
     static std::istream & ContainerRead(std::istream & is,
                                         _containerT & c)
     {
@@ -1038,8 +1091,8 @@ namespace Dwm {
         if (Write(os, numEntries)) {
           if (numEntries) {
             Write<typename _containerT::const_iterator>(os, 
-                                                        c.begin(), 
-                                                        c.end());
+                                                        c.cbegin(), 
+                                                        c.cend());
           }
         }
       }
@@ -1077,7 +1130,7 @@ namespace Dwm {
       return(is);
     }
 
-#if defined(DWMSTREAMIO_CAN_USE_REFLECTION)
+#if defined(DWM_CAN_USE_REFLECTION)
 
     //------------------------------------------------------------------------
     //!  
@@ -1094,7 +1147,7 @@ namespace Dwm {
       return "";
     }
 
-#endif  // defined(DWMSTREAMIO_CAN_USE_REFLECTION)
+#endif  // defined(DWM_CAN_USE_REFLECTION)
     
   };
 
