@@ -61,7 +61,7 @@
 #    if __has_include(<meta>)
 #      include <meta>
 #      if defined(__cpp_lib_define_static)
-#        define DWMSTREAMIO_CAN_USE_REFLECTION 1
+#        define DWM_CAN_USE_REFLECTION 1
 #      endif
 #    endif
 #  endif
@@ -71,7 +71,7 @@ namespace Dwm {
 
   namespace Concepts {
 
-#if defined(DWMSTREAMIO_CAN_USE_REFLECTION)
+#if defined(DWM_CAN_USE_REFLECTION)
     //  With reflection, it's easy to define a concept that can test if
     //  a given type matches a given template, since we have template_of().
     //  The macro here is just to reduce the amount of boilerplate code
