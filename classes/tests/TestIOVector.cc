@@ -48,6 +48,7 @@ extern "C" {
 
 #include <cstdio>
 #include <fstream>
+#include <sstream>
 #include <vector>
 
 #include "DwmDescriptorIO.hh"
@@ -64,8 +65,27 @@ using namespace Dwm;
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void TestVectorBool()
+{
+  vector<bool>  v1{true,false,true,true,false,false,true};
+
+  stringstream  ss;
+  if (UnitAssert(StreamIO::Write(ss, v1))) {
+    vector<bool>  v2;
+    if (UnitAssert(StreamIO::Read(ss, v2))) {
+      UnitAssert(v2 == v1);
+    }
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
+  TestVectorBool();
+  
   vector<std::string>  vector1;
   
   vector1.push_back("1");
