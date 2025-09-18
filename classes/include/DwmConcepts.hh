@@ -139,7 +139,8 @@ namespace Dwm {
       is_std_array<T>
       or is_std_deque<T>
       or is_std_list<T>
-      or is_std_vector<T>;
+      or (is_std_vector<T>
+          and (not std::is_same_v<typename T::value_type,bool>));
     
   }  // namespace Concepts
   
