@@ -1105,8 +1105,9 @@ namespace Dwm {
     //!  We use this for map, multimap and hash_map.
     //------------------------------------------------------------------------
     template <typename _containerT>
-    static std::istream & 
-    PairAssocContRead(std::istream & is, _containerT & m)
+    requires std::is_default_constructible_v<typename _containerT::key_type>
+      and std::is_default_constructible_v<typename _containerT::mapped_type>
+    static std::istream & PairAssocContRead(std::istream & is, _containerT & m)
     {
       if (! m.empty())
         m.clear();
@@ -1118,7 +1119,8 @@ namespace Dwm {
             if (Read(is, key)) {
               typename _containerT::mapped_type  val;
               if (Read(is, val))
-                m.insert(typename _containerT::value_type(std::move(key), std::move(val)));
+                m.insert(typename _containerT::value_type(std::move(key),
+                                                          std::move(val)));
               else
                 break;
             }
