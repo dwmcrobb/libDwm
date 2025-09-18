@@ -1528,7 +1528,7 @@ done:
   return rc;
 }
 
-#if defined(DWMSTREAMIO_CAN_USE_REFLECTION)
+#if defined(DWM_CAN_USE_REFLECTION)
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
@@ -1644,7 +1644,7 @@ static bool ReflectionStreamTest()
     
   return rc;
 }
-#endif  //  defined(DWMSTREAMIO_CAN_USE_REFLECTION)
+#endif  //  defined(DWM_CAN_USE_REFLECTION)
 
 //----------------------------------------------------------------------------
 //!  
@@ -1680,7 +1680,7 @@ int main(int argc, char *argv[])
   VarArgDescriptorTest();
   VarArgDescriptorTestFail();
   BoundedArrayStreamTest();
-#if defined(DWMSTREAMIO_CAN_USE_REFLECTION)
+#if defined(DWM_CAN_USE_REFLECTION)
   ReflectionStreamTest();
   MembersWritableTest();
 #endif
