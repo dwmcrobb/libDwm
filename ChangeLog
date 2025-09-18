@@ -1,3 +1,8 @@
+2025-09-18  Daniel McRobb  <dwm@thrip.mcplex.net>
+
+	* classes/include/DwmConcepts.hh: Rename DWMSTREAMIO_CAN_USE_REFLECTION
+	to DWM_CAN_USE_REFLECTION.
+
 2025-09-17  dwm  <dwm@nomnom.mcplex.net>
 
 	* classes/include/DwmStreamIO.hh: #include <condition_variable>
