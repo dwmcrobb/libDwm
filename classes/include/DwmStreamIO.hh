@@ -63,17 +63,6 @@ namespace Dwm {
   namespace __iostream_detail {
 
     //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    template <typename T>
-    concept IsPair = requires(T t) {
-      typename T::first_type;
-      typename T::second_type;
-      { t.first } -> std::same_as<typename T::first_type &>;
-      { t.second } -> std::same_as<typename T::second_type &>;
-    };
-
-    //------------------------------------------------------------------------
     //!  Concept to match types we directly support (no reflection needed).
     //------------------------------------------------------------------------
     template <typename T>
@@ -92,7 +81,7 @@ namespace Dwm {
       or std::same_as<T,double>
       or std::same_as<T,std::string>
       or std::is_enum_v<T>
-      or IsPair<T>
+      or Concepts::is_std_pair<T>
       or std::same_as<T,std::vector<bool>>
       or (Dwm::HasStreamWrite<T> and Dwm::HasStreamRead<T>);
 
@@ -497,57 +486,21 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Reads a map<_keyT,_valueT> from an istream.  Returns the istream.
+    //!  Reads a pair-associative container (map, multimap, unordered_map or
+    //!  unordered_multimap) from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    template <typename _keyT, typename _valueT, 
-              typename _Compare, typename _Alloc>
-    static std::istream & Read(std::istream & is,
-                               std::map<_keyT, _valueT, _Compare, _Alloc> & m)
+    template <typename T>
+    requires Concepts::is_std_pair_associative_container<T>
+    static std::istream & Read(std::istream & is, T & c)
     {
-      return(PairAssocContRead<std::map<_keyT, _valueT, _Compare, _Alloc> >(is, m));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes a map<_keyT,_valueT> to an ostream.  Returns the ostream.
-    //------------------------------------------------------------------------
-    template <typename _keyT, typename _valueT, 
-              typename _Compare, typename _Alloc>
-    static std::ostream & Write(std::ostream & os,
-                                const std::map<_keyT,_valueT, _Compare, _Alloc> & m)
-    {
-      return(ContainerWrite<std::map<_keyT,_valueT,_Compare,_Alloc> >(os, m));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads a multimap<_keyT,_valueT> from an istream.  Returns the 
-    //!  istream.
-    //------------------------------------------------------------------------
-    template <typename _keyT, typename _valueT, 
-              typename _Compare, typename _Alloc>
-    static std::istream &
-    Read(std::istream & is, std::multimap<_keyT,_valueT,_Compare,_Alloc> & m)
-    {
-      return(PairAssocContRead<std::multimap<_keyT,_valueT,_Compare,_Alloc> >(is, m));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes a multimap<_keyT,_valueT> to an ostream.  Returns the ostream.
-    //------------------------------------------------------------------------
-    template <typename _keyT, typename _valueT, 
-              typename _Compare, typename _Alloc>
-    static std::ostream & 
-    Write(std::ostream & os,
-          const std::multimap<_keyT,_valueT, _Compare, _Alloc> & m)
-    {
-      return(ContainerWrite<std::multimap<_keyT,_valueT,_Compare,_Alloc> >(os, m));
+      return PairAssocContRead<T>(is, c);
     }
 
     //------------------------------------------------------------------------
     //!  Reads an array<_valueT,N> from an istream.  Returns the istream.
     //------------------------------------------------------------------------
     template <typename _valueT, size_t N>
-    static std::istream & Read(std::istream & is,
-                               std::array<_valueT, N> & a)
+    static std::istream & Read(std::istream & is, std::array<_valueT, N> & a)
     {
       if (is) {
         for (size_t i = 0; i < N; ++i) {
@@ -577,23 +530,52 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Reads a vector<_valueT> from an istream.  Returns the istream.
+    //!  Reads a sequence container (deque, list or vector) or associative
+    //!  container (set, multiset, unordered_set or unordered_multiset) from
+    //!  an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    template <typename _valueT, typename _Alloc>
-    static std::istream & Read(std::istream & is,
-                               std::vector<_valueT, _Alloc> & v)
+    template <typename T>
+    requires Concepts::is_std_associative_container<T>
+      or (Concepts::is_std_sequence_container<T>
+          and (not Concepts::is_std_array<T>))
+    static std::istream & Read(std::istream & is, T & c)
     {
-      return(ContainerRead<std::vector<_valueT, _Alloc> >(is, v));
+      static_assert(std::is_default_constructible_v<typename T::value_type>);
+      c.clear();
+      if (is) {
+        uint64_t  numEntries;
+        if (Read(is, numEntries)) {
+          for (uint64_t i = 0; i < numEntries; ++i) {
+            typename T::value_type  val;
+            if (! Read(is, val)) {
+              break;
+            }
+            c.insert(c.end(), std::move(val));
+          }
+        }
+      }
+      return(is);
     }
 
     //------------------------------------------------------------------------
-    //!  Writes a vector<_valueT> to an ostream.  Returns the ostream.
+    //!  Writes a container to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    template <typename _valueT, typename _Alloc>
-    static std::ostream & Write(std::ostream & os,
-                                const std::vector<_valueT, _Alloc> & v)
+    template <typename T>
+    requires Concepts::is_std_associative_container<T>
+      or Concepts::is_std_pair_associative_container<T>
+      or (Concepts::is_std_sequence_container<T>
+          and (not Concepts::is_std_array<T>))
+    static std::ostream & Write(std::ostream & os, const T & c)
     {
-      return(ContainerWrite<std::vector<_valueT, _Alloc> >(os, v));
+      if (os) {
+        uint64_t  numEntries = c.size();
+        if (Write(os, numEntries)) {
+          if (numEntries) {
+            Write<typename T::const_iterator>(os, c.cbegin(), c.cend());
+          }
+        }
+      }
+      return os;
     }
     
     //------------------------------------------------------------------------
@@ -646,87 +628,6 @@ namespace Dwm {
       }
       return os;
     }
-    
-    //------------------------------------------------------------------------
-    //!  Reads a deque<_valueT> from an istream.  Returns the istream.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Alloc>
-    static std::istream & Read(std::istream & is,
-                               std::deque<_valueT, _Alloc> & d)
-    {
-      return(ContainerRead<std::deque<_valueT, _Alloc> >(is, d));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes a deque<_valueT> to an ostream.  Returns the ostream.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Alloc>
-    static std::ostream & Write(std::ostream & os,
-                                const std::deque<_valueT, _Alloc> & d)
-    {
-      return(ContainerWrite<std::deque<_valueT, _Alloc> >(os, d));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads a list<_valueT> from an istream.  Returns the istream.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Alloc>
-    static std::istream & Read(std::istream & is,
-                               std::list<_valueT, _Alloc> & l)
-    {
-      return(ContainerRead<std::list<_valueT, _Alloc> >(is, l));
-    }
-    
-    //------------------------------------------------------------------------
-    //!  Writes a list<_valueT> to an ostream.  Returns the ostream.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Alloc>
-    static std::ostream & Write(std::ostream & os,
-                                const std::list<_valueT, _Alloc> & l)
-    {
-      return(ContainerWrite<std::list<_valueT, _Alloc> >(os, l));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads a set<_valueT> from an istream.  Returns the istream.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Compare, typename _Alloc>
-    static std::istream & Read(std::istream & is,
-                               std::set<_valueT, _Compare, _Alloc> & l)
-    {
-      return(ContainerRead<std::set<_valueT, _Compare, _Alloc> >(is, l));
-    }
-    
-    //------------------------------------------------------------------------
-    //!  Writes a set<_valueT> to an ostream.  Returns the ostream.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Compare, typename _Alloc>
-    static std::ostream & Write(std::ostream & os,
-                                const std::set<_valueT, _Compare, _Alloc> & l)
-    {
-      return(ContainerWrite<std::set<_valueT, _Compare, _Alloc> >(os, l));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads a multiset<_valueT> from an istream.  Returns the istream.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Compare, typename _Alloc>
-    static std::istream & Read(std::istream & is,
-                               std::multiset<_valueT, _Compare, _Alloc> & l)
-    {
-      return(ContainerRead<std::multiset<_valueT, _Compare, _Alloc> >(is, l));
-    }
-    
-    //------------------------------------------------------------------------
-    //!  Writes a multiset<_valueT> to an ostream.  Returns the ostream.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Compare, typename _Alloc>
-    static std::ostream & 
-    Write(std::ostream & os, 
-          const std::multiset<_valueT, _Compare, _Alloc> & l)
-    {
-      return(ContainerWrite<std::multiset<_valueT, _Compare, _Alloc> >(os, l));
-    }
 
     //------------------------------------------------------------------------
     //!  Reads a tuple from an istream.  Returns the istream.
@@ -749,110 +650,7 @@ namespace Dwm {
       std::apply([&os](auto&&... args) {((Write(os,args)) && ...);}, t);
       return os;
     }
-    
-    //------------------------------------------------------------------------
-    //!  Reads an unordered_map<_keyT,_valueT> from an istream.  Returns 
-    //!  the istream.
-    //------------------------------------------------------------------------
-    template <typename _keyT, typename _valueT, 
-              typename _Hash, typename _Pred, typename _Alloc>
-    static std::istream & 
-    Read(std::istream & is,
-         std::unordered_map<_keyT, _valueT, _Hash, _Pred, _Alloc> & m)
-    {
-      return(PairAssocContRead<std::unordered_map<_keyT, _valueT, _Hash, _Pred, _Alloc> >(is, m));
-    }
 
-    //------------------------------------------------------------------------
-    //!  Writes a unordered_map<_keyT,_valueT> to an ostream.  Returns the
-    //!  ostream.
-    //------------------------------------------------------------------------
-    template <typename _keyT, typename _valueT, 
-              typename _Hash, typename _Pred, typename _Alloc>
-    static std::ostream & 
-    Write(std::ostream & os,
-          const std::unordered_map<_keyT, _valueT, _Hash, _Pred, _Alloc> & m)
-    {
-      return(ContainerWrite<std::unordered_map<_keyT,_valueT,_Hash,_Pred,_Alloc> >(os, m));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads an unordered_multimap<_keyT,_valueT> from an istream.  Returns 
-    //!  the istream.
-    //------------------------------------------------------------------------
-    template <typename _keyT, typename _valueT,
-              typename _Hash, typename _Pred, typename _Alloc>
-    static std::istream & Read(std::istream & is,
-                               std::unordered_multimap<_keyT, _valueT, _Hash, _Pred, _Alloc> & m)
-    {
-      return(PairAssocContRead<std::unordered_multimap<_keyT, _valueT, _Hash, _Pred, _Alloc> >(is, m));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes a unordered_multimap<_keyT,_valueT> to an ostream.  Returns 
-    //!  the ostream.
-    //------------------------------------------------------------------------
-    template <typename _keyT, typename _valueT, 
-              typename _Hash, typename _Pred, typename _Alloc>
-    static std::ostream & 
-    Write(std::ostream & os,
-          const std::unordered_multimap<_keyT, _valueT, _Hash, _Pred, _Alloc> & m)
-    {
-      return(ContainerWrite<std::unordered_multimap<_keyT,_valueT,_Hash,_Pred,_Alloc> >(os, m));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads an unordered_set<_valueT> from an istream.  Returns 
-    //!  the istream.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Hash, 
-              typename _Pred, typename _Alloc>
-    static std::istream & 
-    Read(std::istream & is,
-         std::unordered_set<_valueT, _Hash, _Pred, _Alloc> & m)
-    {
-      return(ContainerRead<std::unordered_set<_valueT, _Hash, _Pred, _Alloc> >(is, m));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes a unordered_set<_valueT> to an ostream.  Returns the
-    //!  ostream.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Hash,
-              typename _Pred, typename _Alloc>
-    static std::ostream & 
-    Write(std::ostream & os,
-          const std::unordered_set<_valueT, _Hash, _Pred, _Alloc> & m)
-    {
-      return(ContainerWrite<std::unordered_set<_valueT,_Hash,_Pred,_Alloc> >(os, m));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads an unordered_multiset<_valueT> from an istream.  Returns 
-    //!  the istream.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Hash, 
-              typename _Pred, typename _Alloc>
-    static std::istream & 
-    Read(std::istream & is,
-         std::unordered_multiset<_valueT, _Hash, _Pred, _Alloc> & m)
-    {
-      return(ContainerRead<std::unordered_multiset<_valueT, _Hash, _Pred, _Alloc> >(is, m));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes a unordered_multiset<_valueT> to an ostream.  Returns the
-    //!  ostream.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Hash,
-              typename _Pred, typename _Alloc>
-    static std::ostream & 
-    Write(std::ostream & os,
-          const std::unordered_multiset<_valueT, _Hash, _Pred, _Alloc> & m)
-    {
-      return(ContainerWrite<std::unordered_multiset<_valueT,_Hash,_Pred,_Alloc> >(os, m));
-    }
-    
     //------------------------------------------------------------------------
     //!  Reads a variant from an istream.  Returns the istream.
     //------------------------------------------------------------------------
@@ -1054,52 +852,6 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Reads a _containerT from an istream.  Returns the istream.
-    //!  We use this for deques, lists, vectors, sets and multisets.
-    //------------------------------------------------------------------------
-    template <typename _containerT>
-    requires std::is_default_constructible_v<typename _containerT::value_type>
-    static std::istream & ContainerRead(std::istream & is,
-                                        _containerT & c)
-    {
-      if (! c.empty())
-        c.clear();
-      if (is) {
-        uint64_t  numEntries;
-        if (Read(is, numEntries)) {
-          for (uint64_t i = 0; i < numEntries; ++i) {
-            typename _containerT::value_type  val;
-            if (! Read(is, val))
-              break;
-            c.insert(c.end(), std::move(val));
-          }
-        }
-      }
-      return(is);
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes a container to an ostream.  Returns the ostream.
-    //!  We use this for all containers.
-    //------------------------------------------------------------------------
-    template <typename _containerT>
-    static std::ostream & ContainerWrite(std::ostream & os, 
-                                         const _containerT & c)
-    {
-      if (os) {
-        uint64_t  numEntries = c.size();
-        if (Write(os, numEntries)) {
-          if (numEntries) {
-            Write<typename _containerT::const_iterator>(os, 
-                                                        c.cbegin(), 
-                                                        c.cend());
-          }
-        }
-      }
-      return(os);
-    }
-
-    //------------------------------------------------------------------------
     //!  Reads a PairAssociative container from an istream.  Returns the
     //!  istream.
     //!  We use this for map, multimap and hash_map.
@@ -1118,14 +870,13 @@ namespace Dwm {
             typename _containerT::key_type  key;
             if (Read(is, key)) {
               typename _containerT::mapped_type  val;
-              if (Read(is, val))
+              if (Read(is, val)) {
                 m.insert(typename _containerT::value_type(std::move(key),
                                                           std::move(val)));
-              else
-                break;
+              }
+              else { break; }
             }
-            else
-              break;
+            else { break; }
           }
         }
       }
