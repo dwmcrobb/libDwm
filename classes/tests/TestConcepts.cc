@@ -122,6 +122,8 @@ static void TestContainers()
   UnitAssert((! Concepts::is_std_pair_associative_container<multiset<int>>));
   UnitAssert((! Concepts::is_std_pair_associative_container<unordered_set<int>>));
   UnitAssert((! Concepts::is_std_pair_associative_container<unordered_multiset<int>>));
+
+  UnitAssert(! Concepts::is_std_sequence_container<vector<bool>>);
   
   return;
 }
