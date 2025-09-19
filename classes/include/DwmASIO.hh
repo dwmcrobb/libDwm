@@ -968,7 +968,7 @@ namespace Dwm {
     }
     
     //------------------------------------------------------------------------
-    //!  Reads a variant \C V from \c s.  Returns \c true on success, \c false
+    //!  Reads a variant \c v from \c s.  Returns \c true on success, \c false
     //!  on failure.
     //------------------------------------------------------------------------
     template <typename S, typename... Ts>
@@ -1041,33 +1041,68 @@ namespace Dwm {
       }
       return (N == i);
     }
-    
-    //------------------------------------------------------------------------
-    //!  Reads a vector<_valueT> \c v from \c s.  Returns \c true on success,
-    //!  \c false on failure.
-    //------------------------------------------------------------------------
-    template <typename S, typename _valueT, typename _Alloc>
-    requires IsSupportedASIOSocket<S>
-    static bool Read(S & s, std::vector<_valueT, _Alloc> & v,
-                     boost::system::error_code & ec)
-    {
-      return ContainerRead<S,std::vector<_valueT, _Alloc> >(s, v, ec);
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes a vector<_valueT> \c v to \c s.  Returns \c true on success,
-    //!  \c false on failure.
-    //------------------------------------------------------------------------
-    template <typename S, typename _valueT, typename _Alloc>
-    requires IsSupportedASIOSocket<S>
-    static bool Write(S & s, const std::vector<_valueT, _Alloc> & v,
-                      boost::system::error_code & ec)
-    {
-      return ContainerWrite<S,std::vector<_valueT, _Alloc> >(s, v, ec);
-    }
 
     //------------------------------------------------------------------------
     //!  
+    //------------------------------------------------------------------------
+    template <typename S, typename T>
+    requires IsSupportedASIOSocket<S>
+    and (Concepts::is_std_associative_container<T>
+         or (Concepts::is_std_sequence_container<T>
+             and (not Concepts::is_std_array<T>)))
+    static bool Read(S & s, T & c, boost::system::error_code & ec)
+    {
+      bool  rc = false;
+      c.clear();
+      uint64_t  numEntries;
+      if (Read(s, numEntries, ec)) {
+        uint64_t  i = 0;
+        for ( ; i < numEntries; ++i) {
+          typename T::value_type  val;
+          if (! Read(s, val, ec)) {
+            break;
+          }
+          c.insert(c.end(), std::move(val));
+        }
+        rc = (i == numEntries);
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes a container @c c to a socket @c s.  Returns true on success,
+    //!  false on failure.
+    //------------------------------------------------------------------------
+    template <typename S, typename T>
+    requires IsSupportedASIOSocket<S>
+    and (Concepts::is_std_associative_container<T>
+         or Concepts::is_std_pair_associative_container<T>
+         or (Concepts::is_std_sequence_container<T>
+             and (not Concepts::is_std_array<T>)))
+    static bool Write(S & s, const T & c, boost::system::error_code & ec)
+    {
+      bool  rc = false;
+      uint64_t  numEntries = c.size();
+      if (Write(s, numEntries, ec)) {
+        if (numEntries) {
+          auto it = c.cbegin();
+          for ( ; it != c.cend(); ++it) {
+            if (! Write(s, *it, ec)) {
+              break;
+            }
+          }
+          rc = (it == c.cend());
+        }
+        else {
+          rc = true;
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads a vector<bool> @c v from socket @c s.  Returns true on
+    //!  success, false on failure.
     //------------------------------------------------------------------------
     template <typename S, typename _Alloc>
     requires IsSupportedASIOSocket<S>
@@ -1092,7 +1127,8 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Writes a vector<bool> @c v to socket @c s.  Returns true on success,
+    //!  false on failure.
     //------------------------------------------------------------------------
     template <typename S, typename _Alloc>
     requires IsSupportedASIOSocket<S>
@@ -1117,213 +1153,15 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Reads a deque<_valueT> \c d from \c s.  Returns \c true on success,
-    //!  \c false on failure.
+    //!  Reads a pair-associative container @c m from socket @c s.  Returns
+    //!  @c true on success, @c false on failure.
     //------------------------------------------------------------------------
-    template <typename S, typename _valueT, typename _Alloc>
+    template <typename S, typename T>
     requires IsSupportedASIOSocket<S>
-    static bool Read(S & s, std::deque<_valueT, _Alloc> & d,
-                     boost::system::error_code & ec)
+      and Concepts::is_std_pair_associative_container<T>
+    static bool Read(S & s, T & m, boost::system::error_code & ec)
     {
-      return ContainerRead<S,std::deque<_valueT, _Alloc> >(s, d, ec);
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes a deque<_valueT> \c d to \c s.  Returns \c true on success,
-    //!  \c false on failure.
-    //------------------------------------------------------------------------
-    template <typename S, typename _valueT, typename _Alloc>
-    requires IsSupportedASIOSocket<S>
-    static bool Write(S & s, const std::deque<_valueT, _Alloc> & d,
-                      boost::system::error_code & ec)
-    {
-      return ContainerWrite<S,std::deque<_valueT, _Alloc> >(s, d, ec);
-    }
-    
-    //------------------------------------------------------------------------
-    //!  Reads a list<_valueT> \c l from \c s.  Returns \c true on success,
-    //!  \c false on failure.
-    //------------------------------------------------------------------------
-    template <typename S, typename _valueT, typename _Alloc>
-    requires IsSupportedASIOSocket<S>
-    static bool Read(S & s, std::list<_valueT, _Alloc> & l,
-                     boost::system::error_code & ec)
-    {
-      return ContainerRead<S,std::list<_valueT, _Alloc> >(s, l, ec);
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes a list<_valueT> \c l to \c s.  Returns \c true on success,
-    //!  \c false on failure.
-    //------------------------------------------------------------------------
-    template <typename S, typename _valueT, typename _Alloc>
-    requires IsSupportedASIOSocket<S>
-    static bool Write(S & s, const std::list<_valueT, _Alloc> & l,
-                      boost::system::error_code & ec)
-    {
-      return ContainerWrite<S,std::list<_valueT, _Alloc> >(s, l, ec);
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads a map<_keyT,_valueT> \c m from \c s.  Returns \c true on
-    //!  success, \c false on failure.
-    //------------------------------------------------------------------------
-    template <typename S, typename _keyT, typename _valueT, 
-              typename _Compare, typename _Alloc>
-    requires IsSupportedASIOSocket<S>
-    static bool Read(S & s, std::map<_keyT, _valueT, _Compare, _Alloc> & m,
-                     boost::system::error_code & ec)
-    {
-      return(PairAssocContRead<S,std::map<_keyT, _valueT, _Compare, _Alloc> >(s, m, ec));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes a map<_keyT,_valueT> \c m to \c s.  Returns \c true on
-    //!  success, \c false on failure.
-    //------------------------------------------------------------------------
-    template <typename S, typename _keyT, typename _valueT, 
-              typename _Compare, typename _Alloc>
-    requires IsSupportedASIOSocket<S>
-    static bool Write(S & s,
-                      const std::map<_keyT,_valueT, _Compare, _Alloc> & m,
-                      boost::system::error_code & ec)
-    {
-      return(ContainerWrite<S,std::map<_keyT,_valueT,_Compare,_Alloc> >(s, m, ec));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads a multimap<_keyT,_valueT> \c m from \c s.  Returns true on
-    //!  success, false on failure.
-    //------------------------------------------------------------------------
-    template <typename S, typename _keyT, typename _valueT, 
-              typename _Compare, typename _Alloc>
-    requires IsSupportedASIOSocket<S>
-    static bool Read(S & s, std::multimap<_keyT,_valueT,_Compare,_Alloc> & m,
-                     boost::system::error_code & ec)
-    {
-      return(PairAssocContRead<S,std::multimap<_keyT,_valueT,_Compare,_Alloc>>(s, m, ec));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes a multimap<_keyT,_valueT> \c m to \c s.  Returns \c true on
-    //!  success, \c false on failure.
-    //------------------------------------------------------------------------
-    template <typename S, typename _keyT, typename _valueT, 
-              typename _Compare, typename _Alloc>
-    requires IsSupportedASIOSocket<S>
-    static bool
-    Write(S & s,
-          const std::multimap<_keyT,_valueT, _Compare, _Alloc> & m,
-          boost::system::error_code & ec)
-    {
-      return(ContainerWrite<S,std::multimap<_keyT,_valueT,_Compare,_Alloc>>(s, m, ec));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads an unordered_map<_keyT,_valueT> \c m from \c s.  Returns 
-    //!  \c true on success, \c false on failure.
-    //------------------------------------------------------------------------
-    template <typename S, typename _keyT, typename _valueT, 
-              typename _Hash, typename _Pred, typename _Alloc>
-    requires IsSupportedASIOSocket<S>
-    static bool
-    Read(S & s, std::unordered_map<_keyT, _valueT, _Hash, _Pred, _Alloc> & m,
-         boost::system::error_code & ec)
-    {
-      return(PairAssocContRead<S,std::unordered_map<_keyT, _valueT, _Hash, _Pred, _Alloc> >(s, m, ec));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes a unordered_map<_keyT,_valueT> \c m to \c s.  Returns \c true
-    //!  on success, \c false on failure.
-    //------------------------------------------------------------------------
-    template <typename S, typename _keyT, typename _valueT, 
-              typename _Hash, typename _Pred, typename _Alloc>
-    requires IsSupportedASIOSocket<S>
-    static bool
-    Write(S & s,
-          const std::unordered_map<_keyT, _valueT, _Hash, _Pred, _Alloc> & m,
-          boost::system::error_code & ec)
-    {
-      return(ContainerWrite<S,std::unordered_map<_keyT,_valueT,_Hash,_Pred,_Alloc> >(s, m, ec));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads a set<_valueT> \c m from \c s.  Returns \c true on success,
-    //!  \c false on failure.
-    //------------------------------------------------------------------------
-    template <typename S, typename _valueT, typename _Compare, typename _Alloc>
-    requires IsSupportedASIOSocket<S>
-    static bool Read(S & s,
-                     std::set<_valueT,_Compare,_Alloc> & m,
-                     boost::system::error_code & ec)
-    {
-      return(ContainerRead<S,std::set<_valueT,_Compare,_Alloc>>(s, m, ec));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes a set<_valueT> \c m to \c s.  Returns \c true on success,
-    //!  \c false on failure.
-    //------------------------------------------------------------------------
-    template <typename S, typename _valueT, typename _Compare, typename _Alloc>
-    requires IsSupportedASIOSocket<S>
-    static bool Write(S & s, const std::set<_valueT,_Compare,_Alloc> & m,
-                      boost::system::error_code & ec)
-    {
-      return(ContainerWrite<S,std::set<_valueT,_Compare,_Alloc>>(s, m, ec));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads a multiset<_valueT> \c m from \c s.  Returns \c true on
-    //!  success, \c false on failure.
-    //------------------------------------------------------------------------
-    template <typename S, typename _valueT, typename _Compare, typename _Alloc>
-    requires IsSupportedASIOSocket<S>
-    static bool Read(S & s, std::multiset<_valueT,_Compare,_Alloc> & m,
-                     boost::system::error_code & ec)
-    {
-      return(ContainerRead<S,std::multiset<_valueT,_Compare,_Alloc>>(s, m, ec));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes a multiset<_valueT> \c m to \c s.  Returns \c true on success,
-    //!  \c false on failure.
-    //------------------------------------------------------------------------
-    template <typename S, typename _valueT, typename _Compare, typename _Alloc>
-    requires IsSupportedASIOSocket<S>
-    static bool Write(S & s,
-                      const std::multiset<_valueT,_Compare,_Alloc> & m,
-                      boost::system::error_code & ec)
-    {
-      return(ContainerWrite<S,std::multiset<_valueT,_Compare,_Alloc>>(s, m, ec));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads an unordered_set<_valueT> \c m from \c s.  Returns \c true on
-    //!  success, \c false on failure.
-    //------------------------------------------------------------------------
-    template <typename S, typename _valueT, typename _Hash, 
-              typename _Pred, typename _Alloc>
-    requires IsSupportedASIOSocket<S>
-    static bool
-    Read(S & s, std::unordered_set<_valueT, _Hash, _Pred, _Alloc> & m,
-         boost::system::error_code & ec)
-    {
-      return(ContainerRead<S,std::unordered_set<_valueT,_Hash,_Pred,_Alloc>>(s, m, ec));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes a unordered_set<_valueT> \c m to \c s.  Returns \c true on
-    //!  success, \c false on failure.
-    //------------------------------------------------------------------------
-    template <typename S, typename _valueT, typename _Hash,
-              typename _Pred, typename _Alloc>
-    requires IsSupportedASIOSocket<S>
-    static bool
-    Write(S & s, const std::unordered_set<_valueT, _Hash, _Pred, _Alloc> & m,
-          boost::system::error_code & ec)
-    {
-      return(ContainerWrite<S,std::unordered_set<_valueT,_Hash,_Pred,_Alloc>>(s, m, ec));
+      return(PairAssocContRead<S,T>(s, m, ec));
     }
 
     //------------------------------------------------------------------------
@@ -1526,73 +1364,6 @@ namespace Dwm {
       return true;
     }
 
-    //------------------------------------------------------------------------
-    //!  Reads a _containerT from \c s.  Returns \c true on success, \c false
-    //!  on failure.  We use this for deques, lists, vectors, sets and
-    //!  multisets.
-    //------------------------------------------------------------------------
-    template <typename S, typename _containerT>
-    requires IsSupportedASIOSocket<S>
-    static bool ContainerRead(S & s, _containerT & c,
-                              boost::system::error_code & ec)
-    {
-      bool  rc = false;
-      c.clear();
-      uint64_t  numEntries;
-      if (Read(s, numEntries, ec)) {
-        uint64_t  i = 0;
-        for ( ; i < numEntries; ++i) {
-          typename _containerT::value_type  val;
-          if (! Read(s, val, ec)) {
-            break;
-          }
-          c.insert(c.end(), std::move(val));
-        }
-        rc = (i == numEntries);
-      }
-      return rc;
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes a container \c c to \c s.  Returns true on success, false on
-    //!  failure.  We use this for all containers.
-    //------------------------------------------------------------------------
-    template <typename S, typename _containerT>
-    requires IsSupportedASIOSocket<S>
-    static bool ContainerWrite(S & s, const _containerT & c,
-                               boost::system::error_code & ec)
-    {
-      bool  rc = false;
-      uint64_t  numEntries = c.size();
-      if (Write(s, numEntries, ec)) {
-        if (numEntries) {
-          rc = Write<S,typename _containerT::const_iterator>(s, 
-                                                             c.cbegin(),
-                                                             c.cend(),
-                                                             ec);
-        }
-        else {
-          rc = true;
-        }
-      }
-      return rc;
-    }
-
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    template <typename S, typename _inputIteratorT>
-    requires IsSupportedASIOSocket<S>
-    static bool Write(S & s, _inputIteratorT f, _inputIteratorT l,
-                      boost::system::error_code & ec)
-    {
-      for ( ; f != l; ++f) {
-        if (! Write(s, *f, ec)) {
-          break;
-        }
-      }
-      return (f == l);
-    }
     //------------------------------------------------------------------------
     //!  Reads a PairAssociative container from an istream.  Returns the
     //!  istream.
