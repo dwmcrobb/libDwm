@@ -42,19 +42,12 @@
 #ifndef _DWMASIO_HH_
 #define _DWMASIO_HH_
 
-#include <array>
-#include <deque>
-#include <list>
-#include <map>
-#include <set>
 #include <string>
-#include <tuple>
-#include <unordered_map>
-#include <unordered_set>
-#include <variant>
-#include <vector>
 
 #include "DwmASIOCapable.hh"
+#include "DwmConcepts.hh"
+#include "DwmSysLogger.hh"
+#include "DwmTypeName.hh"
 #include "DwmVariantFromIndex.hh"
 
 namespace Dwm {
@@ -70,40 +63,173 @@ namespace Dwm {
     || std::is_same_v<S,boost::asio::local::stream_protocol::socket>
     || std::is_same_v<S,boost::asio::generic::stream_protocol::socket>;
 
-  //--------------------------------------------------------------------------
-  //!  Simple concept expressing that an instance of type T can be written
-  //!  to an asio stream via an I::Write() member.  Note that we only need
-  //!  this for the ASIO class (which is always used as the @c I template
-  //!  parameter), but we can't predeclare the ASIO class because the
-  //!  concept needs the class definition since it tests for a class member.
-  //   Hence the @c I template parameter.
-  //--------------------------------------------------------------------------
   namespace __asio_detail {
-    template <typename T, typename I, typename S>
-    concept IsASIOStreamWritable =
-      requires (const T & t, S & s, boost::system::error_code & ec) {
-        { I::Write(s, t, ec) } -> std::same_as<bool>;
-      }
-      and IsSupportedASIOSocket<std::remove_cvref_t<S>>;
-  }
 
-  //--------------------------------------------------------------------------
-  //!  Simple concept expressing that an instance of type T can be read from
-  //!  an asio stream via an I::Read() member.  Note that we only need
-  //!  this for the ASIO class (which is always used as the @c I template
-  //!  parameter), but we can't predeclare the ASIO class because the
-  //!  concept needs the class definition since it tests for a class member.
-  //   Hence the @c I template parameter.
-  //--------------------------------------------------------------------------
-  namespace __asio_detail {
-    template <typename T, typename I, typename S>
-    concept IsASIOStreamReadable =
-      requires (T & t, S & s, boost::system::error_code & ec) {
-        { I::Read(s, t, ec) } -> std::same_as<bool>;
+    //------------------------------------------------------------------------
+    //!  Concept to match types we directly support (no reflection needed).
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept SpecificallySupported =
+      std::same_as<T,char>
+      or std::same_as<T,int8_t>
+      or std::same_as<T,uint8_t>
+      or std::same_as<T,int16_t>
+      or std::same_as<T,uint16_t>
+      or std::same_as<T,int32_t>
+      or std::same_as<T,uint32_t>
+      or std::same_as<T,int64_t>
+      or std::same_as<T,uint64_t>
+      or std::same_as<T,bool>
+      or std::same_as<T,float>
+      or std::same_as<T,double>
+      or std::same_as<T,std::string>
+      or std::is_enum_v<T>
+      or Dwm::Concepts::is_std_pair<T>
+      or std::same_as<T,std::vector<bool>>
+      or (Dwm::HasAsioWrite<T> and Dwm::HasAsioRead<T>);
+    
+    //------------------------------------------------------------------------
+    //!  Used for the cases where we try to use reflection for serialization
+    //!  and deserialization...
+    //!
+    //!  We explicitly deny serialization / deserialization of certain types
+    //!  (for example, std::mutex) as well as pointers (since there's no
+    //!  way to know whether they point to a single object or an array of
+    //!  objects of indeterminate length).  We deny serialization of const
+    //!  types simply because there isn't a clean way to deserialize them
+    //!  since they're declared immutable.
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept ExplicitlyDenied =
+      std::is_pointer_v<T>
+      or std::is_const_v<T>
+      or std::same_as<T,std::mutex>
+      or std::same_as<T,std::recursive_mutex>
+      or std::same_as<T,std::condition_variable>
+      or std::same_as<T,std::lock_guard<std::mutex>>
+      or std::same_as<T,std::unique_lock<std::mutex>>;
+    
+    //------------------------------------------------------------------------
+    //!  Concept to match STL containers.
+    //------------------------------------------------------------------------
+    template <class T>
+    concept SupportedContainer =
+      Concepts::is_std_associative_container<T>
+      or Concepts::is_std_pair_associative_container<T>
+      or Concepts::is_std_sequence_container<T>;
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T, std::size_t I = 0>
+    consteval bool Writable()
+    {
+      if constexpr (SpecificallySupported<T>) {
+        return true;
       }
-      and IsSupportedASIOSocket<std::remove_cvref_t<S>>;
-  }
-  
+      else if constexpr (ExplicitlyDenied<T>) {
+        return false;
+      }
+      else if constexpr (std::is_bounded_array_v<T>) {
+        return Writable<std::remove_all_extents_t<T>>();
+      }
+      else if constexpr (Concepts::is_std_sequence_container<T>) {
+        return Writable<typename T::value_type>();
+      }
+      else if constexpr (Concepts::is_std_pair<T>) {
+        if constexpr (Writable<typename T::first_type>()
+                      && Writable<typename T::second_type>()) {
+          return true;
+        }
+      }
+      else if constexpr (Concepts::is_std_tuple<T>) {
+        if constexpr (I < std::tuple_size_v<T>) {
+          if constexpr (Writable<std::tuple_element_t<I, T>>()) {
+            return Writable<T,I+1>();
+          }
+          else {
+            return false;
+          }
+        }
+        else {
+          return true;
+        }
+      }
+      else if constexpr (Concepts::is_std_variant<T>) {
+        if constexpr (I < std::variant_size_v<T>) {
+          if constexpr (Writable<std::variant_alternative_t<I,T>>()) {
+            return Writable<T,I+1>();
+          }
+          else {
+            return false;
+          }
+        }
+        else {
+          return true;
+        }
+      }
+      else if constexpr (Concepts::is_std_associative_container<T>) {
+        return Writable<typename T::value_type>();
+      }
+      else if constexpr (Concepts::is_std_pair_associative_container<T>) {
+        return (Writable<typename T::key_type>()
+                && Writable<typename T::mapped_type>());
+      }
+#if defined(DWM_CAN_USE_REFLECTION)
+      else if constexpr (std::is_class_v<T>) {
+        constexpr auto ctx = std::meta::access_context::unchecked();
+        constexpr auto members =
+          define_static_array(nonstatic_data_members_of(^^T, ctx));
+        if constexpr (! members.size()) {
+          return false;
+        }
+        template for (constexpr auto mem : members) {
+          if constexpr (! Writable<typename[:std::meta::type_of(mem):]>()) {
+            return false;
+          }
+        }
+        return true;
+      }
+#endif
+      return false;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T, std::size_t I = 0>
+    consteval bool Readable()
+    {
+      if constexpr (std::is_const_v<T>) {
+        return false;
+      }
+      else {
+        return Writable<T,I>();
+      }
+    }
+
+    //------------------------------------------------------------------------
+    //!  Simple concept expressing that an instance of type T can be read from
+    //!  an istream via an I::Read() member.  Note that we only need this
+    //!  for the StreamIO class (which is always used as the @c I template
+    //!  parameter), but we can't predeclare the StreamIO class because the
+    //!  concept needs the class definition since it tests for a class member.
+    //   Hence the @c I template parameter.
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept IsReadable = (Readable<std::remove_reference_t<T>>() == true);
+
+    //------------------------------------------------------------------------
+    //!  Simple concept expressing that an instance of type T can be written
+    //!  to an ostream via a StreamIO::Write() member.
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept IsWritable =
+    (Readable<std::remove_cvref_t<T>>() == true)
+      and (Writable<std::remove_cvref_t<T>>() == true);
+    
+  }  // namespace __asio_detail
+
   //--------------------------------------------------------------------------
   //!  A collection of functions for reading from and writing to
   //!  Boost ASIO stream sockets.
@@ -941,6 +1067,56 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename S, typename _Alloc>
+    requires IsSupportedASIOSocket<S>
+    static bool Read(S & s, std::vector<bool, _Alloc> & v,
+                     boost::system::error_code & ec) 
+    {
+      bool  rc = false;
+      v.clear();
+      uint64_t  numEntries;
+      if (Read(s, numEntries, ec)) {
+        uint64_t  i = 0;
+        for ( ; i < numEntries; ++i) {
+          bool  val;
+          if (! Read(s, val, ec)) {
+            break;
+          }
+          v.insert(v.end(), std::move(val));
+        }
+        rc = (i == numEntries);
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename S, typename _Alloc>
+    requires IsSupportedASIOSocket<S>
+    static bool Write(S & s, const std::vector<bool, _Alloc> & v,
+                      boost::system::error_code & ec) 
+    {
+      bool  rc = false;
+      uint64_t  numEntries = v.size();
+      if (Write(s, numEntries, ec)) {
+        rc = true;
+        if (numEntries) {
+          for (auto it = v.cbegin(); it != v.cend(); ++it) {
+            bool  val = *it;
+            if (! Write(s, val, ec)) {
+              rc = false;
+              break;
+            }
+          }
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
     //!  Reads a deque<_valueT> \c d from \c s.  Returns \c true on success,
     //!  \c false on failure.
     //------------------------------------------------------------------------
@@ -1216,7 +1392,7 @@ namespace Dwm {
     static bool Write(IsSupportedASIOSocket auto & s, T const & v,
                       boost::system::error_code & ec)
     {
-      static_assert(__asio_detail::IsASIOStreamWritable<decltype(v[0]),ASIO,decltype(s)>);
+      static_assert(__asio_detail::IsWritable<std::remove_all_extents_t<T>>);
       bool      rc = false;
       uint64_t  n = std::extent_v<T>;
       if (ASIO::Write(s, n, ec)) {
@@ -1240,7 +1416,7 @@ namespace Dwm {
     static bool Read(IsSupportedASIOSocket auto & s, T & v,
                       boost::system::error_code & ec)
     {
-      static_assert(__asio_detail::IsASIOStreamReadable<decltype(v[0]),ASIO,decltype(s)>);
+      static_assert(__asio_detail::IsReadable<std::remove_all_extents_t<T>>);
       bool      rc = false;
       uint64_t  n;
       if (ASIO::Read(s, n, ec)) {
@@ -1256,6 +1432,72 @@ namespace Dwm {
       }
       return rc;
     }
+
+#if defined(DWM_CAN_USE_REFLECTION)
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <class T>
+    requires std::is_class_v<T>
+      and (not __asio_detail::SpecificallySupported<T>)
+      and (not __asio_detail::SupportedContainer<T>)
+      and (not __asio_detail::ExplicitlyDenied<T>)
+    static bool Write(IsSupportedASIOSocket auto & s, const T & v,
+                      boost::system::error_code & ec)
+    {
+      using __asio_detail::IsWritable;
+      constexpr auto ctx = std::meta::access_context::unchecked();
+      template for (constexpr auto mem :
+                    define_static_array(nonstatic_data_members_of(^^T, ctx))) {
+        if constexpr (IsWritable<typename[:std::meta::type_of(mem):]>) {
+          if (! ASIO::Write(s, v.[:mem:], ec)) {
+            return false;
+          }
+        }
+        else {
+          FSyslog(LOG_ERR, "{}.{} of type '{}' is unwritable{}",
+                  TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                  std::meta::display_string_of(std::meta::type_of(mem)),
+                  ReflectFailReason<mem>());
+          return false;
+        }
+      }
+      return (! ec);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <class T>
+    requires std::is_class_v<T>
+      and (not __asio_detail::SpecificallySupported<T>)
+      and (not __asio_detail::SupportedContainer<T>)
+      and (not __asio_detail::ExplicitlyDenied<T>)
+    static bool Read(IsSupportedASIOSocket auto & s, T & v,
+                     boost::system::error_code & ec)
+    {
+      using __asio_detail::IsReadable;
+      constexpr auto ctx = std::meta::access_context::unchecked();
+      template for (constexpr auto mem :
+                      define_static_array(nonstatic_data_members_of(^^T, ctx))) {
+        if constexpr (IsReadable<typename[:std::meta::type_of(mem):]>) {
+          if (! ASIO::Read(s, v.[:mem:], ec)) {
+            return false;
+          }
+        }
+        else {
+          FSyslog(LOG_ERR, "{}.{} of type '{}' is unreadable{}",
+                  TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                  std::meta::display_string_of(std::meta::type_of(mem)),
+                  ReflectFailReason<mem>());
+          return false;
+        }
+      }
+      return (! ec);
+    }
+
+#endif  // defined(DWM_CAN_USE_REFLECTION)
     
   private:
     //------------------------------------------------------------------------
@@ -1325,8 +1567,8 @@ namespace Dwm {
       if (Write(s, numEntries, ec)) {
         if (numEntries) {
           rc = Write<S,typename _containerT::const_iterator>(s, 
-                                                             c.begin(), 
-                                                             c.end(),
+                                                             c.cbegin(),
+                                                             c.cend(),
                                                              ec);
         }
         else {
@@ -1387,6 +1629,25 @@ namespace Dwm {
       }
       return rc;
     }
+
+#if defined(DWM_CAN_USE_REFLECTION)
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <std::meta::info info>
+    static consteval std::string ReflectFailReason()
+    {
+      if (std::meta::is_const(info)) {
+        return " (immutable)";
+      }
+      if (__asio_detail::ExplicitlyDenied<typename[:std::meta::type_of(info):]>) {
+        return " (explicitly denied)";
+      }
+      return "";
+    }
+
+#endif  // defined(DWM_CAN_USE_REFLECTION)
     
   };
 

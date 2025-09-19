@@ -42,6 +42,7 @@
 
 extern "C" {
   #include <sys/stat.h>
+  #include <sys/time.h>
 }
 
 #include <iomanip>
@@ -59,6 +60,14 @@ using namespace std;
 namespace ip = boost::asio::ip;
 namespace local = boost::asio::local;
 namespace generic = boost::asio::generic;
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static bool operator == (const timeval & t1, const timeval & t2)
+{
+  return ((t1.tv_sec == t2.tv_sec) && (t1.tv_usec == t2.tv_usec));
+}
 
 //----------------------------------------------------------------------------
 //!  
@@ -146,10 +155,7 @@ static void ServerReader(std::vector<T> & entries, std::atomic<bool> & ready)
   acc.accept(sck, endPoint, ec);
   if (UnitAssert(! ec)) {
     sck.non_blocking(false);
-    T  entry;
-    while (Dwm::ASIO::Read(sck, entry, ec)) {
-      entries.push_back(entry);
-    }
+    UnitAssert(Dwm::ASIO::Read(sck, entries, ec));
     sck.close();
   }
   acc.close();
@@ -295,7 +301,7 @@ static void TestVectorOf(const vector<T> & invec)
   while (! serverReady) {
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
-  
+
   boost::asio::io_context    ioContext;
   ip::tcp::endpoint          endPoint(ip::make_address("127.0.0.1"), 7117);
   ip::tcp::socket            sck(ioContext);
@@ -303,9 +309,7 @@ static void TestVectorOf(const vector<T> & invec)
   sck.connect(endPoint, ec);
   if (UnitAssert((! ec))) {
     sck.non_blocking(false);
-    for (const auto & s : invec) {
-      UnitAssert(Dwm::ASIO::Write(sck, s, ec));
-    }
+    UnitAssert(Dwm::ASIO::Write(sck, invec, ec));
     sck.close();
   }
   serverthread.join();
@@ -809,9 +813,20 @@ static void TestStrings()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void TestReflectTimeval()
+{
+  vector<timeval>  vt1 = { { 1, 0xCCCC }, { time((time_t *)0), 42 } };
+  TestVectorOf(vt1);
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static void TestBools()
 {
-  vector<bool>  vs1({true, false});
+  vector<bool>  vs1 = {true, false};
+  static_assert(! Dwm::Concepts::is_std_sequence_container<decltype(vs1)>);
   TestAsArray<bool,2>(vs1);
   TestVectorOf(vs1);
   TestAsVector(vs1);
@@ -1056,7 +1071,7 @@ static void TestBoundedArray()
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  // Dwm::SysLogger::Open("TestASIO", LOG_PERROR, LOG_USER);
+  Dwm::SysLogger::Open("TestASIO", LOG_PERROR, LOG_USER);
   TestStrings();
   TestBools();
   TestInts();
@@ -1068,6 +1083,9 @@ int main(int argc, char *argv[])
   TestVariants();
   TestVarArgs();
   TestBoundedArray();
+#if defined(DWM_CAN_USE_REFLECTION)
+  TestReflectTimeval();
+#endif
   
   if (Dwm::Assertions::Total().Failed()) {
     Dwm::Assertions::Print(cerr, true);
