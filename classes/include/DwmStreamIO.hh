@@ -854,7 +854,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Reads a PairAssociative container from an istream.  Returns the
     //!  istream.
-    //!  We use this for map, multimap and hash_map.
+    //!  We use this for map, multimap, unordered_map and unordered_multimap.
     //------------------------------------------------------------------------
     template <typename _containerT>
     requires std::is_default_constructible_v<typename _containerT::key_type>
