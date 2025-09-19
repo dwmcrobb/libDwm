@@ -1,5 +1,23 @@
 2025-09-18  Daniel McRobb  <dwm@thrip.mcplex.net>
 
+	* classes/include/DwmASIO.hh, classes/tests/TestASIO.cc: Start adding
+	support for using C++26 reflection as last resort serialization and
+	deserialization.
+
+	* classes/include/DwmStreamIO.hh: Added requires clause to
+	PairAssocContRead(); the key and value type must be default
+	constructible.
+
+	* classes/include/DwmConcepts.hh: std::vector<bool> is not a standard
+	sequence container.
+
+	* classes/tests/TestIOVector.cc: Add test for vector<bool>.
+
+	* classes/include/DwmStreamIO.hh: Deal with the fact that
+	std::vector<bool> remains an abomination: specialize for it.  I
+	never use std::vector<bool> in my own code since it violates
+	much of what's useful in std::vector, but others might use it.
+
 	* classes/include/DwmConcepts.hh: Rename DWMSTREAMIO_CAN_USE_REFLECTION
 	to DWM_CAN_USE_REFLECTION.
 
