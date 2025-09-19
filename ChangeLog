@@ -1,3 +1,8 @@
+2025-09-19  Daniel McRobb  <dwm@thrip.mcplex.net>
+
+	* classes/include/DwmStreamIO.hh: Use concepts to refactor a bit.
+	Reduced lines of code by 153 (about 22 percent).
+
 2025-09-18  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* tagged as libDwm-0.9.56
