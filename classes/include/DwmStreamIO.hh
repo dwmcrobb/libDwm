@@ -207,11 +207,7 @@ namespace Dwm {
 
     //------------------------------------------------------------------------
     //!  Simple concept expressing that an instance of type T can be read from
-    //!  an istream via an I::Read() member.  Note that we only need this
-    //!  for the StreamIO class (which is always used as the @c I template
-    //!  parameter), but we can't predeclare the StreamIO class because the
-    //!  concept needs the class definition since it tests for a class member.
-    //   Hence the @c I template parameter.
+    //!  an istream via a StreamIO::Read() member.
     //------------------------------------------------------------------------
     template <typename T>
     concept IsReadable = (Readable<std::remove_reference_t<T>>() == true);
