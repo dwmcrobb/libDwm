@@ -1,4 +1,18 @@
+2025-09-22  Daniel McRobb  <dwm@thrip.mcplex.net>
+
+	* classes/include/DwmStreamIO.hh: Add support for std::optional.  Add
+	support for std::unique_ptr as long as the contained value appears to
+	be a single value by virtue of the deleter being std::default_delete<T>.
+	Working on support for Dwm::deny_io annotation handling when using
+	reflection.
+
+	* classes/include/DwmConcepts.hh: Add support for skipping
+	I/O if a Dwm::skip_io annotation is present.
+
 2025-09-19  Daniel McRobb  <dwm@thrip.mcplex.net>
+
+	* classes/include/DwmASIO.hh: Use concepts to refactor a bit.
+	Reduced lines of code by 141 (about 16 percent).
 
 	* classes/include/DwmStreamIO.hh: Use concepts to refactor a bit.
 	Reduced lines of code by 153 (about 22 percent).
