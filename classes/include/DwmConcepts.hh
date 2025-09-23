@@ -47,7 +47,9 @@
 #include <deque>
 #include <list>
 #include <map>
+#include <memory>
 #include <mutex>
+#include <optional>
 #include <set>
 #include <tuple>
 #include <type_traits>
@@ -115,6 +117,8 @@ namespace Dwm {
     MAKE_IS_STD_CONT_CONCEPT(multimap);
     MAKE_IS_STD_CONT_CONCEPT(set);
     MAKE_IS_STD_CONT_CONCEPT(multiset);
+    MAKE_IS_STD_CONT_CONCEPT(optional);
+    MAKE_IS_STD_CONT_CONCEPT(unique_ptr);
     MAKE_IS_STD_CONT_CONCEPT(tuple);
     MAKE_IS_STD_CONT_CONCEPT(unordered_map);
     MAKE_IS_STD_CONT_CONCEPT(unordered_multimap);
@@ -122,7 +126,7 @@ namespace Dwm {
     MAKE_IS_STD_CONT_CONCEPT(unordered_multiset);
     MAKE_IS_STD_CONT_CONCEPT(variant);
     MAKE_IS_STD_CONT_CONCEPT(vector);
-    
+
     template <class T> concept is_std_associative_container =
       is_std_set<T>
       or is_std_multiset<T>
@@ -141,8 +145,50 @@ namespace Dwm {
       or is_std_list<T>
       or (is_std_vector<T>
           and (not std::is_same_v<typename T::value_type,bool>));
+
+#if defined(DWM_CAN_USE_REFLECTION)
+    //------------------------------------------------------------------------
+    //!  Returns true if the the given reflection @c info has an annotation
+    //!  of type @c A.
+    //------------------------------------------------------------------------
+    template <std::meta::info info, typename A>
+    consteval bool has_annotation_type()
+    {
+      return (! annotations_of(info,^^A).empty());
+    }
+#endif
     
   }  // namespace Concepts
+
+#if defined(DWM_CAN_USE_REFLECTION)
+  //--------------------------------------------------------------------------
+  //!  Used by I/O classes to skip class/struct members when serializing
+  //!  or deserializing via C++ reflection (P2996).  'Dwm::skip_io' can be
+  //!  used as an annotation (P3394) during declaration to explicitly skip a
+  //!  class/struct member.  For example:
+  //!
+  //!   struct Foo {
+  //!     [[=Dwm::skip_io]] int  i;
+  //!     std::string            s;
+  //!   };
+  //!
+  //!   Foo  f { 42, "hello" };
+  //!   Dwm::StreamIO::Write(std::cout, f); // only writes the 's' member of f
+  //!   Dwm::StreamIO::Read(std::cin, f);   // only reads the 's' member of f
+  //!
+  //--------------------------------------------------------------------------
+  typedef struct {} skip_io_t;
+  inline constexpr auto  skip_io = skip_io_t();
+  
+  //--------------------------------------------------------------------------
+  //!  Can be used to deny serialization and deserialization via reflection
+  //!  (P2996).  'Dwm::deny_io' as an annotation (P3394) will cause library
+  //!  Write() and Read() members to fail when attempting to use reflection
+  //!  for serialization/deserialization.
+  //--------------------------------------------------------------------------
+  typedef struct {} deny_io_t;
+  inline constexpr auto  deny_io = deny_io_t();
+#endif
   
 }  // namespace Dwm
 
