@@ -90,21 +90,72 @@ namespace Dwm {
     //!  and deserialization...
     //!
     //!  We explicitly deny serialization / deserialization of certain types
-    //!  (for example, std::mutex) as well as pointers (since there's no
-    //!  way to know whether they point to a single object or an array of
-    //!  objects of indeterminate length).  We deny serialization of const
-    //!  types simply because there isn't a clean way to deserialize them
-    //!  since they're declared immutable.
+    //!  as well as pointers (since there's no way to know whether they point
+    //!  to a single object or an array of objects of indeterminate length).
+    //!  We deny serialization of const types simply because there isn't a
+    //!  clean way to deserialize them since they're declared immutable.
     //------------------------------------------------------------------------
     template <typename T>
-    concept ExplicitlyDenied =
+    concept DenyType =
       std::is_pointer_v<T>
-      or std::is_const_v<T>
-      or std::same_as<T,std::mutex>
+      or std::is_const_v<T>;
+    
+    template <typename T>
+    concept SkipType =
+      std::same_as<T,std::mutex>
       or std::same_as<T,std::recursive_mutex>
       or std::same_as<T,std::condition_variable>
       or std::same_as<T,std::lock_guard<std::mutex>>
       or std::same_as<T,std::unique_lock<std::mutex>>;
+
+#if defined(DWM_CAN_USE_REFLECTION)
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <std::meta::info info>
+    consteval bool SkipAnnotation()
+    {
+      return Concepts::has_annotation_type<info,skip_io_t>();
+    }
+  
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename DeclType, std::meta::info info>
+    consteval bool Skip()
+    {
+      if constexpr (SkipType<DeclType>) {
+        return true;
+      }
+      if constexpr (std::meta::is_type(info)) {
+        if constexpr (SkipType<typename[:std::meta::type_of(info):]>) {
+          return true;
+        }
+      }
+      else if constexpr (SkipAnnotation<info>()) {
+        return true;
+      }
+      return false;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <std::meta::info info>
+    consteval bool Deny()
+    {
+      if constexpr (std::meta::is_type(info)) {
+        if constexpr (DenyType<typename[:std::meta::type_of(info):]>) {
+          return true;
+        }
+      }
+      if constexpr (Concepts::has_annotation_type<info,deny_io_t>()) {
+        return true;
+      }
+      return false;
+    }
+    
+#endif
     
     //------------------------------------------------------------------------
     //!  Concept to match STL containers.
@@ -121,11 +172,25 @@ namespace Dwm {
     template <typename T, std::size_t I = 0>
     consteval bool Writable()
     {
+#if defined(DWM_CAN_USE_REFLECTION)
+      if constexpr (Concepts::has_annotation_type<^^T,deny_io_t>()) {
+        return false;
+      }
+#endif
       if constexpr (SpecificallySupported<T>) {
         return true;
       }
-      else if constexpr (ExplicitlyDenied<T>) {
+      else if constexpr (SkipType<T>) {
+        return true;
+      }
+      else if constexpr (DenyType<T>) {
         return false;
+      }
+      else if constexpr (Concepts::is_std_optional<T>) {
+        return Writable<typename T::value_type>;
+      }
+      else if constexpr (Concepts::is_std_unique_ptr<T>) {
+        return Writable<typename T::element_type>;
       }
       else if constexpr (std::is_bounded_array_v<T>) {
         return Writable<std::remove_all_extents_t<T>>();
@@ -181,7 +246,8 @@ namespace Dwm {
           return false;
         }
         template for (constexpr auto mem : members) {
-          if constexpr (! Writable<typename[:std::meta::type_of(mem):]>()) {
+          if constexpr ((! Writable<typename[:std::meta::type_of(mem):]>())
+                        || __iostream_detail::Deny<mem>()) {
             return false;
           }
         }
@@ -768,6 +834,99 @@ namespace Dwm {
       return is;
     }
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_same_v<typename std::unique_ptr<T>::deleter_type,
+                            std::default_delete<T>>
+    static std::ostream & Write(std::ostream & os,
+                                const std::unique_ptr<T> & t)
+    {
+      static_assert(__iostream_detail::IsWritable<T>);
+      bool  isNull = (nullptr == t);
+      if (StreamIO::Write(os, isNull)) {
+        if (! isNull) {
+          StreamIO::Write(os, *t);
+        }
+      }
+      return os;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_default_constructible_v<T>
+      and std::is_same_v<typename std::unique_ptr<T>::deleter_type,
+                         std::default_delete<T>>
+    static std::istream & Read(std::istream & is,
+                               std::unique_ptr<T> & t)
+    {
+      static_assert(__iostream_detail::IsReadable<T>);
+      
+      bool  isNull = true;
+      if (StreamIO::Read(is, isNull)) {
+        if (isNull) {
+          t.release();
+        }
+        else {
+          if (nullptr == t) {
+            try {
+              t = std::make_unique<T>();
+            }
+            catch (std::bad_alloc & ex) {
+              is.setstate(std::ios_base::failbit);
+              FSyslog(LOG_ERR, "Failed to allocate an object of type {}",
+                      TypeName<decltype(t)>());
+              return is;
+            }
+          }
+          if (! StreamIO::Read(is, *t)) {
+            t.release();
+          }
+        }
+      }
+      return is;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    static std::ostream & Write(std::ostream & os, const std::optional<T> & t)
+    {
+      static_assert(__iostream_detail::IsWritable<T>);
+      bool  hasValue = t.has_value();
+      if (StreamIO::Write(os, hasValue)) {
+        if (hasValue) {
+          StreamIO::Write(os, t.value());
+        }
+      }
+      return os;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    static std::istream & Read(std::istream & is, std::optional<T> & t)
+    {
+      bool  hasValue = false;
+      if (StreamIO::Read(is, hasValue)) {
+        if (hasValue) {
+          if (! t.has_value()) {
+            t = T();
+          }
+          StreamIO::Read(is, t.value());
+        }
+        else {
+          t.reset();
+        }
+      }
+      return is;
+    }
+    
 #if defined(DWM_CAN_USE_REFLECTION)
     
     //------------------------------------------------------------------------
@@ -777,23 +936,34 @@ namespace Dwm {
     requires std::is_class_v<T>
       and (not __iostream_detail::SpecificallySupported<T>)
       and (not __iostream_detail::SupportedContainer<T>)
-      and (not __iostream_detail::ExplicitlyDenied<T>)
+      and (not __iostream_detail::DenyType<T>)
     static std::ostream & Write(std::ostream & os, T const & v)
     {
       using __iostream_detail::IsWritable;
-      using __iostream_detail::ExplicitlyDenied;
+      using __iostream_detail::Skip;
       constexpr auto ctx = std::meta::access_context::unchecked();
       template for (constexpr auto mem :
                     define_static_array(nonstatic_data_members_of(^^T, ctx))) {
-        if constexpr (IsWritable<decltype(v.[:mem:])>) {
-          Write(os, v.[:mem:]);
-        }
-        else {
-          os.setstate(std::ios_base::failbit);
-          FSyslog(LOG_ERR, "{}.{} of type '{}' is unwritable{}",
+        if constexpr (Skip<decltype(v.[:mem:]),mem>()) {
+          FSyslog(LOG_INFO, "{}.{} of type '{}' skipped{}",
                   TypeName<decltype(v)>(), std::meta::identifier_of(mem),
                   std::meta::display_string_of(std::meta::type_of(mem)),
-                  ReflectFailReason<mem>());
+                  SkipReason<decltype(v.[:mem:]),mem>());
+        }
+        else {
+          if constexpr (IsWritable<decltype(v.[:mem:])>) {
+            FSyslog(LOG_DEBUG, "Writing {}.{} of type '{}'",
+                    TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                    std::meta::display_string_of(std::meta::type_of(mem)));
+            Write(os, v.[:mem:]);
+          }
+          else {
+            os.setstate(std::ios_base::failbit);
+            FSyslog(LOG_ERR, "{}.{} of type '{}' is unwritable{}",
+                    TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                    std::meta::display_string_of(std::meta::type_of(mem)),
+                    DenyReason<mem>());
+          }
         }
       }
       return os;
@@ -806,22 +976,31 @@ namespace Dwm {
     requires std::is_class_v<T>
       and (not __iostream_detail::SpecificallySupported<T>)
       and (not __iostream_detail::SupportedContainer<T>)
-      and (not __iostream_detail::ExplicitlyDenied<T>)
+      and (not __iostream_detail::DenyType<T>)
     static std::istream & Read(std::istream & is, T & v)
     {
       using __iostream_detail::IsReadable;
+      using __iostream_detail::Skip;
       constexpr auto ctx = std::meta::access_context::unchecked();
       template for (constexpr auto mem :
                       define_static_array(nonstatic_data_members_of(^^T, ctx))) {
-        if constexpr (IsReadable<decltype(v.[:mem:])>) {
-          Read(is, (v.[:mem:]));
-        }
-        else {
-          is.setstate(std::ios_base::failbit);
-          FSyslog(LOG_ERR, "{}.{} of type '{}' is unreadable{}",
+        if constexpr (Skip<decltype(v.[:mem:]),mem>()) {
+          FSyslog(LOG_INFO, "{}.{} of type '{}' skipped{}",
                   TypeName<decltype(v)>(), std::meta::identifier_of(mem),
                   std::meta::display_string_of(std::meta::type_of(mem)),
-                  ReflectFailReason<mem>());
+                  SkipReason<decltype(v.[:mem:]),mem>());
+        }
+        else {
+          if constexpr (IsReadable<decltype(v.[:mem:])>) {
+            Read(is, (v.[:mem:]));
+          }
+          else {
+            is.setstate(std::ios_base::failbit);
+            FSyslog(LOG_ERR, "{}.{} of type '{}' is unreadable{}",
+                    TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                    std::meta::display_string_of(std::meta::type_of(mem)),
+                    DenyReason<mem>());
+          }
         }
       }
       return is;
@@ -885,17 +1064,34 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     template <std::meta::info info>
-    static consteval std::string ReflectFailReason()
+    static constexpr std::string DenyReason()
     {
-      if (std::meta::is_const(info)) {
+      if constexpr (std::meta::is_const(info)) {
         return " (immutable)";
       }
-      if (__iostream_detail::ExplicitlyDenied<typename[:std::meta::type_of(info):]>) {
-        return " (explicitly denied)";
+      if constexpr (__iostream_detail::Deny<info>()) {
+        return " (denied)";
       }
       return "";
     }
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename DeclType, std::meta::info info>
+    static constexpr std::string SkipReason()
+    {
+      if constexpr (__iostream_detail::SkipType<DeclType>) {
+        return " (skipped type)";
+      }
+      else if constexpr (__iostream_detail::SkipAnnotation<info>()) {
+        return " (has skip_io annotation)";
+      }
+      else {
+        return "";
+      }
+    }
+    
 #endif  // defined(DWM_CAN_USE_REFLECTION)
     
   };
