@@ -36,10 +36,11 @@
 
 //---------------------------------------------------------------------------
 //!  \file TestDwmIO.cc
-//!  \brief Unit tests for Dwm::IO
+//!  \brief Unit tests for Dwm::(Stream|File|Descriptor)IO
 //---------------------------------------------------------------------------
 
-//  This program is just a simple test application for functions in Dwm::IO.
+//  This program is just a simple test application for IO functionality in
+//  libDwm.
 
 extern "C" {
   #include <fcntl.h>
@@ -50,6 +51,7 @@ extern "C" {
 #include <cassert>
 #include <cstdlib>
 #include <fstream>
+#include <sstream>
 
 #include "DwmIpv4Prefix.hh"
 #include "DwmIO.hh"
@@ -69,6 +71,7 @@ static const uint64_t  k_uint64Val = 4294967296LL * 65535;
 static const string    k_stringVal = "TestDwmIO";
 static const float     k_floatVal  = 123456789.987654321;
 static const double    k_doubleVal = 987654321.123456789;
+static const timeval   k_timeVal   = { 42, 0xCCCC };
 
 //----------------------------------------------------------------------------
 //!  
@@ -1528,7 +1531,105 @@ done:
   return rc;
 }
 
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static bool TestStreamUniquePtr()
+{
+  bool  rc = false;
+  std::unique_ptr<std::string>  sp1 = make_unique<std::string>("hello");
+  stringstream  ss;
+  if (UnitAssert(StreamIO::Write(ss, sp1))) {
+    std::unique_ptr<std::string>  sp2;
+    if (UnitAssert(StreamIO::Read(ss, sp2))) {
+      rc = (*sp2 == *sp1);
+    }
+  }
+  return rc;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static bool TestStreamOptional()
+{
+  bool  rc = false;
+  std::optional<std::string>  so1 = "hello";
+  stringstream  ss;
+  if (UnitAssert(StreamIO::Write(ss, so1))) {
+    std::optional<std::string>  so2;
+    if (UnitAssert(StreamIO::Read(ss, so2))) {
+      if (UnitAssert(so2 == so1)) {
+        rc = true;
+      }
+    }
+  }
+  return rc;
+}
+
 #if defined(DWM_CAN_USE_REFLECTION)
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static bool ReflectionSkipTest()
+{
+  bool  rc = false;
+  
+  struct Skip1_t {
+    [[=Dwm::skip_io]] int  i;
+    int                    j;
+  };
+
+  struct Skip2_t {
+    string                 s;
+    [[=Dwm::skip_io]] int  k;
+  };
+
+  struct Skip1_2_t {
+    Skip1_t  sk1;
+    Skip2_t  sk2;
+  };
+  
+  if (UnitAssert(IsStreamWritable<Skip1_2_t>)) {
+    const Skip1_2_t  sk1_2_1 = { {42, 99}, {"hello", 0xCCCC} };
+    Skip1_2_t        sk1_2_2 = { {77, 0},  {"goodbye", 55 } };
+    stringstream  ss;
+    if (UnitAssert(StreamIO::Write(ss, sk1_2_1))) {
+      if (UnitAssert(StreamIO::Read(ss, sk1_2_2))) {
+        if (UnitAssert(sk1_2_2.sk1.j == sk1_2_1.sk1.j)) {
+          if (UnitAssert(sk1_2_2.sk1.i == 77)) {
+            if (UnitAssert(sk1_2_2.sk2.s == sk1_2_1.sk2.s)) {
+              if (UnitAssert(sk1_2_2.sk2.k == 55)) {
+                rc = true;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  typedef struct {
+    [[=Dwm::skip_io]] Skip1_t  sk1;
+    Skip2_t                    sk2;
+  } Skip3_t;
+
+  if (UnitAssert(IsStreamWritable<Skip3_t>)) {
+    const Skip3_t  sk3_1 = { {99, 42}, {"goodbye", 0xAAAA} };
+    Skip3_t        sk3_2 = { {33, 88}, {"???",     0x1010} };
+    stringstream  ss;
+    if (UnitAssert(StreamIO::Write(ss, sk3_1))) {
+      if (UnitAssert(StreamIO::Read(ss, sk3_2))) {
+        UnitAssert(sk3_2.sk1.i == 33);
+        UnitAssert(sk3_2.sk1.j == 88);
+        UnitAssert(sk3_2.sk2.s == sk3_1.sk2.s);
+        UnitAssert(sk3_2.sk2.k == 0x1010);
+      }
+    }
+  }
+        
+  return rc;
+}
+    
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
@@ -1541,24 +1642,28 @@ static bool MembersWritableTest()
     int  *ip;
   } UnwritableStruct1;
   rc &= UnitAssert(! IsStreamWritable<UnwritableStruct1>);
+  rc &= UnitAssert(! IsFileWritable<UnwritableStruct1>);
 
-  //  Not writable: contains a std::mutex
+  //  writable: contains a std::mutex, which is skipped
   typedef struct {
     std::mutex  mtx;
   } UnwritableStruct2;
-  rc &= UnitAssert(! IsStreamWritable<UnwritableStruct2>);
+  rc &= UnitAssert(IsStreamWritable<UnwritableStruct2>);
+  rc &= UnitAssert(IsFileWritable<UnwritableStruct2>);
 
   //  Not readable (contains a const member), hence not writable
   typedef struct {
     const int i;
   } UnwritableStruct3;
   rc &= UnitAssert(! IsStreamWritable<UnwritableStruct3>);
+  rc &= UnitAssert(! IsFileWritable<UnwritableStruct3>);
 
   typedef struct {
     UnwritableStruct1  us1;
     UnwritableStruct2  us2;
   } UnwritableStruct1_2;
   rc &= UnitAssert(! IsStreamWritable<UnwritableStruct1_2>);
+  rc &= UnitAssert(! IsFileWritable<UnwritableStruct1_2>);
 
   typedef struct {
     int     a;
@@ -1566,6 +1671,7 @@ static bool MembersWritableTest()
     string  c;
   } WritableStruct1;
   rc &= UnitAssert(IsStreamWritable<WritableStruct1>);
+  rc &= UnitAssert(IsFileWritable<WritableStruct1>);
 
   typedef struct {
     string  a;
@@ -1573,12 +1679,14 @@ static bool MembersWritableTest()
     string  c;
   } WritableStruct2;
   rc &= UnitAssert(IsStreamWritable<WritableStruct2>);
+  rc &= UnitAssert(IsFileWritable<WritableStruct2>);
 
   typedef struct {
     WritableStruct1  s1;
     WritableStruct2  s2;
   } WritableStruct1_2;
   rc &= UnitAssert(IsStreamWritable<WritableStruct1_2>);
+  rc &= UnitAssert(IsFileWritable<WritableStruct1_2>);
 
   WritableStruct1_2  ws1 = { { 42, 0xCCCC, "hello"}, { "hi", 99, "goodbye" } };
   stringstream  ss;
@@ -1641,7 +1749,64 @@ static bool ReflectionStreamTest()
       }
     }
   }
-    
+
+  struct DenyOneMember {
+    [[=deny_io]] int  a;
+  };
+
+  DenyOneMember  dom;
+  rc &= UnitAssert((! __iostream_detail::Writable<DenyOneMember>()));
+      
+  return rc;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static bool ReflectionFileTest()
+{
+  bool  rc = false;
+
+  typedef struct {
+    int                a;
+    int                b;
+    string             c;
+    struct timeval     tv;
+    std::vector<int>   vi;
+    std::map<int,int>  mi;
+  } ReflTestStruct;
+
+  UnitAssert((__fileio_detail::Writable<ReflTestStruct>()));
+  
+  ReflTestStruct  rts1{9,42,"ReflectionStreamTest",{42,0xCCCC},{6,7,8},
+                       {{1,2},{3,4}}};
+  string  fn("/tmp/DWMReflectionFileTest");
+  FILE  *f = fopen(fn.c_str(), "wb");
+  if (UnitAssert(f)) {
+    if (UnitAssert(FileIO::Write(f, rts1))) {
+      fclose(f);
+      f = fopen(fn.c_str(), "rb");
+      if (UnitAssert(f)) {
+        ReflTestStruct  rts2;
+        if (UnitAssert(FileIO::Read(f, rts2))) {
+          if (UnitAssert(rts1.a == rts2.a)
+              && UnitAssert(rts1.b == rts2.b)
+              && UnitAssert(rts1.c == rts2.c)
+              && UnitAssert(rts1.tv.tv_sec == rts2.tv.tv_sec)
+              && UnitAssert(rts1.tv.tv_usec == rts2.tv.tv_usec)
+              && UnitAssert(rts1.vi == rts2.vi)
+              && UnitAssert(rts1.mi == rts2.mi)) {
+            rc = true;
+          }
+        }
+        fclose(f);
+      }
+    }
+    else {
+      fclose(f);
+    }
+    std::remove(fn.c_str());
+  }
   return rc;
 }
 #endif  //  defined(DWM_CAN_USE_REFLECTION)
@@ -1651,8 +1816,8 @@ static bool ReflectionStreamTest()
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  // SysLogger::Open("TestIO", LOG_PERROR, LOG_USER);
-  SysLogger::MinimumPriority(LOG_ERR);
+  SysLogger::Open("TestIO", LOG_PERROR, LOG_USER);
+  SysLogger::MinimumPriority(LOG_INFO);
   
   StreamTest();
   DescriptorTest();
@@ -1680,8 +1845,12 @@ int main(int argc, char *argv[])
   VarArgDescriptorTest();
   VarArgDescriptorTestFail();
   BoundedArrayStreamTest();
+  TestStreamUniquePtr();
+  TestStreamOptional();
 #if defined(DWM_CAN_USE_REFLECTION)
+  ReflectionSkipTest();
   ReflectionStreamTest();
+  ReflectionFileTest();
   MembersWritableTest();
 #endif
   
