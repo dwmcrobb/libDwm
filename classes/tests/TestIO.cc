@@ -1567,6 +1567,19 @@ static bool TestStreamOptional()
   return rc;
 }
 
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestTupleWritable()
+{
+  UnitAssert((IsStreamWritable<std::tuple<int,std::string,int,std::pair<int,std::string>>>));
+  UnitAssert((IsStreamWritable<std::tuple<int,string,int>>));
+  UnitAssert((! IsStreamWritable<std::tuple<int,const string>>));
+  UnitAssert((! IsStreamReadable<std::tuple<int,const string>>));
+  UnitAssert((! IsStreamWritable<std::tuple<const string>>));
+  return;
+}
+
 #if defined(DWM_CAN_USE_REFLECTION)
 //----------------------------------------------------------------------------
 //!  
@@ -1629,7 +1642,7 @@ static bool ReflectionSkipTest()
         
   return rc;
 }
-    
+
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
@@ -1731,7 +1744,7 @@ static bool ReflectionStreamTest()
     
   } ReflTestStruct;
 
-  UnitAssert((__iostream_detail::Writable<ReflTestStruct>()));
+  UnitAssert((iostream_detail::Writable<ReflTestStruct>()));
   
   ReflTestStruct  rts1{9,42,"ReflectionStreamTest",{42,0xCCCC},{6,7,8},
                        {{1,2},{3,4}}};
@@ -1755,7 +1768,7 @@ static bool ReflectionStreamTest()
   };
 
   DenyOneMember  dom;
-  rc &= UnitAssert((! __iostream_detail::Writable<DenyOneMember>()));
+  rc &= UnitAssert((! iostream_detail::Writable<DenyOneMember>()));
       
   return rc;
 }
@@ -1816,7 +1829,7 @@ static bool ReflectionFileTest()
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  SysLogger::Open("TestIO", LOG_PERROR, LOG_USER);
+  //  SysLogger::Open("TestIO", LOG_PERROR, LOG_USER);
   SysLogger::MinimumPriority(LOG_INFO);
   
   StreamTest();
@@ -1847,6 +1860,7 @@ int main(int argc, char *argv[])
   BoundedArrayStreamTest();
   TestStreamUniquePtr();
   TestStreamOptional();
+  TestTupleWritable();
 #if defined(DWM_CAN_USE_REFLECTION)
   ReflectionSkipTest();
   ReflectionStreamTest();

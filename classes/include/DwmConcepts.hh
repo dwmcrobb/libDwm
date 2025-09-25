@@ -69,6 +69,8 @@
 #  endif
 #endif
 
+// #undef DWM_CAN_USE_REFLECTION
+
 namespace Dwm {
 
   namespace Concepts {

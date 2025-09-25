@@ -42,6 +42,7 @@
 #ifndef _DWMSTREAMIO_HH_
 #define _DWMSTREAMIO_HH_
 
+#include <algorithm>
 #include <cassert>
 #include <condition_variable>
 #include <cstdint>
@@ -53,14 +54,14 @@
 
 #include "DwmPortability.hh"
 #include "DwmStreamIOCapable.hh"
-#include "DwmConcepts.hh"
+#include "DwmIOConcepts.hh"
 #include "DwmSysLogger.hh"
 #include "DwmTypeName.hh"
 #include "DwmVariantFromIndex.hh"
 
 namespace Dwm {
 
-  namespace __iostream_detail {
+  namespace iostream_detail {
 
     //------------------------------------------------------------------------
     //!  Concept to match types we directly support (no reflection needed).
@@ -85,107 +86,133 @@ namespace Dwm {
       or std::same_as<T,std::vector<bool>>
       or (Dwm::HasStreamWrite<T> and Dwm::HasStreamRead<T>);
 
-    //------------------------------------------------------------------------
-    //!  Used for the cases where we try to use reflection for serialization
-    //!  and deserialization...
-    //!
-    //!  We explicitly deny serialization / deserialization of certain types
-    //!  as well as pointers (since there's no way to know whether they point
-    //!  to a single object or an array of objects of indeterminate length).
-    //!  We deny serialization of const types simply because there isn't a
-    //!  clean way to deserialize them since they're declared immutable.
-    //------------------------------------------------------------------------
-    template <typename T>
-    concept DenyType =
-      std::is_pointer_v<T>
-      or std::is_const_v<T>;
-    
-    template <typename T>
-    concept SkipType =
-      std::same_as<T,std::mutex>
-      or std::same_as<T,std::recursive_mutex>
-      or std::same_as<T,std::condition_variable>
-      or std::same_as<T,std::lock_guard<std::mutex>>
-      or std::same_as<T,std::unique_lock<std::mutex>>;
+    template <typename T> consteval bool Writable();
+    template <typename T> consteval bool Readable();
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires Concepts::is_std_pair<T>
+    consteval bool PairWritable()
+    {
+      return (Writable<typename T::first_type>()
+              && Writable<typename T::second_type>());
+    }
+    
 #if defined(DWM_CAN_USE_REFLECTION)
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    template <std::meta::info info>
-    consteval bool SkipAnnotation()
+    template <typename T, size_t ParamCount = 0>
+    requires (Concepts::is_std_tuple<T>
+              or Concepts::is_std_variant<T>
+              or Concepts::is_std_pair<T>)
+    consteval bool TemplateTypeParamsWritable()
     {
-      return Concepts::has_annotation_type<info,skip_io_t>();
+      constexpr const auto tmpl_args =
+        define_static_array(template_arguments_of(^^T));
+      size_t  numParams = 0, numTypes = 0, numWritable = 0;
+      template for (constexpr auto tmpl_arg : tmpl_args) {
+        ++numParams;
+        if (ParamCount && (numParams > ParamCount)) {
+          break;
+        }
+        if (std::meta::is_type(tmpl_arg)) {
+          ++numTypes;
+          if constexpr (! Writable<typename[:tmpl_arg:]>()) {
+            break;
+          }
+          ++numWritable;
+        }
+      }
+      return (numTypes == numWritable);
     }
-  
+      
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    template <typename DeclType, std::meta::info info>
-    consteval bool Skip()
+    template <typename T>
+    requires Concepts::is_std_tuple<T>
+    consteval bool TupleWritable() { return TemplateTypeParamsWritable<T>(); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires Concepts::is_std_variant<T>
+    consteval bool VariantWritable() { return TemplateTypeParamsWritable<T>(); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_class_v<T>
+    consteval bool ReflectionWritable()
     {
-      if constexpr (SkipType<DeclType>) {
-        return true;
+      constexpr auto ctx = std::meta::access_context::unchecked();
+      constexpr auto members =
+        define_static_array(nonstatic_data_members_of(^^T, ctx));
+      if constexpr (! members.size()) {
+        return false;
       }
-      if constexpr (std::meta::is_type(info)) {
-        if constexpr (SkipType<typename[:std::meta::type_of(info):]>) {
-          return true;
+      template for (constexpr auto mem : members) {
+        if constexpr ((! Writable<typename[:std::meta::type_of(mem):]>())
+                      || io_detail::Deny<mem>()) {
+          return false;
         }
       }
-      else if constexpr (SkipAnnotation<info>()) {
-        return true;
-      }
-      return false;
+      return true;
+    }
+    
+#else
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires Concepts::is_std_tuple<T>
+    consteval bool TupleWritable()
+    {
+      auto  l = []<typename ...ET>(ET && ...args)
+        { return (Writable<ET>() && ...); };
+      return std::apply(l, std::forward<T>(T()));
     }
 
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    template <std::meta::info info>
-    consteval bool Deny()
+    template <typename T, size_t I = 0>
+    requires Concepts::is_std_variant<T>
+    consteval bool VariantWritable()
     {
-      if constexpr (std::meta::is_type(info)) {
-        if constexpr (DenyType<typename[:std::meta::type_of(info):]>) {
-          return true;
+      if constexpr (I < std::variant_size_v<T>) {
+        if constexpr (Writable<std::variant_alternative_t<I,T>>()) {
+          return VariantWritable<T,I+1>();
+        }
+        else {
+          return false;
         }
       }
-      if constexpr (Concepts::has_annotation_type<info,deny_io_t>()) {
-        return true;
-      }
-      return false;
+      return true;
     }
-    
+
 #endif
-    
-    //------------------------------------------------------------------------
-    //!  Concept to match STL containers.
-    //------------------------------------------------------------------------
-    template <class T>
-    concept SupportedContainer =
-      Concepts::is_std_associative_container<T>
-      or Concepts::is_std_pair_associative_container<T>
-      or Concepts::is_std_sequence_container<T>;
 
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    template <typename T, std::size_t I = 0>
+    template <typename T>
     consteval bool Writable()
     {
 #if defined(DWM_CAN_USE_REFLECTION)
-      if constexpr (Concepts::has_annotation_type<^^T,deny_io_t>()) {
+      if constexpr (io_detail::HasDenyAnnotation<^^T>) {
         return false;
       }
 #endif
-      if constexpr (SpecificallySupported<T>) {
-        return true;
-      }
-      else if constexpr (SkipType<T>) {
-        return true;
-      }
-      else if constexpr (DenyType<T>) {
-        return false;
-      }
+      if constexpr (SpecificallySupported<T>)    { return true;  }
+      else if constexpr (io_detail::SkipType<T>) { return true;  }
+      else if constexpr (io_detail::DenyType<T>) { return false; }
       else if constexpr (Concepts::is_std_optional<T>) {
         return Writable<typename T::value_type>;
       }
@@ -199,59 +226,24 @@ namespace Dwm {
         return Writable<typename T::value_type>();
       }
       else if constexpr (Concepts::is_std_pair<T>) {
-        if constexpr (Writable<typename T::first_type>()
-                      && Writable<typename T::second_type>()) {
-          return true;
-        }
+        return PairWritable<T>();
       }
       else if constexpr (Concepts::is_std_tuple<T>) {
-        if constexpr (I < std::tuple_size_v<T>) {
-          if constexpr (Writable<std::tuple_element_t<I, T>>()) {
-            return Writable<T,I+1>();
-          }
-          else {
-            return false;
-          }
-        }
-        else {
-          return true;
-        }
+        return TupleWritable<T>();
       }
       else if constexpr (Concepts::is_std_variant<T>) {
-        if constexpr (I < std::variant_size_v<T>) {
-          if constexpr (Writable<std::variant_alternative_t<I,T>>()) {
-            return Writable<T,I+1>();
-          }
-          else {
-            return false;
-          }
-        }
-        else {
-          return true;
-        }
+        return VariantWritable<T>();
       }
       else if constexpr (Concepts::is_std_associative_container<T>) {
         return Writable<typename T::value_type>();
       }
       else if constexpr (Concepts::is_std_pair_associative_container<T>) {
-        return (Writable<typename T::key_type>()
-                && Writable<typename T::mapped_type>());
+        return PairWritable<std::pair<typename T::key_type,
+                                      typename T::mapped_type>>();
       }
 #if defined(DWM_CAN_USE_REFLECTION)
       else if constexpr (std::is_class_v<T>) {
-        constexpr auto ctx = std::meta::access_context::unchecked();
-        constexpr auto members =
-          define_static_array(nonstatic_data_members_of(^^T, ctx));
-        if constexpr (! members.size()) {
-          return false;
-        }
-        template for (constexpr auto mem : members) {
-          if constexpr ((! Writable<typename[:std::meta::type_of(mem):]>())
-                        || __iostream_detail::Deny<mem>()) {
-            return false;
-          }
-        }
-        return true;
+        return ReflectionWritable<T>();
       }
 #endif
       return false;
@@ -260,14 +252,14 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    template <typename T, std::size_t I = 0>
+    template <typename T>
     consteval bool Readable()
     {
       if constexpr (std::is_const_v<T>) {
         return false;
       }
       else {
-        return Writable<T,I>();
+        return Writable<T>();
       }
     }
 
@@ -284,10 +276,10 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <typename T>
     concept IsWritable =
-    (Readable<std::remove_cvref_t<T>>() == true)
+      (Readable<std::remove_cvref_t<T>>() == true)
       and (Writable<std::remove_cvref_t<T>>() == true);
     
-  }  // namespace __iostream_detail
+  }  // namespace iostream_detail
 
   //--------------------------------------------------------------------------
   //!  This class contains a collection of static functions for reading and
@@ -798,7 +790,8 @@ namespace Dwm {
     requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
     static std::ostream & Write(std::ostream & os, const T & v)
     {
-      static_assert(__iostream_detail::IsWritable<decltype(v[0])>);
+      // static_assert(iostream_detail::Writable<std::remove_cvref_t<decltype(v[0])>>());
+      static_assert(iostream_detail::IsWritable<std::remove_reference_t<decltype(v[0])>>);
       uint64_t  n = std::extent_v<T>;
       if (StreamIO::Write(os, n)) {
         for (size_t i = 0; i < std::extent_v<T>; ++i) {
@@ -817,7 +810,7 @@ namespace Dwm {
     requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
     static std::istream & Read(std::istream & is, T & v)
     {
-      static_assert(__iostream_detail::IsReadable<decltype(v[0])>);
+      static_assert(iostream_detail::Readable<std::remove_reference_t<decltype(v[0])>>());
       uint64_t  n;
       if (StreamIO::Read(is, n)) {
         if (std::extent_v<T> == n) {
@@ -843,7 +836,7 @@ namespace Dwm {
     static std::ostream & Write(std::ostream & os,
                                 const std::unique_ptr<T> & t)
     {
-      static_assert(__iostream_detail::IsWritable<T>);
+      static_assert(iostream_detail::IsWritable<T>);
       bool  isNull = (nullptr == t);
       if (StreamIO::Write(os, isNull)) {
         if (! isNull) {
@@ -863,7 +856,7 @@ namespace Dwm {
     static std::istream & Read(std::istream & is,
                                std::unique_ptr<T> & t)
     {
-      static_assert(__iostream_detail::IsReadable<T>);
+      static_assert(iostream_detail::IsReadable<T>);
       
       bool  isNull = true;
       if (StreamIO::Read(is, isNull)) {
@@ -891,12 +884,12 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Writes a std::optional<T> to @c os.  Returns @c os.
     //------------------------------------------------------------------------
     template <typename T>
     static std::ostream & Write(std::ostream & os, const std::optional<T> & t)
     {
-      static_assert(__iostream_detail::IsWritable<T>);
+      static_assert(iostream_detail::IsWritable<T>);
       bool  hasValue = t.has_value();
       if (StreamIO::Write(os, hasValue)) {
         if (hasValue) {
@@ -907,9 +900,10 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Reads a std::optional<T> from @c is.  Returns @c is.
     //------------------------------------------------------------------------
     template <typename T>
+    requires std::is_default_constructible_v<T>
     static std::istream & Read(std::istream & is, std::optional<T> & t)
     {
       bool  hasValue = false;
@@ -934,13 +928,13 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <class T>
     requires std::is_class_v<T>
-      and (not __iostream_detail::SpecificallySupported<T>)
-      and (not __iostream_detail::SupportedContainer<T>)
-      and (not __iostream_detail::DenyType<T>)
+      and (not iostream_detail::SpecificallySupported<T>)
+      and (not io_detail::SupportedContainer<T>)
+      and (not io_detail::DenyType<T>)
     static std::ostream & Write(std::ostream & os, T const & v)
     {
-      using __iostream_detail::IsWritable;
-      using __iostream_detail::Skip;
+      using Dwm::iostream_detail::IsWritable;
+      using Dwm::io_detail::Skip;
       constexpr auto ctx = std::meta::access_context::unchecked();
       template for (constexpr auto mem :
                     define_static_array(nonstatic_data_members_of(^^T, ctx))) {
@@ -974,13 +968,13 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <class T>
     requires std::is_class_v<T>
-      and (not __iostream_detail::SpecificallySupported<T>)
-      and (not __iostream_detail::SupportedContainer<T>)
-      and (not __iostream_detail::DenyType<T>)
+      and (not iostream_detail::SpecificallySupported<T>)
+      and (not io_detail::SupportedContainer<T>)
+      and (not io_detail::DenyType<T>)
     static std::istream & Read(std::istream & is, T & v)
     {
-      using __iostream_detail::IsReadable;
-      using __iostream_detail::Skip;
+      using iostream_detail::IsReadable;
+      using io_detail::Skip;
       constexpr auto ctx = std::meta::access_context::unchecked();
       template for (constexpr auto mem :
                       define_static_array(nonstatic_data_members_of(^^T, ctx))) {
@@ -1069,7 +1063,7 @@ namespace Dwm {
       if constexpr (std::meta::is_const(info)) {
         return " (immutable)";
       }
-      if constexpr (__iostream_detail::Deny<info>()) {
+      if constexpr (io_detail::Deny<info>()) {
         return " (denied)";
       }
       return "";
@@ -1081,10 +1075,10 @@ namespace Dwm {
     template <typename DeclType, std::meta::info info>
     static constexpr std::string SkipReason()
     {
-      if constexpr (__iostream_detail::SkipType<DeclType>) {
+      if constexpr (io_detail::SkipType<DeclType>) {
         return " (skipped type)";
       }
-      else if constexpr (__iostream_detail::SkipAnnotation<info>()) {
+      else if constexpr (io_detail::HasSkipAnnotation<info>) {
         return " (has skip_io annotation)";
       }
       else {
@@ -1102,7 +1096,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   template <typename T>
   concept IsStreamWritable =
-    (__iostream_detail::IsWritable<T> == true)
+    (iostream_detail::IsWritable<T> == true)
     and requires(const T & t, std::ostream & os) {
       { StreamIO::Write(os, t) } -> std::same_as<std::ostream &>;
     };
@@ -1113,7 +1107,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   template <typename T>
   concept IsStreamReadable =
-    (__iostream_detail::IsReadable<T> == true)
+    (iostream_detail::IsReadable<T> == true)
     and requires(T & t, std::istream & is) {
       { StreamIO::Read(is, t) } -> std::same_as<std::istream &>;
     };
