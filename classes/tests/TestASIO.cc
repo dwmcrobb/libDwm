@@ -810,6 +810,77 @@ static void TestStrings()
   return;
 }
 
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static bool TestStreamUniquePtr()
+{
+  bool  rc = false;
+  std::unique_ptr<std::string>  sp1 = make_unique<std::string>("hello");
+  std::unique_ptr<std::string>  sp2;
+  
+  std::atomic<bool>  serverReady = false;
+  std::thread  serverthread =
+    std::thread(VarArgServerReader<decltype(sp2)>,
+                  std::ref(serverReady), std::ref(sp2));
+  while (! serverReady) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  }
+  
+  boost::asio::io_context    ioContext;
+  ip::tcp::endpoint          endPoint(ip::make_address("127.0.0.1"), 7117);
+  ip::tcp::socket            sck(ioContext);
+  boost::system::error_code  ec;
+  sck.connect(endPoint, ec);
+  if (UnitAssert((! ec))) {
+    sck.non_blocking(false);
+    UnitAssert(Dwm::ASIO::WriteV(sck, ec, sp1));
+    sck.close();
+  }
+  serverthread.join();
+
+  if (UnitAssert(*sp2 == *sp1)) {
+    rc = true;
+  }
+  return rc;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static bool TestOptional()
+{
+  bool  rc = false;
+  std::optional<std::string>  so1 = "hello";
+  std::optional<std::string>  so2;
+
+  std::atomic<bool>  serverReady = false;
+  std::thread  serverthread =
+    std::thread(VarArgServerReader<decltype(so2)>,
+                  std::ref(serverReady), std::ref(so2));
+  while (! serverReady) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  }
+  
+  boost::asio::io_context    ioContext;
+  ip::tcp::endpoint          endPoint(ip::make_address("127.0.0.1"), 7117);
+  ip::tcp::socket            sck(ioContext);
+  boost::system::error_code  ec;
+  sck.connect(endPoint, ec);
+  if (UnitAssert((! ec))) {
+    sck.non_blocking(false);
+    UnitAssert(Dwm::ASIO::WriteV(sck, ec, so1));
+    sck.close();
+  }
+  serverthread.join();
+
+  if (UnitAssert(so2 == so1)) {
+    rc = true;
+  }
+  return rc;
+}
+
+
 #if defined(DWM_CAN_USE_REFLECTION)
 //----------------------------------------------------------------------------
 //!  
@@ -820,6 +891,66 @@ static void TestReflectTimeval()
   TestVectorOf(vt1);
   return;
 }
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static bool ReflectionSkipTest()
+{
+  bool  rc = false;
+  
+  struct Skip1_t {
+    [[=Dwm::skip_io]] int  i;
+    int                    j;
+  };
+
+  struct Skip2_t {
+    string                 s;
+    [[=Dwm::skip_io]] int  k;
+  };
+
+  struct Skip1_2_t {
+    Skip1_t  sk1;
+    Skip2_t  sk2;
+  };
+  
+  if (UnitAssert(Dwm::IsASIOWritable<Skip1_2_t>)) {
+    const Skip1_2_t  sk1_2_1 = { {42, 99}, {"hello", 0xCCCC} };
+    Skip1_2_t        sk1_2_2 = { {77, 0},  {"goodbye", 55 } };
+
+    std::atomic<bool>  serverReady = false;
+    std::thread  serverthread =
+      std::thread(VarArgServerReader<Skip1_2_t>,
+                  std::ref(serverReady), std::ref(sk1_2_2));
+    while (! serverReady) {
+      std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+
+    boost::asio::io_context    ioContext;
+    ip::tcp::endpoint          endPoint(ip::make_address("127.0.0.1"), 7117);
+    ip::tcp::socket            sck(ioContext);
+    boost::system::error_code  ec;
+    sck.connect(endPoint, ec);
+    if (UnitAssert((! ec))) {
+      sck.non_blocking(false);
+      UnitAssert(Dwm::ASIO::WriteV(sck, ec, sk1_2_1));
+      sck.close();
+    }
+    serverthread.join();
+    if (UnitAssert(sk1_2_2.sk1.j == sk1_2_1.sk1.j)) {
+      if (UnitAssert(sk1_2_2.sk1.i == 77)) {
+        if (UnitAssert(sk1_2_2.sk2.s == sk1_2_1.sk2.s)) {
+          if (UnitAssert(sk1_2_2.sk2.k == 55)) {
+            rc = true;
+          }
+        }
+      }
+    }
+  }
+        
+  return rc;
+}
+
 #endif
 
 //----------------------------------------------------------------------------
@@ -1085,8 +1216,11 @@ int main(int argc, char *argv[])
   TestVariants();
   TestVarArgs();
   TestBoundedArray();
+  TestStreamUniquePtr();
+  TestOptional();
 #if defined(DWM_CAN_USE_REFLECTION)
   TestReflectTimeval();
+  ReflectionSkipTest();
 #endif
   
   if (Dwm::Assertions::Total().Failed()) {

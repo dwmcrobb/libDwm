@@ -206,9 +206,7 @@ namespace Dwm {
     consteval bool Writable()
     {
 #if defined(DWM_CAN_USE_REFLECTION)
-      if constexpr (io_detail::HasDenyAnnotation<^^T>) {
-        return false;
-      }
+      if constexpr (io_detail::HasDenyAnnotation<^^T>) { return false; }
 #endif
       if constexpr (SpecificallySupported<T>)    { return true;  }
       else if constexpr (io_detail::SkipType<T>) { return true;  }
@@ -255,12 +253,8 @@ namespace Dwm {
     template <typename T>
     consteval bool Readable()
     {
-      if constexpr (std::is_const_v<T>) {
-        return false;
-      }
-      else {
-        return Writable<T>();
-      }
+      if constexpr (std::is_const_v<T>) { return false; }
+      else                              { return Writable<T>(); }
     }
 
     //------------------------------------------------------------------------
@@ -468,8 +462,8 @@ namespace Dwm {
     }
     
     //------------------------------------------------------------------------
-    //!  Writes \c t to \c os, where \c t is an enumerated type.  Returns
-    //!  \c os.  Note that this is risky for enum types with an underlying
+    //!  Writes @c t to @c os, where @c t is an enumerated type.  Returns
+    //!  @c os.  Note that this is risky for enum types with an underlying
     //!  type whose size is not fixed.
     //------------------------------------------------------------------------
     template <typename T>
@@ -935,6 +929,7 @@ namespace Dwm {
     {
       using Dwm::iostream_detail::IsWritable;
       using Dwm::io_detail::Skip;
+      using io_detail::SkipReason, io_detail::DenyReason;
       constexpr auto ctx = std::meta::access_context::unchecked();
       template for (constexpr auto mem :
                     define_static_array(nonstatic_data_members_of(^^T, ctx))) {
@@ -975,6 +970,7 @@ namespace Dwm {
     {
       using iostream_detail::IsReadable;
       using io_detail::Skip;
+      using io_detail::SkipReason, io_detail::DenyReason;
       constexpr auto ctx = std::meta::access_context::unchecked();
       template for (constexpr auto mem :
                       define_static_array(nonstatic_data_members_of(^^T, ctx))) {
@@ -1052,43 +1048,7 @@ namespace Dwm {
       return(is);
     }
 
-#if defined(DWM_CAN_USE_REFLECTION)
-
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    template <std::meta::info info>
-    static constexpr std::string DenyReason()
-    {
-      if constexpr (std::meta::is_const(info)) {
-        return " (immutable)";
-      }
-      if constexpr (io_detail::Deny<info>()) {
-        return " (denied)";
-      }
-      return "";
-    }
-
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    template <typename DeclType, std::meta::info info>
-    static constexpr std::string SkipReason()
-    {
-      if constexpr (io_detail::SkipType<DeclType>) {
-        return " (skipped type)";
-      }
-      else if constexpr (io_detail::HasSkipAnnotation<info>) {
-        return " (has skip_io annotation)";
-      }
-      else {
-        return "";
-      }
-    }
-    
-#endif  // defined(DWM_CAN_USE_REFLECTION)
-    
-  };
+  };  // class StreamIO
 
   //--------------------------------------------------------------------------
   //!  Simple concept expressing that an instance of type T can be written

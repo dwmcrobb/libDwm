@@ -45,7 +45,7 @@
 #include <string>
 
 #include "DwmASIOCapable.hh"
-#include "DwmConcepts.hh"
+#include "DwmIOConcepts.hh"
 #include "DwmSysLogger.hh"
 #include "DwmTypeName.hh"
 #include "DwmVariantFromIndex.hh"
@@ -63,7 +63,7 @@ namespace Dwm {
     || std::is_same_v<S,boost::asio::local::stream_protocol::socket>
     || std::is_same_v<S,boost::asio::generic::stream_protocol::socket>;
 
-  namespace __asio_detail {
+  namespace asio_detail {
 
     //------------------------------------------------------------------------
     //!  Concept to match types we directly support (no reflection needed).
@@ -87,48 +87,137 @@ namespace Dwm {
       or Dwm::Concepts::is_std_pair<T>
       or std::same_as<T,std::vector<bool>>
       or (Dwm::HasAsioWrite<T> and Dwm::HasAsioRead<T>);
-    
-    //------------------------------------------------------------------------
-    //!  Used for the cases where we try to use reflection for serialization
-    //!  and deserialization...
-    //!
-    //!  We explicitly deny serialization / deserialization of certain types
-    //!  (for example, std::mutex) as well as pointers (since there's no
-    //!  way to know whether they point to a single object or an array of
-    //!  objects of indeterminate length).  We deny serialization of const
-    //!  types simply because there isn't a clean way to deserialize them
-    //!  since they're declared immutable.
-    //------------------------------------------------------------------------
-    template <typename T>
-    concept ExplicitlyDenied =
-      std::is_pointer_v<T>
-      or std::is_const_v<T>
-      or std::same_as<T,std::mutex>
-      or std::same_as<T,std::recursive_mutex>
-      or std::same_as<T,std::condition_variable>
-      or std::same_as<T,std::lock_guard<std::mutex>>
-      or std::same_as<T,std::unique_lock<std::mutex>>;
-    
-    //------------------------------------------------------------------------
-    //!  Concept to match STL containers.
-    //------------------------------------------------------------------------
-    template <class T>
-    concept SupportedContainer =
-      Concepts::is_std_associative_container<T>
-      or Concepts::is_std_pair_associative_container<T>
-      or Concepts::is_std_sequence_container<T>;
+
+    template <typename T> consteval bool Writable();
+    template <typename T> consteval bool Readable();
 
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    template <typename T, std::size_t I = 0>
+    template <typename T>
+    requires Concepts::is_std_pair<T>
+    consteval bool PairWritable()
+    {
+      return (Writable<typename T::first_type>()
+              && Writable<typename T::second_type>());
+    }
+
+#if defined(DWM_CAN_USE_REFLECTION)
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T, size_t ParamCount = 0>
+    requires (Concepts::is_std_tuple<T>
+              or Concepts::is_std_variant<T>
+              or Concepts::is_std_pair<T>)
+    consteval bool TemplateTypeParamsWritable()
+    {
+      constexpr const auto tmpl_args =
+        define_static_array(template_arguments_of(^^T));
+      size_t  numParams = 0, numTypes = 0, numWritable = 0;
+      template for (constexpr auto tmpl_arg : tmpl_args) {
+        ++numParams;
+        if (ParamCount && (numParams > ParamCount)) {
+          break;
+        }
+        if (std::meta::is_type(tmpl_arg)) {
+          ++numTypes;
+          if constexpr (! Writable<typename[:tmpl_arg:]>()) {
+            break;
+          }
+          ++numWritable;
+        }
+      }
+      return (numTypes == numWritable);
+    }
+      
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires Concepts::is_std_tuple<T>
+    consteval bool TupleWritable() { return TemplateTypeParamsWritable<T>(); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires Concepts::is_std_variant<T>
+    consteval bool VariantWritable() { return TemplateTypeParamsWritable<T>(); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_class_v<T>
+    consteval bool ReflectionWritable()
+    {
+      constexpr auto ctx = std::meta::access_context::unchecked();
+      constexpr auto members =
+        define_static_array(nonstatic_data_members_of(^^T, ctx));
+      if constexpr (! members.size()) {
+        return false;
+      }
+      template for (constexpr auto mem : members) {
+        if constexpr ((! Writable<typename[:std::meta::type_of(mem):]>())
+                      || io_detail::Deny<mem>()) {
+          return false;
+        }
+      }
+      return true;
+    }
+    
+#else
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires Concepts::is_std_tuple<T>
+    consteval bool TupleWritable()
+    {
+      auto  l = []<typename ...ET>(ET && ...args)
+        { return (Writable<ET>() && ...); };
+      return std::apply(l, std::forward<T>(T()));
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T, size_t I = 0>
+    requires Concepts::is_std_variant<T>
+    consteval bool VariantWritable()
+    {
+      if constexpr (I < std::variant_size_v<T>) {
+        if constexpr (Writable<std::variant_alternative_t<I,T>>()) {
+          return VariantWritable<T,I+1>();
+        }
+        else {
+          return false;
+        }
+      }
+      return true;
+    }
+
+#endif
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
     consteval bool Writable()
     {
-      if constexpr (SpecificallySupported<T>) {
-        return true;
+#if defined(DWM_CAN_USE_REFLECTION)
+      if constexpr (io_detail::HasDenyAnnotation<^^T>) { return false; }
+#endif
+      if constexpr (SpecificallySupported<T>)    { return true; }
+      else if constexpr (io_detail::SkipType<T>) { return true; }
+      else if constexpr (io_detail::DenyType<T>) { return false; }
+      else if constexpr (Concepts::is_std_optional<T>) {
+        return Writable<typename T::value_type>;
       }
-      else if constexpr (ExplicitlyDenied<T>) {
-        return false;
+      else if constexpr (Concepts::is_std_unique_ptr<T>) {
+        return Writable<typename T::element_type>;
       }
       else if constexpr (std::is_bounded_array_v<T>) {
         return Writable<std::remove_all_extents_t<T>>();
@@ -137,58 +226,24 @@ namespace Dwm {
         return Writable<typename T::value_type>();
       }
       else if constexpr (Concepts::is_std_pair<T>) {
-        if constexpr (Writable<typename T::first_type>()
-                      && Writable<typename T::second_type>()) {
-          return true;
-        }
+        return PairWritable<T>();
       }
       else if constexpr (Concepts::is_std_tuple<T>) {
-        if constexpr (I < std::tuple_size_v<T>) {
-          if constexpr (Writable<std::tuple_element_t<I, T>>()) {
-            return Writable<T,I+1>();
-          }
-          else {
-            return false;
-          }
-        }
-        else {
-          return true;
-        }
+        return TupleWritable<T>();
       }
       else if constexpr (Concepts::is_std_variant<T>) {
-        if constexpr (I < std::variant_size_v<T>) {
-          if constexpr (Writable<std::variant_alternative_t<I,T>>()) {
-            return Writable<T,I+1>();
-          }
-          else {
-            return false;
-          }
-        }
-        else {
-          return true;
-        }
+        return VariantWritable<T>();
       }
       else if constexpr (Concepts::is_std_associative_container<T>) {
         return Writable<typename T::value_type>();
       }
       else if constexpr (Concepts::is_std_pair_associative_container<T>) {
-        return (Writable<typename T::key_type>()
-                && Writable<typename T::mapped_type>());
+        return PairWritable<std::pair<typename T::key_type,
+                                      typename T::mapped_type>>();
       }
 #if defined(DWM_CAN_USE_REFLECTION)
       else if constexpr (std::is_class_v<T>) {
-        constexpr auto ctx = std::meta::access_context::unchecked();
-        constexpr auto members =
-          define_static_array(nonstatic_data_members_of(^^T, ctx));
-        if constexpr (! members.size()) {
-          return false;
-        }
-        template for (constexpr auto mem : members) {
-          if constexpr (! Writable<typename[:std::meta::type_of(mem):]>()) {
-            return false;
-          }
-        }
-        return true;
+        return ReflectionWritable<T>();
       }
 #endif
       return false;
@@ -197,38 +252,30 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    template <typename T, std::size_t I = 0>
+    template <typename T>
     consteval bool Readable()
     {
-      if constexpr (std::is_const_v<T>) {
-        return false;
-      }
-      else {
-        return Writable<T,I>();
-      }
+      if constexpr (std::is_const_v<T>) { return false; }
+      else                              { return Writable<T>(); }
     }
 
     //------------------------------------------------------------------------
     //!  Simple concept expressing that an instance of type T can be read from
-    //!  an istream via an I::Read() member.  Note that we only need this
-    //!  for the StreamIO class (which is always used as the @c I template
-    //!  parameter), but we can't predeclare the StreamIO class because the
-    //!  concept needs the class definition since it tests for a class member.
-    //   Hence the @c I template parameter.
+    //!  a supported asio socket via an ASIO::Read() member.
     //------------------------------------------------------------------------
     template <typename T>
     concept IsReadable = (Readable<std::remove_reference_t<T>>() == true);
 
     //------------------------------------------------------------------------
     //!  Simple concept expressing that an instance of type T can be written
-    //!  to an ostream via a StreamIO::Write() member.
+    //!  to a supported asio socket via an ASIO::Write() member.
     //------------------------------------------------------------------------
     template <typename T>
     concept IsWritable =
     (Readable<std::remove_cvref_t<T>>() == true)
       and (Writable<std::remove_cvref_t<T>>() == true);
     
-  }  // namespace __asio_detail
+  }  // namespace asio_detail
 
   //--------------------------------------------------------------------------
   //!  A collection of functions for reading from and writing to
@@ -715,7 +762,7 @@ namespace Dwm {
     static uint64_t StreamedLength(const std::string & s);
 
     //------------------------------------------------------------------------
-    //!  Reads \c t from \c s, where \c t is an enumerated type.  Returns true
+    //!  Reads @c t from @c s, where @c t is an enumerated type.  Returns true
     //!  on success, false on failure.  Should only be used for enumerated
     //!  types with a fixed size underlying type.
     //------------------------------------------------------------------------
@@ -733,7 +780,7 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Writes \c t to \c s, where \c t is an enumerated type.  Returns true
+    //!  Writes @c t to @c s, where @c t is an enumerated type.  Returns true
     //!  on success, false on failure.  Should only be used for enumerated
     //!  types with a fixed size underlying type.
     //------------------------------------------------------------------------
@@ -746,7 +793,7 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Reads \c t from \c s, where \c t is an enumerated type.  Returns true
+    //!  Reads @c t from @c s, where @c t is an enumerated type.  Returns true
     //!  on success, false on failure.  Should only be used for enumerated
     //!  types with a fixed size underlying type.
     //------------------------------------------------------------------------
@@ -764,7 +811,7 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Writes \c t to \c s, where \c t is an enumerated type.  Returns true
+    //!  Writes @c t to @c s, where @c t is an enumerated type.  Returns true
     //!  on success, false on failure.  Should only be used for enumerated
     //!  types with a fixed size underlying type.
     //------------------------------------------------------------------------
@@ -777,7 +824,7 @@ namespace Dwm {
     }
         
     //------------------------------------------------------------------------
-    //!  Reads \c t from \c s, where \c t is an enumerated type.  Returns true
+    //!  Reads @c t from @c s, where @c t is an enumerated type.  Returns true
     //!  on success, false on failure.  Should only be used for enumerated
     //!  types with a fixed size underlying type.
     //------------------------------------------------------------------------
@@ -795,7 +842,7 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Writes \c t to \c s, where \c t is an enumerated type.  Returns true
+    //!  Writes @c t to @c s, where @c t is an enumerated type.  Returns true
     //!  on success, false on failure.  Should only be used for enumerated
     //!  types with a fixed size underlying type.
     //------------------------------------------------------------------------
@@ -808,104 +855,104 @@ namespace Dwm {
     }
     
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c s, in IEEE format (see RFC 1832
-    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
-    //!  \c false on failure.
+    //!  Reads @c val from @c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns @c true on success,
+    //!  @c false on failure.
     //------------------------------------------------------------------------
     static bool Read(boost::asio::ip::tcp::socket & s, float & val,
                      boost::system::error_code & ec);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c s, in IEEE format (see RFC 1832
-    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
-    //!  \c false on failure.
+    //!  Writes @c val to @c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns @c true on success,
+    //!  @c false on failure.
     //------------------------------------------------------------------------
     static bool Write(boost::asio::ip::tcp::socket & s, float val,
                       boost::system::error_code & ec);
 
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c s, in IEEE format (see RFC 1832
-    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
-    //!  \c false on failure.
+    //!  Reads @c val from @c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns @c true on success,
+    //!  @c false on failure.
     //------------------------------------------------------------------------
     static bool Read(boost::asio::local::stream_protocol::socket & s,
                      float & val, boost::system::error_code & ec);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c s, in IEEE format (see RFC 1832
-    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
-    //!  \c false on failure.
+    //!  Writes @c val to @c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns @c true on success,
+    //!  @c false on failure.
     //------------------------------------------------------------------------
     static bool Write(boost::asio::local::stream_protocol::socket & s,
                       float val, boost::system::error_code & ec);
     
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c s, in IEEE format (see RFC 1832
-    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
-    //!  \c false on failure.
+    //!  Reads @c val from @c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns @c true on success,
+    //!  @c false on failure.
     //------------------------------------------------------------------------
     static bool Read(boost::asio::generic::stream_protocol::socket & s,
                      float & val, boost::system::error_code & ec);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c s, in IEEE format (see RFC 1832
-    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
-    //!  \c false on failure.
+    //!  Writes @c val to @c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns @c true on success,
+    //!  @c false on failure.
     //------------------------------------------------------------------------
     static bool Write(boost::asio::generic::stream_protocol::socket & s,
                       float val, boost::system::error_code & ec);
     
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c s, in IEEE format (see RFC 1832
-    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
-    //!  \c false on failure.
+    //!  Reads @c val from @c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns @c true on success,
+    //!  @c false on failure.
     //------------------------------------------------------------------------
     static bool Read(boost::asio::ip::tcp::socket & s, double & val,
                      boost::system::error_code & ec);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c s, in IEEE format (see RFC 1832
-    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
-    //!  \c false on failure.
+    //!  Writes @c val to @c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns @c true on success,
+    //!  @c false on failure.
     //------------------------------------------------------------------------
     static bool Write(boost::asio::ip::tcp::socket & s, double val,
                       boost::system::error_code & ec);
 
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c s, in IEEE format (see RFC 1832
-    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
-    //!  \c false on failure.
+    //!  Reads @c val from @c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns @c true on success,
+    //!  @c false on failure.
     //------------------------------------------------------------------------
     static bool Read(boost::asio::local::stream_protocol::socket & s,
                      double & val, boost::system::error_code & ec);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c s, in IEEE format (see RFC 1832
-    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
-    //!  \c false on failure.
+    //!  Writes @c val to @c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns @c true on success,
+    //!  @c false on failure.
     //------------------------------------------------------------------------
     static bool Write(boost::asio::local::stream_protocol::socket & s,
                       double val, boost::system::error_code & ec);
 
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c s, in IEEE format (see RFC 1832
-    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
-    //!  \c false on failure.
+    //!  Reads @c val from @c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns @c true on success,
+    //!  @c false on failure.
     //------------------------------------------------------------------------
     static bool Read(boost::asio::generic::stream_protocol::socket & s,
                      double & val, boost::system::error_code & ec);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c s, in IEEE format (see RFC 1832
-    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c true on success,
-    //!  \c false on failure.
+    //!  Writes @c val to @c s, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns @c true on success,
+    //!  @c false on failure.
     //------------------------------------------------------------------------
     static bool Write(boost::asio::generic::stream_protocol::socket & s,
                       double val, boost::system::error_code & ec);
     
     //------------------------------------------------------------------------
-    //!  Reads a pair<_firstT,_secondT> from \c s.  Returns \c true on
-    //!  success, \c false on failure.
+    //!  Reads a pair<_firstT,_secondT> from @c s.  Returns @c true on
+    //!  success, @c false on failure.
     //------------------------------------------------------------------------
     template <typename S, typename _firstT, typename _secondT>
     requires IsSupportedASIOSocket<S>
@@ -920,8 +967,8 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Writes a pair<_firstT,_secondT> to \c s.  Returns \c true on success,
-    //!  \c false on failure.
+    //!  Writes a pair<_firstT,_secondT> to @c s.  Returns @c true on success,
+    //!  @c false on failure.
     //------------------------------------------------------------------------
     template <typename S, typename _firstT, typename _secondT>
     requires IsSupportedASIOSocket<S>
@@ -936,7 +983,7 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Reads a tuple from \c s.  Returns \c true on success, \c false on
+    //!  Reads a tuple from @c s.  Returns @c true on success, @c false on
     //!  failure.
     //------------------------------------------------------------------------
     template <typename S, typename... Args>
@@ -952,7 +999,7 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Writes a tuple to \c s.  Returns \c true on success, \c false on
+    //!  Writes a tuple to @c s.  Returns @c true on success, @c false on
     //!  failure.
     //------------------------------------------------------------------------
     template <typename S, typename... Args>
@@ -968,7 +1015,7 @@ namespace Dwm {
     }
     
     //------------------------------------------------------------------------
-    //!  Reads a variant \c v from \c s.  Returns \c true on success, \c false
+    //!  Reads a variant @c v from @c s.  Returns @c true on success, @c false
     //!  on failure.
     //------------------------------------------------------------------------
     template <typename S, typename... Ts>
@@ -989,7 +1036,7 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Writes a variant \c v to \c s.  Returns \c true on sucess, \c false
+    //!  Writes a variant @c v to @c s.  Returns @c true on sucess, @c false
     //!  on failure.
     //------------------------------------------------------------------------
     template <typename S, typename... Ts>
@@ -1007,8 +1054,8 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Reads an array<_valueT,N> \c v from \c s.  Returns \c true on
-    //!  success, \c false on failure.
+    //!  Reads an array<_valueT,N> @c v from @c s.  Returns @c true on
+    //!  success, @c false on failure.
     //------------------------------------------------------------------------
     template <typename S, typename _valueT, size_t N>
     requires IsSupportedASIOSocket<S>
@@ -1230,7 +1277,7 @@ namespace Dwm {
     static bool Write(IsSupportedASIOSocket auto & s, T const & v,
                       boost::system::error_code & ec)
     {
-      static_assert(__asio_detail::IsWritable<std::remove_all_extents_t<T>>);
+      static_assert(asio_detail::IsWritable<std::remove_all_extents_t<T>>);
       bool      rc = false;
       uint64_t  n = std::extent_v<T>;
       if (ASIO::Write(s, n, ec)) {
@@ -1254,7 +1301,7 @@ namespace Dwm {
     static bool Read(IsSupportedASIOSocket auto & s, T & v,
                       boost::system::error_code & ec)
     {
-      static_assert(__asio_detail::IsReadable<std::remove_all_extents_t<T>>);
+      static_assert(asio_detail::IsReadable<std::remove_all_extents_t<T>>);
       bool      rc = false;
       uint64_t  n;
       if (ASIO::Read(s, n, ec)) {
@@ -1271,6 +1318,117 @@ namespace Dwm {
       return rc;
     }
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_same_v<typename std::unique_ptr<T>::deleter_type,
+                            std::default_delete<T>>
+    static bool Write(IsSupportedASIOSocket auto & s,
+                      const std::unique_ptr<T> & t,
+                      boost::system::error_code & ec)
+    {
+      static_assert(asio_detail::IsWritable<T>);
+      bool  rc = false;
+      bool  isNull = (nullptr == t);
+      if (ASIO::Write(s, isNull, ec)) {
+        rc = true;
+        if (! isNull) {
+          rc = ASIO::Write(s, *t, ec);
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_default_constructible_v<T>
+      and std::is_same_v<typename std::unique_ptr<T>::deleter_type,
+                         std::default_delete<T>>
+    static bool Read(IsSupportedASIOSocket auto & s,
+                     std::unique_ptr<T> & t,
+                     boost::system::error_code & ec)
+    {
+      static_assert(asio_detail::IsReadable<T>);
+      bool  rc = false;
+      bool  isNull = true;
+      if (ASIO::Read(s, isNull, ec)) {
+        if (isNull) {
+          t.release();
+          rc = true;
+        }
+        else {
+          if (nullptr == t) {
+            try {
+              t = std::make_unique<T>();
+            }
+            catch (std::bad_alloc & ex) {
+              FSyslog(LOG_ERR, "Failed to allocate an object of type {}",
+                      TypeName<decltype(t)>());
+              return false;
+            }
+          }
+          if (ASIO::Read(s, *t, ec)) {
+            rc = true;
+          }
+          else {
+            t.release();
+          }
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes a std::optional<T> to @c s.  Returns true on success, false
+    //!  on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static bool Write(IsSupportedASIOSocket auto & s,
+                      const std::optional<T> & t,
+                      boost::system::error_code & ec)
+    {
+      static_assert(asio_detail::IsWritable<T>);
+      bool  rc = false;
+      bool  hasValue = t.has_value();
+      if (ASIO::Write(s, hasValue, ec)) {
+        rc = true;
+        if (hasValue) {
+          rc = ASIO::Write(s, t.value(), ec);
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads a std::optional<T> from @c s.  Returns true on success, false
+    //!  on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_default_constructible_v<T>
+    static bool Read(IsSupportedASIOSocket auto & s, std::optional<T> & t,
+                     boost::system::error_code & ec)
+    {
+      static_assert(asio_detail::IsReadable<T>);
+      bool  rc = false;
+      bool  hasValue = false;
+      if (ASIO::Read(s, hasValue, ec)) {
+        if (hasValue) {
+          if (! t.has_value()) {
+            t = T();
+          }
+          rc = ASIO::Read(s, t.value(), ec);
+        }
+        else {
+          t.reset();
+          rc = true;
+        }
+      }
+      return rc;
+    }
+    
 #if defined(DWM_CAN_USE_REFLECTION)
     
     //------------------------------------------------------------------------
@@ -1278,27 +1436,37 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <class T>
     requires std::is_class_v<T>
-      and (not __asio_detail::SpecificallySupported<T>)
-      and (not __asio_detail::SupportedContainer<T>)
-      and (not __asio_detail::ExplicitlyDenied<T>)
+      and (not asio_detail::SpecificallySupported<T>)
+      and (not io_detail::SupportedContainer<T>)
+      and (not io_detail::DenyType<T>)
     static bool Write(IsSupportedASIOSocket auto & s, const T & v,
                       boost::system::error_code & ec)
     {
-      using __asio_detail::IsWritable;
+      using asio_detail::IsWritable;
+      using Dwm::io_detail::Skip;
+      using Dwm::io_detail::SkipReason;
       constexpr auto ctx = std::meta::access_context::unchecked();
       template for (constexpr auto mem :
                     define_static_array(nonstatic_data_members_of(^^T, ctx))) {
-        if constexpr (IsWritable<typename[:std::meta::type_of(mem):]>) {
-          if (! ASIO::Write(s, v.[:mem:], ec)) {
-            return false;
-          }
-        }
-        else {
-          FSyslog(LOG_ERR, "{}.{} of type '{}' is unwritable{}",
+        if constexpr (Skip<decltype(v.[:mem:]),mem>()) {
+          FSyslog(LOG_INFO, "{}.{} of type '{}' skipped{}",
                   TypeName<decltype(v)>(), std::meta::identifier_of(mem),
                   std::meta::display_string_of(std::meta::type_of(mem)),
-                  ReflectFailReason<mem>());
-          return false;
+                  SkipReason<decltype(v.[:mem:]),mem>());
+        }
+        else {
+          if constexpr (IsWritable<typename[:std::meta::type_of(mem):]>) {
+            if (! ASIO::Write(s, v.[:mem:], ec)) {
+              return false;
+            }
+          }
+          else {
+            FSyslog(LOG_ERR, "{}.{} of type '{}' is unwritable{}",
+                    TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                    std::meta::display_string_of(std::meta::type_of(mem)),
+                    DenyReason<mem>());
+            return false;
+          }
         }
       }
       return (! ec);
@@ -1309,27 +1477,37 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <class T>
     requires std::is_class_v<T>
-      and (not __asio_detail::SpecificallySupported<T>)
-      and (not __asio_detail::SupportedContainer<T>)
-      and (not __asio_detail::ExplicitlyDenied<T>)
+      and (not asio_detail::SpecificallySupported<T>)
+      and (not io_detail::SupportedContainer<T>)
+      and (not io_detail::DenyType<T>)
     static bool Read(IsSupportedASIOSocket auto & s, T & v,
                      boost::system::error_code & ec)
     {
-      using __asio_detail::IsReadable;
+      using asio_detail::IsReadable;
+      using Dwm::io_detail::Skip;
+      using Dwm::io_detail::SkipReason;
       constexpr auto ctx = std::meta::access_context::unchecked();
       template for (constexpr auto mem :
                       define_static_array(nonstatic_data_members_of(^^T, ctx))) {
-        if constexpr (IsReadable<typename[:std::meta::type_of(mem):]>) {
-          if (! ASIO::Read(s, v.[:mem:], ec)) {
-            return false;
-          }
-        }
-        else {
-          FSyslog(LOG_ERR, "{}.{} of type '{}' is unreadable{}",
+        if constexpr (Skip<decltype(v.[:mem:]),mem>()) {
+          FSyslog(LOG_INFO, "{}.{} of type '{}' skipped{}",
                   TypeName<decltype(v)>(), std::meta::identifier_of(mem),
                   std::meta::display_string_of(std::meta::type_of(mem)),
-                  ReflectFailReason<mem>());
-          return false;
+                  SkipReason<decltype(v.[:mem:]),mem>());
+        }
+        else {
+          if constexpr (IsReadable<typename[:std::meta::type_of(mem):]>) {
+            if (! ASIO::Read(s, v.[:mem:], ec)) {
+              return false;
+            }
+          }
+          else {
+            FSyslog(LOG_ERR, "{}.{} of type '{}' is unreadable{}",
+                    TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                    std::meta::display_string_of(std::meta::type_of(mem)),
+                    DenyReason<mem>());
+            return false;
+          }
         }
       }
       return (! ec);
@@ -1396,32 +1574,53 @@ namespace Dwm {
           }
         }
         rc = (i == numEntries);
-
       }
       return rc;
     }
 
-#if defined(DWM_CAN_USE_REFLECTION)
+  };  // class ASIO
 
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    template <std::meta::info info>
-    static consteval std::string ReflectFailReason()
-    {
-      if (std::meta::is_const(info)) {
-        return " (immutable)";
-      }
-      if (__asio_detail::ExplicitlyDenied<typename[:std::meta::type_of(info):]>) {
-        return " (explicitly denied)";
-      }
-      return "";
-    }
-
-#endif  // defined(DWM_CAN_USE_REFLECTION)
-    
+  //--------------------------------------------------------------------------
+  //!  Simple concept expressing that an instance of type T can be written
+  //!  to a supported asio socket via aa ASIO::Write() member.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept IsASIOWritable =
+  (asio_detail::IsWritable<T> == true)
+  and requires(const T & t, boost::asio::ip::tcp::socket & s,
+               boost::system::error_code & ec) {
+    { ASIO::Write(s, t, ec) } -> std::same_as<bool>;
+  }
+  and requires(const T & t, boost::asio::generic::stream_protocol::socket & s,
+               boost::system::error_code & ec) {
+    { ASIO::Write(s, t, ec) } -> std::same_as<bool>;
+  }
+  and requires(const T & t, boost::asio::local::stream_protocol::socket & s,
+               boost::system::error_code & ec) {
+    { ASIO::Write(s, t, ec) } -> std::same_as<bool>;
   };
-
+  
+  //--------------------------------------------------------------------------
+  //!  Simple concept expressing that an instance of type T can be read from
+  //!  a supported asio socket via am ASIO::Read() member.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept IsASIOReadable =
+  (asio_detail::IsReadable<T> == true)
+  and requires(T & t, boost::asio::ip::tcp::socket & s,
+               boost::system::error_code & ec) {
+    { ASIO::Read(s, t, ec) } -> std::same_as<bool>;
+  }
+  and requires(T & t, boost::asio::generic::stream_protocol::socket & s,
+               boost::system::error_code & ec) {
+    { ASIO::Read(s, t, ec) } -> std::same_as<bool>;
+  }
+  and requires(T & t, boost::asio::local::stream_protocol::socket & s,
+               boost::system::error_code & ec) {
+    { ASIO::Read(s, t, ec) } -> std::same_as<bool>;
+  };
+  
+  
 }  // namespace Dwm
 
 #endif  // _DWMASIO_HH_

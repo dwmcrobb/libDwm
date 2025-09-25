@@ -120,6 +120,38 @@ namespace Dwm {
       }
       return false;
     }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <std::meta::info info>
+    static constexpr std::string DenyReason()
+    {
+      if constexpr (std::meta::is_const(info)) {
+        return " (immutable)";
+      }
+      if constexpr (Deny<info>()) {
+        return " (denied)";
+      }
+      return "";
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename DeclType, std::meta::info info>
+    static constexpr std::string SkipReason()
+    {
+      if constexpr (SkipType<DeclType>) {
+        return " (skipped type)";
+      }
+      else if constexpr (HasSkipAnnotation<info>) {
+        return " (has skip_io annotation)";
+      }
+      else {
+        return "";
+      }
+    }
     
 #endif  // if defined(DWM_CAN_USE_REFLECTION)
 
