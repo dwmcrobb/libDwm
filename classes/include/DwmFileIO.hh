@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2007, 2016, 2017, 2020, 2024
+//  Copyright (c) Daniel W. McRobb 2004-2007, 2016-2017, 2020, 2024-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -41,28 +41,237 @@
 #ifndef _DWMFILEIO_HH_
 #define _DWMFILEIO_HH_
 
-#include <array>
 #include <cassert>
 #include <cstdint>
 #include <cstdio>
-#include <deque>
-#include <iostream>
-#include <list>
-#include <map>
-#include <set>
 #include <string>
-#include <tuple>
-#include <unordered_map>
-#include <unordered_set>
-#include <variant>
-#include <vector>
 
 #include "DwmPortability.hh"
+#include "DwmIOConcepts.hh"
 #include "DwmFileIOCapable.hh"
+#include "DwmSysLogger.hh"
 #include "DwmVariantFromIndex.hh"
 
 namespace Dwm {
 
+  namespace fileio_detail {
+    
+    //------------------------------------------------------------------------
+    //!  Concept to match types we directly support (no reflection needed).
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept SpecificallySupported =
+      std::same_as<T,char>
+      or std::same_as<T,int8_t>
+      or std::same_as<T,uint8_t>
+      or std::same_as<T,int16_t>
+      or std::same_as<T,uint16_t>
+      or std::same_as<T,int32_t>
+      or std::same_as<T,uint32_t>
+      or std::same_as<T,int64_t>
+      or std::same_as<T,uint64_t>
+      or std::same_as<T,bool>
+      or std::same_as<T,float>
+      or std::same_as<T,double>
+      or std::same_as<T,std::string>
+      or std::is_enum_v<T>
+      or Concepts::is_std_pair<T>
+      or std::same_as<T,std::vector<bool>>
+      or (Dwm::HasFileWrite<T> and Dwm::HasFileRead<T>);
+
+    template <typename T> consteval bool Writable();
+    template <typename T> consteval bool Readable();
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires Concepts::is_std_pair<T>
+    consteval bool PairWritable()
+    {
+      return (Writable<typename T::first_type>()
+              && Writable<typename T::second_type>());
+    }
+
+#if defined(DWM_CAN_USE_REFLECTION)
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T, size_t ParamCount = 0>
+    requires (Concepts::is_std_tuple<T>
+              or Concepts::is_std_variant<T>
+              or Concepts::is_std_pair<T>)
+    consteval bool TemplateTypeParamsWritable()
+    {
+      constexpr const auto tmpl_args =
+        define_static_array(template_arguments_of(^^T));
+      size_t  numParams = 0, numTypes = 0, numWritable = 0;
+      template for (constexpr auto tmpl_arg : tmpl_args) {
+        ++numParams;
+        if (ParamCount && (numParams > ParamCount)) {
+          break;
+        }
+        if (std::meta::is_type(tmpl_arg)) {
+          ++numTypes;
+          if constexpr (! Writable<typename[:tmpl_arg:]>()) {
+            break;
+          }
+          ++numWritable;
+        }
+      }
+      return (numTypes == numWritable);
+    }
+      
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires Concepts::is_std_tuple<T>
+    consteval bool TupleWritable() { return TemplateTypeParamsWritable<T>(); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires Concepts::is_std_variant<T>
+    consteval bool VariantWritable() { return TemplateTypeParamsWritable<T>(); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_class_v<T>
+    consteval bool ReflectionWritable()
+    {
+      constexpr auto ctx = std::meta::access_context::unchecked();
+      constexpr auto members =
+        define_static_array(nonstatic_data_members_of(^^T, ctx));
+      if constexpr (! members.size()) {
+        return false;
+      }
+      template for (constexpr auto mem : members) {
+        if constexpr ((! Writable<typename[:std::meta::type_of(mem):]>())
+                      || io_detail::Deny<mem>()) {
+          return false;
+        }
+      }
+      return true;
+    }
+    
+#else
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires Concepts::is_std_tuple<T>
+    consteval bool TupleWritable()
+    {
+      auto  l = []<typename ...ET>(ET && ...args)
+        { return (Writable<ET>() && ...); };
+      return std::apply(l, std::forward<T>(T()));
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T, size_t I = 0>
+    requires Concepts::is_std_variant<T>
+    consteval bool VariantWritable()
+    {
+      if constexpr (I < std::variant_size_v<T>) {
+        if constexpr (Writable<std::variant_alternative_t<I,T>>()) {
+          return VariantWritable<T,I+1>();
+        }
+        else {
+          return false;
+        }
+      }
+      return true;
+    }
+
+#endif
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    consteval bool Writable()
+    {
+#if defined(DWM_CAN_USE_REFLECTION)
+      if constexpr (io_detail::HasDenyAnnotation<^^T>) { return false; }
+#endif
+      if constexpr (SpecificallySupported<T>)    { return true; }
+      else if constexpr (io_detail::SkipType<T>) { return true; }
+      else if constexpr (io_detail::DenyType<T>) { return false; }
+      else if constexpr (Concepts::is_std_optional<T>) {
+        return Writable<typename T::value_type>;
+      }
+      else if constexpr (Concepts::is_std_unique_ptr<T>) {
+        return Writable<typename T::element_type>;
+      }
+      else if constexpr (std::is_bounded_array_v<T>) {
+        return Writable<std::remove_all_extents_t<T>>();
+      }
+      else if constexpr (Concepts::is_std_sequence_container<T>) {
+        return Writable<typename T::value_type>();
+      }
+      else if constexpr (Concepts::is_std_pair<T>) {
+        return PairWritable<T>();
+      }
+      else if constexpr (Concepts::is_std_tuple<T>) {
+        return TupleWritable<T>();
+      }
+      else if constexpr (Concepts::is_std_variant<T>) {
+        return VariantWritable<T>();
+      }
+      else if constexpr (Concepts::is_std_associative_container<T>) {
+        return Writable<typename T::value_type>();
+      }
+      else if constexpr (Concepts::is_std_pair_associative_container<T>) {
+        return (Writable<typename T::key_type>()
+                && Writable<typename T::mapped_type>());
+      }
+#if defined(DWM_CAN_USE_REFLECTION)
+      else if constexpr (std::is_class_v<T>) {
+        return ReflectionWritable<T>();
+      }
+#endif
+      return false;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    consteval bool Readable()
+    {
+      if constexpr (std::is_const_v<T>) {
+        return false;
+      }
+      else {
+        return Writable<T>();
+      }
+    }
+
+    //------------------------------------------------------------------------
+    //!  Simple concept expressing that an instance of type T can be read from
+    //!  a FILE via a FileIO::Read() member.
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept IsReadable = (Readable<std::remove_reference_t<T>>() == true);
+
+    //------------------------------------------------------------------------
+    //!  Simple concept expressing that an instance of type T can be written
+    //!  to a FILE via a FileIO::Write() member.
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept IsWritable =
+    (Readable<std::remove_cvref_t<T>>() == true)
+      and (Writable<std::remove_cvref_t<T>>() == true);
+    
+  }  // namespace fileio_detail
+  
   //--------------------------------------------------------------------------
   //!  This class contains a collection of static functions for reading and
   //!  writing simple types, in network byte order (MSB first).  It also
@@ -82,170 +291,170 @@ namespace Dwm {
   {
   public:
     //------------------------------------------------------------------------
-    //!  Reads \c c from \c f.  Returns the number of bytes read (1 on
+    //!  Reads @c c from @c f.  Returns the number of bytes read (1 on
     //!  success, 0 on failure).
     //------------------------------------------------------------------------
     static size_t Read(FILE * f, char & c);
 
     //------------------------------------------------------------------------
-    //!  Writes \c c to \c f.  Returns the number of bytes written (1) on 
+    //!  Writes @c c to @c f.  Returns the number of bytes written (1) on 
     //!  success.
     //------------------------------------------------------------------------
     static size_t Write(FILE * f, char c);
 
     //------------------------------------------------------------------------
-    //!  Reads \c c from \c f.  Returns the number of bytes read (1 on
+    //!  Reads @c c from @c f.  Returns the number of bytes read (1 on
     //!  success).
     //------------------------------------------------------------------------
     static size_t Read(FILE * f, int8_t & c);
 
     //------------------------------------------------------------------------
-    //!  Writes \c c to \c f.  Returns the number of bytes written (1) on
+    //!  Writes @c c to @c f.  Returns the number of bytes written (1) on
     //!  success.
     //------------------------------------------------------------------------
     static size_t Write(FILE * f, int8_t c);
  
     //------------------------------------------------------------------------
-    //!  Reads \c c from \c f.  Returns the number of bytes read (1 on
+    //!  Reads @c c from @c f.  Returns the number of bytes read (1 on
     //!  success).
     //------------------------------------------------------------------------
     static size_t Read(FILE * f, uint8_t & c);
 
     //------------------------------------------------------------------------
-    //!  Writes \c c to \c f.  Returns the number of bytes written (1) on
+    //!  Writes @c c to @c f.  Returns the number of bytes written (1) on
     //!  success.
     //------------------------------------------------------------------------
     static size_t Write(FILE * f, uint8_t c);
  
     //------------------------------------------------------------------------
-    //!  Reads \c b from \c f.  Returns the number of bytes read (1 on
+    //!  Reads @c b from @c f.  Returns the number of bytes read (1 on
     //!  success).
     //------------------------------------------------------------------------
     static size_t Read(FILE * f, bool & b);
     
     //------------------------------------------------------------------------
-    //!  Writes \c b to \c f.  Returns the number of bytes written (1) on
+    //!  Writes @c b to @c f.  Returns the number of bytes written (1) on
     //!  success.
     //------------------------------------------------------------------------
     static size_t Write(FILE * f, bool b);
 
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c f, in network byte order (MSB first).
+    //!  Reads @c val from @c f, in network byte order (MSB first).
     //!  Returns the number of bytes read (2 on success).
     //------------------------------------------------------------------------
     static size_t Read(FILE * f, int16_t & val);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c f, in network byte order (MSB first).  Returns
+    //!  Writes @c val to @c f, in network byte order (MSB first).  Returns
     //!  the number of bytes written (2) on success.
     //------------------------------------------------------------------------
     static size_t Write(FILE * f, int16_t val);
 
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c f, in network byte order (MSB first).
+    //!  Reads @c val from @c f, in network byte order (MSB first).
     //!  Returns the number of bytes read (2 on success).
     //------------------------------------------------------------------------
     static size_t Read(FILE * f, uint16_t & val);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c f, in network byte order (MSB first).  Returns
+    //!  Writes @c val to @c f, in network byte order (MSB first).  Returns
     //!  the number of bytes written (2) on success.
     //------------------------------------------------------------------------
     static size_t Write(FILE * f, uint16_t val);
 
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c f, in network byte order (MSB first).
+    //!  Reads @c val from @c f, in network byte order (MSB first).
     //!  Returns the number of bytes read (4 on success).
     //------------------------------------------------------------------------
     static size_t Read(FILE * f, int32_t & val);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c f, in network byte order (MSB first).  Returns
+    //!  Writes @c val to @c f, in network byte order (MSB first).  Returns
     //!  the number of bytes written (4) on success.
     //------------------------------------------------------------------------
     static size_t Write(FILE * f, int32_t val);
 
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c f, in network byte order (MSB first).
+    //!  Reads @c val from @c f, in network byte order (MSB first).
     //!  Returns the number of bytes read (4 on success).
     //------------------------------------------------------------------------
     static size_t Read(FILE * f, uint32_t & val);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c f, in network byte order (MSB first).  Returns
+    //!  Writes @c val to @c f, in network byte order (MSB first).  Returns
     //!  the number of bytes written (4) on success.
     //------------------------------------------------------------------------
     static size_t Write(FILE * f, uint32_t val);
 
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c f, in network byte order (MSB first).
+    //!  Reads @c val from @c f, in network byte order (MSB first).
     //!  Returns the number of bytes read (8 on success).
     //------------------------------------------------------------------------
     static size_t Read(FILE * f, int64_t & val);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c f, in network byte order (MSB first).  Returns
+    //!  Writes @c val to @c f, in network byte order (MSB first).  Returns
     //!  the number of bytes written (8) on success.
     //------------------------------------------------------------------------
     static size_t Write(FILE * f, const int64_t & val);
 
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c f, in network byte order (MSB first).
+    //!  Reads @c val from @c f, in network byte order (MSB first).
     //!  Returns the number of bytes read (8 on success).
     //------------------------------------------------------------------------
     static size_t Read(FILE * f, uint64_t & val);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c f, in network byte order (MSB first).  Returns
+    //!  Writes @c val to @c f, in network byte order (MSB first).  Returns
     //!  the number of bytes written (8) on success.
     //------------------------------------------------------------------------
     static size_t Write(FILE * f, const uint64_t & val);
 
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c f, in IEEE format (see RFC 1832 and/or
+    //!  Reads @c val from @c f, in IEEE format (see RFC 1832 and/or
     //!  ANSI/IEEE Standard 754-1985).  Returns the number of bytes read
     //! (4 on success).
     //------------------------------------------------------------------------
     static size_t Read(FILE * f, float & val);
     
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c f, in IEEE format (see RFC 1832 and/or 
+    //!  Writes @c val to @c f, in IEEE format (see RFC 1832 and/or 
     //!  ANSI/IEEE Standard 754-1985).  Returns the number of bytes 
     //!  written (4 on success).
     //------------------------------------------------------------------------
     static size_t Write(FILE * f, float val);
     
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c f, in IEEE format (see RFC 1832 and/or
+    //!  Reads @c val from @c f, in IEEE format (see RFC 1832 and/or
     //!  ANSI/IEEE Standard 754-1985).  Returns the number of bytes read
     //! (8 on success).
     //------------------------------------------------------------------------
     static size_t Read(FILE * f, double & val);
     
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c f, in IEEE format (see RFC 1832 and/or 
+    //!  Writes @c val to @c f, in IEEE format (see RFC 1832 and/or 
     //!  ANSI/IEEE Standard 754-1985).  Returns the number of bytes 
     //!  written (8 on success).
     //------------------------------------------------------------------------
     static size_t Write(FILE * f, const double & val);
     
     //------------------------------------------------------------------------
-    //!  Reads \c s from \c f.  Since we write strings with a 64-bit length
+    //!  Reads @c s from @c f.  Since we write strings with a 64-bit length
     //!  value preceding, and always write the terminating NULL, this
     //!  function will always return a value of 9 or greater on success.
     //------------------------------------------------------------------------
     static size_t Read(FILE * f, std::string & s);
 
     //------------------------------------------------------------------------
-    //!  Writes \c s to \c f.  Returns the number of bytes written.  Note
+    //!  Writes @c s to @c f.  Returns the number of bytes written.  Note
     //!  that we first write a 64-bit length value, then the string itself
     //!  (with terminating NULL).  Hence a successful write will always
-    //!  return a value of 8 + \c s.length() + 1.
+    //!  return a value of 8 + @c s.length() + 1.
     //------------------------------------------------------------------------
     static size_t Write(FILE * f, const std::string & s);
 
     //------------------------------------------------------------------------
-    //!  Reads \c t from \c f, where \c t is an enumerated type.  Returns 1
+    //!  Reads @c t from @c f, where @c t is an enumerated type.  Returns 1
     //!  on success, 0 on failure.  Note this is risky for enumerated types
     //!  whose underlying type is not of fixed size.
     //------------------------------------------------------------------------
@@ -263,7 +472,7 @@ namespace Dwm {
     }
     
     //------------------------------------------------------------------------
-    //!  Writes \c t to \c f, where \c t is an enumerated type.  Returns 1
+    //!  Writes @c t to @c f, where @c t is an enumerated type.  Returns 1
     //!  on success, 0 on failure.  Note this is risky for enumerated types
     //!  whose underlying type is not of fixed size.
     //------------------------------------------------------------------------
@@ -331,52 +540,72 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Reads a map<_keyT,_valueT> from a FILE.  Returns 1 on success,
-    //!  0 on failure.
+    //!  Reads a pair-associative container (map, multimap, unordered_map or
+    //!  unordered_multimap) from a FILE.  Returns 1 on success, 0 on failure.
     //------------------------------------------------------------------------
-    template <typename _keyT, typename _valueT, 
-              typename _Compare, typename _Alloc>
-    static size_t Read(FILE *f, std::map<_keyT, _valueT, _Compare, _Alloc> & m)
+    template <typename T>
+    requires Concepts::is_std_pair_associative_container<T>
+    static size_t Read(FILE *f, T & c)
     {
-      return(PairAssocContRead<std::map<_keyT, _valueT, _Compare, _Alloc> >(f, m));
+      return PairAssocContRead<T>(f, c);
     }
 
     //------------------------------------------------------------------------
-    //!  Writes a map<_keyT,_valueT> to a FILE.  Returns 1 on success,
-    //!  0 on failure.
+    //!  Writes a container (except std::array) @c c to a FILE @c f.  Returns
+    //!  1 on success, 0 on failure.
     //------------------------------------------------------------------------
-    template <typename _keyT, typename _valueT, 
-              typename _Compare, typename _Alloc>
-    static size_t
-    Write(FILE *f, const std::map<_keyT, _valueT, _Compare, _Alloc> & m)
+    template <typename T>
+    requires Concepts::is_std_associative_container<T>
+      or Concepts::is_std_pair_associative_container<T>
+      or (Concepts::is_std_sequence_container<T>
+          and (not Concepts::is_std_array<T>))
+    static size_t Write(FILE *f, const T & c)
     {
-      return(ContainerWrite<std::map<_keyT,_valueT> >(f, m));
+      size_t  rc = 0;
+      if (f) {
+        uint64_t  numEntries = c.size();
+        if (Write(f, numEntries)) {
+          if (numEntries) {
+            rc = Write<typename T::const_iterator>(f, c.cbegin(), c.cend());
+          }
+          else {
+            rc = 1;
+          }
+        }
+      }
+      return rc;
     }
 
     //------------------------------------------------------------------------
-    //!  Reads a multimap<_keyT,_valueT> from a FILE.  Returns 1 on success,
-    //!  0 on failure.
+    //!  Reads a sequence container (deque, list or vector) or associative
+    //!  container (set, multiset, unordered_set or unordered_multiset) from
+    //!  a FILE.  Returns 1 on success, 0 on failure.
     //------------------------------------------------------------------------
-    template <typename _keyT, typename _valueT, 
-              typename _Compare, typename _Alloc>
-    static size_t
-    Read(FILE *f, std::multimap<_keyT, _valueT, _Compare, _Alloc> & m)
+    template <typename T>
+    requires Concepts::is_std_associative_container<T>
+      or (Concepts::is_std_sequence_container<T>
+          and (not Concepts::is_std_array<T>))
+    static size_t Read(FILE *f, T & c)
     {
-      return(PairAssocContRead<std::multimap<_keyT,_valueT,_Compare,_Alloc> >(f, m));
+      c.clear();
+      size_t  rc = 0;
+      if (f) {
+        uint64_t  numEntries;
+        if (Read(f, numEntries)) {
+          uint64_t  i = 0;
+          for ( ; i < numEntries; ++i) {
+            typename T::value_type  val;
+            if (! Read(f, val)) {
+              break;
+            }
+            c.insert(c.end(), std::move(val));
+          }
+          rc = (i == numEntries) ? 1 : 0;
+        }
+      }
+      return rc;
     }
-
-    //------------------------------------------------------------------------
-    //!  Writes a multimap<_keyT,_valueT> to a FILE.  Returns 1 on success,
-    //!  0 on failure.
-    //------------------------------------------------------------------------
-    template <typename _keyT, typename _valueT, 
-              typename _Compare, typename _Alloc>
-    static size_t 
-    Write(FILE *f, const std::multimap<_keyT,_valueT, _Compare, _Alloc> & m)
-    {
-      return(ContainerWrite<std::multimap<_keyT,_valueT,_Compare,_Alloc> >(f, m));
-    }
-
+    
     //------------------------------------------------------------------------
     //!  Reads an array<_valueT,N> from a FILE.  Returns 1 on success,
     //!  0 on failure.
@@ -409,107 +638,6 @@ namespace Dwm {
         }
       }
       return rc;
-    }
-    
-    //------------------------------------------------------------------------
-    //!  Reads a vector<_valueT> from a FILE.  Returns 1 on success,
-    //!  0 on failure.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Alloc>
-    static size_t Read(FILE *f, std::vector<_valueT, _Alloc> & v)
-    {
-      return(ContainerRead<std::vector<_valueT, _Alloc> >(f, v));
-    }
-    
-    //------------------------------------------------------------------------
-    //!  Writes a vector<_valueT> to a FILE.  Returns 1 on success,
-    //!  0 on failure.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Alloc>
-    static size_t Write(FILE *f, const std::vector<_valueT, _Alloc> & v)
-    {
-      return(ContainerWrite<std::vector<_valueT, _Alloc> >(f, v));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads a deque<_valueT> from a FILE.  Returns 1 on success,
-    //!  0 on failure.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Alloc>
-    static size_t Read(FILE *f, std::deque<_valueT, _Alloc> & d)
-    {
-      return(ContainerRead<std::deque<_valueT, _Alloc> >(f, d));
-    }
-    
-    //------------------------------------------------------------------------
-    //!  Writes a deque<_valueT> to a FILE.  Returns 1 on success,
-    //!  0 on failure.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Alloc>
-    static size_t Write(FILE *f, const std::deque<_valueT, _Alloc> & d)
-    {
-      return(ContainerWrite<std::deque<_valueT, _Alloc> >(f, d));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads a list<_valueT> from a FILE.  Returns 1 on success,
-    //!  0 on failure.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Alloc>
-    static size_t Read(FILE *f, std::list<_valueT, _Alloc> & l)
-    {
-      return(ContainerRead<std::list<_valueT, _Alloc> >(f, l));
-    }
-    
-    //------------------------------------------------------------------------
-    //!  Writes a list<_valueT> to a FILE.  Returns 1 on success,
-    //!  0 on failure.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Alloc>
-    static size_t Write(FILE *f, const std::list<_valueT, _Alloc> & l)
-    {
-      return(ContainerWrite<std::list<_valueT, _Alloc> >(f, l));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads a set<_valueT> from a FILE.  Returns 1 on success,
-    //!  0 on failure.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Compare, typename _Alloc>
-    static size_t Read(FILE *f, std::set<_valueT, _Compare, _Alloc> & l)
-    {
-      return(ContainerRead<std::set<_valueT, _Compare, _Alloc> >(f, l));
-    }
-    
-    //------------------------------------------------------------------------
-    //!  Writes a set<_valueT> to a FILE.  Returns 1 on success,
-    //!  0 on failure.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Compare, typename _Alloc>
-    static size_t Write(FILE *f, const std::set<_valueT, _Compare, _Alloc> & l)
-    {
-      return(ContainerWrite<std::set<_valueT, _Compare, _Alloc> >(f, l));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads a multiset<_valueT> from a FILE.  Returns 1 on success,
-    //!  0 on failure.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Compare, typename _Alloc>
-    static size_t Read(FILE *f, std::multiset<_valueT, _Compare, _Alloc> & l)
-    {
-      return(ContainerRead<std::multiset<_valueT, _Compare, _Alloc> >(f, l));
-    }
-    
-    //------------------------------------------------------------------------
-    //!  Writes a multiset<_valueT> to a FILE.  Returns 1 on success,
-    //!  0 on failure.
-    //------------------------------------------------------------------------
-    template <typename _valueT, typename _Compare, typename _Alloc>
-    static size_t
-    Write(FILE *f, const std::multiset<_valueT, _Compare, _Alloc> & l)
-    {
-      return(ContainerWrite<std::multiset<_valueT, _Compare, _Alloc> >(f, l));
     }
 
     //------------------------------------------------------------------------
@@ -590,102 +718,6 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Reads an unordered_map from a FILE.  Returns 1 on success,
-    //!  0 on failure.
-    //------------------------------------------------------------------------
-    template<typename _keyT, typename _valueT, typename _Hash,
-             typename _Pred, typename _Alloc>
-    static size_t
-    Read(FILE *f, std::unordered_map<_keyT,_valueT,_Hash,_Pred,_Alloc> & hm)
-    {
-      return(PairAssocContRead<std::unordered_map<_keyT,_valueT,_Hash,_Pred,_Alloc> >(f, hm));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes an unordered_map to a FILE.  Returns 1 on success,
-    //!  0 on failure.
-    //------------------------------------------------------------------------
-    template<typename _keyT, typename _valueT, typename _Hash,
-             typename _Pred, typename _Alloc>
-    static size_t  
-    Write(FILE *f, const std::unordered_map<_keyT,_valueT,_Hash,_Pred,_Alloc> & hm)
-    {
-      return(ContainerWrite<std::unordered_map<_keyT,_valueT,_Hash,_Pred,_Alloc> >(f, hm));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads an unordered_multimap from a FILE.  Returns 1 on
-    //!  success, 0 on failure.
-    //------------------------------------------------------------------------
-    template<typename _keyT, typename _valueT, typename _Hash,
-             typename _Pred, typename _Alloc>
-    static size_t
-    Read(FILE *f, std::unordered_multimap<_keyT,_valueT,_Hash,_Pred,_Alloc> & hm)
-    {
-      return(PairAssocContRead<std::unordered_multimap<_keyT,_valueT,_Hash,_Pred,_Alloc> >(f, hm));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes an unordered_multimap to a FILE.  Returns 1 on success,
-    //!  0 on failure.
-    //------------------------------------------------------------------------
-    template<typename _keyT, typename _valueT, typename _Hash,
-             typename _Pred, typename _Alloc>
-    static size_t  
-    Write(FILE *f, const std::unordered_multimap<_keyT,_valueT,_Hash,_Pred,_Alloc> & hm)
-    {
-      return(ContainerWrite<std::unordered_multimap<_keyT,_valueT,_Hash,_Pred,_Alloc> >(f, hm));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads an unordered_set from a FILE.  Returns 1 on success,
-    //!  0 on failure.
-    //------------------------------------------------------------------------
-    template<typename _valueT, typename _Hash,
-             typename _Pred, typename _Alloc>
-    static size_t
-    Read(FILE *f, std::unordered_set<_valueT,_Hash,_Pred,_Alloc> & hm)
-    {
-      return(ContainerRead<std::unordered_set<_valueT,_Hash,_Pred,_Alloc> >(f, hm));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes an unordered_set to a FILE.  Returns 1 on success,
-    //!  0 on failure.
-    //------------------------------------------------------------------------
-    template<typename _valueT, typename _Hash,
-             typename _Pred, typename _Alloc>
-    static size_t  
-    Write(FILE *f, const std::unordered_set<_valueT,_Hash,_Pred,_Alloc> & hm)
-    {
-      return(ContainerWrite<std::unordered_set<_valueT,_Hash,_Pred,_Alloc> >(f, hm));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Reads an unordered_multiset from a FILE.  Returns 1 on success,
-    //!  0 on failure.
-    //------------------------------------------------------------------------
-    template<typename _valueT, typename _Hash,
-             typename _Pred, typename _Alloc>
-    static size_t
-    Read(FILE *f, std::unordered_multiset<_valueT,_Hash,_Pred,_Alloc> & hm)
-    {
-      return(ContainerRead<std::unordered_multiset<_valueT,_Hash,_Pred,_Alloc> >(f, hm));
-    }
-
-    //------------------------------------------------------------------------
-    //!  Writes an unordered_multiset to a FILE.  Returns 1 on success,
-    //!  0 on failure.
-    //------------------------------------------------------------------------
-    template<typename _valueT, typename _Hash,
-             typename _Pred, typename _Alloc>
-    static size_t  
-    Write(FILE *f, const std::unordered_multiset<_valueT,_Hash,_Pred,_Alloc> & hm)
-    {
-      return(ContainerWrite<std::unordered_multiset<_valueT,_Hash,_Pred,_Alloc> >(f, hm));
-    }
-
-    //------------------------------------------------------------------------
     //!  Reads multiple objects from a FILE.  Returns 1 on success, 0 on
     //!  failure.
     //------------------------------------------------------------------------
@@ -704,6 +736,257 @@ namespace Dwm {
     {
       return (Write(f,args) && ...);
     }
+
+    //------------------------------------------------------------------------
+    //!  Writes a bounded array @c v to FILE @c f.  Returns 1 on success, 0
+    //!  on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
+    static size_t Write(FILE *f, const T & v)
+    {
+      static_assert(fileio_detail::IsWritable<std::remove_reference_t<decltype(v[0])>>);
+      size_t  rc = 0;
+      if (f) {
+        const uint64_t  n = std::extent_v<T>;
+        if (Write(f, n)) {
+          size_t  i = 0;
+          for ( ; i < std::extent_v<T>; ++i) {
+            if (! Write(f, v[i])) {
+              break;
+            }
+          }
+          rc = (n == i) ? 1 : 0;
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads a bounded array @c v from FILE @c f.  Returns 1 on success, 0
+    //!  on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
+    static size_t Read(FILE *f, T & v)
+    {
+      static_assert(fileio_detail::Readable<std::remove_reference_t<decltype(v[0])>>());
+      size_t  rc = 0;
+      if (f) {
+        uint64_t  n;
+        if (Read(f, n)) {
+          if (std::extent_v<T> == n) {
+            size_t  i = 0;
+            for ( ; i < std::extent_v<T>; ++i) {
+              if (! Read(f, v[i])) {
+                break;
+              }
+            }
+            rc = (std::extent_v<T> == i) ? 1 : 0;
+          }
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_same_v<typename std::unique_ptr<T>::deleter_type,
+                            std::default_delete<T>>
+    static size_t Write(FILE *f, const std::unique_ptr<T> & t)
+    {
+      static_assert(! std::is_unbounded_array_v<T>);
+      static_assert(fileio_detail::IsWritable<T>);
+      size_t  rc = 0;
+      bool  isNull = (nullptr == t);
+      if (Write(f, isNull)) {
+        if (! isNull) {
+          rc = Write(f, *t);
+        }
+        else {
+          rc = 1;
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_default_constructible_v<T>
+      and std::is_same_v<typename std::unique_ptr<T>::deleter_type,
+                         std::default_delete<T>>
+    static size_t Read(FILE *f, std::unique_ptr<T> & t)
+    {
+      static_assert(! std::is_unbounded_array_v<T>);
+      static_assert(fileio_detail::IsReadable<T>);
+      size_t  rc = 0;
+      if (f) {
+        bool  isNull = true;
+        if (Read(f, isNull)) {
+          if (isNull) {
+            t.release();
+            rc = 1;
+          }
+          else {
+            if (nullptr == t) {
+              try {
+                t = std::make_unique<T>();
+              }
+              catch (std::bad_alloc & ex) {
+                FSyslog(LOG_ERR, "Failed to allocate an object of type {}",
+                        TypeName<decltype(t)>());
+                return 0;
+              }
+            }
+            if (Read(f, *t)) {
+              rc = 1;
+            }
+            else {
+              t.release();
+            }
+          }
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes a std::optional<T> @c t to FILE @c f.  Returns 1 on success,
+    //!  0 on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static size_t Write(FILE *f, const std::optional<T> & t)
+    {
+      static_assert(fileio_detail::IsWritable<T>);
+      size_t  rc = 0;
+      if (f) {
+        bool  hasValue = t.has_value();
+        if (Write(f, hasValue)) {
+          if (hasValue) { rc = Write(f, t.value()); }
+          else          { rc = 1; }
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads a std::optional<T> @c t from FILE @c f.  Returns 1 on success,
+    //!  0 on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_default_constructible_v<T>
+    static size_t Read(FILE *f, std::optional<T> & t)
+    {
+      size_t  rc = 0;
+      if (f) {
+        bool  hasValue = false;
+        if (Read(f, hasValue)) {
+          if (hasValue) {
+            if (! t.has_value()) {
+              t = T();
+            }
+            rc = Read(f, t.value());
+          }
+          else {
+            t.reset();
+            rc = 1;
+          }
+        }
+      }
+      return rc;
+    }
+
+#if defined(DWM_CAN_USE_REFLECTION)
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <class T>
+    requires std::is_class_v<T>
+      and (not fileio_detail::SpecificallySupported<T>)
+      and (not io_detail::SupportedContainer<T>)
+      and (not io_detail::DenyType<T>)
+    static size_t Write(FILE *f, const T & v)
+    {
+      if (f) {
+        using fileio_detail::IsWritable;
+        using io_detail::Skip, io_detail::SkipReason, io_detail::DenyReason;
+        constexpr auto ctx = std::meta::access_context::unchecked();
+        template for (constexpr auto mem :
+                        define_static_array(nonstatic_data_members_of(^^T, ctx))) {
+          if constexpr (Skip<decltype(v.[:mem:]),mem>()) {
+            FSyslog(LOG_INFO, "{}.{} of type '{}' skipped{}",
+                    TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                    std::meta::display_string_of(std::meta::type_of(mem)),
+                    SkipReason<decltype(v.[:mem:]),mem>());
+          }
+          else {
+            if constexpr (IsWritable<decltype(v.[:mem:])>) {
+              if (! Write(f, v.[:mem:])) {
+                return 0;
+              }
+            }
+            else {
+              FSyslog(LOG_ERR, "{}.{} of type '{}' is unwritable{}",
+                      TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                      std::meta::display_string_of(std::meta::type_of(mem)),
+                      DenyReason<mem>());
+              return 0;
+            }
+          }
+        }
+        return 1;
+      }
+      return 0;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <class T>
+    requires std::is_class_v<T>
+      and (not fileio_detail::SpecificallySupported<T>)
+      and (not io_detail::SupportedContainer<T>)
+      and (not io_detail::DenyType<T>)
+    static size_t Read(FILE *f, T & v)
+    {
+      using fileio_detail::IsReadable;
+      using io_detail::Skip, io_detail::SkipReason, io_detail::DenyReason;
+      if (f) {
+        constexpr auto ctx = std::meta::access_context::unchecked();
+        template for (constexpr auto mem :
+                        define_static_array(nonstatic_data_members_of(^^T, ctx))) {
+          if constexpr (Skip<decltype(v.[:mem:]),mem>()) {
+            FSyslog(LOG_INFO, "{}.{} of type '{}' skipped{}",
+                    TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                    std::meta::display_string_of(std::meta::type_of(mem)),
+                    SkipReason<decltype(v.[:mem:]),mem>());
+          }
+          else {
+            if constexpr (IsReadable<decltype(v.[:mem:])>) {
+              if (! Read(f, (v.[:mem:]))) {
+                return 0;
+              }
+            }
+            else {
+              FSyslog(LOG_ERR, "{}.{} of type '{}' is unreadable{}",
+                      TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                      std::meta::display_string_of(std::meta::type_of(mem)),
+                      DenyReason<mem>());
+              return 0;
+            }
+          }
+        }
+        return 1;
+      }
+      return 0;
+    }
+    
+#endif  // defined(DWM_CAN_USE_REFLECTION)
     
   private:
     //------------------------------------------------------------------------
@@ -725,57 +1008,6 @@ namespace Dwm {
       return(rc);
     }
 
-    //------------------------------------------------------------------------
-    //!  Reads a container from a FILE.  Returns 1 on success, 0 on failure.
-    //!  We use this for deques, lists, vectors, sets and multisets.
-    //------------------------------------------------------------------------
-    template <typename _containerT>
-    static size_t ContainerRead(FILE *f, _containerT & c)
-    {
-      size_t  rc = 0;
-      if (! c.empty())
-        c.clear();
-      if (f) {
-        uint64_t  numEntries;
-        if (Read(f, numEntries)) {
-          uint64_t  i = 0;
-          for ( ; i < numEntries; ++i) {
-            typename _containerT::value_type  val;
-            if (Read(f, val) > 0)
-              c.insert(c.end(), std::move(val));
-            else
-              break;
-          }
-          if (i == numEntries)
-            rc = 1;
-        }
-      }
-      return(rc);
-    }
-    
-    //------------------------------------------------------------------------
-    //!  Writes a container to a FILE.  Returns 1 on success, 0 on failure.
-    //!  We use this for all containers.
-    //------------------------------------------------------------------------
-    template <typename _containerT>
-    static size_t ContainerWrite(FILE *f, const _containerT & c)
-    {
-      size_t  rc = 0;
-      if (f) {
-        uint64_t  numEntries = c.size();
-        if (Write(f, numEntries)) {
-          if (numEntries) {
-            rc = Write<typename _containerT::const_iterator>(f, 
-                                                             c.begin(), c.end());
-          }
-          else {
-            rc = 1;
-          }
-        }
-      }
-      return(rc);
-    }
-    
     //------------------------------------------------------------------------
     //!  Reads a PairAssociative container from a FILE.  Returns 1 on success,
     //!  0 on failure.
@@ -814,14 +1046,16 @@ namespace Dwm {
       return(rc);
     }
 
-  };
+  };  // class FileIO
 
   //--------------------------------------------------------------------------
   //!  Simple concept expressing that an instance of type T can be written to
   //!  a FILE via a FileIO::Write() member.
   //--------------------------------------------------------------------------
   template <typename T>
-  concept IsFileWritable = requires(const T & t, FILE *f) {
+  concept IsFileWritable =
+  (fileio_detail::IsWritable<T> == true)
+  and requires(const T & t, FILE *f) {
     { FileIO::Write(f, t) } -> std::same_as<size_t>;
   };
 
@@ -830,7 +1064,9 @@ namespace Dwm {
   //!  a FILE via a FileIO::Read() member.
   //--------------------------------------------------------------------------
   template <typename T>
-  concept IsFileReadable = requires(T & t, FILE *f) {
+  concept IsFileReadable =
+  (fileio_detail::IsReadable<T> == true)
+  and requires(T & t, FILE *f) {
     { FileIO::Read(f, t) } -> std::same_as<size_t>;
   };
   

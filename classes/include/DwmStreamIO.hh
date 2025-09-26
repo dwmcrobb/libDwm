@@ -784,9 +784,8 @@ namespace Dwm {
     requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
     static std::ostream & Write(std::ostream & os, const T & v)
     {
-      // static_assert(iostream_detail::Writable<std::remove_cvref_t<decltype(v[0])>>());
       static_assert(iostream_detail::IsWritable<std::remove_reference_t<decltype(v[0])>>);
-      uint64_t  n = std::extent_v<T>;
+      const uint64_t  n = std::extent_v<T>;
       if (StreamIO::Write(os, n)) {
         for (size_t i = 0; i < std::extent_v<T>; ++i) {
           if (! StreamIO::Write(os, v[i])) {
@@ -830,6 +829,7 @@ namespace Dwm {
     static std::ostream & Write(std::ostream & os,
                                 const std::unique_ptr<T> & t)
     {
+      static_assert(! std::is_unbounded_array_v<T>);
       static_assert(iostream_detail::IsWritable<T>);
       bool  isNull = (nullptr == t);
       if (StreamIO::Write(os, isNull)) {
@@ -850,8 +850,8 @@ namespace Dwm {
     static std::istream & Read(std::istream & is,
                                std::unique_ptr<T> & t)
     {
+      static_assert(! std::is_unbounded_array_v<T>);
       static_assert(iostream_detail::IsReadable<T>);
-      
       bool  isNull = true;
       if (StreamIO::Read(is, isNull)) {
         if (isNull) {

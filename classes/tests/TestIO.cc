@@ -1,6 +1,6 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmIO.cc 8389 $
-// @(#) $Id: TestDwmIO.cc 8389 2016-04-17 04:31:36Z dwm $
+// @(#) $DwmPath:$
+// @(#) $Id:$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2004-2007, 2016, 2025
 //  All rights reserved.
@@ -35,8 +35,8 @@
 //===========================================================================
 
 //---------------------------------------------------------------------------
-//!  \file TestDwmIO.cc
-//!  \brief Unit tests for Dwm::(Stream|File|Descriptor)IO
+//!  \file TestStreamIO.cc
+//!  \brief Unit tests for Dwm::StreamIO
 //---------------------------------------------------------------------------
 
 //  This program is just a simple test application for IO functionality in
@@ -54,7 +54,7 @@ extern "C" {
 #include <sstream>
 
 #include "DwmIpv4Prefix.hh"
-#include "DwmIO.hh"
+#include "DwmStreamIO.hh"
 #include "DwmUnitAssert.hh"
 
 using namespace std;
@@ -68,7 +68,7 @@ static const int32_t   k_int32Val  = 0x7FFFFFFF;
 static const uint32_t  k_uint32Val = 0xFBFBFBFB;
 static const int64_t   k_int64Val  = 4294967296LL * 15;
 static const uint64_t  k_uint64Val = 4294967296LL * 65535;
-static const string    k_stringVal = "TestDwmIO";
+static const string    k_stringVal = "TestStreamIO";
 static const float     k_floatVal  = 123456789.987654321;
 static const double    k_doubleVal = 987654321.123456789;
 static const timeval   k_timeVal   = { 42, 0xCCCC };
@@ -82,123 +82,27 @@ static bool WriteTestBlob(ostream & os)
 
   if (os) {
     char  c = k_charVal;
-    if (IO::Write(os,c)) {
+    if (StreamIO::Write(os,c)) {
       uint8_t  uc = k_ucharVal;
-      if (IO::Write(os,uc)) {
+      if (StreamIO::Write(os,uc)) {
         int16_t sh = k_int16Val;
-        if (IO::Write(os,sh)) {
+        if (StreamIO::Write(os,sh)) {
           uint16_t ush = k_uint16Val;
-          if (IO::Write(os,ush)) {
+          if (StreamIO::Write(os,ush)) {
             int32_t  w = k_int32Val;
-            if (IO::Write(os,w)) {
+            if (StreamIO::Write(os,w)) {
               uint32_t  uw = k_uint32Val;
-              if (IO::Write(os,uw)) {
+              if (StreamIO::Write(os,uw)) {
                 int64_t  d = k_int64Val;
-                if (IO::Write(os,d)) {
+                if (StreamIO::Write(os,d)) {
                   uint64_t  ud = k_uint64Val;
-                  if (IO::Write(os,ud)) {
+                  if (StreamIO::Write(os,ud)) {
                     std::string  s = k_stringVal;
-                    if (IO::Write(os,s)) {
+                    if (StreamIO::Write(os,s)) {
                       float  f = k_floatVal;
-                      if (IO::Write(os,f)) {
+                      if (StreamIO::Write(os,f)) {
                         double df = k_doubleVal;
-                        if (IO::Write(os,df)) {
-                          rc = true;
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  UnitAssert(rc == true);
-  return(rc);
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool WriteTestBlob(int fd)
-{
-  bool  rc = false;
-
-  if (fd >= 0) {
-    char  c = k_charVal;
-    if (IO::Write(fd,c) == sizeof(c)) {
-      uint8_t  uc = k_ucharVal;
-      if (IO::Write(fd,uc) == sizeof(uc)) {
-        int16_t sh = k_int16Val;
-        if (IO::Write(fd,sh) == sizeof(sh)) {
-          uint16_t ush = k_uint16Val;
-          if (IO::Write(fd,ush) == sizeof(ush)) {
-            int32_t  w = k_int32Val;
-            if (IO::Write(fd,w) == sizeof(w)) {
-              uint32_t  uw = k_uint32Val;
-              if (IO::Write(fd,uw) == sizeof(uw)) {
-                int64_t  d = k_int64Val;
-                if (IO::Write(fd,d) == sizeof(d)) {
-                  uint64_t  ud = k_uint64Val;
-                  if (IO::Write(fd,ud) == sizeof(ud)) {
-                    std::string  s = k_stringVal;
-                    if (IO::Write(fd,s) > 4) {
-                      float  f = k_floatVal;
-                      if (IO::Write(fd,f) == sizeof(f)) {
-                        double  df = k_doubleVal;
-                        if (IO::Write(fd,df) == sizeof(df)) {
-                          rc = true;
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  UnitAssert(rc == true);
-  return(rc);
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool WriteTestBlob(FILE * f)
-{
-  bool  rc = false;
-
-  if (f) {
-    char  c = k_charVal;
-    if (IO::Write(f,c) == sizeof(c)) {
-      uint8_t  uc = k_ucharVal;
-      if (IO::Write(f,uc) == sizeof(uc)) {
-        int16_t sh = k_int16Val;
-        if (IO::Write(f,sh) == sizeof(sh)) {
-          uint16_t ush = k_uint16Val;
-          if (IO::Write(f,ush) == sizeof(ush)) {
-            int32_t  w = k_int32Val;
-            if (IO::Write(f,w) == sizeof(w)) {
-              uint32_t  uw = k_uint32Val;
-              if (IO::Write(f,uw) == sizeof(uw)) {
-                int64_t  d = k_int64Val;
-                if (IO::Write(f,d) == sizeof(d)) {
-                  uint64_t  ud = k_uint64Val;
-                  if (IO::Write(f,ud) == sizeof(ud)) {
-                    std::string  s = k_stringVal;
-                    if (IO::Write(f,s) > 4) {
-                      float  fl = k_floatVal;
-                      if (IO::Write(f,fl) == sizeof(fl)) {
-                        double  dfl = k_doubleVal;
-                        if (IO::Write(f,dfl) == sizeof(dfl)) {
+                        if (StreamIO::Write(os,df)) {
                           rc = true;
                         }
                       }
@@ -239,164 +143,32 @@ static bool WriteTestBlobs(ostream & os, uint32_t numBlobs)
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
-static bool WriteTestBlobs(int fd, uint32_t numBlobs)
-{
-  assert(numBlobs > 0);
-  
-  bool  rc = true;
-  for (uint32_t i = 0; i < numBlobs; ++i) {
-    if (! WriteTestBlob(fd)) {
-      rc = false;
-      break;
-    }
-  }
-  
-  UnitAssert(rc == true);
-  return(rc);
-}
-  
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool WriteTestBlobs(FILE * f, uint32_t numBlobs)
-{
-  assert(numBlobs > 0);
-  
-  bool  rc = true;
-  for (uint32_t i = 0; i < numBlobs; ++i) {
-    if (! WriteTestBlob(f)) {
-      rc = false;
-      break;
-    }
-  }
-
-  UnitAssert(rc == true);
-  return(rc);
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
 static bool ReadTestBlob(istream & is)
 {
   bool  rc = false;
   if (is) {
     char  c;
-    if (IO::Read(is,c) && (c == k_charVal)) {
+    if (StreamIO::Read(is,c) && (c == k_charVal)) {
       uint8_t  uc;
-      if (IO::Read(is,uc) && (uc == k_ucharVal)) {
+      if (StreamIO::Read(is,uc) && (uc == k_ucharVal)) {
         int16_t  sh;
-        if (IO::Read(is,sh) && (sh == k_int16Val)) {
+        if (StreamIO::Read(is,sh) && (sh == k_int16Val)) {
           uint16_t  ush;
-          if (IO::Read(is,ush) && (ush == k_uint16Val)) {
+          if (StreamIO::Read(is,ush) && (ush == k_uint16Val)) {
             int32_t  w;
-            if (IO::Read(is,w) && (w == k_int32Val)) {
+            if (StreamIO::Read(is,w) && (w == k_int32Val)) {
               uint32_t uw;
-              if (IO::Read(is,uw) && (uw == k_uint32Val)) {
+              if (StreamIO::Read(is,uw) && (uw == k_uint32Val)) {
                 int64_t  d;
-                if (IO::Read(is,d) && (d == k_int64Val)) {
+                if (StreamIO::Read(is,d) && (d == k_int64Val)) {
                   uint64_t  ud;
-                  if (IO::Read(is,ud) && (ud == k_uint64Val)) {
+                  if (StreamIO::Read(is,ud) && (ud == k_uint64Val)) {
                     string  s;
-                    if (IO::Read(is,s) && (s == k_stringVal)) {
+                    if (StreamIO::Read(is,s) && (s == k_stringVal)) {
                       float  f;
-                      if (IO::Read(is,f) && (f == k_floatVal)) {
+                      if (StreamIO::Read(is,f) && (f == k_floatVal)) {
                         double  df;
-                        if (IO::Read(is,df) && (df == k_doubleVal)) {
-                          rc = true;
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  UnitAssert(rc == true);
-  return(rc);
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool ReadTestBlob(int fd)
-{
-  bool  rc = false;
-  if (fd >= 0) {
-    char  c;
-    if (IO::Read(fd,c) && (c == k_charVal)) {
-      uint8_t  uc = 0;
-      if (IO::Read(fd,uc) && (uc == k_ucharVal)) {
-        int16_t  sh = 0;
-        if (IO::Read(fd,sh) && (sh == k_int16Val)) {
-          uint16_t  ush = 0;
-          if (IO::Read(fd,ush) && (ush == k_uint16Val)) {
-            int32_t  w = 0;
-            if (IO::Read(fd,w) && (w == k_int32Val)) {
-              uint32_t uw = 0;
-              if (IO::Read(fd,uw) && (uw == k_uint32Val)) {
-                int64_t  d = 0;
-                if (IO::Read(fd,d) && (d == k_int64Val)) {
-                  uint64_t  ud = 0;
-                  if (IO::Read(fd,ud) && (ud == k_uint64Val)) {
-                    string  s;
-                    if (IO::Read(fd,s) && (s == k_stringVal)) {
-                      float  f;
-                      if (IO::Read(fd,f) && (f == k_floatVal)) {
-                        double  df;
-                        if (IO::Read(fd,df) && (df == k_doubleVal)) {
-                          rc = true;
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  
-  UnitAssert(rc == true);
-  return(rc);
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool ReadTestBlob(FILE * f)
-{
-  bool  rc = false;
-  if (f) {
-    char  c;
-    if (IO::Read(f,c) && (c == k_charVal)) {
-      uint8_t  uc = 0;
-      if (IO::Read(f,uc) && (uc == k_ucharVal)) {
-        int16_t  sh = 0;
-        if (IO::Read(f,sh) && (sh == k_int16Val)) {
-          uint16_t  ush = 0;
-          if (IO::Read(f,ush) && (ush == k_uint16Val)) {
-            int32_t  w = 0;
-            if (IO::Read(f,w) && (w == k_int32Val)) {
-              uint32_t uw = 0;
-              if (IO::Read(f,uw) && (uw == k_uint32Val)) {
-                int64_t  d = 0;
-                if (IO::Read(f,d) && (d == k_int64Val)) {
-                  uint64_t  ud = 0;
-                  if (IO::Read(f,ud) && (ud == k_uint64Val)) {
-                    string  s;
-                    if (IO::Read(f,s) && (s == k_stringVal)) {
-                      float  fl;
-                      if (IO::Read(f,fl) && (fl == k_floatVal)) {
-                        double  dfl;
-                        if (IO::Read(f,dfl) && (dfl == k_doubleVal)) {
+                        if (StreamIO::Read(is,df) && (df == k_doubleVal)) {
                           rc = true;
                         }
                       }
@@ -435,40 +207,6 @@ static bool ReadTestBlobs(istream & is, uint32_t numBlobs)
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
-static bool ReadTestBlobs(int fd, uint32_t numBlobs)
-{
-  assert(numBlobs > 0);
-  bool  rc = true;
-  for (uint32_t i = 0; i < numBlobs; ++i) {
-    if (! ReadTestBlob(fd)) {
-      rc = false;
-      break;
-    }
-  }
-  UnitAssert(rc == true);
-  return(rc);
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool ReadTestBlobs(FILE * f, uint32_t numBlobs)
-{
-  assert(numBlobs > 0);
-  bool  rc = true;
-  for (uint32_t i = 0; i < numBlobs; ++i) {
-    if (! ReadTestBlob(f)) {
-      rc = false;
-      break;
-    }
-  }
-  UnitAssert(rc == true);
-  return(rc);
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
 static bool StreamTest()
 {
   bool  rc = false;
@@ -493,80 +231,6 @@ static bool StreamTest()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
-static bool DescriptorTest()
-{
-  bool  rc = false;
-  int  fd = open("/tmp/DWMIODescriptorTest",O_WRONLY|O_CREAT|O_TRUNC,0644);
-  if (fd >= 0) {
-    if (WriteTestBlobs(fd,3)) {
-      close(fd);
-      
-      fd = open("/tmp/DWMIODescriptorTest",O_RDONLY);
-      if (fd >= 0) {
-        if (ReadTestBlobs(fd,3)) {
-          rc = true;
-        }
-        close(fd);
-      }
-      else {
-        cerr << "open(\"/tmp/DWMIODescriptorTest\",O_RDONLY) failed: "
-             << strerror(errno) << endl;
-      }
-    }
-    else {
-      close(fd);
-    }
-    std::remove("/tmp/DWMIODescriptorTest");
-  }
-  else {
-    cerr << "open(\"/tmp/DWMIODescriptorTest\",O_WRONLY|O_CREAT|O_TRUNC,0644)"
-         << " failed: " << strerror(errno) << endl;
-  }
-
-  UnitAssert(rc == true);
-  return(rc);
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool FileTest()
-{
-  bool  rc = false;
-  FILE  *f = fopen("/tmp/DWMIOFileTest","w");
-  if (f) {
-    if (WriteTestBlobs(f,3)) {
-      fclose(f);
-      
-      f = fopen("/tmp/DWMIOFileTest","r");
-      if (f) {
-        if (ReadTestBlobs(f,3)) {
-          rc = true;
-        }
-        fclose(f);
-      }
-      else {
-        cerr << "fopen(\"/tmp/DWMIOFileTest\",\"r\") failed: "
-             << strerror(errno) << endl;
-      }
-    }
-    else {
-      fclose(f);
-    }
-    std::remove("/tmp/DWMIOFileTest");
-  }
-  else {
-    cerr << "fopen(\"/tmp/DWMIOFileTest\",\"w\")" << " failed: "
-         << strerror(errno) << endl;
-  }
-
-  UnitAssert(rc == true);
-  return(rc);
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
 static bool MapStreamTest()
 {
   bool  rc = false;
@@ -579,13 +243,13 @@ static bool MapStreamTest()
   
   ofstream  os(fn.c_str());
   if (os) {
-    IO::Write(os, m1);
+    StreamIO::Write(os, m1);
     os.close();
 
     ifstream  is(fn.c_str());
     if (is) {
       map<Ipv4Address,Ipv4Prefix>  m2;
-      if (IO::Read(is, m2)) {
+      if (StreamIO::Read(is, m2)) {
         if (m1 == m2) {
           rc = true;
         }
@@ -622,106 +286,18 @@ static bool MapStreamTestSimple()
   
   ofstream  os(fn.c_str());
   if (os) {
-    IO::Write(os, m1);
+    StreamIO::Write(os, m1);
     os.close();
 
     ifstream  is(fn.c_str());
     if (is) {
       map<int,string>  m2;
-      if (IO::Read(is, m2)) {
+      if (StreamIO::Read(is, m2)) {
         if (m1 == m2) {
           rc = true;
         }
       }
       is.close();
-    }
-    else {
-      cerr << "Failed to open '" << fn.c_str() << "' for reading: "
-           << strerror(errno) << endl;
-    }
-    std::remove(fn.c_str());
-  }
-  else {
-    cerr << "Failed to open '" << fn.c_str() << "': " << strerror(errno)
-         << endl;
-  }
-  
-  UnitAssert(rc == true);
-  return(rc);
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool MapDescriptorTest()
-{
-  bool  rc = false;
-  string  fn("/tmp/DWMMapDescriptorTest");
-  
-  map<Ipv4Address,Ipv4Prefix>  m1;
-  m1[Ipv4Address("192.168.168.1")] = Ipv4Prefix("192.168.168/24");
-  m1[Ipv4Address("10.10.10.10")] = Ipv4Prefix("10/8");
-  
-  int  fd = open(fn.c_str(), O_WRONLY|O_CREAT, 0644);
-  if (fd >= 0) {
-    IO::Write(fd, m1);
-    close(fd);
-
-    fd = open(fn.c_str(), O_RDONLY);
-    if (fd >= 0) {
-      map<Ipv4Address,Ipv4Prefix>  m2;
-      if (IO::Read(fd, m2) > 0) {
-        if (m1 == m2) {
-          rc = true;
-        }
-      }
-      else {
-        cerr << "IO::Read(fd, m2) failed in MapDescriptorTest" << endl;
-      }
-      close(fd);
-    }
-    else {
-      cerr << "Failed to open '" << fn.c_str() << "' for reading: "
-           << strerror(errno) << endl;
-    }
-    std::remove(fn.c_str());
-  }
-  else {
-    cerr << "Failed to open '" << fn.c_str() << "': " << strerror(errno)
-         << endl;
-  }
-  
-  UnitAssert(rc == true);
-  return(rc);
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool MapFileTest()
-{
-  bool  rc = false;
-
-  string  fn("/tmp/DWMMapFileTest");
-  
-  map<Ipv4Address,Ipv4Prefix>  m1;
-  m1[Ipv4Address("192.168.168.1")] = Ipv4Prefix("192.168.168/24");
-  m1[Ipv4Address("10.10.10.10")] = Ipv4Prefix("10/8");
-  
-  FILE  *f = fopen(fn.c_str(), "w");
-  if (f) {
-    IO::Write(f, m1);
-    fclose(f);
-
-    f = fopen(fn.c_str(), "r");
-    if (f) {
-      map<Ipv4Address,Ipv4Prefix>  m2;
-      if (IO::Read(f, m2)) {
-        if (m1 == m2) {
-          rc = true;
-        }
-      }
-      fclose(f);
     }
     else {
       cerr << "Failed to open '" << fn.c_str() << "' for reading: "
@@ -752,13 +328,13 @@ static bool VectorStreamTest()
   
   ofstream  os(fn.c_str());
   if (os) {
-    IO::Write(os, v1);
+    StreamIO::Write(os, v1);
     os.close();
 
     ifstream  is(fn.c_str());
     if (is) {
       vector<Ipv4Prefix>  v2;
-      if (IO::Read(is, v2)) {
+      if (StreamIO::Read(is, v2)) {
         if (v1 == v2) {
           rc = true;
         }
@@ -775,89 +351,6 @@ static bool VectorStreamTest()
     cerr << "Failed to open '" << fn.c_str() << "' for writing: "
          << strerror(errno) << endl;
   }
-  UnitAssert(rc == true);
-  return(rc);
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool VectorFileTest()
-{
-  bool  rc = false;
-  string  fn("/tmp/DWMVectorFileTest");
-  
-  vector<Ipv4Prefix>  v1;
-  v1.push_back(Ipv4Prefix("192.168.168/24"));
-  v1.push_back(Ipv4Prefix("10/8"));
-  
-  FILE  *f = fopen(fn.c_str(), "w");
-  if (f) {
-    IO::Write(f, v1);
-    fclose(f);
-
-    f = fopen(fn.c_str(), "r");
-    if (f) {
-      vector<Ipv4Prefix>  v2;
-      if (IO::Read(f, v2)) {
-        if (v1 == v2) {
-          rc = true;
-        }
-      }
-      fclose(f);
-    }
-    else {
-      cerr << "Failed to open '" << fn.c_str() << "' for reading: "
-           << strerror(errno) << endl;
-    }
-    std::remove(fn.c_str());
-  }
-  else {
-    cerr << "Failed to open '" << fn.c_str() << "' for writing: "
-         << strerror(errno) << endl;
-  }
-  
-  UnitAssert(rc == true);
-  return(rc);
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool VectorDescriptorTest()
-{
-  bool  rc = false;
-  string  fn("/tmp/DWMVectorDescriptorTest");
-  vector<Ipv4Prefix>  v1;
-  v1.push_back(Ipv4Prefix("192.168.168/24"));
-  v1.push_back(Ipv4Prefix("10/8"));
-  
-  int fd = open(fn.c_str(), O_WRONLY|O_CREAT, 0644);
-  if (fd >= 0) {
-    IO::Write(fd, v1);
-    close(fd);
-
-    fd = open(fn.c_str(), O_RDONLY);
-    if (fd >= 0) {
-      vector<Ipv4Prefix>  v2;
-      if (IO::Read(fd, v2) > 0) {
-        if (v1 == v2) {
-          rc = true;
-        }
-      }
-      close(fd);
-    }
-    else {
-      cerr << "Failed to open '" << fn.c_str() << "' for reading: "
-           << strerror(errno) << endl;
-    }
-    std::remove(fn.c_str());
-  }
-  else {
-    cerr << "Failed to open '" << fn.c_str() << "' for writing: "
-         << strerror(errno) << endl;
-  }
-
   UnitAssert(rc == true);
   return(rc);
 }
@@ -876,13 +369,13 @@ static bool ArrayStreamTest()
   
   ofstream  os(fn.c_str());
   if (os) {
-    IO::Write(os, a1);
+    StreamIO::Write(os, a1);
     os.close();
 
     ifstream  is(fn.c_str());
     if (is) {
       array<Ipv4Prefix,2>  a2;
-      if (IO::Read(is, a2)) {
+      if (StreamIO::Read(is, a2)) {
         if (a1 == a2) {
           rc = true;
         }
@@ -899,88 +392,6 @@ static bool ArrayStreamTest()
     cerr << "Failed to open '" << fn.c_str() << "' for writing: "
          << strerror(errno) << endl;
   }
-  UnitAssert(rc == true);
-  return(rc);
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool ArrayFileTest()
-{
-  bool  rc = false;
-  string  fn("/tmp/DWMArrayFileTest");
-  
-  array<Ipv4Prefix,2>
-    a1({Ipv4Prefix("192.168.168/24"),
-        Ipv4Prefix("10/8")});
-  
-  FILE  *f = fopen(fn.c_str(), "w");
-  if (f) {
-    IO::Write(f, a1);
-    fclose(f);
-
-    f = fopen(fn.c_str(), "r");
-    if (f) {
-      array<Ipv4Prefix,2>  a2;
-      if (IO::Read(f, a2)) {
-        if (a1 == a2) {
-          rc = true;
-        }
-      }
-      fclose(f);
-    }
-    else {
-      cerr << "Failed to open '" << fn.c_str() << "' for reading: "
-           << strerror(errno) << endl;
-    }
-    std::remove(fn.c_str());
-  }
-  else {
-    cerr << "Failed to open '" << fn.c_str() << "' for writing: "
-         << strerror(errno) << endl;
-  }
-  
-  UnitAssert(rc == true);
-  return(rc);
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool ArrayDescriptorTest()
-{
-  bool  rc = false;
-  string  fn("/tmp/DWMArrayDescriptorTest");
-  array<Ipv4Prefix,2>
-    a1({Ipv4Prefix("192.168.168/24"),
-        Ipv4Prefix("10/8")});
-  int fd = open(fn.c_str(), O_WRONLY|O_CREAT, 0644);
-  if (fd >= 0) {
-    IO::Write(fd, a1);
-    close(fd);
-
-    fd = open(fn.c_str(), O_RDONLY);
-    if (fd >= 0) {
-      array<Ipv4Prefix,2>  a2;
-      if (IO::Read(fd, a2) > 0) {
-        if (a1 == a2) {
-          rc = true;
-        }
-      }
-      close(fd);
-    }
-    else {
-      cerr << "Failed to open '" << fn.c_str() << "' for reading: "
-           << strerror(errno) << endl;
-    }
-    std::remove(fn.c_str());
-  }
-  else {
-    cerr << "Failed to open '" << fn.c_str() << "' for writing: "
-         << strerror(errno) << endl;
-  }
-
   UnitAssert(rc == true);
   return(rc);
 }
@@ -999,13 +410,13 @@ static bool DequeStreamTest()
   
   ofstream  os(fn.c_str());
   if (os) {
-    IO::Write(os, d1);
+    StreamIO::Write(os, d1);
     os.close();
 
     ifstream  is(fn.c_str());
     if (is) {
       deque<Ipv4Prefix>  d2;
-      if (IO::Read(is, d2)) {
+      if (StreamIO::Read(is, d2)) {
         if (d1 == d2) {
           rc = true;
         }
@@ -1023,48 +434,6 @@ static bool DequeStreamTest()
          << strerror(errno) << endl;
   }
 
-  UnitAssert(rc == true);
-  return(rc);
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool DequeDescriptorTest()
-{
-  bool  rc = false;
-
-  string  fn("/tmp/DWMDequeDescriptorTest");
-  deque<Ipv4Prefix>  d1;
-  d1.push_back(Ipv4Prefix("192.168.168/24"));
-  d1.push_back(Ipv4Prefix("10/8"));
-  
-  int fd = open(fn.c_str(), O_WRONLY|O_CREAT, 0644);
-  if (fd >= 0) {
-    IO::Write(fd, d1);
-    close(fd);
-
-    fd = open(fn.c_str(), O_RDONLY);
-    if (fd >= 0) {
-      deque<Ipv4Prefix>  d2;
-      if (IO::Read(fd, d2) > 0) {
-        if (d1 == d2) {
-          rc = true;
-        }
-      }
-      close(fd);
-    }
-    else {
-      cerr << "Failed to open '" << fn.c_str() << "' for reading: "
-           << strerror(errno) << endl;
-    }
-    std::remove(fn.c_str());
-  }
-  else {
-    cerr << "Failed to open '" << fn.c_str() << "' for writing: "
-         << strerror(errno) << endl;
-  }
-  
   UnitAssert(rc == true);
   return(rc);
 }
@@ -1083,60 +452,18 @@ static bool ListStreamTest()
   
   ofstream  os(fn.c_str());
   if (os) {
-    IO::Write(os, l1);
+    StreamIO::Write(os, l1);
     os.close();
 
     ifstream  is(fn.c_str());
     if (is) {
       list<Ipv4Prefix>  l2;
-      if (IO::Read(is, l2)) {
+      if (StreamIO::Read(is, l2)) {
         if (l1 == l2) {
           rc = true;
         }
       }
       is.close();
-    }
-    else {
-      cerr << "Failed to open '" << fn.c_str() << "' for reading: "
-           << strerror(errno) << endl;
-    }
-    std::remove(fn.c_str());
-  }
-  else {
-    cerr << "Failed to open '" << fn.c_str() << "' for writing: "
-         << strerror(errno) << endl;
-  }
-  
-  UnitAssert(rc == true);
-  return(rc);
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool ListDescriptorTest()
-{
-  bool  rc = false;
-
-  string  fn("/tmp/DWMDequeDescriptorTest");
-  list<Ipv4Prefix>  l1;
-  l1.push_back(Ipv4Prefix("192.168.168/24"));
-  l1.push_back(Ipv4Prefix("10/8"));
-  
-  int fd = open(fn.c_str(), O_WRONLY|O_CREAT, 0644);
-  if (fd >= 0) {
-    IO::Write(fd, l1);
-    close(fd);
-
-    fd = open(fn.c_str(), O_RDONLY);
-    if (fd >= 0) {
-      list<Ipv4Prefix>  l2;
-      if (IO::Read(fd, l2) > 0) {
-        if (l1 == l2) {
-          rc = true;
-        }
-      }
-      close(fd);
     }
     else {
       cerr << "Failed to open '" << fn.c_str() << "' for reading: "
@@ -1167,60 +494,18 @@ static bool SetStreamTest()
   
   ofstream  os(fn.c_str());
   if (os) {
-    IO::Write(os, s1);
+    StreamIO::Write(os, s1);
     os.close();
 
     ifstream  is(fn.c_str());
     if (is) {
       set<Ipv4Prefix>  s2;
-      if (IO::Read(is, s2)) {
+      if (StreamIO::Read(is, s2)) {
         if (s1 == s2) {
           rc = true;
         }
       }
       is.close();
-    }
-    else {
-      cerr << "Failed to open '" << fn.c_str() << "' for reading: "
-           << strerror(errno) << endl;
-    }
-    std::remove(fn.c_str());
-  }
-  else {
-    cerr << "Failed to open '" << fn.c_str() << "' for writing: "
-         << strerror(errno) << endl;
-  }
-  
-  UnitAssert(rc == true);
-  return(rc);
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool SetDescriptorTest()
-{
-  bool  rc = false;
-
-  string  fn("/tmp/DWMDequeDescriptorTest");
-  set<Ipv4Prefix>  s1;
-  s1.insert(Ipv4Prefix("192.168.168/24"));
-  s1.insert(Ipv4Prefix("10/8"));
-  
-  int fd = open(fn.c_str(), O_WRONLY|O_CREAT, 0644);
-  if (fd >= 0) {
-    IO::Write(fd, s1);
-    close(fd);
-
-    fd = open(fn.c_str(), O_RDONLY);
-    if (fd >= 0) {
-      set<Ipv4Prefix>  s2;
-      if (IO::Read(fd, s2) > 0) {
-        if (s1 == s2) {
-          rc = true;
-        }
-      }
-      close(fd);
     }
     else {
       cerr << "Failed to open '" << fn.c_str() << "' for reading: "
@@ -1293,168 +578,6 @@ static bool VarArgStreamTestFail()
       //  successfully read s2.
       rc = UnitAssert(s == s2);
     }
-  }
-  return rc;
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool VarArgDescriptorTest()
-{
-  bool  rc = false;
-  
-  std::string  s("Hello");
-  uint16_t     u = 0xf00f;
-  bool         b = true;
-  int32_t      i = -2020;
-  pair<string,bool>  p("Goodbye", false);
-
-  string  fn("/tmp/DWMVarArgDescriptorTest");
-  int fd = open(fn.c_str(), O_WRONLY|O_CREAT, 0644);
-  if (UnitAssert(fd >= 0)) {
-    if (UnitAssert(DescriptorIO::WriteV(fd, s, u, b, i, p)) > 0) {
-      close(fd);
-      fd = open(fn.c_str(), O_RDONLY);
-      if (UnitAssert(fd >= 0)) {
-        std::string        s2;
-        uint16_t           u2;
-        bool               b2;
-        int32_t            i2;
-        pair<string,bool>  p2;
-        if (UnitAssert(DescriptorIO::ReadV(fd, s2, u2, b2, i2, p2))) {
-          if (UnitAssert(s == s2)) {
-            if (UnitAssert(u == u2)) {
-              if (UnitAssert(b == b2)) {
-                if (UnitAssert(i == i2)) {
-                  if (UnitAssert(p == p2)) {
-                    rc = true;
-                  }
-                }
-              }
-            }
-          }
-        }
-        close(fd);
-      }
-    }
-    else {
-      close(fd);
-    }
-    std::remove(fn.c_str());
-  }
-  return rc;
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool VarArgDescriptorTestFail()
-{
-  bool  rc = false;
-  std::string   s("HeLlO");
-
-  string  fn("/tmp/DWMVarArgDescriptorTestFail");
-  int fd = open(fn.c_str(), O_WRONLY|O_CREAT, 0644);
-  if (UnitAssert(fd >= 0)) {
-    if (UnitAssert(DescriptorIO::WriteV(fd, s))) {
-      close(fd);
-      fd = open(fn.c_str(), O_RDONLY);
-      if (UnitAssert(fd >= 0)) {
-        std::string        s2;
-        uint16_t           u2;
-        if (UnitAssert(DescriptorIO::ReadV(fd, s2, u2) < 0)) {
-          //  We expect ReadV() to fail because we only wrote a string, so the
-          //  stream should end before we can read u2.  But we should have
-          //  successfully read s2.
-          rc = UnitAssert(s == s2);
-        }
-        close(fd);
-      }
-    }
-    else {
-      close(fd);
-    }
-    std::remove(fn.c_str());
-  }
-  return rc;
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool VarArgFileTest()
-{
-  bool  rc = false;
-  
-  std::string  s("Hello");
-  uint16_t     u = 0xf00f;
-  bool         b = true;
-  int32_t      i = -2020;
-  pair<string,bool>  p("Goodbye", false);
-
-  string  fn("/tmp/DWMVarArgFileTest");
-  FILE  *f = fopen(fn.c_str(), "w");
-  if (f) {
-    UnitAssert(FileIO::WriteV(f, s, u, b, i, p));
-    fclose(f);
-    f = fopen(fn.c_str(), "r");
-    if (f) {
-      std::string        s2;
-      uint16_t           u2;
-      bool               b2;
-      int32_t            i2;
-      pair<string,bool>  p2;
-      if (UnitAssert(FileIO::ReadV(f, s2, u2, b2, i2, p2))) {
-        if (UnitAssert(s == s2)) {
-          if (UnitAssert(u == u2)) {
-            if (UnitAssert(b == b2)) {
-              if (UnitAssert(i == i2)) {
-                if (UnitAssert(p == p2)) {
-                  rc = true;
-                }
-              }
-            }
-          }
-        }
-      }
-      fclose(f);
-    }
-    std::remove(fn.c_str());
-  }
-  return rc;
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool VarArgFileTestFail()
-{
-  bool  rc = false;
-  std::string  s("HeLlO");
-
-  string  fn("/tmp/DWMVarArgFileTest");
-  FILE  *f = fopen(fn.c_str(), "wb");
-  if (UnitAssert(f)) {
-    if (UnitAssert(FileIO::WriteV(f, s))) {
-      fclose(f);
-      f = fopen(fn.c_str(), "rb");
-      if (UnitAssert(f)) {
-        std::string        s2;
-        uint16_t           u2;
-        if (UnitAssert(! FileIO::ReadV(f, s2, u2))) {
-          //  We expect ReadV() to fail because we only wrote a string, so the
-          //  stream should end before we can read u2.  But we should have
-          //  successfully read s2.
-          rc = UnitAssert(s == s2);
-        }
-        fclose(f);
-      }
-    }
-    else {
-      fclose(f);
-    }
-    std::remove(fn.c_str());
   }
   return rc;
 }
@@ -1655,28 +778,24 @@ static bool MembersWritableTest()
     int  *ip;
   } UnwritableStruct1;
   rc &= UnitAssert(! IsStreamWritable<UnwritableStruct1>);
-  rc &= UnitAssert(! IsFileWritable<UnwritableStruct1>);
 
   //  writable: contains a std::mutex, which is skipped
   typedef struct {
     std::mutex  mtx;
   } UnwritableStruct2;
   rc &= UnitAssert(IsStreamWritable<UnwritableStruct2>);
-  rc &= UnitAssert(IsFileWritable<UnwritableStruct2>);
 
   //  Not readable (contains a const member), hence not writable
   typedef struct {
     const int i;
   } UnwritableStruct3;
   rc &= UnitAssert(! IsStreamWritable<UnwritableStruct3>);
-  rc &= UnitAssert(! IsFileWritable<UnwritableStruct3>);
 
   typedef struct {
     UnwritableStruct1  us1;
     UnwritableStruct2  us2;
   } UnwritableStruct1_2;
   rc &= UnitAssert(! IsStreamWritable<UnwritableStruct1_2>);
-  rc &= UnitAssert(! IsFileWritable<UnwritableStruct1_2>);
 
   typedef struct {
     int     a;
@@ -1684,7 +803,6 @@ static bool MembersWritableTest()
     string  c;
   } WritableStruct1;
   rc &= UnitAssert(IsStreamWritable<WritableStruct1>);
-  rc &= UnitAssert(IsFileWritable<WritableStruct1>);
 
   typedef struct {
     string  a;
@@ -1692,14 +810,12 @@ static bool MembersWritableTest()
     string  c;
   } WritableStruct2;
   rc &= UnitAssert(IsStreamWritable<WritableStruct2>);
-  rc &= UnitAssert(IsFileWritable<WritableStruct2>);
 
   typedef struct {
     WritableStruct1  s1;
     WritableStruct2  s2;
   } WritableStruct1_2;
   rc &= UnitAssert(IsStreamWritable<WritableStruct1_2>);
-  rc &= UnitAssert(IsFileWritable<WritableStruct1_2>);
 
   WritableStruct1_2  ws1 = { { 42, 0xCCCC, "hello"}, { "hi", 99, "goodbye" } };
   stringstream  ss;
@@ -1773,55 +889,6 @@ static bool ReflectionStreamTest()
   return rc;
 }
 
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-static bool ReflectionFileTest()
-{
-  bool  rc = false;
-
-  typedef struct {
-    int                a;
-    int                b;
-    string             c;
-    struct timeval     tv;
-    std::vector<int>   vi;
-    std::map<int,int>  mi;
-  } ReflTestStruct;
-
-  UnitAssert((__fileio_detail::Writable<ReflTestStruct>()));
-  
-  ReflTestStruct  rts1{9,42,"ReflectionStreamTest",{42,0xCCCC},{6,7,8},
-                       {{1,2},{3,4}}};
-  string  fn("/tmp/DWMReflectionFileTest");
-  FILE  *f = fopen(fn.c_str(), "wb");
-  if (UnitAssert(f)) {
-    if (UnitAssert(FileIO::Write(f, rts1))) {
-      fclose(f);
-      f = fopen(fn.c_str(), "rb");
-      if (UnitAssert(f)) {
-        ReflTestStruct  rts2;
-        if (UnitAssert(FileIO::Read(f, rts2))) {
-          if (UnitAssert(rts1.a == rts2.a)
-              && UnitAssert(rts1.b == rts2.b)
-              && UnitAssert(rts1.c == rts2.c)
-              && UnitAssert(rts1.tv.tv_sec == rts2.tv.tv_sec)
-              && UnitAssert(rts1.tv.tv_usec == rts2.tv.tv_usec)
-              && UnitAssert(rts1.vi == rts2.vi)
-              && UnitAssert(rts1.mi == rts2.mi)) {
-            rc = true;
-          }
-        }
-        fclose(f);
-      }
-    }
-    else {
-      fclose(f);
-    }
-    std::remove(fn.c_str());
-  }
-  return rc;
-}
 #endif  //  defined(DWM_CAN_USE_REFLECTION)
 
 //----------------------------------------------------------------------------
@@ -1829,34 +896,19 @@ static bool ReflectionFileTest()
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  //  SysLogger::Open("TestIO", LOG_PERROR, LOG_USER);
+  SysLogger::Open("TestIO", LOG_PERROR, LOG_USER);
   SysLogger::MinimumPriority(LOG_INFO);
   
   StreamTest();
-  DescriptorTest();
-  FileTest();
   MapStreamTestSimple();
   MapStreamTest();
-  MapDescriptorTest();
-  MapFileTest();
   VectorStreamTest();
-  VectorFileTest();
-  VectorDescriptorTest();
   ArrayStreamTest();
-  ArrayFileTest();
-  ArrayDescriptorTest();
   DequeStreamTest();
-  DequeDescriptorTest();
   ListStreamTest();
-  ListDescriptorTest();
   SetStreamTest();
-  SetDescriptorTest();
   VarArgStreamTest();
   UnitAssert(VarArgStreamTestFail());
-  UnitAssert(VarArgFileTest());
-  UnitAssert(VarArgFileTestFail());
-  VarArgDescriptorTest();
-  VarArgDescriptorTestFail();
   BoundedArrayStreamTest();
   TestStreamUniquePtr();
   TestStreamOptional();
@@ -1864,7 +916,6 @@ int main(int argc, char *argv[])
 #if defined(DWM_CAN_USE_REFLECTION)
   ReflectionSkipTest();
   ReflectionStreamTest();
-  ReflectionFileTest();
   MembersWritableTest();
 #endif
   

@@ -10,8 +10,10 @@ TestBZ2IO
 TestDataLog
 TestDateTime
 TestDescriptor
+TestDescriptorIO
 TestDiff
 TestDirectoryEntry
+TestFileIO
 TestFileLogger
 TestGZIO
 TestIO
