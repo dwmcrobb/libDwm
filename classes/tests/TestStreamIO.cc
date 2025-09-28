@@ -38,16 +38,6 @@
 //!  \file TestStreamIO.cc
 //!  \brief Unit tests for Dwm::StreamIO
 //---------------------------------------------------------------------------
-
-//  This program is just a simple test application for IO functionality in
-//  libDwm.
-
-extern "C" {
-  #include <fcntl.h>
-  #include <errno.h>
-  #include <unistd.h>
-}
-
 #include <cassert>
 #include <cstdlib>
 #include <fstream>
@@ -898,7 +888,7 @@ int main(int argc, char *argv[])
 {
   SysLogger::Open("TestIO", LOG_PERROR, LOG_USER);
   SysLogger::MinimumPriority(LOG_INFO);
-  
+
   StreamTest();
   MapStreamTestSimple();
   MapStreamTest();
