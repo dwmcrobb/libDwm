@@ -36,7 +36,7 @@
 //---------------------------------------------------------------------------
 //!  \file TestConcepts.cc
 //!  \author Daniel W. McRobb
-//!  \brief NOT YET DOCUMENTED
+//!  \brief Dwm::Concepts unit tests
 //---------------------------------------------------------------------------
 
 #include "DwmConcepts.hh"
