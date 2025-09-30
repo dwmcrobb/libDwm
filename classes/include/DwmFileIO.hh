@@ -55,221 +55,24 @@
 namespace Dwm {
 
   namespace fileio_detail {
-    
-    //------------------------------------------------------------------------
-    //!  Concept to match types we directly support (no reflection needed).
-    //------------------------------------------------------------------------
-    template <typename T>
-    concept SpecificallySupported =
-      std::same_as<T,char>
-      or std::same_as<T,int8_t>
-      or std::same_as<T,uint8_t>
-      or std::same_as<T,int16_t>
-      or std::same_as<T,uint16_t>
-      or std::same_as<T,int32_t>
-      or std::same_as<T,uint32_t>
-      or std::same_as<T,int64_t>
-      or std::same_as<T,uint64_t>
-      or std::same_as<T,bool>
-      or std::same_as<T,float>
-      or std::same_as<T,double>
-      or std::same_as<T,std::string>
-      or std::is_enum_v<T>
-      or Concepts::is_std_pair<T>
-      or std::same_as<T,std::vector<bool>>
-      or (Dwm::HasFileWrite<T> and Dwm::HasFileRead<T>);
-
-    template <typename T> consteval bool Writable();
-    template <typename T> consteval bool Readable();
-    
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    template <typename T>
-    requires Concepts::is_std_pair<T>
-    consteval bool PairWritable()
-    {
-      return (Writable<typename T::first_type>()
-              && Writable<typename T::second_type>());
-    }
-
-#if defined(DWM_CAN_USE_REFLECTION)
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    template <typename T, size_t ParamCount = 0>
-    requires (Concepts::is_std_tuple<T>
-              or Concepts::is_std_variant<T>
-              or Concepts::is_std_pair<T>)
-    consteval bool TemplateTypeParamsWritable()
-    {
-      constexpr const auto tmpl_args =
-        define_static_array(template_arguments_of(^^T));
-      size_t  numParams = 0, numTypes = 0, numWritable = 0;
-      template for (constexpr auto tmpl_arg : tmpl_args) {
-        ++numParams;
-        if (ParamCount && (numParams > ParamCount)) {
-          break;
-        }
-        if (std::meta::is_type(tmpl_arg)) {
-          ++numTypes;
-          if constexpr (! Writable<typename[:tmpl_arg:]>()) {
-            break;
-          }
-          ++numWritable;
-        }
-      }
-      return (numTypes == numWritable);
-    }
-      
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    template <typename T>
-    requires Concepts::is_std_tuple<T>
-    consteval bool TupleWritable() { return TemplateTypeParamsWritable<T>(); }
-
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    template <typename T>
-    requires Concepts::is_std_variant<T>
-    consteval bool VariantWritable() { return TemplateTypeParamsWritable<T>(); }
-
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    template <typename T>
-    requires std::is_class_v<T>
-    consteval bool ReflectionWritable()
-    {
-      constexpr auto ctx = std::meta::access_context::unchecked();
-      constexpr auto members =
-        define_static_array(nonstatic_data_members_of(^^T, ctx));
-      if constexpr (! members.size()) {
-        return false;
-      }
-      template for (constexpr auto mem : members) {
-        if constexpr ((! Writable<typename[:std::meta::type_of(mem):]>())
-                      || io_detail::Deny<mem>()) {
-          return false;
-        }
-      }
-      return true;
-    }
-    
-#else
-
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    template <typename T>
-    requires Concepts::is_std_tuple<T>
-    consteval bool TupleWritable()
-    {
-      auto  l = []<typename ...ET>(ET && ...args)
-        { return (Writable<ET>() && ...); };
-      return std::apply(l, std::forward<T>(T()));
-    }
-
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    template <typename T, size_t I = 0>
-    requires Concepts::is_std_variant<T>
-    consteval bool VariantWritable()
-    {
-      if constexpr (I < std::variant_size_v<T>) {
-        if constexpr (Writable<std::variant_alternative_t<I,T>>()) {
-          return VariantWritable<T,I+1>();
-        }
-        else {
-          return false;
-        }
-      }
-      return true;
-    }
-
-#endif
-
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    template <typename T>
-    consteval bool Writable()
-    {
-#if defined(DWM_CAN_USE_REFLECTION)
-      if constexpr (io_detail::HasDenyAnnotation<^^T>) { return false; }
-#endif
-      if constexpr (SpecificallySupported<T>)    { return true; }
-      else if constexpr (io_detail::SkipType<T>) { return true; }
-      else if constexpr (io_detail::DenyType<T>) { return false; }
-      else if constexpr (Concepts::is_std_optional<T>) {
-        return Writable<typename T::value_type>;
-      }
-      else if constexpr (Concepts::is_std_unique_ptr<T>) {
-        return Writable<typename T::element_type>;
-      }
-      else if constexpr (std::is_bounded_array_v<T>) {
-        return Writable<std::remove_all_extents_t<T>>();
-      }
-      else if constexpr (Concepts::is_std_sequence_container<T>) {
-        return Writable<typename T::value_type>();
-      }
-      else if constexpr (Concepts::is_std_pair<T>) {
-        return PairWritable<T>();
-      }
-      else if constexpr (Concepts::is_std_tuple<T>) {
-        return TupleWritable<T>();
-      }
-      else if constexpr (Concepts::is_std_variant<T>) {
-        return VariantWritable<T>();
-      }
-      else if constexpr (Concepts::is_std_associative_container<T>) {
-        return Writable<typename T::value_type>();
-      }
-      else if constexpr (Concepts::is_std_pair_associative_container<T>) {
-        return (Writable<typename T::key_type>()
-                && Writable<typename T::mapped_type>());
-      }
-#if defined(DWM_CAN_USE_REFLECTION)
-      else if constexpr (std::is_class_v<T>) {
-        return ReflectionWritable<T>();
-      }
-#endif
-      return false;
-    }
-
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    template <typename T>
-    consteval bool Readable()
-    {
-      if constexpr (std::is_const_v<T>) {
-        return false;
-      }
-      else {
-        return Writable<T>();
-      }
-    }
 
     //------------------------------------------------------------------------
     //!  Simple concept expressing that an instance of type T can be read from
     //!  a FILE via a FileIO::Read() member.
     //------------------------------------------------------------------------
     template <typename T>
-    concept IsReadable = (Readable<std::remove_reference_t<T>>() == true);
+    concept IsReadable =
+    (io_detail::Readable<std::remove_reference_t<T>,HasFileRead_t>() == true);
 
     //------------------------------------------------------------------------
     //!  Simple concept expressing that an instance of type T can be written
-    //!  to a FILE via a FileIO::Write() member.
+    //!  to a FILE via a File::Write() member.
     //------------------------------------------------------------------------
     template <typename T>
     concept IsWritable =
-    (Readable<std::remove_cvref_t<T>>() == true)
-      and (Writable<std::remove_cvref_t<T>>() == true);
-    
+    (io_detail::Readable<std::remove_cvref_t<T>,HasFileRead_t>() == true)
+      and (io_detail::Writable<std::remove_cvref_t<T>,HasFileWrite_t>() == true);
+
   }  // namespace fileio_detail
   
   //--------------------------------------------------------------------------
@@ -770,7 +573,7 @@ namespace Dwm {
     requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
     static size_t Read(FILE *f, T & v)
     {
-      static_assert(fileio_detail::Readable<std::remove_reference_t<decltype(v[0])>>());
+      static_assert(fileio_detail::IsReadable<std::remove_reference_t<decltype(v[0])>>);
       size_t  rc = 0;
       if (f) {
         uint64_t  n;
@@ -790,13 +593,14 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Experimental support for std::unique_ptr, if it points to a single
+    //!  object (deduced by requiring std::default_delete as its deleter).
     //------------------------------------------------------------------------
     template <typename T>
-    requires std::is_same_v<typename std::unique_ptr<T>::deleter_type,
-                            std::default_delete<T>>
     static size_t Write(FILE *f, const std::unique_ptr<T> & t)
     {
+      using deleterType = std::remove_cvref_t<decltype(t)>::deleter_type;
+      static_assert(std::is_same_v<deleterType, std::default_delete<T>>);
       static_assert(! std::is_unbounded_array_v<T>);
       static_assert(fileio_detail::IsWritable<T>);
       size_t  rc = 0;
@@ -813,14 +617,15 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Experimental support for std::unique_ptr, if it points to a single
+    //!  object (deduced by requiring std::default_delete as its deleter).
     //------------------------------------------------------------------------
     template <typename T>
     requires std::is_default_constructible_v<T>
-      and std::is_same_v<typename std::unique_ptr<T>::deleter_type,
-                         std::default_delete<T>>
     static size_t Read(FILE *f, std::unique_ptr<T> & t)
     {
+      using deleterType = std::remove_reference_t<decltype(t)>::deleter_type;
+      static_assert(std::is_same_v<deleterType,std::default_delete<T>>);
       static_assert(! std::is_unbounded_array_v<T>);
       static_assert(fileio_detail::IsReadable<T>);
       size_t  rc = 0;
@@ -907,9 +712,10 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <class T>
     requires std::is_class_v<T>
-      and (not fileio_detail::SpecificallySupported<T>)
+      and (not io_detail::DirectlySupported<T>)
       and (not io_detail::SupportedContainer<T>)
       and (not io_detail::DenyType<T>)
+      and (not HasFileWrite<T>)
     static size_t Write(FILE *f, const T & v)
     {
       if (f) {
@@ -949,9 +755,10 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <class T>
     requires std::is_class_v<T>
-      and (not fileio_detail::SpecificallySupported<T>)
+      and (not io_detail::DirectlySupported<T>)
       and (not io_detail::SupportedContainer<T>)
       and (not io_detail::DenyType<T>)
+      and (not HasFileRead<T>)
     static size_t Read(FILE *f, T & v)
     {
       using fileio_detail::IsReadable;
