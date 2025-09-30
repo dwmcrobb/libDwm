@@ -63,10 +63,28 @@ static bool TestWritableTrue()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+template <typename T, template <typename> typename W>
+static bool TestWritableFalse()
+{
+  return UnitAssert(! (Dwm::io_detail::Writable<T,W>()));
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 template <typename T, template <typename> typename R>
 static bool TestReadableTrue()
 {
   return UnitAssert((Dwm::io_detail::Writable<T,R>()));
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+template <typename T, template <typename> typename R>
+static bool TestReadableFalse()
+{
+  return UnitAssert(! (Dwm::io_detail::Writable<T,R>()));
 }
 
 //----------------------------------------------------------------------------
@@ -84,6 +102,18 @@ static bool TestReadableWritableTrue()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+template <template <typename> typename W, template <typename> typename R,
+          typename T>
+static bool TestReadableWritableFalse()
+{
+  bool  rc = UnitAssert((TestWritableFalse<T,W>()));
+  rc &= UnitAssert((TestReadableFalse<T,R>()));
+  return rc;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 template <typename T>
 static bool TestReadableWritableTrue()
 {
@@ -93,6 +123,21 @@ static bool TestReadableWritableTrue()
   rc &= UnitAssert((TestReadableWritableTrue<HasDescriptorWrite_t,HasDescriptorRead_t,T>()));
   rc &= UnitAssert((TestReadableWritableTrue<HasFileWrite_t,HasFileRead_t,T>()));
   rc &= UnitAssert((TestReadableWritableTrue<HasGZWrite_t,HasGZWrite_t,T>()));
+  return rc;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+template <typename T>
+static bool TestReadableWritableFalse()
+{
+  bool  rc = UnitAssert((TestReadableWritableFalse<HasStreamWrite_t,HasStreamRead_t,T>()));
+  rc &= UnitAssert((TestReadableWritableFalse<HasAsioWrite_t,HasAsioRead_t,T>()));
+  rc &= UnitAssert((TestReadableWritableFalse<HasBZWrite_t,HasBZRead_t,T>()));
+  rc &= UnitAssert((TestReadableWritableFalse<HasDescriptorWrite_t,HasDescriptorRead_t,T>()));
+  rc &= UnitAssert((TestReadableWritableFalse<HasFileWrite_t,HasFileRead_t,T>()));
+  rc &= UnitAssert((TestReadableWritableFalse<HasGZWrite_t,HasGZWrite_t,T>()));
   return rc;
 }
 
@@ -143,6 +188,17 @@ static bool TestVectors()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static bool TestVectorsNotWritable()
+{
+  bool  rc = UnitAssert(TestReadableWritableFalse<std::vector<int *>>());
+  rc &= UnitAssert(TestReadableWritableFalse<const std::vector<int>>());
+  rc &= UnitAssert((TestReadableWritableFalse<std::vector<std::map<int,int *>>>()));
+  return rc;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static bool TestMaps()
 {
   bool  rc = UnitAssert((TestReadableWritableTrue<std::map<std::string,std::vector<std::string>>>()));
@@ -169,6 +225,8 @@ static void TestIOConcepts()
   UnitAssert(TestVectors());
   UnitAssert(TestMaps());
   UnitAssert(TestTuples());
+  UnitAssert(TestVectorsNotWritable());
+  
   return;
 }
 
