@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2007, 2016, 2017, 2020, 2024
+//  Copyright (c) Daniel W. McRobb 2004-2007, 2016-2017, 2020, 2024-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -60,9 +60,32 @@
 
 #include "DwmPortability.hh"
 #include "DwmDescriptorIOCapable.hh"
+#include "DwmIOConcepts.hh"
 #include "DwmVariantFromIndex.hh"
+#include "DwmSysLogger.hh"
 
 namespace Dwm {
+
+    namespace descio_detail {
+
+    //------------------------------------------------------------------------
+    //!  Simple concept expressing that an instance of type T can be read from
+    //!  a descriptor via a DescriptorIO::Read() member.
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept IsReadable =
+    (io_detail::Readable<std::remove_reference_t<T>,HasDescriptorRead_t>() == true);
+
+    //------------------------------------------------------------------------
+    //!  Simple concept expressing that an instance of type T can be written
+    //!  to a descriptor via a DescriptorIO::Write() member.
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept IsWritable =
+    (io_detail::Readable<std::remove_cvref_t<T>,HasDescriptorRead_t>() == true)
+      and (io_detail::Writable<std::remove_cvref_t<T>,HasDescriptorWrite_t>() == true);
+
+  }  // namespace descio_detail
 
   //--------------------------------------------------------------------------
   //!  This class contains a collection of static functions for reading and
@@ -816,6 +839,227 @@ namespace Dwm {
       };
       (writeOne(args) && ...);
       return rv;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads a bounded array @c v from a descriptor @c fd.  Returns the
+    //!  number of bytes read on success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
+    static ssize_t Read(int fd, T & v)
+    {
+      static_assert(descio_detail::IsReadable<std::remove_all_extents_t<T>>);
+      if (0 <= fd) {
+        ssize_t   rc = 0;
+        uint64_t  n;
+        ssize_t   bytesRead = Read(fd, n);
+        if ((sizeof(n) == bytesRead) && (std::extent_v<T> == n)) {
+          rc += bytesRead;
+          size_t  i = 0;
+          for ( ; i < n; ++i) {
+            bytesRead = Read(fd, v[i]);
+            if (bytesRead > 0) {
+              rc += bytesRead;
+            }
+            else {
+              break;
+            }
+          }
+          if (i != n) {
+            rc = -1;
+          }
+        }
+        else {
+          rc = -1;
+        }
+        return rc;
+      }
+      return -1;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes a bounded array @c v to descriptor @c fd.  Returns the number
+    //!  of bytes written on success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
+    static ssize_t Write(int fd, T const & v)
+    {
+      static_assert(descio_detail::IsWritable<std::remove_all_extents_t<T>>);
+      if (0 <= fd) {
+        ssize_t   rc = 0;
+        uint64_t  n = std::extent_v<T>;
+        ssize_t   bytesWritten = Write(fd, n);
+        if (sizeof(n) == bytesWritten) {
+          rc += bytesWritten;
+          size_t i = 0;
+          for ( ; i < std::extent_v<T>; ++i) {
+            bytesWritten = Write(fd, v[i]);
+            if (bytesWritten > 0) {
+              rc += bytesWritten;
+            }
+            else {
+              rc = -1;
+              break;
+            }
+          }
+        }
+        else {
+          rc = -1;
+        }
+        return rc;
+      }
+      return -1;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Experimental support for std::unique_ptr, iff it points to a single
+    //!  object (deduced by checking if it has std::default_delete as its
+    //!  deleter).
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_default_constructible_v<T>
+    static ssize_t Read(int fd, std::unique_ptr<T> & t)
+    {
+      using deleterType = std::remove_reference_t<decltype(t)>::deleter_type;
+      static_assert(std::is_same_v<deleterType,std::default_delete<T>>);
+      static_assert(descio_detail::IsReadable<T>);
+      if (0 <= fd) {
+        ssize_t  rc = 0;
+        bool     isNull = true;
+        ssize_t  bytesRead = Read(fd, isNull);
+        if (bytesRead > 0) {
+          rc += bytesRead;
+          if (isNull) {
+            t.release();
+            return rc;
+          }
+          else {
+            if (nullptr == t) {
+              try {
+                t = std::make_unique<T>();
+              }
+              catch (std::bad_alloc & ex) {
+                FSyslog(LOG_ERR, "Failed to allocate an object of type {}",
+                        TypeName<decltype(t)>());
+                return -1;
+              }
+            }
+            bytesRead = Read(fd, *t);
+            if (bytesRead > 0) {
+              rc += bytesRead;
+            }
+            else {
+              t.release();
+              rc = -1;
+            }
+          }
+        }
+        else {
+          rc = -1;
+        }
+        return rc;
+      }
+      return -1;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Experimental support for std::unique_ptr, iff it points to a single
+    //!  object (deduced by checking if it has std::default_delete as its
+    //!  deleter).
+    //------------------------------------------------------------------------
+    template <typename T>
+    static ssize_t Write(int fd, const std::unique_ptr<T> & t)
+    {
+      using deleterType = std::remove_cvref_t<decltype(t)>::deleter_type;
+      static_assert(std::is_same_v<deleterType, std::default_delete<T>>);
+      static_assert(descio_detail::IsWritable<T>);
+      if (0 <= fd) {
+        ssize_t  rc = 0;
+        bool     isNull = (nullptr == t);
+        ssize_t  bytesWritten = Write(fd, isNull);
+        if (bytesWritten > 0) {
+          rc += bytesWritten;
+          if (! isNull) {
+            bytesWritten = Write(fd, *t);
+            if (bytesWritten > 0) { rc += bytesWritten; }
+            else                  { rc = -1; }
+          }
+        }
+        else {
+          rc = -1;
+        }
+        return rc;
+      }
+      return -1;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads a std::optional<T> @c t from descriptor @c fd.  Returns the
+    //!  number of bytes read on success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static ssize_t Read(int fd, std::optional<T> & t)
+    {
+      static_assert(descio_detail::IsReadable<T>);
+      if (0 <= fd) {
+        ssize_t  rc = 0;
+        bool     hasValue = false;
+        ssize_t  bytesRead = Read(fd, hasValue);
+        if (bytesRead > 0) {
+          rc += bytesRead;
+          if (hasValue) {
+            if (! t.has_value()) {
+              t = T();
+            }
+            bytesRead = Read(fd, t.value());
+            if (bytesRead > 0) {
+              rc += bytesRead;
+            }
+            else {
+              rc = -1;
+            }
+          }
+        }
+        else {
+          rc = -1;
+        }
+        return rc;
+      }
+      return -1;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes a std::optional<T> @c t to descriptor @c fd.  Returns the
+    //!  number of bytes written on success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static ssize_t Write(int fd, const std::optional<T> & t)
+    {
+      static_assert(descio_detail::IsWritable<T>);
+      if (0 <= fd) {
+        ssize_t  rc = 0;
+        bool     hasValue = t.has_value();
+        ssize_t  bytesWritten = Write(fd, hasValue);
+        if (bytesWritten > 0) {
+          rc += bytesWritten;
+          if (hasValue) {
+            bytesWritten = Write(fd, t.value());
+            if (bytesWritten > 0) {
+              rc += bytesWritten;
+            }
+            else {
+              rc = -1;
+            }
+          }
+        }
+        else {
+          rc = -1;
+        }
+        return rc;
+      }
+      return -1;
     }
     
     //------------------------------------------------------------------------
