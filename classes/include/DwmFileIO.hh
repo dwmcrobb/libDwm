@@ -50,6 +50,7 @@
 #include "DwmIOConcepts.hh"
 #include "DwmFileIOCapable.hh"
 #include "DwmSysLogger.hh"
+#include "DwmTypeName.hh"
 #include "DwmVariantFromIndex.hh"
 
 namespace Dwm {
