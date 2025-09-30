@@ -2,7 +2,7 @@
 // @(#) $DwmPath: dwm/libDwm/trunk/tests/TestASIO.cc 10968 $
 // @(#) $Id: TestASIO.cc 10968 2020-08-24 22:45:47Z dwm $
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2018, 2020, 2023, 2024
+//  Copyright (c) Daniel W. McRobb 2018, 2020, 2023-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -1204,7 +1204,7 @@ static void TestBoundedArray()
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  Dwm::SysLogger::Open("TestASIO", LOG_PERROR, LOG_USER);
+  // Dwm::SysLogger::Open("TestASIO", LOG_PERROR, LOG_USER);
   TestStrings();
   TestBools();
   TestInts();
