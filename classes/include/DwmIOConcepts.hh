@@ -387,27 +387,37 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    template <typename T, template <typename> typename W>
-    requires Concepts::is_std_tuple<T>
+    template <typename T, template <typename> typename W, size_t elt = 0>
     consteval bool TupleWritable()
     {
-      auto  l = []<typename ...ET>(ET && ...args)
-        { return (Writable<ET,W>() && ...); };
-      return std::apply(l, std::forward<T>(T()));
+      if constexpr (elt < std::tuple_size_v<T>) {
+        if constexpr (Writable<std::tuple_element_t<elt,T>,W>()) {
+          return TupleWritable<T,W,elt+1>();
+        }
+        else {
+          return false;
+        }
+      }
+      return true;
     }
 
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    template <typename T, template <typename> typename R>
-    requires Concepts::is_std_tuple<T>
+    template <typename T, template <typename> typename W, size_t elt = 0>
     consteval bool TupleReadable()
     {
-      auto  l = []<typename ...ET>(ET && ...args)
-        { return (Readable<ET,R>() && ...); };
-      return std::apply(l, std::forward<T>(T()));
+      if constexpr (elt < std::tuple_size_v<T>) {
+        if constexpr (Readable<std::tuple_element_t<elt,T>,W>()) {
+          return TupleReadable<T,W,elt+1>();
+        }
+        else {
+          return false;
+        }
+      }
+      return true;
     }
-    
+
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
