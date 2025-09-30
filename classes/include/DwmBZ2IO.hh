@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2006, 2016, 2020, 2024
+//  Copyright (c) Daniel W. McRobb 2004-2006, 2016, 2020, 2024-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -60,10 +60,33 @@
 
 #include "DwmPortability.hh"
 #include "DwmBZ2IOCapable.hh"
+#include "DwmIOConcepts.hh"
 #include "DwmVariantFromIndex.hh"
+#include "DwmSysLogger.hh"
 
 namespace Dwm {
 
+  namespace bz2io_detail {
+
+    //------------------------------------------------------------------------
+    //!  Simple concept expressing that an instance of type T can be read from
+    //!  a BZFILE via a BZ2IO::BZRead() member.
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept IsReadable =
+    (io_detail::Readable<std::remove_reference_t<T>,HasBZRead_t>() == true);
+
+    //------------------------------------------------------------------------
+    //!  Simple concept expressing that an instance of type T can be written
+    //!  to a BZFILE via a BZ2IO::BZWrite() member.
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept IsWritable =
+    (io_detail::Readable<std::remove_cvref_t<T>,HasBZRead_t>() == true)
+      and (io_detail::Writable<std::remove_cvref_t<T>,HasBZWrite_t>() == true);
+    
+  }  // namespace bz2io_detail
+  
   //--------------------------------------------------------------------------
   //!  This class contains a collection of static functions for reading and
   //!  writing simple types in network byte order (MSB first) from/to bzip2
@@ -817,6 +840,227 @@ namespace Dwm {
       };
       (writeOne(args) && ...);
       return rv;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads a bounded array @c v from a BZFILE @c bzf.  Returns the number
+    //!  of bytes read on success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
+    static int BZRead(BZFILE *bzf, T & v)
+    {
+      static_assert(bz2io_detail::IsReadable<std::remove_all_extents_t<T>>);
+      if (bzf) {
+        int  rc = 0;
+        uint64_t  n;
+        int  bytesRead = BZRead(bzf, n);
+        if ((sizeof(n) == bytesRead) && (std::extent_v<T> == n)) {
+          rc += bytesRead;
+          size_t  i = 0;
+          for ( ; i < n; ++i) {
+            bytesRead = BZRead(bzf, v[i]);
+            if (bytesRead > 0) {
+              rc += bytesRead;
+            }
+            else {
+              break;
+            }
+          }
+          if (i != n) {
+            rc = -1;
+          }
+        }
+        else {
+          rc = -1;
+        }
+        return rc;
+      }
+      return -1;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes a bounded array @c v to a BZFILE @c bzf.  Returns the number
+    //!  of bytes written on success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
+    static int BZWrite(BZFILE *bzf, T const & v)
+    {
+      static_assert(bz2io_detail::IsWritable<std::remove_all_extents_t<T>>);
+      if (bzf) {
+        int  rc = 0;
+        uint64_t  n = std::extent_v<T>;
+        int  bytesWritten = BZWrite(bzf, n);
+        if (sizeof(n) == bytesWritten) {
+          rc += bytesWritten;
+          size_t i = 0;
+          for ( ; i < std::extent_v<T>; ++i) {
+            bytesWritten = BZWrite(bzf, v[i]);
+            if (bytesWritten > 0) {
+              rc += bytesWritten;
+            }
+            else {
+              rc = -1;
+              break;
+            }
+          }
+        }
+        else {
+          rc = -1;
+        }
+        return rc;
+      }
+      return -1;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Experimental support for std::unique_ptr, iff it points to a single
+    //!  object (deduced by checking if it has std::default_delete as its
+    //!  deleter).
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_default_constructible_v<T>
+    static int BZRead(BZFILE *bzf, std::unique_ptr<T> & t)
+    {
+      using deleterType = std::remove_reference_t<decltype(t)>::deleter_type;
+      static_assert(std::is_same_v<deleterType,std::default_delete<T>>);
+      static_assert(bz2io_detail::IsReadable<T>);
+      if (bzf) {
+        int   rc = 0;
+        bool  isNull = true;
+        int   bytesRead = BZRead(bzf, isNull);
+        if (bytesRead > 0) {
+          rc += bytesRead;
+          if (isNull) {
+            t.release();
+            return rc;
+          }
+          else {
+            if (nullptr == t) {
+              try {
+                t = std::make_unique<T>();
+              }
+              catch (std::bad_alloc & ex) {
+                FSyslog(LOG_ERR, "Failed to allocate an object of type {}",
+                        TypeName<decltype(t)>());
+                return -1;
+              }
+            }
+            bytesRead = BZRead(bzf, *t);
+            if (bytesRead > 0) {
+              rc += bytesRead;
+            }
+            else {
+              t.release();
+              rc = -1;
+            }
+          }
+        }
+        else {
+          rc = -1;
+        }
+        return rc;
+      }
+      return -1;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Experimental support for std::unique_ptr, iff it points to a single
+    //!  object (deduced by checking if it has std::default_delete as its
+    //!  deleter).
+    //------------------------------------------------------------------------
+    template <typename T>
+    static int BZWrite(BZFILE *bzf, const std::unique_ptr<T> & t)
+    {
+      using deleterType = std::remove_cvref_t<decltype(t)>::deleter_type;
+      static_assert(std::is_same_v<deleterType, std::default_delete<T>>);
+      static_assert(bz2io_detail::IsWritable<T>);
+      if (bzf) {
+        int  rc = 0;
+        bool  isNull = (nullptr == t);
+        int  bytesWritten = BZWrite(bzf, isNull);
+        if (bytesWritten > 0) {
+          rc += bytesWritten;
+          if (! isNull) {
+            bytesWritten = BZWrite(bzf, *t);
+            if (bytesWritten > 0) { rc += bytesWritten; }
+            else                  { rc = -1; }
+          }
+        }
+        else {
+          rc = -1;
+        }
+        return rc;
+      }
+      return -1;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads a std::optional<T> @c t from a BZFILE @c bzf.  Returns the
+    //!  number of bytes read on success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static int BZRead(BZFILE *bzf, std::optional<T> & t)
+    {
+      static_assert(bz2io_detail::IsReadable<T>);
+      if (bzf) {
+        int   rc = 0;
+        bool  hasValue = false;
+        int   bytesRead = BZRead(bzf, hasValue);
+        if (bytesRead > 0) {
+          rc += bytesRead;
+          if (hasValue) {
+            if (! t.has_value()) {
+              t = T();
+            }
+            bytesRead = BZRead(bzf, t.value());
+            if (bytesRead > 0) {
+              rc += bytesRead;
+            }
+            else {
+              rc = -1;
+            }
+          }
+        }
+        else {
+          rc = -1;
+        }
+        return rc;
+      }
+      return -1;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes a std::optional<T> @c t to a BZFILE @c bzf.  Returns the
+    //!  number of bytes written on success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static int BZWrite(BZFILE *bzf, const std::optional<T> & t)
+    {
+      static_assert(bz2io_detail::IsWritable<T>);
+      if (bzf) {
+        int   rc = 0;
+        bool  hasValue = t.has_value();
+        int   bytesWritten = BZWrite(bzf, hasValue);
+        if (bytesWritten > 0) {
+          rc += bytesWritten;
+          if (hasValue) {
+            bytesWritten = BZWrite(bzf, t.value());
+            if (bytesWritten > 0) {
+              rc += bytesWritten;
+            }
+            else {
+              rc = -1;
+            }
+          }
+        }
+        else {
+          rc = -1;
+        }
+        return rc;
+      }
+      return -1;
     }
     
   private:
