@@ -850,7 +850,7 @@ static bool ReflectionStreamTest()
     
   } ReflTestStruct;
 
-  UnitAssert((iostream_detail::Writable<ReflTestStruct>()));
+  UnitAssert((iostream_detail::IsWritable<ReflTestStruct>));
   
   ReflTestStruct  rts1{9,42,"ReflectionStreamTest",{42,0xCCCC},{6,7,8},
                        {{1,2},{3,4}}};
@@ -874,7 +874,7 @@ static bool ReflectionStreamTest()
   };
 
   DenyOneMember  dom;
-  rc &= UnitAssert((! iostream_detail::Writable<DenyOneMember>()));
+  rc &= UnitAssert((! iostream_detail::IsWritable<DenyOneMember>));
       
   return rc;
 }
@@ -886,7 +886,7 @@ static bool ReflectionStreamTest()
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  SysLogger::Open("TestIO", LOG_PERROR, LOG_USER);
+  //  SysLogger::Open("TestStreamIO", LOG_PERROR, LOG_USER);
   SysLogger::MinimumPriority(LOG_INFO);
 
   StreamTest();
