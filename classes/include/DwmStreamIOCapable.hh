@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2020, 2024
+//  Copyright (c) Daniel W. McRobb 2020, 2024-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -58,6 +58,15 @@ namespace Dwm {
   };
 
   //--------------------------------------------------------------------------
+  //!  Until C++26 P2841R7, we can't pass concepts as template template
+  //!  parameters.  So we need to be able to convert our concept into a
+  //!  type so it can be passed as a class template template parameter, for
+  //!  any templates where we need it.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  struct HasStreamRead_t { static constexpr bool value = HasStreamRead<T>; };
+  
+  //--------------------------------------------------------------------------
   //!  T has a Write(std::ostream &) const method that returns the
   //!  std::ostream reference that was passed in as its only parameter.
   //--------------------------------------------------------------------------
@@ -65,7 +74,16 @@ namespace Dwm {
   concept HasStreamWrite = requires(const T & t, std::ostream & os) {
     { t.Write(os) } -> std::same_as<std::ostream &>;
   };
-  
+
+  //--------------------------------------------------------------------------
+  //!  Until C++26 P2841R7, we can't pass concepts as template template
+  //!  parameters.  So we need to be able to convert our concept into a
+  //!  type so it can be passed as a class template template parameter, for
+  //!  any templates where we need it.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  struct HasStreamWrite_t { static constexpr bool value = HasStreamWrite<T>; };
+
   //--------------------------------------------------------------------------
   //!  This class defines an interface for classes that can read their
   //!  contents from an istream.

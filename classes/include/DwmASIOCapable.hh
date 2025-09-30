@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2021, 2023, 2024
+//  Copyright (c) Daniel W. McRobb 2021, 2023-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -128,15 +128,33 @@ namespace Dwm {
   concept HasAsioRead = (HasAsioTcpRead<T>
                          && HasAsioLocalRead<T>
                          && HasAsioGenericStreamRead<T>);
+  
+  //--------------------------------------------------------------------------
+  //!  Until C++26 P2841R7, we can't pass concepts as template template
+  //!  parameters.  So we need to be able to convert our concept into a
+  //!  type so it can be passed as a class template template parameter, for
+  //!  any templates where we need it.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  struct HasAsioRead_t { static constexpr bool value = HasAsioRead<T>; };
 
   //--------------------------------------------------------------------------
   //!  T has asio write members
   //--------------------------------------------------------------------------
   template <typename T>
   concept HasAsioWrite = (HasAsioTcpWrite<T>
-                         && HasAsioLocalWrite<T>
-                         && HasAsioGenericStreamWrite<T>);
+                          && HasAsioLocalWrite<T>
+                          && HasAsioGenericStreamWrite<T>);
   
+  //--------------------------------------------------------------------------
+  //!  Until C++26 P2841R7, we can't pass concepts as template template
+  //!  parameters.  So we need to be able to convert our concept into a
+  //!  type so it can be passed as a class template template parameter, for
+  //!  any templates where we need it.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  struct HasAsioWrite_t { static constexpr bool value = HasAsioWrite<T>; };
+
   //--------------------------------------------------------------------------
   //!  Interface for classes that wish to be readable via Dwm::ASIO.  Pure
   //!  virtual.

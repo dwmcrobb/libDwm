@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2020, 2024
+//  Copyright (c) Daniel W. McRobb 2020, 2024-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -57,6 +57,15 @@ namespace Dwm {
   };
 
   //--------------------------------------------------------------------------
+  //!  Until C++26 P2841R7, we can't pass concepts as template template
+  //!  parameters.  So we need to be able to convert our concept into a
+  //!  type so it can be passed as a class template template parameter, for
+  //!  any templates where we need it.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  struct HasFileRead_t { static constexpr bool value = HasFileRead<T>; };
+  
+  //--------------------------------------------------------------------------
   //!  T has a Write(FILE *) const member that returns size_t (1 on success,
   //!  0 on failure).
   //--------------------------------------------------------------------------
@@ -65,6 +74,15 @@ namespace Dwm {
     { t.Write(f) } -> std::same_as<size_t>;
   };
 
+  //--------------------------------------------------------------------------
+  //!  Until C++26 P2841R7, we can't pass concepts as template template
+  //!  parameters.  So we need to be able to convert our concept into a
+  //!  type so it can be passed as a class template template parameter, for
+  //!  any templates where we need it.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  struct HasFileWrite_t { static constexpr bool value = HasFileWrite<T>; };
+  
   //--------------------------------------------------------------------------
   //!  This class defines an interface for classes that can read their
   //!  contents from a FILE pointer.

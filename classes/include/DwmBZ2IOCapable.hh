@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2020, 2024
+//  Copyright (c) Daniel W. McRobb 2020, 2024-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -63,6 +63,15 @@ namespace Dwm {
   };
 
   //--------------------------------------------------------------------------
+  //!  Until C++26 P2841R7, we can't pass concepts as template template
+  //!  parameters.  So we need to be able to convert our concept into a
+  //!  type so it can be passed as a class template template parameter, for
+  //!  any templates where we need it.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  struct HasBZRead_t { static constexpr bool value = HasBZRead<T>; };
+  
+  //--------------------------------------------------------------------------
   //!  T has a BZWrite(BZFILE *) const member that returns int (return value
   //!  of BZ2_bzwrite() on success, -1 on failure).
   //--------------------------------------------------------------------------
@@ -70,6 +79,15 @@ namespace Dwm {
   concept HasBZWrite = requires(const T & t, BZFILE *bzf) {
     { ((const T)t).BZWrite(bzf) } -> std::same_as<int>;
   };
+
+  //--------------------------------------------------------------------------
+  //!  Until C++26 P2841R7, we can't pass concepts as template template
+  //!  parameters.  So we need to be able to convert our concept into a
+  //!  type so it can be passed as a class template template parameter, for
+  //!  any templates where we need it.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  struct HasBZWrite_t { static constexpr bool value = HasBZWrite<T>; };
   
   //--------------------------------------------------------------------------
   //!  This class is a pure virtual class, defining an interface for

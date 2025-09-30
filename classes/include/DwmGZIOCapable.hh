@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2020, 2024
+//  Copyright (c) Daniel W. McRobb 2020, 2024-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -60,6 +60,15 @@ namespace Dwm {
   concept HasGZRead = requires(T & t, gzFile gzf) {
     { t.Read(gzf) } -> std::same_as<int>;
   };
+
+  //--------------------------------------------------------------------------
+  //!  Until C++26 P2841R7, we can't pass concepts as template template
+  //!  parameters.  So we need to be able to convert our concept into a
+  //!  type so it can be passed as a class template template parameter, for
+  //!  any templates where we need it.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  struct HasGZRead_t { static constexpr bool value = HasGZRead<T>; };
   
   //--------------------------------------------------------------------------
   //!  T has a Write(gzFile) const member that returns int (return value of
@@ -69,7 +78,16 @@ namespace Dwm {
   concept HasGZWrite = requires(const T & t, gzFile gzf) {
     { t.Write(gzf) } -> std::same_as<int>;
   };
-      
+
+  //--------------------------------------------------------------------------
+  //!  Until C++26 P2841R7, we can't pass concepts as template template
+  //!  parameters.  So we need to be able to convert our concept into a
+  //!  type so it can be passed as a class template template parameter, for
+  //!  any templates where we need it.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  struct HasGZWrite_t { static constexpr bool value = HasGZWrite<T>; };
+  
   //--------------------------------------------------------------------------
   //!  This class is a pure virtual class, defining an interface for
   //!  classes that can read their contents from a gzFile.
