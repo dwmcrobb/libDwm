@@ -17,6 +17,7 @@ TestFileIO
 TestFileLogger
 TestGZIO
 TestIO
+TestIOConcepts
 TestLoadBalancer
 TestLocalInterfaces
 TestMutex
