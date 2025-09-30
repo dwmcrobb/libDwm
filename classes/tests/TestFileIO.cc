@@ -453,7 +453,7 @@ static bool ReflectionFileTest()
     std::map<int,int>  mi;
   } ReflTestStruct;
 
-  UnitAssert((fileio_detail::Writable<ReflTestStruct>()));
+  UnitAssert((fileio_detail::IsWritable<ReflTestStruct>));
   
   ReflTestStruct  rts1{9,42,"ReflectionStreamTest",{42,0xCCCC},{6,7,8},
                        {{1,2},{3,4}}};
