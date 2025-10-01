@@ -298,12 +298,18 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  This macro is used just like assert(), but populates Assertions
   //!  so we can report results at the end of tests using the members of
-  //!  Assertions.
+  //!  Assertions.  Note that only one argument is expected, but since C++
+  //!  often has commas in a single expression (for example, map<int,int>),
+  //!  and I need this for testing code that's only looking at type
+  //!  information, I don't want the preprocessor to think an expression with
+  //!  commas is multiple arguments and I grew tired of always wrapping my
+  //!  argument with parentheses.  So this is a variadic macro but only to
+  //!  allow me to gobble up comma-separated tokens as one token.  Basically
+  //!  it's variadic just to circumvent the preprocessor's tokenization.
   //--------------------------------------------------------------------------
-#define UnitAssert(e) ((e) ?                                             \
-  Dwm::Assertions::Passed(__FILE__, __PRETTY_FUNCTION__, __LINE__, #e) : \
-  Dwm::Assertions::Failed(__FILE__, __PRETTY_FUNCTION__, __LINE__, #e))
-  
+#define UnitAssert(...) ((__VA_ARGS__) ?                                \
+  Dwm::Assertions::Passed(__FILE__, __PRETTY_FUNCTION__, __LINE__, (#__VA_ARGS__)) : \
+  Dwm::Assertions::Failed(__FILE__, __PRETTY_FUNCTION__, __LINE__, (#__VA_ARGS__)))
 }  // namespace Dwm
 
 #endif  // _DWMUNITASSERT_HH_
