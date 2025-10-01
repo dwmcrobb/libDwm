@@ -1127,7 +1127,7 @@ namespace Dwm {
 
     //------------------------------------------------------------------------
     //!  Experimental support for std::unique_ptr, if it points to a single
-    //!  object (deduced by requiring std::default_delete as its deleter).
+    //!  object.
     //------------------------------------------------------------------------
     template <typename T>
     static bool Write(IsSupportedASIOSocket auto & s,
@@ -1151,7 +1151,7 @@ namespace Dwm {
 
     //------------------------------------------------------------------------
     //!  Experimental support for std::unique_ptr, if it points to a single
-    //!  object (deduced by requiring std::default_delete as its deleter).
+    //!  object.
     //------------------------------------------------------------------------
     template <typename T>
     requires std::is_default_constructible_v<T>

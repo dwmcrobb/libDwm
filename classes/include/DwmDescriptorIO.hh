@@ -916,8 +916,7 @@ namespace Dwm {
 
     //------------------------------------------------------------------------
     //!  Experimental support for std::unique_ptr, iff it points to a single
-    //!  object (deduced by checking if it has std::default_delete as its
-    //!  deleter).
+    //!  object.
     //------------------------------------------------------------------------
     template <typename T>
     requires std::is_default_constructible_v<T>
@@ -967,8 +966,7 @@ namespace Dwm {
 
     //------------------------------------------------------------------------
     //!  Experimental support for std::unique_ptr, iff it points to a single
-    //!  object (deduced by checking if it has std::default_delete as its
-    //!  deleter).
+    //!  object.
     //------------------------------------------------------------------------
     template <typename T>
     static ssize_t Write(int fd, const std::unique_ptr<T> & t)

@@ -315,6 +315,8 @@ namespace Dwm {
     //!  Reads a pair<_firstT,_secondT> from an istream.  Returns the istream.
     //------------------------------------------------------------------------
     template <typename _firstT, typename _secondT>
+    requires iostream_detail::IsReadable<_firstT>
+    and iostream_detail::IsReadable<_secondT>
     static std::istream & Read(std::istream & is,
                                std::pair<_firstT, _secondT> & p)
     {
@@ -629,7 +631,7 @@ namespace Dwm {
 
     //------------------------------------------------------------------------
     //!  Experimental support for std::unique_ptr, if it points to a single
-    //!  object (deduced by requiring std::default_delete as its deleter).
+    //!  object.
     //------------------------------------------------------------------------
     template <typename T>
     static std::ostream & Write(std::ostream & os,
@@ -638,6 +640,7 @@ namespace Dwm {
       using deleterType = std::remove_cvref_t<decltype(t)>::deleter_type;
       static_assert(std::is_same_v<deleterType,std::default_delete<T>>);
       static_assert(! std::is_unbounded_array_v<T>);
+      static_assert(! std::is_bounded_array_v<T>);
       static_assert(iostream_detail::IsWritable<T>);
       bool  isNull = (nullptr == t);
       if (StreamIO::Write(os, isNull)) {
@@ -650,7 +653,7 @@ namespace Dwm {
 
     //------------------------------------------------------------------------
     //!  Experimental support for std::unique_ptr, if it points to a single
-    //!  object (deduced by requiring std::default_delete as its deleter).
+    //!  object.
     //------------------------------------------------------------------------
     template <typename T>
     requires std::is_default_constructible_v<T>
@@ -660,6 +663,7 @@ namespace Dwm {
       using deleterType = std::remove_reference_t<decltype(t)>::deleter_type;
       static_assert(std::is_same_v<deleterType,std::default_delete<T>>);
       static_assert(! std::is_unbounded_array_v<T>);
+      static_assert(! std::is_bounded_array_v<T>);
       static_assert(iostream_detail::IsReadable<T>);
       bool  isNull = true;
       if (StreamIO::Read(is, isNull)) {

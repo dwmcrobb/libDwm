@@ -457,6 +457,14 @@ namespace Dwm {
 #endif
 
     //------------------------------------------------------------------------
+    //!  True if T is a std::unique_ptr managing an array.
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept IsUniquePtrToArray =
+    Concepts::is_std_unique_ptr<T> and
+    requires (T t) { { t[0] } -> std::same_as<typename T::element_type &>; };
+    
+    //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
     template <typename T, template <typename> typename W>
@@ -467,15 +475,17 @@ namespace Dwm {
       if constexpr (io_detail::HasDenyAnnotation<^^T>) { return false; }
 #endif
       if constexpr (io_detail::DirectlySupported<T>)   { return true; }
-      else if constexpr (W<T>::value)                  { return true; }
       else if constexpr (io_detail::SkipType<T>)       { return true;  }
       else if constexpr (io_detail::DenyType<T>)       { return false; }
       else if constexpr (Concepts::is_std_optional<T>) {
         return Writable<typename T::value_type,W>();
       }
       else if constexpr (Concepts::is_std_unique_ptr<T>) {
-        return Writable<typename T::element_type,W>();
+        if constexpr (! IsUniquePtrToArray<T>) {
+          return Writable<typename T::element_type,W>();
+        }
       }
+      else if constexpr (W<T>::value)                  { return true; }
       else if constexpr (std::is_bounded_array_v<T>) {
         return Writable<std::remove_all_extents_t<T>,W>();
       }
@@ -518,15 +528,17 @@ namespace Dwm {
 #endif
       if constexpr (std::is_const_v<T>)                { return false; }
       if constexpr (io_detail::DirectlySupported<T>)   { return true;  }
-      else if constexpr (R<T>::value)                  { return true;  }
       else if constexpr (io_detail::SkipType<T>)       { return true;  }
       else if constexpr (io_detail::DenyType<T>)       { return false; }
       else if constexpr (Concepts::is_std_optional<T>) {
         return Readable<typename T::value_type,R>();
       }
       else if constexpr (Concepts::is_std_unique_ptr<T>) {
-        return Readable<typename T::element_type,R>();
+        if constexpr (! IsUniquePtrToArray<T>) {
+          return Readable<typename T::element_type,R>();
+        }
       }
+      else if constexpr (R<T>::value)                  { return true;  }
       else if constexpr (std::is_bounded_array_v<T>) {
         return Readable<std::remove_all_extents_t<T>,R>();
       }
