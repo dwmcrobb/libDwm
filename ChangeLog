@@ -1,3 +1,23 @@
+2025-09-30  Daniel McRobb  <dwm@thrip.mcplex.net>
+
+	* classes/include/DwmUnitAssert.hh: Make the UnitAssert() macro
+	variadic.  This is only to circumvent the preprocessor's comma-based
+	tokenization; we treat the whole set as a single expression, not as
+	multiple arguments.  I did this because I grew tired of having to
+	type UnitAssert((expression)) instead of just UnitAssert(expression)
+	when expression contained commas that were not intended as macro
+	argument separators.  Commas in expressions are very common in C++
+	due to templates, and unlike assert(), UnitAssert() is almost always
+	used with an expression that produces (desired) side effects since
+	it's for unit testing.  assert() should generally never be passed an
+	expression that produces side-effects, since assert() does nothing
+	if NDEBUG is defined.
+
+	This reminds me of a paper targetted at WG21 and WG14 a few years ago...
+	P2246 (https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2829.htm)
+	argued that assert() should be variadic.  I think it would have been
+	if we had variadic macros before we had assert().
+
 2025-09-22  Daniel McRobb  <dwm@thrip.mcplex.net>
 
 	* classes/include/DwmStreamIO.hh: Add support for std::optional.  Add
