@@ -85,6 +85,42 @@ namespace Dwm {
   struct HasStreamWrite_t { static constexpr bool value = HasStreamWrite<T>; };
 
   //--------------------------------------------------------------------------
+  //!  T has an NRead(std::istream &) method that returns the std::istream
+  //!  reference that was passed in as its only parameter.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept HasStreamNRead = requires(T & t, std::istream & is) {
+    { t.NRead(is) } -> std::same_as<std::istream &>;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  Until C++26 P2841R7, we can't pass concepts as template template
+  //!  parameters.  So we need to be able to convert our concept into a
+  //!  type so it can be passed as a class template template parameter, for
+  //!  any templates where we need it.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  struct HasStreamNRead_t { static constexpr bool value = HasStreamNRead<T>; };
+  
+  //--------------------------------------------------------------------------
+  //!  T has an NWrite(std::ostream &) const method that returns the
+  //!  std::ostream reference that was passed in as its only parameter.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept HasStreamNWrite = requires(const T & t, std::ostream & os) {
+    { t.NWrite(os) } -> std::same_as<std::ostream &>;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  Until C++26 P2841R7, we can't pass concepts as template template
+  //!  parameters.  So we need to be able to convert our concept into a
+  //!  type so it can be passed as a class template template parameter, for
+  //!  any templates where we need it.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  struct HasStreamNWrite_t { static constexpr bool value = HasStreamNWrite<T>; };
+  
+  //--------------------------------------------------------------------------
   //!  This class defines an interface for classes that can read their
   //!  contents from an istream.
   //--------------------------------------------------------------------------

@@ -47,6 +47,30 @@
 namespace Dwm {
 
   namespace io_detail {
+
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept ArithmeticMultiByte = std::is_arithmetic_v<T>
+      and (sizeof(T) > 1)
+      and (not std::is_same_v<T,bool>);
+
+    template <typename T, size_t N>
+    concept NByteIntegral = std::is_integral_v<T> and (sizeof(T) == N);
+    
+    template <typename T> concept TwoByteIntegral   = NByteIntegral<T,2>;
+    template <typename T> concept FourByteIntegral  = NByteIntegral<T,4>;
+    template <typename T> concept EightByteIntegral = NByteIntegral<T,8>;
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept OneByteNotBool = std::is_arithmetic_v<T>
+      and (sizeof(T) == 1)
+      and (not std::is_same_v<T,bool>);
     
     //------------------------------------------------------------------------
     //!  Used for the cases where we try to use reflection for serialization

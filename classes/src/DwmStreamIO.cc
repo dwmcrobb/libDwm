@@ -206,6 +206,22 @@ namespace Dwm {
     }
     return(os);
   }
+
+  //------------------------------------------------------------------------
+  //!  
+  //------------------------------------------------------------------------
+  std::ostream & StreamIO::NWrite(std::ostream & os, const std::string & s)
+  {
+    if (os) {
+      uint64_t  len = s.size();
+      if (NWrite(os, len)) {
+        if (len > 0) {
+          os.write(s.c_str(), len);
+        }
+      }
+    }
+    return(os);
+  }
   
   //------------------------------------------------------------------------
   //!  
@@ -265,7 +281,7 @@ namespace Dwm {
     }
     return(is);
   }
-  
+
   //------------------------------------------------------------------------
   //!  
   //------------------------------------------------------------------------
@@ -373,6 +389,36 @@ namespace Dwm {
     if (is) {
       uint64_t  len;
       if (StreamIO::Read(is, len)) {
+        if (len > 0) {
+          try {
+            s.resize(len);
+            if (! is.read(s.data(), len)) {
+              s.clear();
+            }
+          }
+          catch (const std::exception & ex) {
+            Syslog(LOG_ERR, "Exception: %s", ex.what());
+            is.setstate(std::ios_base::failbit);
+          }
+          catch (...) {
+            Syslog(LOG_ERR, "Exception");
+            is.setstate(std::ios_base::failbit);
+          }
+        }
+      }
+    }
+    return(is);
+  }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  std::istream & StreamIO::NRead(std::istream & is, std::string & s)
+  {
+    s.clear();
+    if (is) {
+      uint64_t  len;
+      if (StreamIO::NRead(is, len)) {
         if (len > 0) {
           try {
             s.resize(len);

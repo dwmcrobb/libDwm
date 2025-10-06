@@ -79,6 +79,23 @@ namespace Dwm {
     concept IsWritable =
     (io_detail::Readable<std::remove_cvref_t<T>,HasStreamRead_t>() == true)
       and (io_detail::Writable<std::remove_cvref_t<T>,HasStreamWrite_t>() == true);
+
+    //------------------------------------------------------------------------
+    //!  Simple concept expressing that an instance of type T can be read from
+    //!  an istream via a StreamIO::NRead() member.
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept IsNReadable =
+    (io_detail::Readable<std::remove_reference_t<T>,HasStreamNRead_t>() == true);
+
+    //------------------------------------------------------------------------
+    //!  Simple concept expressing that an instance of type T can be written
+    //!  to an ostream via a StreamIO::NWrite() member.
+    //------------------------------------------------------------------------
+    template <typename T>
+    concept IsNWritable =
+    (io_detail::Readable<std::remove_cvref_t<T>,HasStreamNRead_t>() == true)
+      and (io_detail::Writable<std::remove_cvref_t<T>,HasStreamNWrite_t>() == true);
     
   }  // namespace iostream_detail
 
@@ -106,34 +123,76 @@ namespace Dwm {
     static std::istream & Read(std::istream & is, char & c);
 
     //------------------------------------------------------------------------
+    //!  Reads \c c from \c is.  Returns \c is.
+    //------------------------------------------------------------------------
+    static inline std::istream & NRead(std::istream & is, char & c)
+    { return Read(is, c); }
+
+    //------------------------------------------------------------------------
     //!  Writes \c c to \c os.  Returns \c os.
     //------------------------------------------------------------------------
     static std::ostream & Write(std::ostream & os, char c);
 
+    //------------------------------------------------------------------------
+    //!  Writes \c c to \c os.  Returns \c os.
+    //------------------------------------------------------------------------
+    static inline std::ostream & NWrite(std::ostream & os, char c)
+    { return Write(os, c); }
+    
     //------------------------------------------------------------------------
     //!  Reads \c c from \c is.  Returns \c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, int8_t & c);
 
     //------------------------------------------------------------------------
+    //!  Reads \c c from \c is.  Returns \c is.
+    //------------------------------------------------------------------------
+    static inline  std::istream & NRead(std::istream & is, int8_t & c)
+    { return Read(is, c); }
+    
+    //------------------------------------------------------------------------
     //!  Writes \c c to \c os.  Returns \c os.
     //------------------------------------------------------------------------
     static std::ostream & Write(std::ostream & os, int8_t c);
 
+    //------------------------------------------------------------------------
+    //!  Writes \c c to \c os.  Returns \c os.
+    //------------------------------------------------------------------------
+    static inline std::ostream & NWrite(std::ostream & os, int8_t c)
+    { return Write(os, c); }
+    
     //------------------------------------------------------------------------
     //!  Reads \c c from \c is.  Returns \c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, uint8_t & c);
 
     //------------------------------------------------------------------------
+    //!  Reads \c c from \c is.  Returns \c is.
+    //------------------------------------------------------------------------
+    static inline std::istream & NRead(std::istream & is, uint8_t & c)
+    { return Read(is, c); }
+    
+    //------------------------------------------------------------------------
     //!  Writes \c c to \c os.  Returns \c os.
     //------------------------------------------------------------------------
     static std::ostream & Write(std::ostream & os, uint8_t c);
 
     //------------------------------------------------------------------------
+    //!  Writes \c c to \c os.  Returns \c os.
+    //------------------------------------------------------------------------
+    static inline std::ostream & NWrite(std::ostream & os, uint8_t c)
+    { return Write(os, c); }
+    
+    //------------------------------------------------------------------------
     //!  Reads \c b from \c is.  Returns \c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, bool & b);
+
+    //------------------------------------------------------------------------
+    //!  Reads \c b from \c is.  Returns \c is.
+    //------------------------------------------------------------------------
+    static inline std::istream & NRead(std::istream & is, bool & b)
+    { return Read(is, b); }
     
     //------------------------------------------------------------------------
     //!  Writes a bool \c b to an ostream \c os.  Returns \c os.
@@ -141,11 +200,23 @@ namespace Dwm {
     static std::ostream & Write(std::ostream & os, bool b);
 
     //------------------------------------------------------------------------
+    //!  Writes a bool \c b to an ostream \c os.  Returns \c os.
+    //------------------------------------------------------------------------
+    static inline std::ostream & NWrite(std::ostream & os, bool b)
+    { return Write(os, b); }
+    
+    //------------------------------------------------------------------------
     //!  Reads \c val from \c is, in network byte order (MSB first).
     //!  Returns \c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, int16_t & val);
 
+    //------------------------------------------------------------------------
+    //!  Reads \c val from \c is, in native byte order.  Returns \c is.
+    //------------------------------------------------------------------------
+    static inline std::istream & NRead(std::istream & is, int16_t & val)
+    { return is.read((caddr_t)&val, sizeof(val)); }
+    
     //------------------------------------------------------------------------
     //!  Writes \c val to \c os, in network byte order (MSB first).
     //!  Returns \c os.
@@ -153,11 +224,23 @@ namespace Dwm {
     static std::ostream & Write(std::ostream & os, int16_t val);
 
     //------------------------------------------------------------------------
+    //!  Writes \c val to \c os, in native byte order.  Returns \c os.
+    //------------------------------------------------------------------------
+    static inline std::ostream & NWrite(std::ostream & os, int16_t val)
+    { return os.write((caddr_t)&val, sizeof(val)); }
+    
+    //------------------------------------------------------------------------
     //!  Reads \c val from \c is, in network byte order (MSB first).
     //!  Returns \c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, uint16_t & val);
 
+    //------------------------------------------------------------------------
+    //!  Reads \c val from \c is, in native byte order.  Returns \c is.
+    //------------------------------------------------------------------------
+    static inline std::istream & NRead(std::istream & is, uint16_t & val)
+    { return is.read((caddr_t)&val, sizeof(val)); }
+    
     //------------------------------------------------------------------------
     //!  Writes \c val to \c os, in network byte order (MSB first).
     //!  Returns \c os.
@@ -165,11 +248,23 @@ namespace Dwm {
     static std::ostream & Write(std::ostream & os, uint16_t val);
 
     //------------------------------------------------------------------------
+    //!  Writes \c val to \c os, in native byte order.  Returns \c os.
+    //------------------------------------------------------------------------
+    static inline std::ostream & NWrite(std::ostream & os, uint16_t val)
+    { return os.write((caddr_t)&val, sizeof(val)); }
+    
+    //------------------------------------------------------------------------
     //!  Reads \c val from \c is, in network byte order (MSB first).
     //!  Returns \c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, int32_t & val);
 
+    //------------------------------------------------------------------------
+    //!  Reads \c val from \c is, in native byte order.  Returns \c is.
+    //------------------------------------------------------------------------
+    static inline std::istream & NRead(std::istream & is, int32_t & val)
+    { return is.read((caddr_t)&val, sizeof(val)); }
+    
     //------------------------------------------------------------------------
     //!  Writes \c val to \c os, in network byte order (MSB first).
     //!  Returns \c os.
@@ -177,11 +272,23 @@ namespace Dwm {
     static std::ostream & Write(std::ostream & os, int32_t val);
 
     //------------------------------------------------------------------------
+    //!  Writes \c val to \c os, in native byte order.  Returns \c os.
+    //------------------------------------------------------------------------
+    static inline std::ostream & NWrite(std::ostream & os, int32_t val)
+    { return os.write((caddr_t)&val, sizeof(val)); }
+    
+    //------------------------------------------------------------------------
     //!  Reads \c val from \c is, in network byte order (MSB first).
     //!  Returns \c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, uint32_t & val);
 
+    //------------------------------------------------------------------------
+    //!  Reads \c val from \c is, in native byte order.  Returns \c is.
+    //------------------------------------------------------------------------
+    static inline std::istream & NRead(std::istream & is, uint32_t & val)
+    { return is.read((caddr_t)&val, sizeof(val)); }
+    
     //------------------------------------------------------------------------
     //!  Writes \c val to \c os, in network byte order (MSB first).
     //!  Returns \c os.
@@ -189,11 +296,23 @@ namespace Dwm {
     static std::ostream & Write(std::ostream & os, uint32_t val);
 
     //------------------------------------------------------------------------
+    //!  Writes \c val to \c os, in native byte order.  Returns \c os.
+    //------------------------------------------------------------------------
+    static inline std::ostream & NWrite(std::ostream & os, uint32_t val)
+    { return os.write((caddr_t)&val, sizeof(val)); }
+    
+    //------------------------------------------------------------------------
     //!  Reads \c val from \c is, in network byte order (MSB first).
     //!  Returns \c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, int64_t & val);
 
+    //------------------------------------------------------------------------
+    //!  Reads \c val from \c is, in native byte order.  Returns \c is.
+    //------------------------------------------------------------------------
+    static inline std::istream & NRead(std::istream & is, int64_t & val)
+    { return is.read((caddr_t)&val, sizeof(val)); }
+    
     //------------------------------------------------------------------------
     //!  Writes \c val to \c os, in network byte order (MSB first).
     //!  Returns \c os.
@@ -201,11 +320,23 @@ namespace Dwm {
     static std::ostream & Write(std::ostream & os, const int64_t & val);
 
     //------------------------------------------------------------------------
+    //!  Writes \c val to \c os, in native byte order.  Returns \c os.
+    //------------------------------------------------------------------------
+    static inline std::ostream & NWrite(std::ostream & os, const int64_t & val)
+    { return os.write((caddr_t)&val, sizeof(val)); }
+    
+    //------------------------------------------------------------------------
     //!  Reads \c val from \c is, in network byte order (MSB first).
     //!  Returns \c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, uint64_t & val);
-    
+
+    //------------------------------------------------------------------------
+    //!  Reads \c val from \c is, in native byte order.  Returns \c is.
+    //------------------------------------------------------------------------
+    static inline std::istream & NRead(std::istream & is, uint64_t & val)
+    { return is.read((caddr_t)&val, sizeof(val)); }
+
     //------------------------------------------------------------------------
     //!  Writes \c val to \c os, in network byte order (MSB first).
     //!  Returns \c os.
@@ -213,10 +344,24 @@ namespace Dwm {
     static std::ostream & Write(std::ostream & os, const uint64_t & val);
 
     //------------------------------------------------------------------------
+    //!  Writes \c val to \c os, in native byte order.  Returns \c os.
+    //------------------------------------------------------------------------
+    static inline std::ostream & NWrite(std::ostream & os,
+                                        const uint64_t & val)
+    { return os.write((caddr_t)&val, sizeof(val)); }
+    
+    //------------------------------------------------------------------------
     //!  Reads \c val from \c is, in IEEE format (see RFC 1832
     //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, float & val);
+
+    //------------------------------------------------------------------------
+    //!  Reads \c val from \c is, in native format (typically IEEE 754).
+    //!  Returns \c is.
+    //------------------------------------------------------------------------
+    static inline std::istream & NRead(std::istream & is, float & val)
+    { return is.read((caddr_t)&val, sizeof(val)); }
     
     //------------------------------------------------------------------------
     //!  Writes \c val to \c os, in IEEE format (see RFC 1832
@@ -225,10 +370,24 @@ namespace Dwm {
     static std::ostream & Write(std::ostream & os, float val);
 
     //------------------------------------------------------------------------
+    //!  Writes \c val to \c os, in native format (typically IEEE 754).
+    //!  Returns \c os.
+    //------------------------------------------------------------------------
+    static inline std::ostream & NWrite(std::ostream & os, float val)
+    { return os.write((caddr_t)&val, sizeof(val)); }
+    
+    //------------------------------------------------------------------------
     //!  Reads \c val from \c is, in IEEE format (see RFC 1832
     //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, double & val);
+
+    //------------------------------------------------------------------------
+    //!  Reads \c val from \c is, in native format (typically IEEE 754).
+    //!  Returns \c is.
+    //------------------------------------------------------------------------
+    static inline std::istream & NRead(std::istream & is, double & val)
+    { return is.read((caddr_t)&val, sizeof(val)); }
     
     //------------------------------------------------------------------------
     //!  Writes \c val to \c os, in IEEE format (see RFC 1832
@@ -237,24 +396,43 @@ namespace Dwm {
     static std::ostream & Write(std::ostream & os, const double & val);
 
     //------------------------------------------------------------------------
-    //!  Reads string \c s from \c is.  Since we write strings with a 
-    //!  64-bit length value preceding, and always write the terminating
-    //!  NULL, this function will always read at least 9 bytes on success.
+    //!  Writes \c val to \c os, in native format (typically IEEE 754).
+    //!  Returns \c os.
+    //------------------------------------------------------------------------
+    static inline std::ostream & NWrite(std::ostream & os, const double & val)
+    { return os.write((caddr_t)&val, sizeof(val)); }
+    
+    //------------------------------------------------------------------------
+    //!  Reads string \c s from \c is.  Returns @c is.
+    //!  Strings are length:value encoded, where the length is a 64 bit
+    //!  unsigned integer in network byte order (MSB first).
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, std::string & s);
 
     //------------------------------------------------------------------------
-    //!  Writes \c s to \c os.  Note that the length of \c s is written
-    //!  first, as an unsigned 64-bit number in network byte order
-    //!  (MSB first).  Hence at least 9 bytes will always be written;
-    //!  4 for the length and 1 for the terminating NULL character of
-    //!  an empty string.
+    //!  Reads string @c s from @c is.  Returns @c is.
+    //!  Strings are length:value encoded, where the length is a 64 bit
+    //!  unsigned integer in native byte order.
+    //------------------------------------------------------------------------
+    static std::istream & NRead(std::istream & is, std::string & s);
+    
+    //------------------------------------------------------------------------
+    //!  Writes @c s to @c os.  Returns @c os.
+    //!  Strings are length:value encoded, where the length is a 64 bit
+    //!  unsigned integer in network byte order (MSB first).
     //------------------------------------------------------------------------
     static std::ostream & Write(std::ostream & os, const std::string & s);
 
     //------------------------------------------------------------------------
-    //!  Reads \c t from \c is, where \c t is an enumerated type.  Returns
-    //!  \c is.  Note that this is risky for enum types with an underlying
+    //!  Writes @c s to @c os.  Returns @c os.
+    //!  Strings are length:value encoded, where the length is a 64 bit
+    //!  unsigned integer in native byte order.
+    //------------------------------------------------------------------------
+    static std::ostream & NWrite(std::ostream & os, const std::string & s);
+
+    //------------------------------------------------------------------------
+    //!  Reads @c t from @c is, where @c t is an enumerated type.  Returns
+    //!  @c is.  Note that this is risky for enum types with an underlying
     //!  type whose size is not fixed.
     //------------------------------------------------------------------------
     template <typename T>
@@ -263,6 +441,22 @@ namespace Dwm {
     {
       std::underlying_type_t<T>  cp;
       if (Read(is, cp)) {
+        t = static_cast<T>(cp);
+      }
+      return is;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads @c t from @c is, where @c t is an enumerated type.  Returns
+    //!  @c is.  Note that this is risky for enum types with an underlying
+    //!  type whose size is not fixed.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static std::istream & NRead(std::istream & is, T & t)
+      requires std::is_enum_v<T>
+    {
+      std::underlying_type_t<T>  cp;
+      if (NRead(is, cp)) {
         t = static_cast<T>(cp);
       }
       return is;
@@ -279,6 +473,18 @@ namespace Dwm {
     {
       return Write(os, static_cast<std::underlying_type_t<T>>(t));
     }
+
+    //------------------------------------------------------------------------
+    //!  Writes @c t to @c os, where @c t is an enumerated type.  Returns
+    //!  @c os.  Note that this is risky for enum types with an underlying
+    //!  type whose size is not fixed.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static std::ostream & NWrite(std::ostream & os, const T & t)
+      requires std::is_enum_v<T>
+    {
+      return NWrite(os, static_cast<std::underlying_type_t<T>>(t));
+    }
     
     //------------------------------------------------------------------------
     //!  Wrapper function to read a StreamReadable object from an istream.
@@ -294,7 +500,14 @@ namespace Dwm {
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, HasStreamRead auto & t)
     { return t.Read(is); }
-     
+
+    //------------------------------------------------------------------------
+    //!  Reads an object @c t that meets the HasStreamNRead requirement from
+    //!  an istream.
+    //------------------------------------------------------------------------
+    static std::istream & NRead(std::istream & is, HasStreamNRead auto & t)
+    { return t.NRead(is); }
+    
     //------------------------------------------------------------------------
     //!  Wrapper function to write a StreamWritable object to an ostream.
     //------------------------------------------------------------------------
@@ -310,7 +523,15 @@ namespace Dwm {
     static std::ostream &
     Write(std::ostream & os, const HasStreamWrite auto & t)
     { return t.Write(os); }
-      
+
+    //------------------------------------------------------------------------
+    //!  Writes an object that meets the HasStreamNWrite requirement to an
+    //!  ostream.
+    //------------------------------------------------------------------------
+    static std::ostream &
+    NWrite(std::ostream & os, const HasStreamNWrite auto & t)
+    { return t.NWrite(os); }
+    
     //------------------------------------------------------------------------
     //!  Reads a pair<_firstT,_secondT> from an istream.  Returns the istream.
     //------------------------------------------------------------------------
@@ -323,6 +544,22 @@ namespace Dwm {
       if (is) {
         if (Read(is, p.first))
           Read(is, p.second);
+      }
+      return(is);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads a pair<_firstT,_secondT> from an istream.  Returns the istream.
+    //------------------------------------------------------------------------
+    template <typename _firstT, typename _secondT>
+    requires iostream_detail::IsReadable<_firstT>
+    and iostream_detail::IsReadable<_secondT>
+    static std::istream & NRead(std::istream & is,
+                                std::pair<_firstT, _secondT> & p)
+    {
+      if (is) {
+        if (NRead(is, p.first))
+          NRead(is, p.second);
       }
       return(is);
     }
@@ -343,6 +580,21 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
+    //!  Writes a pair<_firstT,_secondT> to an ostream.  Returns the ostream.
+    //------------------------------------------------------------------------
+    template <typename _firstT, typename _secondT>
+    static std::ostream & NWrite(std::ostream & os,
+                                 const std::pair<_firstT,_secondT> & p)
+    {
+      if (os) {
+        if (NWrite(os, p.first)) {
+          NWrite(os, p.second);
+        }
+      }
+      return(os);
+    }
+
+    //------------------------------------------------------------------------
     //!  Reads a pair-associative container (map, multimap, unordered_map or
     //!  unordered_multimap) from an istream.  Returns the istream.
     //------------------------------------------------------------------------
@@ -353,6 +605,17 @@ namespace Dwm {
       return PairAssocContRead<T>(is, c);
     }
 
+    //------------------------------------------------------------------------
+    //!  Reads a pair-associative container (map, multimap, unordered_map or
+    //!  unordered_multimap) from an istream.  Returns the istream.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires Concepts::is_std_pair_associative_container<T>
+    static std::istream & NRead(std::istream & is, T & c)
+    {
+      return PairAssocContNRead<T>(is, c);
+    }
+    
     //------------------------------------------------------------------------
     //!  Reads an array<_valueT,N> from an istream.  Returns the istream.
     //------------------------------------------------------------------------
@@ -370,6 +633,22 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
+    //!  Reads an array<_valueT,N> from an istream.  Returns the istream.
+    //------------------------------------------------------------------------
+    template <typename _valueT, size_t N>
+    static std::istream & NRead(std::istream & is, std::array<_valueT, N> & a)
+    {
+      if (is) {
+        for (size_t i = 0; i < N; ++i) {
+          if (! NRead(is, a[i])) {
+            break;
+          }
+        }
+      }
+      return is;
+    }
+    
+    //------------------------------------------------------------------------
     //!  Writes an array<_valueT,N> to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
     template <typename _valueT, size_t N>
@@ -386,6 +665,23 @@ namespace Dwm {
       return os;
     }
 
+    //------------------------------------------------------------------------
+    //!  Writes an array<_valueT,N> to an ostream.  Returns the ostream.
+    //------------------------------------------------------------------------
+    template <typename _valueT, size_t N>
+    static std::ostream & NWrite(std::ostream & os,
+                                 const std::array<_valueT, N> & a)
+    {
+      if (os) {
+        for (size_t i = 0; i < N; ++i) {
+          if (! NWrite(os, a[i])) {
+            break;
+          }
+        }
+      }
+      return os;
+    }
+    
     //------------------------------------------------------------------------
     //!  Reads a sequence container (deque, list or vector) or associative
     //!  container (set, multiset, unordered_set or unordered_multiset) from
@@ -415,6 +711,34 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
+    //!  Reads a sequence container (deque, list or vector) or associative
+    //!  container (set, multiset, unordered_set or unordered_multiset) from
+    //!  an istream.  Returns the istream.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires Concepts::is_std_associative_container<T>
+      or (Concepts::is_std_sequence_container<T>
+          and (not Concepts::is_std_array<T>))
+    static std::istream & NRead(std::istream & is, T & c)
+    {
+      static_assert(std::is_default_constructible_v<typename T::value_type>);
+      c.clear();
+      if (is) {
+        uint64_t  numEntries;
+        if (NRead(is, numEntries)) {
+          for (uint64_t i = 0; i < numEntries; ++i) {
+            typename T::value_type  val;
+            if (! NRead(is, val)) {
+              break;
+            }
+            c.insert(c.end(), std::move(val));
+          }
+        }
+      }
+      return(is);
+    }
+    
+    //------------------------------------------------------------------------
     //!  Writes a container to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
     template <typename T>
@@ -428,7 +752,36 @@ namespace Dwm {
         uint64_t  numEntries = c.size();
         if (Write(os, numEntries)) {
           if (numEntries) {
-            Write<typename T::const_iterator>(os, c.cbegin(), c.cend());
+            for (auto it = c.cbegin(); it != c.end(); ++it) {
+              if (! Write(os, *it)) {
+                break;
+              }
+            }
+          }
+        }
+      }
+      return os;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes a container to an ostream.  Returns the ostream.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires Concepts::is_std_associative_container<T>
+      or Concepts::is_std_pair_associative_container<T>
+      or (Concepts::is_std_sequence_container<T>
+          and (not Concepts::is_std_array<T>))
+    static std::ostream & NWrite(std::ostream & os, const T & c)
+    {
+      if (os) {
+        uint64_t  numEntries = c.size();
+        if (NWrite(os, numEntries)) {
+          if (numEntries) {
+            for (auto it = c.cbegin(); it != c.end(); ++it) {
+              if (! NWrite(os, *it)) {
+                break;
+              }
+            }
           }
         }
       }
@@ -469,6 +822,39 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
+    //!  Reads a vector<bool> from an istream.  Returns the istream.
+    //------------------------------------------------------------------------
+    template <typename _Alloc>
+    static std::istream & NRead(std::istream & is,
+                                std::vector<bool, _Alloc> & v)
+    {
+      v.clear();
+      uint64_t  numEntries;
+      if (NRead(is, numEntries)) {
+        try {
+          v.resize(numEntries);
+          for (size_t i = 0; i < numEntries; ++i) {
+            bool  b;
+            if (! NRead(is, b)) {
+              v.clear();
+              break;
+            }
+            v[i] = b;
+          }
+        }
+        catch (const std::exception & ex) {
+          Syslog(LOG_ERR, "Exception: %s", ex.what());
+          is.setstate(std::ios_base::failbit);
+        }
+        catch (...) {
+          Syslog(LOG_ERR, "Exception");
+          is.setstate(std::ios_base::failbit);
+        }
+      }
+      return is;
+    }
+    
+    //------------------------------------------------------------------------
     //!  Writes a vector<bool> to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
     template <typename _Alloc>
@@ -487,6 +873,247 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
+    //!  Writes a vector of any one-byte arithmetic type (except bool) to an
+    //!  ostream.  Returns the ostream.
+    //------------------------------------------------------------------------
+    template <typename T, typename _Alloc>
+    requires io_detail::OneByteNotBool<T>
+    static std::ostream & Write(std::ostream & os,
+                                const std::vector<T, _Alloc> & v)
+    {
+      uint64_t  numEntries = v.size();
+      if (Write(os, numEntries)) {
+        os.write((caddr_t)v.data(), v.size());
+      }
+      return os;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads a vector of any one-byte arithmetic type (except bool) from an
+    //!  istream.  Returns the istream.
+    //------------------------------------------------------------------------
+    template <typename T, typename _Alloc>
+    requires io_detail::OneByteNotBool<T>
+    static std::istream & Read(std::istream & is,
+                               std::vector<T, _Alloc> & v)
+    {
+      uint64_t  len = 0;
+      v.clear();
+      if (Read(is, len)) {
+        if (len) {
+          try {
+            v.resize(len);
+            is.read(v.data(), len);
+          }
+          catch (const std::exception & ex) {
+            FSyslog(LOG_ERR, "Exception: {}", ex.what());
+            is.setstate(std::ios_base::failbit);
+          }
+          catch (...) {
+            Syslog(LOG_ERR, "Exception");
+            is.setstate(std::ios_base::failbit);
+          }
+        }
+      }
+      return is;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T, typename _Alloc>
+    requires io_detail::OneByteNotBool<T>
+    static std::istream & NRead(std::istream & is,
+                                std::vector<T, _Alloc> & v)
+    {
+      uint64_t  len = 0;
+      v.clear();
+      if (NRead(is, len)) {
+        if (len) {
+          try {
+            v.resize(len);
+            is.read(v.data(), len);
+          }
+          catch (const std::exception & ex) {
+            FSyslog(LOG_ERR, "Exception: {}", ex.what());
+            is.setstate(std::ios_base::failbit);
+          }
+          catch (...) {
+            Syslog(LOG_ERR, "Exception");
+            is.setstate(std::ios_base::failbit);
+          }
+        }
+      }
+      return is;
+    }
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T, typename _Alloc>
+    requires io_detail::OneByteNotBool<T>
+    static std::ostream & NWrite(std::ostream & os,
+                                 const std::vector<T, _Alloc> & v)
+    {
+      uint64_t  len = v.size();
+      if (NWrite(os, len)) {
+        if (len) {
+          os.write(v.data(), len);
+        }
+      }
+      return os;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T, typename _Alloc>
+    requires io_detail::TwoByteIntegral<T>
+    static std::istream & Read(std::istream & is,
+                               std::vector<T, _Alloc> & v)
+    {
+      v.clear();
+      uint64_t  len = 0;
+      if (Read(is, len)) {
+        if (len) {
+          try {
+            v.resize(len);
+            if (is.read((caddr_t)v.data(), len * sizeof(T))) {
+              for (size_t i = 0; i < len; ++i) {
+                v[i] = be16toh(v[i]);
+              }
+            }
+          }
+          catch (const std::exception & ex) {
+            FSyslog(LOG_ERR, "Exception: {}", ex.what());
+            is.setstate(std::ios_base::failbit);
+          }
+          catch (...) {
+            Syslog(LOG_ERR, "Exception");
+            is.setstate(std::ios_base::failbit);
+          }
+        }
+      }
+      return is;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T, typename _Alloc>
+    requires io_detail::FourByteIntegral<T>
+    static std::istream & Read(std::istream & is,
+                               std::vector<T, _Alloc> & v)
+    {
+      v.clear();
+      uint64_t  len = 0;
+      if (Read(is, len)) {
+        if (len) {
+          try {
+            v.resize(len);
+            if (is.read((caddr_t)v.data(), len * sizeof(T))) {
+              for (size_t i = 0; i < len; ++i) {
+                v[i] = be32toh(v[i]);
+              }
+            }
+          }
+          catch (const std::exception & ex) {
+            FSyslog(LOG_ERR, "Exception: {}", ex.what());
+            is.setstate(std::ios_base::failbit);
+          }
+          catch (...) {
+            Syslog(LOG_ERR, "Exception");
+            is.setstate(std::ios_base::failbit);
+          }
+        }
+      }
+      return is;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T, typename _Alloc>
+    requires io_detail::EightByteIntegral<T>
+    static std::istream & Read(std::istream & is,
+                               std::vector<T, _Alloc> & v)
+    {
+      v.clear();
+      uint64_t  len = 0;
+      if (Read(is, len)) {
+        if (len) {
+          try {
+            v.resize(len);
+            if (is.read((caddr_t)v.data(), len * sizeof(T))) {
+              for (size_t i = 0; i < len; ++i) {
+                v[i] = be64toh(v[i]);
+              }
+            }
+          }
+          catch (const std::exception & ex) {
+            FSyslog(LOG_ERR, "Exception: {}", ex.what());
+            is.setstate(std::ios_base::failbit);
+          }
+          catch (...) {
+            Syslog(LOG_ERR, "Exception");
+            is.setstate(std::ios_base::failbit);
+          }
+        }
+      }
+      return is;
+    }
+    
+    //------------------------------------------------------------------------
+    //!  Specialization for vectors of multi-byte arithmetic types (int16_t,
+    //!  uint16_t, int32_t, uint32_t, int64_t, uint64_t, float, double).
+    //!  Reads @c v from @c is, in native byte order.  Returns @c is.
+    //------------------------------------------------------------------------
+    template <typename T, typename _Alloc>
+    requires io_detail::ArithmeticMultiByte<T>
+    static std::istream & NRead(std::istream & is,
+                                std::vector<T, _Alloc> & v)
+    {
+      uint64_t  len = 0;
+      v.clear();
+      if (NRead(is, len)) {
+        if (len) {
+          try {
+            v.resize(len);
+            is.read((caddr_t)v.data(), len * sizeof(T));
+          }
+          catch (const std::exception & ex) {
+            FSyslog(LOG_ERR, "Exception: {}", ex.what());
+            is.setstate(std::ios_base::failbit);
+          }
+          catch (...) {
+            Syslog(LOG_ERR, "Exception");
+            is.setstate(std::ios_base::failbit);
+          }
+        }
+      }
+      return is;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Specialization for vectors of multi-byte arithmetic types (int16_t,
+    //!  uint16_t, int32_t, uint32_t, int64_t, uint64_t, float, double).
+    //!  Writes @c v to @c os, in native byte order.  Returns @c os.
+    //------------------------------------------------------------------------
+    template <typename T, typename _Alloc>
+    requires io_detail::ArithmeticMultiByte<T>
+    static std::ostream & NWrite(std::ostream & os,
+                                 const std::vector<T, _Alloc> & v)
+    {
+      uint64_t  len = v.size();
+      if (NWrite(os, len)) {
+        if (len) {
+          os.write((caddr_t)v.data(), len * sizeof(T));
+        }
+      }
+      return os;
+    }
+    
+    //------------------------------------------------------------------------
     //!  Reads a tuple from an istream.  Returns the istream.
     //------------------------------------------------------------------------
     template <typename... Args>
@@ -498,6 +1125,17 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
+    //!  Reads a tuple from an istream.  Returns the istream.
+    //------------------------------------------------------------------------
+    template <typename... Args>
+    static std::istream & NRead(std::istream & is, 
+                                std::tuple<Args...> & t)
+    {
+      std::apply([&is](auto&&... args) {((NRead(is,args)) && ...);}, t);
+      return is;
+    }
+    
+    //------------------------------------------------------------------------
     //!  Writes a tuple to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
     template <typename... Args>
@@ -508,6 +1146,17 @@ namespace Dwm {
       return os;
     }
 
+    //------------------------------------------------------------------------
+    //!  Writes a tuple to an ostream.  Returns the ostream.
+    //------------------------------------------------------------------------
+    template <typename... Args>
+    static std::ostream & NWrite(std::ostream & os, 
+                                 const std::tuple<Args...> & t)
+    {
+      std::apply([&os](auto&&... args) {((NWrite(os,args)) && ...);}, t);
+      return os;
+    }
+    
     //------------------------------------------------------------------------
     //!  Reads a variant from an istream.  Returns the istream.
     //------------------------------------------------------------------------
@@ -529,6 +1178,26 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
+    //!  Reads a variant from an istream.  Returns the istream.
+    //------------------------------------------------------------------------
+    template <typename... Ts>
+    static std::istream & NRead(std::istream & is,
+                                std::variant<Ts...> & v)
+    {
+      uint64_t  index = 0;
+      if (NRead(is, index)) {
+        if (index < std::variant_size_v<std::variant<Ts...>>) {
+          v = VariantFromIndex<Ts...>(index);
+          std::visit([&] (auto && arg) { NRead(is, arg); }, v);
+        }
+        else {
+          is.setstate(std::ios_base::failbit);
+        }
+      }
+      return is;
+    }
+    
+    //------------------------------------------------------------------------
     //!  Writes a variant to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
     template <typename... Ts>
@@ -543,16 +1212,37 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
+    //!  Writes a variant to an ostream.  Returns the ostream.
+    //------------------------------------------------------------------------
+    template <typename... Ts>
+    static std::ostream & NWrite(std::ostream & os,
+                                 const std::variant<Ts...> & v)
+    {
+      uint64_t  index = v.index();
+      if (NWrite(os, index)) {
+        std::visit([&os] (const auto & arg) { NWrite(os, arg); }, v);
+      }
+      return os;
+    }
+
+    //------------------------------------------------------------------------
     //!  Just a dummy helper function for std::variant instances that hold
     //!  a std::monostate.  This should only be called from our Read() for
     //!  std::variant (via std::visit()), and does nothing.  Returns the
     //!  given istream.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, std::monostate & sm)
-    {
-      return is;
-    }
+    { return is; }
 
+    //------------------------------------------------------------------------
+    //!  Just a dummy helper function for std::variant instances that hold
+    //!  a std::monostate.  This should only be called from our NRead() for
+    //!  std::variant (via std::visit()), and does nothing.  Returns the
+    //!  given istream.
+    //------------------------------------------------------------------------
+    static std::istream & NRead(std::istream & is, std::monostate & sm)
+    { return is; }
+    
     //------------------------------------------------------------------------
     //!  Just a dummy helper function for std::variant instances that hold
     //!  a std::monostate.  This should only be called from our Write() for
@@ -560,10 +1250,17 @@ namespace Dwm {
     //!  given ostream.
     //------------------------------------------------------------------------
     static std::ostream & Write(std::ostream & os, const std::monostate & sm)
-    {
-      return os;
-    }
+    { return os; }
 
+    //------------------------------------------------------------------------
+    //!  Just a dummy helper function for std::variant instances that hold
+    //!  a std::monostate.  This should only be called from our NWrite() for
+    //!  std::variant (via std::visit()), and does nothing.  Returns the
+    //!  given ostream.
+    //------------------------------------------------------------------------
+    static std::ostream & NWrite(std::ostream & os, const std::monostate & sm)
+    { return os; }
+    
     //------------------------------------------------------------------------
     //!  Reads multiple objects from an istream.  Returns the istream.  This
     //!  is just a convenience function.
@@ -576,6 +1273,17 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
+    //!  Reads multiple objects from an istream.  Returns the istream.  This
+    //!  is just a convenience function.
+    //------------------------------------------------------------------------
+    template <typename... Args>
+    static std::istream & NReadV(std::istream & is, Args & ...args)
+    {
+      (NRead(is,args) &&...);
+      return is;
+    }
+    
+    //------------------------------------------------------------------------
     //!  Writes multiple objects to an ostream.  Returns the ostream.  This
     //!  is just a convenience function.
     //------------------------------------------------------------------------
@@ -586,6 +1294,17 @@ namespace Dwm {
       return os;
     }
 
+    //------------------------------------------------------------------------
+    //!  Writes multiple objects to an ostream.  Returns the ostream.  This
+    //!  is just a convenience function.
+    //------------------------------------------------------------------------
+    template <typename... Args>
+    static std::ostream & NWriteV(std::ostream & os, const Args & ...args)
+    {
+      (NWrite(os,args) &&...);
+      return os;
+    }
+    
     //------------------------------------------------------------------------
     //!  Writes a bounded array @c v to an ostream @c os.  Returns @c os.
     //------------------------------------------------------------------------
@@ -605,6 +1324,25 @@ namespace Dwm {
       return os;
     }
 
+    //------------------------------------------------------------------------
+    //!  Writes a bounded array @c v to an ostream @c os.  Returns @c os.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
+    static std::ostream & NWrite(std::ostream & os, const T & v)
+    {
+      static_assert(iostream_detail::IsNWritable<std::remove_reference_t<decltype(v[0])>>);
+      const uint64_t  n = std::extent_v<T>;
+      if (StreamIO::NWrite(os, n)) {
+        for (size_t i = 0; i < std::extent_v<T>; ++i) {
+          if (! StreamIO::NWrite(os, v[i])) {
+            break;
+          }
+        }
+      }
+      return os;
+    }
+    
     //------------------------------------------------------------------------
     //!  Reads a bounded array @c v from an istream @c is.  Returns @c is.
     //------------------------------------------------------------------------
@@ -630,6 +1368,30 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
+    //!  Reads a bounded array @c v from an istream @c is.  Returns @c is.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
+    static std::istream & NRead(std::istream & is, T & v)
+    {
+      static_assert(iostream_detail::IsNReadable<std::remove_reference_t<decltype(v[0])>>);
+      uint64_t  n;
+      if (StreamIO::NRead(is, n)) {
+        if (std::extent_v<T> == n) {
+          for (size_t i = 0; i < std::extent_v<T>; ++i) {
+            if (! StreamIO::NRead(is, v[i])) {
+              break;
+            }
+          }
+        }
+        else {
+          is.setstate(std::ios_base::failbit);
+        }
+      }
+      return is;
+    }
+    
+    //------------------------------------------------------------------------
     //!  Experimental support for std::unique_ptr, if it points to a single
     //!  object.
     //------------------------------------------------------------------------
@@ -651,6 +1413,28 @@ namespace Dwm {
       return os;
     }
 
+    //------------------------------------------------------------------------
+    //!  Experimental support for std::unique_ptr, if it points to a single
+    //!  object.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static std::ostream & NWrite(std::ostream & os,
+                                 const std::unique_ptr<T> & t)
+    {
+      using deleterType = std::remove_cvref_t<decltype(t)>::deleter_type;
+      static_assert(std::is_same_v<deleterType,std::default_delete<T>>);
+      static_assert(! std::is_unbounded_array_v<T>);
+      static_assert(! std::is_bounded_array_v<T>);
+      static_assert(iostream_detail::IsNWritable<T>);
+      bool  isNull = (nullptr == t);
+      if (StreamIO::NWrite(os, isNull)) {
+        if (! isNull) {
+          StreamIO::NWrite(os, *t);
+        }
+      }
+      return os;
+    }
+    
     //------------------------------------------------------------------------
     //!  Experimental support for std::unique_ptr, if it points to a single
     //!  object.
@@ -691,6 +1475,45 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
+    //!  Experimental support for std::unique_ptr, if it points to a single
+    //!  object.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_default_constructible_v<T>
+    static std::istream & NRead(std::istream & is,
+                                std::unique_ptr<T> & t)
+    {
+      using deleterType = std::remove_reference_t<decltype(t)>::deleter_type;
+      static_assert(std::is_same_v<deleterType,std::default_delete<T>>);
+      static_assert(! std::is_unbounded_array_v<T>);
+      static_assert(! std::is_bounded_array_v<T>);
+      static_assert(iostream_detail::IsNReadable<T>);
+      bool  isNull = true;
+      if (StreamIO::NRead(is, isNull)) {
+        if (isNull) {
+          t.release();
+        }
+        else {
+          if (nullptr == t) {
+            try {
+              t = std::make_unique<T>();
+            }
+            catch (std::bad_alloc & ex) {
+              is.setstate(std::ios_base::failbit);
+              FSyslog(LOG_ERR, "Failed to allocate an object of type {}",
+                      TypeName<decltype(t)>());
+              return is;
+            }
+          }
+          if (! StreamIO::NRead(is, *t)) {
+            t.release();
+          }
+        }
+      }
+      return is;
+    }
+    
+    //------------------------------------------------------------------------
     //!  Writes a std::optional<T> to @c os.  Returns @c os.
     //------------------------------------------------------------------------
     template <typename T>
@@ -707,6 +1530,22 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
+    //!  Writes a std::optional<T> to @c os.  Returns @c os.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static std::ostream & NWrite(std::ostream & os, const std::optional<T> & t)
+    {
+      static_assert(iostream_detail::IsNWritable<T>);
+      bool  hasValue = t.has_value();
+      if (StreamIO::NWrite(os, hasValue)) {
+        if (hasValue) {
+          StreamIO::NWrite(os, t.value());
+        }
+      }
+      return os;
+    }
+    
+    //------------------------------------------------------------------------
     //!  Reads a std::optional<T> from @c is.  Returns @c is.
     //------------------------------------------------------------------------
     template <typename T>
@@ -720,6 +1559,28 @@ namespace Dwm {
             t = T();
           }
           StreamIO::Read(is, t.value());
+        }
+        else {
+          t.reset();
+        }
+      }
+      return is;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads a std::optional<T> from @c is.  Returns @c is.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_default_constructible_v<T>
+    static std::istream & NRead(std::istream & is, std::optional<T> & t)
+    {
+      bool  hasValue = false;
+      if (StreamIO::NRead(is, hasValue)) {
+        if (hasValue) {
+          if (! t.has_value()) {
+            t = T();
+          }
+          StreamIO::NRead(is, t.value());
         }
         else {
           t.reset();
@@ -780,6 +1641,48 @@ namespace Dwm {
       and (not io_detail::DirectlySupported<T>)
       and (not io_detail::SupportedContainer<T>)
       and (not io_detail::DenyType<T>)
+      and (not HasStreamNWrite<T>)
+    static std::ostream & NWrite(std::ostream & os, T const & v)
+    {
+      using Dwm::iostream_detail::IsNWritable;
+      using Dwm::io_detail::Skip;
+      using io_detail::SkipReason, io_detail::DenyReason;
+      constexpr auto ctx = std::meta::access_context::unchecked();
+      template for (constexpr auto mem :
+                    define_static_array(nonstatic_data_members_of(^^T, ctx))) {
+        if constexpr (Skip<decltype(v.[:mem:]),mem>()) {
+          FSyslog(LOG_INFO, "{}.{} of type '{}' skipped{}",
+                  TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                  std::meta::display_string_of(std::meta::type_of(mem)),
+                  SkipReason<decltype(v.[:mem:]),mem>());
+        }
+        else {
+          if constexpr (IsNWritable<decltype(v.[:mem:])>) {
+            FSyslog(LOG_DEBUG, "Writing {}.{} of type '{}'",
+                    TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                    std::meta::display_string_of(std::meta::type_of(mem)));
+            NWrite(os, v.[:mem:]);
+          }
+          else {
+            os.setstate(std::ios_base::failbit);
+            FSyslog(LOG_ERR, "{}.{} of type '{}' is unwritable{}",
+                    TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                    std::meta::display_string_of(std::meta::type_of(mem)),
+                    DenyReason<mem>());
+          }
+        }
+      }
+      return os;
+    }
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <class T>
+    requires std::is_class_v<T>
+      and (not io_detail::DirectlySupported<T>)
+      and (not io_detail::SupportedContainer<T>)
+      and (not io_detail::DenyType<T>)
       and (not HasStreamRead<T>)
     static std::istream & Read(std::istream & is, T & v)
     {
@@ -810,6 +1713,45 @@ namespace Dwm {
       }
       return is;
     }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <class T>
+    requires std::is_class_v<T>
+      and (not io_detail::DirectlySupported<T>)
+      and (not io_detail::SupportedContainer<T>)
+      and (not io_detail::DenyType<T>)
+      and (not HasStreamNRead<T>)
+    static std::istream & NRead(std::istream & is, T & v)
+    {
+      using iostream_detail::IsNReadable;
+      using io_detail::Skip;
+      using io_detail::SkipReason, io_detail::DenyReason;
+      constexpr auto ctx = std::meta::access_context::unchecked();
+      template for (constexpr auto mem :
+                      define_static_array(nonstatic_data_members_of(^^T, ctx))) {
+        if constexpr (Skip<decltype(v.[:mem:]),mem>()) {
+          FSyslog(LOG_INFO, "{}.{} of type '{}' skipped{}",
+                  TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                  std::meta::display_string_of(std::meta::type_of(mem)),
+                  SkipReason<decltype(v.[:mem:]),mem>());
+        }
+        else {
+          if constexpr (IsNReadable<decltype(v.[:mem:])>) {
+            NRead(is, (v.[:mem:]));
+          }
+          else {
+            is.setstate(std::ios_base::failbit);
+            FSyslog(LOG_ERR, "{}.{} of type '{}' is unreadable{}",
+                    TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                    std::meta::display_string_of(std::meta::type_of(mem)),
+                    DenyReason<mem>());
+          }
+        }
+      }
+      return is;
+    }
     
 #endif  // defined(DWM_CAN_USE_REFLECTION)
 
@@ -817,6 +1759,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
+#if 0
     template <typename _inputIteratorT>
     static std::ostream & Write(std::ostream & os,
                                 _inputIteratorT f, _inputIteratorT l)
@@ -830,6 +1773,24 @@ namespace Dwm {
       }
       return(os);
     }
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename _inputIteratorT>
+    static std::ostream & NWrite(std::ostream & os,
+                                 _inputIteratorT f, _inputIteratorT l)
+    {
+      if (os) {
+        for ( ; f != l; ++f) {
+          if (! NWrite(os, *f)) {
+            break;
+          }
+        }
+      }
+      return(os);
+    }
+#endif
 
     //------------------------------------------------------------------------
     //!  Reads a PairAssociative container from an istream.  Returns the
@@ -863,6 +1824,38 @@ namespace Dwm {
       return(is);
     }
 
+    //------------------------------------------------------------------------
+    //!  Reads a PairAssociative container from an istream.  Returns the
+    //!  istream.
+    //!  We use this for map, multimap, unordered_map and unordered_multimap.
+    //------------------------------------------------------------------------
+    template <typename _containerT>
+    requires std::is_default_constructible_v<typename _containerT::key_type>
+      and std::is_default_constructible_v<typename _containerT::mapped_type>
+    static std::istream & PairAssocContNRead(std::istream & is, _containerT & m)
+    {
+      if (! m.empty())
+        m.clear();
+      if (is) {
+        uint64_t  numEntries;
+        if (NRead(is, numEntries)) {
+          for (uint64_t i = 0; i < numEntries; ++i) {
+            typename _containerT::key_type  key;
+            if (NRead(is, key)) {
+              typename _containerT::mapped_type  val;
+              if (NRead(is, val)) {
+                m.insert(typename _containerT::value_type(std::move(key),
+                                                          std::move(val)));
+              }
+              else { break; }
+            }
+            else { break; }
+          }
+        }
+      }
+      return(is);
+    }
+        
   };  // class StreamIO
 
   //--------------------------------------------------------------------------
@@ -887,6 +1880,28 @@ namespace Dwm {
       { StreamIO::Read(is, t) } -> std::same_as<std::istream &>;
     };
 
+  //--------------------------------------------------------------------------
+  //!  Simple concept expressing that an instance of type T can be written
+  //!  to an ostream via a StreamIO::NWrite() member.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept IsStreamNWritable =
+    (iostream_detail::IsNWritable<T> == true)
+    and requires(const T & t, std::ostream & os) {
+      { StreamIO::NWrite(os, t) } -> std::same_as<std::ostream &>;
+    };
+
+  //--------------------------------------------------------------------------
+  //!  Simple concept expressing that an instance of type T can be read from
+  //!  an istream via a StreamIO::NRead() member.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept IsStreamNReadable =
+    (iostream_detail::IsNReadable<T> == true)
+    and requires(T & t, std::istream & is) {
+      { StreamIO::NRead(is, t) } -> std::same_as<std::istream &>;
+    };
+  
 }  // namespace Dwm
 
 #endif  // _DWMSTREAMIO_HH_
