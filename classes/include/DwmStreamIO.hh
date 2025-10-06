@@ -118,292 +118,298 @@ namespace Dwm {
   {
   public:
     //------------------------------------------------------------------------
-    //!  Reads \c c from \c is.  Returns \c is.
+    //!  Reads @c c from @c is.  Returns @c is.
     //------------------------------------------------------------------------
-    static std::istream & Read(std::istream & is, char & c);
+    static inline std::istream & Read(std::istream & is, char & c)
+    { return is.read(&c, sizeof(c)); }
 
     //------------------------------------------------------------------------
-    //!  Reads \c c from \c is.  Returns \c is.
+    //!  Reads @c c from @c is.  Returns @c is.
     //------------------------------------------------------------------------
     static inline std::istream & NRead(std::istream & is, char & c)
     { return Read(is, c); }
 
     //------------------------------------------------------------------------
-    //!  Writes \c c to \c os.  Returns \c os.
+    //!  Writes @c c to @c os.  Returns @c os.
     //------------------------------------------------------------------------
-    static std::ostream & Write(std::ostream & os, char c);
+    static inline std::ostream & Write(std::ostream & os, char c)
+    { return os.write(&c, sizeof(c)); }
 
     //------------------------------------------------------------------------
-    //!  Writes \c c to \c os.  Returns \c os.
+    //!  Writes @c c to @c os.  Returns @c os.
     //------------------------------------------------------------------------
     static inline std::ostream & NWrite(std::ostream & os, char c)
     { return Write(os, c); }
     
     //------------------------------------------------------------------------
-    //!  Reads \c c from \c is.  Returns \c is.
+    //!  Reads @c c from @c is.  Returns @c is.
     //------------------------------------------------------------------------
-    static std::istream & Read(std::istream & is, int8_t & c);
+    static inline std::istream & Read(std::istream & is, int8_t & c)
+    { return is.read((caddr_t)&c, sizeof(c)); }
 
     //------------------------------------------------------------------------
-    //!  Reads \c c from \c is.  Returns \c is.
+    //!  Reads @c c from @c is.  Returns @c is.
     //------------------------------------------------------------------------
-    static inline  std::istream & NRead(std::istream & is, int8_t & c)
+    static inline std::istream & NRead(std::istream & is, int8_t & c)
     { return Read(is, c); }
     
     //------------------------------------------------------------------------
-    //!  Writes \c c to \c os.  Returns \c os.
+    //!  Writes @c c to @c os.  Returns @c os.
     //------------------------------------------------------------------------
-    static std::ostream & Write(std::ostream & os, int8_t c);
+    static inline std::ostream & Write(std::ostream & os, int8_t c)
+    { return os.write((caddr_t)&c, sizeof(c)); }
 
     //------------------------------------------------------------------------
-    //!  Writes \c c to \c os.  Returns \c os.
+    //!  Writes @c c to @c os.  Returns @c os.
     //------------------------------------------------------------------------
     static inline std::ostream & NWrite(std::ostream & os, int8_t c)
     { return Write(os, c); }
     
     //------------------------------------------------------------------------
-    //!  Reads \c c from \c is.  Returns \c is.
+    //!  Reads @c c from @c is.  Returns @c is.
     //------------------------------------------------------------------------
-    static std::istream & Read(std::istream & is, uint8_t & c);
+    static inline std::istream & Read(std::istream & is, uint8_t & c)
+    { return is.read((caddr_t)&c, sizeof(c)); }
 
     //------------------------------------------------------------------------
-    //!  Reads \c c from \c is.  Returns \c is.
+    //!  Reads @c c from @c is.  Returns @c is.
     //------------------------------------------------------------------------
     static inline std::istream & NRead(std::istream & is, uint8_t & c)
     { return Read(is, c); }
     
     //------------------------------------------------------------------------
-    //!  Writes \c c to \c os.  Returns \c os.
+    //!  Writes @c c to @c os.  Returns @c os.
     //------------------------------------------------------------------------
-    static std::ostream & Write(std::ostream & os, uint8_t c);
+    static inline std::ostream & Write(std::ostream & os, uint8_t c)
+    { return os.write((caddr_t)&c, sizeof(c)); }
 
     //------------------------------------------------------------------------
-    //!  Writes \c c to \c os.  Returns \c os.
+    //!  Writes @c c to @c os.  Returns @c os.
     //------------------------------------------------------------------------
     static inline std::ostream & NWrite(std::ostream & os, uint8_t c)
     { return Write(os, c); }
     
     //------------------------------------------------------------------------
-    //!  Reads \c b from \c is.  Returns \c is.
+    //!  Reads @c b from @c is.  Returns @c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, bool & b);
 
     //------------------------------------------------------------------------
-    //!  Reads \c b from \c is.  Returns \c is.
+    //!  Reads @c b from @c is.  Returns @c is.
     //------------------------------------------------------------------------
     static inline std::istream & NRead(std::istream & is, bool & b)
     { return Read(is, b); }
     
     //------------------------------------------------------------------------
-    //!  Writes a bool \c b to an ostream \c os.  Returns \c os.
+    //!  Writes a bool @c b to an ostream @c os.  Returns @c os.
     //------------------------------------------------------------------------
     static std::ostream & Write(std::ostream & os, bool b);
 
     //------------------------------------------------------------------------
-    //!  Writes a bool \c b to an ostream \c os.  Returns \c os.
+    //!  Writes a bool @c b to an ostream @c os.  Returns @c os.
     //------------------------------------------------------------------------
     static inline std::ostream & NWrite(std::ostream & os, bool b)
     { return Write(os, b); }
     
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c is, in network byte order (MSB first).
-    //!  Returns \c is.
+    //!  Reads @c val from @c is, in network byte order (MSB first).
+    //!  Returns @c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, int16_t & val);
 
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c is, in native byte order.  Returns \c is.
+    //!  Reads @c val from @c is, in native byte order.  Returns @c is.
     //------------------------------------------------------------------------
     static inline std::istream & NRead(std::istream & is, int16_t & val)
     { return is.read((caddr_t)&val, sizeof(val)); }
     
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c os, in network byte order (MSB first).
-    //!  Returns \c os.
+    //!  Writes @c val to @c os, in network byte order (MSB first).
+    //!  Returns @c os.
     //------------------------------------------------------------------------
     static std::ostream & Write(std::ostream & os, int16_t val);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c os, in native byte order.  Returns \c os.
+    //!  Writes @c val to @c os, in native byte order.  Returns @c os.
     //------------------------------------------------------------------------
     static inline std::ostream & NWrite(std::ostream & os, int16_t val)
     { return os.write((caddr_t)&val, sizeof(val)); }
     
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c is, in network byte order (MSB first).
-    //!  Returns \c is.
+    //!  Reads @c val from @c is, in network byte order (MSB first).
+    //!  Returns @c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, uint16_t & val);
 
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c is, in native byte order.  Returns \c is.
+    //!  Reads @c val from @c is, in native byte order.  Returns @c is.
     //------------------------------------------------------------------------
     static inline std::istream & NRead(std::istream & is, uint16_t & val)
     { return is.read((caddr_t)&val, sizeof(val)); }
     
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c os, in network byte order (MSB first).
-    //!  Returns \c os.
+    //!  Writes @c val to @c os, in network byte order (MSB first).
+    //!  Returns @c os.
     //------------------------------------------------------------------------
     static std::ostream & Write(std::ostream & os, uint16_t val);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c os, in native byte order.  Returns \c os.
+    //!  Writes @c val to @c os, in native byte order.  Returns @c os.
     //------------------------------------------------------------------------
     static inline std::ostream & NWrite(std::ostream & os, uint16_t val)
     { return os.write((caddr_t)&val, sizeof(val)); }
     
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c is, in network byte order (MSB first).
-    //!  Returns \c is.
+    //!  Reads @c val from @c is, in network byte order (MSB first).
+    //!  Returns @c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, int32_t & val);
 
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c is, in native byte order.  Returns \c is.
+    //!  Reads @c val from @c is, in native byte order.  Returns @c is.
     //------------------------------------------------------------------------
     static inline std::istream & NRead(std::istream & is, int32_t & val)
     { return is.read((caddr_t)&val, sizeof(val)); }
     
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c os, in network byte order (MSB first).
-    //!  Returns \c os.
+    //!  Writes @c val to @c os, in network byte order (MSB first).
+    //!  Returns @c os.
     //------------------------------------------------------------------------
     static std::ostream & Write(std::ostream & os, int32_t val);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c os, in native byte order.  Returns \c os.
+    //!  Writes @c val to @c os, in native byte order.  Returns @c os.
     //------------------------------------------------------------------------
     static inline std::ostream & NWrite(std::ostream & os, int32_t val)
     { return os.write((caddr_t)&val, sizeof(val)); }
     
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c is, in network byte order (MSB first).
-    //!  Returns \c is.
+    //!  Reads @c val from @c is, in network byte order (MSB first).
+    //!  Returns @c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, uint32_t & val);
 
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c is, in native byte order.  Returns \c is.
+    //!  Reads @c val from @c is, in native byte order.  Returns @c is.
     //------------------------------------------------------------------------
     static inline std::istream & NRead(std::istream & is, uint32_t & val)
     { return is.read((caddr_t)&val, sizeof(val)); }
     
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c os, in network byte order (MSB first).
-    //!  Returns \c os.
+    //!  Writes @c val to @c os, in network byte order (MSB first).
+    //!  Returns @c os.
     //------------------------------------------------------------------------
     static std::ostream & Write(std::ostream & os, uint32_t val);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c os, in native byte order.  Returns \c os.
+    //!  Writes @c val to @c os, in native byte order.  Returns @c os.
     //------------------------------------------------------------------------
     static inline std::ostream & NWrite(std::ostream & os, uint32_t val)
     { return os.write((caddr_t)&val, sizeof(val)); }
     
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c is, in network byte order (MSB first).
-    //!  Returns \c is.
+    //!  Reads @c val from @c is, in network byte order (MSB first).
+    //!  Returns @c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, int64_t & val);
 
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c is, in native byte order.  Returns \c is.
+    //!  Reads @c val from @c is, in native byte order.  Returns @c is.
     //------------------------------------------------------------------------
     static inline std::istream & NRead(std::istream & is, int64_t & val)
     { return is.read((caddr_t)&val, sizeof(val)); }
     
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c os, in network byte order (MSB first).
-    //!  Returns \c os.
+    //!  Writes @c val to @c os, in network byte order (MSB first).
+    //!  Returns @c os.
     //------------------------------------------------------------------------
     static std::ostream & Write(std::ostream & os, const int64_t & val);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c os, in native byte order.  Returns \c os.
+    //!  Writes @c val to @c os, in native byte order.  Returns @c os.
     //------------------------------------------------------------------------
     static inline std::ostream & NWrite(std::ostream & os, const int64_t & val)
     { return os.write((caddr_t)&val, sizeof(val)); }
     
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c is, in network byte order (MSB first).
-    //!  Returns \c is.
+    //!  Reads @c val from @c is, in network byte order (MSB first).
+    //!  Returns @c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, uint64_t & val);
 
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c is, in native byte order.  Returns \c is.
+    //!  Reads @c val from @c is, in native byte order.  Returns @c is.
     //------------------------------------------------------------------------
     static inline std::istream & NRead(std::istream & is, uint64_t & val)
     { return is.read((caddr_t)&val, sizeof(val)); }
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c os, in network byte order (MSB first).
-    //!  Returns \c os.
+    //!  Writes @c val to @c os, in network byte order (MSB first).
+    //!  Returns @c os.
     //------------------------------------------------------------------------
     static std::ostream & Write(std::ostream & os, const uint64_t & val);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c os, in native byte order.  Returns \c os.
+    //!  Writes @c val to @c os, in native byte order.  Returns @c os.
     //------------------------------------------------------------------------
     static inline std::ostream & NWrite(std::ostream & os,
                                         const uint64_t & val)
     { return os.write((caddr_t)&val, sizeof(val)); }
     
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c is, in IEEE format (see RFC 1832
-    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c is.
+    //!  Reads @c val from @c is, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns @c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, float & val);
 
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c is, in native format (typically IEEE 754).
-    //!  Returns \c is.
+    //!  Reads @c val from @c is, in native format (typically IEEE 754).
+    //!  Returns @c is.
     //------------------------------------------------------------------------
     static inline std::istream & NRead(std::istream & is, float & val)
     { return is.read((caddr_t)&val, sizeof(val)); }
     
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c os, in IEEE format (see RFC 1832
-    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c os.
+    //!  Writes @c val to @c os, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns @c os.
     //------------------------------------------------------------------------
     static std::ostream & Write(std::ostream & os, float val);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c os, in native format (typically IEEE 754).
-    //!  Returns \c os.
+    //!  Writes @c val to @c os, in native format (typically IEEE 754).
+    //!  Returns @c os.
     //------------------------------------------------------------------------
     static inline std::ostream & NWrite(std::ostream & os, float val)
     { return os.write((caddr_t)&val, sizeof(val)); }
     
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c is, in IEEE format (see RFC 1832
-    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c is.
+    //!  Reads @c val from @c is, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns @c is.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, double & val);
 
     //------------------------------------------------------------------------
-    //!  Reads \c val from \c is, in native format (typically IEEE 754).
-    //!  Returns \c is.
+    //!  Reads @c val from @c is, in native format (typically IEEE 754).
+    //!  Returns @c is.
     //------------------------------------------------------------------------
     static inline std::istream & NRead(std::istream & is, double & val)
     { return is.read((caddr_t)&val, sizeof(val)); }
     
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c os, in IEEE format (see RFC 1832
-    //!  and/or ANSI/IEEE Standard 754-1985).  Returns \c os.
+    //!  Writes @c val to @c os, in IEEE format (see RFC 1832
+    //!  and/or ANSI/IEEE Standard 754-1985).  Returns @c os.
     //------------------------------------------------------------------------
     static std::ostream & Write(std::ostream & os, const double & val);
 
     //------------------------------------------------------------------------
-    //!  Writes \c val to \c os, in native format (typically IEEE 754).
-    //!  Returns \c os.
+    //!  Writes @c val to @c os, in native format (typically IEEE 754).
+    //!  Returns @c os.
     //------------------------------------------------------------------------
     static inline std::ostream & NWrite(std::ostream & os, const double & val)
     { return os.write((caddr_t)&val, sizeof(val)); }
     
     //------------------------------------------------------------------------
-    //!  Reads string \c s from \c is.  Returns @c is.
+    //!  Reads string @c s from @c is.  Returns @c is.
     //!  Strings are length:value encoded, where the length is a 64 bit
     //!  unsigned integer in network byte order (MSB first).
     //------------------------------------------------------------------------
