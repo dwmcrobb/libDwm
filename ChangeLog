@@ -15,7 +15,9 @@
 	  classes/include/DwmIpv4Prefix.hh, classes/src/DwmIpv4Prefix.cc,
 	  classes/include/DwmIpAddress.hh, classes/src/DwmIpAddress.cc,
 	  classes/include/DwmIpv6Address.hh, classes/src/DwmIpv6Address.cc,
-	  classes/include/DwmIpv4Address.hh, classes/src/DwmIpv4Address.cc:
+	  classes/include/DwmIpv4Address.hh, classes/src/DwmIpv4Address.cc,
+	  classes/include/DwmTimeInterval64.hh,
+	  classes/src/DwmTimeInterval64.cc:
 	Inlined the Read(istream &) and Write(ostream &) members.  Added
 	NRead(istream &) and NWrite(ostream &) members.
 
