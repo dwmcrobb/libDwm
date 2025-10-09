@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2005-2007, 2020
+//  Copyright (c) Daniel W. McRobb 2005-2007, 2020, 2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -131,6 +131,22 @@ namespace Dwm {
   std::ostream & TimeInterval::Write(std::ostream & os) const
   {
     return(StreamIO::Write(os, _data));
+  }
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  std::istream & TimeInterval::NRead(std::istream & is)
+  {
+    return(StreamIO::NRead(is, _data));
+  }
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  std::ostream & TimeInterval::NWrite(std::ostream & os) const
+  {
+    return(StreamIO::NWrite(os, _data));
   }
   
   //--------------------------------------------------------------------------
