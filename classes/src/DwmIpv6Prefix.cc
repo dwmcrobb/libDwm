@@ -344,9 +344,8 @@ namespace Dwm {
   std::istream & Ipv6Prefix::Read(std::istream & is)
   {
     memset(_addr.s6_addr, 0, sizeof(_addr.s6_addr));
-    if (is) {
-      if (is.read((char *)&_length, sizeof(_length)))
-        is.read((char *)_addr.s6_addr, NumAddrBytes());
+    if (is.read((char *)&_length, sizeof(_length))) {
+      is.read((char *)_addr.s6_addr, NumAddrBytes());
     }
     return(is);
   }
@@ -356,9 +355,8 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   std::ostream & Ipv6Prefix::Write(std::ostream & os) const
   {
-    if (os) {
-      if (os.write((const char *)&_length, sizeof(_length)))
-        os.write((const char *)_addr.s6_addr, NumAddrBytes());
+    if (os.write((const char *)&_length, sizeof(_length))) {
+      os.write((const char *)_addr.s6_addr, NumAddrBytes());
     }
     return(os);
   }
