@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2005-2007, 2020
+//  Copyright (c) Daniel W. McRobb 2005-2007, 2020, 2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -262,9 +262,9 @@ namespace Dwm {
   {
     _secs  = 0;
     _usecs = 0;
-    if (is)
-      if (StreamIO::Read(is, _secs))
-        StreamIO::Read(is, _usecs);
+    if (StreamIO::Read(is, _secs)) {
+      StreamIO::Read(is, _usecs);
+    }
     return(is);
   }
   
@@ -273,9 +273,33 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   std::ostream & TimeValue64::Write(std::ostream & os) const
   {
-    if (os)
-      if (StreamIO::Write(os, _secs))
-        StreamIO::Write(os, _usecs);
+    if (StreamIO::Write(os, _secs)) {
+      StreamIO::Write(os, _usecs);
+    }
+    return(os);
+  }
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  std::istream & TimeValue64::NRead(std::istream & is)
+  {
+    _secs  = 0;
+    _usecs = 0;
+    if (StreamIO::NRead(is, _secs)) {
+      StreamIO::NRead(is, _usecs);
+    }
+    return(is);
+  }
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  std::ostream & TimeValue64::NWrite(std::ostream & os) const
+  {
+    if (StreamIO::NWrite(os, _secs)) {
+      StreamIO::NWrite(os, _usecs);
+    }
     return(os);
   }
   
