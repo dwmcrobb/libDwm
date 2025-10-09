@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2007, 2020, 2024
+//  Copyright (c) Daniel W. McRobb 2007, 2020, 2024-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -47,11 +47,10 @@ extern "C" {
   #include <zlib.h>
 }
 
-#include <array>
 #include <cstdint>
 #include <cstdio>
-#include <iostream>
-#include <string>
+
+#include "DwmStreamIO.hh"
 
 namespace Dwm {
 
@@ -109,13 +108,27 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Reads the MAC address from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    std::istream & Read(std::istream & is);
+    inline std::istream & Read(std::istream & is)
+    { return StreamIO::Read(is, _addr); }
 
     //------------------------------------------------------------------------
     //!  Writes the MAC address to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const;
+    inline std::ostream & Write(std::ostream & os) const
+    { return StreamIO::Write(os, _addr); }
 
+    //------------------------------------------------------------------------
+    //!  Reads the MAC address from an istream.  Returns the istream.
+    //------------------------------------------------------------------------
+    inline std::istream & NRead(std::istream & is)
+    { return Read(is); }
+
+    //------------------------------------------------------------------------
+    //!  Writes the MAC address to an ostream.  Returns the ostream.
+    //------------------------------------------------------------------------
+    inline std::ostream & NWrite(std::ostream & os) const
+    { return Write(os); }
+    
     //------------------------------------------------------------------------
     //!  Reads the MAC address from a file descriptor.  Returns the number
     //!  of bytes read on success (should be 6), -1 on failure.

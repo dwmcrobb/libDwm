@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2007, 2024
+//  Copyright (c) Daniel W. McRobb 2007, 2024-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,6 @@ extern "C" {
 #include <sstream>
 
 #include "DwmMacAddress.hh"
-#include "DwmStreamIO.hh"
 #include "DwmDescriptorIO.hh"
 #include "DwmFileIO.hh"
 #include "DwmGZIO.hh"
@@ -133,22 +132,6 @@ namespace Dwm {
     ostringstream  os;
     os << *this;
     return os.str();
-  }
-  
-  //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
-  std::istream & MacAddress::Read(std::istream & is)
-  {
-    return StreamIO::Read(is, _addr);
-  }
-  
-  //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
-  std::ostream & MacAddress::Write(std::ostream & os) const
-  {
-    return StreamIO::Write(os, _addr);
   }
   
   //--------------------------------------------------------------------------
