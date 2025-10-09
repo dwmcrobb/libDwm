@@ -1,7 +1,10 @@
 2025-10-08  Daniel McRobb  <dwm@thrip.mcplex.net>
 
-	* classes/include/DwmProcessInfo.hh, classes/src/DwmProcessInfo.cc:
+	* classes/include/DwmMplsLabelStack.hh,
+	  classes/src/DwmMplsLabelStack.cc:
 	Added NRead(istream &) and NWrite(ostream &) members.
+
+	* classes/include/DwmProcessInfo.hh, classes/src/DwmProcessInfo.cc:
 
 	* classes/include/DwmMplsLabel.hh, classes/src/DwmMplsLabel.cc:
 	Inlined the Read(istream &) and Write(ostream &) members.  Added
