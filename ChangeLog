@@ -1,14 +1,17 @@
 2025-10-08  Daniel McRobb  <dwm@thrip.mcplex.net>
 
-	* classes/include/DwmMplsLabel.hh classes/src/DwmMplsLabel.cc:
+	* classes/include/DwmProcessInfo.hh, classes/src/DwmProcessInfo.cc:
+	Added NRead(istream &) and NWrite(ostream &) members.
+
+	* classes/include/DwmMplsLabel.hh, classes/src/DwmMplsLabel.cc:
 	Inlined the Read(istream &) and Write(ostream &) members.  Added
 	NRead(istream &) and NWrite(ostream &) members.
 
-	* classes/include/DwmMacAddress.hh classes/src/DwmMacAddress.cc:
+	* classes/include/DwmMacAddress.hh, classes/src/DwmMacAddress.cc:
 	Inlined the Read(istream &) and Write(ostream &) members.  Added
 	NRead(istream &) and NWrite(ostream &) members.
 
-	* classes/include/DwmIpPrefix.hh classes/src/DwmIpPrefix.cc:
+	* classes/include/DwmIpPrefix.hh, classes/src/DwmIpPrefix.cc:
 	Inlined the Read(istream &) and Write(ostream &) members.  Added
 	NRead(istream &) and NWrite(ostream &) members.
 
