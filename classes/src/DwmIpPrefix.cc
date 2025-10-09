@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2020
+//  Copyright (c) Daniel W. McRobb 2020, 2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -45,7 +45,6 @@
 #include "DwmGZIO.hh"
 #include "DwmIpPrefix.hh"
 #include "DwmIOUtils.hh"
-#include "DwmStreamIO.hh"
 
 namespace Dwm {
 
@@ -272,22 +271,6 @@ namespace Dwm {
     return FileIO::Write(f, _prefix);
   }
   
-  //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
-  std::istream & IpPrefix::Read(std::istream & is)
-  {
-    return StreamIO::Read(is, _prefix);
-  }
-
-  //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
-  std::ostream & IpPrefix::Write(std::ostream & os) const
-  {
-    return StreamIO::Write(os, _prefix);
-  }
-
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------

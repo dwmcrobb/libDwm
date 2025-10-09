@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2020, 2024
+//  Copyright (c) Daniel W. McRobb 2020, 2024-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -47,6 +47,7 @@
 #include "DwmIpAddress.hh"
 #include "DwmIpv4Prefix.hh"
 #include "DwmIpv6Prefix.hh"
+#include "DwmStreamIO.hh"
 
 namespace Dwm {
 
@@ -111,13 +112,27 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Reads the prefix from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    std::istream & Read(std::istream & is);
+    inline std::istream & Read(std::istream & is)
+    { return StreamIO::Read(is, _prefix); }
 
     //------------------------------------------------------------------------
     //!  Writes the prefix to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const;
+    inline std::ostream & Write(std::ostream & os) const
+    { return StreamIO::Write(os, _prefix); }
 
+    //------------------------------------------------------------------------
+    //!  Reads the prefix from an istream.  Returns the istream.
+    //------------------------------------------------------------------------
+    inline std::istream & NRead(std::istream & is)
+    { return Read(is); }
+
+    //------------------------------------------------------------------------
+    //!  Writes the prefix to an ostream.  Returns the ostream.
+    //------------------------------------------------------------------------
+    inline std::ostream & NWrite(std::ostream & os) const
+    { return Write(os); }
+    
     //------------------------------------------------------------------------
     //!  Reads the prefix from a gzFile.
     //------------------------------------------------------------------------
