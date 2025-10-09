@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2007, 2020
+//  Copyright (c) Daniel W. McRobb 2007, 2020, 2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,6 @@
 #include "DwmGZIO.hh"
 #include "DwmDescriptorIO.hh"
 #include "DwmFileIO.hh"
-#include "DwmStreamIO.hh"
 #include "DwmMplsLabel.hh"
 
 namespace Dwm {
@@ -162,30 +161,6 @@ namespace Dwm {
     return(_data & 0xFF);
   }
     
-  //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
-  bool MplsLabel::operator == (const MplsLabel & label) const
-  {
-    return(_data == label._data);
-  }
-  
-  //------------------------------------------------------------------------
-  //!  
-  //------------------------------------------------------------------------
-  std::istream & MplsLabel::Read(std::istream & is)
-  {
-    return(StreamIO::Read(is, _data));
-  }
-
-  //------------------------------------------------------------------------
-  //!  
-  //------------------------------------------------------------------------
-  std::ostream & MplsLabel::Write(std::ostream & os) const
-  {
-    return(StreamIO::Write(os, _data));
-  }
-
   //------------------------------------------------------------------------
   //!  
   //------------------------------------------------------------------------

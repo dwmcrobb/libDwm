@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2007, 2016, 2020, 2024
+//  Copyright (c) Daniel W. McRobb 2007, 2016, 2020, 2024-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -49,6 +49,8 @@ extern "C" {
 #include <cstdint>
 #include <cstdio>
 #include <iostream>
+
+#include "DwmStreamIO.hh"
 
 namespace Dwm {
 
@@ -111,17 +113,32 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  operator ==
     //------------------------------------------------------------------------
-    bool operator == (const MplsLabel & label) const;
+    inline bool operator == (const MplsLabel & label) const
+    { return(_data == label._data); }
     
     //------------------------------------------------------------------------
     //!  Reads the MPLS label from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    std::istream & Read(std::istream & is);
+    inline std::istream & Read(std::istream & is)
+    { return StreamIO::Read(is, _data); }
 
     //------------------------------------------------------------------------
     //!  Writes the MPLS label to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const;
+    inline std::ostream & Write(std::ostream & os) const
+    { return StreamIO::Write(os, _data); }
+
+    //------------------------------------------------------------------------
+    //!  Reads the MPLS label from an istream.  Returns the istream.
+    //------------------------------------------------------------------------
+    inline std::istream & NRead(std::istream & is)
+    { return StreamIO::NRead(is, _data); }
+    
+    //------------------------------------------------------------------------
+    //!  Writes the MPLS label to an ostream.  Returns the ostream.
+    //------------------------------------------------------------------------
+    inline std::ostream & NWrite(std::ostream & os) const
+    { return StreamIO::NWrite(os, _data); }
 
     //------------------------------------------------------------------------
     //!  Reads the MPLS label from a file descriptor.  Returns the number
