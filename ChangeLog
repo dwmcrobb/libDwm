@@ -3,6 +3,7 @@
 	* classes/include/DwmTimeInterval.hh, classes/src/DwmTimeInterval.cc:
 	  classes/include/DwmRusage.hh, classes/src/DwmRusage.cc,
 	  classes/include/DwmTimeValue.hh, classes/src/DwmTimeValue.cc,
+	  classes/include/DwmTimeValue64.hh, classes/src/DwmTimeValue64.cc,
 	  classes/include/DwmMplsLabelStack.hh,
 	  classes/src/DwmMplsLabelStack.cc,
 	  classes/include/DwmProcessInfo.hh, classes/src/DwmProcessInfo.cc:
