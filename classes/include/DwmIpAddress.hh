@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004, 2024
+//  Copyright (c) Daniel W. McRobb 2004, 2024-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -51,6 +51,7 @@ extern "C" {
 
 #include "DwmIpv4Address.hh"
 #include "DwmIpv6Address.hh"
+#include "DwmStreamIO.hh"
 
 namespace Dwm {
 
@@ -133,13 +134,27 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Reads from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    std::istream & Read(std::istream & is);
+    inline std::istream & Read(std::istream & is)
+    { return StreamIO::Read(is, _addr); }
     
     //------------------------------------------------------------------------
     //!  Writes to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const;
+    inline std::ostream & Write(std::ostream & os) const
+    { return StreamIO::Write(os, _addr); }
 
+    //------------------------------------------------------------------------
+    //!  Reads from an istream.  Returns the istream.
+    //------------------------------------------------------------------------
+    inline std::istream & NRead(std::istream & is)
+    { return Read(is); }
+    
+    //------------------------------------------------------------------------
+    //!  Writes to an ostream.  Returns the ostream.
+    //------------------------------------------------------------------------
+    std::ostream & NWrite(std::ostream & os) const
+    { return Write(os); }
+    
     //------------------------------------------------------------------------
     //!  Reads from a file descriptor.  Returns the number of bytes read
     //!  on success, -1 on failure.
