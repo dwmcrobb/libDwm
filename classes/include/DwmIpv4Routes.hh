@@ -452,6 +452,22 @@ namespace Dwm {
     {
       return(StreamIO::Write(os, _hashMaps));
     }
+
+    //------------------------------------------------------------------------
+    //!  Reads the routes from an istream.  Returns the istream.
+    //------------------------------------------------------------------------
+    std::istream & NRead(std::istream & is)
+    {
+      return(StreamIO::NRead(is, _hashMaps));
+    }
+    
+    //------------------------------------------------------------------------
+    //!  Writes the routes to an ostream.  Returns the ostream.
+    //------------------------------------------------------------------------
+    std::ostream & NWrite(std::ostream & os) const
+    {
+      return(StreamIO::NWrite(os, _hashMaps));
+    }
     
     //------------------------------------------------------------------------
     //!  Reades the routes from a FILE pointer.  Returns 1 on success,
