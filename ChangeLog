@@ -1,5 +1,9 @@
 2025-10-08  Daniel McRobb  <dwm@thrip.mcplex.net>
 
+	* classes/include/DwmIpPrefix.hh classes/src/DwmIpPrefix.cc:
+	Inlined the Read(istream &) and Write(ostream &) members.  Added
+	NRead(istream &) and NWrite(ostream &) members.
+
 	* classes/include/DwmIpv6Prefix.h, classes/src/DwmIpv6Prefix.cc:
 	Slight optimization of the Read(istream &) and Write(ostream &)
 	members.  Added	NRead(istream &) and NWrite(ostream &) members.
