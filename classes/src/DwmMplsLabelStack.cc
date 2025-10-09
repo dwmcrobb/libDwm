@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2007, 2020
+//  Copyright (c) Daniel W. McRobb 2007, 2020, 2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -96,12 +96,42 @@ namespace Dwm {
     assert(! _labels.empty());
     assert(_labels.rbegin()->S());
     
-    if (os) {
-      std::vector<MplsLabel>::const_iterator  i;
-      for (i = _labels.begin(); i != _labels.end(); ++i) {
-        if (! i->Write(os))
+    for (const auto & label : _labels) {
+      if (! label.Write(os))
+        break;
+    }
+    return(os);
+  }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  std::istream & MplsLabelStack::NRead(std::istream & is)
+  {
+    _labels.clear();
+    
+    if (is) {
+      MplsLabel  label;
+      while (! label.S()) {
+        if (! label.NRead(is))
           break;
+        _labels.push_back(label);
       }
+    }
+    return(is);
+  }
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  std::ostream & MplsLabelStack::NWrite(std::ostream & os) const
+  {
+    assert(! _labels.empty());
+    assert(_labels.rbegin()->S());
+    
+    for (const auto & label : _labels) {
+      if (! label.NWrite(os))
+        break;
     }
     return(os);
   }
