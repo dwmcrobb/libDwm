@@ -1,5 +1,9 @@
 2025-10-08  Daniel McRobb  <dwm@thrip.mcplex.net>
 
+	* classes/include/DwmIpAddress.hh, classes/src/DwmIpAddress.cc:
+	Inlined the Read(istream &) and Write(ostream &) members.  Added
+	NRead(istream &) and NWrite(ostream &) members.
+
 	* classes/include/DwmIpv6Address.hh, classes/src/DwmIpv6Address.cc:
 	Inlined the Read(istream &) and Write(ostream &) members.  Added
 	NRead(istream &) and NWrite(ostream &) members.
