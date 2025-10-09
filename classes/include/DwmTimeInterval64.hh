@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2016, 2017, 2020, 2024
+//  Copyright (c) Daniel W. McRobb 2016, 2017, 2020, 2024-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -47,6 +47,7 @@
 
 #include "DwmTimeInterval.hh"
 #include "DwmTimeValue64.hh"
+#include "DwmStreamIO.hh"
 
 namespace Dwm {
 
@@ -161,13 +162,29 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Reads the time interval from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    std::istream & Read(std::istream & is);
-
+    inline std::istream & Read(std::istream & is)
+    { return StreamIO::Read(is, _data); }
+    
     //------------------------------------------------------------------------
     //!  Writes the time interval to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const;
+    inline std::ostream & Write(std::ostream & os) const
+    { return StreamIO::Write(os, _data); }
+      
+    //------------------------------------------------------------------------
+    //!  Reads the time interval from an istream, in native byte order.
+    //!  Returns the istream.
+    //------------------------------------------------------------------------
+    inline std::istream & NRead(std::istream & is)
+    { return StreamIO::NRead(is, _data); }
 
+    //------------------------------------------------------------------------
+    //!  Writes the time interval to an ostream, in native byte order.
+    //!  Returns the ostream.
+    //------------------------------------------------------------------------
+    inline std::ostream & NWrite(std::ostream & os) const
+    { return StreamIO::NWrite(os, _data); }
+    
     //------------------------------------------------------------------------
     //!  Reads the time interval from a FILE pointer.  Returns 1 on success,
     //!  0 on failure.

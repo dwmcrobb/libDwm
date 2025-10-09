@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2005-2007, 2020
+//  Copyright (c) Daniel W. McRobb 2005-2007, 2020, 2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,6 @@
 #include "DwmTimeInterval64.hh"
 #include "DwmDescriptorIO.hh"
 #include "DwmFileIO.hh"
-#include "DwmStreamIO.hh"
 #include "DwmBZ2IO.hh"
 #include "DwmGZIO.hh"
 
@@ -115,22 +114,6 @@ namespace Dwm {
   uint64_t TimeInterval64::StreamedLength() const
   {
     return(_data.first.StreamedLength() + _data.second.StreamedLength());
-  }
-  
-  //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
-  std::istream & TimeInterval64::Read(std::istream & is)
-  {
-    return(StreamIO::Read(is, _data));
-  }
-  
-  //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
-  std::ostream & TimeInterval64::Write(std::ostream & os) const
-  {
-    return(StreamIO::Write(os, _data));
   }
   
   //--------------------------------------------------------------------------
