@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2006-2007, 2020
+//  Copyright (c) Daniel W. McRobb 2006-2007, 2020, 2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -303,14 +303,12 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   std::istream & Rusage::Read(std::istream & is)
   {
-    if (is) {
-      StreamIO::ReadV(is, _userTime, _systemTime, _maxResidentSetSize,
-                      _integralSharedTextMemorySize, _integralUnsharedDataSize,
-                      _integralUnsharedStackSize, _pageReclaims, _pageFaults,
-                      _swaps, _blockInputOperations, _blockOutputOperations,
-                      _messagesSent, _messagesReceived, _signalsReceived,
-                      _voluntaryContextSwitches, _involuntaryContextSwitches);
-    }
+    StreamIO::ReadV(is, _userTime, _systemTime, _maxResidentSetSize,
+                    _integralSharedTextMemorySize, _integralUnsharedDataSize,
+                    _integralUnsharedStackSize, _pageReclaims, _pageFaults,
+                    _swaps, _blockInputOperations, _blockOutputOperations,
+                    _messagesSent, _messagesReceived, _signalsReceived,
+                    _voluntaryContextSwitches, _involuntaryContextSwitches);
     return(is);
   }
   
@@ -319,18 +317,45 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   std::ostream & Rusage::Write(std::ostream & os) const
   {
-    if (os) {
-      StreamIO::WriteV(os, _userTime, _systemTime, _maxResidentSetSize,
-                       _integralSharedTextMemorySize,
-                       _integralUnsharedDataSize, _integralUnsharedStackSize,
-                       _pageReclaims, _pageFaults, _swaps,
-                       _blockInputOperations, _blockOutputOperations,
-                       _messagesSent, _messagesReceived, _signalsReceived,
-                       _voluntaryContextSwitches, _involuntaryContextSwitches);
-    }
+    StreamIO::WriteV(os, _userTime, _systemTime, _maxResidentSetSize,
+                     _integralSharedTextMemorySize,
+                     _integralUnsharedDataSize, _integralUnsharedStackSize,
+                     _pageReclaims, _pageFaults, _swaps,
+                     _blockInputOperations, _blockOutputOperations,
+                     _messagesSent, _messagesReceived, _signalsReceived,
+                     _voluntaryContextSwitches, _involuntaryContextSwitches);
     return(os);
   }
 
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  std::istream & Rusage::NRead(std::istream & is)
+  {
+    StreamIO::NReadV(is, _userTime, _systemTime, _maxResidentSetSize,
+                     _integralSharedTextMemorySize, _integralUnsharedDataSize,
+                     _integralUnsharedStackSize, _pageReclaims, _pageFaults,
+                     _swaps, _blockInputOperations, _blockOutputOperations,
+                     _messagesSent, _messagesReceived, _signalsReceived,
+                     _voluntaryContextSwitches, _involuntaryContextSwitches);
+    return(is);
+  }
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  std::ostream & Rusage::NWrite(std::ostream & os) const
+  {
+    StreamIO::NWriteV(os, _userTime, _systemTime, _maxResidentSetSize,
+                      _integralSharedTextMemorySize,
+                      _integralUnsharedDataSize, _integralUnsharedStackSize,
+                      _pageReclaims, _pageFaults, _swaps,
+                      _blockInputOperations, _blockOutputOperations,
+                      _messagesSent, _messagesReceived, _signalsReceived,
+                      _voluntaryContextSwitches, _involuntaryContextSwitches);
+    return(os);
+  }
+  
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------

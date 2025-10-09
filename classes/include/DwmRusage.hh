@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2006-2007, 2016, 2024
+//  Copyright (c) Daniel W. McRobb 2006-2007, 2016, 2024-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -183,6 +183,16 @@ namespace Dwm {
     //!  Writes to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
     std::ostream & Write(std::ostream & os) const;
+
+    //------------------------------------------------------------------------
+    //!  Reads from an istream, in native byte order.  Returns the istream.
+    //------------------------------------------------------------------------
+    std::istream & NRead(std::istream & is);
+    
+    //------------------------------------------------------------------------
+    //!  Writes to an ostream, in native byte order.  Returns the ostream.
+    //------------------------------------------------------------------------
+    std::ostream & NWrite(std::ostream & os) const;
     
     //------------------------------------------------------------------------
     //!  Reads from a gzFile.  Returns the number of bytes read on success,
