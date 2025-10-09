@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2006, 2023, 2024
+//  Copyright (c) Daniel W. McRobb 2004-2006, 2023-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -279,13 +279,27 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Reads a prefix from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    std::istream & Read(std::istream & is);
+    inline std::istream & Read(std::istream & is) 
+    { return is.read((caddr_t)_data, sizeof(_data)); }
+    
+    //------------------------------------------------------------------------
+    //!  Reads a prefix from an istream.  Returns the istream.
+    //------------------------------------------------------------------------
+    inline std::istream & NRead(std::istream & is)
+    { return Read(is); }
     
     //------------------------------------------------------------------------
     //!  Writes a prefix to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const;
-    
+    inline std::ostream & Write(std::ostream & os) const
+    { return os.write((caddr_t)_data, sizeof(_data)); }
+
+    //------------------------------------------------------------------------
+    //!  Writes a prefix to an ostream.  Returns the ostream.
+    //------------------------------------------------------------------------
+    inline std::ostream & NWrite(std::ostream & os) const
+    { return Write(os); }
+      
     //------------------------------------------------------------------------
     //!  Reads a prefix from a gzFile.  Returns the number of
     //!  bytes read on success, -1 on failure.
