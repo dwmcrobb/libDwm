@@ -1,3 +1,13 @@
+2025-10-08  Daniel McRobb  <dwm@thrip.mcplex.net>
+
+	* classes/include/DwmIpv6Address.hh, classes/src/DwmIpv6Address.cc:
+	Inlined the Read(istream &) and Write(ostream &) members.  Added
+	NRead(istream &) and NWrite(ostream &) members.
+
+	* classes/include/DwmIpv4Address.hh, classes/src/DwmIpv4Address.cc:
+	Inlined the Read(istream &) and Write(ostream &) members.  Added
+	NRead(istream &) and NWrite(ostream &) members.
+
 2025-09-30  Daniel McRobb  <dwm@thrip.mcplex.net>
 
 	* classes/include/DwmUnitAssert.hh: Make the UnitAssert() macro
