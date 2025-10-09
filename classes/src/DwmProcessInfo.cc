@@ -100,6 +100,32 @@ namespace Dwm {
     }
     return os;
   }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  std::istream & ProcessInfo::NRead(std::istream & is)
+  {
+    if (is) {
+      StreamIO::NReadV(is, user, ruser, pid, ppid, gid, uid, ruid, svuid,
+                       rgid, svgid, rss, vsz, pcpu, pmem, pri, lstart, tty,
+                       args);
+    }
+    return is;
+  }
+ 
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  std::ostream & ProcessInfo::NWrite(std::ostream & os) const
+  {
+    if (os) {
+      StreamIO::NWriteV(os, user, ruser, pid, ppid, gid, uid, ruid, svuid,
+                        rgid, svgid, rss, vsz, pcpu, pmem, pri, lstart, tty,
+                        args);
+    }
+    return os;
+  }
   
   //--------------------------------------------------------------------------
   //!  

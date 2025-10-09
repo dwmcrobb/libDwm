@@ -84,12 +84,24 @@ namespace Dwm {
     //!  Reads the process info from an istream.  Returns the istream.
     //------------------------------------------------------------------------
     std::istream & Read(std::istream & is);
-    
+
     //------------------------------------------------------------------------
     //!  Writes the process info to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
     std::ostream & Write(std::ostream & os) const;
     
+    //------------------------------------------------------------------------
+    //!  Reads the process info from an istream, in native byte order.
+    //!  Returns the istream.
+    //------------------------------------------------------------------------
+    std::istream & NRead(std::istream & is);
+    
+    //------------------------------------------------------------------------
+    //!  Writes the process info to an ostream, in native byte order.
+    //!  Returns the ostream.
+    //------------------------------------------------------------------------
+    std::ostream & NWrite(std::ostream & os) const;
+
     //------------------------------------------------------------------------
     //!  Reads the process info from a gzFile.  Returns the number of bytes
     //!  read on success, -1 on failure.
