@@ -74,11 +74,11 @@ void TestStreamIO()
     remove(TEST_FILE);
   }
 
-  TimeInterval64  ti3;
-  TimeValue64     yesterday(true);
+  TimeInterval64    ti3;
+  Dwm::TimeValue64  yesterday(true);
   yesterday.Set(yesterday.Secs() - (24 * 60 * 60), 0);
   ti3.Start(yesterday);
-  ti3.End(TimeValue64(true));
+  ti3.End(Dwm::TimeValue64(true));
   UnitAssert(ti3.Contains(yesterday));
   os.open(TEST_FILE);
   if (UnitAssert(os)) {
@@ -122,11 +122,11 @@ void TestFileIO()
     remove(TEST_FILE);
   }
 
-  TimeInterval64  ti3;
-  TimeValue64     yesterday(true);
+  TimeInterval64    ti3;
+  Dwm::TimeValue64  yesterday(true);
   yesterday.Set(yesterday.Secs() - (24 * 60 * 60), 0);
   ti3.Start(yesterday);
-  ti3.End(TimeValue64(true));
+  ti3.End(Dwm::TimeValue64(true));
   UnitAssert(ti3.Contains(yesterday));
   f = fopen(TEST_FILE, "w");
   if (UnitAssert(f)) {
@@ -174,11 +174,11 @@ void TestDescriptorIO()
     remove(TEST_FILE);
   }
 
-  TimeInterval64  ti3;
-  TimeValue64     yesterday(true);
+  TimeInterval64    ti3;
+  Dwm::TimeValue64  yesterday(true);
   yesterday.Set(yesterday.Secs() - (24 * 60 * 60), 0);
   ti3.Start(yesterday);
-  ti3.End(TimeValue64(true));
+  ti3.End(Dwm::TimeValue64(true));
   UnitAssert(ti3.Contains(yesterday));
   fd = open(TEST_FILE, O_WRONLY|O_CREAT|O_TRUNC, 0644);
   if (UnitAssert(fd >= 0)) {
