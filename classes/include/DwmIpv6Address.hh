@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2006, 2016, 2020, 2023, 2024
+//  Copyright (c) Daniel W. McRobb 2004-2006, 2016, 2020, 2023-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -154,13 +154,27 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Reads from an istream.  Returns the istream.
     //------------------------------------------------------------------------
-    std::istream & Read(std::istream & is);
+    inline std::istream & Read(std::istream & is)
+    { return is.read((char *)&_addr, sizeof(_addr)); }
 
     //------------------------------------------------------------------------
     //!  Writes to an ostream.  Returns the ostream.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const;
+    inline std::ostream & Write(std::ostream & os) const
+    { return os.write((char *)&_addr, sizeof(_addr)); }
 
+    //------------------------------------------------------------------------
+    //!  Reads from an istream.  Returns the istream.
+    //------------------------------------------------------------------------
+    inline std::istream & NRead(std::istream & is)
+    { return Read(is); }
+    
+    //------------------------------------------------------------------------
+    //!  Writes to an ostream.  Returns the ostream.
+    //------------------------------------------------------------------------
+    inline std::ostream & NWrite(std::ostream & os) const
+    { return Write(os); }
+    
     //------------------------------------------------------------------------
     //!  Reads from a file descriptor.  Returns the number of bytes read
     //!  (16 on success).

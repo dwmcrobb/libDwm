@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2004-2007, 2020, 2023
+//  Copyright (c) Daniel W. McRobb 2004-2007, 2020, 2023, 2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -176,26 +176,6 @@ namespace Dwm {
   uint64_t Ipv6Address::StreamedLength() const
   {
     return(sizeof(_addr));
-  }
-
-  //------------------------------------------------------------------------
-  //!  Reads from an istream.  Returns the istream.
-  //------------------------------------------------------------------------
-  std::istream & Ipv6Address::Read(std::istream & is)
-  {
-    if (is)
-      is.read((char *)&_addr, sizeof(_addr));
-    return(is);
-  }
-  
-  //------------------------------------------------------------------------
-  //!  Writes to an ostream.  Returns the ostream.
-  //------------------------------------------------------------------------
-  std::ostream & Ipv6Address::Write(std::ostream & os) const
-  {
-    if (os)
-      os.write((char *)&_addr, sizeof(_addr));
-    return(os);
   }
 
   //------------------------------------------------------------------------
