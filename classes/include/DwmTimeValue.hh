@@ -1,7 +1,7 @@
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
-//  Copyright (c) Daniel W. McRobb 2005-2007, 2016, 2024
+//  Copyright (c) Daniel W. McRobb 2005-2007, 2016, 2024-2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -158,6 +158,18 @@ namespace Dwm {
     //------------------------------------------------------------------------
     std::ostream & Write(std::ostream & os) const;
 
+    //------------------------------------------------------------------------
+    //!  Reads the TimeValue from an istream, in native byte order.  Returns
+    //!  the istream.
+    //------------------------------------------------------------------------
+    std::istream & NRead(std::istream & is);
+
+    //------------------------------------------------------------------------
+    //!  Writes the TimeValue to an ostream, in native byte order.  Returns
+    //!  the ostream.
+    //------------------------------------------------------------------------
+    std::ostream & NWrite(std::ostream & os) const;
+    
     //------------------------------------------------------------------------
     //!  Reads the TimeValue from a FILE pointer.  Returns 1 on success,
     //!  0 on failure.
