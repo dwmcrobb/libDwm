@@ -48,6 +48,7 @@ extern "C" {
 #include <iostream>
 #include <sstream>
 
+#include "DwmBZ2IO.hh"
 #include "DwmDescriptorIO.hh"
 #include "DwmGZIO.hh"
 #include "DwmSvnTag.hh"
@@ -61,6 +62,7 @@ static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmRu
 
 using namespace std;
 using Dwm::Assertions;
+using Dwm::BZ2IO;
 using Dwm::DescriptorIO;
 using Dwm::GZIO;
 using Dwm::OptArgs;
@@ -117,6 +119,32 @@ static void TestRusageGZIO()
     if (gzf) {
       UnitAssert(GZIO::Read(gzf, rusage2));
       gzclose(gzf);
+      UnitAssert(rusage2 == rusage);
+    }
+    std::remove(filename.str().c_str());
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestRusageBZ2IO()
+{
+  Rusage  rusage;
+  rusage.Get(RUSAGE_SELF);
+  
+  ostringstream  filename;
+  filename << "/tmp/TestDwmRusageBZ2IO." << getpid();
+  BZFILE  *bzf = BZ2_bzopen(filename.str().c_str(), "wb");
+  if (UnitAssert(bzf)) {
+    UnitAssert(BZ2IO::Write(bzf, rusage));
+    BZ2_bzclose(bzf);
+    Rusage  rusage2;
+    bzf = BZ2_bzopen(filename.str().c_str(), "rb");
+    if (UnitAssert(bzf)) {
+      UnitAssert(BZ2IO::Read(bzf, rusage2));
+      BZ2_bzclose(bzf);
       UnitAssert(rusage2 == rusage);
     }
     std::remove(filename.str().c_str());
@@ -216,6 +244,7 @@ int main(int argc, char *argv[])
   TestRusageIO();
   TestRusageGZIO();
   TestRusageDescriptorIO();
+  TestRusageBZ2IO();
   
   if (Assertions::Total().Failed() > 0) {
     Assertions::Print(std::cerr, true);
