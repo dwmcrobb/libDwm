@@ -49,6 +49,8 @@
 #include "DwmPortability.hh"
 #include "DwmIOConcepts.hh"
 #include "DwmFileIOCapable.hh"
+#include "DwmStreamIO.hh"
+#include "DwmStreamedLengthCapable.hh"
 #include "DwmSysLogger.hh"
 #include "DwmTypeName.hh"
 #include "DwmVariantFromIndex.hh"
@@ -706,6 +708,39 @@ namespace Dwm {
       return rc;
     }
 
+    //------------------------------------------------------------------------
+    //!  Writes a std::atomic<T> @c t to FILE @c f.  Returns 1 on success,
+    //!  0 on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static size_t Write(FILE *f, const std::atomic<T> & t)
+    {
+      static_assert(fileio_detail::IsWritable<T>);
+      if (f) {
+        T  val = t.load();
+        return Write(f, val);
+      }
+      return 0;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads a std::atomic<T> @c t from FILE @c f.  Returns 1 on success,
+    //!  0 on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static size_t Read(FILE *f, std::atomic<T> & t)
+    {
+      size_t  rc = 0;
+      if (f) {
+        T  val;
+        if (Read(f, val)) {
+          t.store(val);
+          return 1;
+        }
+      }
+      return 0;
+    }
+    
 #if defined(DWM_CAN_USE_REFLECTION)
     
     //------------------------------------------------------------------------
