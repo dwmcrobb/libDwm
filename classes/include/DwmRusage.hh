@@ -208,9 +208,10 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if we called
     //!  one of the Write() members.
     //!  Note that by making this constexpr, we automatically get
-    //!  DescriptorIO::Read(), DescriptorIO::Write(), GZIO::Read(),
-    //!  GZIO::Write(), ASIO::Read() and ASIO::Write() functionality via our
-    //!  Read(std::istream &) and Write(std::ostream &) members.
+    //!  DescriptorIO::Read(), DescriptorIO::Write(), BZ2IO::BZRead(),
+    //!  BZ2IO::BZWrite(), GZIO::Read(), GZIO::Write(), ASIO::Read() and
+    //!  ASIO::Write() functionality via our Read(std::istream &) and
+    //!  Write(std::ostream &) members.
     //------------------------------------------------------------------------
     static constexpr uint64_t StreamedLength()
     {
@@ -228,9 +229,10 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if we called
     //!  one of the Write() members.
     //!  Note that by making this constexpr, we automatically get
-    //!  DescriptorIO::Read(), DescriptorIO::Write(), GZIO::Read(),
-    //!  GZIO::Write(), ASIO::Read() and ASIO::Write() functionality via our
-    //!  Read(std::istream &) and Write(std::ostream &) members.
+    //!  DescriptorIO::Read(), DescriptorIO::Write(), BZ2IO::BZRead(),
+    //!  BZ2IO::BZWrite(), GZIO::Read(), GZIO::Write(), ASIO::Read() and
+    //!  ASIO::Write() functionality via our Read(std::istream &) and
+    //!  Write(std::ostream &) members.
     //------------------------------------------------------------------------
     static constexpr uint64_t StreamedLength()
     {
