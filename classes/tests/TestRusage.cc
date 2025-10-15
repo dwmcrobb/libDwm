@@ -132,7 +132,7 @@ static void TestRusageDescriptorIO()
   
   ostringstream  filename;
   filename << "/tmp/TestDwmRusageDescriptorIO." << getpid();
-  int  fd = open(filename.str().c_str(), O_CREAT|O_WRONLY, S_IRUSR|S_IWUSR);
+  int  fd = open(filename.str().c_str(), O_CREAT|O_WRONLY, 0644);
   if (UnitAssert(fd >= 0)) {
     UnitAssert(DescriptorIO::Write(fd, rusage) == rusage.StreamedLength());
     close(fd);
