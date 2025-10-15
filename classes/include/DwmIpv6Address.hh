@@ -188,6 +188,20 @@ namespace Dwm {
     ssize_t Write(int fd) const;
 
     //------------------------------------------------------------------------
+    //!  Reads from a file descriptor.  Returns the number of bytes read
+    //!  (16 on success).
+    //------------------------------------------------------------------------
+    inline ssize_t NRead(int fd)
+    { return Read(fd); }
+    
+    //------------------------------------------------------------------------
+    //!  Writes to a file descriptor.  Returns the number of bytes written
+    //!  (16 on success).
+    //------------------------------------------------------------------------
+    inline ssize_t NWrite(int fd) const
+    { return Write(fd); }
+
+    //------------------------------------------------------------------------
     //!  Reads from a FILE pointer.  Returns 1 on success, 0 on failure.
     //------------------------------------------------------------------------
     size_t Read(FILE * f);
