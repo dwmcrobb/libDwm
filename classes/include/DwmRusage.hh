@@ -47,7 +47,9 @@ extern "C" {
 
 #include <cstdint>
 
-#include "DwmTimeValue.hh"
+#include "DwmConcepts.hh"
+#include "DwmIOUtils.hh"
+#include "DwmTimeValue64.hh"
 
 namespace Dwm {
 
@@ -76,13 +78,13 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  The total amount of time spent executing in user mode.
     //------------------------------------------------------------------------
-    const TimeValue & UserTime() const;
+    const TimeValue64 & UserTime() const;
 
     //------------------------------------------------------------------------
     //!  The total amount of time spent in the system executing on
     //!  behalf of the process(es).
     //------------------------------------------------------------------------
-    const TimeValue & SystemTime() const;
+    const TimeValue64 & SystemTime() const;
 
     //------------------------------------------------------------------------
     //!  The maximum resident set size utilized (in bytes).
@@ -206,46 +208,97 @@ namespace Dwm {
     //------------------------------------------------------------------------
     int Write(gzFile gzf) const;
     
+#if 0
     //------------------------------------------------------------------------
-    //!  Reads from a file descriptor.  Returns the number of bytes read 
-    //!  on success, -1 on failure.
+    //!  Reads from a file descriptor, in network byte order (MSB first).
+    //!  Returns the number of bytes read on success, -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Read(int fd);
+    // ssize_t Read(int fd);
+#endif
     
     //------------------------------------------------------------------------
-    //!  Writes to a file descriptor.  Returns the number of bytes written
-    //!  on success, -1 on failure.
+    //!  Reads from a file descriptor, in native byte order (usually LSB
+    //!  first).  Returns the number of bytes read on success, -1 on failure.
+    //------------------------------------------------------------------------
+    ssize_t NRead(int fd);
+
+#if 0
+    //------------------------------------------------------------------------
+    //!  Writes to a file descriptor, in network byte order (MSB first).
+    //!  Returns the number of bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
     ssize_t Write(int fd) const;
+#endif
     
+    //------------------------------------------------------------------------
+    //!  Writes to a file descriptor, in native byte order (usually LSB
+    //!  first).  Returns the number of bytes written on success, -1 on
+    //!  failure.
+    //------------------------------------------------------------------------
+    ssize_t NWrite(int fd) const;
+
+#if defined(DWM_CAN_USE_REFLECTION)
+    static constexpr uint64_t StreamedLength()
+    {
+      size_t  rc = 0;
+      constexpr auto ctx = std::meta::access_context::unchecked();
+      template for (constexpr auto mem :
+                      define_static_array(nonstatic_data_members_of(^^Rusage, ctx))) {
+        rc += IOUtils::StreamedLength(typename[:std::meta::type_of(mem):]());
+      }
+      return rc;
+    }
+    
+#else      
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if we called
     //!  one of the Write() members.
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const;
-
+    static constexpr uint64_t StreamedLength()
+    {
+      uint64_t  rc = 0;
+      rc += IOUtils::StreamedLength(_userTime);
+      rc += IOUtils::StreamedLength(_systemTime);
+      rc += IOUtils::StreamedLength(_maxResidentSetSize);
+      rc += IOUtils::StreamedLength(_integralSharedTextMemorySize);
+      rc += IOUtils::StreamedLength(_integralUnsharedDataSize);
+      rc += IOUtils::StreamedLength(_integralUnsharedStackSize);
+      rc += IOUtils::StreamedLength(_pageReclaims);
+      rc += IOUtils::StreamedLength(_pageFaults);
+      rc += IOUtils::StreamedLength(_swaps);
+      rc += IOUtils::StreamedLength(_blockInputOperations);
+      rc += IOUtils::StreamedLength(_blockOutputOperations);
+      rc += IOUtils::StreamedLength(_messagesSent);
+      rc += IOUtils::StreamedLength(_messagesReceived);
+      rc += IOUtils::StreamedLength(_signalsReceived);
+      rc += IOUtils::StreamedLength(_voluntaryContextSwitches);
+      rc += IOUtils::StreamedLength(_involuntaryContextSwitches);
+      return(rc);
+    }
+#endif
+    
     //------------------------------------------------------------------------
     //!  operator ==
     //------------------------------------------------------------------------
     bool operator == (const Rusage & rusage) const;
     
   private:
-    TimeValue  _userTime;
-    TimeValue  _systemTime;
-    int64_t    _maxResidentSetSize;
-    int64_t    _integralSharedTextMemorySize;
-    int64_t    _integralUnsharedDataSize;
-    int64_t    _integralUnsharedStackSize;
-    int32_t    _pageReclaims;
-    int32_t    _pageFaults;
-    int32_t    _swaps;
-    int32_t    _blockInputOperations;
-    int32_t    _blockOutputOperations;
-    int32_t    _messagesSent;
-    int32_t    _messagesReceived;
-    int32_t    _signalsReceived;
-    int32_t    _voluntaryContextSwitches;
-    int32_t    _involuntaryContextSwitches;
+    TimeValue64  _userTime;
+    TimeValue64  _systemTime;
+    int64_t      _maxResidentSetSize;
+    int64_t      _integralSharedTextMemorySize;
+    int64_t      _integralUnsharedDataSize;
+    int64_t      _integralUnsharedStackSize;
+    int32_t      _pageReclaims;
+    int32_t      _pageFaults;
+    int32_t      _swaps;
+    int32_t      _blockInputOperations;
+    int32_t      _blockOutputOperations;
+    int32_t      _messagesSent;
+    int32_t      _messagesReceived;
+    int32_t      _signalsReceived;
+    int32_t      _voluntaryContextSwitches;
+    int32_t      _involuntaryContextSwitches;
     
     void Set(const struct rusage & rusage);
   };

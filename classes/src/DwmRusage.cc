@@ -50,6 +50,7 @@
 #include "DwmStreamIO.hh"
 #include "DwmSysLogger.hh"
 #include "DwmRusage.hh"
+#include "DwmEndianness.hh"
 
 using namespace std;
 
@@ -121,7 +122,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  const TimeValue & Rusage::UserTime() const
+  const TimeValue64 & Rusage::UserTime() const
   {
     return(_userTime);
   }
@@ -129,7 +130,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  const TimeValue & Rusage::SystemTime() const
+  const TimeValue64 & Rusage::SystemTime() const
   {
     return(_systemTime);
   }
@@ -303,6 +304,9 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   std::istream & Rusage::Read(std::istream & is)
   {
+#if defined(DWM_CAN_USE_REFLECTION)
+    return StreamIO::ReadNonstaticMembers(is, *this);
+#else
     StreamIO::ReadV(is, _userTime, _systemTime, _maxResidentSetSize,
                     _integralSharedTextMemorySize, _integralUnsharedDataSize,
                     _integralUnsharedStackSize, _pageReclaims, _pageFaults,
@@ -310,6 +314,7 @@ namespace Dwm {
                     _messagesSent, _messagesReceived, _signalsReceived,
                     _voluntaryContextSwitches, _involuntaryContextSwitches);
     return(is);
+#endif
   }
   
   //--------------------------------------------------------------------------
@@ -317,6 +322,9 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   std::ostream & Rusage::Write(std::ostream & os) const
   {
+#if defined(DWM_CAN_USE_REFLECTION)
+    return StreamIO::WriteNonstaticMembers(os, *this);
+#else
     StreamIO::WriteV(os, _userTime, _systemTime, _maxResidentSetSize,
                      _integralSharedTextMemorySize,
                      _integralUnsharedDataSize, _integralUnsharedStackSize,
@@ -325,6 +333,7 @@ namespace Dwm {
                      _messagesSent, _messagesReceived, _signalsReceived,
                      _voluntaryContextSwitches, _involuntaryContextSwitches);
     return(os);
+#endif
   }
 
   //--------------------------------------------------------------------------
@@ -346,6 +355,9 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   std::ostream & Rusage::NWrite(std::ostream & os) const
   {
+#if defined(DWM_CAN_USE_REFLECTION)
+    return StreamIO::NWriteNonstaticMembers(os, *this);
+#else
     StreamIO::NWriteV(os, _userTime, _systemTime, _maxResidentSetSize,
                       _integralSharedTextMemorySize,
                       _integralUnsharedDataSize, _integralUnsharedStackSize,
@@ -354,6 +366,7 @@ namespace Dwm {
                       _messagesSent, _messagesReceived, _signalsReceived,
                       _voluntaryContextSwitches, _involuntaryContextSwitches);
     return(os);
+#endif
   }
   
   //--------------------------------------------------------------------------
@@ -460,110 +473,127 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  template <typename T>
-  static bool MyIORead(int fd, T & val, ssize_t & totalBytes)
+  template <typename ...Args>
+  static void MyToHostByteOrder(Args & ...args)
   {
-    bool  rc = false;
-    if (fd >= 0) {
-      ssize_t  bytesRead = DescriptorIO::Read(fd, val);
-      if (bytesRead == (int)IOUtils::StreamedLength(val)) {
-        rc = true;
-        totalBytes += bytesRead;
+    auto  hbo = [&] (auto & f) -> void {
+      using fType = std::remove_cvref_t<decltype(f)>;
+      if constexpr (io_detail::EightByteIntegral<fType>) {
+        f = be64toh(f);
       }
-    }
-    return(rc);
+      else if constexpr (io_detail::FourByteIntegral<fType>) {
+        f = be32toh(f);
+      }
+    };
+    
+    return ( hbo(args), ...);
   }
 
+#if 0
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
   ssize_t Rusage::Read(int fd)
   {
-    if (fd < 0)
-      return(-1);
-    
-    ssize_t  rc = 0;
-
-    if (! MyIORead(fd, _userTime, rc))                      goto readError;
-    if (! MyIORead(fd, _systemTime, rc))                    goto readError;
-    if (! MyIORead(fd, _maxResidentSetSize, rc))            goto readError;
-    if (! MyIORead(fd, _integralSharedTextMemorySize, rc))  goto readError;
-    if (! MyIORead(fd, _integralUnsharedDataSize, rc))      goto readError;
-    if (! MyIORead(fd, _integralUnsharedStackSize, rc))     goto readError;
-    if (! MyIORead(fd, _pageReclaims, rc))                  goto readError;
-    if (! MyIORead(fd, _pageFaults, rc))                    goto readError;
-    if (! MyIORead(fd, _swaps, rc))                         goto readError;
-    if (! MyIORead(fd, _blockInputOperations, rc))          goto readError;
-    if (! MyIORead(fd, _blockOutputOperations, rc))         goto readError;
-    if (! MyIORead(fd, _messagesSent, rc))                  goto readError;
-    if (! MyIORead(fd, _messagesReceived, rc))              goto readError;
-    if (! MyIORead(fd, _signalsReceived, rc))               goto readError;
-    if (! MyIORead(fd, _voluntaryContextSwitches, rc))      goto readError;
-    if (! MyIORead(fd, _involuntaryContextSwitches, rc))    goto readError;
-    
-    return(rc);
-    
-  readError:
-    Syslog(LOG_ERR, "Read(%d) failed for Rusage", fd);
-    return(-1);
+    ssize_t  rc = -1;
+    if (0 <= fd) {
+      constexpr size_t  bufSize = StreamedLength();
+      string  s;
+      try {
+        s.resize(bufSize);
+        if (bufSize == ::read(fd, s.data(), bufSize)) {
+          std::istringstream  iss(std::move(s));
+          if (Read(iss)) {
+            rc = bufSize;
+          }
+        }
+      }
+      catch (...) {
+        FSyslog(LOG_ERR, "Exception in Rusage::Read(int fd={})", fd);
+      }
+    }
+    return rc;
   }
-
+#endif
+  
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  template <typename T>
-  static bool MyIOWrite(int fd, const T & val, ssize_t & totalBytes)
+  ssize_t Rusage::NRead(int fd)
   {
-    bool  rc = false;
-    if (fd >= 0) {
-      ssize_t  bytesWritten = DescriptorIO::Write(fd, val);
-      if (bytesWritten == (int)IOUtils::StreamedLength(val)) {
-        rc = true;
-        totalBytes += bytesWritten;
+    ssize_t  rc = -1;
+    if (0 <= fd) {
+      const size_t  bufSize = StreamedLength();
+      string  s;
+      try {
+        s.resize(bufSize);
+        if (bufSize == ::read(fd, s.data(), bufSize)) {
+          std::istringstream  iss(std::move(s));
+          if (NRead(iss)) {
+            rc = bufSize;
+          }
+        }
+      }
+      catch (...) {
+        FSyslog(LOG_ERR, "Exception in Rusage::NRead(int fd={})", fd);
       }
     }
-    return(rc);
+    return rc;
   }
-  
+
+#if 0
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
   ssize_t Rusage::Write(int fd) const
   {
-    if (fd < 0)
-      return(-1);
-
-    ssize_t  rc = 0;
-
-    if (! MyIOWrite(fd, _userTime, rc))                     goto writeError;
-    if (! MyIOWrite(fd, _systemTime, rc))                   goto writeError;
-    if (! MyIOWrite(fd, _maxResidentSetSize, rc))           goto writeError;
-    if (! MyIOWrite(fd, _integralSharedTextMemorySize, rc)) goto writeError;
-    if (! MyIOWrite(fd, _integralUnsharedDataSize, rc))     goto writeError;
-    if (! MyIOWrite(fd, _integralUnsharedStackSize, rc))    goto writeError;
-    if (! MyIOWrite(fd, _pageReclaims, rc))                 goto writeError;
-    if (! MyIOWrite(fd, _pageFaults, rc))                   goto writeError;
-    if (! MyIOWrite(fd, _swaps, rc))                        goto writeError;
-    if (! MyIOWrite(fd, _blockInputOperations, rc))         goto writeError;
-    if (! MyIOWrite(fd, _blockOutputOperations, rc))        goto writeError;
-    if (! MyIOWrite(fd, _messagesSent, rc))                 goto writeError;
-    if (! MyIOWrite(fd, _messagesReceived, rc))             goto writeError;
-    if (! MyIOWrite(fd, _signalsReceived, rc))              goto writeError;
-    if (! MyIOWrite(fd, _voluntaryContextSwitches, rc))     goto writeError;
-    if (! MyIOWrite(fd, _involuntaryContextSwitches, rc))   goto writeError;
-      
+    ssize_t  rc = -1;
+    if (0 <= fd) {
+      //  We'll buffer into an ostringstream just to avoid potential context
+      //  switches.
+      ostringstream  oss;
+      if (Write(oss)) {
+        string_view  ossv(oss.view());
+        rc = write(fd, ossv.data(), ossv.size());
+        if (rc != ossv.size()) {
+          rc = -1;
+        }
+      }
+    }
     return(rc);
-
-  writeError:
-    return(-1);
   }
+#endif
   
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  ssize_t Rusage::NWrite(int fd) const
+  {
+    ssize_t  rc = -1;
+    if (0 <= fd) {
+      //  We'll buffer into an ostringstream just to avoid potential context
+      //  switches.
+      ostringstream  oss;
+      if (NWrite(oss)) {
+        string_view  ossv(oss.view());
+        rc = write(fd, ossv.data(), ossv.size());
+        if (rc != ossv.size()) {
+          rc = -1;
+        }
+      }
+    }
+    return(rc);
+  }
+
+#if 0
+#if ! defined(DWM_CAN_USE_REFLECTION)
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
   uint64_t Rusage::StreamedLength() const
   {
-    uint64_t  rc = IOUtils::StreamedLength(_userTime);
+    uint64_t  rc = 0;
+    rc += IOUtils::StreamedLength(_userTime);
     rc += IOUtils::StreamedLength(_systemTime);
     rc += IOUtils::StreamedLength(_maxResidentSetSize);
     rc += IOUtils::StreamedLength(_integralSharedTextMemorySize);
@@ -581,7 +611,9 @@ namespace Dwm {
     rc += IOUtils::StreamedLength(_involuntaryContextSwitches);
     return(rc);
   }
-
+#endif
+#endif
+  
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
