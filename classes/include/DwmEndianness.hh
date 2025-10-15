@@ -47,36 +47,42 @@
 namespace Dwm {
 
   //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept IsEndianSensitiveInteger =
+    std::is_integral_v<T>
+    and ((sizeof(T) == 2) or (sizeof(T) == 4) or (sizeof(T) == 8));
+  
+  //--------------------------------------------------------------------------
   //!  Returns the host endian conversion of the big endian @c t.
   //--------------------------------------------------------------------------
   template <typename T>
-  requires std::is_integral_v<T>
-  inline auto BE2Host(T t) -> T
+  requires IsEndianSensitiveInteger<T>
+  [[nodiscard]] inline auto BE2Host(T t) -> T
   {
     if constexpr (sizeof(t) == 2)      { return be16toh(t); }
     else if constexpr (sizeof(t) == 4) { return be32toh(t); }
     else if constexpr (sizeof(t) == 8) { return be64toh(t); }
-    else                               { return t; }
   }
   
   //--------------------------------------------------------------------------
   //!  Returns the big endian conversion of the host endian @c t.
   //--------------------------------------------------------------------------
   template <typename T>
-  requires std::is_integral_v<T>
-  inline auto Host2BE(T t) -> T
+  requires IsEndianSensitiveInteger<T>
+  [[nodiscard]] inline auto Host2BE(T t) -> T
   {
     if constexpr (sizeof(t) == 2)      { return htobe16(t); }
     else if constexpr (sizeof(t) == 4) { return htobe32(t); }
     else if constexpr (sizeof(t) == 8) { return htobe64(t); }
-    else                               { return t; }
   }
 
   //--------------------------------------------------------------------------
   //!  Converts all @c args from big endian to host endian, in place.
   //--------------------------------------------------------------------------
   template <typename ...Args>
-  requires (std::is_integral_v<Args> and ...)
+  requires (IsEndianSensitiveInteger<Args> and ...)
   void BE2Host(Args & ...args)
   {
     auto  be2h = [&] (auto & f) -> void { f = BE2Host(f); };
@@ -87,7 +93,7 @@ namespace Dwm {
   //!  Converts all @c args from host endian to big endian, in place.
   //--------------------------------------------------------------------------
   template <typename ...Args>
-  requires (std::is_integral_v<Args> and ...)
+  requires (IsEndianSensitiveInteger<Args> and ...)
   void Host2BE(Args & ...args)
   {
     auto  h2be = [&] (auto & f) -> void { f = Host2BE(f); };
