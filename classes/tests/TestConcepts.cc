@@ -40,10 +40,43 @@
 //---------------------------------------------------------------------------
 
 #include "DwmConcepts.hh"
+#include "DwmStreamedLengthCapable.hh"
 #include "DwmUnitAssert.hh"
 
 using namespace std;
 using namespace Dwm;
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestStreamedLengthCapable()
+{
+  struct s1 {
+    uint64_t StreamedLength() const;
+  };
+  UnitAssert(! HasConstexprStreamedLength<s1>);
+  UnitAssert(HasStreamedLength<s1>);
+
+  struct s2 {
+    static constexpr uint64_t StreamedLength() { return 1; }
+  };
+  UnitAssert(HasConstexprStreamedLength<s2>);
+  UnitAssert(HasStreamedLength<s2>);
+
+  struct s3 {
+    constexpr inline uint64_t StreamedLength() const { return 1; }
+  };
+  UnitAssert(! HasConstexprStreamedLength<s3>);
+  UnitAssert(HasStreamedLength<s3>);
+  
+  struct s4 {
+    static inline uint64_t StreamedLength() { return 1; }
+  };
+  UnitAssert(! HasConstexprStreamedLength<s4>);
+  UnitAssert(HasStreamedLength<s4>);
+
+  return;
+}
 
 //----------------------------------------------------------------------------
 //!  
@@ -217,6 +250,7 @@ static void TestAllMembersArithmeticPacked()
 int main(int argc, char *argv[])
 {
   TestContainers();
+  TestStreamedLengthCapable();
 #if defined(DWM_CAN_USE_REFLECTION)
   TestAllMembersArithmetic();
   TestAllMembersArithmeticPacked();
