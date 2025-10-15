@@ -1650,7 +1650,7 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     template <typename T>
-    static std::ostream & Write(std::ostream & os, std::atomic<T> & t)
+    static std::ostream & Write(std::ostream & os, const std::atomic<T> & t)
     {
       T  val = t.load();
       return Write(os, val);
@@ -1673,7 +1673,7 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     template <typename T>
-    static std::ostream & NWrite(std::ostream & os, std::atomic<T> & t)
+    static std::ostream & NWrite(std::ostream & os, const std::atomic<T> & t)
     {
       T  val = t.load();
       return NWrite(os, val);
