@@ -58,6 +58,7 @@
 #include "DwmSysLogger.hh"
 #include "DwmTypeName.hh"
 #include "DwmVariantFromIndex.hh"
+#include "DwmEndianness.hh"
 
 namespace Dwm {
 
@@ -436,6 +437,8 @@ namespace Dwm {
     //------------------------------------------------------------------------
     static std::ostream & NWrite(std::ostream & os, const std::string & s);
 
+    static std::ostream & Write(std::ostream & os, std::string_view v);
+    
     //------------------------------------------------------------------------
     //!  Reads @c t from @c is, where @c t is an enumerated type.  Returns
     //!  @c is.  Note that this is risky for enum types with an underlying
@@ -1316,20 +1319,80 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <typename T>
     requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
+      and (not io_detail::NByteIntegral<std::remove_all_extents_t<T>,1>)
     static std::ostream & Write(std::ostream & os, const T & v)
     {
       static_assert(iostream_detail::IsWritable<std::remove_reference_t<decltype(v[0])>>);
-      const uint64_t  n = std::extent_v<T>;
-      if (StreamIO::Write(os, n)) {
-        for (size_t i = 0; i < std::extent_v<T>; ++i) {
-          if (! StreamIO::Write(os, v[i])) {
-            break;
-          }
+      for (size_t i = 0; i < std::extent_v<T>; ++i) {
+        if (! StreamIO::Write(os, v[i])) {
+          break;
         }
       }
       return os;
     }
 
+    //------------------------------------------------------------------------
+    //!  Writes a bounded array of bytes @c v to an ostream @c os.  Returns
+    //!  @c os.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
+      and io_detail::NByteIntegral<std::remove_all_extents_t<T>,1>
+    static std::ostream & Write(std::ostream & os, const T & v)
+    {
+      return os.write((caddr_t)v,sizeof(v));
+    }
+    
+    //------------------------------------------------------------------------
+    //!  Reads a bounded array @c v from an istream @c is.  Returns @c is.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
+      and (not (io_detail::NByteIntegral<std::remove_all_extents_t<T>,1>
+                or io_detail::NByteIntegral<std::remove_all_extents_t<T>,2>
+                or io_detail::NByteIntegral<std::remove_all_extents_t<T>,4>
+                or io_detail::NByteIntegral<std::remove_all_extents_t<T>,8>))
+    static std::istream & Read(std::istream & is, T & v)
+    {
+      static_assert(iostream_detail::IsReadable<std::remove_reference_t<decltype(v[0])>>);
+      for (size_t i = 0; i < std::extent_v<T>; ++i) {
+        if (! StreamIO::Read(is, v[i])) {
+          break;
+        }
+        else {
+          is.setstate(std::ios_base::failbit);
+        }
+      }
+      return is;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads a bounded array of bytes @c v from istream @c is.  Returns
+    //!  @c is.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
+      and io_detail::NByteIntegral<std::remove_all_extents_t<T>,1>
+    static std::istream & Read(std::istream & is, T & v)
+    {
+      return is.read((caddr_t)v, sizeof(v));
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads a bounded array of multi-byte integral values @c v from
+    //!  istream @c is, in network byte order (MSB first).  Returns @c is.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
+      and IsEndianSensitiveInteger<std::remove_all_extents_t<T>>
+    static std::istream & Read(std::istream & is, T & v)
+    {
+      if (is.read((caddr_t)v, sizeof(v))) {
+        ToHostByteOrder(v);
+      }
+      return is;
+    }
+    
     //------------------------------------------------------------------------
     //!  Writes a bounded array @c v to an ostream @c os.  Returns @c os.
     //------------------------------------------------------------------------
@@ -1341,6 +1404,7 @@ namespace Dwm {
       const uint64_t  n = std::extent_v<T>;
       if (StreamIO::NWrite(os, n)) {
         for (size_t i = 0; i < std::extent_v<T>; ++i) {
+          FSyslog(LOG_INFO, "NWrite(v[{}] rank {}", i, std::rank_v<T>);
           if (! StreamIO::NWrite(os, v[i])) {
             break;
           }
@@ -1349,30 +1413,6 @@ namespace Dwm {
       return os;
     }
     
-    //------------------------------------------------------------------------
-    //!  Reads a bounded array @c v from an istream @c is.  Returns @c is.
-    //------------------------------------------------------------------------
-    template <typename T>
-    requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
-    static std::istream & Read(std::istream & is, T & v)
-    {
-      static_assert(iostream_detail::IsReadable<std::remove_reference_t<decltype(v[0])>>);
-      uint64_t  n;
-      if (StreamIO::Read(is, n)) {
-        if (std::extent_v<T> == n) {
-          for (size_t i = 0; i < std::extent_v<T>; ++i) {
-            if (! StreamIO::Read(is, v[i])) {
-              break;
-            }
-          }
-        }
-        else {
-          is.setstate(std::ios_base::failbit);
-        }
-      }
-      return is;
-    }
-
     //------------------------------------------------------------------------
     //!  Reads a bounded array @c v from an istream @c is.  Returns @c is.
     //------------------------------------------------------------------------
@@ -1424,28 +1464,6 @@ namespace Dwm {
     //!  object.
     //------------------------------------------------------------------------
     template <typename T>
-    static std::ostream & NWrite(std::ostream & os,
-                                 const std::unique_ptr<T> & t)
-    {
-      using deleterType = std::remove_cvref_t<decltype(t)>::deleter_type;
-      static_assert(std::is_same_v<deleterType,std::default_delete<T>>);
-      static_assert(! std::is_unbounded_array_v<T>);
-      static_assert(! std::is_bounded_array_v<T>);
-      static_assert(iostream_detail::IsNWritable<T>);
-      bool  isNull = (nullptr == t);
-      if (StreamIO::NWrite(os, isNull)) {
-        if (! isNull) {
-          StreamIO::NWrite(os, *t);
-        }
-      }
-      return os;
-    }
-    
-    //------------------------------------------------------------------------
-    //!  Experimental support for std::unique_ptr, if it points to a single
-    //!  object.
-    //------------------------------------------------------------------------
-    template <typename T>
     requires std::is_default_constructible_v<T>
     static std::istream & Read(std::istream & is,
                                std::unique_ptr<T> & t)
@@ -1480,6 +1498,28 @@ namespace Dwm {
       return is;
     }
 
+    //------------------------------------------------------------------------
+    //!  Experimental support for std::unique_ptr, if it points to a single
+    //!  object.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static std::ostream & NWrite(std::ostream & os,
+                                 const std::unique_ptr<T> & t)
+    {
+      using deleterType = std::remove_cvref_t<decltype(t)>::deleter_type;
+      static_assert(std::is_same_v<deleterType,std::default_delete<T>>);
+      static_assert(! std::is_unbounded_array_v<T>);
+      static_assert(! std::is_bounded_array_v<T>);
+      static_assert(iostream_detail::IsNWritable<T>);
+      bool  isNull = (nullptr == t);
+      if (StreamIO::NWrite(os, isNull)) {
+        if (! isNull) {
+          StreamIO::NWrite(os, *t);
+        }
+      }
+      return os;
+    }
+    
     //------------------------------------------------------------------------
     //!  Experimental support for std::unique_ptr, if it points to a single
     //!  object.
@@ -1536,22 +1576,6 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  Writes a std::optional<T> to @c os.  Returns @c os.
-    //------------------------------------------------------------------------
-    template <typename T>
-    static std::ostream & NWrite(std::ostream & os, const std::optional<T> & t)
-    {
-      static_assert(iostream_detail::IsNWritable<T>);
-      bool  hasValue = t.has_value();
-      if (StreamIO::NWrite(os, hasValue)) {
-        if (hasValue) {
-          StreamIO::NWrite(os, t.value());
-        }
-      }
-      return os;
-    }
-    
-    //------------------------------------------------------------------------
     //!  Reads a std::optional<T> from @c is.  Returns @c is.
     //------------------------------------------------------------------------
     template <typename T>
@@ -1574,6 +1598,22 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
+    //!  Writes a std::optional<T> to @c os.  Returns @c os.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static std::ostream & NWrite(std::ostream & os, const std::optional<T> & t)
+    {
+      static_assert(iostream_detail::IsNWritable<T>);
+      bool  hasValue = t.has_value();
+      if (StreamIO::NWrite(os, hasValue)) {
+        if (hasValue) {
+          StreamIO::NWrite(os, t.value());
+        }
+      }
+      return os;
+    }
+    
+    //------------------------------------------------------------------------
     //!  Reads a std::optional<T> from @c is.  Returns @c is.
     //------------------------------------------------------------------------
     template <typename T>
@@ -1594,19 +1634,109 @@ namespace Dwm {
       }
       return is;
     }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    static std::ostream & Write(std::ostream & os, std::atomic<T> & t)
+    {
+      T  val = t.load();
+      return Write(os, val);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    static std::istream & Read(std::istream & is, std::atomic<T> & t)
+    {
+      T  val;
+      if (Read(is, val)) {
+        t.store(val);
+      }
+      return is;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    static std::ostream & NWrite(std::ostream & os, std::atomic<T> & t)
+    {
+      T  val = t.load();
+      return NWrite(os, val);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    static std::istream & NRead(std::istream & is, std::atomic<T> & t)
+    {
+      T  val;
+      if (NRead(is, val)) {
+        t.store(val);
+      }
+      return is;
+    }
+    
+    //------------------------------------------------------------------------
+    //!  This is evil, and will not work reliably beyond the local host
+    //!  environment (i.e. across the network).  But there are cases where we
+    //!  need to transport a trivial union locally, mostly in old C code.
+    //!
+    //!  Writes the given union @c u to the ostream @c os.  Returns @c os.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_union_v<T>
+    static std::ostream & Write(std::ostream & os, const T & u)
+    { return os.write((caddr_t)&u, sizeof(u)); }
+
+    //------------------------------------------------------------------------
+    //!  This is evil, and will not work reliably beyond the local host
+    //!  environment (i.e. across the network).  But there are cases where we
+    //!  need to transport a trivial union locally, mostly in old C code.
+    //!
+    //!  Reads the given union @c u from the istream @c is.  Returns @c is.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_union_v<T>
+    static std::istream & Read(std::istream & is, T & u)
+    { return is.read((caddr_t)&u, sizeof(u)); }
+
+    //------------------------------------------------------------------------
+    //!  This is evil, and will not work reliably beyond the local host
+    //!  environment (i.e. across the network).  But there are cases where we
+    //!  need to transport a trivial union locally, mostly in old C code.
+    //!
+    //!  Writes the given union @c u to the ostream @c os.  Returns @c os.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_union_v<T>
+    static std::ostream & NWrite(std::ostream & os, const T & u)
+    { return os.write((caddr_t)&u, sizeof(u)); }
+
+    //------------------------------------------------------------------------
+    //!  This is evil, and will not work reliably beyond the local host
+    //!  environment (i.e. across the network).  But there are cases where we
+    //!  need to transport a trivial union locally, mostly in old C code.
+    //!
+    //!  Reads the given union @c u from the istream @c is.  Returns @c is.
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_union_v<T>
+    static std::istream & NRead(std::istream & is, T & u)
+    { return is.read((caddr_t)&u, sizeof(u)); }
     
 #if defined(DWM_CAN_USE_REFLECTION)
-    
+
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
     template <class T>
     requires std::is_class_v<T>
-      and (not io_detail::DirectlySupported<T>)
-      and (not io_detail::SupportedContainer<T>)
-      and (not io_detail::DenyType<T>)
-      and (not HasStreamWrite<T>)
-    static std::ostream & Write(std::ostream & os, T const & v)
+    static std::ostream & WriteNonstaticMembers(std::ostream & os, const T & v)
     {
       using Dwm::iostream_detail::IsWritable;
       using Dwm::io_detail::Skip;
@@ -1644,13 +1774,47 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <class T>
     requires std::is_class_v<T>
-      and (not io_detail::DirectlySupported<T>)
-      and (not io_detail::SupportedContainer<T>)
-      and (not io_detail::DenyType<T>)
-      and (not HasStreamNWrite<T>)
-    static std::ostream & NWrite(std::ostream & os, T const & v)
+    static std::istream & ReadNonstaticMembers(std::istream & is, T & v)
     {
-      using Dwm::iostream_detail::IsNWritable;
+      using Dwm::io_detail::Skip;
+      using io_detail::SkipReason, io_detail::DenyReason;
+      constexpr auto ctx = std::meta::access_context::unchecked();
+      template for (constexpr auto mem :
+                    define_static_array(nonstatic_data_members_of(^^T, ctx))) {
+        if constexpr (Skip<decltype(v.[:mem:]),mem>()) {
+          FSyslog(LOG_INFO, "Read of {}.{} of type '{}' skipped{}",
+                  TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                  std::meta::display_string_of(std::meta::type_of(mem)),
+                  SkipReason<decltype(v.[:mem:]),mem>());
+        }
+        else {
+          if constexpr (iostream_detail::IsReadable<decltype(v.[:mem:])>) {
+            FSyslog(LOG_DEBUG, "Reading {}.{} of type '{}'",
+                    TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                    std::meta::display_string_of(std::meta::type_of(mem)));
+            if (! Read(is, v.[:mem:])) {
+              break;
+            }
+          }
+          else {
+            is.setstate(std::ios_base::failbit);
+            FSyslog(LOG_ERR, "{}.{} of type '{}' is unreadable{}",
+                    TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                    std::meta::display_string_of(std::meta::type_of(mem)),
+                    DenyReason<mem>());
+          }
+        }
+      }
+      return is;
+    }
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <class T>
+    requires std::is_class_v<T>
+    static std::ostream & NWriteNonstaticMembers(std::ostream & os, const T & v)
+    {
       using Dwm::io_detail::Skip;
       using io_detail::SkipReason, io_detail::DenyReason;
       constexpr auto ctx = std::meta::access_context::unchecked();
@@ -1663,11 +1827,13 @@ namespace Dwm {
                   SkipReason<decltype(v.[:mem:]),mem>());
         }
         else {
-          if constexpr (IsNWritable<decltype(v.[:mem:])>) {
+          if constexpr (iostream_detail::IsNWritable<decltype(v.[:mem:])>) {
             FSyslog(LOG_DEBUG, "Writing {}.{} of type '{}'",
                     TypeName<decltype(v)>(), std::meta::identifier_of(mem),
                     std::meta::display_string_of(std::meta::type_of(mem)));
-            NWrite(os, v.[:mem:]);
+            if (! NWrite(os, v.[:mem:])) {
+              break;
+            }
           }
           else {
             os.setstate(std::ios_base::failbit);
@@ -1686,27 +1852,27 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <class T>
     requires std::is_class_v<T>
-      and (not io_detail::DirectlySupported<T>)
-      and (not io_detail::SupportedContainer<T>)
-      and (not io_detail::DenyType<T>)
-      and (not HasStreamRead<T>)
-    static std::istream & Read(std::istream & is, T & v)
+    static std::istream & NReadNonstaticMembers(std::istream & is, T & v)
     {
-      using iostream_detail::IsReadable;
-      using io_detail::Skip;
+      using Dwm::io_detail::Skip;
       using io_detail::SkipReason, io_detail::DenyReason;
       constexpr auto ctx = std::meta::access_context::unchecked();
       template for (constexpr auto mem :
-                      define_static_array(nonstatic_data_members_of(^^T, ctx))) {
+                    define_static_array(nonstatic_data_members_of(^^T, ctx))) {
         if constexpr (Skip<decltype(v.[:mem:]),mem>()) {
-          FSyslog(LOG_INFO, "{}.{} of type '{}' skipped{}",
+          FSyslog(LOG_INFO, "NRead of {}.{} of type '{}' skipped{}",
                   TypeName<decltype(v)>(), std::meta::identifier_of(mem),
                   std::meta::display_string_of(std::meta::type_of(mem)),
                   SkipReason<decltype(v.[:mem:]),mem>());
         }
         else {
-          if constexpr (IsReadable<decltype(v.[:mem:])>) {
-            Read(is, (v.[:mem:]));
+          if constexpr (iostream_detail::IsNReadable<decltype(v.[:mem:])>) {
+            FSyslog(LOG_DEBUG, "NReading {}.{} of type '{}'",
+                    TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                    std::meta::display_string_of(std::meta::type_of(mem)));
+            if (! NRead(is, v.[:mem:])) {
+              break;
+            }
           }
           else {
             is.setstate(std::ios_base::failbit);
@@ -1728,35 +1894,52 @@ namespace Dwm {
       and (not io_detail::DirectlySupported<T>)
       and (not io_detail::SupportedContainer<T>)
       and (not io_detail::DenyType<T>)
+      and (not HasStreamWrite<T>)
+    static std::ostream & Write(std::ostream & os, T const & v)
+    {
+      return WriteNonstaticMembers(os, v);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <class T>
+    requires std::is_class_v<T>
+      and (not io_detail::DirectlySupported<T>)
+      and (not io_detail::SupportedContainer<T>)
+      and (not io_detail::DenyType<T>)
+      and (not HasStreamNWrite<T>)
+    static std::ostream & NWrite(std::ostream & os, T const & v)
+    {
+      return NWriteNonstaticMembers(os, v);
+    }
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <class T>
+    requires std::is_class_v<T>
+      and (not io_detail::DirectlySupported<T>)
+      and (not io_detail::SupportedContainer<T>)
+      and (not io_detail::DenyType<T>)
+      and (not HasStreamRead<T>)
+    static std::istream & Read(std::istream & is, T & v)
+    {
+      return ReadNonstaticMembers(is, v);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <class T>
+    requires std::is_class_v<T>
+      and (not io_detail::DirectlySupported<T>)
+      and (not io_detail::SupportedContainer<T>)
+      and (not io_detail::DenyType<T>)
       and (not HasStreamNRead<T>)
     static std::istream & NRead(std::istream & is, T & v)
     {
-      using iostream_detail::IsNReadable;
-      using io_detail::Skip;
-      using io_detail::SkipReason, io_detail::DenyReason;
-      constexpr auto ctx = std::meta::access_context::unchecked();
-      template for (constexpr auto mem :
-                      define_static_array(nonstatic_data_members_of(^^T, ctx))) {
-        if constexpr (Skip<decltype(v.[:mem:]),mem>()) {
-          FSyslog(LOG_INFO, "{}.{} of type '{}' skipped{}",
-                  TypeName<decltype(v)>(), std::meta::identifier_of(mem),
-                  std::meta::display_string_of(std::meta::type_of(mem)),
-                  SkipReason<decltype(v.[:mem:]),mem>());
-        }
-        else {
-          if constexpr (IsNReadable<decltype(v.[:mem:])>) {
-            NRead(is, (v.[:mem:]));
-          }
-          else {
-            is.setstate(std::ios_base::failbit);
-            FSyslog(LOG_ERR, "{}.{} of type '{}' is unreadable{}",
-                    TypeName<decltype(v)>(), std::meta::identifier_of(mem),
-                    std::meta::display_string_of(std::meta::type_of(mem)),
-                    DenyReason<mem>());
-          }
-        }
-      }
-      return is;
+      return NReadNonstaticMembers(is, v);
     }
     
 #endif  // defined(DWM_CAN_USE_REFLECTION)
@@ -1861,7 +2044,28 @@ namespace Dwm {
       }
       return(is);
     }
-        
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
+      and IsEndianSensitiveInteger<std::remove_all_extents_t<T>>
+    static void ToHostByteOrder(T & v)
+    {
+      if constexpr (std::rank_v<std::remove_cvref_t<decltype(v)>> == 1) {
+        for (std::size_t i = 0; i < std::extent_v<T>; ++i) {
+          v[i] = BE2Host(v[i]);
+        }
+      }
+      else {
+        for (std::size_t i = 0; i < std::extent_v<T>; ++i) {
+          ToHostByteOrder(v[i]);
+        }
+      }
+      return;
+    }
+    
   };  // class StreamIO
 
   //--------------------------------------------------------------------------
