@@ -49,6 +49,7 @@ extern "C" {
 #include <sstream>
 
 #include "DwmDescriptorIO.hh"
+#include "DwmGZIO.hh"
 #include "DwmSvnTag.hh"
 #include "DwmOptArgs.hh"
 #include "DwmPassword.hh"
@@ -61,6 +62,7 @@ static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmRu
 using namespace std;
 using Dwm::Assertions;
 using Dwm::DescriptorIO;
+using Dwm::GZIO;
 using Dwm::OptArgs;
 using Dwm::Password;
 using Dwm::Rusage;
@@ -107,13 +109,13 @@ static void TestRusageGZIO()
   UnitAssert(gzf);
   
   if (gzf) {
-    UnitAssert(rusage.Write(gzf));
+    UnitAssert(GZIO::Write(gzf, rusage));
     gzclose(gzf);
     Rusage  rusage2;
     gzf = gzopen(filename.str().c_str(), "rb");
     UnitAssert(gzf);
     if (gzf) {
-      UnitAssert(rusage2.Read(gzf));
+      UnitAssert(GZIO::Read(gzf, rusage2));
       gzclose(gzf);
       UnitAssert(rusage2 == rusage);
     }

@@ -202,23 +202,15 @@ namespace Dwm {
     //!  Writes to an ostream, in native byte order.  Returns the ostream.
     //------------------------------------------------------------------------
     std::ostream & NWrite(std::ostream & os) const;
-    
-    //------------------------------------------------------------------------
-    //!  Reads from a gzFile.  Returns the number of bytes read on success,
-    //!  -1 on failure.
-    //------------------------------------------------------------------------
-    int Read(gzFile gzf);
-    
-    //------------------------------------------------------------------------
-    //!  Writes to a gzFile.  Returns the number of bytes written on 
-    //!  success, -1 on failure.
-    //------------------------------------------------------------------------
-    int Write(gzFile gzf) const;
 
 #if defined(DWM_CAN_USE_REFLECTION)
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if we called
     //!  one of the Write() members.
+    //!  Note that by making this constexpr, we automatically get
+    //!  DescriptorIO::Read(), DescriptorIO::Write(), GZIO::Read() and
+    //!  GZIO::Write() functionality via our Read(std::istream &) and
+    //!  Write(std::ostream &) members.
     //------------------------------------------------------------------------
     static constexpr uint64_t StreamedLength()
     {
@@ -235,6 +227,10 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if we called
     //!  one of the Write() members.
+    //!  Note that by making this constexpr, we automatically get
+    //!  DescriptorIO::Read(), DescriptorIO::Write(), GZIO::Read() and
+    //!  GZIO::Write() functionality via our Read(std::istream &) and
+    //!  Write(std::ostream &) members.
     //------------------------------------------------------------------------
     static constexpr uint64_t StreamedLength()
     {
