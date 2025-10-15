@@ -44,6 +44,7 @@
 
 
 #include <array>
+#include <atomic>
 #include <condition_variable>
 #include <deque>
 #include <list>
@@ -52,6 +53,7 @@
 #include <mutex>
 #include <optional>
 #include <set>
+#include <string_view>
 #include <tuple>
 #include <type_traits>
 #include <unordered_map>
@@ -113,6 +115,7 @@ namespace Dwm {
     template <class T> concept is_std_##x = is_std_container<T,std::x>
 #endif
 
+    MAKE_IS_STD_CONT_CONCEPT(atomic);
     MAKE_IS_STD_CONT_CONCEPT(pair);
     MAKE_IS_STD_CONT_CONCEPT(list);
     MAKE_IS_STD_CONT_CONCEPT(deque);
@@ -191,6 +194,42 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   typedef struct {} deny_io_t;
   inline constexpr auto  deny_io = deny_io_t();
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  template <typename T>
+  consteval bool AllMembersArithmetic()
+  {
+    constexpr auto ctx = std::meta::access_context::unchecked();
+    template for (constexpr auto mem :
+                    define_static_array(nonstatic_data_members_of(^^T, ctx))) {
+      if constexpr (! std::is_arithmetic_v<typename[:std::meta::type_of(mem):]>) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  template <typename T>
+  consteval bool AllMembersArithmeticPacked()
+  {
+    std::size_t  sz = 0;
+    constexpr auto ctx = std::meta::access_context::unchecked();
+    template for (constexpr auto mem :
+                    define_static_array(nonstatic_data_members_of(^^T, ctx))) {
+      if constexpr (! std::is_arithmetic_v<typename[:std::meta::type_of(mem):]>) {
+        return false;
+      }
+      sz += sizeof(typename[:std::meta::type_of(mem):]);
+      
+    }
+    return (sizeof(T) == sz);
+  }
+  
 #endif
   
 }  // namespace Dwm
