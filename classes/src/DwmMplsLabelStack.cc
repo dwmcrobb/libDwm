@@ -39,6 +39,7 @@
 //!  \brief Dwm::MplsLabelStack class implementation
 //---------------------------------------------------------------------------
 
+#include <numeric>
 #include <cassert>
 
 #include "DwmMplsLabelStack.hh"
@@ -346,12 +347,9 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   uint64_t MplsLabelStack::StreamedLength() const
   {
-    uint64_t  rc = 0;
-    std::vector<MplsLabel>::const_iterator  i;
-    for (i = _labels.begin(); i != _labels.end(); ++i) {
-      rc += i->StreamedLength();
-    }
-    return(rc);
+    return std::accumulate(_labels.begin(), _labels.end(), uint64_t(0),
+                           [] (uint64_t init, const MplsLabel & label)
+                           { return init + label.StreamedLength(); });
   }
   
   //--------------------------------------------------------------------------
@@ -362,10 +360,10 @@ namespace Dwm {
   {
     if (os) {
       if (! labelStack._labels.empty()) {
-        std::vector<MplsLabel>::const_iterator  i = labelStack._labels.begin();
+        auto  i = labelStack._labels.cbegin();
         os << *i;
         ++i;
-        for ( ; i != labelStack._labels.end(); ++i) {
+        for ( ; i != labelStack._labels.cend(); ++i) {
           os << ' ' << *i;
         }
       }
