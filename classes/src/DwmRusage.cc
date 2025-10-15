@@ -59,19 +59,6 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  Rusage::Rusage()
-      : _userTime(0, 0), _systemTime(0, 0), _maxResidentSetSize(0),
-        _integralSharedTextMemorySize(0), _integralUnsharedDataSize(0),
-        _integralUnsharedStackSize(0), _pageReclaims(0), _pageFaults(0),
-        _swaps(0), _blockInputOperations(0), _blockOutputOperations(0),
-        _messagesSent(0), _messagesReceived(0), _signalsReceived(0),
-        _voluntaryContextSwitches(0), _involuntaryContextSwitches(0)
-  {
-  }
-
-  //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
   Rusage::Rusage(const struct rusage & rusage)
   {
     Set(rusage);

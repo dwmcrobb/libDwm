@@ -132,6 +132,7 @@ static void TestContainers()
   return;
 }
 
+#if defined(DWM_CAN_USE_REFLECTION)
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
@@ -208,6 +209,7 @@ static void TestAllMembersArithmeticPacked()
   
   return;
 }
+#endif  // DWM_CAN_USE_REFLECTION
 
 //----------------------------------------------------------------------------
 //!  
@@ -215,9 +217,10 @@ static void TestAllMembersArithmeticPacked()
 int main(int argc, char *argv[])
 {
   TestContainers();
+#if defined(DWM_CAN_USE_REFLECTION)
   TestAllMembersArithmetic();
   TestAllMembersArithmeticPacked();
-  
+#endif
   if (Assertions::Total().Failed()) {
     Assertions::Print(cerr, true);
     exit(1);

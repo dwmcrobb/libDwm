@@ -2456,7 +2456,7 @@ namespace Dwm {
     {
       ssize_t  rc = -1;
       if (0 <= fd) {
-        constexpr size_t  bufSize = t.StreamedLength();
+        constexpr size_t  bufSize = T::StreamedLength();
         std::string  s;
         try {
           s.resize(bufSize);

@@ -62,8 +62,15 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Constructor
     //------------------------------------------------------------------------
-    Rusage();
-
+    constexpr Rusage()
+      : _userTime(), _systemTime(), _maxResidentSetSize(0),
+        _integralSharedTextMemorySize(0), _integralUnsharedDataSize(0),
+        _integralUnsharedStackSize(0), _pageReclaims(0), _pageFaults(0),
+        _swaps(0), _blockInputOperations(0), _blockOutputOperations(0),
+        _messagesSent(0), _messagesReceived(0), _signalsReceived(0),
+        _voluntaryContextSwitches(0), _involuntaryContextSwitches(0)
+    {}
+    
     //------------------------------------------------------------------------
     //!  Construct from a struct rusagee
     //------------------------------------------------------------------------
@@ -257,22 +264,23 @@ namespace Dwm {
     static constexpr uint64_t StreamedLength()
     {
       uint64_t  rc = 0;
-      rc += IOUtils::StreamedLength(_userTime);
-      rc += IOUtils::StreamedLength(_systemTime);
-      rc += IOUtils::StreamedLength(_maxResidentSetSize);
-      rc += IOUtils::StreamedLength(_integralSharedTextMemorySize);
-      rc += IOUtils::StreamedLength(_integralUnsharedDataSize);
-      rc += IOUtils::StreamedLength(_integralUnsharedStackSize);
-      rc += IOUtils::StreamedLength(_pageReclaims);
-      rc += IOUtils::StreamedLength(_pageFaults);
-      rc += IOUtils::StreamedLength(_swaps);
-      rc += IOUtils::StreamedLength(_blockInputOperations);
-      rc += IOUtils::StreamedLength(_blockOutputOperations);
-      rc += IOUtils::StreamedLength(_messagesSent);
-      rc += IOUtils::StreamedLength(_messagesReceived);
-      rc += IOUtils::StreamedLength(_signalsReceived);
-      rc += IOUtils::StreamedLength(_voluntaryContextSwitches);
-      rc += IOUtils::StreamedLength(_involuntaryContextSwitches);
+      constexpr  Rusage  r;
+      rc += IOUtils::StreamedLength(r._userTime);
+      rc += IOUtils::StreamedLength(r._systemTime);
+      rc += IOUtils::StreamedLength(r._maxResidentSetSize);
+      rc += IOUtils::StreamedLength(r._integralSharedTextMemorySize);
+      rc += IOUtils::StreamedLength(r._integralUnsharedDataSize);
+      rc += IOUtils::StreamedLength(r._integralUnsharedStackSize);
+      rc += IOUtils::StreamedLength(r._pageReclaims);
+      rc += IOUtils::StreamedLength(r._pageFaults);
+      rc += IOUtils::StreamedLength(r._swaps);
+      rc += IOUtils::StreamedLength(r._blockInputOperations);
+      rc += IOUtils::StreamedLength(r._blockOutputOperations);
+      rc += IOUtils::StreamedLength(r._messagesSent);
+      rc += IOUtils::StreamedLength(r._messagesReceived);
+      rc += IOUtils::StreamedLength(r._signalsReceived);
+      rc += IOUtils::StreamedLength(r._voluntaryContextSwitches);
+      rc += IOUtils::StreamedLength(r._involuntaryContextSwitches);
       return(rc);
     }
 #endif

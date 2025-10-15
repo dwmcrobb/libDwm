@@ -50,7 +50,7 @@ namespace Dwm {
 
   template <typename T>
   concept HasConstexprStreamedLength = requires (const T & t) {
-    typename ConstExprStreamedLengthHelper<t.StreamedLength()>;
+    typename ConstExprStreamedLengthHelper<T::StreamedLength()>;
   };
 
   //--------------------------------------------------------------------------
