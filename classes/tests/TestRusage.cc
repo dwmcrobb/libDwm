@@ -153,15 +153,23 @@ static void TestRusageDescriptorIO()
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  bool  show = false;
+  bool  show = false, debug = false;
 
   OptArgs  optargs;
   optargs.AddOptArg("s", "show", false, "false", "show rusage results");
+  optargs.AddOptArg("d", "debug", false, "false", "enable debug logging");
   optargs.Parse(argc, argv);
   show = optargs.Get<bool>('s');
-
+  debug = optargs.Get<bool>('d');
+  
   Dwm::SysLogger::Open("TestRusage", LOG_PERROR, LOG_USER);
-
+  if (debug) {
+    Dwm::SysLogger::MinimumPriority(LOG_DEBUG);
+  }
+  else {
+    Dwm::SysLogger::MinimumPriority(LOG_INFO);
+  }
+  
   for (int i = 0; i < 100000; ++i) {
     getpid();
   }
