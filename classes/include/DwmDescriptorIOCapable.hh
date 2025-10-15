@@ -91,6 +91,45 @@ namespace Dwm {
   { static constexpr bool value = HasDescriptorWrite<T>; };
     
   //--------------------------------------------------------------------------
+  //!  T has an NRead(int) member that returns ssize_t (number of bytes read
+  //!  on success, -1 on failure).
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept HasDescriptorNRead = requires (T & t, int fd) {
+    { t.NRead(fd) } -> std::same_as<ssize_t>;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  Until C++26 P2841R7, we can't pass concepts as template template
+  //!  parameters.  So we need to be able to convert our concept into a
+  //!  type so it can be passed as a class template template parameter, for
+  //!  any templates where we need it.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  struct HasDescriptorNRead_t
+  { static constexpr bool value = HasDescriptorNRead<T>; };
+    
+  //--------------------------------------------------------------------------
+  //!  T has an NWrite(int fd) const member that returns ssize_t (number of
+  //!  bytes read on success, -1 on failure).
+  //--------------------------------------------------------------------------
+  template <typename T>
+  concept HasDescriptorNWrite = requires (const T & t, int fd) {
+    { t.NWrite(fd) } -> std::same_as<ssize_t>;
+  };
+
+  //--------------------------------------------------------------------------
+  //!  Until C++26 P2841R7, we can't pass concepts as template template
+  //!  parameters.  So we need to be able to convert our concept into a
+  //!  type so it can be passed as a class template template parameter, for
+  //!  any templates where we need it.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  struct HasDescriptorNWrite_t
+  { static constexpr bool value = HasDescriptorNWrite<T>; };
+    
+
+  //--------------------------------------------------------------------------
   //!  This class defines an interface for classes that can read their
   //!  contents from a file descriptor.
   //--------------------------------------------------------------------------
