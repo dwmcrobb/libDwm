@@ -44,7 +44,7 @@
 #include <cassert>
 #include <cstdint>
 #include <cstdio>
-#include <string>
+#include <sstream>
 
 #include "DwmPortability.hh"
 #include "DwmIOConcepts.hh"
@@ -752,6 +752,7 @@ namespace Dwm {
       and (not io_detail::SupportedContainer<T>)
       and (not io_detail::DenyType<T>)
       and (not HasFileWrite<T>)
+      and (not HasConstexprStreamedLength<T>)
     static size_t Write(FILE *f, const T & v)
     {
       if (f) {
@@ -795,6 +796,7 @@ namespace Dwm {
       and (not io_detail::SupportedContainer<T>)
       and (not io_detail::DenyType<T>)
       and (not HasFileRead<T>)
+      and (not HasConstexprStreamedLength<T>)
     static size_t Read(FILE *f, T & v)
     {
       using fileio_detail::IsReadable;
@@ -830,8 +832,77 @@ namespace Dwm {
     }
     
 #endif  // defined(DWM_CAN_USE_REFLECTION)
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires HasConstexprStreamedLength<T>
+    and (not HasFileRead<T>)
+    and HasStreamRead<T>
+    static size_t Read(FILE *f, T & t)
+    { return ReadViaIstream(f, t); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires HasConstexprStreamedLength<T>
+    and (not HasFileWrite<T>)
+    and HasStreamWrite<T>
+    static size_t Write(FILE *f, const T & t)
+    { return WriteViaOstream(f, t); }
     
   private:
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires HasConstexprStreamedLength<T>
+    and (not HasFileRead<T>)
+    and HasStreamRead<T>
+    static size_t ReadViaIstream(FILE *f, T & t)
+    {
+      size_t  rc = 0;
+      if (f) {
+        constexpr size_t  bufSize = T::StreamedLength();
+        std::string       s;
+        try {
+          s.resize(bufSize);
+          if (1 == fread(s.data(), bufSize, 1, f)) {
+            std::istringstream  iss(std::move(s));
+            if (t.Read(iss)) {
+              rc = 1;
+            }
+          }
+        }
+        catch (...) {
+          FSyslog(LOG_ERR, "Exception in GZIO::ReadViaIstream()");
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires HasConstexprStreamedLength<T>
+    and (not HasFileWrite<T>)
+    and HasStreamWrite<T>
+    static size_t WriteViaOstream(FILE *f, const T & t)
+    {
+      size_t  rc = 0;
+      if (f) {
+        std::ostringstream  os;
+        if (StreamIO::Write(os, t)) {
+          std::string_view  ossv(os.view());
+          rc = fwrite(ossv.data(), ossv.size(), 1, f);
+        }
+      }
+      return rc;
+    }
+        
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
