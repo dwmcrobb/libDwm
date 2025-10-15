@@ -64,7 +64,9 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Constructor.  Sets the address to 00:00:00:00:00:00
     //------------------------------------------------------------------------
-    MacAddress();
+    constexpr MacAddress()
+        : _addr{0,0,0,0,0,0}
+    {}
 
     //------------------------------------------------------------------------
     //!  Construct from a string of the form xx:xx:xx:xx:xx:xx
@@ -198,7 +200,8 @@ namespace Dwm {
     //!  Returns the number of bytes that should be written if we call one
     //!  of the Write() members.  Should always return 6.
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const;
+    static inline constexpr uint64_t StreamedLength()
+    { constexpr MacAddress  ma; return ma._addr.size(); }
     
     //------------------------------------------------------------------------
     //!  Prints to an ostream in 'xx:xx:xx:xx:xx:xx' format.
