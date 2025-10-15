@@ -79,6 +79,7 @@ TestPthreadMutex
 TestPthreadReadWriteLock
 TestReflection
 TestRegistry
+TestStreamNativeIO
 TestStringConverter
 TestStringUtils
 TestSvnTag
