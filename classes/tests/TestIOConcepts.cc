@@ -58,6 +58,7 @@ template <typename T, template <typename> typename W>
 static void TestWritableTrue()
 {
   UnitAssert(Dwm::io_detail::Writable<T,W>());
+  return;
 }
 
 //----------------------------------------------------------------------------
@@ -67,6 +68,7 @@ template <typename T, template <typename> typename W>
 static void TestWritableFalse()
 {
   UnitAssert(! (Dwm::io_detail::Writable<T,W>()));
+  return;
 }
 
 //----------------------------------------------------------------------------
@@ -76,6 +78,7 @@ template <typename T, template <typename> typename R>
 static void TestReadableTrue()
 {
   UnitAssert(Dwm::io_detail::Writable<T,R>());
+  return;
 }
 
 //----------------------------------------------------------------------------
@@ -85,6 +88,7 @@ template <typename T, template <typename> typename R>
 static void TestReadableFalse()
 {
   UnitAssert(! Dwm::io_detail::Writable<T,R>());
+  return;
 }
 
 //----------------------------------------------------------------------------
@@ -96,6 +100,7 @@ static void TestReadableWritableTrue()
 {
   TestWritableTrue<T,W>();
   TestReadableTrue<T,R>();
+  return;
 }
 
 //----------------------------------------------------------------------------
@@ -107,6 +112,7 @@ static void TestReadableWritableFalse()
 {
   TestWritableFalse<T,W>();
   TestReadableFalse<T,R>();
+  return;
 }
 
 //----------------------------------------------------------------------------
@@ -121,6 +127,7 @@ static void TestReadableWritableTrue()
   TestReadableWritableTrue<HasDescriptorWrite_t,HasDescriptorRead_t,T>();
   TestReadableWritableTrue<HasFileWrite_t,HasFileRead_t,T>();
   TestReadableWritableTrue<HasGZWrite_t,HasGZWrite_t,T>();
+  return;
 }
 
 //----------------------------------------------------------------------------
@@ -135,6 +142,7 @@ static void TestReadableWritableFalse()
   TestReadableWritableFalse<HasDescriptorWrite_t,HasDescriptorRead_t,T>();
   TestReadableWritableFalse<HasFileWrite_t,HasFileRead_t,T>();
   TestReadableWritableFalse<HasGZWrite_t,HasGZWrite_t,T>();
+  return;
 }
 
 //----------------------------------------------------------------------------
@@ -165,6 +173,7 @@ static void TestDirectlySupported()
   TestReadableWritableTrue<EnumU32_t>();
   TestReadableWritableTrue<EnumU64_t>();
   TestReadableWritableTrue<std::vector<bool>>();
+  return;
 }
 
 //----------------------------------------------------------------------------
@@ -177,6 +186,7 @@ static void TestVectors()
   TestReadableWritableTrue<std::vector<std::set<std::string>>>();
   TestReadableWritableTrue<std::vector<std::map<std::string,int>>>();
   TestReadableWritableTrue<std::vector<std::map<int,std::string>>>();
+  return;
 }
 
 //----------------------------------------------------------------------------
@@ -187,6 +197,7 @@ static void TestVectorsNotWritable()
   TestReadableWritableFalse<std::vector<int *>>();
   TestReadableWritableFalse<const std::vector<int>>();
   TestReadableWritableFalse<std::vector<std::map<int,int *>>>();
+  return;
 }
 
 //----------------------------------------------------------------------------
@@ -195,6 +206,7 @@ static void TestVectorsNotWritable()
 static void TestMaps()
 {
   TestReadableWritableTrue<std::map<std::string,std::vector<std::string>>>();
+  return;
 }
 
 //----------------------------------------------------------------------------
@@ -205,6 +217,7 @@ static void TestTuples()
   TestReadableWritableTrue<std::tuple<int,std::string,
                                       std::vector<std::string>,
                                       std::map<int,bool>>>();
+  return;
 }
 
 //----------------------------------------------------------------------------
@@ -216,6 +229,7 @@ static void TestUniquePtr()
   TestReadableWritableFalse<std::unique_ptr<int[]>>();
   UnitAssert(io_detail::IsUniquePtrToArray<std::unique_ptr<int[]>>);
   UnitAssert(! io_detail::IsUniquePtrToArray<std::unique_ptr<int>>);
+  return;
 }
 
 //----------------------------------------------------------------------------
@@ -249,8 +263,12 @@ static void TestSkipAnnotation()
   if (UnitAssert(io_detail::Skip<decltype(SK1::j),^^SK1::j>())) {
     UnitAssert(! io_detail::SkipReason<decltype(SK1::j),^^SK1::j>().empty());
   }
+  return;
 }
 
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static void TestDenyAnnotation()
 {
   struct SK1 {
@@ -266,9 +284,21 @@ static void TestDenyAnnotation()
   if (UnitAssert(io_detail::Deny<^^SK1::j>())) {
     UnitAssert(! io_detail::DenyReason<^^SK1::j>().empty());
   }
+  return;
 }
 
 #endif
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestAtomics()
+{
+  TestReadableWritableTrue<std::atomic<char>>();
+  TestReadableWritableTrue<std::atomic<uint64_t>>();
+  TestReadableWritableFalse<std::atomic<char *>>();
+  return;
+}
 
 //----------------------------------------------------------------------------
 //!  
@@ -282,6 +312,7 @@ static void TestIOConcepts()
   TestVectorsNotWritable();
   TestUniquePtr();
   TestOptional();
+  TestAtomics();
 #if defined(DWM_CAN_USE_REFLECTION)
   TestSkipAnnotation();
   TestDenyAnnotation();

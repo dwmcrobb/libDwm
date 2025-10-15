@@ -41,6 +41,7 @@
 
 #include "DwmDescriptorIO.hh"
 #include "DwmIpv4Prefix.hh"
+#include "DwmTypeName.hh"
 #include "DwmUnitAssert.hh"
 
 using namespace std;
@@ -564,6 +565,185 @@ static bool VarArgDescriptorTestFail()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static bool UnionTest()
+{
+  string  fn("/tmp/DWMUnionTest." + std::to_string(getpid()));
+  
+  bool  rc = false;
+  typedef union {
+    uint32_t   i;
+    char       s[16];
+  } MyUnion;
+  MyUnion  u1 = { .s = "hello" };
+  MyUnion  u3 = { .i = 0xCAFEF00D };
+  
+  int  fd = open(fn.c_str(), O_WRONLY|O_CREAT, 0644);
+  if (UnitAssert(fd >= 0)) {
+    if (UnitAssert((DescriptorIO::Write(fd, u1) > 0)
+                   && (DescriptorIO::Write(fd, u3) > 0))) {
+      close(fd);
+      fd = open(fn.c_str(), O_RDONLY);
+      if (UnitAssert(fd >= 0)) {
+        MyUnion  u2, u4;
+        if (UnitAssert(DescriptorIO::Read(fd, u2))) {
+          if (UnitAssert(DescriptorIO::Read(fd, u4))) {
+            rc = UnitAssert(string("hello") == string(u2.s));
+            rc &= UnitAssert(u2.i == u1.i);
+            rc = UnitAssert(string(u3.s) == string(u4.s));
+            rc &= UnitAssert(u3.i == u4.i);
+          }
+        }
+        close(fd);
+      }
+    }
+    else {
+      close(fd);
+    }
+    std::remove(fn.c_str());
+  }
+  return rc;
+}
+
+#if defined(DWM_CAN_USE_REFLECTION)
+#if 0
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestIOVecSize()
+{
+  struct SK0 {
+    [[=Dwm::skip_io]]  int i;
+    [[=Dwm::skip_io]]  int j;
+  };
+  UnitAssert(0 == io_detail::IOVecSize<SK0>());
+  UnitAssert(! io_detail::IsIOVCapable<SK0>());
+
+  struct SK1 {
+    int                    i;
+    [[=Dwm::skip_io]]  int j;
+  };
+  UnitAssert(1 == io_detail::IOVecSize<SK1>());
+  UnitAssert(io_detail::IsIOVCapable<SK1>());
+
+  struct SK2 {
+    int     i;
+    bool    b;
+  };
+  UnitAssert(2 == io_detail::IOVecSize<SK2>());
+  UnitAssert(io_detail::IsIOVCapable<SK2>());
+}
+#endif
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestGatherScatterN()
+{
+  string  fn("/tmp/TestGatherScatterN." + std::to_string(getpid()));
+  struct S1 {
+    bool      b;
+    uint16_t  us;
+    int       i;
+    uint32_t  j[4][2];
+  };
+  const S1  s1 { true, 0xF00F, 42,
+                 { { 0xCAFEF00D, 0xFF00FF00 },
+                   { 0xDEADBEEF, 0xFFFF0000 },
+                   { 0x0000FFFF, 0xBADC0FFE },
+                   { 0xFADEDEAD, 0x00FF00FF } } };
+
+  //  consteval {
+    constexpr auto  aggInfo = DescriptorIO::TestAggregate<S1>();
+    static_assert(Concepts::is_std_tuple<typename[:aggInfo:]>);
+    static_assert(std::tuple_size_v<typename[:aggInfo:]> == 4);
+    [:aggInfo:]  agg;
+    // DescriptorIO::FillAggregate(agg, s1);
+    cerr << "std::get<0>(agg): " << std::get<0>(agg) << '\n'
+         << "std::get<1>(agg): " << std::get<1>(agg) << '\n'
+         << "std::get<2>(agg): " << std::get<1>(agg) << '\n';
+    static_assert(std::is_same_v<std::tuple_element_t<3, decltype(agg)>, uint32_t[4][2]>);
+
+    //  }
+  
+  int  fd = open(fn.c_str(), O_WRONLY|O_CREAT|O_TRUNC, 0644);
+  if (UnitAssert(0 <= fd)) {
+    if (UnitAssert(0 < DescriptorIO::GatherNWrite(fd, s1))) {
+      close(fd);
+      fd = open(fn.c_str(), O_RDONLY);
+      if (UnitAssert(0 <= fd)) {
+        S1  s1_2;
+        if (UnitAssert(0 < DescriptorIO::ScatterNRead(fd, s1_2))) {
+          UnitAssert(s1.b == s1_2.b);
+          UnitAssert(s1.us == s1_2.us);
+          UnitAssert(s1.i == s1_2.i);
+          for (size_t i = 0; i < 4; ++i) {
+            for (size_t j = 0; j < 2; ++j) {
+              UnitAssert(s1.j[i][j] == s1_2.j[i][j]);
+            }
+          }
+        }
+        close(fd);
+      }
+    }
+    else {
+      close(fd);
+    }
+    std::remove(fn.c_str());
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestGatherScatter()
+{
+  string  fn("/tmp/TestGatherScatter." + std::to_string(getpid()));
+  struct S1 {
+    bool      b;
+    uint16_t  us;
+    int       i;
+    uint32_t  j[4][2];
+  };
+  const S1  s1 { true, 0xF00F, 42,
+                 { { 0xCAFEF00D, 0xFF00FF00 },
+                   { 0xDEADBEEF, 0xFFFF0000 },
+                   { 0x0000FFFF, 0xBADC0FFE },
+                   { 0xFADEDEAD, 0x00FF00FF } } };
+
+  int fd = open(fn.c_str(), O_WRONLY|O_CREAT|O_TRUNC, 0644);
+  if (UnitAssert(0 <= fd)) {
+    if (UnitAssert(0 < DescriptorIO::GatherWrite(fd, s1))) {
+      close(fd);
+      fd = open(fn.c_str(), O_RDONLY);
+      if (UnitAssert(0 <= fd)) {
+        S1  s1_2;
+        if (UnitAssert(0 < DescriptorIO::ScatterRead(fd, s1_2))) {
+          UnitAssert(s1.b == s1_2.b);
+          UnitAssert(s1.us == s1_2.us);
+          UnitAssert(s1.i == s1_2.i);
+          for (size_t i = 0; i < 4; ++i) {
+            for (size_t j = 0; j < 2; ++j) {
+              UnitAssert(s1.j[i][j] == s1_2.j[i][j]);
+            }
+          }
+        }
+        close(fd);
+      }
+    }
+    else {
+      close(fd);
+    }
+    std::remove(fn.c_str());
+  }
+  return;
+}
+
+#endif
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
   SysLogger::Open("TestDescriptorIO", LOG_PERROR, LOG_USER);
@@ -578,7 +758,11 @@ int main(int argc, char *argv[])
   SetDescriptorTest();
   VarArgDescriptorTest();
   VarArgDescriptorTestFail();
+  UnionTest();
 #if defined(DWM_CAN_USE_REFLECTION)
+  //  TestIOVecSize();
+  TestGatherScatterN();
+  TestGatherScatter();
 #endif
   
   if (Assertions::Total().Failed()) {

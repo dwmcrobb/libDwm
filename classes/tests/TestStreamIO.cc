@@ -618,14 +618,14 @@ static bool BoundedArrayStreamTest()
   }
 
   if (rc) {
-    int  ic1[][3] = { {2,3,4}, {6,7,8}, {10,11,12} };
+    uint8_t  ic1[][3] = { {2,3,4}, {6,7,8}, {10,11,12}, {9,5,1} };
     static_assert(std::is_bounded_array_v<decltype(ic1)>);
     rc = false;
     if (UnitAssert(StreamIO::Write(ss, ic1))) {
-      int  ic2[][3] = { {0,0,0}, {0,0,0}, {0,0,0} };
+      uint8_t  ic2[][3] = { {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0} };
       if (UnitAssert(StreamIO::Read(ss, ic2))) {
         rc = true;
-        for (size_t i = 0; i < 3; ++i) {
+        for (size_t i = 0; i < 4; ++i) {
           for (size_t j = 0; j < 3; ++j) {
             if (! UnitAssert(ic1[i][j] == ic2[i][j])) {
               rc = false;
@@ -884,9 +884,62 @@ static bool ReflectionStreamTest()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static bool UnionTest()
+{
+  bool  rc = false;
+  typedef union {
+    uint32_t   i;
+    char       s[16];
+  } MyUnion;
+  MyUnion  u1 = { .s = "hello" };
+
+  stringstream  ss;
+  if (UnitAssert(StreamIO::Write(ss, u1))) {
+    MyUnion  u2;
+    if (UnitAssert(StreamIO::Read(ss, u2))) {
+      rc = UnitAssert(string("hello") == string(u2.s));
+      rc &= UnitAssert(u2.i == u1.i);
+      u1.i = 0xdeadbeef;
+      rc &= UnitAssert(StreamIO::Write(ss, u1));
+      rc &= UnitAssert(StreamIO::Read(ss, u2));
+      rc &= UnitAssert(u2.i == u1.i);
+    }
+  }
+  return rc;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void AtomicsTest()
+{
+  std::stringstream  ss;
+
+  std::atomic<uint32_t>  au32_1 = 0xCAFEF00D;
+  if (UnitAssert(StreamIO::Write(ss, au32_1))) {
+    std::atomic<uint32_t>	 au32_2 = 0x00000000;
+    if (UnitAssert(StreamIO::Read(ss, au32_2))) {
+      UnitAssert(au32_1.load() == au32_2.load());
+    }
+  }
+  
+  std::atomic<uint8_t>  au8_1 = 0x99;
+  if (UnitAssert(StreamIO::Write(ss, au8_1))) {
+    std::atomic<uint8_t>  au8_2 = 0x00;
+    if (UnitAssert(StreamIO::Read(ss, au8_2))) {
+      UnitAssert(au8_1.load() == au8_2.load());
+    }
+  }
+  
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  //  SysLogger::Open("TestStreamIO", LOG_PERROR, LOG_USER);
+  SysLogger::Open("TestStreamIO", LOG_PERROR, LOG_USER);
   SysLogger::MinimumPriority(LOG_INFO);
 
   StreamTest();
@@ -903,6 +956,8 @@ int main(int argc, char *argv[])
   TestStreamUniquePtr();
   TestStreamOptional();
   TestTupleWritable();
+  UnionTest();
+  AtomicsTest();
 #if defined(DWM_CAN_USE_REFLECTION)
   ReflectionSkipTest();
   ReflectionStreamTest();

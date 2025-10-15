@@ -124,6 +124,87 @@ static void TestContainers()
   UnitAssert((! Concepts::is_std_pair_associative_container<unordered_multiset<int>>));
 
   UnitAssert(! Concepts::is_std_sequence_container<vector<bool>>);
+
+  UnitAssert(Concepts::is_std_atomic<std::atomic<int>>);
+  UnitAssert(Concepts::is_std_atomic<std::atomic<uint64_t>>);
+  UnitAssert(! Concepts::is_std_atomic<std::pair<char,char>>);
+  
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestAllMembersArithmetic()
+{
+  struct s1 {
+    uint64_t  i;
+    uint64_t  j;
+  };
+  UnitAssert(AllMembersArithmetic<s1>());
+  struct s2 {
+    bool  b;
+    char  c;
+  };
+  UnitAssert(AllMembersArithmetic<s2>());
+  struct s3 {
+    short   s;
+    int     i;
+    float   f;
+    double  d;
+  };
+  UnitAssert(AllMembersArithmetic<s3>());
+  struct s4 {
+    int     i;
+    int    *ip;
+  };
+  UnitAssert(! AllMembersArithmetic<s4>());
+  struct s5 {
+    int          i;
+    std::string  s;
+  };
+  UnitAssert(! AllMembersArithmetic<s5>());
+
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestAllMembersArithmeticPacked()
+{
+  struct s1 {
+    uint64_t  i;
+    uint64_t  j;
+  };
+  UnitAssert(AllMembersArithmeticPacked<s1>());
+  UnitAssert(std::is_trivially_copyable_v<s1>);
+
+  struct s2 {
+    uint32_t  i;
+    uint64_t  j;
+  };
+  UnitAssert(! AllMembersArithmeticPacked<s2>());
+  UnitAssert(std::is_trivially_copyable_v<s2>);
+
+  struct s3 {
+    uint32_t  i;
+    uint64_t  j;
+  } __attribute__((packed));
+  UnitAssert(AllMembersArithmeticPacked<s3>());
+  UnitAssert(std::is_trivially_copyable_v<s3>);
+
+  struct s4 {
+    std::string  s;
+  } __attribute__((packed));
+  UnitAssert(! AllMembersArithmeticPacked<s4>());
+  UnitAssert(! std::is_trivially_copyable_v<s4>);
+
+  struct s5 {
+    int  *p;
+  } __attribute__((packed));
+  UnitAssert(! AllMembersArithmeticPacked<s5>());
+  UnitAssert(std::is_trivially_copyable_v<s5>);
   
   return;
 }
@@ -134,6 +215,8 @@ static void TestContainers()
 int main(int argc, char *argv[])
 {
   TestContainers();
+  TestAllMembersArithmetic();
+  TestAllMembersArithmeticPacked();
   
   if (Assertions::Total().Failed()) {
     Assertions::Print(cerr, true);

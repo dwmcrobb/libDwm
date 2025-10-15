@@ -39,21 +39,28 @@
 //!  \brief Unit tests for Dwm::Rusage class
 //---------------------------------------------------------------------------
 
+extern "C" {
+  #include <fcntl.h>
+}
+
 #include <cstdio>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
+#include "DwmDescriptorIO.hh"
 #include "DwmSvnTag.hh"
 #include "DwmOptArgs.hh"
 #include "DwmPassword.hh"
 #include "DwmRusage.hh"
+#include "DwmSysLogger.hh"
 #include "DwmUnitAssert.hh"
 
 static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmRusage.cc 9014 $");
 
 using namespace std;
 using Dwm::Assertions;
+using Dwm::DescriptorIO;
 using Dwm::OptArgs;
 using Dwm::Password;
 using Dwm::Rusage;
@@ -118,6 +125,32 @@ static void TestRusageGZIO()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void TestRusageDescriptorIO()
+{
+  Rusage  rusage;
+  rusage.Get(RUSAGE_SELF);
+  
+  ostringstream  filename;
+  filename << "/tmp/TestDwmRusageDescriptorIO." << getpid();
+  int  fd = open(filename.str().c_str(), O_CREAT|O_WRONLY, S_IRUSR|S_IWUSR);
+  if (UnitAssert(fd >= 0)) {
+    UnitAssert(DescriptorIO::Write(fd, rusage) == rusage.StreamedLength());
+    close(fd);
+    Rusage  rusage2;
+    fd = open(filename.str().c_str(), O_RDONLY);
+    if (UnitAssert(fd >= 0)) {
+      UnitAssert(DescriptorIO::Read(fd, rusage2) == rusage2.StreamedLength());
+      close(fd);
+      UnitAssert(rusage2 == rusage);
+    }
+    //    std::remove(filename.str().c_str());
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
   bool  show = false;
@@ -126,7 +159,9 @@ int main(int argc, char *argv[])
   optargs.AddOptArg("s", "show", false, "false", "show rusage results");
   optargs.Parse(argc, argv);
   show = optargs.Get<bool>('s');
-  
+
+  Dwm::SysLogger::Open("TestRusage", LOG_PERROR, LOG_USER);
+
   for (int i = 0; i < 100000; ++i) {
     getpid();
   }
@@ -145,7 +180,6 @@ int main(int argc, char *argv[])
   for (int i = 0; i < 1000; ++i) {
     Password  passwd(getuid());
   }
-  sleep(2);
 
   Rusage  rusage2;
   rusage2.Get(RUSAGE_SELF);
@@ -171,6 +205,7 @@ int main(int argc, char *argv[])
 
   TestRusageIO();
   TestRusageGZIO();
+  TestRusageDescriptorIO();
   
   if (Assertions::Total().Failed() > 0) {
     Assertions::Print(std::cerr, true);
