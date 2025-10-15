@@ -50,6 +50,7 @@ extern "C" {
 
 #include "DwmBZ2IO.hh"
 #include "DwmDescriptorIO.hh"
+#include "DwmFileIO.hh"
 #include "DwmGZIO.hh"
 #include "DwmSvnTag.hh"
 #include "DwmOptArgs.hh"
@@ -64,6 +65,7 @@ using namespace std;
 using Dwm::Assertions;
 using Dwm::BZ2IO;
 using Dwm::DescriptorIO;
+using Dwm::FileIO;
 using Dwm::GZIO;
 using Dwm::OptArgs;
 using Dwm::Password;
@@ -90,6 +92,32 @@ static void TestRusageIO()
     if (is) {
       UnitAssert(rusage2.Read(is));
       is.close();
+      UnitAssert(rusage2 == rusage);
+    }
+    std::remove(filename.str().c_str());
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestRusageFileIO()
+{
+  Rusage  rusage;
+  rusage.Get(RUSAGE_SELF);
+  
+  ostringstream  filename;
+  filename << "/tmp/TestDwmRusageFileIO." << getpid();
+  FILE  *f = fopen(filename.str().c_str(), "w");
+  if (UnitAssert(f)) {
+    UnitAssert(FileIO::Write(f, rusage));
+    fclose(f);
+    Rusage  rusage2;
+    f = fopen(filename.str().c_str(), "r");
+    if (UnitAssert(f)) {
+      UnitAssert(FileIO::Read(f, rusage2));
+      fclose(f);
       UnitAssert(rusage2 == rusage);
     }
     std::remove(filename.str().c_str());
@@ -244,6 +272,7 @@ int main(int argc, char *argv[])
   TestRusageIO();
   TestRusageGZIO();
   TestRusageDescriptorIO();
+  TestRusageFileIO();
   TestRusageBZ2IO();
   
   if (Assertions::Total().Failed() > 0) {
