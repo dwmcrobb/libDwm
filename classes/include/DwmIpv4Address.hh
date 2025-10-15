@@ -63,9 +63,10 @@ namespace Dwm {
   {
   public:
     //------------------------------------------------------------------------
-    //!  Constructor.
+    //!  Default constructor.
     //------------------------------------------------------------------------
-    Ipv4Address();
+    constexpr Ipv4Address() : _addr(0)
+    {}
 
     //------------------------------------------------------------------------
     //!  Construct from an ipv4addr_t (32-bit value in network byte order).
@@ -240,14 +241,15 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    static inline uint8_t MaxKeyBits()
+    static inline constexpr uint8_t MaxKeyBits()
     { return 32; }
     
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if we called
     //!  one of the non-compressing Write() members.
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const;
+    static constexpr uint64_t StreamedLength()
+    { return sizeof(_addr); }
     
     //------------------------------------------------------------------------
     //!  Reads from an istream.  Returns the istream.
@@ -285,13 +287,13 @@ namespace Dwm {
     //------------------------------------------------------------------------
     inline ssize_t NRead(int fd)
     { return Read(fd); }
-      
+
     //------------------------------------------------------------------------
     //!  Writes to a file descriptor.  Returns the number of bytes written
     //!  (4 on success).
     //------------------------------------------------------------------------
     ssize_t Write(int fd) const;
-
+    
     //------------------------------------------------------------------------
     //!  Writes to a file descriptor.  Returns the number of bytes written
     //!  (4 on success).
