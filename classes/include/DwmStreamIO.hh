@@ -437,7 +437,19 @@ namespace Dwm {
     //------------------------------------------------------------------------
     static std::ostream & NWrite(std::ostream & os, const std::string & s);
 
+    //------------------------------------------------------------------------
+    //!  Writes @c v to @c os.  Returns @c os.
+    //!  string_view objects are length:value encoded, where the length is
+    //!  a 64 bit unsigned integer in network byte order (MSB first).
+    //------------------------------------------------------------------------
     static std::ostream & Write(std::ostream & os, std::string_view v);
+
+    //------------------------------------------------------------------------
+    //!  Writes @c v to @c os.  Returns @c os.
+    //!  string_view objects are length:value encoded, where the length is
+    //!  a 64 bit unsigned integer in native byte order.
+    //------------------------------------------------------------------------
+    static std::ostream & NWrite(std::ostream & os, std::string_view v);
     
     //------------------------------------------------------------------------
     //!  Reads @c t from @c is, where @c t is an enumerated type.  Returns
