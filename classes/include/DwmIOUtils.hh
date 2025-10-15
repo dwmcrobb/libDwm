@@ -82,100 +82,78 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if we called
     //!  Write() for a char.  Should always be 1.
     //------------------------------------------------------------------------
-    static uint64_t StreamedLength(char c)
-    {
-      return(sizeof(c));
-    }
+    static constexpr uint64_t StreamedLength(char c)
+    { return(sizeof(c)); }
 
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if we called
     //!  Write() for a uint8_t.  Should always be 1.
     //------------------------------------------------------------------------
-    static uint64_t StreamedLength(uint8_t c)
-    {
-      return(sizeof(c));
-    }
+    static constexpr uint64_t StreamedLength(uint8_t c)
+    { return(sizeof(c)); }
 
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if we called
     //!  Write() member for a bool.
     //------------------------------------------------------------------------
-    static uint64_t StreamedLength(bool b)
-    {
-      return(1);
-    }
+    static constexpr uint64_t StreamedLength(bool b)
+    { return(1); }
     
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if we called
     //!  Write() for an \c int16_t.
     //------------------------------------------------------------------------
-    static uint64_t StreamedLength(int16_t val)
-    {
-      return(sizeof(val));
-    }
+    static constexpr uint64_t StreamedLength(int16_t val)
+    { return(sizeof(val)); }
     
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if we called
     //!  Write() for a \c uint16_t.
     //------------------------------------------------------------------------
-    static uint64_t StreamedLength(uint16_t val)
-    {
-      return(sizeof(val));
-    }
+    static constexpr uint64_t StreamedLength(uint16_t val)
+    { return(sizeof(val)); }
     
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if we called
     //!  Write() for an \c int32_t.
     //------------------------------------------------------------------------
-    static uint64_t StreamedLength(int32_t val)
-    {
-      return(sizeof(val));
-    }
+    static constexpr uint64_t StreamedLength(int32_t val)
+    { return(sizeof(val)); }
     
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if we called
     //!  Write() for a \c uint32_t.
     //------------------------------------------------------------------------
-    static uint64_t StreamedLength(uint32_t val)
-    {
-      return(sizeof(val));
-    }
+    static constexpr uint64_t StreamedLength(uint32_t val)
+    { return(sizeof(val)); }
     
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if we called
     //!  Write() for an \c int64_t.
     //------------------------------------------------------------------------
-    static uint64_t StreamedLength(int64_t val)
-    {
-      return(sizeof(val));
-    }
+    static constexpr uint64_t StreamedLength(int64_t val)
+    { return(sizeof(val)); }
     
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that would be written if we called
     //!  Write() for a \c uint64_t.
     //------------------------------------------------------------------------
-    static uint64_t StreamedLength(uint64_t val)
-    {
-      return(sizeof(val));
-    }
+    static constexpr  uint64_t StreamedLength(uint64_t val)
+    { return(sizeof(val)); }
     
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that should be written if we call Write()
     //!  for a float.
     //------------------------------------------------------------------------
-    static uint64_t StreamedLength(float val)
-    {
-      return(4);
-    }
+    static constexpr uint64_t StreamedLength(float val)
+    { return(4); }
     
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that should be written if we call Write()
     //!  for a double.
     //------------------------------------------------------------------------
-    static uint64_t StreamedLength(double val)
-    {
-      return(8);
-    }
+    static constexpr uint64_t StreamedLength(double val)
+    { return(8); }
 
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that should be written if we call Write()
@@ -397,7 +375,15 @@ namespace Dwm {
     //------------------------------------------------------------------------
     static uint64_t StreamedLength(const HasStreamedLength auto & sl)
     { return sl.StreamedLength(); }
-      
+
+    //------------------------------------------------------------------------
+    //!  Specialization for types that have a constexpr StreamedLength()
+    //!  member.
+    //------------------------------------------------------------------------
+    static constexpr uint64_t
+    StreamedLength(const HasConstexprStreamedLength auto & sl)
+    { return sl.StreamedLength(); }
+    
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
