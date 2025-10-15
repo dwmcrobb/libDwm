@@ -11,6 +11,7 @@ TestDataLog
 TestDateTime
 TestDescriptor
 TestDescriptorIO
+TestDescriptorNativeIO
 TestDiff
 TestDirectoryEntry
 TestFileIO
@@ -76,6 +77,7 @@ TestPatricia
 TestProcessTable
 TestPthreadMutex
 TestPthreadReadWriteLock
+TestReflection
 TestRegistry
 TestStringConverter
 TestStringUtils
