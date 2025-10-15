@@ -58,37 +58,19 @@ namespace Dwm {
   //!  
   //------------------------------------------------------------------------
   int GZIO::Write(gzFile gzf, char c)
-  {
-    int  rc = -1;
-    if (gzf) { 
-      rc = gzwrite(gzf,(void *)&c,sizeof(c));
-    }
-    return(rc);
-  }
+  { return (gzf) ? gzwrite(gzf, (void *)&c, sizeof(c)) : -1; }
   
   //------------------------------------------------------------------------
   //!  
   //------------------------------------------------------------------------
   int GZIO::Write(gzFile gzf, int8_t c)
-  {
-    int  rc = -1;
-    if (gzf) {
-      rc = gzwrite(gzf,(void *)&c,sizeof(c));
-    }
-    return(rc);
-  }
+  { return (gzf) ? gzwrite(gzf, (void *)&c, sizeof(c)) : -1; }
 
   //------------------------------------------------------------------------
   //!  
   //------------------------------------------------------------------------
   int GZIO::Write(gzFile gzf, uint8_t c)
-  {
-    int  rc = -1;
-    if (gzf) {
-      rc = gzwrite(gzf,(void *)&c,sizeof(c));
-    }
-    return(rc);
-  }
+  { return (gzf) ? gzwrite(gzf, (void *)&c, sizeof(c)) : -1; }
 
   //--------------------------------------------------------------------------
   //!  
@@ -109,8 +91,8 @@ namespace Dwm {
   {
     int  rc = -1;
     if (gzf) {
-      int16_t v = htobe16(val);
-      rc = gzwrite(gzf,(void *)&v,sizeof(v));
+      int16_t  v = htobe16(val);
+      rc = gzwrite(gzf, (void *)&v, sizeof(v));
     }
     return(rc);
   }
@@ -122,8 +104,8 @@ namespace Dwm {
   {
     int  rc = -1;
     if (gzf) {
-      uint16_t v = htobe16(val);
-      rc = gzwrite(gzf,(void *)&v,sizeof(v));
+      uint16_t  v = htobe16(val);
+      rc = gzwrite(gzf, (void *)&v, sizeof(v));
     }
     return(rc);
   }
@@ -135,8 +117,8 @@ namespace Dwm {
   {
     int  rc = -1;
     if (gzf) {
-      int32_t v = htobe32(val);
-      rc = gzwrite(gzf,(void *)&v,sizeof(v));
+      int32_t  v = htobe32(val);
+      rc = gzwrite(gzf, (void *)&v, sizeof(v));
     }
     return(rc);
   }
@@ -148,8 +130,8 @@ namespace Dwm {
   {
     int  rc = -1;
     if (gzf) {
-      uint32_t v = htobe32(val);
-      rc = gzwrite(gzf,(void *)&v,sizeof(v));
+      uint32_t  v = htobe32(val);
+      rc = gzwrite(gzf, (void *)&v, sizeof(v));
     }
     return(rc);
   }
@@ -161,8 +143,8 @@ namespace Dwm {
   {
     int  rc = -1;
     if (gzf) {
-      int64_t v = htobe64(val);
-      rc = gzwrite(gzf,(void *)&v,sizeof(v));
+      int64_t  v = htobe64(val);
+      rc = gzwrite(gzf, (void *)&v, sizeof(v));
       if (rc != sizeof(v))
         rc = -1;
     }
@@ -176,8 +158,8 @@ namespace Dwm {
   {
     int  rc = -1;
     if (gzf) {
-      uint64_t v = htobe64(val);
-      rc = gzwrite(gzf,(void *)&v,sizeof(v));
+      uint64_t  v = htobe64(val);
+      rc = gzwrite(gzf, (void *)&v, sizeof(v));
       if (rc != sizeof(v))
         rc = -1;
     }
@@ -193,8 +175,8 @@ namespace Dwm {
       return(-1);
     
     char     *buf = 0;
-    uint32_t  xe = XDRUtils::Encode(val,&buf);
-    int   rc = gzwrite(gzf,buf,xe);
+    uint32_t  xe = XDRUtils::Encode(val, &buf);
+    int   rc = gzwrite(gzf, buf, xe);
     free(buf);
     
     if (rc < 4)
@@ -212,8 +194,8 @@ namespace Dwm {
       return(-1);
     
     char  *buf = 0;
-    uint32_t  xe = XDRUtils::Encode(val,&buf);
-    int   rc = gzwrite(gzf,buf,xe);
+    uint32_t  xe = XDRUtils::Encode(val, &buf);
+    int   rc = gzwrite(gzf, buf, xe);
     free(buf);
     
     if (rc < 8)
@@ -231,9 +213,9 @@ namespace Dwm {
     
     if (gzf) {
       int64_t  len = s.length();
-      if (Write(gzf,len) == sizeof(len)) {
+      if (Write(gzf, len) == sizeof(len)) {
         rc = sizeof(len);
-        if (gzwrite(gzf,(void *)s.c_str(),len) == len)
+        if (gzwrite(gzf, (void *)s.c_str(), len) == len)
           rc += len;
         else
           rc = -1;
@@ -246,37 +228,19 @@ namespace Dwm {
   //!  
   //------------------------------------------------------------------------
   int GZIO::Read(gzFile gzf, char & c)
-  {
-    int  rc = -1;
-    if (gzf) {
-      rc = gzread(gzf,(void *)&c,sizeof(c));
-    }
-    return(rc);
-  }
+  { return (gzf) ? gzread(gzf, (void *)&c, sizeof(c)) : -1; }
   
   //------------------------------------------------------------------------
   //!  
   //------------------------------------------------------------------------
   int GZIO::Read(gzFile gzf, int8_t & c)
-  {
-    int  rc = -1;
-    if (gzf) {
-      rc = gzread(gzf,(void *)&c,sizeof(c));
-    }
-    return(rc);
-  }
+  { return (gzf) ? gzread(gzf,(void *)&c,sizeof(c)) : -1; }
 
   //------------------------------------------------------------------------
   //!  
   //------------------------------------------------------------------------
   int GZIO::Read(gzFile gzf, uint8_t & c)
-  {
-    int  rc = -1;
-    if (gzf) {
-      rc = gzread(gzf,(void *)&c,sizeof(c));
-    }
-    return(rc);
-  }
+  { return (gzf) ? gzread(gzf,(void *)&c,sizeof(c)) : -1; }
 
   //--------------------------------------------------------------------------
   //!  
@@ -301,7 +265,7 @@ namespace Dwm {
     int  rc = -1;
     if (gzf) {
       int16_t  v;
-      rc = gzread(gzf,(void *)&v,sizeof(v));
+      rc = gzread(gzf, (void *)&v, sizeof(v));
       if (rc == sizeof(v)) {
         val = be16toh(v);
       }
@@ -317,7 +281,7 @@ namespace Dwm {
     int  rc = -1;
     if (gzf) {
       uint16_t  v;
-      rc = gzread(gzf,(void *)&v,sizeof(v));
+      rc = gzread(gzf, (void *)&v, sizeof(v));
       if (rc == sizeof(v)) {
         val = be16toh(v);
       }
@@ -333,7 +297,7 @@ namespace Dwm {
     int  rc = -1;
     if (gzf) {
       int32_t  v;
-      rc = gzread(gzf,(void *)&v,sizeof(v));
+      rc = gzread(gzf, (void *)&v, sizeof(v));
       if (rc == sizeof(v)) {
         val = be32toh(v);
       }
@@ -349,7 +313,7 @@ namespace Dwm {
     int  rc = -1;
     if (gzf) {
       uint32_t  v;
-      rc = gzread(gzf,(void *)&v,sizeof(v));
+      rc = gzread(gzf, (void *)&v, sizeof(v));
       if (rc == sizeof(v)) {
         val = be32toh(v);
       }
@@ -365,7 +329,7 @@ namespace Dwm {
     int  rc = -1;
     if (gzf) {
       uint64_t  v;
-      if (gzread(gzf,(void *)&v,sizeof(v)) == sizeof(v)) {
+      if (gzread(gzf, (void *)&v, sizeof(v)) == sizeof(v)) {
         val = be64toh(v);
         rc = sizeof(v);
       }
@@ -381,7 +345,7 @@ namespace Dwm {
     int  rc = -1;
     if (gzf) {
       uint64_t  v;
-      if (gzread(gzf,(void *)&v,sizeof(v)) == sizeof(v)) {
+      if (gzread(gzf, (void *)&v, sizeof(v)) == sizeof(v)) {
         val = be64toh(v);
         rc = sizeof(v);
       }
@@ -427,23 +391,25 @@ namespace Dwm {
   int GZIO::Read(gzFile gzf, std::string & s)
   {
     int  rc = -1;
-    s = "";
+    s.clear();
     
     if (gzf) {
       int64_t  len;
-      if (Read(gzf,len) == sizeof(len)) {
+      if (Read(gzf, len) == sizeof(len)) {
         rc = sizeof(len);
         if (len > 0) {
-          char  *buf = (char *)calloc(1,len);
-          if (buf) {
-            if (gzread(gzf,(void *)buf,len) == len) {
+          try {
+            s.resize(len);
+            if (gzread(gzf, (void *)s.data(), len) == len) {
               rc += len;
-              s.assign(buf,len);
             }
             else {
               rc = -1;
             }
-            free(buf);
+          }
+          catch (...) {
+            FSyslog(LOG_ERR, "Exception in GZIO::Read(gzFile, std::string &)");
+            rc = -1;
           }
         }
       }
