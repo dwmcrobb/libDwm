@@ -52,6 +52,7 @@
 #include <map>
 #include <memory>
 #include <set>
+#include <sstream>
 #include <string>
 #include <tuple>
 #include <unordered_map>
@@ -62,6 +63,8 @@
 #include "DwmPortability.hh"
 #include "DwmBZ2IOCapable.hh"
 #include "DwmIOConcepts.hh"
+#include "DwmStreamIO.hh"
+#include "DwmStreamedLengthCapable.hh"
 #include "DwmVariantFromIndex.hh"
 #include "DwmSysLogger.hh"
 #include "DwmTypeName.hh"
@@ -1099,8 +1102,81 @@ namespace Dwm {
       }
       return (sizeof(T) == rc) ? rc : -1;
     }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires HasConstexprStreamedLength<T>
+    and (not HasBZRead<T>)
+    and HasStreamRead<T>
+    static size_t Read(BZFILE *bzf, T & t)
+    { return BZReadViaIstream(bzf, t); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires HasConstexprStreamedLength<T>
+    and (not HasBZWrite<T>)
+    and HasStreamWrite<T>
+    static int Write(BZFILE *bzf, const T & t)
+    { return BZWriteViaOstream(bzf, t); }
     
   private:
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires HasConstexprStreamedLength<T>
+    and (not HasBZRead<T>)
+    and HasStreamRead<T>
+    static int BZReadViaIstream(BZFILE *bzf, T & t)
+    {
+      int  rc = -1;
+      if (bzf) {
+        constexpr size_t  bufSize = T::StreamedLength();
+        static_assert(bufSize < std::numeric_limits<int>::max());
+        std::string       s;
+        try {
+          s.resize(bufSize);
+          if (bufSize == BZ2_bzread(bzf, s.data(), bufSize)) {
+            std::istringstream  iss(std::move(s));
+            if (t.Read(iss)) {
+              rc = bufSize;
+            }
+          }
+        }
+        catch (...) {
+          FSyslog(LOG_ERR, "Exception in GZIO::ReadViaIstream()");
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires HasConstexprStreamedLength<T>
+    and (not HasBZWrite<T>)
+    and HasStreamWrite<T>
+    static int BZWriteViaOstream(BZFILE *bzf, const T & t)
+    {
+      int  rc = -1;
+      if (bzf) {
+        std::ostringstream  os;
+        if (StreamIO::Write(os, t)) {
+          std::string_view  ossv(os.view());
+          rc = BZ2_bzwrite(bzf, (void *)ossv.data(), ossv.size());
+          if (rc != ossv.size()) {
+            rc = -1;
+          }
+        }
+      }
+      return rc;
+    }
+    
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
