@@ -42,6 +42,7 @@
 #ifndef _DWMASIO_HH_
 #define _DWMASIO_HH_
 
+#include <memory>
 #include <string>
 
 #include "DwmASIOCapable.hh"
@@ -1238,6 +1239,30 @@ namespace Dwm {
         }
       }
       return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    static bool Write(IsSupportedASIOSocket auto & s, const std::atomic<T> & t)
+    {
+      T  val = t.load();
+      return Write(s, val);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    static bool Read(IsSupportedASIOSocket auto & s, std::atomic<T> & t)
+    {
+      T  val;
+      if (Read(s, val)) {
+        t.store(val);
+        return true;
+      }
+      return false;
     }
     
 #if defined(DWM_CAN_USE_REFLECTION)
