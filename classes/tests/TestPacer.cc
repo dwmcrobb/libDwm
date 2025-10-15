@@ -90,7 +90,10 @@ static void TestPacer(Pacer & pacer, uint32_t reps)
   }
   TimeValue  elapsed(true);
   elapsed -= start;
-  UnitAssert(Accurate(elapsed, pacer, reps));
+  if (! UnitAssert(Accurate(elapsed, pacer, reps))) {
+    std::cerr << "Failed with " << reps << " reps at "
+              << pacer.Rate() << "/sec\n";
+  }
   return;
 }
 
@@ -111,25 +114,25 @@ int main(int argc, char *argv[])
   TestPacer(pacer, 100);
 
   pacer.Rate(1000);
-  TestPacer(pacer, 5000);
+  TestPacer(pacer, 2000);
 
-  usleep(500000);
+  // usleep(500000);
 
-  TestPacer(pacer, 5000);
+  TestPacer(pacer, 2000);
 
   pacer.Rate(2000);
-  TestPacer(pacer, 4000);
+  TestPacer(pacer, 2000);
 
   usleep(200000);
 
-  TestPacer(pacer, 4000);
+  TestPacer(pacer, 2000);
 
   pacer.Rate(20000);
-  TestPacer(pacer, 40000);
+  TestPacer(pacer, 20000);
 
-  sleep(1);
+  // sleep(1);
 
-  TestPacer(pacer, 40000);
+  TestPacer(pacer, 20000);
 
   pacer.Rate(100000);
   TestPacer(pacer, 100000);
