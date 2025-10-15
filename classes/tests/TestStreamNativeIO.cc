@@ -44,6 +44,7 @@
 #include <sstream>
 
 #include "DwmIpv4Prefix.hh"
+#include "DwmOptArgs.hh"
 #include "DwmStreamIO.hh"
 #include "DwmUnitAssert.hh"
 
@@ -893,8 +894,14 @@ static bool ReflectionStreamTest()
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  SysLogger::Open("TestStreamIO", LOG_PERROR, LOG_USER);
-  // SysLogger::MinimumPriority(LOG_INFO);
+  Dwm::OptArgs  optargs;
+  optargs.AddOptArg("d", "debug", false, "false", "enable debug logging");
+  optargs.Parse(argc, argv);
+
+  if (optargs.Get<bool>('d')) {
+    SysLogger::Open("TestStreamNativeIO", LOG_PERROR, LOG_USER);
+    SysLogger::MinimumPriority(LOG_DEBUG);
+  }
 
   StreamTest();
   MapStreamTestSimple();
