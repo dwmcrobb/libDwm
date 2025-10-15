@@ -243,10 +243,10 @@ namespace Dwm {
       os << "Rusage: "
          << endl
          << "  UserTime:                     "
-         << EngFormat((double)r._userTime) << " secs"
+         << EngFormat((double)r._userTime) << "secs"
          << endl
          << "  SystemTime:                   "
-         << EngFormat((double)r._systemTime) << " secs"
+         << EngFormat((double)r._systemTime) << "secs"
          << endl
          << "  MaxResidentSetSize:           " 
          << EngFormat(r._maxResidentSetSize)
