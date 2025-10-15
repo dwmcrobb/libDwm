@@ -1416,7 +1416,6 @@ namespace Dwm {
       const uint64_t  n = std::extent_v<T>;
       if (StreamIO::NWrite(os, n)) {
         for (size_t i = 0; i < std::extent_v<T>; ++i) {
-          FSyslog(LOG_INFO, "NWrite(v[{}] rank {}", i, std::rank_v<T>);
           if (! StreamIO::NWrite(os, v[i])) {
             break;
           }
@@ -1840,9 +1839,6 @@ namespace Dwm {
         }
         else {
           if constexpr (iostream_detail::IsNWritable<decltype(v.[:mem:])>) {
-            FSyslog(LOG_DEBUG, "Writing {}.{} of type '{}'",
-                    TypeName<decltype(v)>(), std::meta::identifier_of(mem),
-                    std::meta::display_string_of(std::meta::type_of(mem)));
             if (! NWrite(os, v.[:mem:])) {
               break;
             }
@@ -1879,9 +1875,6 @@ namespace Dwm {
         }
         else {
           if constexpr (iostream_detail::IsNReadable<decltype(v.[:mem:])>) {
-            FSyslog(LOG_DEBUG, "NReading {}.{} of type '{}'",
-                    TypeName<decltype(v)>(), std::meta::identifier_of(mem),
-                    std::meta::display_string_of(std::meta::type_of(mem)));
             if (! NRead(is, v.[:mem:])) {
               break;
             }
