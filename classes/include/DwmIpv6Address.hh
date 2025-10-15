@@ -66,7 +66,12 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Constructor.  Sets address to 0::
     //------------------------------------------------------------------------
-    Ipv6Address();
+    constexpr Ipv6Address()
+    {
+      for (size_t i = 0; i < sizeof(_addr.s6_addr); ++i) {
+        _addr.s6_addr[i] = 0;
+      }
+    }
     
     //------------------------------------------------------------------------
     //!  Construct from a string.
@@ -149,7 +154,8 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if we called
     //!  one of the Write() members.
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const;
+    static inline constexpr uint64_t StreamedLength()
+    { return sizeof(_addr); }
     
     //------------------------------------------------------------------------
     //!  Reads from an istream.  Returns the istream.
