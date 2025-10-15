@@ -214,37 +214,12 @@ namespace Dwm {
     //!  success, -1 on failure.
     //------------------------------------------------------------------------
     int Write(gzFile gzf) const;
-    
-#if 0
-    //------------------------------------------------------------------------
-    //!  Reads from a file descriptor, in network byte order (MSB first).
-    //!  Returns the number of bytes read on success, -1 on failure.
-    //------------------------------------------------------------------------
-    // ssize_t Read(int fd);
-#endif
-    
-    //------------------------------------------------------------------------
-    //!  Reads from a file descriptor, in native byte order (usually LSB
-    //!  first).  Returns the number of bytes read on success, -1 on failure.
-    //------------------------------------------------------------------------
-    ssize_t NRead(int fd);
-
-#if 0
-    //------------------------------------------------------------------------
-    //!  Writes to a file descriptor, in network byte order (MSB first).
-    //!  Returns the number of bytes written on success, -1 on failure.
-    //------------------------------------------------------------------------
-    ssize_t Write(int fd) const;
-#endif
-    
-    //------------------------------------------------------------------------
-    //!  Writes to a file descriptor, in native byte order (usually LSB
-    //!  first).  Returns the number of bytes written on success, -1 on
-    //!  failure.
-    //------------------------------------------------------------------------
-    ssize_t NWrite(int fd) const;
 
 #if defined(DWM_CAN_USE_REFLECTION)
+    //------------------------------------------------------------------------
+    //!  Returns the number of bytes that would be written if we called
+    //!  one of the Write() members.
+    //------------------------------------------------------------------------
     static constexpr uint64_t StreamedLength()
     {
       size_t  rc = 0;
