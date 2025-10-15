@@ -1244,20 +1244,22 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     template <typename T>
-    static bool Write(IsSupportedASIOSocket auto & s, const std::atomic<T> & t)
+    static bool Write(IsSupportedASIOSocket auto & s, const std::atomic<T> & t,
+                      boost::system::error_code & ec)
     {
       T  val = t.load();
-      return Write(s, val);
+      return Write(s, val, ec);
     }
 
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
     template <typename T>
-    static bool Read(IsSupportedASIOSocket auto & s, std::atomic<T> & t)
+    static bool Read(IsSupportedASIOSocket auto & s, std::atomic<T> & t,
+                     boost::system::error_code & ec)
     {
       T  val;
-      if (Read(s, val)) {
+      if (Read(s, val, ec)) {
         t.store(val);
         return true;
       }
