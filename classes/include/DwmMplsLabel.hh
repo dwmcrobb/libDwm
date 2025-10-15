@@ -63,7 +63,8 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Constructor.  Sets all label bits to 0.
     //------------------------------------------------------------------------
-    MplsLabel();
+    constexpr MplsLabel() : _data(0) 
+    {}
 
     //------------------------------------------------------------------------
     //!  Construct from a string of the form 'label:exp:s:ttl'.
@@ -192,7 +193,8 @@ namespace Dwm {
     //!  Returns the number of bytes that should be written if we call one
     //!  of the Write() members.  Should always return 4.
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const;
+    static inline constexpr uint64_t StreamedLength()
+    { constexpr MplsLabel ml; return sizeof(ml._data); }
     
     //------------------------------------------------------------------------
     //!  Prints to an ostream in 'label:exp:s:ttl' format.
