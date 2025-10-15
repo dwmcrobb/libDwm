@@ -105,17 +105,19 @@ static void TestVarArgs()
   string                         s("GoOdByE");
   tuple<string,bool,string,int>  t("Hello",true,"Goodbye",55);
   Dwm::Rusage                    rusage;
-  
+  std::atomic<uint32_t>          u32 = 0x00C0FFEE;
   int                            i2;
   string                         s2;
   tuple<string,bool,string,int>  t2;
   Dwm::Rusage                    rusage2;
+  std::atomic<uint32_t>          u32_2 = 0;
   
   std::atomic<bool>  serverReady = false;
   std::thread  serverthread =
-    std::thread(VarArgServerReader<int,string,tuple<string,bool,string,int>,Dwm::Rusage>,
+    std::thread(VarArgServerReader<int,string,tuple<string,bool,string,int>,
+                Dwm::Rusage,std::atomic<uint32_t>>,
                 std::ref(serverReady), std::ref(i2),
-                std::ref(s2), std::ref(t2), std::ref(rusage2));
+                std::ref(s2), std::ref(t2), std::ref(rusage2),std::ref(u32_2));
   while (! serverReady) {
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
@@ -128,7 +130,7 @@ static void TestVarArgs()
   if (UnitAssert((! ec))) {
     sck.non_blocking(false);
     rusage.Get(RUSAGE_SELF);
-    UnitAssert(Dwm::ASIO::WriteV(sck, ec, i, s, t, rusage));
+    UnitAssert(Dwm::ASIO::WriteV(sck, ec, i, s, t, rusage, u32));
     sck.close();
   }
   serverthread.join();
@@ -136,6 +138,7 @@ static void TestVarArgs()
   UnitAssert(s == s2);
   UnitAssert(t == t2);
   UnitAssert(rusage == rusage2);
+  UnitAssert(u32.load() == u32_2.load());
   
   return;
 }
