@@ -44,6 +44,7 @@
 #include <sstream>
 
 #include "DwmIpv4Prefix.hh"
+#include "DwmOptArgs.hh"
 #include "DwmStreamIO.hh"
 #include "DwmUnitAssert.hh"
 
@@ -939,8 +940,17 @@ static void AtomicsTest()
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  SysLogger::Open("TestStreamIO", LOG_PERROR, LOG_USER);
-  SysLogger::MinimumPriority(LOG_INFO);
+  bool  debug = false;
+
+  OptArgs  optargs;
+  optargs.AddOptArg("d", "debug", false, "false", "enable debug logging");
+  optargs.Parse(argc, argv);
+  debug = optargs.Get<bool>('d');
+
+  if (debug) {
+    SysLogger::Open("TestStreamIO", LOG_PERROR, LOG_USER);
+    SysLogger::MinimumPriority(LOG_DEBUG);
+  }
 
   StreamTest();
   MapStreamTestSimple();
