@@ -99,90 +99,6 @@ namespace Dwm {
     return(DescriptorIO::Write(fd, c));
   }
   
-  //------------------------------------------------------------------------
-  //!  
-  //------------------------------------------------------------------------
-  ssize_t DescriptorIO::Write(int fd, int16_t val)
-  {
-    ssize_t  rc = -1;
-    if (fd >= 0) {
-      int16_t v = htobe16(val);
-      rc = write(fd, (void *)&v, sizeof(v));
-    }
-    return(rc);
-  }
-  
-  //------------------------------------------------------------------------
-  //!  
-  //------------------------------------------------------------------------
-  ssize_t DescriptorIO::Write(int fd, uint16_t val)
-  {
-    ssize_t  rc = -1;
-    if (fd >= 0) {
-      uint16_t v = htobe16(val);
-      rc = write(fd, (void *)&v, sizeof(v));
-    }
-    return(rc);
-  }
-  
-  //------------------------------------------------------------------------
-  //!  
-  //------------------------------------------------------------------------
-  ssize_t DescriptorIO::Write(int fd, int32_t val)
-  {
-    ssize_t  rc = -1;
-    if (fd >= 0) {
-      int32_t v = htobe32(val);
-      rc = write(fd, (void *)&v, sizeof(v));
-    }
-    return(rc);
-  }
-  
-  //------------------------------------------------------------------------
-  //!  
-  //------------------------------------------------------------------------
-  ssize_t DescriptorIO::Write(int fd, uint32_t val)
-  {
-    ssize_t  rc = -1;
-    if (fd >= 0) {
-      uint32_t v = htobe32(val);
-      rc = write(fd, (void *)&v, sizeof(v));
-    }
-    return(rc);
-  }
-  
-  //------------------------------------------------------------------------
-  //!  
-  //------------------------------------------------------------------------
-  ssize_t DescriptorIO::Write(int fd, const int64_t & val)
-  {
-    ssize_t  rc = -1;
-    if (fd >= 0) {
-      int64_t v = htobe64(val);
-      rc = write(fd, (void *)&v, sizeof(v));
-      if (rc != sizeof(v)) {
-        rc = -1;
-      }
-    }
-    return(rc);
-  }
-  
-  //------------------------------------------------------------------------
-  //!  
-  //------------------------------------------------------------------------
-  ssize_t DescriptorIO::Write(int fd, const uint64_t & val)
-  {
-    ssize_t  rc = -1;
-    if (fd >= 0) {
-      uint64_t v = htobe64(val);
-      rc = write(fd, (void *)&v, sizeof(v));
-      if (rc != sizeof(v)) {
-        rc = -1;
-      }
-    }
-    return(rc);
-  }
-  
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
@@ -231,6 +147,52 @@ namespace Dwm {
         rc = sizeof(len);
         if (len > 0) {
           if (Write(fd, (const void *)s.c_str(), len) == len) {
+            rc += len;
+          }
+          else {
+            rc = -1;
+          }
+        }
+      }
+    }
+    return(rc);
+  }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  ssize_t DescriptorIO::NWrite(int fd, const std::string & s)
+  {
+    ssize_t  rc = -1;
+    if (fd >= 0) {
+      uint64_t  len = s.size();
+      if (NWrite(fd,len) == sizeof(len)) {
+        rc = sizeof(len);
+        if (len > 0) {
+          if (Write(fd, (const void *)s.c_str(), len) == len) {
+            rc += len;
+          }
+          else {
+            rc = -1;
+          }
+        }
+      }
+    }
+    return(rc);
+  }
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  ssize_t DescriptorIO::Write(int fd, std::string_view v)
+  {
+    ssize_t  rc = -1;
+    if (fd >= 0) {
+      uint64_t  len = v.size();
+      if (Write(fd, len) == sizeof(len)) {
+        rc = sizeof(len);
+        if (len > 0) {
+          if (Write(fd, (const void *)v.data(), len) == len) {
             rc += len;
           }
           else {
@@ -291,102 +253,6 @@ namespace Dwm {
     return(rc);
   }
   
-  //------------------------------------------------------------------------
-  //!  
-  //------------------------------------------------------------------------
-  ssize_t DescriptorIO::Read(int fd, int16_t & val)
-  {
-    ssize_t  rc = -1;
-    if (fd >= 0) {
-      int16_t  v;
-      rc = read(fd, (void *)&v, sizeof(v));
-      if (rc == sizeof(v)) {
-        val = be16toh(v);
-      }
-    }
-    return(rc);
-  }
-  
-  //------------------------------------------------------------------------
-  //!  
-  //------------------------------------------------------------------------
-  ssize_t DescriptorIO::Read(int fd, uint16_t & val)
-  {
-    ssize_t  rc = -1;
-    if (fd >= 0) {
-      uint16_t  v;
-      rc = read(fd, (void *)&v, sizeof(v));
-      if (rc == sizeof(v)) {
-        val = be16toh(v);
-      }
-    }
-    return(rc);
-  }
-  
-  //------------------------------------------------------------------------
-  //!  
-  //------------------------------------------------------------------------
-  ssize_t DescriptorIO::Read(int fd, int32_t & val)
-  {
-    ssize_t  rc = -1;
-    if (fd >= 0) {
-      int32_t  v;
-      rc = read(fd, (void *)&v, sizeof(v));
-      if (rc == sizeof(v)) {
-        val = be32toh(v);
-      }
-    }
-    return(rc);
-  }
-  
-  //------------------------------------------------------------------------
-  //!  
-  //------------------------------------------------------------------------
-  ssize_t DescriptorIO::Read(int fd, uint32_t & val)
-  {
-    ssize_t  rc = -1;
-    if (fd >= 0) {
-      uint32_t  v;
-      rc = read(fd, (void *)&v, sizeof(v));
-      if (rc == sizeof(v)) {
-        val = be32toh(v);
-      }
-    }
-    return(rc);
-  }
-  
-  //------------------------------------------------------------------------
-  //!  
-  //------------------------------------------------------------------------
-  ssize_t DescriptorIO::Read(int fd, int64_t & val)
-  {
-    ssize_t  rc = -1;
-    if (fd >= 0) {
-      uint64_t  v;
-      if (read(fd, (void *)&v, sizeof(v)) == sizeof(v)) {
-        val = be64toh(v);
-        rc = sizeof(v);
-      }
-    }
-    return(rc);
-  }
-  
-  //------------------------------------------------------------------------
-  //!  
-  //------------------------------------------------------------------------
-  ssize_t DescriptorIO::Read(int fd, uint64_t & val)
-  {
-    ssize_t  rc = -1;
-    if (fd >= 0) {
-      uint64_t  v;
-      if (read(fd, (void *)&v, sizeof(v)) == sizeof(v)) {
-        val = be64toh(v);
-        rc = sizeof(v);
-      }
-    }
-    return(rc);
-  }
-  
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
@@ -429,6 +295,43 @@ namespace Dwm {
     if (fd >= 0) {
       uint64_t  len;
       if (Read(fd, len) == sizeof(len)) {
+        rc = sizeof(len);
+        if (len > 0) {
+          try {
+            s.resize(len);
+            ssize_t  bytesRead = Read(fd, s.data(), len);
+            if (bytesRead == len) {
+              rc += len;
+            }
+            else {
+              s.clear();
+              rc = -1;
+            }
+          }
+          catch (const std::exception & ex) {
+            Syslog(LOG_ERR, "Exception: %s", ex.what());
+            rc = -1;
+          }
+          catch (...) {
+            Syslog(LOG_ERR, "Exception");
+            rc = -1;
+          }
+        }
+      }
+    }
+    return(rc);
+  }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  ssize_t DescriptorIO::NRead(int fd, std::string & s)
+  {
+    s.clear();
+    ssize_t  rc = -1;
+    if (fd >= 0) {
+      uint64_t  len;
+      if (NRead(fd, len) == sizeof(len)) {
         rc = sizeof(len);
         if (len > 0) {
           try {
