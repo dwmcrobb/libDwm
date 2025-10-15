@@ -496,12 +496,16 @@ namespace Dwm {
     consteval bool ConceptuallyWritable()
     {
 #if defined(DWM_CAN_USE_REFLECTION)
-      if constexpr (io_detail::HasDenyAnnotation<^^T>) { return false; }
+      if constexpr (io_detail::HasDenyAnnotation<^^T>)      { return false; }
 #endif
-      if constexpr (io_detail::DirectlySupported<T>)   { return true; }
-      else if constexpr (io_detail::SkipType<T>)       { return true;  }
-      else if constexpr (io_detail::DenyType<T>)       { return false; }
+      if constexpr (io_detail::DirectlySupported<T>)        { return true; }
+      else if constexpr (io_detail::SkipType<T>)            { return true;  }
+      else if constexpr (io_detail::DenyType<T>)            { return false; }
+      else if constexpr (std::same_as<T,std::string_view>)  { return true; }
       else if constexpr (Concepts::is_std_optional<T>) {
+        return Writable<typename T::value_type,W>();
+      }
+      else if constexpr (Concepts::is_std_atomic<T>) {
         return Writable<typename T::value_type,W>();
       }
       else if constexpr (Concepts::is_std_unique_ptr<T>) {
@@ -509,7 +513,7 @@ namespace Dwm {
           return Writable<typename T::element_type,W>();
         }
       }
-      else if constexpr (W<T>::value)                  { return true; }
+      else if constexpr (W<T>::value)                       { return true; }
       else if constexpr (std::is_bounded_array_v<T>) {
         return Writable<std::remove_all_extents_t<T>,W>();
       }
@@ -557,6 +561,9 @@ namespace Dwm {
       else if constexpr (Concepts::is_std_optional<T>) {
         return Readable<typename T::value_type,R>();
       }
+      else if constexpr (Concepts::is_std_atomic<T>) {
+        return Readable<typename T::value_type,R>();
+      }
       else if constexpr (Concepts::is_std_unique_ptr<T>) {
         if constexpr (! IsUniquePtrToArray<T>) {
           return Readable<typename T::element_type,R>();
@@ -592,7 +599,7 @@ namespace Dwm {
 #endif
       return false;
     }
-    
+
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
