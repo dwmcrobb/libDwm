@@ -50,6 +50,7 @@ extern "C" {
 #include <cstdint>
 #include <cstdio>
 
+#include "DwmDescriptorIO.hh"
 #include "DwmStreamIO.hh"
 
 namespace Dwm {
@@ -133,14 +134,30 @@ namespace Dwm {
     //!  Reads the MAC address from a file descriptor.  Returns the number
     //!  of bytes read on success (should be 6), -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Read(int fd);
+    inline ssize_t Read(int fd)
+    { return DescriptorIO::Read(fd, _addr); }
+
+    //------------------------------------------------------------------------
+    //!  Reads the MAC address from a file descriptor.  Returns the number
+    //!  of bytes read on success (should be 6), -1 on failure.
+    //------------------------------------------------------------------------
+    inline ssize_t NRead(int fd)
+    { return DescriptorIO::NRead(fd, _addr); }
+    
+    //------------------------------------------------------------------------
+    //!  Writes the MAC address to a file descriptor.  Returns the number of
+    //!  bytes written on success (should be 6), -1 on failure.
+    //------------------------------------------------------------------------
+    inline ssize_t Write(int fd) const
+    { return DescriptorIO::Write(fd, _addr); }
 
     //------------------------------------------------------------------------
     //!  Writes the MAC address to a file descriptor.  Returns the number of
     //!  bytes written on success (should be 6), -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Write(int fd) const;
-
+    inline ssize_t NWrite(int fd) const
+    { return DescriptorIO::NWrite(fd, _addr); }
+    
     //------------------------------------------------------------------------
     //!  Reads the MAC address from a FILE.  Returns 1 on success, 0 on
     //!  failure.
