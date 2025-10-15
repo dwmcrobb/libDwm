@@ -61,6 +61,7 @@ static const string    k_stringVal = "TestDwmIO";
 static const float     k_floatVal  = 123456789.987654321;
 static const double    k_doubleVal = 987654321.123456789;
 static const timeval   k_timeVal   = { 42, 0xCCCC };
+static const std::atomic<uint32_t>  k_atomicUintVal = 0xD0C0FFEE;
 
 //----------------------------------------------------------------------------
 //!  
@@ -92,7 +93,10 @@ static bool WriteTestBlob(FILE * f)
                       if (FileIO::Write(f,fl) == sizeof(fl)) {
                         double  dfl = k_doubleVal;
                         if (FileIO::Write(f,dfl) == sizeof(dfl)) {
-                          rc = true;
+                          std::atomic<uint32_t>  au32l = k_atomicUintVal.load();
+                          if (FileIO::Write(f, au32l) == sizeof(uint32_t)) {
+                            rc = true;
+                          }
                         }
                       }
                     }
@@ -158,7 +162,10 @@ static bool ReadTestBlob(FILE * f)
                       if (FileIO::Read(f,fl) && (fl == k_floatVal)) {
                         double  dfl;
                         if (FileIO::Read(f,dfl) && (dfl == k_doubleVal)) {
-                          rc = true;
+                          std::atomic<uint32_t>  au32l;
+                          if (FileIO::Read(f, au32l) && (au32l == k_atomicUintVal)) {
+                            rc = true;
+                          }
                         }
                       }
                     }
