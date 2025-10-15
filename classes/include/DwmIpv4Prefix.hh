@@ -259,11 +259,25 @@ namespace Dwm {
     ssize_t Read(int fd);
 
     //------------------------------------------------------------------------
+    //!  Reads a prefix from a file descriptor.  Returns the number of
+    //!  bytes read on success, -1 on failure.
+    //------------------------------------------------------------------------
+    inline ssize_t NRead(int fd)
+    { return Read(fd); }
+
+    //------------------------------------------------------------------------
     //!  Writes a prefix to a file descriptor.  Returns the number of
     //!  bytes written on success, -1 on failure.
     //------------------------------------------------------------------------
     ssize_t Write(int fd) const;
 
+    //------------------------------------------------------------------------
+    //!  Writes a prefix to a file descriptor.  Returns the number of
+    //!  bytes written on success, -1 on failure.
+    //------------------------------------------------------------------------
+    inline ssize_t NWrite(int fd) const
+    { return Write(fd); }
+    
     //------------------------------------------------------------------------
     //!  Reads a prefix from a FILE pointer.  Returns 1 on success, 0 on
     //!  failure.
