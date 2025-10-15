@@ -2443,6 +2443,26 @@ namespace Dwm {
     and HasStreamWrite<T>
     static size_t Write(int fd, T & t)
     { return WriteViaOstream(fd, t); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires HasConstexprStreamedLength<T>
+    and (not HasDescriptorNRead<T>)
+    and HasStreamNRead<T>
+    static size_t NRead(int fd, T & t)
+    { return NReadViaIstream(fd, t); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires HasConstexprStreamedLength<T>
+    and (not HasDescriptorNWrite<T>)
+    and HasStreamNWrite<T>
+    static size_t NWrite(int fd, T & t)
+    { return NWriteViaOstream(fd, t); }
     
   private:
     //------------------------------------------------------------------------
@@ -2479,6 +2499,35 @@ namespace Dwm {
     //------------------------------------------------------------------------
     template <typename T>
     requires HasConstexprStreamedLength<T>
+    and (not HasDescriptorNRead<T>)
+    and HasStreamNRead<T>
+    static size_t NReadViaIstream(int fd, T & t)
+    {
+      ssize_t  rc = -1;
+      if (0 <= fd) {
+        constexpr size_t  bufSize = T::StreamedLength();
+        std::string  s;
+        try {
+          s.resize(bufSize);
+          if (bufSize == ::read(fd, s.data(), bufSize)) {
+            std::istringstream  iss(std::move(s));
+            if (t.NRead(iss)) {
+              rc = bufSize;
+            }
+          }
+        }
+        catch (...) {
+          FSyslog(LOG_ERR, "Exception in Rusage::Read(int fd={})", fd);
+        }
+      }
+      return rc;
+    }
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires HasConstexprStreamedLength<T>
     and (not HasDescriptorWrite<T>)
     and HasStreamWrite<T>
     static size_t WriteViaOstream(int fd, const T & t)
@@ -2487,6 +2536,29 @@ namespace Dwm {
       if (0 <= fd) {
         std::ostringstream  os;
         if (StreamIO::Write(os, t)) {
+          std::string_view  ossv(os.view());
+          rc = write(fd, ossv.data(), ossv.size());
+          if (rc != ossv.size()) {
+            rc = -1;
+          }
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires HasConstexprStreamedLength<T>
+    and (not HasDescriptorNWrite<T>)
+    and HasStreamNWrite<T>
+    static size_t NWriteViaOstream(int fd, const T & t)
+    {
+      ssize_t  rc = -1;
+      if (0 <= fd) {
+        std::ostringstream  os;
+        if (StreamIO::NWrite(os, t)) {
           std::string_view  ossv(os.view());
           rc = write(fd, ossv.data(), ossv.size());
           if (rc != ossv.size()) {
