@@ -43,7 +43,6 @@
 #include <ranges>
 #include <string>
 #include <tuple>
-#include <meta>
 
 #include "DwmConcepts.hh"
 
@@ -51,6 +50,7 @@
 template <class T, template <typename> class Trait>
 concept has_trait = Trait<T>::value;
 
+#if defined(DWM_CAN_USE_REFLECTION)
 //----------------------------------------------------------------------------
 template <typename T, template <typename> typename Trait>
 requires (template_of(^^T) == ^^std::tuple)
@@ -139,11 +139,15 @@ constexpr auto struct_to_tuple(T const& t) {
 }
 
 #endif
+
+#endif  // defined(DWM_CAN_USE_REFLECTION)
+
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
+#if defined(DWM_CAN_USE_REFLECTION)  
   static_assert(tuple_param_has_trait<std::tuple<int,const std::string>,
                                       std::is_const>());
   static_assert(! tuple_param_has_trait<std::tuple<int,std::string>,
@@ -166,4 +170,6 @@ int main(int argc, char *argv[])
             << std::hex
             << std::get<2>(t)[1][0] << ' ' << std::get<2>(t)[1][1] << '\n';
 #endif
+
+#endif  // defined(DWM_CAN_USE_REFLECTION)
 }
