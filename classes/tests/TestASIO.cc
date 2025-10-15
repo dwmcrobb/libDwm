@@ -53,6 +53,7 @@ extern "C" {
 #include "DwmUnitAssert.hh"
 #include "DwmASIO.hh"
 #include "DwmIpv4Address.hh"
+#include "DwmRusage.hh"
 #include "DwmSysLogger.hh"
 
 using namespace std;
@@ -100,19 +101,21 @@ static void VarArgServerReader(std::atomic<bool> & ready, Args & ...args)
 //----------------------------------------------------------------------------
 static void TestVarArgs()
 {
-  int        i = -42;
-  string     s("GoOdByE");
+  int                            i = -42;
+  string                         s("GoOdByE");
   tuple<string,bool,string,int>  t("Hello",true,"Goodbye",55);
+  Dwm::Rusage                    rusage;
   
   int                            i2;
   string                         s2;
   tuple<string,bool,string,int>  t2;
+  Dwm::Rusage                    rusage2;
   
   std::atomic<bool>  serverReady = false;
   std::thread  serverthread =
-    std::thread(VarArgServerReader<int,string,tuple<string,bool,string,int>>,
+    std::thread(VarArgServerReader<int,string,tuple<string,bool,string,int>,Dwm::Rusage>,
                 std::ref(serverReady), std::ref(i2),
-                std::ref(s2), std::ref(t2));
+                std::ref(s2), std::ref(t2), std::ref(rusage2));
   while (! serverReady) {
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
@@ -124,13 +127,15 @@ static void TestVarArgs()
   sck.connect(endPoint, ec);
   if (UnitAssert((! ec))) {
     sck.non_blocking(false);
-    UnitAssert(Dwm::ASIO::WriteV(sck, ec, i, s, t));
+    rusage.Get(RUSAGE_SELF);
+    UnitAssert(Dwm::ASIO::WriteV(sck, ec, i, s, t, rusage));
     sck.close();
   }
   serverthread.join();
   UnitAssert(i == i2);
   UnitAssert(s == s2);
   UnitAssert(t == t2);
+  UnitAssert(rusage == rusage2);
   
   return;
 }
