@@ -67,10 +67,16 @@ namespace Dwm {
   {
   public:
     //------------------------------------------------------------------------
-    //!  Constructor.  Initializes to 0 (the UNIX epoch) if setNow is
-    //!  false, else initializaes to the current time.
+    //!  Default constructor.  Initializes to 0 (the UNIX epoch),
     //------------------------------------------------------------------------
-    TimeValue64(bool setNow = false);
+    constexpr TimeValue64() : _secs(0), _usecs(0)
+    { }
+
+    //------------------------------------------------------------------------
+    //!  Constructor.  Initializes to 0 (the UNIX epoch) if setNow is
+    //!  false, else initializes to the current time.
+    //------------------------------------------------------------------------
+    TimeValue64(bool setNow);
 
     //------------------------------------------------------------------------
     //!  Construct from a struct timeval.
@@ -153,7 +159,7 @@ namespace Dwm {
     //!  Returns the number of bytes that would be written if one of the
     //!  Write() members were called.
     //------------------------------------------------------------------------
-    uint64_t StreamedLength() const;
+    static constexpr uint64_t StreamedLength()  { return 12; }
     
     //------------------------------------------------------------------------
     //!  Reads the TimeValue64 from an istream.  Returns the istream.
@@ -238,9 +244,9 @@ namespace Dwm {
 }  // namespace Dwm
 
 Dwm::TimeValue64 operator + (const Dwm::TimeValue64 & tv1,
-                           const Dwm::TimeValue64 & tv2);
+                             const Dwm::TimeValue64 & tv2);
 Dwm::TimeValue64 operator - (const Dwm::TimeValue64 & tv1,
-                           const Dwm::TimeValue64 & tv2);
+                             const Dwm::TimeValue64 & tv2);
 
 #endif  // _DWMTIMEVALUE64_HH_
 
