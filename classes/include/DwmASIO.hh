@@ -42,11 +42,10 @@
 #ifndef _DWMASIO_HH_
 #define _DWMASIO_HH_
 
-#include <memory>
-#include <string>
-
 #include "DwmASIOCapable.hh"
 #include "DwmIOConcepts.hh"
+#include "DwmStreamIO.hh"
+#include "DwmStreamedLengthCapable.hh"
 #include "DwmSysLogger.hh"
 #include "DwmTypeName.hh"
 #include "DwmVariantFromIndex.hh"
@@ -1276,6 +1275,7 @@ namespace Dwm {
       and (not io_detail::SupportedContainer<T>)
       and (not io_detail::DenyType<T>)
       and (not HasAsioWrite<T>)
+      and (not HasConstexprStreamedLength<T>)
     static bool Write(IsSupportedASIOSocket auto & s, const T & v,
                       boost::system::error_code & ec)
     {
@@ -1318,6 +1318,7 @@ namespace Dwm {
       and (not io_detail::SupportedContainer<T>)
       and (not io_detail::DenyType<T>)
       and (not HasAsioRead<T>)
+      and (not HasConstexprStreamedLength<T>)
     static bool Read(IsSupportedASIOSocket auto & s, T & v,
                      boost::system::error_code & ec)
     {
@@ -1352,8 +1353,88 @@ namespace Dwm {
     }
 
 #endif  // defined(DWM_CAN_USE_REFLECTION)
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires HasConstexprStreamedLength<T>
+    and (not HasAsioRead<T>)
+    and HasStreamRead<T>
+    static bool Read(IsSupportedASIOSocket auto & s, T & t,
+                     boost::system::error_code & ec)
+    { return ReadViaIstream(s, t, ec); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires HasConstexprStreamedLength<T>
+    and (not HasAsioWrite<T>)
+    and HasStreamWrite<T>
+      static bool Write(IsSupportedASIOSocket auto & s, const T & t,
+                        boost::system::error_code & ec)
+    { return WriteViaOstream(s, t, ec); }
     
   private:
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires HasConstexprStreamedLength<T>
+    and (not HasAsioRead<T>)
+    and HasStreamRead<T>
+    static bool ReadViaIstream(IsSupportedASIOSocket auto & is, T & t,
+                               boost::system::error_code & ec)
+    {
+      using boost::asio::read;
+      using boost::asio::buffer;
+      bool  rc = false;
+      if (is.is_open()) {
+        constexpr size_t  bufSize = T::StreamedLength();
+        std::string       s;
+        try {
+          s.resize(bufSize);
+          if (bufSize == read(is, buffer(s.data(), bufSize), ec)) {
+            std::istringstream  iss(std::move(s));
+            if (t.Read(iss)) {
+              rc = true;
+            }
+          }
+        }
+        catch (...) {
+          FSyslog(LOG_ERR, "Exception in ASIO::ReadViaIstream()");
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires HasConstexprStreamedLength<T>
+    and (not HasAsioWrite<T>)
+    and HasStreamWrite<T>
+    static bool WriteViaOstream(IsSupportedASIOSocket auto & s, const T & t,
+                                boost::system::error_code & ec)
+    {
+      using boost::asio::write;
+      using boost::asio::buffer;
+      bool  rc = false;
+      if (s.is_open()) {
+        std::ostringstream  os;
+        if (StreamIO::Write(os, t)) {
+          std::string_view  ossv(os.view());
+          if (ossv.size() == write(s, buffer(ossv.data(), ossv.size()), ec)) {
+            rc = true;
+          }
+        }
+      }
+      return rc;
+    }
+    
     //------------------------------------------------------------------------
     //!  Just a dummy helper function for std::variant instances that hold
     //!  a std::monostate.  This should only be called from our Read() for
