@@ -51,6 +51,7 @@ extern "C" {
 
 #include "DwmIpv4Address.hh"
 #include "DwmIpv6Address.hh"
+#include "DwmDescriptorIO.hh"
 #include "DwmStreamIO.hh"
 
 namespace Dwm {
@@ -159,14 +160,30 @@ namespace Dwm {
     //!  Reads from a file descriptor.  Returns the number of bytes read
     //!  on success, -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Read(int fd);
+    inline ssize_t Read(int fd)
+    { return DescriptorIO::Read(fd, _addr); }
     
     //------------------------------------------------------------------------
     //!  Writes to a file descriptor.  Returns the number of bytes written
     //!  on success, -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Write(int fd) const;
+    inline ssize_t Write(int fd) const
+    { return DescriptorIO::Write(fd, _addr); }
 
+    //------------------------------------------------------------------------
+    //!  Reads from a file descriptor.  Returns the number of bytes read
+    //!  on success, -1 on failure.
+    //------------------------------------------------------------------------
+    inline ssize_t NRead(int fd)
+    { return Read(fd); }
+    
+    //------------------------------------------------------------------------
+    //!  Writes to a file descriptor.  Returns the number of bytes written
+    //!  on success, -1 on failure.
+    //------------------------------------------------------------------------
+    inline ssize_t NWrite(int fd) const
+    { return Write(fd); }
+    
     //------------------------------------------------------------------------
     //!  Reads from a FILE pointer.  Returns 1 on success, 0 on failure.
     //------------------------------------------------------------------------
