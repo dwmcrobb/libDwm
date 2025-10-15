@@ -1059,7 +1059,37 @@ namespace Dwm {
       }
       return -1;
     }
-    
+
+    //------------------------------------------------------------------------
+    //!  Writes an atomic @c t to descriptor @c fd, in network byte order
+    //!  (MSB first).  Returns the number of bytes written on success, -1 on
+    //!  failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static int Write(gzFile gzf, const std::atomic<T> & t)
+    {
+      T  val = t.load();
+      return Write(gzf, val);
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads an atomic @c t from descriptor @c fd, in network byte order
+    //!  (MSB first).  Returns the number of bytes read on success, -1 on
+    //!  failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static int Read(gzFile gzf, std::atomic<T> & t)
+    {
+      int  rc = -1;
+      T    val;
+      int  bytesRead = Read(gzf, val);
+      if (sizeof(val) == bytesRead) {
+        t.store(val);
+        rc = bytesRead;
+      }
+      return rc;
+    }
+
   private:
     //------------------------------------------------------------------------
     //!  
