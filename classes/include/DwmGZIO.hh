@@ -1100,7 +1100,7 @@ namespace Dwm {
     requires HasConstexprStreamedLength<T>
     and (not HasGZRead<T>)
     and HasStreamRead<T>
-    static size_t Read(gzFile gzf, T & t)
+    static int Read(gzFile gzf, T & t)
     { return ReadViaIstream(gzf, t); }
 
     //------------------------------------------------------------------------
@@ -1124,9 +1124,10 @@ namespace Dwm {
     and HasStreamRead<T>
     static int ReadViaIstream(gzFile gzf, T & t)
     {
-      ssize_t  rc = -1;
+      int  rc = -1;
       if (gzf) {
         constexpr size_t  bufSize = T::StreamedLength();
+        static_assert(bufSize < std::numeric_limits<int>::max());
         std::string       s;
         try {
           s.resize(bufSize);
