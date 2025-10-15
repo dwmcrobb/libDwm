@@ -46,13 +46,22 @@
 
 namespace Dwm {
 
+  template<uint64_t> using ConstExprStreamedLengthHelper = uint64_t;
+
+  template <typename T>
+  concept HasConstexprStreamedLength = requires (const T & t) {
+    typename ConstExprStreamedLengthHelper<t.StreamedLength()>;
+  };
+
   //--------------------------------------------------------------------------
   //!  T has a StreamedLength() const member that returns uint64_t.
   //--------------------------------------------------------------------------
   template <typename T>
-  concept HasStreamedLength = requires (const T & t) {
-    { t.StreamedLength() } -> std::same_as<uint64_t>;
-  };
+  concept HasStreamedLength =
+    (not HasConstexprStreamedLength<T>)
+    and requires (const T & t) {
+      { t.StreamedLength() } -> std::same_as<uint64_t>;
+    };
   
   //--------------------------------------------------------------------------
   //!  Interface for classes which can return their streamed length.  This
