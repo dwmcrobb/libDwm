@@ -59,9 +59,11 @@ namespace Dwm {
   {
   public:
     //------------------------------------------------------------------------
-    //!  Constructor.  Initializes the prefix to 255.255.255.255/32
+    //!  Default constructor.  Initializes the prefix to 255.255.255.255/32
     //------------------------------------------------------------------------
-    Ipv4Prefix();
+    constexpr Ipv4Prefix()
+        : _data{255,255,255,255,32}
+    {}
     
     //------------------------------------------------------------------------
     //!  Constructor accepting an IP address and a netmask length.
@@ -402,7 +404,7 @@ namespace Dwm {
     //!  Returns the number of bytes that should be written if
     //!  a Write() member was called.
     //------------------------------------------------------------------------
-    inline uint64_t StreamedLength() const
+    inline static constexpr uint64_t StreamedLength()
     { return(5); }
 
     //------------------------------------------------------------------------
