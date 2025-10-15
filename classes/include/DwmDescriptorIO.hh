@@ -2066,7 +2066,7 @@ namespace Dwm {
     //!  failure.  
     //------------------------------------------------------------------------
     template <typename T>
-    static ssize_t Write(int fd, std::atomic<T> & t)
+    static ssize_t Write(int fd, const std::atomic<T> & t)
     {
       T  val = t.load();
       return Write(fd, val);
@@ -2095,7 +2095,7 @@ namespace Dwm {
     //!  Returns the number of bytes written on success, -1 on failure.  
     //------------------------------------------------------------------------
     template <typename T>
-    static ssize_t NWrite(int fd, std::atomic<T> & t)
+    static ssize_t NWrite(int fd, const std::atomic<T> & t)
     {
       T  val = t.load();
       return NWrite(fd, val);
@@ -2441,7 +2441,7 @@ namespace Dwm {
     requires HasConstexprStreamedLength<T>
     and (not HasDescriptorWrite<T>)
     and HasStreamWrite<T>
-    static size_t Write(int fd, T & t)
+    static size_t Write(int fd, const T & t)
     { return WriteViaOstream(fd, t); }
 
     //------------------------------------------------------------------------
@@ -2461,7 +2461,7 @@ namespace Dwm {
     requires HasConstexprStreamedLength<T>
     and (not HasDescriptorNWrite<T>)
     and HasStreamNWrite<T>
-    static size_t NWrite(int fd, T & t)
+    static size_t NWrite(int fd, const T & t)
     { return NWriteViaOstream(fd, t); }
     
   private:
