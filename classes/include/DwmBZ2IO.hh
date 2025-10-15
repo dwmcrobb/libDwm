@@ -50,6 +50,7 @@
 #include <iostream>
 #include <list>
 #include <map>
+#include <memory>
 #include <set>
 #include <string>
 #include <tuple>
@@ -1061,6 +1062,42 @@ namespace Dwm {
         return rc;
       }
       return -1;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Reads a std::atomic<T> @c t from a BZFILE @c bzf.  Returns the
+    //!  number of bytes read on success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static int BZRead(BZFILE *bzf, std::atomic<T> & t)
+    {
+      static_assert(bz2io_detail::IsReadable<T>);
+      int  rc = -1;
+      if (bzf) {
+        T  val;
+        int  bytesRead = BZRead(bzf, val);
+        if (sizeof(val) == bytesRead) {
+          t.store(val);
+          rc = bytesRead;
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Writes a std::atomic<T> @c t to a BZFILE @c bzf.  Returns the
+    //!  number of bytes written on success, -1 on failure.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static int BZWrite(BZFILE *bzf, const std::atomic<T> & t)
+    {
+      static_assert(bz2io_detail::IsWritable<T>);
+      int  rc = -1;
+      if (bzf) {
+        T  val = t.load();
+        rc = BZWrite(bzf, val);
+      }
+      return (sizeof(T) == rc) ? rc : -1;
     }
     
   private:
