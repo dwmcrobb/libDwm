@@ -58,8 +58,8 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   template <typename T>
   concept HasStreamedLength =
-    (not HasConstexprStreamedLength<T>)
-    and requires (const T & t) {
+    HasConstexprStreamedLength<T>
+    or requires (const T & t) {
       { t.StreamedLength() } -> std::same_as<uint64_t>;
     };
   
