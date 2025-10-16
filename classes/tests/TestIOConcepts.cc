@@ -292,6 +292,96 @@ static void TestDenyAnnotation()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void TestConstStreamedLength()
+{
+  struct SK1 {
+    int    i;
+    float  f;
+    bool   b[10];
+    char   c[4][4];
+  };
+  UnitAssert(io_detail::HasConstStreamedLength<SK1>());
+  UnitAssert(io_detail::ConstStreamedLength<SK1>() == 34);
+  
+  struct SK2 {
+    std::string  s;
+    float        f;
+    bool         b[10];
+    char         c[4][4];
+  };
+  UnitAssert(! io_detail::HasConstStreamedLength<SK2>());
+
+  struct SK3 {
+    std::map<int,int>  m;
+    int                i;
+  };
+  UnitAssert(! io_detail::HasConstStreamedLength<SK3>());
+  
+#if defined(DWM_CAN_USE_REFLECTION)
+  struct SK4 {
+    [[=Dwm::skip_io]] std::string  s;
+    float        f;
+    bool         b[10];
+    char         c[4][4];
+  };
+  UnitAssert(io_detail::HasConstStreamedLength<SK4>());
+  UnitAssert(io_detail::ConstStreamedLength<SK4>() == 30);
+#endif
+
+  struct SK5 {
+    std::array<int,8>  a;
+    int                i;
+  };
+  UnitAssert(io_detail::HasConstStreamedLength<SK5>());
+  UnitAssert(io_detail::ConstStreamedLength<SK5>() == 36);
+
+  struct SK6 {
+    std::array<std::string,8>  a;
+    int                        i;
+  };
+  UnitAssert(! io_detail::HasConstStreamedLength<SK6>());
+
+  struct SK7 {
+    std::array<std::array<uint32_t,4>,8>  aa;
+    uint8_t                               i;
+  };
+  UnitAssert(io_detail::HasConstStreamedLength<SK7>());
+  UnitAssert(io_detail::ConstStreamedLength<SK7>() == 129);
+
+  struct SK8 {
+    std::array<std::array<uint32_t,4>,8>  aa[2];
+    uint8_t                               i;
+  };
+  UnitAssert(io_detail::HasConstStreamedLength<SK8>());
+  UnitAssert(io_detail::ConstStreamedLength<SK8>() == 257);
+
+#if defined(DWM_CAN_USE_REFLECTION)
+
+  struct SK9 {
+    bool  b;
+    struct S {
+      int                ia[2][2];
+      [[=Dwm::skip_io]]  std::string  s;
+    } s;
+  };
+  UnitAssert(io_detail::HasConstStreamedLength<SK9>());
+  UnitAssert(io_detail::ConstStreamedLength<SK9>() == 17);
+
+  struct SK10 {
+    bool  b;
+    struct S {
+      int          ia[2][2];
+      std::string  s;
+    } s;
+  };
+  UnitAssert(! io_detail::HasConstStreamedLength<SK10>());
+  
+#endif
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static void TestAtomics()
 {
   TestReadableWritableTrue<std::atomic<char>>();
@@ -313,6 +403,7 @@ static void TestIOConcepts()
   TestUniquePtr();
   TestOptional();
   TestAtomics();
+  TestConstStreamedLength();
 #if defined(DWM_CAN_USE_REFLECTION)
   TestSkipAnnotation();
   TestDenyAnnotation();

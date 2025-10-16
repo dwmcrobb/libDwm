@@ -2428,7 +2428,7 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     template <typename T>
-    requires HasConstexprStreamedLength<T>
+    requires (io_detail::HasConstStreamedLength<T>())
     and (not HasDescriptorRead<T>)
     and HasStreamRead<T>
     static ssize_t Read(int fd, T & t)
@@ -2438,7 +2438,7 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     template <typename T>
-    requires HasConstexprStreamedLength<T>
+    requires (io_detail::HasConstStreamedLength<T>())
     and (not HasDescriptorWrite<T>)
     and HasStreamWrite<T>
     static ssize_t Write(int fd, const T & t)
@@ -2448,7 +2448,7 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     template <typename T>
-    requires HasConstexprStreamedLength<T>
+    requires (io_detail::HasConstStreamedLength<T>())
     and (not HasDescriptorNRead<T>)
     and HasStreamNRead<T>
     static ssize_t NRead(int fd, T & t)
@@ -2458,7 +2458,7 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     template <typename T>
-    requires HasConstexprStreamedLength<T>
+    requires (io_detail::HasConstStreamedLength<T>())
     and (not HasDescriptorNWrite<T>)
     and HasStreamNWrite<T>
     static ssize_t NWrite(int fd, const T & t)
@@ -2600,14 +2600,14 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     template <typename T>
-    requires HasConstexprStreamedLength<T>
+    requires (io_detail::HasConstStreamedLength<T>())
     and (not HasDescriptorRead<T>)
     and HasStreamRead<T>
     static ssize_t ReadViaIstream(int fd, T & t)
     {
       ssize_t  rc = -1;
       if (0 <= fd) {
-        constexpr size_t  bufSize = T::StreamedLength();
+        constexpr size_t  bufSize = io_detail::ConstStreamedLength<T>();
         std::string  s;
         try {
           s.resize(bufSize);
@@ -2629,14 +2629,14 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     template <typename T>
-    requires HasConstexprStreamedLength<T>
+    requires (io_detail::HasConstStreamedLength<T>())
     and (not HasDescriptorNRead<T>)
     and HasStreamNRead<T>
     static ssize_t NReadViaIstream(int fd, T & t)
     {
       ssize_t  rc = -1;
       if (0 <= fd) {
-        constexpr size_t  bufSize = T::StreamedLength();
+        constexpr size_t  bufSize = io_detail::ConstStreamedLength<T>();
         std::string  s;
         try {
           s.resize(bufSize);
@@ -2658,7 +2658,7 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     template <typename T>
-    requires HasConstexprStreamedLength<T>
+    requires (io_detail::HasConstStreamedLength<T>())
     and (not HasDescriptorWrite<T>)
     and HasStreamWrite<T>
     static ssize_t WriteViaOstream(int fd, const T & t)
@@ -2681,7 +2681,7 @@ namespace Dwm {
     //!  
     //------------------------------------------------------------------------
     template <typename T>
-    requires HasConstexprStreamedLength<T>
+    requires (io_detail::HasConstStreamedLength<T>())
     and (not HasDescriptorNWrite<T>)
     and HasStreamNWrite<T>
     static ssize_t NWriteViaOstream(int fd, const T & t)

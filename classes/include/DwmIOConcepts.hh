@@ -43,6 +43,7 @@
 #define _DWMIOCONCEPTS_HH_
 
 #include "DwmConcepts.hh"
+#include "DwmStreamedLengthCapable.hh"
 
 namespace Dwm {
 
@@ -241,9 +242,26 @@ namespace Dwm {
     // Predeclare our function template that let us determine if a type
     // T is readable.  We need this so we can recurse through a data type
     // while also not having all of the recursion (diving into containers,
-    // etc.) in one function.
+    // etc.) inside our recursive function's body.
     //------------------------------------------------------------------------
     template <typename T, template <typename> typename R> consteval bool Readable();
+
+    //------------------------------------------------------------------------
+    // Predeclare our function template that let us determine if a type
+    // T will always produce/consume the same number of bytes when streamed.
+    // We need this so we can recurse through a data type while also not
+    // having all of the recursion (diving into containers, etc.) inside our
+    // recursive function's body.
+    //------------------------------------------------------------------------
+    template <typename T> consteval bool HasConstStreamedLength();
+
+    //------------------------------------------------------------------------
+    // Predeclare our function template that let us determine the constant
+    // streamed length of T.  We need this so we can recurse through a data
+    // type while also not having all of the recursion (diving into
+    // containers, etc.) inside our recursive function's body.
+    //------------------------------------------------------------------------
+    template <typename T> consteval uint64_t ConstStreamedLength();
 
     //------------------------------------------------------------------------
     //!  Returns true if the given @c PairType (a @c std::pair) is
@@ -405,6 +423,55 @@ namespace Dwm {
       }
       return true;
     }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_class_v<T>
+    consteval bool ReflectionHasConstStreamedLength()
+    {
+      constexpr auto ctx = std::meta::access_context::unchecked();
+      constexpr auto members =
+        define_static_array(nonstatic_data_members_of(^^T, ctx));
+      if constexpr (! members.size()) {
+        return false;
+      }
+      template for (constexpr auto mem : members) {
+        if constexpr (! io_detail::HasSkipAnnotation<mem>) {
+          if constexpr ((! HasConstStreamedLength<typename[:std::meta::type_of(mem):]>())
+                        || io_detail::Deny<mem>()) {
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_class_v<T>
+    consteval uint64_t ReflectionConstStreamedLength()
+    {
+      uint64_t  rc = 0;
+      constexpr auto ctx = std::meta::access_context::unchecked();
+      constexpr auto members =
+        define_static_array(nonstatic_data_members_of(^^T, ctx));
+      if constexpr (! members.size()) {
+        return 0;
+      }
+      template for (constexpr auto mem : members) {
+        if constexpr (! io_detail::HasSkipAnnotation<mem>) {
+          if constexpr (HasConstStreamedLength<typename[:std::meta::type_of(mem):]>()
+                        && (! io_detail::Deny<mem>())) {
+            rc += ConstStreamedLength<typename[:std::meta::type_of(mem):]>();
+          }
+        }
+      }
+      return rc;
+    }
     
 #else
 
@@ -477,9 +544,45 @@ namespace Dwm {
       }
       return true;
     }
-    
+
 #endif
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T, size_t elt = 0>
+    consteval bool TupleHasConstStreamedLength()
+    {
+      if constexpr (elt < std::tuple_size_v<T>) {
+        if constexpr (HasConstStreamedLength<std::tuple_element_t<elt,T>>()) {
+          return TupleHasConstStreamedLength<T,elt+1>();
+        }
+        else {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T, size_t elt = 0>
+    consteval uint64_t TupleConstStreamedLength()
+    {
+      uint64_t  rc = 0;
+      if constexpr (elt < std::tuple_size_v<T>) {
+        if constexpr (HasConstStreamedLength<std::tuple_element_t<elt,T>>()) {
+          rc += ConstStreamedLength<std::tuple_element_t<elt,T>>();
+          rc += TupleConstStreamedLength<T,elt+1>();
+        }
+        else {
+          return 0;
+        }
+      }
+      return rc;
+    }
+        
     //------------------------------------------------------------------------
     //!  True if T is a std::unique_ptr managing an array.
     //------------------------------------------------------------------------
@@ -487,7 +590,102 @@ namespace Dwm {
     concept IsUniquePtrToArray =
     Concepts::is_std_unique_ptr<T> and
     requires (T t) { { t[0] } -> std::same_as<typename T::element_type &>; };
-    
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    consteval bool HasConstStreamedLength()
+    {
+#if defined(DWM_CAN_USE_REFLECTION)
+      if constexpr (io_detail::HasDenyAnnotation<^^T>)       { return false; }
+#endif
+      if constexpr (io_detail::DenyType<T>)                  { return false; }
+      else if constexpr (io_detail::SkipType<T>)             { return true;  }
+      else if constexpr (HasConstexprStreamedLength<T>)      { return true;  }
+      else if constexpr (Concepts::is_std_optional<T>)       { return false; }
+      else if constexpr (Concepts::is_std_atomic<T>) {
+        return HasConstStreamedLength<typename T::value_type>();
+      }
+      else if constexpr (Concepts::is_std_unique_ptr<T>)     { return false; }
+      else if constexpr (Concepts::is_std_shared_ptr<T>)     { return false; }
+      else if constexpr (std::is_bounded_array_v<T>) {
+        return HasConstStreamedLength<std::remove_all_extents_t<T>>();
+      }
+      else if constexpr (Concepts::is_std_pair<T>) {
+        return (HasConstStreamedLength<typename T::first_type>()
+                && HasConstStreamedLength<typename T::second_type>());
+      }
+      else if constexpr (Concepts::is_std_tuple<T>) {
+        return TupleHasConstStreamedLength<T>();
+      }
+      else if constexpr (Concepts::is_std_variant<T>)        { return false; }
+      else if constexpr (std::is_arithmetic_v<T>)            { return true;  }
+      else if constexpr (std::same_as<T,std::string>)        { return false; }
+      else if constexpr (Concepts::is_std_array<T>) {
+        return HasConstStreamedLength<typename T::value_type>();
+      }
+      else if constexpr (Concepts::is_dynamic_size_container<T>) {
+        return false;
+      }
+#if defined(DWM_CAN_USE_REFLECTION)
+      else if constexpr (std::is_class_v<T>) {
+        return ReflectionHasConstStreamedLength<T>();
+      }
+#endif
+      
+      return false;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    consteval uint64_t ConstStreamedLength()
+    {
+      static_assert(HasConstStreamedLength<T>());
+      
+#if defined(DWM_CAN_USE_REFLECTION)
+      if constexpr (io_detail::HasDenyAnnotation<^^T>)       { return 0; }
+#endif
+      if constexpr (io_detail::DenyType<T>)                  { return 0; }
+      else if constexpr (io_detail::SkipType<T>)             { return 0; }
+      else if constexpr (HasConstexprStreamedLength<T>)
+      {
+        return T::StreamedLength();
+      }
+      else if constexpr (Concepts::is_std_optional<T>)       { return 0; }
+      else if constexpr (Concepts::is_std_atomic<T>) {
+        return ConstStreamedLength<typename T::value_type>();
+      }
+      else if constexpr (Concepts::is_std_unique_ptr<T>)     { return 0; }
+      else if constexpr (Concepts::is_std_shared_ptr<T>)     { return 0; }
+      else if constexpr (std::is_bounded_array_v<T>) {
+        return (ConstStreamedLength<std::remove_all_extents_t<T>>()
+                * (sizeof(T) / sizeof(std::remove_all_extents_t<T>)));
+      }
+      else if constexpr (Concepts::is_std_pair<T>) {
+        return (ConstStreamedLength<typename T::first_type>()
+                + ConstStreamedLength<typename T::second_type>());
+      }
+      else if constexpr (Concepts::is_std_tuple<T>) {
+        return TupleConstStreamedLength<T>();
+      }
+      else if constexpr (Concepts::is_std_variant<T>)    { return 0; }
+      else if constexpr (std::is_arithmetic_v<T>)        { return sizeof(T); }
+      else if constexpr (std::same_as<T,std::string>)    { return 0; }
+      else if constexpr (Concepts::is_std_array<T>) {
+        return (ConstStreamedLength<typename T::value_type>() * std::tuple_size_v<T>);
+      }
+      else if constexpr (Concepts::is_dynamic_size_container<T>) { return 0; }
+#if defined(DWM_CAN_USE_REFLECTION)
+      else if constexpr (std::is_class_v<T>) {
+        return ReflectionConstStreamedLength<T>();
+      }
+#endif
+      return 0;
+    }
+   
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------

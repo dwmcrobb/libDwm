@@ -124,6 +124,7 @@ namespace Dwm {
     MAKE_IS_STD_CONT_CONCEPT(set);
     MAKE_IS_STD_CONT_CONCEPT(multiset);
     MAKE_IS_STD_CONT_CONCEPT(optional);
+    MAKE_IS_STD_CONT_CONCEPT(shared_ptr);
     MAKE_IS_STD_CONT_CONCEPT(unique_ptr);
     MAKE_IS_STD_CONT_CONCEPT(tuple);
     MAKE_IS_STD_CONT_CONCEPT(unordered_map);
@@ -152,6 +153,13 @@ namespace Dwm {
       or (is_std_vector<T>
           and (not std::is_same_v<typename T::value_type,bool>));
 
+    template <typename T> concept is_dynamic_size_container =
+      is_std_deque<T>
+      or is_std_list<T>
+      or is_std_vector<T>
+      or is_std_pair_associative_container<T>
+      or is_std_associative_container<T>;
+    
 #if defined(DWM_CAN_USE_REFLECTION)
     //------------------------------------------------------------------------
     //!  Returns true if the the given reflection @c info has an annotation

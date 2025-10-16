@@ -53,6 +53,7 @@
 #include <set>
 #include <string>
 #include <tuple>
+#include <type_traits>
 #include <unordered_map>
 #include <unordered_set>
 #include <variant>
@@ -383,7 +384,7 @@ namespace Dwm {
     static constexpr uint64_t
     StreamedLength(const HasConstexprStreamedLength auto & sl)
     { return sl.StreamedLength(); }
-    
+
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
@@ -393,6 +394,53 @@ namespace Dwm {
       return (StreamedLength(args) +...);
     }
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    requires std::is_bounded_array_v<T> and (std::rank_v<T> >= 1)
+    static uint64_t StreamedLength(const T & v)
+    {
+      uint64_t  rc = 0;
+      for (size_t i = 0; i < std::extent_v<T>; ++i) {
+        rc += StreamedLength(v[i]);
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    static uint64_t StreamedLength(const std::unique_ptr<T> & v)
+    {
+      return StreamedLength(*v);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    static uint64_t StreamedLength(const std::optional<T> & v)
+    {
+      return StreamedLength(v.value());
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <typename T>
+    static uint64_t StreamedLength(const std::atomic<T> & v)
+    {
+      if constexpr (std::is_pointer_v<T>) {
+        return StreamedLength(*v);
+      }
+      else {
+        T  val;
+        return StreamedLength(val);
+      }
+    }
+    
   private:
     //------------------------------------------------------------------------
     //!  
