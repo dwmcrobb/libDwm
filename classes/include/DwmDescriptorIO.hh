@@ -2431,7 +2431,7 @@ namespace Dwm {
     requires HasConstexprStreamedLength<T>
     and (not HasDescriptorRead<T>)
     and HasStreamRead<T>
-    static size_t Read(int fd, T & t)
+    static ssize_t Read(int fd, T & t)
     { return ReadViaIstream(fd, t); }
 
     //------------------------------------------------------------------------
@@ -2441,7 +2441,7 @@ namespace Dwm {
     requires HasConstexprStreamedLength<T>
     and (not HasDescriptorWrite<T>)
     and HasStreamWrite<T>
-    static size_t Write(int fd, const T & t)
+    static ssize_t Write(int fd, const T & t)
     { return WriteViaOstream(fd, t); }
 
     //------------------------------------------------------------------------
@@ -2451,7 +2451,7 @@ namespace Dwm {
     requires HasConstexprStreamedLength<T>
     and (not HasDescriptorNRead<T>)
     and HasStreamNRead<T>
-    static size_t NRead(int fd, T & t)
+    static ssize_t NRead(int fd, T & t)
     { return NReadViaIstream(fd, t); }
 
     //------------------------------------------------------------------------
@@ -2461,9 +2461,140 @@ namespace Dwm {
     requires HasConstexprStreamedLength<T>
     and (not HasDescriptorNWrite<T>)
     and HasStreamNWrite<T>
-    static size_t NWrite(int fd, const T & t)
+    static ssize_t NWrite(int fd, const T & t)
     { return NWriteViaOstream(fd, t); }
+
+#if defined(DWM_CAN_USE_REFLECTION)
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <class T>
+    requires std::is_class_v<T>
+      and (not io_detail::DirectlySupported<T>)
+      and (not io_detail::SupportedContainer<T>)
+      and (not io_detail::DenyType<T>)
+      and (not HasDescriptorWrite<T>)
+      and (not HasStreamWrite<T>)
+    static ssize_t Write(int fd, T const & v)
+    {
+      return WriteNonstaticMembers(fd, v);
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <class T>
+    requires std::is_class_v<T>
+      and (not io_detail::DirectlySupported<T>)
+      and (not io_detail::SupportedContainer<T>)
+      and (not io_detail::DenyType<T>)
+      and (not HasDescriptorRead<T>)
+      and (not HasStreamRead<T>)
+    static ssize_t Read(int fd, T & v)
+    {
+      return ReadNonstaticMembers(fd, v);
+    }
     
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <class T>
+    requires std::is_class_v<T>
+    static ssize_t WriteNonstaticMembers(int fd, const T & v)
+    {
+      ssize_t  rc = 0;
+      if (0 <= fd) {
+        using Dwm::iostream_detail::IsWritable;
+        using Dwm::io_detail::Skip;
+        using io_detail::SkipReason, io_detail::DenyReason;
+        constexpr auto ctx = std::meta::access_context::unchecked();
+        template for (constexpr auto mem :
+                        define_static_array(nonstatic_data_members_of(^^T, ctx))) {
+          if constexpr (Skip<decltype(v.[:mem:]),mem>()) {
+            FSyslog(LOG_DEBUG, "Write of {}.{} of type '{}' skipped{}",
+                    TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                    std::meta::display_string_of(std::meta::type_of(mem)),
+                    SkipReason<decltype(v.[:mem:]),mem>());
+          }
+          else {
+            if constexpr (IsWritable<decltype(v.[:mem:])>) {
+              FSyslog(LOG_DEBUG, "Writing {}.{} of type '{}'",
+                      TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                      std::meta::display_string_of(std::meta::type_of(mem)));
+              ssize_t  bytesWritten = Write(fd, v.[:mem:]);
+              if (bytesWritten > 0) {
+                rc += bytesWritten;
+              }
+              else {
+                rc = -1;
+                break;
+              }
+            }
+            else {
+              rc = -1;
+              FSyslog(LOG_ERR, "{}.{} of type '{}' is unwritable{}",
+                      TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                      std::meta::display_string_of(std::meta::type_of(mem)),
+                      DenyReason<mem>());
+              break;
+            }
+          }
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <class T>
+    requires std::is_class_v<T>
+    static ssize_t ReadNonstaticMembers(int fd, T & v)
+    {
+      ssize_t  rc = 0;
+      if (0 <= fd) {
+        using Dwm::io_detail::Skip;
+        using io_detail::SkipReason, io_detail::DenyReason;
+        constexpr auto ctx = std::meta::access_context::unchecked();
+        template for (constexpr auto mem :
+                        define_static_array(nonstatic_data_members_of(^^T, ctx))) {
+          if constexpr (Skip<decltype(v.[:mem:]),mem>()) {
+            FSyslog(LOG_DEBUG, "Read of {}.{} of type '{}' skipped{}",
+                    TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                    std::meta::display_string_of(std::meta::type_of(mem)),
+                    SkipReason<decltype(v.[:mem:]),mem>());
+          }
+          else {
+            if constexpr (iostream_detail::IsReadable<decltype(v.[:mem:])>) {
+              FSyslog(LOG_DEBUG, "Reading {}.{} of type '{}'",
+                      TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                      std::meta::display_string_of(std::meta::type_of(mem)));
+              ssize_t  bytesRead = Read(fd, v.[:mem:]);
+              if (0 < bytesRead) {
+                rc += bytesRead;
+              }
+              else {
+                rc = -1;
+                break;
+              }
+            }
+            else {
+              rc = -1;
+              FSyslog(LOG_ERR, "{}.{} of type '{}' is unreadable{}",
+                      TypeName<decltype(v)>(), std::meta::identifier_of(mem),
+                      std::meta::display_string_of(std::meta::type_of(mem)),
+                      DenyReason<mem>());
+              break;
+            }
+          }
+        }
+      }
+      return rc;
+    }
+    
+#endif
+
   private:
     //------------------------------------------------------------------------
     //!  
@@ -2472,7 +2603,7 @@ namespace Dwm {
     requires HasConstexprStreamedLength<T>
     and (not HasDescriptorRead<T>)
     and HasStreamRead<T>
-    static size_t ReadViaIstream(int fd, T & t)
+    static ssize_t ReadViaIstream(int fd, T & t)
     {
       ssize_t  rc = -1;
       if (0 <= fd) {
@@ -2501,7 +2632,7 @@ namespace Dwm {
     requires HasConstexprStreamedLength<T>
     and (not HasDescriptorNRead<T>)
     and HasStreamNRead<T>
-    static size_t NReadViaIstream(int fd, T & t)
+    static ssize_t NReadViaIstream(int fd, T & t)
     {
       ssize_t  rc = -1;
       if (0 <= fd) {
@@ -2530,7 +2661,7 @@ namespace Dwm {
     requires HasConstexprStreamedLength<T>
     and (not HasDescriptorWrite<T>)
     and HasStreamWrite<T>
-    static size_t WriteViaOstream(int fd, const T & t)
+    static ssize_t WriteViaOstream(int fd, const T & t)
     {
       ssize_t  rc = -1;
       if (0 <= fd) {
@@ -2553,7 +2684,7 @@ namespace Dwm {
     requires HasConstexprStreamedLength<T>
     and (not HasDescriptorNWrite<T>)
     and HasStreamNWrite<T>
-    static size_t NWriteViaOstream(int fd, const T & t)
+    static ssize_t NWriteViaOstream(int fd, const T & t)
     {
       ssize_t  rc = -1;
       if (0 <= fd) {
