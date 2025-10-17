@@ -38,13 +38,15 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
 \renewcommand{\ttdefault}{pcr}
 
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codeblue}{rgb}{0.2,0.2,1.0}
 
 \lstdefinestyle{mystyle}%
-{basicstyle=\ttfamily\large,
+ {basicstyle=\ttfamily,
+  keywordstyle=\ttfamily,
   keepspaces=true,
   showspaces=false,                
   showstringspaces=false,
-  numberstyle=\tiny\color{codegray},
+  numberstyle=\sffamily\small\color{codeblue},
   numbers=left,                    
   numbersep=5pt
 }

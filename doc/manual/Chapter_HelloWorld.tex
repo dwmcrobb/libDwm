@@ -1,16 +1,9 @@
 \chapter{Hello, World!}
 
-\begin{lstlisting}[language=C++]
-  #include "DwmStreamIO.hh"
+\lstinputlisting[language=c++]{examples/Example01_HelloWorldString.cc}
 
-  int main(int argc, char *argv[]) {
-    std::string  str1("Hello, world!");
-    std::stringstream  ss;
-    if (Dwm::StreamIO::Write(ss, str1)) {
-      std::string  str2;
-      if (Dwm::StreamIO::Read(ss, str2)) {
-        std::cout << str2 << '\n';
-      }
-    }
-  }
-\end{lstlisting}
+\pagebreak
+\lstinputlisting[language=c++]{examples/Example02_StringMap.cc}
+
+\pagebreak
+\lstinputlisting[language=c++]{examples/Example03_MapVectorString.cc}
