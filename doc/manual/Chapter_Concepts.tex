@@ -1,0 +1,41 @@
+\chapter{Concepts}
+
+\section{Streamable}
+
+\section{C++ iostreams}
+\subsection{\ttfamily HasStreamRead}
+\subsection{\ttfamily HasStreamWrite}
+
+\section{{\ttfamily FILE} pointer ({\ttfamily cstdio})}
+\subsection{\ttfamily HasFileRead}
+\subsection{\ttfamily HasFileWrite}
+
+\section{UNIX descriptors}
+\subsection{\ttfamily HasDescriptorRead}
+\subsection{\ttfamily HasDescriptorWrite}
+
+\section{Boost asio sockets}
+\subsection{\ttfamily HasAsioRead}
+\subsection{\ttfamily HasAsioWrite}
+
+\section{{\ttfamily BZFILE} pointer ({\ttfamily bzip2})}
+\subsection{\ttfamily HasBZRead}
+\subsection{\ttfamily HasBZWrite}
+
+\section{{\ttfamily gzFile} ({\ttfamily libz})}
+\subsection{\ttfamily HasGZRead}
+\subsection{\ttfamily HasGZWrite}
+
+\section{Streamed length}
+
+\subsection{Constant streamed length}
+\subsection{Constant streamed length via {\ttfamily static constexpr
+    uint64\_t StreamedLength()} member}
+\subsection{Constant streamed length from C++26 reflection}
+When using C++26 reflection for serialization and deserialization of
+instances of a given type, we can determine at compile time whether
+or not the streamed length of the type is constant, and hence whether
+or not we can leverage {\ttfamily StreamIO} to provide
+{\ttfamily DescriptorIO}, {\ttfamily FileIO}, {\ttfamily BZ2IO},
+{\ttfamily GZIO} and {\ttfamily ASIO} functionality automatically
+(via a pass through a {\ttfamily std::stringstream}).

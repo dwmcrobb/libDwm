@@ -1,0 +1,128 @@
+\chapter{On-the-wire formats}
+
+% the short nodes \shnode{<label>}{<right of>}{<text>}
+\def\shnode#1#2#3{%
+  \node[short,right=of #1] (#2) {\rotatebox{270}{#3}}}
+
+% the long nodes \lnode{<label>}{<right of>}
+\def\lnode#1#2#3{%
+  \node[long,right=of #1] (#2) {\linebreak #3}}
+
+\def\dotdotnode#1#2{%
+  \node[dotdot,right=of #1] (#2) {\linebreak \Large{...}}}
+
+\def\msbencoding#1#2#3{%
+  \noindent\begin{tikzpicture}[node distance=-\pgflinewidth]
+
+  \node[short] (a) {\rotatebox{270}{\ttfamily MSB}};
+  \shnode{a}{b}{};
+  \shnode{b}{c}{};
+  \shnode{c}{d}{};
+  \shnode{d}{e}{};
+  \shnode{e}{f}{};
+  \shnode{f}{g}{};
+  \shnode{g}{h}{\ttfamily LSB};
+  \lnode{h}{i}{\ttfamily #1};
+  \dotdotnode{i}{j};
+  \lnode{j}{k}{\ttfamily #2};
+  \draw[decorate,decoration={brace,raise=2pt,amplitude=1em}] (a.north west) -- node[above=1.1em] {{\ttfamily length} (64 bits)} (h.north east);
+  \draw[decorate,decoration={brace,raise=2pt,amplitude=1em}] (i.north west) -- node[above=1.1em] {data ({\ttfamily length} #3)} (k.north east);
+  \draw[,dotted] (f.north east) -- (h.north west);
+  \draw[dotted] (f.south east) -- (h.south west);
+
+  \end{tikzpicture}
+}
+
+\section{On-the-wire formats, network byte order (MSB first)}
+
+\subsection{16 bit integral types ({\ttfamily int16\_t}, {\ttfamily uint16\_t})}
+\noindent\begin{tikzpicture}[node distance=-\pgflinewidth]                                                                   
+\node[short] (u16msb) {\rotatebox{270}{\ttfamily MSB}};
+\node[short,right=of u16msb] (u16lsb) {\rotatebox{270}{\ttfamily LSB}};
+\end{tikzpicture}                                                                                                            
+
+\subsection{32 bit integral types ({\ttfamily int32\_t}, {\ttfamily uint32\_t})}
+\noindent\begin{tikzpicture}[node distance=-\pgflinewidth]                                                                   
+\node[short] (u32b1) {\rotatebox{270}{\ttfamily MSB}};
+\node[short,right=of u32b1] (u32b2) {};
+\node[short,right=of u32b2] (u32b3) {};
+\node[short,right=of u32b3] (u32b4) {\rotatebox{270}{\ttfamily LSB}};
+\end{tikzpicture}                                                                                                            
+
+\subsection{64 bit integral types ({\ttfamily int64\_t}, {\ttfamily uint64\_t})}
+\noindent\begin{tikzpicture}[node distance=-\pgflinewidth]                                                                   
+\node[short] (u64b1) {\rotatebox{270}{\ttfamily MSB}};
+\node[short,right=of u64b1] (u64b2) {};
+\node[short,right=of u64b2] (u64b3) {};
+\node[short,right=of u64b3] (u64b4) {};
+\node[short,right=of u64b4] (u64b5) {};
+\node[short,right=of u64b5] (u64b6) {};
+\node[short,right=of u64b6] (u64b7) {};
+\node[short,right=of u64b7] (u64b8) {\rotatebox{270}{\ttfamily LSB}};
+\end{tikzpicture}                                                                                                            
+
+\subsection{\ttfamily float}
+\noindent\begin{tikzpicture}[node distance=-\pgflinewidth]                                                                   
+\node[short] (u32b1) {};
+\node[short,right=of u32b1] (u32b2) {};
+\node[short,right=of u32b2] (u32b3) {};
+\node[short,right=of u32b3] (u32b4) {};
+  \draw[decorate,decoration={brace,raise=2pt,amplitude=1em}] (u32b1.north west) -- node[above=1.1em] {4 bytes, RFC4506} (u32b4.north east);
+\end{tikzpicture}                                                                                                            
+
+\subsection{\ttfamily double}
+\noindent
+\begin{tikzpicture}[node distance=-\pgflinewidth]                                                                   
+  \node[short] (u64b1) {};
+  \node[short,right=of u64b1] (u64b2) {};
+  \node[short,right=of u64b2] (u64b3) {};
+  \node[short,right=of u64b3] (u64b4) {};
+  \node[short,right=of u64b4] (u64b5) {};
+  \node[short,right=of u64b5] (u64b6) {};
+  \node[short,right=of u64b6] (u64b7) {};
+  \node[short,right=of u64b7] (u64b8) {};
+  \draw[decorate,decoration={brace,raise=2pt,amplitude=1em}] (u64b1.north west) -- node[above=1.1em] {8 bytes, RFC4506} (u64b8.north east);
+\end{tikzpicture}                                                                                                            
+
+\subsection{\ttfamily std::string}
+\msbencoding{s[0]}{s[length-1]}{bytes}
+
+\subsection{\ttfamily std::pair<T1,T2>}
+\noindent%
+\begin{tikzpicture}[node distance=-\pgflinewidth]
+  \node[long] (first) {\linebreak\ttfamily T1};
+  \node[long,right=of first] (second) {\linebreak\ttfamily T2};
+\end{tikzpicture}
+
+\subsection{\ttfamily std::vector<T>}
+\msbencoding{T}{T}{entries}
+
+\subsection{\ttfamily std::deque<T>}
+\msbencoding{T}{T}{entries}
+
+\subsection{\ttfamily std::list<T>}
+\msbencoding{T}{T}{entries}
+
+\subsection{\ttfamily std::map<Key,Value>}
+\msbencoding{std::pair<Key,Value>}{std::pair<Key,Value>}{entries}
+
+\subsection{\ttfamily std::multimap<Key,Value>}
+\msbencoding{std::pair<Key,Value>}{std::pair<Key,Value>}{entries}
+
+\subsection{\ttfamily std::unordered\_map<Key,Value>}
+\msbencoding{std::pair<Key,Value>}{std::pair<Key,Value>}{entries}
+
+\subsection{\ttfamily std::unordered\_multimap<Key,Value>}
+\msbencoding{std::pair<Key,Value>}{std::pair<Key,Value>}{entries}
+
+\subsection{\ttfamily std::set<T>}
+\msbencoding{T}{T}{entries}
+
+\subsection{\ttfamily std::multiset<T>}
+\msbencoding{T}{T}{entries}
+
+\subsection{\ttfamily std::unordered\_set<T>}
+\msbencoding{T}{T}{entries}
+
+\subsection{\ttfamily std::unordered\_multiset<T>}
+\msbencoding{T}{T}{entries}

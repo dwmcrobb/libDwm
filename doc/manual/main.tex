@@ -1,0 +1,60 @@
+\documentclass[letterpaper,openany]{book}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{titlesec}
+\usepackage{tikz}
+\usetikzlibrary{calc,positioning,shapes,decorations.pathreplacing}
+
+\titlespacing*{\section}{0pt}{1ex}{.1ex}
+\textwidth=6.5in
+% \textheight=8.0in
+\oddsidemargin=-0.25in
+\evensidemargin=-0.25in
+\topmargin=-0.25in
+\parskip=1em
+\parindent=0in
+
+% the styles for short and long nodes
+\tikzset{
+short/.style={draw,text height=3pt,text depth=20pt,
+  text width=7pt,align=center,fill=blue!10},
+long/.style={short,fill=green!10,text width=(\textwidth-64pt)/3},
+dotdot/.style={fill=white,minimum width=(\textwidth-96pt)/3},
+eightByteEmpty/.style={draw,fill=blue!10,text depth=20pt,text width=96pt,align=center},
+fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text width=48pt,align=center,text centered}}
+
+\makeatletter
+    \let\pgf@decorate@@brace@brace@code@old\pgf@decorate@@brace@brace@code
+    \def\pgf@decorate@@brace@brace@code{
+        \ifdim\pgfdecoratedremainingdistance<4\pgfdecorationsegmentamplitude
+            \pgftransformxscale{\pgfdecoratedremainingdistance/4\pgfdecorationsegmentamplitude}
+            \pgfdecoratedremainingdistance=4\pgfdecorationsegmentamplitude
+        \fi
+        \pgf@decorate@@brace@brace@code@old
+    }
+    \makeatother
+
+% Using Courier font
+\renewcommand{\ttdefault}{pcr}
+
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+
+\lstdefinestyle{mystyle}%
+{basicstyle=\ttfamily,
+  keepspaces=true,
+  numberstyle=\tiny\color{codegray},
+  numbers=left,                    
+  numbersep=5pt
+}
+\lstset{style=mystyle}
+
+\begin{document}
+
+\include{Chapter_HelloWorld.tex}
+\include{Chapter_TypesOfStreams.tex}
+\include{Chapter_DirectDataTypes.tex}
+\include{Chapter_ContainerTypes.tex}
+\include{Chapter_Concepts.tex}
+\include{Chapter_OnTheWire.tex}
+
+\end{document}

@@ -1,0 +1,68 @@
+\chapter{Container types}
+
+\section{\ttfamily std::array<T,N>}
+We can stream any instances of {\ttfamily std::array<T,N>} where
+{\ttfamily T} is streamable.
+
+\section{\ttfamily std::deque<T>}
+We can stream any instances of {\ttfamily std::deque<T>} where
+{\ttfamily T} is streamable.
+
+\section{\ttfamily std::list<T>}
+We can stream any instances of {\ttfamily std::list<T>} where
+{\ttfamily T} is streamable.
+
+\section{\ttfamily std::map<KeyType,MappedType>}
+We can stream any instances of {\ttfamily std::map<KeyType,MappedTypeT>}
+where {\ttfamily KeyType} and {\ttfamily MappedType} are streamable.
+
+\section{\ttfamily std::multimap<KeyType,MappedType>}
+We can stream any instances of {\ttfamily std::multimap<KeyType,MappedTypeT>}
+where {\ttfamily KeyType} and {\ttfamily MappedType} are streamable.
+
+\section{\ttfamily std::optional<T>}
+We can stream any instances of {\ttfamily std::optional<T>} where
+{\ttfamily T} is streamable.
+
+\section{\ttfamily std::pair<FirstType,SecondType>}
+
+\section{\ttfamily std::set<T>}
+We can stream any instances of {\ttfamily std::set<T>} where
+{\ttfamily T} is streamable.
+
+\section{\ttfamily std::multiset<T>}
+We can stream any instances of {\ttfamily std::multiset<T>} where
+{\ttfamily T} is streamable.
+
+\section{\ttfamily std::unique\_ptr<T>}
+We can stream instances of {\ttfamily std::unique\_ptr<T>} where
+{\ttfamily T} is streamable and the {\ttfamily unique\_ptr}'s
+{\ttfamily deleter\_type} is {\ttfamily std::default\_delete<T>}.
+We use the {\ttfamily deleter\_type} test to infer that the
+{\ttfamily std::unique\_ptr<T>} points to a single object and not
+to an array.  This can of course be incorrect, and hence should
+not be relied on as a general mechanism.
+
+\section{\ttfamily std::unordered\_map<KeyType,MappedType>}
+We can stream any instances of
+{\ttfamily std::unordered\_map<KeyType,MappedTypeT>} where
+{\ttfamily KeyType} and {\ttfamily MappedType} are streamable.
+
+\section{\ttfamily std::unordered\_multimap<KeyType,MappedType>}
+We can stream any instances of
+{\ttfamily std::unordered\_multimap<KeyType,MappedTypeT>} where
+{\ttfamily KeyType} and {\ttfamily MappedType} are streamable.
+
+\section{\ttfamily std::unordered\_set<T>}
+We can stream any instances of {\ttfamily std::unordered\_set<T>} where
+{\ttfamily T} is streamable.
+
+\section{\ttfamily std::unordered\_multiset<T>}
+We can stream any instances of {\ttfamily std::unordered\_multiset<T>} where
+{\ttfamily T} is streamable.
+
+\section{\ttfamily std::vector<T>}
+We can stream any instances of {\ttfamily std::vector<T>} where
+{\ttfamily T} is streamable.
+
+
