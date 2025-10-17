@@ -44,8 +44,11 @@
 #include "DwmDescriptorIOCapable.hh"
 #include "DwmFileIOCapable.hh"
 #include "DwmGZIOCapable.hh"
-#include "DwmStreamIOCapable.hh"
 #include "DwmIOConcepts.hh"
+#include "DwmIpv4Address.hh"
+#include "DwmIpv4Routes.hh"
+#include "DwmStreamIOCapable.hh"
+#include "DwmRusage.hh"
 #include "DwmUnitAssert.hh"
 
 using namespace std;
@@ -294,6 +297,7 @@ static void TestDenyAnnotation()
 //----------------------------------------------------------------------------
 static void TestConstStreamedLength()
 {
+#if defined(DWM_CAN_USE_REFLECTION)
   struct SK1 {
     int    i;
     float  f;
@@ -317,7 +321,6 @@ static void TestConstStreamedLength()
   };
   UnitAssert(! io_detail::HasConstStreamedLength<SK3>());
   
-#if defined(DWM_CAN_USE_REFLECTION)
   struct SK4 {
     [[=Dwm::skip_io]] std::string  s;
     float        f;
@@ -326,7 +329,6 @@ static void TestConstStreamedLength()
   };
   UnitAssert(io_detail::HasConstStreamedLength<SK4>());
   UnitAssert(io_detail::ConstStreamedLength<SK4>() == 30);
-#endif
 
   struct SK5 {
     std::array<int,8>  a;
@@ -355,8 +357,6 @@ static void TestConstStreamedLength()
   UnitAssert(io_detail::HasConstStreamedLength<SK8>());
   UnitAssert(io_detail::ConstStreamedLength<SK8>() == 257);
 
-#if defined(DWM_CAN_USE_REFLECTION)
-
   struct SK9 {
     bool  b;
     struct S {
@@ -375,8 +375,19 @@ static void TestConstStreamedLength()
     } s;
   };
   UnitAssert(! io_detail::HasConstStreamedLength<SK10>());
+
+#endif  // defined(DWM_CAN_USE_REFLECTION)
+
+  UnitAssert(io_detail::HasConstStreamedLength<Dwm::Rusage>());
+  UnitAssert(io_detail::ConstStreamedLength<Dwm::Rusage>() == 96);
+
+  UnitAssert(io_detail::HasConstStreamedLength<Dwm::Ipv4Address>());
+  UnitAssert(io_detail::ConstStreamedLength<Dwm::Ipv4Address>() == 4);
+
+  UnitAssert(! io_detail::HasConstStreamedLength<Dwm::Ipv4Routes<int>>());
+  UnitAssert(HasStreamedLength<Dwm::Ipv4Routes<int>>);
   
-#endif
+  return;
 }
 
 //----------------------------------------------------------------------------
