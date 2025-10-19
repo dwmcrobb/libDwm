@@ -1,20 +1,102 @@
-\chapter{Supported stream types}
+\chapter{Primary I/O Classes}
 
-\section{\ttfamily StreamIO}
-{\ttfamily std::istream} and {\ttfamily std::ostream}
+\begin{minipage}{\textwidth}
+\section{\ttfamily Dwm::StreamIO}
+\begin{tabular}{ll}
+  source type: & {\ttfamily std::istream} \\
+  sink type: & {\ttfamily std::ostream} \\
+\end{tabular}
+\vspace{1ex}
 
-\section{\ttfamily FileIO}
-{\ttfamily FILE *} ({\ttfamily <cstdio>})
+Uses the \hyperlink{concept:HasStreamRead}{\ttfamily HasStreamRead} and
+\hyperlink{concept:HasStreamWrite}{\ttfamily HasStreamWrite} concepts
+to detect the presence of stream I/O support within a user defined type.
+In the absence of C++26 reflection, this support requires a user defined
+type to contain these two member functions:
+\vspace{1ex}
 
-\section{\ttfamily DescriptorIO}
-{UNIX file descriptors}
+\begin{itemize}[noitemsep,nolistsep]
+\item[] \conceptfuncsig{std::istream \& Read(std::istream \& is)}
+\item[] \conceptfuncsig{std::ostream \& Write(std::ostream \& os) const}
+\end{itemize}
+\end{minipage}
 
-\section{\ttfamily BZ2IO}
-{\ttfamily BZFILE *}
+\begin{minipage}{\textwidth}
+\section{\ttfamily Dwm::FileIO}
+\begin{tabular}{ll}
+  source type: & {\ttfamily FILE *} \\
+  sink type: & {\ttfamily FILE *} \\
+\end{tabular}
+\vspace{1ex}
 
-\section{\ttfamily GZIO}
+Uses the \hyperlink{concept:HasFileRead}{\ttfamily HasFileRead} and
+\hyperlink{concept:HasFileWrite}{\ttfamily HasFileWrite} concepts to detect
+the presence of C stdio support (reading and writing from/to
+{\ttfamily FILE *}) in a user defined type.
+\vspace{1ex}
+
+\begin{itemize}[noitemsep,nolistsep]
+\item[] \conceptfuncsig{size\_t Read(FILE *f)}
+\item[] \conceptfuncsig{size\_t Write(FILE *f) const}
+\end{itemize}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+\section{\ttfamily Dwm::DescriptorIO}
+\begin{tabular}{ll}
+  source type: & {\ttfamily int} \\
+  sink type: & {\ttfamily int} \\
+\end{tabular}
+\vspace{1ex}
+
+Uses the \hyperlink{concept:HasDescriptorRead}{\ttfamily HasDescriptorRead}
+and \hyperlink{concept:HasDescriptorWrite}{\ttfamily HasDescriptorWrite}
+concepts to detect the presence of descriptor I/O support (reading and
+writing from/to UNIX file descriptors) inside a user defined type.
+\vspace{1ex}
+
+\begin{itemize}[noitemsep,nolistsep]
+\item[] \conceptfuncsig{ssize\_t Read(int fd)}
+\item[] \conceptfuncsig{ssize\_t Write(int fd) const}
+\end{itemize}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+\section{\ttfamily Dwm::BZ2IO}
+\begin{tabular}{ll}
+  source type: & {\ttfamily BZFILE *} \\
+  sink type: & {\ttfamily BZFILE *} \\
+\end{tabular}
+\vspace{1ex}
+
+Uses the \hyperlink{concept:HasBZRead}{\ttfamily HasBZRead}
+and \hyperlink{concept:HasBZWrite}{\ttfamily HasBZWrite}
+concepts to detect the presence of bzip2 I/O support (reading and
+writing from/to {\ttfamily BZFILE *}) inside a user defined type.
+\vspace{1ex}
+
+\begin{itemize}[noitemsep,nolistsep]
+\item[] \conceptfuncsig{int BZRead(BZFILE *)}
+\item[] \conceptfuncsig{int BZWrite(BZFILE *) const}
+\end{itemize}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+\section{\ttfamily Dwm::GZIO}
 {\ttfamily gzFile}
+\begin{tabular}{ll}
+  source type: & {\ttfamily gzFile} \\
+  sink type: & {\ttfamily gzFile} \\
+\end{tabular}
+\vspace{1ex}
 
-\section{\ttfamily ASIO}
+\vspace{1ex}
+\begin{itemize}[noitemsep,nolistsep]
+\item[] \conceptfuncsig{int Read(gzFile)}
+\item[] \conceptfuncsig{int BZWrite(gzFile) const}
+\end{itemize}
+\end{minipage}
+
+\section{\ttfamily Dwm::ASIO}
 Boost asio sockets
 

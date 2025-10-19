@@ -4,7 +4,7 @@
 
 \begin{minipage}{\textwidth}
 \section{C++ iostreams}
-\subsection{\ttfamily HasStreamRead<T>}
+\hypertarget{concept:HasStreamRead}{\subsection{\ttfamily HasStreamRead<T>}}
 Evaluates to true if {\ttfamily T} has a member function with signature:
 
 \conceptfsigpar{std::istream \& Read(std::istream \& is)}
@@ -15,7 +15,7 @@ Evaluates to true if {\ttfamily T} has a member function with signature:
   \item Must return {\ttfamily is}
 \end{itemize}
 
-\subsection{\ttfamily HasStreamWrite<T>}
+\hypertarget{concept:HasStreamWrite}{\subsection{\ttfamily HasStreamWrite<T>}}
 Evaluates to true if {\ttfamily T} has a member function with signature:
 
 \conceptfsigpar{std::ostream \& Write(std::ostream \& os) const}
@@ -35,7 +35,7 @@ Evaluates to true if {\ttfamily T} has a member function with signature:
 
 \begin{minipage}{\textwidth}
 \section{{\ttfamily FILE} pointer ({\ttfamily cstdio})}
-\subsection{\ttfamily HasFileRead<T>}
+\hypertarget{concept:HasFileRead}{\subsection{\ttfamily HasFileRead<T>}}
 Evaluates to true if {\ttfamily T} has a member function with signature:
 
 \conceptfsigpar{size\_t Read(FILE *f)}
@@ -47,7 +47,7 @@ Evaluates to true if {\ttfamily T} has a member function with signature:
     on failure
 \end{itemize}
 
-\subsection{\ttfamily HasFileWrite<T>}
+\hypertarget{concept:HasFileWrite}{\subsection{\ttfamily HasFileWrite<T>}}
 Evaluates to true if {\ttfamily T} has a member function with signature:
 
 \conceptfsigpar{size\_t Write(FILE *f) const}
@@ -62,7 +62,7 @@ Evaluates to true if {\ttfamily T} has a member function with signature:
 
 \begin{minipage}{\textwidth}
 \section{UNIX descriptors}
-\subsection{\ttfamily HasDescriptorRead<T>}
+\hypertarget{concept:HasDescriptorRead}{\subsection{\ttfamily HasDescriptorRead<T>}}
 Evaluates to true if {\ttfamily T} has a member function with signature:
 
 \conceptfsigpar{ssize\_t Read(int fd)}
@@ -74,7 +74,7 @@ Evaluates to true if {\ttfamily T} has a member function with signature:
     on failure
 \end{itemize}
 
-\subsection{\ttfamily HasDescriptorWrite<T>}
+\hypertarget{concept:HasDescriptorWrite}{\subsection{\ttfamily HasDescriptorWrite<T>}}
 Evaluates to true if {\ttfamily T} has a member function with signature:
 
 \conceptfsigpar{ssize\_t Write(int fd) const}
@@ -88,12 +88,12 @@ Evaluates to true if {\ttfamily T} has a member function with signature:
 \end{minipage}
 
 \section{Boost asio sockets}
-\subsection{\ttfamily HasAsioRead<T>}
-\subsection{\ttfamily HasAsioWrite<T>}
+\hypertarget{concept:HasAsioRead}{\subsection{\ttfamily HasAsioRead<T>}}
+\hypertarget{concept:HasAsioWrite}{\subsection{\ttfamily HasAsioWrite<T>}}
 
 \begin{minipage}{\textwidth}
 \section{{\ttfamily BZFILE} pointer ({\ttfamily bzip2})}
-\subsection{\ttfamily HasBZRead<T>}
+\hypertarget{concept:HasBZRead}{\subsection{\ttfamily HasBZRead<T>}}
 Evaluates to true if {\ttfamily T} has a member function with signature:
 
 \conceptfsigpar{int BZRead(BZFILE *bzf)}
@@ -105,7 +105,7 @@ Evaluates to true if {\ttfamily T} has a member function with signature:
     on failure
 \end{itemize}
 
-\subsection{\ttfamily HasBZWrite<T>}
+\hypertarget{concept:HasBZWrite}{\subsection{\ttfamily HasBZWrite<T>}}
 Evaluates to true if {\ttfamily T} has a member function with signature:
 
 \conceptfsigpar{int Write(BZFILE *bzf) const}

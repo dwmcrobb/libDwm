@@ -1,6 +1,7 @@
 \documentclass[letterpaper,openany]{book}
 \usepackage{enumitem}
 \usepackage{graphicx}
+\usepackage{hyperref}
 \usepackage{listings}
 \usepackage{titlesec}
 \usepackage{tikz}
@@ -84,12 +85,22 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
 \newcommand{\conceptfuncsig}[1]{{\color{darkblue}\bfseries\ttfamily #1}}
 \newcommand{\conceptfsigpar}[1]{\vspace{.5ex}\begin{itemize}[noitemsep,nolistsep]\item[]\conceptfuncsig{#1}\end{itemize}}
 
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,    
+    urlcolor=cyan,
+    pdftitle={libDwm I/O},
+    pdfpagemode=FullScreen,
+}
+
 \begin{document}
+\tableofcontents
 
 \include{Chapter_HelloWorld.tex}
 \include{Chapter_TypesOfStreams.tex}
 \include{Chapter_DirectDataTypes.tex}
-\include{Chapter_ContainerTypes.tex}
+\include{Chapter_std_Type_Templates.tex}
 \include{Chapter_Concepts.tex}
 \include{Chapter_OnTheWire.tex}
 

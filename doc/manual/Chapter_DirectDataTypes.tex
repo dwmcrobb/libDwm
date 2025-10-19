@@ -1,11 +1,31 @@
-\chapter{Directly supported data types}
+\chapter{Directly supported data types}\label{ch:dsdt}
+Directly supported data types are those types for which we have static
+member functions to read the type from a source and write the type to
+a sink.  These types include integral types, floating point types,
+enumerated types, {\ttfamily std::string} and
+{\ttfamily std::vector<bool>}.
 
 \section{integral types}
 
+The category of types for which {\ttfamily std::is\_integral\_v<T>}
+evaluates to {\ttfamily true}.
+
+For multi-byte types in this category, we use an MSB-first representation
+on-the-wire.
+
 \section{floating point types}
+
+The category of types for which {\ttfamily std::is\_floating\_point\_v<T>}
+evaluates to {\ttfamily true}.
+
+We use XDR for the on-the-wire representation of {\ttfamily float} and
+{\ttfamily double}.
 
 \section{enumerated types}
 
+The category of types for which {\ttfamily std::is\_enum\_v<T>} evaluates
+to {\ttfamily true}.
+        
 \section{\ttfamily std::string}
 
 \section{\ttfamily std::vector<bool>}
