@@ -1,9 +1,45 @@
 \chapter{Hello, World!}
 
+\section{Write and read a {\ttfamily string} to/from an {\ttfamily iostream}}
+The program below writes a {\ttfamily std::string} to a {\ttfamily
+  std::stringstream}, then reads a {\ttfamily std::string} from the
+{\ttfamily std::stringstream}.  It returns {\ttfamily 0} if the string
+we read matches the string we wrote.
+
+\begin{minipage}{\textwidth}
 \lstinputlisting[language=c++]{examples/Example01_HelloWorldString.cc}
+\end{minipage}
 
 \pagebreak
+\section{Write and read a {\ttfamily map<string,string>} to/from an {\ttfamily iostream}}
+The program below writes a {\ttfamily std::map<std::string,std::string>}
+to a {\ttfamily std::stringstream}, then reads a
+{\ttfamily std::map<std::string,std::string>} from the
+{\ttfamily std::stringstream} and returns {\ttfamily 0} if the map
+we read matches the map we wrote.  This is an example of our support
+for standard containers holding supported types ({\ttfamily std::string}
+is an explicitly supported type).
+
+\begin{minipage}{\textwidth}
 \lstinputlisting[language=c++]{examples/Example02_StringMap.cc}
+\end{minipage}
 
 \pagebreak
+\begin{minipage}{\textwidth}
+\lstinputlisting[language=c++]{examples/Example05_StringMap.cc}
+\end{minipage}
+
+\pagebreak
+\section{Turtles all the way down}
+The program below writes a
+{\ttfamily std::map<std::string,std::vector<std::string>>}
+to a {\ttfamily std::stringstream}, then reads a
+{\ttfamily std::map<std::string,std::vector<std::string>>} from the
+{\ttfamily std::stringstream} and returns {\ttfamily 0} if the map
+we read matches the map we wrote.  This is an example of our support
+for standard containers and supported types being ``turtles all the
+way down'': our support is recursive to any depth.
+
+\begin{minipage}{\textwidth}
 \lstinputlisting[language=c++]{examples/Example03_MapVectorString.cc}
+\end{minipage}

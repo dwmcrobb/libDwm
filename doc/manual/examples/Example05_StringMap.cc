@@ -1,10 +1,11 @@
-#include <sstream>
+#include <fstream>
 #include "DwmStreamIO.hh"
 
 int main(int argc, char *argv[])
 {
   using stringmap = std::map<std::string,std::string>;
-  stringmap  m1 {
+  std::string  tmpFile("./stringmaptest.tmp");
+  stringmap    m1 {
     { "apple",    "fruit"     },
     { "cat",      "feline"    },
     { "broccoli", "vegetable" },
@@ -13,12 +14,18 @@ int main(int argc, char *argv[])
     { "cow",      "bovine"    }
   };
   bool               success{false};
-  std::stringstream  ss;
-  if (Dwm::StreamIO::Write(ss, m1)) {
-    stringmap        m2;
-    if (Dwm::StreamIO::Read(ss, m2)) {
+  std::ofstream      os(tmpFile);
+  if (os) {
+    Dwm::StreamIO::Write(os, m1);
+    os.close();
+    std::ifstream  is(tmpFile);
+    if (is) {
+      stringmap      m2;
+      Dwm::StreamIO::Read(is, m2);
       success = (m2 == m1);
+      is.close();
     }
+    std::remove(tmpFile.c_str());
   }
   return success ? 0 : 1;
 }

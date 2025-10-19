@@ -1,18 +1,31 @@
 \documentclass[letterpaper,openany]{book}
+\usepackage{enumitem}
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{titlesec}
 \usepackage{tikz}
 \usetikzlibrary{calc,positioning,shapes,decorations.pathreplacing}
+\usepackage{times}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+\titleformat{\chapter}[display]
+            {\normalfont\huge\bfseries}
+            {\chaptertitlename~\thechapter}{20pt}{\Huge}
 
 \titlespacing*{\section}{0pt}{1ex}{.1ex}
+\titlespacing*{\chapter}{0pt}{1ex}{.1ex}
+\titlespacing*{\subsection}{0pt}{1ex}{1ex}
+\titlespacing*{\subsubsection}{0pt}{1ex}{1ex}
+
 \textwidth=6.5in
-% \textheight=8.0in
+\textheight=9.0in
 \oddsidemargin=-0.25in
 \evensidemargin=-0.25in
 \topmargin=-0.25in
 \parskip=1em
 \parindent=0in
+\itemsep=.1ex
 
 % the styles for short and long nodes
 \tikzset{
@@ -37,20 +50,39 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
 % Using Courier font
 \renewcommand{\ttdefault}{pcr}
 
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codegray}{rgb}{0.7,0.7,0.7}
 \definecolor{codeblue}{rgb}{0.2,0.2,1.0}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.7}
+\definecolor{numberbg}{rgb}{0.9,0.9,0.2}
+\definecolor{numbercolor}{rgb}{0.2,0.2,1.0}
+\colorlet{mynumberbg}{numberbg!20}
+\colorlet{mynumbercolor}{numbercolor!40}
 
 \lstdefinestyle{mystyle}%
- {basicstyle=\ttfamily,
-  keywordstyle=\ttfamily,
-  keepspaces=true,
-  showspaces=false,                
-  showstringspaces=false,
-  numberstyle=\sffamily\small\color{codeblue},
-  numbers=left,                    
-  numbersep=5pt
+{basicstyle=\ttfamily,
+ keywordstyle=\ttfamily\color{black},
+ identifierstyle=\ttfamily\color{black},
+ morekeywords={std::string, cout, cin, vector, map, assert},
+ keepspaces=true,
+ showspaces=false,                
+ showstringspaces=false,
+% numberstyle=\sffamily\small\color{codegray},
+ numbers=left,                    
+ numbersep=1em,
+ frame=l,
+ framesep=2em,
+ framexleftmargin=.8em,
+ fillcolor=\color{mynumberbg},
+ rulecolor=\color{mynumberbg},
+ numberstyle=\sffamily\small\color{mynumbercolor}
 }
-\lstset{style=mystyle}
+
+\lstset{language=C++,
+  style=mystyle
+}
+
+\newcommand{\conceptfuncsig}[1]{{\color{darkblue}\bfseries\ttfamily #1}}
+\newcommand{\conceptfsigpar}[1]{\vspace{.5ex}\begin{itemize}[noitemsep,nolistsep]\item[]\conceptfuncsig{#1}\end{itemize}}
 
 \begin{document}
 

@@ -2,29 +2,154 @@
 
 \section{Streamable}
 
+\begin{minipage}{\textwidth}
 \section{C++ iostreams}
-\subsection{\ttfamily HasStreamRead}
-\subsection{\ttfamily HasStreamWrite}
+\subsection{\ttfamily HasStreamRead<T>}
+Evaluates to true if {\ttfamily T} has a member function with signature:
 
+\conceptfsigpar{std::istream \& Read(std::istream \& is)}
+
+\subsubsection{Required semantics}
+\begin{itemize}[noitemsep,nolistsep]
+  \item Must populate {\ttfamily *this} with contents read from {\ttfamily is}
+  \item Must return {\ttfamily is}
+\end{itemize}
+
+\subsection{\ttfamily HasStreamWrite<T>}
+Evaluates to true if {\ttfamily T} has a member function with signature:
+
+\conceptfsigpar{std::ostream \& Write(std::ostream \& os) const}
+
+\subsubsection{Required semantics}
+\begin{itemize}[noitemsep,nolistsep]
+  \item Must write the contents of {\ttfamily *this} to {\ttfamily os}
+  \item Must return {\ttfamily os}
+\end{itemize}
+
+\subsection{\ttfamily Dwm::IsStreamReadable<T>}
+
+\subsection{\ttfamily Dwm::IsStreamWritable<T>}
+
+\vfill
+\end{minipage}
+
+\begin{minipage}{\textwidth}
 \section{{\ttfamily FILE} pointer ({\ttfamily cstdio})}
-\subsection{\ttfamily HasFileRead}
-\subsection{\ttfamily HasFileWrite}
+\subsection{\ttfamily HasFileRead<T>}
+Evaluates to true if {\ttfamily T} has a member function with signature:
 
+\conceptfsigpar{size\_t Read(FILE *f)}
+
+\subsubsection{Required semantics}
+\begin{itemize}[noitemsep,nolistsep]
+  \item Must populate {\ttfamily *this} with contents read from {\ttfamily f}
+  \item Must return a non-zero {\ttfamily size\_t} on success, {\ttfamily 0}
+    on failure
+\end{itemize}
+
+\subsection{\ttfamily HasFileWrite<T>}
+Evaluates to true if {\ttfamily T} has a member function with signature:
+
+\conceptfsigpar{size\_t Write(FILE *f) const}
+
+\subsubsection{Required semantics}
+\begin{itemize}[noitemsep,nolistsep]
+\item Must write the contents of {\ttfamily *this} to {\ttfamily f}
+\item Must return a non-zero {\ttfamily size\_t} on success, {\ttfamily 0}
+  on failure
+\end{itemize}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
 \section{UNIX descriptors}
-\subsection{\ttfamily HasDescriptorRead}
-\subsection{\ttfamily HasDescriptorWrite}
+\subsection{\ttfamily HasDescriptorRead<T>}
+Evaluates to true if {\ttfamily T} has a member function with signature:
+
+\conceptfsigpar{ssize\_t Read(int fd)}
+
+\subsubsection{Required semantics}
+\begin{itemize}[noitemsep,nolistsep]
+  \item Must populate {\ttfamily *this} with contents read from {\ttfamily fd}
+  \item Must return a positive {\ttfamily ssize\_t} on success, {\ttfamily -1}
+    on failure
+\end{itemize}
+
+\subsection{\ttfamily HasDescriptorWrite<T>}
+Evaluates to true if {\ttfamily T} has a member function with signature:
+
+\conceptfsigpar{ssize\_t Write(int fd) const}
+
+\subsubsection{Required semantics}
+\begin{itemize}[noitemsep,nolistsep]
+\item Must write the contents of {\ttfamily *this} to {\ttfamily fd}
+\item Must return a positive {\ttfamily ssize\_t} on success, {\ttfamily -1}
+  on failure
+\end{itemize}
+\end{minipage}
 
 \section{Boost asio sockets}
-\subsection{\ttfamily HasAsioRead}
-\subsection{\ttfamily HasAsioWrite}
+\subsection{\ttfamily HasAsioRead<T>}
+\subsection{\ttfamily HasAsioWrite<T>}
 
+\begin{minipage}{\textwidth}
 \section{{\ttfamily BZFILE} pointer ({\ttfamily bzip2})}
-\subsection{\ttfamily HasBZRead}
-\subsection{\ttfamily HasBZWrite}
+\subsection{\ttfamily HasBZRead<T>}
+Evaluates to true if {\ttfamily T} has a member function with signature:
 
+\conceptfsigpar{int BZRead(BZFILE *bzf)}
+
+\subsubsection{Required semantics}
+\begin{itemize}[noitemsep,nolistsep]
+  \item Must populate {\ttfamily *this} with contents read from {\ttfamily bzf}
+  \item Must return a positive {\ttfamily int} on success, {\ttfamily -1}
+    on failure
+\end{itemize}
+
+\subsection{\ttfamily HasBZWrite<T>}
+Evaluates to true if {\ttfamily T} has a member function with signature:
+
+\conceptfsigpar{int Write(BZFILE *bzf) const}
+
+\subsubsection{Required semantics}
+\begin{itemize}[noitemsep,nolistsep]
+\item Must write the contents of {\ttfamily *this} to {\ttfamily bzf}
+\item Must return a positive {\ttfamily int} on success, {\ttfamily -1}
+  on failure
+\end{itemize}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
 \section{{\ttfamily gzFile} ({\ttfamily libz})}
-\subsection{\ttfamily HasGZRead}
-\subsection{\ttfamily HasGZWrite}
+\subsection{\ttfamily HasGZRead<T>}
+Evaluates to true if {\ttfamily T} has a member function with signature:
+
+\conceptfsigpar{int Read(gzFile gzf)}
+
+\subsubsection{Required semantics}
+\begin{itemize}[noitemsep,nolistsep]
+  \item Must populate {\ttfamily *this} with contents read from {\ttfamily gzf}
+  \item Should return the number of decompressed bytes read on success, -1 on
+    failure
+\end{itemize}
+
+\subsection{\ttfamily HasGZWrite<T>}
+Evaluates to true if {\ttfamily T} has a member function with signature:
+
+\conceptfsigpar{int Write(gzFile gzf) const}
+
+\subsubsection{Required semantics}
+\begin{itemize}[noitemsep,nolistsep]
+\item Must write the contents of {\ttfamily *this} to {\ttfamily gzf}
+\item Should return the number of uncompressed bytes written on success, -1
+  on failure
+\end{itemize}
+\end{minipage}
+
+\section{\ttfamily HasSkipAnnotation<std::meta::info info>}
+Evaluates to true if the given reflection {\ttfamily info} has an
+annotation of the form {\ttfamily [[=Dwm::skip\_io]]}
+
+This requires C++26 reflection, specifically P2996 and P3394.
 
 \section{Streamed length}
 
