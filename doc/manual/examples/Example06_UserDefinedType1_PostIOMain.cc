@@ -1,19 +1,5 @@
 #include <sstream>
-#include "DwmStreamIO.hh"
-
-//----------------------------------------------------------------------------
-struct MyType {
-  uint32_t     id;
-  std::string  name;
-
-  std::istream & Read(std::istream & is)
-  { return Dwm::StreamIO::ReadV(is, id, name); }
-
-  std::ostream & Write(std::ostream & os) const
-  { return Dwm::StreamIO::WriteV(os, id, name); }
-
-  bool operator <=> (const MyType &) const = default;
-};
+#include "MyType.hh"
 
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])

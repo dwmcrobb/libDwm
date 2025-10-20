@@ -48,6 +48,15 @@ way down'': our support is recursive to any depth.
 
 \pagebreak
 \section{Integrating a user-defined type}
+\begin{minipage}{\textwidth}
+  \lstinputlisting[language=c++,captionpos=b,caption={\texttt{MyType} without \texttt{Dwm::StreamIO} support},label={listing:example06_preIO}]{examples/Example06_UserDefinedType1_PreIOMyType.hh}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+  \lstinputlisting[language=c++,captionpos=b,caption={\texttt{MyType} with \texttt{Dwm::StreamIO} support},label={listing:example06_postIO}]{examples/Example06_UserDefinedType1_PostIOMyType.hh}
+\end{minipage}
+
+
 The program in listing~\ref{listing:example06} utilizes a user-defined type
 \texttt{MyType} that has \texttt{Dwm::StreamIO} functionality.
 \texttt{MyType} meets the requirements of the
@@ -58,7 +67,7 @@ concepts by providing the \texttt{Read()} member at line 9 and the
 \texttt{Write()} member at line 12.
 
 \begin{minipage}{\textwidth}
-  \lstinputlisting[language=c++,captionpos=b,caption={Integrating a user-defined type},label={listing:example06}]{examples/Example06_UserDefinedType1.cc}
+  \lstinputlisting[language=c++,captionpos=b,caption={Integrating a user-defined type},label={listing:example06}]{examples/Example06_UserDefinedType1_PostIOMain.cc}
 \end{minipage}
 
 The main function creates a vector of \texttt{MyType} named \texttt{myvec1}
