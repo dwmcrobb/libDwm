@@ -3,17 +3,19 @@
 \section{Write and read a {\ttfamily string} to/from an {\ttfamily iostream}}
 The program below writes a {\ttfamily std::string} to a {\ttfamily
   std::stringstream}, then reads a {\ttfamily std::string} from the
-{\ttfamily std::stringstream}.  The program returns {\ttfamily 0} if the
+{\ttfamily std::stringstream}.  The program in
+listing~\ref{listing:example01} returns {\ttfamily 0} if the
 string we read matches the string we wrote.
 
 \begin{minipage}{\textwidth}
-\lstinputlisting[language=c++]{examples/Example01_HelloWorldString.cc}
+\lstinputlisting[language=c++,captionpos=b,caption={Write and read a \texttt{string} to/from an \texttt{iostream}},label={listing:example01}]{examples/Example01_HelloWorldString.cc}
 \end{minipage}
 
 \pagebreak
 \section{Write and read a {\ttfamily map<string,string>} to/from an {\ttfamily iostream}}
-The program below writes a {\ttfamily std::map<std::string,std::string>}
-to a {\ttfamily std::stringstream}, then reads a
+The program in listing~\ref{listing:example02} writes a
+{\ttfamily std::map<std::string,std::string>} to a
+{\ttfamily std::stringstream}, then reads a
 {\ttfamily std::map<std::string,std::string>} from the
 {\ttfamily std::stringstream} and returns {\ttfamily 0} if the map
 we read matches the map we wrote.  This is an example of our support
@@ -21,17 +23,17 @@ for standard containers holding supported types ({\ttfamily std::string}
 is an explicitly supported type).
 
 \begin{minipage}{\textwidth}
-\lstinputlisting[language=c++]{examples/Example02_StringMap.cc}
+\lstinputlisting[language=c++,captionpos=b,caption={Write and read a \texttt{map<string,string>} to/from an \texttt{iostream}},label={listing:example02}]{examples/Example02_StringMap.cc}
 \end{minipage}
 
-\pagebreak
-\begin{minipage}{\textwidth}
-\lstinputlisting[language=c++]{examples/Example05_StringMap.cc}
-\end{minipage}
+% \pagebreak
+% \begin{minipage}{\textwidth}
+% \lstinputlisting[language=c++]{examples/Example05_StringMap.cc}
+% \end{minipage}
 
 \pagebreak
 \section{Turtles all the way down}
-The program below writes a
+The program in listing~\ref{listing:example03} writes a
 {\ttfamily std::map<std::string,std::vector<std::string>>}
 to a {\ttfamily std::stringstream}, then reads a
 {\ttfamily std::map<std::string,std::vector<std::string>>} from the
@@ -41,5 +43,27 @@ for standard containers and supported types being ``turtles all the
 way down'': our support is recursive to any depth.
 
 \begin{minipage}{\textwidth}
-\lstinputlisting[language=c++]{examples/Example03_MapVectorString.cc}
+  \lstinputlisting[language=c++,captionpos=b,caption={Write and read a \texttt{map<string,vector<string>>} to/from an \texttt{iostream}},label={listing:example03}]{examples/Example03_MapVectorString.cc}
 \end{minipage}
+
+\pagebreak
+\section{Integrating a user defined type}
+The program in listing~\ref{listing:example06} utilizes a user defined type
+\texttt{MyType} that has \texttt{Dwm::StreamIO} functionality.
+\texttt{MyType} meets the requirements of the
+\hyperlink{concept:HasStreamRead}{\texttt{HasStreamRead<T>}}
+and
+\hyperlink{concept:HasStreamWrite}{\texttt{HasStreamWrite<T>}}
+concepts by providing the \texttt{Read()} member at line 9 and the
+\texttt{Write()} member at line 12.
+
+\begin{minipage}{\textwidth}
+  \lstinputlisting[language=c++,captionpos=b,caption={Integrating a user defined type},label={listing:example06}]{examples/Example06_UserDefinedType1.cc}
+\end{minipage}
+
+The main function creates a vector of \texttt{MyType} named \texttt{myvec1}
+on line 22.  It writes \texttt{myvec1} to the \texttt{stringstream} named
+\texttt{ss} at line 24.  It then creates a second vector of \texttt{MyType}
+named \texttt{myvec2} on line 25 and reads the contents of \texttt{myvec2}
+from \texttt{ss} on line 26.  On line 27 it checks if the vector we
+read (\texttt{myvec2}) matches the vector we wrote (\texttt{myvec1}).

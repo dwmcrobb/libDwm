@@ -1,12 +1,17 @@
 \documentclass[letterpaper,openany]{book}
 \usepackage{enumitem}
+\usepackage{fvextra}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{listings}
 \usepackage{titlesec}
 \usepackage{tikz}
 \usetikzlibrary{calc,positioning,shapes,decorations.pathreplacing}
-\usepackage{times}
+%\usepackage{times}
+\usepackage[T1]{fontenc}
+\usepackage[scaled]{beramono}
+
+% \renewcommand{\ttdefault}{beramono}
 
 \renewcommand{\familydefault}{\sfdefault}
 
@@ -49,7 +54,7 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
     \makeatother
 
 % Using Courier font
-\renewcommand{\ttdefault}{pcr}
+% \renewcommand{\ttdefault}{pcr}
 
 \definecolor{codegray}{rgb}{0.7,0.7,0.7}
 \definecolor{codeblue}{rgb}{0.2,0.2,1.0}
@@ -84,6 +89,16 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
 
 \newcommand{\conceptfuncsig}[1]{{\color{darkblue}\bfseries\ttfamily #1}}
 \newcommand{\conceptfsigpar}[1]{\vspace{.5ex}\begin{itemize}[noitemsep,nolistsep]\item[]\conceptfuncsig{#1}\end{itemize}}
+
+\DefineVerbatimEnvironment{fnverb}{Verbatim}{
+  fontfamily=\ttdefault,
+  fontshape=\updefault,
+  fontseries=bx,
+  breaklines,
+  breakanywhere,
+  breaksymbolleft=,
+  breakindent=0pt
+}
 
 \hypersetup{
     colorlinks=true,

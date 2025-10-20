@@ -1,2 +1,8 @@
 *.o
+.libs/**
 Example01_HelloWorldString
+Example02_StringMap
+Example03_MapVectorString
+Example04_HelloWorldString
+Example05_StringMap
+Example06_UserDefinedType1

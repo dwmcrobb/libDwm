@@ -15,6 +15,11 @@ Evaluates to true if {\ttfamily T} has a member function with signature:
   \item Must return {\ttfamily is}
 \end{itemize}
 
+\subsubsection{Other semantics}
+\begin{itemize}[noitemsep,nolistsep]
+  \item May set \texttt{std::ios\_base::failbit}
+\end{itemize}
+
 \hypertarget{concept:HasStreamWrite}{\subsection{\ttfamily HasStreamWrite<T>}}
 Evaluates to true if {\ttfamily T} has a member function with signature:
 
@@ -24,6 +29,11 @@ Evaluates to true if {\ttfamily T} has a member function with signature:
 \begin{itemize}[noitemsep,nolistsep]
   \item Must write the contents of {\ttfamily *this} to {\ttfamily os}
   \item Must return {\ttfamily os}
+\end{itemize}
+
+\subsubsection{Other semantics}
+\begin{itemize}[noitemsep,nolistsep]
+  \item May set \texttt{std::ios\_base::failbit}
 \end{itemize}
 
 \subsection{\ttfamily Dwm::IsStreamReadable<T>}

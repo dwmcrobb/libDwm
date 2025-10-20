@@ -1,88 +1,290 @@
 \chapter{Primary I/O Classes}
+There are several primary I/O classes in libDwm.  Each is used with
+a particular type of source and sink.
 
 \begin{minipage}{\textwidth}
-\section{\ttfamily Dwm::StreamIO}
+\begin{itemize}[noitemsep,nolistsep]
+\item[] \hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}} is used
+  with C++ iostreams (\texttt{std::istream} and \texttt{std::ostream}).
+\item[] \hyperref[section:DwmFileIOClass]{\texttt{Dwm::FileIO}} is used
+  with \texttt{FILE}s (\texttt{<cstdio>}).
+\item[] \hyperref[section:DwmDescriptorIOClass]{\texttt{Dwm::DescriptorIO}}
+  is used with UNIX file descriptors.
+\item[] \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}}
+  is used with bz2 streams (\texttt{BZFILE}s opened via
+  \texttt{BZ2\_bzopen()}).
+\item[] \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}}
+  is used with gz streams (\texttt{gzFile}s opened via
+  \texttt{gzopen()}).
+\end{itemize}
+\vspace{1em}
+
+When adding I/O support for your own data type (struct or class),
+\texttt{Dwm::StreamIO} support would typically be the first target.
+That's largely because for fixed length types, all of the other
+I/O classes can be supported via an intermediate pass through
+\texttt{Dwm::StreamIO} with a \texttt{std::stringstream} as a
+data buffer.
+
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+\section{\ttfamily Dwm::StreamIO}\label{section:DwmStreamIOClass}
 \begin{tabular}{ll}
   source type: & {\ttfamily std::istream} \\
   sink type: & {\ttfamily std::ostream} \\
 \end{tabular}
 \vspace{1ex}
 
-Uses the \hyperlink{concept:HasStreamRead}{\ttfamily HasStreamRead} and
-\hyperlink{concept:HasStreamWrite}{\ttfamily HasStreamWrite} concepts
-to detect the presence of stream I/O support within a user defined type.
-In the absence of C++26 reflection, this support requires a user defined
-type to contain these two member functions:
+\texttt{Dwm::StreamIO} provides static functions and function
+templates to read and write from/to C++ iostreams.  Conceptually,
+the primary interface looks like four static member function templates:
+\vspace{1ex}
+\color{darkblue}
+\begin{fnverb}
+  namespace Dwm {
+    class StreamIO {
+    public:
+      template <typename T>
+      static std::istream & Read(std::istream & is, T & t);
+
+      template <typename T>
+      static std::ostream & Write(std::ostream & os, const T & t);
+
+      template <typename... Args>
+      static std::istream & ReadV(std::istream & is, Args & ...args);
+
+      template <typename... Args>
+      static std::ostream & WriteV(std::ostream & os, const Args & ...args);
+    };
+  }
+\end{fnverb}
+\color{black}
+\vspace{1ex}
+
+The actual implementation uses many function and function template
+overloads for \texttt{Read()} and \texttt{Write()}.  It can't
+automatically read and write any type \texttt{T}; a data type must
+either be directly supported or meet the requirements of
+\hyperlink{concept:HasStreamRead}{\ttfamily Dwm::HasStreamRead}
+and \hyperlink{concept:HasStreamWrite}{\ttfamily Dwm::HasStreamWrite}.
+\vspace{1ex}
+
+Note that \texttt{ReadV()} and \texttt{WriteV()} are just convenient
+variadic function templates that will read or write multiple objects
+in sequence.
+\vspace{1ex}
+
+\subsection{Using {\ttfamily Dwm::StreamIO} with user defined types}
+If a user-defined type provides the following two public members,
+{\ttfamily Dwm::StreamIO} will utilize them to read and write instances
+of the user defined type:
 \vspace{1ex}
 
 \begin{itemize}[noitemsep,nolistsep]
 \item[] \conceptfuncsig{std::istream \& Read(std::istream \& is)}
 \item[] \conceptfuncsig{std::ostream \& Write(std::ostream \& os) const}
 \end{itemize}
+\vspace{1ex}
+
+See the \hyperlink{concept:HasStreamRead}{\ttfamily Dwm::HasStreamRead}        
+and \hyperlink{concept:HasStreamWrite}{\ttfamily Dwm::HasStreamWrite}
+concepts for the semantic requirements of these members.
 \end{minipage}
 
 \begin{minipage}{\textwidth}
-\section{\ttfamily Dwm::FileIO}
+\section{\ttfamily Dwm::FileIO}\label{section:DwmFileIOClass}
 \begin{tabular}{ll}
   source type: & {\ttfamily FILE *} \\
   sink type: & {\ttfamily FILE *} \\
 \end{tabular}
 \vspace{1ex}
 
-Uses the \hyperlink{concept:HasFileRead}{\ttfamily HasFileRead} and
-\hyperlink{concept:HasFileWrite}{\ttfamily HasFileWrite} concepts to detect
-the presence of C stdio support (reading and writing from/to
-{\ttfamily FILE *}) in a user defined type.
+{\ttfamily Dwm::FileIO} provides static functions and function
+templates to read and write from/to {\ttfamily FILE}s.  Conceptually,
+the interface looks like four static member function templates:
+\vspace{1ex}
+
+\color{darkblue}
+\begin{fnverb}
+  namespace Dwm {
+    class FileIO {
+    public:
+      template <typename T>
+      static size_t Read(FILE *f, T & t);
+
+      template <typename T>
+      static size_t Write(FILE *f, const T & t);
+
+      template <typename... Args>
+      static size_t ReadV(FILE *f, Args & ...args);
+
+      template <typename... Args>
+      static size_t WriteV(FILE *f, const Args & ...args);
+    };
+  }
+\end{fnverb}
+\color{black}
+
+The actual implementation uses many function and function template
+overloads for \texttt{Read()} and \texttt{Write()}.  It can't
+automatically read and write any type \texttt{T}; a data type must
+either be directly supported or meet the requirements of
+\hyperlink{concept:HasFileRead}{\ttfamily Dwm::HasFileRead}                 
+and \hyperlink{concept:HasFileWrite}{\ttfamily Dwm::HasFileWrite}.
+\vspace{1ex}
+
+Note that \texttt{ReadV()} and \texttt{WriteV()} are just convenient
+variadic function templates that will read or write multiple objects
+in sequence.
+\vspace{1ex}
+
+\subsection{Using {\ttfamily Dwm::FileIO} with user defined types}
+If a user-defined type provides the following two public members,
+{\ttfamily Dwm::FileIO} will utilize them to read and write instances
+of the user defined type:
 \vspace{1ex}
 
 \begin{itemize}[noitemsep,nolistsep]
 \item[] \conceptfuncsig{size\_t Read(FILE *f)}
 \item[] \conceptfuncsig{size\_t Write(FILE *f) const}
 \end{itemize}
+\vspace{1ex}
+
+See the \hyperlink{concept:HasFileRead}{\ttfamily Dwm::HasFileRead} and
+\hyperlink{concept:HasFileWrite}{\ttfamily Dwm::HasFileWrite} concepts for
+the semantic requirements of these members.
 \end{minipage}
 
 \begin{minipage}{\textwidth}
-\section{\ttfamily Dwm::DescriptorIO}
+\section{\ttfamily Dwm::DescriptorIO}\label{section:DwmDescriptorIOClass}
 \begin{tabular}{ll}
   source type: & {\ttfamily int} \\
   sink type: & {\ttfamily int} \\
 \end{tabular}
 \vspace{1ex}
 
-Uses the \hyperlink{concept:HasDescriptorRead}{\ttfamily HasDescriptorRead}
-and \hyperlink{concept:HasDescriptorWrite}{\ttfamily HasDescriptorWrite}
-concepts to detect the presence of descriptor I/O support (reading and
-writing from/to UNIX file descriptors) inside a user defined type.
+{\ttfamily Dwm::DescriptorIO} provides static functions and function
+templates to read and write from/to UNIX file descriptors.  Conceptually,
+the interface looks like four static member function templates:
+\vspace{1ex}
+
+\color{darkblue}
+\begin{fnverb}
+  namespace Dwm {
+    class DescriptorIO {
+    public:
+      <template typename T> static ssize_t Read(int fd, T & t);
+
+      <template typename T> static ssize_t Write(int fd, const T & t);
+
+      template <typename ...Args>
+      static ssize_t ReadV(int fd, Args & ...args);
+
+      template <typename ...Args>
+      static ssize_t WriteV(int fd, const Args & ...args);
+    };
+  }
+\end{fnverb}
+\color{black}
+\vspace{1ex}
+
+The actual implementation uses many function and function template
+overloads for \texttt{Read()} and \texttt{Write()}.  It can't
+automatically read and write any type \texttt{T}; a data type must
+either be directly supported or meet the requirements of
+\hyperlink{concept:HasDescriptorRead}{\ttfamily Dwm::HasDescriptorRead}
+and
+\hyperlink{concept:HasDescriptorWrite}{\ttfamily Dwm::HasDescriptorWrite}.
+\vspace{1ex}
+
+Note that \texttt{ReadV()} and \texttt{WriteV()} are just convenient
+variadic function templates that will read or write multiple objects
+in sequence.
+\vspace{1ex}
+
+\subsection{Using {\ttfamily Dwm::DescriptorIO} with user defined types}
+If a user defined type provides the following two public members,
+{\ttfamily Dwm::DescriptorIO} will utilize them to read and write
+instances of the user defined type:
 \vspace{1ex}
 
 \begin{itemize}[noitemsep,nolistsep]
 \item[] \conceptfuncsig{ssize\_t Read(int fd)}
 \item[] \conceptfuncsig{ssize\_t Write(int fd) const}
 \end{itemize}
+\vspace{1ex}
+
+See the
+\hyperlink{concept:HasDescriptorRead}{\ttfamily Dwm::HasDescriptorRead}
+and \hyperlink{concept:HasDescriptorWrite}{\ttfamily Dwm::HasDescriptorWrite}
+concepts for the semantic requirements of these members.
+
 \end{minipage}
 
 \begin{minipage}{\textwidth}
-\section{\ttfamily Dwm::BZ2IO}
+\section{\ttfamily Dwm::BZ2IO}\label{section:DwmBZ2IOClass}
 \begin{tabular}{ll}
   source type: & {\ttfamily BZFILE *} \\
   sink type: & {\ttfamily BZFILE *} \\
 \end{tabular}
 \vspace{1ex}
 
-Uses the \hyperlink{concept:HasBZRead}{\ttfamily HasBZRead}
-and \hyperlink{concept:HasBZWrite}{\ttfamily HasBZWrite}
-concepts to detect the presence of bzip2 I/O support (reading and
-writing from/to {\ttfamily BZFILE *}) inside a user defined type.
+{\ttfamily Dwm::BZ2IO} provides static functions and function
+templates to read and write from/to bz2 streams (\texttt{BZFILE *}).
+Conceptually, the interface looks like four static member function
+templates:
+\vspace{1ex}
+
+\color{darkblue}
+\begin{fnverb}
+  namespace Dwm {
+    class BZ2IO {
+    public:
+      <template typename T>
+      static int BZRead(BZFILE *bzf, T & t);
+      
+      <template typename T>
+      static int BZWrite(BZFILE *bzf, const T & t);
+
+      template <typename ...Args>
+      static int BZReadV(BZFILE *bzf, Args & ...args);
+
+      template <typename ...Args>
+      static int BZWriteV(BZFILE *bzf, const Args & ...args);
+    };
+  }
+\end{fnverb}
+\color{black}
+\vspace{1ex}
+
+The actual implementation uses many function and function template
+overloads for \texttt{BZRead()} and \texttt{BZWrite()}.  It can't
+automatically read and write any type \texttt{T}; a data type must
+either be directly supported or meet the requirements of
+\hyperlink{concept:HasBZRead}{\ttfamily Dwm::HasBZRead}                 
+and \hyperlink{concept:HasBZWrite}{\ttfamily Dwm::HasBZWrite}.
+\vspace{1ex}
+
+\subsection{Using {\ttfamily Dwm::BZ2IO} with user defined types}
+If a user defined type provides the following two public members,
+{\ttfamily Dwm::BZ2IO} will utilize them to read and write
+instances of the user defined type:
 \vspace{1ex}
 
 \begin{itemize}[noitemsep,nolistsep]
 \item[] \conceptfuncsig{int BZRead(BZFILE *)}
 \item[] \conceptfuncsig{int BZWrite(BZFILE *) const}
 \end{itemize}
+\vspace{1ex}
+
+See the \hyperlink{concept:HasBZRead}{\ttfamily Dwm::HasBZRead}
+and \hyperlink{concept:HasBZWrite}{\ttfamily Dwm::HasBZWrite}
+concepts for the semantic requirements of these member functions.
 \end{minipage}
 
 \begin{minipage}{\textwidth}
-\section{\ttfamily Dwm::GZIO}
+\section{\ttfamily Dwm::GZIO}\label{section:DwmGZIOClass}
 {\ttfamily gzFile}
 \begin{tabular}{ll}
   source type: & {\ttfamily gzFile} \\
@@ -90,11 +292,57 @@ writing from/to {\ttfamily BZFILE *}) inside a user defined type.
 \end{tabular}
 \vspace{1ex}
 
+{\ttfamily Dwm::GZIO} provides static functions and function
+templates to read and write from/to gz streams (\texttt{gzFile}).
+Conceptually, the interface looks like four static member function
+templates:
 \vspace{1ex}
+
+\color{darkblue}
+\begin{fnverb}
+  namespace Dwm {
+    class GZIO {
+      public:
+      <template typename T>
+      static int Read(gzFile gzf, T & t);
+
+      <template typename T>
+      static int Write(gzFile gzf, const T & t);
+
+      template <typename ...Args>
+      static int ReadV(gzFile gzf, Args & ...args);
+
+      template <typename ...Args>
+      static int WriteV(gzFile gzf, const Args & ...args);
+    };
+  }
+\end{fnverb}
+\color{black}
+\vspace{1ex}
+
+The actual implementation uses many function and function template
+overloads for \texttt{Read()} and \texttt{Write()}.  It can't
+automatically read and write any type \texttt{T}; a data type must
+either be directly supported or meet the requirements of
+\hyperlink{concept:HasGZRead}{\ttfamily Dwm::HasGZRead}                 
+and \hyperlink{concept:HasGZWrite}{\ttfamily Dwm::HasGZWrite}.
+\vspace{1ex}
+
+\subsection{Using {\ttfamily Dwm::GZIO} with user defined types}
+If a user defined type provides the following two public members,
+{\ttfamily Dwm::GZIO} will utilize them to read and write
+instances of the user defined type:
+\vspace{1ex}
+
 \begin{itemize}[noitemsep,nolistsep]
 \item[] \conceptfuncsig{int Read(gzFile)}
-\item[] \conceptfuncsig{int BZWrite(gzFile) const}
+\item[] \conceptfuncsig{int Write(gzFile) const}
 \end{itemize}
+\vspace{1ex}
+
+See the \hyperlink{concept:HasGZRead}{\ttfamily Dwm::HasGZRead}
+and \hyperlink{concept:HasGZWrite}{\ttfamily Dwm::HasGZWrite}
+concepts for the expected semantics of these members.
 \end{minipage}
 
 \section{\ttfamily Dwm::ASIO}
