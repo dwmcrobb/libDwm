@@ -48,31 +48,63 @@ way down'': our support is recursive to any depth.
 
 \pagebreak
 \section{Integrating a user-defined type}
-\begin{minipage}{\textwidth}
-  \lstinputlisting[language=c++,captionpos=b,caption={\texttt{MyType} without \texttt{Dwm::StreamIO} support},label={listing:example06_preIO}]{examples/Example06_UserDefinedType1_PreIOMyType.hh}
-\end{minipage}
+Listing~\ref{listing:example06_preIO} shows a user defined type
+\texttt{MyType} with three simple data members: \texttt{id}, \texttt{name}
+and \texttt{category}.
 
 \begin{minipage}{\textwidth}
-  \lstinputlisting[language=c++,captionpos=b,caption={\texttt{MyType} with \texttt{Dwm::StreamIO} support},label={listing:example06_postIO}]{examples/Example06_UserDefinedType1_PostIOMyType.hh}
+  \lstinputlisting[language=c++,captionpos=b,caption={\texttt{MyType} without explicit \texttt{Dwm::StreamIO} support},label={listing:example06_preIO}]{examples/Example06_UserDefinedType1_PreIOMyType.hh}
 \end{minipage}
 
+\subsection{With C++26 reflection}
+With C++26 reflection, all of the
+\hyperref[chapter:primaryIOClasses]{primary I/O classes} can read and write
+instances of \texttt{MyType} from/to their associated source/sink with no
+changes to \texttt{MyType}.  The primary I/O classes will do what one would
+expect: read and write each of the members of \texttt{MyType}, in the order
+in which they appear in the declaration of \texttt{MyType}.
 
+\subsection{Without C++26 reflection}
+Without C++26 reflection, two members need to be added to \texttt{MyType}
+for each \hyperref[chapter:primaryIOClasses]{primary I/O class} you wish
+to use with \texttt{MyType}.  For example,
+listing~\ref{listing:example06_postIO} adds support for \texttt{Dwm::StreamIO}
+by adding the \texttt{Read(std::istream \&)} and
+\texttt{Write(std::ostream \&) const} member functions for the case where
+C++26 reflection is not available (\texttt{DWM\_CAN\_USE\_REFLECTION}
+is notdefined).  Note that these member functions are simple in this case
+because our member data types are all already supported by
+\texttt{Dwm::StreamIO} and hence we can use the \texttt{ReadV()} and
+\texttt{WriteV()} members of \texttt{Dwm::StreamIO} to implement these
+members.
+
+\begin{minipage}{\textwidth}
+  \lstinputlisting[language=c++,captionpos=b,caption={\texttt{MyType} with explicit \texttt{Dwm::StreamIO} support when needed},label={listing:example06_postIO}]{examples/Example06_UserDefinedType1_PostIOMyType.hh}
+\end{minipage}
+
+\pagebreak
+\subsection{A test program to write and read \texttt{std::vector<MyType>}}
 The program in listing~\ref{listing:example06} utilizes a user-defined type
-\texttt{MyType} that has \texttt{Dwm::StreamIO} functionality.
-\texttt{MyType} meets the requirements of the
+\texttt{MyType} that has explicit
+\hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}} functionality as
+needed.  \texttt{MyType} meets the requirements of the
 \hyperlink{concept:HasStreamRead}{\texttt{HasStreamRead<T>}}
 and
 \hyperlink{concept:HasStreamWrite}{\texttt{HasStreamWrite<T>}}
-concepts by providing the \texttt{Read()} member at line 9 and the
-\texttt{Write()} member at line 12.
+concepts by providing the \texttt{Read(std::istream \&)} member at lines
+10-11 and the \texttt{Write(std::ostream \&) const} member at lines 13-14
+when we do not have C++26 reflection.
 
 \begin{minipage}{\textwidth}
   \lstinputlisting[language=c++,captionpos=b,caption={Integrating a user-defined type},label={listing:example06}]{examples/Example06_UserDefinedType1_PostIOMain.cc}
 \end{minipage}
 
 The main function creates a vector of \texttt{MyType} named \texttt{myvec1}
-on line 22.  It writes \texttt{myvec1} to the \texttt{stringstream} named
-\texttt{ss} at line 24.  It then creates a second vector of \texttt{MyType}
-named \texttt{myvec2} on line 25 and reads the contents of \texttt{myvec2}
-from \texttt{ss} on line 26.  On line 27 it checks if the vector we
+on line 23.  It writes \texttt{myvec1} to the \texttt{stringstream} named
+\texttt{ss} at line 29.  It then creates a second vector of \texttt{MyType}
+named \texttt{myvec2} on line 30 and reads the contents of \texttt{myvec2}
+from \texttt{ss} on line 31.  On line 32 it checks if the vector we
 read (\texttt{myvec2}) matches the vector we wrote (\texttt{myvec1}).
+
+\pagebreak
+\subsection{Skipping data when using C++26 reflection}

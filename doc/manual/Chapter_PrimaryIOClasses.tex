@@ -1,4 +1,4 @@
-\chapter{Primary I/O Classes}
+\chapter{Primary I/O Classes}\label{chapter:primaryIOClasses}
 There are several primary I/O classes in libDwm.  Each is used with
 a particular type of source and sink.
 
@@ -7,9 +7,9 @@ a particular type of source and sink.
 \item[] \hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}} is used
   with C++ iostreams (\texttt{std::istream} and \texttt{std::ostream}).
 \item[] \hyperref[section:DwmFileIOClass]{\texttt{Dwm::FileIO}} is used
-  with \texttt{FILE}s (\texttt{<cstdio>}).
+  with \texttt{FILE}s crated via \texttt{fopen()}, \texttt{fdopen()}, et. al.
 \item[] \hyperref[section:DwmDescriptorIOClass]{\texttt{Dwm::DescriptorIO}}
-  is used with UNIX file descriptors.
+  is used with UNIX file descriptors created via \texttt{open()}, et. al.
 \item[] \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}}
   is used with bz2 streams (\texttt{BZFILE}s opened via
   \texttt{BZ2\_bzopen()}).
