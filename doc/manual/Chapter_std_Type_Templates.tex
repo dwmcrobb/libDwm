@@ -1,40 +1,193 @@
 \chapter{Supported {\ttfamily std} type templates}
 
-\section{\ttfamily std::array<T,N>}
-We can stream any instances of {\ttfamily std::array<T,N>} where
-{\ttfamily T} is streamable.
+\begin{minipage}{\textwidth}
+\section{\ttfamily std::array<class T, std::size\_t N>}
 
-\section{\ttfamily std::deque<T>}
+We can stream any instances of \texttt{std::array<T,N>} where
+\texttt{T} satisfies the read and write concepts of the desired
+primary I/O class.
+\vspace{1ex}
+
+\begin{tabular}{lll}
+  \textbf{primary I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
+  \hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}} & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<T>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<T>}} \\
+  \hyperref[section:DwmFileIOClass]{\texttt{Dwm::FileIO}} & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<T>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<T>}} \\
+  \hyperref[section:DwmDescriptorIOClass]{\texttt{Dwm::DescriptorIO}} & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<T>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<T>}} \\
+  \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<T>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<T>}} \\
+  \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<T>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<T>}} \\
+\end{tabular}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+\section{\ttfamily std::atomic<class T>}
+We can stream any instances of \texttt{std::atomic<T>} where
+\texttt{T} satisfies the read and write concepts of the desired
+primary I/O class.  Note this excludes cases where T is a raw
+pointer, \texttt{std::shared\_ptr} or \texttt{std::weak\_ptr}.
+\vspace{1ex}
+
+\begin{tabular}{lll}
+  \textbf{primary I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
+  \hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}} & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<T>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<T>}} \\
+  \hyperref[section:DwmFileIOClass]{\texttt{Dwm::FileIO}} & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<T>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<T>}} \\
+  \hyperref[section:DwmDescriptorIOClass]{\texttt{Dwm::DescriptorIO}} & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<T>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<T>}} \\
+  \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<T>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<T>}} \\
+  \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<T>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<T>}} \\
+\end{tabular}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+\section{\ttfamily std::deque<class T>}
 We can stream any instances of {\ttfamily std::deque<T>} where
-{\ttfamily T} is streamable.
+\texttt{T} satisfies the read and write concepts of the desired
+primary I/O class.
+\vspace{1ex}
 
-\section{\ttfamily std::list<T>}
+\begin{tabular}{lll}
+  \textbf{primary I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
+  \hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}} & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<T>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<T>}} \\
+  \hyperref[section:DwmFileIOClass]{\texttt{Dwm::FileIO}} & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<T>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<T>}} \\
+  \hyperref[section:DwmDescriptorIOClass]{\texttt{Dwm::DescriptorIO}} & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<T>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<T>}} \\
+  \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<T>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<T>}} \\
+  \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<T>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<T>}} \\
+\end{tabular}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+\section{\ttfamily std::list<class T>}
 We can stream any instances of {\ttfamily std::list<T>} where
-{\ttfamily T} is streamable.
+{\ttfamily T} satisfies the read and write concepts of the desired
+primary I/O class.
+\vspace{1ex}
 
-\section{\ttfamily std::map<KeyType,MappedType>}
+\begin{tabular}{lll}
+  \textbf{primary I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
+  \hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}} & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<T>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<T>}} \\
+  \hyperref[section:DwmFileIOClass]{\texttt{Dwm::FileIO}} & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<T>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<T>}} \\
+  \hyperref[section:DwmDescriptorIOClass]{\texttt{Dwm::DescriptorIO}} & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<T>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<T>}} \\
+  \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<T>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<T>}} \\
+  \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<T>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<T>}} \\
+\end{tabular}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+\section{\ttfamily std::map<class KeyType, class MappedType>}
 We can stream any instances of {\ttfamily std::map<KeyType,MappedTypeT>}
-where {\ttfamily KeyType} and {\ttfamily MappedType} are streamable.
+where {\ttfamily KeyType} and {\ttfamily MappedType} satisfy the read and
+write requirements of the desired primary I/O class.
 
-\section{\ttfamily std::multimap<KeyType,MappedType>}
+\begin{tabular}{lll}
+\textbf{primary I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}}} & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<KeyType>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<KeyType>}} \\
+ & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<MappedType>>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<MappedType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmFileIOClass]{\texttt{Dwm::FileIO}}} & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<KeyType>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<KeyType>}} \\
+ & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<MappedType>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<MappedType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmDescriptorIOClass]{\texttt{Dwm::DescriptorIO}}} & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<KeyType>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<KeyType>}} \\
+ & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<MappedType>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<MappedType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<KeyType>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<KeyType>}} \\
+ & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<MappedType>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<MappedType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<KeyType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<KeyType>}} \\
+ & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<MappedType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<MappedType>}} \\
+\end{tabular}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+\section{\ttfamily std::multimap<class KeyType, class MappedType>}
 We can stream any instances of {\ttfamily std::multimap<KeyType,MappedTypeT>}
-where {\ttfamily KeyType} and {\ttfamily MappedType} are streamable.
+where {\ttfamily KeyType} and {\ttfamily MappedType} satisfy the read
+and write requirements of the desired primary I/O class.
+\vspace{1ex}
 
-\section{\ttfamily std::optional<T>}
+\begin{tabular}{lll}
+\textbf{primary I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}}} & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<KeyType>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<KeyType>}} \\
+ & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<MappedType>>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<MappedType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmFileIOClass]{\texttt{Dwm::FileIO}}} & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<KeyType>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<KeyType>}} \\
+ & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<MappedType>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<MappedType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmDescriptorIOClass]{\texttt{Dwm::DescriptorIO}}} & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<KeyType>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<KeyType>}} \\
+ & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<MappedType>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<MappedType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<KeyType>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<KeyType>}} \\
+ & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<MappedType>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<MappedType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<KeyType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<KeyType>}} \\
+ & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<MappedType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<MappedType>}} \\
+\end{tabular}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+\section{\ttfamily std::optional<class T>}
 We can stream any instances of {\ttfamily std::optional<T>} where
-{\ttfamily T} is streamable.
+{\ttfamily T} satisfies the read and write concepts of the desired
+primary I/O class.
+\vspace{1ex}
 
-\section{\ttfamily std::pair<FirstType,SecondType>}
+\begin{tabular}{lll}
+  \textbf{primary I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
+  \hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}} & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<T>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<T>}} \\
+  \hyperref[section:DwmFileIOClass]{\texttt{Dwm::FileIO}} & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<T>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<T>}} \\
+  \hyperref[section:DwmDescriptorIOClass]{\texttt{Dwm::DescriptorIO}} & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<T>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<T>}} \\
+  \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<T>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<T>}} \\
+  \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<T>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<T>}} \\
+\end{tabular}
+\end{minipage}
 
-\section{\ttfamily std::set<T>}
+\begin{minipage}{\textwidth}
+\section{\ttfamily std::pair<class FirstType, class SecondType>}
+We can stream any instances of \texttt{std::pair<FirstType,SecondType>}
+where \texttt{FirstType} and \texttt{SecondType} satisfy the read
+and write concepts of the desired primary I/O class.
+\vspace{1ex}
+
+\begin{tabular}{lll}
+\textbf{primary I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}}} & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<FirstType>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<FirstType>}} \\
+ & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<SecondType>>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<SecondType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmFileIOClass]{\texttt{Dwm::FileIO}}} & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<FirstType>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<FirstType>}} \\
+ & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<SecondType>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<SecondType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmDescriptorIOClass]{\texttt{Dwm::DescriptorIO}}} & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<FirstType>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<FirstType>}} \\
+ & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<SecondType>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<SecondType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<FirstType>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<FirstType>}} \\
+ & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<SecondType>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<SecondType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<FirstType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<FirstType>}} \\
+ & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<SecondType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<SecondType>}} \\
+\end{tabular}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+\section{\ttfamily std::set<class T>}
 We can stream any instances of {\ttfamily std::set<T>} where
-{\ttfamily T} is streamable.
+{\ttfamily T} satisfies the read and write concepts of the desired
+primary I/O class.
+\vspace{1ex}
 
-\section{\ttfamily std::multiset<T>}
+\begin{tabular}{lll}
+  \textbf{primary I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
+  \hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}} & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<T>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<T>}} \\
+  \hyperref[section:DwmFileIOClass]{\texttt{Dwm::FileIO}} & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<T>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<T>}} \\
+  \hyperref[section:DwmDescriptorIOClass]{\texttt{Dwm::DescriptorIO}} & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<T>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<T>}} \\
+  \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<T>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<T>}} \\
+  \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<T>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<T>}} \\
+\end{tabular}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+\section{\ttfamily std::multiset<class T>}
 We can stream any instances of {\ttfamily std::multiset<T>} where
-{\ttfamily T} is streamable.
+{\ttfamily T} satisfies the read and write concepts of the desired
+primary I/O class.
+\vspace{1ex}
 
-\section{\ttfamily std::unique\_ptr<T>}
+\begin{tabular}{lll}
+  \textbf{primary I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
+  \hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}} & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<T>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<T>}} \\
+  \hyperref[section:DwmFileIOClass]{\texttt{Dwm::FileIO}} & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<T>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<T>}} \\
+  \hyperref[section:DwmDescriptorIOClass]{\texttt{Dwm::DescriptorIO}} & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<T>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<T>}} \\
+  \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<T>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<T>}} \\
+  \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<T>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<T>}} \\
+\end{tabular}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+\section{\ttfamily std::unique\_ptr<class T>}
 We can stream instances of {\ttfamily std::unique\_ptr<T>} where
 {\ttfamily T} is streamable and the {\ttfamily unique\_ptr}'s
 {\ttfamily deleter\_type} is {\ttfamily std::default\_delete<T>}.
@@ -42,27 +195,101 @@ We use the {\ttfamily deleter\_type} test to infer that the
 {\ttfamily std::unique\_ptr<T>} points to a single object and not
 to an array.  This can of course be incorrect, and hence should
 not be relied on as a general mechanism.
+\end{minipage}
 
-\section{\ttfamily std::unordered\_map<KeyType,MappedType>}
+\begin{minipage}{\textwidth}
+\section{\ttfamily std::unordered\_map<class KeyType, class MappedType>}
 We can stream any instances of
 {\ttfamily std::unordered\_map<KeyType,MappedTypeT>} where
-{\ttfamily KeyType} and {\ttfamily MappedType} are streamable.
+{\ttfamily KeyType} and {\ttfamily MappedType} satisfy the read
+and write requirements of the desired primary I/O class.
+\vspace{1ex}
 
-\section{\ttfamily std::unordered\_multimap<KeyType,MappedType>}
+\begin{tabular}{lll}
+\textbf{primary I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}}} & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<KeyType>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<KeyType>}} \\
+ & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<MappedType>>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<MappedType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmFileIOClass]{\texttt{Dwm::FileIO}}} & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<KeyType>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<KeyType>}} \\
+ & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<MappedType>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<MappedType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmDescriptorIOClass]{\texttt{Dwm::DescriptorIO}}} & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<KeyType>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<KeyType>}} \\
+ & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<MappedType>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<MappedType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<KeyType>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<KeyType>}} \\
+ & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<MappedType>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<MappedType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<KeyType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<KeyType>}} \\
+ & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<MappedType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<MappedType>}} \\
+\end{tabular}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+\section{\ttfamily std::unordered\_multimap<class KeyType, class MappedType>}
 We can stream any instances of
 {\ttfamily std::unordered\_multimap<KeyType,MappedTypeT>} where
-{\ttfamily KeyType} and {\ttfamily MappedType} are streamable.
+{\ttfamily KeyType} and {\ttfamily MappedType} satisfy the read
+and write requirements of the desired primary I/O class.
+\vspace{1ex}
 
-\section{\ttfamily std::unordered\_set<T>}
+\begin{tabular}{lll}
+\textbf{primary I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}}} & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<KeyType>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<KeyType>}} \\
+ & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<MappedType>>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<MappedType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmFileIOClass]{\texttt{Dwm::FileIO}}} & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<KeyType>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<KeyType>}} \\
+ & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<MappedType>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<MappedType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmDescriptorIOClass]{\texttt{Dwm::DescriptorIO}}} & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<KeyType>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<KeyType>}} \\
+ & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<MappedType>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<MappedType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<KeyType>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<KeyType>}} \\
+ & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<MappedType>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<MappedType>}} \\ \hline
+\multirow{2}{*}{\hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<KeyType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<KeyType>}} \\
+ & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<MappedType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<MappedType>}} \\
+\end{tabular}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+\section{\ttfamily std::unordered\_set<class T>}
 We can stream any instances of {\ttfamily std::unordered\_set<T>} where
-{\ttfamily T} is streamable.
+{\ttfamily T} satisfies the read and write concepts of the desired
+primary I/O class.
+\vspace{1ex}
 
-\section{\ttfamily std::unordered\_multiset<T>}
+\begin{tabular}{lll}
+  \textbf{primary I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
+  \hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}} & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<T>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<T>}} \\
+  \hyperref[section:DwmFileIOClass]{\texttt{Dwm::FileIO}} & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<T>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<T>}} \\
+  \hyperref[section:DwmDescriptorIOClass]{\texttt{Dwm::DescriptorIO}} & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<T>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<T>}} \\
+  \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<T>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<T>}} \\
+  \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<T>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<T>}} \\
+\end{tabular}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+\section{\ttfamily std::unordered\_multiset<class T>}
 We can stream any instances of {\ttfamily std::unordered\_multiset<T>} where
-{\ttfamily T} is streamable.
+{\ttfamily T} satisfies the read and write concepts of the desired
+primary I/O class.
+\vspace{1ex}
 
-\section{\ttfamily std::vector<T>}
+\begin{tabular}{lll}
+  \textbf{primary I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
+  \hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}} & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<T>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<T>}} \\
+  \hyperref[section:DwmFileIOClass]{\texttt{Dwm::FileIO}} & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<T>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<T>}} \\
+  \hyperref[section:DwmDescriptorIOClass]{\texttt{Dwm::DescriptorIO}} & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<T>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<T>}} \\
+  \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<T>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<T>}} \\
+  \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<T>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<T>}} \\
+\end{tabular}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+\section{\ttfamily std::vector<class T>}
 We can stream any instances of {\ttfamily std::vector<T>} where
-{\ttfamily T} is streamable.
+{\ttfamily T} satisfies the read and write concepts of the desired
+primary I/O class.
+\vspace{1ex}
 
-
+\begin{tabular}{lll}
+  \textbf{primary I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
+  \hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}} & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<T>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<T>}} \\
+  \hyperref[section:DwmFileIOClass]{\texttt{Dwm::FileIO}} & \hyperref[concept:DwmIsFileReadable]{\texttt{Dwm::IsFileReadable<T>}} & \hyperref[concept:DwmIsFileWritable]{\texttt{Dwm::IsFileWritable<T>}} \\
+  \hyperref[section:DwmDescriptorIOClass]{\texttt{Dwm::DescriptorIO}} & \hyperref[concept:DwmIsDescriptorReadable]{\texttt{Dwm::IsDescriptorReadable<T>}} & \hyperref[concept:DwmIsDescriptorWritable]{\texttt{Dwm::IsDescriptorWritable<T>}} \\
+  \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<T>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<T>}} \\
+  \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<T>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<T>}} \\
+\end{tabular}
+\end{minipage}

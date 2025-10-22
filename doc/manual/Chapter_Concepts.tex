@@ -3,7 +3,7 @@
 \section{Streamable}
 
 \begin{minipage}{\textwidth}
-\section{C++ iostreams}
+\section{Concepts used by \texttt{Dwm::StreamIO} (C++ iostreams)}
 \hypertarget{concept:HasStreamRead}{\subsection{\ttfamily HasStreamRead<T>}}
 Evaluates to true if {\ttfamily T} has a member function with signature:
 
@@ -37,14 +37,24 @@ Evaluates to true if {\ttfamily T} has a member function with signature:
 \end{itemize}
 
 \subsection{\ttfamily Dwm::IsStreamReadable<T>}
+\label{concept:DwmIsStreamReadable}
+Evaluates to true if \texttt{T} is a directly supported type, a type that
+satisfies \hyperlink{concept:HasStreamRead}{\ttfamily HasStreamRead<T>},
+an instance of a supported class template, or (if C++26 reflection is
+available) is readable via reflection.
 
 \subsection{\ttfamily Dwm::IsStreamWritable<T>}
+\label{concept:DwmIsStreamWritable}
+Evaluates to true if \texttt{T} is a directly supported type, a type that
+satisfies \hyperlink{concept:HasStreamWrite}{\ttfamily HasStreamWrite<T>},
+an instance of a supported class template, or (if C++26 reflection is
+available) is writable via reflection.
 
 \vfill
 \end{minipage}
 
 \begin{minipage}{\textwidth}
-\section{{\ttfamily FILE} pointer ({\ttfamily cstdio})}
+\section{Concepts used by \texttt{Dwm::FileIO} (\texttt{FILE}s, i.e. \texttt{cstdio})}
 \hypertarget{concept:HasFileRead}{\subsection{\ttfamily HasFileRead<T>}}
 Evaluates to true if {\ttfamily T} has a member function with signature:
 
@@ -68,10 +78,14 @@ Evaluates to true if {\ttfamily T} has a member function with signature:
 \item Must return a non-zero {\ttfamily size\_t} on success, {\ttfamily 0}
   on failure
 \end{itemize}
+
+\subsection{\ttfamily Dwm::IsFileReadable<T>}\label{concept:DwmIsFileReadable}
+
+\subsection{\ttfamily Dwm::IsFileWritable<T>}\label{concept:DwmIsFileWritable}
 \end{minipage}
 
 \begin{minipage}{\textwidth}
-\section{UNIX descriptors}
+\section{Concepts used by \texttt{Dwm::DescriptorIO} (UNIX descriptors)}
 \hypertarget{concept:HasDescriptorRead}{\subsection{\ttfamily HasDescriptorRead<T>}}
 Evaluates to true if {\ttfamily T} has a member function with signature:
 
@@ -95,6 +109,10 @@ Evaluates to true if {\ttfamily T} has a member function with signature:
 \item Must return a positive {\ttfamily ssize\_t} on success, {\ttfamily -1}
   on failure
 \end{itemize}
+
+\subsection{\ttfamily Dwm::IsDescriptorReadable<T>}\label{concept:DwmIsDescriptorReadable}
+
+\subsection{\ttfamily Dwm::IsDescriptorWritable<T>}\label{concept:DwmIsDescriptorWritable}
 \end{minipage}
 
 \section{Boost asio sockets}
@@ -102,7 +120,7 @@ Evaluates to true if {\ttfamily T} has a member function with signature:
 \hypertarget{concept:HasAsioWrite}{\subsection{\ttfamily HasAsioWrite<T>}}
 
 \begin{minipage}{\textwidth}
-\section{{\ttfamily BZFILE} pointer ({\ttfamily bzip2})}
+\section{Concepts used by \texttt{Dwm::BZ2IO} (\texttt{BZFILE}s from \texttt{BZ2\_bzopen()})}
 \hypertarget{concept:HasBZRead}{\subsection{\ttfamily HasBZRead<T>}}
 Evaluates to true if {\ttfamily T} has a member function with signature:
 
@@ -126,11 +144,15 @@ Evaluates to true if {\ttfamily T} has a member function with signature:
 \item Must return a positive {\ttfamily int} on success, {\ttfamily -1}
   on failure
 \end{itemize}
+
+\subsection{\ttfamily Dwm::IsBZ2Readable<T>}\label{concept:DwmIsBZ2Readable}
+
+\subsection{\ttfamily Dwm::IsBZ2Writable<T>}\label{concept:DwmIsBZ2Writable}
 \end{minipage}
 
 \begin{minipage}{\textwidth}
-\section{{\ttfamily gzFile} ({\ttfamily libz})}
-\subsection{\ttfamily HasGZRead<T>}
+\section{Concepts used by \texttt{Dwm::GZIO} (\texttt{gzFile}s from \texttt{gzopen()})}
+\hypertarget{concept:DwmHasGZRead}{\subsection{\ttfamily HasGZRead<T>}}
 Evaluates to true if {\ttfamily T} has a member function with signature:
 
 \conceptfsigpar{int Read(gzFile gzf)}
@@ -142,7 +164,7 @@ Evaluates to true if {\ttfamily T} has a member function with signature:
     failure
 \end{itemize}
 
-\subsection{\ttfamily HasGZWrite<T>}
+\hypertarget{concept:DwmHasGZWrite}{\subsection{\ttfamily HasGZWrite<T>}}
 Evaluates to true if {\ttfamily T} has a member function with signature:
 
 \conceptfsigpar{int Write(gzFile gzf) const}
@@ -153,6 +175,10 @@ Evaluates to true if {\ttfamily T} has a member function with signature:
 \item Should return the number of uncompressed bytes written on success, -1
   on failure
 \end{itemize}
+
+\subsection{\ttfamily Dwm::IsGZReadable<T>}\label{concept:DwmIsGZReadable}
+
+\subsection{\ttfamily Dwm::IsGZWritable<T>}\label{concept:DwmIsGZWritable}
 \end{minipage}
 
 \section{\ttfamily HasSkipAnnotation<std::meta::info info>}

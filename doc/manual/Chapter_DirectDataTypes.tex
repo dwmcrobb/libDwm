@@ -10,6 +10,20 @@ enumerated types, {\ttfamily std::string} and
 The category of types for which {\ttfamily std::is\_integral\_v<T>}
 evaluates to {\ttfamily true}.
 
+\begin{tabular}{lll}
+  \textbf{Size} & \textbf{Supported type} & \textbf{typically aliased from} \\ \hline
+  \multirow{4}{*}{1 byte} & \texttt{bool} & \\
+  & \texttt{char}      & \\
+  & \texttt{int8\_t}   & \texttt{char} \\
+  & \texttt{uint8\_t}  & \texttt{unsigned char} \\ \hline
+  \multirow{2}{*}{2 bytes} & \texttt{int16\_t}  & \texttt{short} \\
+  & \texttt{uint16\_t} & \texttt{unsigned short} \\ \hline
+  \multirow{2}{*}{4 bytes} & \texttt{int32\_t}  & \texttt{int} or \texttt{long} \\
+  & \texttt{uint32\_t} & \texttt{unsigned int} or \texttt{unsigned long} \\ \hline
+  \multirow{2}{*}{8 bytes} & \texttt{int64\_t}  & \texttt{long long} \\
+  & \texttt{uint64\_t} & \texttt{unsigned long long} \\
+\end{tabular}
+
 For multi-byte types in this category, we use an MSB-first representation
 on-the-wire.
 
@@ -18,15 +32,29 @@ on-the-wire.
 The category of types for which {\ttfamily std::is\_floating\_point\_v<T>}
 evaluates to {\ttfamily true}.
 
+\begin{tabular}{ll}
+  \textbf{Size} & \textbf{Supported type} \\ \hline
+  4 bytes & \texttt{float} \\
+  8 bytes & \texttt{double} \\
+\end{tabular}
+
 We use XDR for the on-the-wire representation of {\ttfamily float} and
 {\ttfamily double}.
 
 \section{enumerated types}
 
 The category of types for which {\ttfamily std::is\_enum\_v<T>} evaluates
-to {\ttfamily true}.
+to {\ttfamily true}.  Note that in general, we expect an enumerated type
+to have an explicit underlying type so we are certain of its size.
         
 \section{\ttfamily std::string}
 
+\texttt{std::string} is explicitly supported.
+
 \section{\ttfamily std::vector<bool>}
 
+\texttt{std::vector<bool>} is explicitly supported, mainly because it's
+not a conforming container (which all of us in the C++ community wish
+was not true).  In general it's unwise to use \texttt{std::vector<bool>}
+due to its lack of complete conformance with what's expected of an
+instance of \texttt{std::vector<T>}.

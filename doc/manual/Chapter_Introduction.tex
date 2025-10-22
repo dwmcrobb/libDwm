@@ -1,0 +1,35 @@
+\chapter{Introduction}
+
+\section{Motivation}
+\begin{description}
+\item[Efficiency]  I did not want conversions between textual and native
+  representations for arithmetic types.  For example, if I need to stream
+  an unsigned 32-bit integer of value 0xFFFFFFFF, I should only need to
+  transfer 4 bytes, not 10 or more.
+\item[Portability]  Since network transport was a primary goal, I was
+  motivated to provide schemes that work across fairly common hardware
+  platforms and UNIX operating systems.
+\item[Flexibility]  I/O facilities should be flexible enough to accomodate
+  instances of common class templates from the standard library, particularly
+  containers like \texttt{vector}, \texttt{map}, et. al.  They should
+  also be flexible enough to accomodate user-defined types without a
+  tremendous amount of work.
+\end{description}
+
+\section{History}
+libDwm was started around 1998.  Needless to say, C++ was a very
+different language in 1998 versus 2025.  And the standard library has
+grown tremendously since 1998.
+
+The I/O facilities in libDwm started appearing in the early 2000's
+(around the time we got C++03).  Since that time, it has evolved a bit
+with each new version of the C++ standard, and is about to see a sea
+change with C++26 reflection (P2996 and P3394 in particular).
+
+\section{Primary I/O classes}
+
+\section{Directly supported types}
+
+\section{Supported \texttt{std} class templates}
+
+\section{Concepts}

@@ -1,0 +1,212 @@
+\chapter{Design}
+
+\section{A primary I/O class for each source/sink type}
+The library divides I/O functionality into a primary I/O class
+for a given category of sources/sinks.
+
+\begin{tabular}{llll}
+  \textbf{Primary I/O class} & \textbf{Source type} & \textbf{Sink type} & \textbf{Description} \\ \hline
+  \hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}} & \texttt{std::istream \&} & \texttt{std::ostream \&} & references to C++ iostreams \\
+  \hyperref[section:DwmFileIOClass]{\texttt{Dwm::FileIO}} & \texttt{FILE *} & \texttt{FILE *} & \texttt{FILE} created with \texttt{fopen()} and friends \\
+  \hyperref[section:DwmDescriptorIOClass]{\texttt{Dwm::DescriptorIO}} & \texttt{int} & \texttt{int} & UNIX descriptors \\
+  \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \texttt{BZFILE *} & \texttt{BZFILE *} & \texttt{BZFILE} created with \texttt{BZ2\_bzopen()}\\
+  \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \texttt{gzFile} & \texttt{gzFile} & \texttt{gzFile} created with \texttt{gzopen()} \\
+\end{tabular}
+
+Each of the primary I/O classes provides a set of static functions and
+function templates to read and write data.
+
+\section{Conceptual interfaces}
+Conceptually, the I/O classes provide four primary interfaces to read
+and write from/to their associated source/sink type, as depicted in
+table~\ref{table:ConceptualInterfaceGeneric}.  There are
+single-object interfaces (\texttt{ReadFunc} and \texttt{WriteFunc})
+and multi-object variadic interfaces (\texttt{VariadicReadFunc} and
+\texttt{VariadicWriteFunc}).  The multi-object variadic interfaces
+just call to the single-object interfaces for each object.
+
+\begin{table}[H]
+  \caption{Conceptual read/write functions in all primary I/O classes}
+  \label{table:ConceptualInterfaceGeneric}
+\begin{tabular}{l}
+  \textbf{Read/write functions (conceptual)} \\ \hline
+  \makecell[l]{\texttt{template <typename T>}\\ \texttt{static \textit{\color{red1}ReadReturnType} \& \color{darkblue}{\textit{ReadFunc}}(\textit{\color{green1}SourceType} {\color{green1}source}, T \& t);}} \\
+  \makecell[l]{\texttt{template <typename T>}\\ \texttt{static \textit{\color{red1}WriteReturnType} \textit{\color{darkblue}WriteFunc}(\textit{\color{green1}SinkType} {\color{green1}sink}, const T \& t);}} \\
+  \makecell[l]{\texttt{template <typename... Args>}\\ \texttt{static \textit{\color{red1}ReadReturnType} \textit{\color{darkblue}VariadicReadFunc}(\textit{\color{green1}SourceType} {\color{green1}source}, Args \& ...args);}} \\
+  \makecell[l]{\texttt{template <typename... Args>}\\ \texttt{static \textit{\color{red1}WriteReturnType} \textit{\color{darkblue}VariadicWriteFunc}(\textit{\color{green1}SinkType} {\color{green1}sink}, const Args \& ...args);}} \\
+\end{tabular}
+\end{table}
+
+Table~\ref{table:ConceptualInterfaceMapping} maps the generic conceptual
+interface to each of the primary I/O classes.
+
+\begin{table}[H]
+  \caption{Conceptual interface mapping to the primary I/O classes}
+  \label{table:ConceptualInterfaceMapping}
+\begin{tabular}{l|l|l|l|l|l}
+  & \multicolumn{5}{c}{\texttt{Dwm} I/O class} \\
+  & \texttt{StreamIO} & \texttt{FileIO} & \texttt{DescriptorIO} & \texttt{BZ2IO} & \texttt{GZIO} \\ \hline
+  \texttt{\textit{\color{darkblue}ReadFunc}} & \texttt{\color{darkblue}Read} & \texttt{\color{darkblue}Read} & \texttt{\color{darkblue}Read} & \texttt{\color{darkblue}BZRead} & \texttt{\color{darkblue}Read} \\
+  \texttt{\textit{\color{darkblue}VariadicReadFunc}} & \texttt{\color{darkblue}ReadV} & \texttt{\color{darkblue}ReadV} & \texttt{\color{darkblue}ReadV} & \texttt{\color{darkblue}BZReadV} & \texttt{\color{darkblue}ReadV} \\
+  \texttt{\textit{\color{red1}ReadReturnType}} & \texttt{\color{red1}std::istream \&} & \texttt{\color{red1}size\_t} & \texttt{\color{red1}ssize\_t} & \texttt{\color{red1}int} & \texttt{\color{red1}int} \\
+  \color{green1}\texttt{\textit{SourceType}} & \color{green1}\texttt{std::istream \&} & \color{green1}\texttt{FILE *} & \color{green1}\texttt{int} & \color{green1}\texttt{BZFILE *} & \color{green1}\texttt{gzFile} \\
+  \texttt{\textit{\color{darkblue}WriteFunc}} & \texttt{\color{darkblue}Write} & \texttt{\color{darkblue}Write} & \texttt{\color{darkblue}Write} & \texttt{\color{darkblue}BZWrite} & \texttt{\color{darkblue}Write} \\
+  \texttt{\textit{\color{darkblue}VariadicWriteFunc}} & \texttt{\color{darkblue}WriteV} & \texttt{\color{darkblue}WriteV} & \texttt{\color{darkblue}WriteV} & \texttt{\color{darkblue}BZWriteV} & \texttt{\color{darkblue}WriteV} \\
+  \texttt{\textit{\color{red1}WriteReturnType}} & \texttt{\color{red1}std::ostream \&} & \texttt{\color{red1}size\_t} & \texttt{\color{red1}ssize\_t} & \texttt{\color{red1}int} & \texttt{\color{red1}int} \\
+  \texttt{\textit{\color{green1}SinkType}} & \texttt{\color{green1}std::ostream \&} & \texttt{\color{green1}FILE *} & \texttt{\color{green1}int} & \texttt{\color{green1}BZFILE *} & \texttt{\color{green1}gzFile} \\
+\end{tabular}
+\end{table}
+
+\section{Categories of interface overloads in actual implementation}
+\subsection{Regular functions for directly supported types}
+\texttt{read} and \texttt{write} of directly supported types is done
+with regular function overloads.
+
+\subsection{Function templates for STL container and other standard class templates}
+Overloaded function templates are used to read and write types instantiated
+via standard class templates, where the parameter types of the standard
+class templates are either directly supported types, types that meet
+the conceptual requirements of a readable and writable class, or instances
+of supported standard templates using any of the aforementioned types in
+type parameters.  In other words, supported standard containers of any depth
+can be read and written, as long as the leaf types are directly
+supported types or types that meet the conceptual requirements of a
+readable and writable class for the I/O class of interest.
+
+This is probably best explained via some example readable and writable
+types:
+\begin{verbatim}
+  std::vector<std::string>
+  std::map<uint32_t,std::vector<std::string>>
+  std::map<uint32_t,std::vector<std::map<uint8_t,std::string>>>
+\end{verbatim}
+
+
+\subsection{Function templates for types that meet the conceptual requirements of a given primary I/O class}
+Overloaded function templates with concept requirements are used to read
+and write types that meet the concept requirements.
+
+\begin{tabular}{lll}
+  \textbf{\texttt{Dwm} I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
+  \hyperref[section:DwmStreamIOClass]{\texttt{StreamIO}} & \hyperlink{concept:HasStreamRead}{\texttt{Dwm::HasStreamRead<T>}} & \hyperlink{concept:HasStreamWrite}{\texttt{Dwm::HasStreamWrite<T>}} \\
+  \hyperref[section:DwmFileIOClass]{\texttt{FileIO}} & \hyperlink{concept:HasFileRead}{\texttt{Dwm::HasFileRead<T>}} & \hyperlink{concept:HasFileWrite}{\texttt{Dwm::HasFileWrite</t>}} \\
+  \hyperref[section:DwmDescriptorIOClass]{\texttt{DescriptorIO}} & \hyperlink{concept:HasDescriptorRead}{\texttt{Dwm::HasDescriptorRead<T>}} & \hyperlink{concept:HasDescriptorWrite}{\texttt{Dwm::HasDescriptorWrite<T>}} \\
+  \hyperref[section:DwmBZ2IOClass]{\texttt{BZ2IO}} & \hyperlink{concept:HasBZRead}{\texttt{Dwm::HasBZRead<T>}} & \hyperlink{concept:HasBZWrite}{\texttt{Dwm::HasBZWrite<T>}} \\
+  \hyperref[section:DwmGZIOClass]{\texttt{GZIO}} & \hyperlink{concept:DwmHasGZRead}{\texttt{Dwm::HasGZRead<T>}} & \hyperlink{concept:DwmHasGZWrite}{\texttt{Dwm::HasGZWrite<T>}} \\
+\end{tabular}
+
+\section{\texttt{Dwm::StreamIO} read/write functions}
+\subsection{\texttt{Dwm::StreamIO} conceptual read/write functions}
+\begin{tabular}{ll}
+  \textbf{Primary I/O class} & \textbf{Read/write functions (conceptual)} \\ \hline
+  \multirow{4}{*}{\hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}}} & \makecell[l]{\texttt{template <typename T>}\\ \texttt{static std::istream \& Read(std::istream \& is, T \& t);}} \\ \cline{2-2}
+  & \makecell[l]{\texttt{template <typename T>}\\ \texttt{static std::ostream \& Write(std::ostream \& os, const T \& t);}} \\ \cline{2-2}
+  & \makecell[l]{\texttt{template <typename... Args>}\\ \texttt{static std::istream \& ReadV(std::istream \& is, Args \& ...args);}} \\ \cline{2-2}
+  & \makecell[l]{\texttt{template <typename... Args>}\\ \texttt{static std::ostream \& WriteV(std::ostream \& os, const Args \& ...args);}} \\ \hline
+\end{tabular}
+
+\begin{minipage}{\textwidth}
+Conceptually...
+
+\subsubsection{\texttt{template <typename T>}\\ \texttt{static std::istream \& Read(std::istream \& is, T \& t)}}
+\begin{itemize}[noitemsep,nolistsep]
+\item Reads the contents of \texttt{t} from \texttt{is} and returns
+  \texttt{is}.
+\end{itemize}
+
+\subsubsection{\texttt{template <typename T>}\\ \texttt{static std::Write(std::ostream \& os, const T \& t)}}
+\begin{itemize}[noitemsep,nolistsep]
+\item Writes the contents of \texttt{t} to \texttt{os} and returns
+  \texttt{os}.
+\end{itemize}
+
+\subsubsection{\texttt{template <typename... Args>}\\ \texttt{static std::istream \& ReadV(std::istream \& is, Args \& ...args)}}
+\begin{itemize}[noitemsep,nolistsep]
+\item Reads the contents of all \texttt{args} (in order) from \texttt{is}
+  and returns \texttt{is}.
+\end{itemize}
+
+\subsubsection{\texttt{template <typename... Args>}\\ \texttt{static std::ostream \& WriteV(std::ostream \& os, const Args \& ...args)}}
+\begin{itemize}[noitemsep,nolistsep]
+\item Writes the contents of all \texttt{args} (in order) to \texttt{os}
+  and returns \texttt{os}.
+\end{itemize}
+
+\end{minipage}
+
+\section{\texttt{Dwm::FileIO} read/write functions}
+\subsection{\texttt{Dwm::FileIO} conceptual read/write functions}
+\begin{tabular}{ll}
+  \textbf{Primary I/O class} & \textbf{Read/write functions (conceptual)} \\ \hline  \multirow{4}{*}{\hyperref[section:DwmFileIOClass]{\texttt{Dwm::FileIO}}} & \makecell[l]{\texttt{template <typename T>}\\ \texttt{static size\_t Read(FILE *f, T \& t);}} \\ \cline{2-2}
+  & \makecell[l]{\texttt{template <typename T>}\\ \texttt{static size\_t Write(FILE *f, const T \& t);}} \\ \cline{2-2}
+  & \makecell[l]{\texttt{template <typename... Args>}\\ \texttt{static size\_t ReadV(FILE *f, Args \& ...args);}} \\ \cline{2-2}
+  & \makecell[l]{\texttt{template <typename... Args>}\\ \texttt{static size\_t WriteV(FILE *f, const Args \& ...args);}} \\ \hline
+\end{tabular}
+
+\section{\texttt{Dwm::DescriptorIO} read/write functions}
+\subsection{\texttt{Dwm::DescriptorIO} conceptual read/write functions}
+\begin{tabular}{ll}
+  \textbf{Primary I/O class} & \textbf{Read/write functions (conceptual)} \\ \hline
+  \multirow{2}{*}{\hyperref[section:DwmDescriptorIOClass]{\texttt{Dwm::DescriptorIO}}} & \makecell[l]{\texttt{template <typename T>}\\ \texttt{static ssize\_t Read(int fd, T \& t);}} \\ \cline{2-2}
+  & \makecell[l]{\texttt{template <typename T>}\\\texttt{static ssize\_t Write(int fd, const T \& t);}} \\ \cline{2-2}
+  & \makecell[l]{\texttt{template <typename... Args>}\\ \texttt{static ssize\_t ReadV(int fd, Args \& ...args);}} \\ \cline{2-2}
+  & \makecell[l]{\texttt{template <typename... Args>}\\ \texttt{static ssize\_t WriteV(int fd, const Args \& ...args);}} \\ \hline
+\end{tabular}
+
+\section{\texttt{Dwm::BZ2IO} read/write functions}
+\subsection{\texttt{Dwm::BZ2IO} conceptual read/write functions}
+\begin{tabular}{ll}
+  \textbf{Primary I/O class} & \textbf{Read/write functions (conceptual)} \\ \hline
+  \multirow{2}{*}{\hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}}} & \makecell[l]{\texttt{template <typename T>}\\ \texttt{static int BZRead(BZFILE *bzf, T \& t);}} \\ \cline{2-2}
+  & \makecell[l]{\texttt{template <typename T>}\\ \texttt{static int BZWrite(BZFILE *bzf, const T \& t)}} \\ \cline{2-2}
+ & \makecell[l]{\texttt{template <typename... Args>}\\ \texttt{static int BZReadV(BZFILE *bzf, Args \& ...args);}} \\ \cline{2-2}
+  & \makecell[l]{\texttt{template <typename T>}\\ \texttt{static int BZWriteV(BZFILE *bzf, const Args \& ...args)}} \\ \hline
+\end{tabular}
+
+\section{\texttt{Dwm::GZIO} read/write functions}
+\subsection{\texttt{Dwm::GZIO} conceptual read/write functions}
+\begin{tabular}{ll}
+  \textbf{Primary I/O class} & \textbf{Read/write functions (conceptual)} \\ \hline
+  \multirow{2}{*}{\hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}}} & \makecell[l]{\texttt{template <typename T>}\\ \texttt{static int Read(gzFile gzf, T \& t);}} \\ \cline{2-2}
+  & \makecell[l]{\texttt{template <typename T>}\\ \texttt{static int Write(gzFile gzf, const T \& t);}} \\ \cline{2-2}
+ & \makecell[l]{\texttt{template <typename... Args>}\\ \texttt{static int ReadV(gzFile gzf, Args \& ...args);}} \\ \cline{2-2}
+  & \makecell[l]{\texttt{template <typename... Args>}\\ \texttt{static int Write(gzFile gzf, const Args \& ...args);}} \\ \hline
+\end{tabular}
+
+\section{Member function overloads}
+libDwm uses member function overloading to allow the user to use the
+same function names to read or write different types from/to a
+source/sink.  This is also critical to supporting instances of class
+templates.
+
+\section{Member function templates}
+libDwm uses function templates and function template overloads to
+provide the same interfaces (the same member function names) to
+read or write instances of standard class templates from/to a
+source/sink (\texttt{std::vector}, \texttt{std::pair},
+\texttt{std::tuple}, \texttt{std::map}, et. al.).
+
+\section{Concepts}
+libDwm uses concepts in many places to aid in overload resolution
+and to document the requirements of user-defined types.
+
+\section{Support for user-designed types}
+\subsection{Before C++26}
+In general, code utilized with pre-C++26 compilers and standard libraries
+requires a pair of member functions to be added to any user-defined type
+for a given source/sink pair.  Much of the time, these functions are
+fairly simple to implement, particuarly for C++ iostreams
+(\texttt{std::istream} as a source, \texttt{std::ostream} as a sink).
+This is especially true for user-defined types that only contain types
+already supported by the corresponding primry I/O class (for C++ iostreams,
+that would be \texttt{Dwm::StreamIO}).
+
+\subsection{C++26 and beyond}
+With C++26 features (particularly P2996 and P3394), it becomes possible
+to elegantly handle serialization and deserialization of many user
+defined types with no changes to user code.  It also allows annotations
+of types and variables that can control the serialization and
+deserialization of a user defined type (for example, skipping a data
+member of a class during serialization and deserialization).  Work
+here has already begun, using a slightly modified fork of the bloomberg
+clang implementation.

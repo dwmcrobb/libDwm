@@ -1,14 +1,22 @@
+\PassOptionsToPackage{table}{xcolor}
 \documentclass[letterpaper,openany]{book}
 \usepackage{enumitem}
+\usepackage[en-US,showzone]{datetime2}
 \usepackage{fvextra}
+\usepackage{float}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{listings}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage{tabularx}
 \usepackage{titlesec}
+\usepackage{titletoc}
 \usepackage{tikz}
 \usetikzlibrary{calc,positioning,shapes,decorations.pathreplacing}
-%\usepackage{times}
 \usepackage[T1]{fontenc}
+\usepackage[table]{xcolor}
 \usepackage[scaled]{beramono}
 
 % \renewcommand{\ttdefault}{beramono}
@@ -23,6 +31,35 @@
 \titlespacing*{\chapter}{0pt}{1ex}{.1ex}
 \titlespacing*{\subsection}{0pt}{1ex}{1ex}
 \titlespacing*{\subsubsection}{0pt}{1ex}{1ex}
+
+\titlecontents{chapter}   % Affects chapters
+[0em]                    % Left indentation
+{}                       % Space before entry
+{\bfseries\contentslabel{2.3em}}  % Font for numbered chapters
+{}                       % Font for unnumbered chapters
+{\titlerule*[1pc]{.}\contentspage}    % Dot leaders
+{}          % Page number
+\titlecontents{section}   % Affects sections
+[1em]                    % Left indentation
+{}                       % Space before entry
+{\bfseries\contentslabel{2.3em}}  % Font for numbered sections
+{}                       % Font for unnumbered sections
+{\titlerule*[1pc]{.}\contentspage}    % Dot leaders
+{}          % Page number
+\titlecontents{subsection}   % Affects subsections
+[2.5em]                    % Left indentation
+{}                       % Space before entry
+{\contentslabel{3.3em}}         % Font for numbered subsections
+{}                       % Font for unnumbered subsections
+{\titlerule*[1pc]{.}\contentspage}    % Dot leaders
+{}          % Page number
+\titlecontents{subsubsection}   % Affects subsubsections
+[1em]                    % Left indentation
+{}                       % Space before entry
+{\bfseries}              % Font for numbered subsubsections
+{}                       % Font for unnumbered subsubsections
+{\titlerule*[1pc]{.}\contentspage}    % Dot leaders
+{}          
 
 \textwidth=6.5in
 \textheight=9.0in
@@ -56,9 +93,12 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
 % Using Courier font
 % \renewcommand{\ttdefault}{pcr}
 
+\definecolor{dwmOrange}{RGB}{255,127,42}
 \definecolor{codegray}{rgb}{0.7,0.7,0.7}
 \definecolor{codeblue}{rgb}{0.2,0.2,1.0}
 \definecolor{darkblue}{rgb}{0.0,0.0,0.7}
+\definecolor{green1}{RGB}{0,160,0}
+\definecolor{red1}{RGB}{160,0,0}
 \definecolor{numberbg}{rgb}{0.9,0.9,0.2}
 \definecolor{numbercolor}{rgb}{0.2,0.2,1.0}
 \colorlet{mynumberbg}{numberbg!20}
@@ -110,8 +150,16 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
 }
 
 \begin{document}
+\include{TitlePage.tex}
+%% \begin{spacing}{0.0}
+\begingroup
+\renewcommand{\baselinestretch}{1.0}
 \tableofcontents
+\endgroup
+%% \end{spacing}
 
+\include{Chapter_Introduction.tex}
+\include{Chapter_Design.tex}
 \include{Chapter_Examples.tex}
 \include{Chapter_PrimaryIOClasses.tex}
 \include{Chapter_DirectDataTypes.tex}
