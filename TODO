@@ -1,0 +1,5 @@
+Document the SizedLength() class in the latex documentation.
+Note that I intend to start using it for length-encoded
+stuff in the near future (especially strings and STL
+containers).  This will invalidate data I have on disk,
+but I can live with that (I think).
