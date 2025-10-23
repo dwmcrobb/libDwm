@@ -26,8 +26,7 @@ and multi-object variadic interfaces (\texttt{VariadicReadFunc} and
 just call to the single-object interfaces for each object.
 
 \begin{table}[H]
-  \caption{Conceptual read/write functions in all primary I/O classes}
-  \label{table:ConceptualInterfaceGeneric}
+\label{table:ConceptualInterfaceGeneric}
 \begin{tabular}{l}
   \textbf{Read/write functions (conceptual)} \\ \hline
   \makecell[l]{\texttt{template <typename T>}\\ \texttt{static \textit{\color{red1}ReadReturnType} \& \color{darkblue}{\textit{ReadFunc}}(\textit{\color{green1}SourceType} {\color{green1}source}, T \& t);}} \\
@@ -35,6 +34,7 @@ just call to the single-object interfaces for each object.
   \makecell[l]{\texttt{template <typename... Args>}\\ \texttt{static \textit{\color{red1}ReadReturnType} \textit{\color{darkblue}VariadicReadFunc}(\textit{\color{green1}SourceType} {\color{green1}source}, Args \& ...args);}} \\
   \makecell[l]{\texttt{template <typename... Args>}\\ \texttt{static \textit{\color{red1}WriteReturnType} \textit{\color{darkblue}VariadicWriteFunc}(\textit{\color{green1}SinkType} {\color{green1}sink}, const Args \& ...args);}} \\
 \end{tabular}
+\caption{Conceptual read/write functions in all primary I/O classes}
 \end{table}
 
 Table~\ref{table:ConceptualInterfaceMapping} maps the generic conceptual
@@ -84,8 +84,13 @@ types:
 
 \subsection{Function templates for types that meet the conceptual requirements of a given primary I/O class}
 Overloaded function templates with concept requirements are used to read
-and write types that meet the concept requirements.
+and write types that meet the concept requirements.  The concepts required
+for each primary I/O class are listed in
+table~\ref{table:PrimaryIOClassConcepts}.
 
+\begin{table}[H]
+\caption{Primary I/O class concepts for user-defined types}
+\label{table:PrimaryIOClassConcepts}
 \begin{tabular}{lll}
   \textbf{\texttt{Dwm} I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
   \hyperref[section:DwmStreamIOClass]{\texttt{StreamIO}} & \hyperlink{concept:HasStreamRead}{\texttt{Dwm::HasStreamRead<T>}} & \hyperlink{concept:HasStreamWrite}{\texttt{Dwm::HasStreamWrite<T>}} \\
@@ -94,6 +99,7 @@ and write types that meet the concept requirements.
   \hyperref[section:DwmBZ2IOClass]{\texttt{BZ2IO}} & \hyperlink{concept:HasBZRead}{\texttt{Dwm::HasBZRead<T>}} & \hyperlink{concept:HasBZWrite}{\texttt{Dwm::HasBZWrite<T>}} \\
   \hyperref[section:DwmGZIOClass]{\texttt{GZIO}} & \hyperlink{concept:DwmHasGZRead}{\texttt{Dwm::HasGZRead<T>}} & \hyperlink{concept:DwmHasGZWrite}{\texttt{Dwm::HasGZWrite<T>}} \\
 \end{tabular}
+\end{table}
 
 \section{\texttt{Dwm::StreamIO} read/write functions}
 \subsection{\texttt{Dwm::StreamIO} conceptual read/write functions}
