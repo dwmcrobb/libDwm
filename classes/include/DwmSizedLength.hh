@@ -151,6 +151,8 @@ namespace Dwm {
 
   private:
     uint64_t  _length;
+
+    std::vector<uint8_t> MakeWriteVector() const;
   };
   
 }  // namespace Dwm
