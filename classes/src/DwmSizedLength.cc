@@ -120,8 +120,13 @@ namespace Dwm {
     uint8_t   sz = SizeFromLength();
     uint64_t  val = Host2BE(_length);
     uint8_t   wsz = SizeToWire(sz);
-    if (os.write((caddr_t)&wsz, sizeof(wsz))) {
-      os.write(((caddr_t)&val) + (sizeof(val) - sz), sz);
+    caddr_t   p = ((caddr_t)(&val)) + sizeof(val) - sz;
+    uint8_t   buf[2] = { wsz, (uint8_t)(*p) };
+    if (os.write((caddr_t)buf, sizeof(buf))) {
+      if (1 < sz) {
+        ++p;
+        os.write(p, sz - 1);
+      }
     }
     return os;
   }
@@ -132,16 +137,17 @@ namespace Dwm {
   std::istream & SizedLength::Read(std::istream & is)
   {
     _length = 0;
-    uint8_t  sz;
-    if (is.read((caddr_t)&sz, sizeof(sz))) {
-      sz = SizeFromWire(sz);
-      if (sz) {
-        if (sizeof(_length) >= sz) {
-          if (is.read(((caddr_t)&_length) + (sizeof(_length) - sz), sz)) {
-            _length = BE2Host(_length);
-          }
-        }
+    uint8_t  buf[2];
+    if (is.read((caddr_t)buf, sizeof(buf))) {
+      uint8_t  sz = SizeFromWire(buf[0]);
+      caddr_t  p = ((caddr_t)(&_length)) + sizeof(_length) - sz;
+      *p = buf[1];
+      if ((1 < sz) && (sizeof(_length) >= sz)) {
+        is.read(++p, sz - 1);
       }
+    }
+    if (is) {
+      _length = BE2Host(_length);
     }
     return is;
   }
@@ -156,8 +162,16 @@ namespace Dwm {
       uint8_t   sz = SizeFromLength();
       uint8_t   wsz = SizeToWire(sz);
       uint64_t  val = Host2BE(_length);
-      if (fwrite((caddr_t)&wsz, sizeof(wsz), 1, f)) {
-        rc = fwrite(((caddr_t)&val) + (sizeof(val) - sz), sz, 1, f);
+      caddr_t   p = ((caddr_t)(&val)) + sizeof(val) - sz;
+      uint8_t   buf[2] = { wsz, (uint8_t)(*p) };
+      if (fwrite((caddr_t)buf, sizeof(buf), 1, f)) {
+        if (1 < sz) {
+          ++p;
+          rc = fwrite(p, sz - 1, 1, f);
+        }
+        else {
+          rc = 1;
+        }
       }
     }
     return rc;
@@ -170,16 +184,20 @@ namespace Dwm {
   {
     size_t  rc = 0;
     _length = 0;
-    uint8_t  sz;
-    if (fread((caddr_t)&sz,sizeof(sz), 1, f)) {
-      sz = SizeFromWire(sz);
-      uint64_t  val = 0;
-      if (sizeof(val) >= sz) {
-        rc = fread(((caddr_t)&val) + (sizeof(val) - sz), sz, 1, f);
-        if (rc) {
-          _length = BE2Host(val);
-        }
+    uint8_t  buf[2];
+    if (fread((caddr_t)buf, sizeof(buf), 1, f)) {
+      uint8_t  sz = SizeFromWire(buf[0]);
+      caddr_t  p = ((caddr_t)(&_length)) + sizeof(_length) - sz;
+      *p = buf[1];
+      if ((1 < sz) && (sizeof(_length) >= sz)) {
+        rc = fread(++p, sz - 1, 1, f);
       }
+      else {
+        rc = 1;
+      }
+    }
+    if (rc) {
+      _length = BE2Host(_length);
     }
     return rc;
   }
@@ -193,14 +211,18 @@ namespace Dwm {
     if (0 <= fd) {
       uint8_t  sz = SizeFromLength();
       uint8_t  wsz = SizeToWire(sz);
-      if (::write(fd, &wsz, sizeof(wsz)) == sizeof(wsz)) {
-        rc = sizeof(wsz);
-        uint64_t  val = Host2BE(_length);
-        if (::write(fd, ((caddr_t)&val) + (sizeof(val) - sz), sz) == sz) {
-          rc += sz;
-        }
-        else {
-          rc = -1;
+      uint64_t  val = Host2BE(_length);
+      caddr_t   p = ((caddr_t)(&val)) + sizeof(val) - sz;
+      uint8_t   buf[2] = { wsz, (uint8_t)(*p) };
+      if (::write(fd, buf, sizeof(buf)) == sizeof(buf)) {
+        rc = sizeof(buf);
+        if (1 < sz) {
+          if (::write(fd, ++p, sz - 1) == (sz - 1)) {
+            rc += sz - 1;
+          }
+          else {
+            rc = -1;
+          }
         }
       }
     }
@@ -215,20 +237,24 @@ namespace Dwm {
     ssize_t  rc = -1;
     _length = 0;
     if (0 <= fd) {
-      uint8_t  sz;
-      if (::read(fd, &sz, sizeof(sz)) == sizeof(sz)) {
-        sz = SizeFromWire(sz);
-        if (sizeof(_length) >= sz) {
-          rc = sizeof(sz);
-          if (::read(fd, ((caddr_t)&_length)+(sizeof(_length)-sz), sz) == sz) {
-            _length = BE2Host(_length);
-            rc += sz;
+      uint8_t  buf[2];
+      if (::read(fd, buf, sizeof(buf)) == sizeof(buf)) {
+        rc = sizeof(buf);
+        uint8_t  sz = SizeFromWire(buf[0]);
+        caddr_t  p = ((caddr_t)(&_length)) + sizeof(_length) - sz;
+        *p = buf[1];
+        if ((1 < sz) && (sizeof(_length) >= sz)) {
+          if (::read(fd, ++p, sz - 1) == (sz - 1)) {
+            rc += (sz - 1);
           }
           else {
             rc = -1;
           }
         }
       }
+    }
+    if (rc > 0) {
+      _length = BE2Host(_length);
     }
     return rc;
   }
@@ -240,16 +266,20 @@ namespace Dwm {
   {
     int  rc = -1;
     if (bzf) {
-      uint8_t  sz = SizeFromLength();
-      uint8_t  wsz = SizeToWire(sz);
-      if (BZ2_bzwrite(bzf,(caddr_t)&wsz,sizeof(wsz)) == sizeof(wsz)) {
-        rc = sizeof(wsz);
-        uint64_t  val = Host2BE(_length);
-        if (BZ2_bzwrite(bzf,((caddr_t)&val) + (sizeof(val)-sz), sz) == sz) {
-          rc += sz;
-        }
-        else {
-          rc = -1;
+      uint8_t   sz = SizeFromLength();
+      uint8_t   wsz = SizeToWire(sz);
+      uint64_t  val = Host2BE(_length);
+      caddr_t   p = ((caddr_t)(&val)) + sizeof(val) - sz;
+      uint8_t   buf[2] = { wsz, (uint8_t)(*p) };
+      if (BZ2_bzwrite(bzf, buf, sizeof(buf)) == sizeof(buf)) {
+        rc = sizeof(buf);
+        if (1 < sz) {
+          if (BZ2_bzwrite(bzf, ++p, sz - 1) == (sz - 1)) {
+            rc += (sz - 1);
+          }
+          else {
+            rc = -1;
+          }
         }
       }
     }
@@ -262,21 +292,24 @@ namespace Dwm {
     int  rc = -1;
     _length = 0;
     if (bzf) {
-      uint8_t  sz;
-      if (BZ2_bzread(bzf, (caddr_t)&sz, sizeof(sz)) == sizeof(sz)) {
-        sz = SizeFromWire(sz);
-        if (sizeof(_length) >= sz) {
-          rc = sizeof(sz);
-          if (BZ2_bzread(bzf, ((caddr_t)&_length) + (sizeof(_length)-sz), sz)
-              == sz) {
-            _length = BE2Host(_length);
-            rc += sz;
+      uint8_t  buf[2];
+      if (BZ2_bzread(bzf, buf, sizeof(buf)) == sizeof(buf)) {
+        rc = sizeof(buf);
+        uint8_t  sz = SizeFromWire(buf[0]);
+        caddr_t  p = ((caddr_t)(&_length)) + sizeof(_length) - sz;
+        *p = buf[1];
+        if ((1 < sz) && (sizeof(_length) >= sz)) {
+          if (BZ2_bzread(bzf, ++p, sz - 1) == (sz - 1)) {
+            rc += (sz - 1);
           }
           else {
             rc = -1;
           }
         }
       }
+    }
+    if (rc > 0) {
+      _length = BE2Host(_length);
     }
     return rc;
   }
@@ -286,16 +319,20 @@ namespace Dwm {
   {
     int  rc = -1;
     if (gzf) {
-      uint8_t  sz = SizeFromLength();
-      uint8_t  wsz = SizeToWire(sz);
-      if (gzwrite(gzf, (caddr_t)&wsz, sizeof(wsz)) == sizeof(wsz)) {
-        rc = sizeof(wsz);
-        uint64_t  val = Host2BE(_length);
-        if (gzwrite(gzf, ((caddr_t)&val) + (sizeof(val)-sz), sz) == sz) {
-          rc += sz;
-        }
-        else {
-          rc = -1;
+      uint8_t   sz = SizeFromLength();
+      uint8_t   wsz = SizeToWire(sz);
+      uint64_t  val = Host2BE(_length);
+      caddr_t   p = ((caddr_t)(&val)) + sizeof(val) - sz;
+      uint8_t   buf[2] = { wsz, (uint8_t)(*p) };
+      if (gzwrite(gzf, buf, sizeof(buf)) == sizeof(buf)) {
+        rc = sizeof(buf);
+        if (1 < sz) {
+          if (gzwrite(gzf, ++p, sz - 1) == (sz - 1)) {
+            rc += (sz - 1);
+          }
+          else {
+            rc = -1;
+          }
         }
       }
     }
@@ -310,21 +347,24 @@ namespace Dwm {
     int  rc = -1;
     _length = 0;
     if (gzf) {
-      uint8_t  sz;
-      if (gzread(gzf, &sz, sizeof(sz)) == sizeof(sz)) {
-        sz = SizeFromWire(sz);
-        if (sizeof(_length) >= sz) {
-          rc = sizeof(sz);
-          if (gzread(gzf, ((caddr_t)&_length) + (sizeof(_length)-sz), sz)
-              == sz) {
-            _length = BE2Host(_length);
-            rc += sz;
+      uint8_t  buf[2];
+      if (gzread(gzf, buf, sizeof(buf)) == sizeof(buf)) {
+        rc = sizeof(buf);
+        uint8_t  sz = SizeFromWire(buf[0]);
+        caddr_t  p = ((caddr_t)(&_length)) + sizeof(_length) - sz;
+        *p = buf[1];
+        if ((1 < sz) && (sizeof(_length) >= sz)) {
+          if (gzread(gzf, ++p, sz - 1) == (sz - 1)) {
+            rc += (sz - 1);
           }
           else {
             rc = -1;
           }
         }
       }
+    }
+    if (rc > 0) {
+      _length = BE2Host(_length);
     }
     return rc;
   }
