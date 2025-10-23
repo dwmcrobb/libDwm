@@ -57,21 +57,22 @@ namespace Dwm {
   static_assert(IsBZ2Writable<SizedLength>);
 
   //--------------------------------------------------------------------------
-  //!  
+  //!  Array of number of bytes we need to represent a given value.
   //--------------------------------------------------------------------------
-  static const std::vector<std::pair<uint64_t,uint8_t>>  sk_sizeThresholds
-  { 
-    { 0xFF,             1 },
-    { 0xFFFF,           2 },
-    { 0xFFFFFF,         3 },
-    { 0xFFFFFFFF,       4 },
-    { 0xFFFFFFFFFF,     5 },
-    { 0xFFFFFFFFFFFF,   6 },
-    { 0xFFFFFFFFFFFFFF, 7 }
-  };
+  static constexpr std::array<std::pair<uint64_t,uint8_t>,7>
+  sk_sizeThresholds {{
+      { 0xFF,             1 },
+      { 0xFFFF,           2 },
+      { 0xFFFFFF,         3 },
+      { 0xFFFFFFFF,       4 },
+      { 0xFFFFFFFFFF,     5 },
+      { 0xFFFFFFFFFFFF,   6 },
+      { 0xFFFFFFFFFFFFFF, 7 }
+    }};
 
   //--------------------------------------------------------------------------
-  //!  
+  //!  Returns the number of bytes we need to represent our _length field
+  //!  on the wire.
   //--------------------------------------------------------------------------
   uint8_t SizedLength::SizeFromLength() const
   {
@@ -88,12 +89,14 @@ namespace Dwm {
   }
 
   //--------------------------------------------------------------------------
-  //!  
+  //!  We only use the lower 3 bits of the first byte of our encoding to
+  //!  represent our 'size' field.
   //--------------------------------------------------------------------------
   static constexpr uint8_t  k_sizeMask = 0x07;
 
   //--------------------------------------------------------------------------
-  //!  
+  //!  Translate a size (1 to 8) to the on-the-wire representation.  Without
+  //!  the sanity checks and masking, this is just s-1.
   //--------------------------------------------------------------------------
   static uint8_t SizeToWire(uint8_t s)
   {
@@ -105,7 +108,7 @@ namespace Dwm {
   }
   
   //--------------------------------------------------------------------------
-  //!  
+  //!  Translate the on-the-wire size encoding to a size.
   //--------------------------------------------------------------------------
   static uint8_t SizeFromWire(uint8_t s)
   {
@@ -113,20 +116,15 @@ namespace Dwm {
   };
   
   //--------------------------------------------------------------------------
-  //!  
+  //  We write the size field and the first MSB of our data in one shot
+  //  since our data must be at least one byte.  We then write the
+  //  rmeaining bytes of our data (if any).
   //--------------------------------------------------------------------------
   std::ostream & SizedLength::Write(std::ostream & os) const
   {
-    uint8_t   sz = SizeFromLength();
-    uint64_t  val = Host2BE(_length);
-    uint8_t   wsz = SizeToWire(sz);
-    caddr_t   p = ((caddr_t)(&val)) + sizeof(val) - sz;
-    uint8_t   buf[2] = { wsz, (uint8_t)(*p) };
-    if (os.write((caddr_t)buf, sizeof(buf))) {
-      if (1 < sz) {
-        ++p;
-        os.write(p, sz - 1);
-      }
+    if (os) {
+      auto  buf = MakeWriteVector();
+      os.write((caddr_t)(buf.data()), buf.size());
     }
     return os;
   }
@@ -159,20 +157,8 @@ namespace Dwm {
   {
     ssize_t  rc = 0;
     if (f) {
-      uint8_t   sz = SizeFromLength();
-      uint8_t   wsz = SizeToWire(sz);
-      uint64_t  val = Host2BE(_length);
-      caddr_t   p = ((caddr_t)(&val)) + sizeof(val) - sz;
-      uint8_t   buf[2] = { wsz, (uint8_t)(*p) };
-      if (fwrite((caddr_t)buf, sizeof(buf), 1, f)) {
-        if (1 < sz) {
-          ++p;
-          rc = fwrite(p, sz - 1, 1, f);
-        }
-        else {
-          rc = 1;
-        }
-      }
+      auto  buf = MakeWriteVector();
+      rc = fwrite(buf.data(), buf.size(), 1, f);
     }
     return rc;
   }
@@ -209,21 +195,15 @@ namespace Dwm {
   {
     ssize_t  rc = -1;
     if (0 <= fd) {
-      uint8_t  sz = SizeFromLength();
-      uint8_t  wsz = SizeToWire(sz);
-      uint64_t  val = Host2BE(_length);
-      caddr_t   p = ((caddr_t)(&val)) + sizeof(val) - sz;
-      uint8_t   buf[2] = { wsz, (uint8_t)(*p) };
-      if (::write(fd, buf, sizeof(buf)) == sizeof(buf)) {
-        rc = sizeof(buf);
-        if (1 < sz) {
-          if (::write(fd, ++p, sz - 1) == (sz - 1)) {
-            rc += sz - 1;
-          }
-          else {
-            rc = -1;
-          }
-        }
+      const uint8_t   sz = SizeFromLength();
+      const uint64_t  val = Host2BE(_length);
+      const caddr_t   p = ((caddr_t)(&val)) + sizeof(val) - sz;
+      const uint8_t   wsz = SizeToWire(sz);
+
+      // cheaper than building a vector: no heap allocation
+      const struct iovec  iovs[2] = { { (void *)&wsz, 1 }, { p, sz } };
+      if (::writev(fd, iovs, 2) == (sz + 1)) {
+        rc = sz + 1;
       }
     }
     return rc;
@@ -262,25 +242,38 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
+  std::vector<uint8_t> SizedLength::MakeWriteVector() const
+  {
+    std::vector<uint8_t>  vec;
+
+    //  The maximum length we need is 9 bytes (1 for size, 8 for data)
+    vec.reserve(9);
+
+    //  First, add the encoded size byte.
+    uint8_t   sz = SizeFromLength();
+    vec.push_back(SizeToWire(sz));
+    
+    //  Then our data.  Note that val is in big endian order, hence
+    //  the setting of the pointer to the offset where the first
+    //  MSB is located.
+    uint64_t  val = Host2BE(_length);
+    caddr_t   p = ((caddr_t)(&val)) + sizeof(val) - sz;                       
+    for (size_t i = 0; i < sz; ++i) {
+      vec.push_back(*p++);
+    }                                                                         
+    return vec;
+  }
+    
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
   int SizedLength::BZWrite(BZFILE *bzf) const
   {
     int  rc = -1;
     if (bzf) {
-      uint8_t   sz = SizeFromLength();
-      uint8_t   wsz = SizeToWire(sz);
-      uint64_t  val = Host2BE(_length);
-      caddr_t   p = ((caddr_t)(&val)) + sizeof(val) - sz;
-      uint8_t   buf[2] = { wsz, (uint8_t)(*p) };
-      if (BZ2_bzwrite(bzf, buf, sizeof(buf)) == sizeof(buf)) {
-        rc = sizeof(buf);
-        if (1 < sz) {
-          if (BZ2_bzwrite(bzf, ++p, sz - 1) == (sz - 1)) {
-            rc += (sz - 1);
-          }
-          else {
-            rc = -1;
-          }
-        }
+      auto  buf = MakeWriteVector();
+      if (BZ2_bzwrite(bzf, buf.data(), buf.size()) == buf.size()) {
+        rc = buf.size();
       }
     }
     return rc;
@@ -319,21 +312,9 @@ namespace Dwm {
   {
     int  rc = -1;
     if (gzf) {
-      uint8_t   sz = SizeFromLength();
-      uint8_t   wsz = SizeToWire(sz);
-      uint64_t  val = Host2BE(_length);
-      caddr_t   p = ((caddr_t)(&val)) + sizeof(val) - sz;
-      uint8_t   buf[2] = { wsz, (uint8_t)(*p) };
-      if (gzwrite(gzf, buf, sizeof(buf)) == sizeof(buf)) {
-        rc = sizeof(buf);
-        if (1 < sz) {
-          if (gzwrite(gzf, ++p, sz - 1) == (sz - 1)) {
-            rc += (sz - 1);
-          }
-          else {
-            rc = -1;
-          }
-        }
+      auto  buf = MakeWriteVector();
+      if (gzwrite(gzf, buf.data(), buf.size()) == buf.size()) {
+        rc = buf.size();
       }
     }
     return rc;
