@@ -28,6 +28,7 @@ TestPacer
 TestPassword
 TestRusage
 TestSignal
+TestSizedLength
 TestSocket
 TestStreamIO
 TestSunriseSunset
