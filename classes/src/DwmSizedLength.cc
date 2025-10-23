@@ -44,6 +44,17 @@
 
 namespace Dwm {
 
+  static_assert(IsStreamReadable<SizedLength>);
+  static_assert(IsStreamWritable<SizedLength>);
+  static_assert(IsFileReadable<SizedLength>);
+  static_assert(IsFileWritable<SizedLength>);
+  static_assert(IsDescriptorReadable<SizedLength>);
+  static_assert(IsDescriptorWritable<SizedLength>);
+  static_assert(IsGZReadable<SizedLength>);
+  static_assert(IsGZWritable<SizedLength>);
+  static_assert(IsBZ2Readable<SizedLength>);
+  static_assert(IsBZ2Writable<SizedLength>);
+  
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
