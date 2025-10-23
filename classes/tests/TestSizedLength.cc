@@ -57,14 +57,14 @@ using namespace Dwm;
 static void TestStreamIO()
 {
   static const SizedLength  sizedLengths[] = {
-    0x0,               0xFF,                 // 1 byte
-    0x100,             0xFFFF,               // 2 bytes
-    0x10000,           0xFFFFFF,             // 3 bytes
-    0x1000000,         0xFFFFFFFF,           // 4 bytes
-    0x100000000,       0xFFFFFFFFFF,         // 5 bytes
-    0x10000000000,     0xFFFFFFFFFFFF,       // 6 bytes
-    0x1000000000000,   0xFFFFFFFFFFFFFF,     // 7 bytes
-    0x100000000000000, 0xFFFFFFFFFFFFFFFF    // 8 bytes
+    0x0,               0x1F,               0xFF,                 // 1 byte
+    0x100,             0xAAAA,             0xFFFF,               // 2 bytes
+    0x10000,           0xABCDEF,           0xFFFFFF,             // 3 bytes
+    0x1000000,         0xF00DCAFE,         0xFFFFFFFF,           // 4 bytes
+    0x100000000,       0xBEEFDEADC1,       0xFFFFFFFFFF,         // 5 bytes
+    0x10000000000,     0xF00DFADEBEEF,     0xFFFFFFFFFFFF,       // 6 bytes
+    0x1000000000000,   0xCAFEBEEFDEADC0,   0xFFFFFFFFFFFFFF,     // 7 bytes
+    0x100000000000000, 0xDEADBEEFCAFEF00D, 0xFFFFFFFFFFFFFFFF    // 8 bytes
   };
   static const size_t  numLengths =
     sizeof(sizedLengths)/sizeof(sizedLengths[0]);
