@@ -36,11 +36,12 @@
 //---------------------------------------------------------------------------
 //!  \file DwmSizedLength.cc
 //!  \author Daniel W. McRobb
-//!  \brief NOT YET DOCUMENTED
+//!  \brief Dwm::SizedLength class implementation
 //---------------------------------------------------------------------------
 
+#include <cassert>
+
 #include "DwmSizedLength.hh"
-#include "DwmIOUtils.hh"
 
 namespace Dwm {
 
@@ -54,148 +55,19 @@ namespace Dwm {
   static_assert(IsGZWritable<SizedLength>);
   static_assert(IsBZ2Readable<SizedLength>);
   static_assert(IsBZ2Writable<SizedLength>);
-  
-  //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
-  template <typename T>
-  class EncodedLength
-  {
-  public:
-    EncodedLength(const SizedLength & sl)
-        : _data(sizeof(T),(T)((uint64_t)sl))
-    {}
-
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    EncodedLength()
-        : _data(sizeof(T),0)
-    {}
-
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const
-    { return StreamIO::Write(os, _data); }
-
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    std::istream & ReadValue(std::istream & is, SizedLength & sl)
-    {
-      if (StreamIO::Read(is, _data.second)) {
-        sl = (uint64_t)_data.second;
-      }
-      return is;
-    }
-    
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    size_t Write(FILE *f) const
-    { return FileIO::Write(f, _data); }
-
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    size_t ReadValue(FILE *f, SizedLength & sl)
-    {
-      size_t rc = FileIO::Read(f, _data.second);
-      if (rc) {
-        sl = (uint64_t)_data.second;
-      }
-      return rc;
-    }
-      
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    ssize_t Write(int fd) const
-    {
-      return (DescriptorIO::Write(fd, _data) == _expectedBytes) ?
-        _expectedBytes : -1;
-    }
-
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    ssize_t ReadValue(int fd, SizedLength & sl)
-    {
-      ssize_t  rc = DescriptorIO::Read(fd, _data.second);
-      if (rc == sizeof(_data.second)) {
-        sl = (uint64_t)_data.second;
-        rc += sizeof(_data.first);
-      }
-      else {
-        rc = -1;
-      }
-      return rc;
-    }
-    
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    int BZWrite(BZFILE *bzf) const
-    {
-      return (BZ2IO::BZWrite(bzf, _data) == _expectedBytes) ?
-        _expectedBytes : -1;
-    }
-
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    int BZReadValue(BZFILE *bzf, SizedLength & sl)
-    {
-      int rc = BZ2IO::BZRead(bzf, _data.second);
-      if (rc == sizeof(_data.second)) {
-        sl = (uint64_t)_data.second;
-        rc += sizeof(_data.first);
-      }
-      else {
-        rc = -1;
-      }
-      return rc;
-    }
-    
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    int Write(gzFile gzf) const
-    {
-      return (GZIO::Write(gzf, _data) == _expectedBytes) ?
-        _expectedBytes : -1;
-    }
-
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    int ReadValue(gzFile gzf, SizedLength & sl)
-    {
-      int rc = GZIO::Read(gzf, _data.second);
-      if (rc == sizeof(_data.second)) {
-        sl = (uint64_t)_data.second;
-        rc += sizeof(_data.first);
-      }
-      else {
-        rc = -1;
-      }
-      return rc;
-    }
-    
-  private:
-    std::pair<uint8_t,T>  _data;
-    static constexpr int  _expectedBytes = sizeof(T) + 1;
-  };
 
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  static const  std::vector<std::pair<uint64_t,uint8_t>>  sk_sizeThresholds
+  static const std::vector<std::pair<uint64_t,uint8_t>>  sk_sizeThresholds
   { 
-    { 0xFFFFFFFF,  8 },
-    { 0xFFFF,      4 },
-    { 0xFF,        2 }
+    { 0xFF,             1 },
+    { 0xFFFF,           2 },
+    { 0xFFFFFF,         3 },
+    { 0xFFFFFFFF,       4 },
+    { 0xFFFFFFFFFF,     5 },
+    { 0xFFFFFFFFFFFF,   6 },
+    { 0xFFFFFFFFFFFFFF, 7 }
   };
 
   //--------------------------------------------------------------------------
@@ -203,29 +75,53 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   uint8_t SizedLength::SizeFromLength() const
   {
-    uint8_t  rc = 1;
+    uint8_t  rc = 8;
     auto it = std::find_if(sk_sizeThresholds.cbegin(),
                            sk_sizeThresholds.cend(),
                            [this]
                            (const std::pair<uint64_t,uint8_t> & thresh)
-                           { return (_length > thresh.first); });
+                           { return (_length <= thresh.first); });
     if (it != sk_sizeThresholds.cend()) {
       rc = it->second;
     }
     return rc;
   }
-      
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  static constexpr uint8_t  k_sizeMask = 0x07;
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  static uint8_t SizeToWire(uint8_t s)
+  {
+    assert((s <= (k_sizeMask + 1)) && (s > 0));
+    if ((s <= (k_sizeMask + 1)) && (s > 0)) {
+      return (s - 1) & k_sizeMask;
+    }
+    return 0;
+  }
+  
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  static uint8_t SizeFromWire(uint8_t s)
+  {
+    return (s & k_sizeMask) + 1;
+  };
+  
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
   std::ostream & SizedLength::Write(std::ostream & os) const
   {
-    switch (SizeFromLength()) {
-      case 1:   EncodedLength<uint8_t>(*this).Write(os);              break;
-      case 2:   EncodedLength<uint16_t>(*this).Write(os);             break;
-      case 4:   EncodedLength<uint32_t>(*this).Write(os);             break;
-      case 8:   EncodedLength<uint64_t>(*this).Write(os);             break;
-      default:  os.setstate(std::ios_base::failbit);  break;
+    uint8_t   sz = SizeFromLength();
+    uint64_t  val = Host2BE(_length);
+    uint8_t   wsz = SizeToWire(sz);
+    if (os.write((caddr_t)&wsz, sizeof(wsz))) {
+      os.write(((caddr_t)&val) + (sizeof(val) - sz), sz);
     }
     return os;
   }
@@ -237,13 +133,14 @@ namespace Dwm {
   {
     _length = 0;
     uint8_t  sz;
-    if (StreamIO::Read(is, sz)) {
-      switch (sz) {
-        case 1:   EncodedLength<uint8_t>().ReadValue(is, *this);      break;
-        case 2:   EncodedLength<uint16_t>().ReadValue(is, *this);     break;
-        case 4:   EncodedLength<uint32_t>().ReadValue(is, *this);     break;
-        case 8:   EncodedLength<uint64_t>().ReadValue(is, *this);     break;
-        default:  is.setstate(std::ios_base::failbit);  break;
+    if (is.read((caddr_t)&sz, sizeof(sz))) {
+      sz = SizeFromWire(sz);
+      if (sz) {
+        if (sizeof(_length) >= sz) {
+          if (is.read(((caddr_t)&_length) + (sizeof(_length) - sz), sz)) {
+            _length = BE2Host(_length);
+          }
+        }
       }
     }
     return is;
@@ -256,13 +153,11 @@ namespace Dwm {
   {
     ssize_t  rc = 0;
     if (f) {
-      uint8_t  sz = SizeFromLength();
-      switch (sz) {
-        case 1:  rc = EncodedLength<uint8_t>(*this).Write(f);         break;
-        case 2:  rc = EncodedLength<uint16_t>(*this).Write(f);        break;
-        case 4:  rc = EncodedLength<uint32_t>(*this).Write(f);        break;
-        case 8:  rc = EncodedLength<uint64_t>(*this).Write(f);        break;
-        default:                                                      break;
+      uint8_t   sz = SizeFromLength();
+      uint8_t   wsz = SizeToWire(sz);
+      uint64_t  val = Host2BE(_length);
+      if (fwrite((caddr_t)&wsz, sizeof(wsz), 1, f)) {
+        rc = fwrite(((caddr_t)&val) + (sizeof(val) - sz), sz, 1, f);
       }
     }
     return rc;
@@ -276,13 +171,14 @@ namespace Dwm {
     size_t  rc = 0;
     _length = 0;
     uint8_t  sz;
-    if (FileIO::Read(f, sz)) {
-      switch (sz) {
-        case 1:  rc = EncodedLength<uint8_t>().ReadValue(f, *this);   break;
-        case 2:  rc = EncodedLength<uint16_t>().ReadValue(f, *this);  break;
-        case 4:  rc = EncodedLength<uint32_t>().ReadValue(f, *this);  break;
-        case 8:  rc = EncodedLength<uint64_t>().ReadValue(f, *this);  break;
-        default:                                                      break;
+    if (fread((caddr_t)&sz,sizeof(sz), 1, f)) {
+      sz = SizeFromWire(sz);
+      uint64_t  val = 0;
+      if (sizeof(val) >= sz) {
+        rc = fread(((caddr_t)&val) + (sizeof(val) - sz), sz, 1, f);
+        if (rc) {
+          _length = BE2Host(val);
+        }
       }
     }
     return rc;
@@ -296,12 +192,16 @@ namespace Dwm {
     ssize_t  rc = -1;
     if (0 <= fd) {
       uint8_t  sz = SizeFromLength();
-      switch (sz) {
-        case 1: rc = EncodedLength<uint8_t>(*this).Write(fd);         break;
-        case 2: rc = EncodedLength<uint16_t>(*this).Write(fd);        break;
-        case 4: rc = EncodedLength<uint32_t>(*this).Write(fd);        break;
-        case 8: rc = EncodedLength<uint64_t>(*this).Write(fd);        break;
-        default:                                                      break;
+      uint8_t  wsz = SizeToWire(sz);
+      if (::write(fd, &wsz, sizeof(wsz)) == sizeof(wsz)) {
+        rc = sizeof(wsz);
+        uint64_t  val = Host2BE(_length);
+        if (::write(fd, ((caddr_t)&val) + (sizeof(val) - sz), sz) == sz) {
+          rc += sz;
+        }
+        else {
+          rc = -1;
+        }
       }
     }
     return rc;
@@ -316,14 +216,17 @@ namespace Dwm {
     _length = 0;
     if (0 <= fd) {
       uint8_t  sz;
-      if (DescriptorIO::Read(fd, sz) == sizeof(sz)) {
-        rc = sizeof(sz);
-        switch (sz) {
-          case 1:  rc = EncodedLength<uint8_t>().ReadValue(fd, *this);  break;
-          case 2:  rc = EncodedLength<uint16_t>().ReadValue(fd, *this); break;
-          case 4:  rc = EncodedLength<uint32_t>().ReadValue(fd, *this); break;
-          case 8:  rc = EncodedLength<uint64_t>().ReadValue(fd, *this); break;
-          default: rc = -1;                                             break;
+      if (::read(fd, &sz, sizeof(sz)) == sizeof(sz)) {
+        sz = SizeFromWire(sz);
+        if (sizeof(_length) >= sz) {
+          rc = sizeof(sz);
+          if (::read(fd, ((caddr_t)&_length)+(sizeof(_length)-sz), sz) == sz) {
+            _length = BE2Host(_length);
+            rc += sz;
+          }
+          else {
+            rc = -1;
+          }
         }
       }
     }
@@ -338,12 +241,16 @@ namespace Dwm {
     int  rc = -1;
     if (bzf) {
       uint8_t  sz = SizeFromLength();
-      switch (sz) {
-        case 1: rc = EncodedLength<uint8_t>(*this).BZWrite(bzf);      break;
-        case 2: rc = EncodedLength<uint16_t>(*this).BZWrite(bzf);     break;
-        case 4: rc = EncodedLength<uint32_t>(*this).BZWrite(bzf);     break;
-        case 8: rc = EncodedLength<uint64_t>(*this).BZWrite(bzf);     break;
-        default:                                                      break;
+      uint8_t  wsz = SizeToWire(sz);
+      if (BZ2_bzwrite(bzf,(caddr_t)&wsz,sizeof(wsz)) == sizeof(wsz)) {
+        rc = sizeof(wsz);
+        uint64_t  val = Host2BE(_length);
+        if (BZ2_bzwrite(bzf,((caddr_t)&val) + (sizeof(val)-sz), sz) == sz) {
+          rc += sz;
+        }
+        else {
+          rc = -1;
+        }
       }
     }
     return rc;
@@ -356,23 +263,18 @@ namespace Dwm {
     _length = 0;
     if (bzf) {
       uint8_t  sz;
-      if (BZ2IO::BZRead(bzf, sz) == sizeof(sz)) {
-        switch (sz) {
-          case 1:
-            rc = EncodedLength<uint8_t>(*this).BZReadValue(bzf, *this);
-            break;
-          case 2:
-            rc = EncodedLength<uint16_t>(*this).BZReadValue(bzf, *this);
-            break;
-          case 4:
-            rc = EncodedLength<uint32_t>(*this).BZReadValue(bzf, *this);
-            break;
-          case 8:
-            rc = EncodedLength<uint64_t>(*this).BZReadValue(bzf, *this);
-            break;
-          default:
+      if (BZ2_bzread(bzf, (caddr_t)&sz, sizeof(sz)) == sizeof(sz)) {
+        sz = SizeFromWire(sz);
+        if (sizeof(_length) >= sz) {
+          rc = sizeof(sz);
+          if (BZ2_bzread(bzf, ((caddr_t)&_length) + (sizeof(_length)-sz), sz)
+              == sz) {
+            _length = BE2Host(_length);
+            rc += sz;
+          }
+          else {
             rc = -1;
-            break;
+          }
         }
       }
     }
@@ -385,12 +287,16 @@ namespace Dwm {
     int  rc = -1;
     if (gzf) {
       uint8_t  sz = SizeFromLength();
-      switch (sz) {
-        case 1: rc = EncodedLength<uint8_t>(*this).Write(gzf);        break;
-        case 2: rc = EncodedLength<uint16_t>(*this).Write(gzf);       break;
-        case 4: rc = EncodedLength<uint32_t>(*this).Write(gzf);       break;
-        case 8: rc = EncodedLength<uint64_t>(*this).Write(gzf);       break;
-        default:                                                      break;
+      uint8_t  wsz = SizeToWire(sz);
+      if (gzwrite(gzf, (caddr_t)&wsz, sizeof(wsz)) == sizeof(wsz)) {
+        rc = sizeof(wsz);
+        uint64_t  val = Host2BE(_length);
+        if (gzwrite(gzf, ((caddr_t)&val) + (sizeof(val)-sz), sz) == sz) {
+          rc += sz;
+        }
+        else {
+          rc = -1;
+        }
       }
     }
     return rc;
@@ -405,13 +311,18 @@ namespace Dwm {
     _length = 0;
     if (gzf) {
       uint8_t  sz;
-      if (GZIO::Read(gzf, sz) == sizeof(sz)) {
-        switch (sz) {
-          case 1: rc = EncodedLength<uint8_t>().ReadValue(gzf, *this);  break;
-          case 2: rc = EncodedLength<uint16_t>().ReadValue(gzf, *this); break;
-          case 4: rc = EncodedLength<uint32_t>().ReadValue(gzf, *this); break;
-          case 8: rc = EncodedLength<uint64_t>().ReadValue(gzf, *this); break;
-          default: rc = -1;                                             break;
+      if (gzread(gzf, &sz, sizeof(sz)) == sizeof(sz)) {
+        sz = SizeFromWire(sz);
+        if (sizeof(_length) >= sz) {
+          rc = sizeof(sz);
+          if (gzread(gzf, ((caddr_t)&_length) + (sizeof(_length)-sz), sz)
+              == sz) {
+            _length = BE2Host(_length);
+            rc += sz;
+          }
+          else {
+            rc = -1;
+          }
         }
       }
     }

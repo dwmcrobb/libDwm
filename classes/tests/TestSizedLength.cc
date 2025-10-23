@@ -56,19 +56,26 @@ using namespace Dwm;
 //----------------------------------------------------------------------------
 static void TestStreamIO()
 {
-  static SizedLength  sizedLengths[8] = {
-    0ull,           0xFFull,
-    0x100ull,       0xFFFFull,
-    0x10000ull,     0xFFFFFFFFull,
-    0x100000000ull, 0xFFFFFFFFFFFFFFFFull
+  static const SizedLength  sizedLengths[] = {
+    0x0,               0xFF,                 // 1 byte
+    0x100,             0xFFFF,               // 2 bytes
+    0x10000,           0xFFFFFF,             // 3 bytes
+    0x1000000,         0xFFFFFFFF,           // 4 bytes
+    0x100000000,       0xFFFFFFFFFF,         // 5 bytes
+    0x10000000000,     0xFFFFFFFFFFFF,       // 6 bytes
+    0x1000000000000,   0xFFFFFFFFFFFFFF,     // 7 bytes
+    0x100000000000000, 0xFFFFFFFFFFFFFFFF    // 8 bytes
   };
+  static const size_t  numLengths =
+    sizeof(sizedLengths)/sizeof(sizedLengths[0]);
+  
   stringstream  ss;
-  for (size_t i = 0; i < 8; ++i) {
+  for (size_t i = 0; i < numLengths; ++i) {
     if (! UnitAssert(sizedLengths[i].Write(ss))) {
       break;
     }
   }
-  for (size_t i = 0; i < 8; ++i) {
+  for (size_t i = 0; i < numLengths; ++i) {
     SizedLength  sizedLength;
     if (! UnitAssert(sizedLength.Read(ss))) {
       break;
@@ -83,12 +90,22 @@ static void TestStreamIO()
 //----------------------------------------------------------------------------
 static void TestFileIO()
 {
-  static SizedLength  sizedLengths[8] = {
-    0, 255, 256, 65535, 65536, 4294967295, 4294967296, 0xFFFFFFFFFFFFFFFFull
+  static const SizedLength  sizedLengths[] = {
+    0x0,               0xFF,                 // 1 byte
+    0x100,             0xFFFF,               // 2 bytes
+    0x10000,           0xFFFFFF,             // 3 bytes
+    0x1000000,         0xFFFFFFFF,           // 4 bytes
+    0x100000000,       0xFFFFFFFFFF,         // 5 bytes
+    0x10000000000,     0xFFFFFFFFFFFF,       // 6 bytes
+    0x1000000000000,   0xFFFFFFFFFFFFFF,     // 7 bytes
+    0x100000000000000, 0xFFFFFFFFFFFFFFFF    // 8 bytes
   };
+  static const size_t  numLengths =
+    sizeof(sizedLengths)/sizeof(sizedLengths[0]);
+  
   FILE *f = fopen("/tmp/SizedLengthTestFileIO","w");
   if (UnitAssert(f)) {
-    for (size_t i = 0; i < 8; ++i) {
+    for (size_t i = 0; i < numLengths; ++i) {
       if (! UnitAssert(sizedLengths[i].Write(f))) {
         break;
       }
@@ -96,7 +113,7 @@ static void TestFileIO()
     fclose(f);
     f = fopen("/tmp/SizedLengthTestFileIO","r");
     if (UnitAssert(f)) {
-      for (size_t i = 0; i < 8; ++i) {
+      for (size_t i = 0; i < numLengths; ++i) {
         SizedLength  sizedLength;
         if (! UnitAssert(sizedLength.Read(f))) {
           break;
@@ -115,16 +132,25 @@ static void TestFileIO()
 //----------------------------------------------------------------------------
 static void TestDescriptorIO()
 {
-  static pair<SizedLength,ssize_t>  sizedLengths[8] = {
-    {0,2}, {255,2},
-    {256,3}, {65535,3},
-    {65536,5}, {4294967295,5},
-    {4294967296,9}, {0xFFFFFFFFFFFFFFFFull,9}
+  //  SizedLength values and the number of bytes we expect to write/read
+  //  for each of the values, including the size byte.
+  static const pair<SizedLength,ssize_t>  sizedLengths[] = {
+    {0x0,               2}, {0xFF,              2},
+    {0x100,             3}, {0xFFFF,            3},
+    {0x10000,           4}, {0xFFFFFF,          4},
+    {0x1000000,         5}, {0xFFFFFFFF,        5},
+    {0x100000000,       6}, {0xFFFFFFFFFF,      6},
+    {0x10000000000,     7}, {0xFFFFFFFFFFFF,    7},
+    {0x1000000000000,   8}, {0xFFFFFFFFFFFFFF,  8},
+    {0x100000000000000, 9}, {0xFFFFFFFFFFFFFFFF,9}
   };
+  static const size_t  numLengths =
+    sizeof(sizedLengths)/sizeof(sizedLengths[0]);
+  
   int fd = open("/tmp/SizedLengthTestDescriptorIO",
                 O_WRONLY|O_CREAT|O_TRUNC,0644);
   if (UnitAssert(0 <= fd)) {
-    for (size_t i = 0; i < 8; ++i) {
+    for (size_t i = 0; i < numLengths; ++i) {
       if (! UnitAssert(sizedLengths[i].first.Write(fd)
                        == sizedLengths[i].second)) {
         break;
@@ -133,7 +159,7 @@ static void TestDescriptorIO()
     close(fd);
     fd = open("/tmp/SizedLengthTestDescriptorIO",O_RDONLY);
     if (UnitAssert(0 <= fd)) {
-      for (size_t i = 0; i < 8; ++i) {
+      for (size_t i = 0; i < numLengths; ++i) {
         SizedLength  sizedLength;
         if (! UnitAssert(sizedLength.Read(fd) == sizedLengths[i].second)) {
           break;
@@ -152,14 +178,24 @@ static void TestDescriptorIO()
 //----------------------------------------------------------------------------
 static void TestBZ2IO()
 {
-  static pair<SizedLength,int>  sizedLengths[8] = {
-    {0,2}, {255,2}, {256,3}, {65535,3},
-    {65536,5}, {4294967295,5},
-    {4294967296,9}, {0xFFFFFFFFFFFFFFFFull,9}
+  //  SizedLength values and the number of bytes we expect to write/read
+  //  for each of the values, including the size byte.
+  static const pair<SizedLength,int>  sizedLengths[] = {
+    {0x00,              2}, {0xFF,              2},
+    {0x100,             3}, {0xFFFF,            3},
+    {0x10000,           4}, {0xFFFFFF,          4},
+    {0x1000000,         5}, {0xFFFFFFFF,        5},
+    {0x100000000,       6}, {0xFFFFFFFFFF,      6},
+    {0x10000000000,     7}, {0xFFFFFFFFFFFF,    7},
+    {0x1000000000000,   8}, {0xFFFFFFFFFFFFFF,  8},
+    {0x100000000000000, 9}, {0xFFFFFFFFFFFFFFFF,9}
   };
+  static const size_t numLengths =
+    sizeof(sizedLengths)/sizeof(sizedLengths[0]);
+  
   BZFILE  *bzf = BZ2_bzopen("/tmp/SizedLengthTestBZ2IO", "wb");
   if (UnitAssert(bzf)) {
-    for (size_t i = 0; i < 8; ++i) {
+    for (size_t i = 0; i < numLengths; ++i) {
       if (! UnitAssert(sizedLengths[i].first.BZWrite(bzf)
                        == sizedLengths[i].second)) {
         break;
@@ -168,7 +204,7 @@ static void TestBZ2IO()
     BZ2_bzclose(bzf);
     bzf = BZ2_bzopen("/tmp/SizedLengthTestBZ2IO", "rb");
     if (UnitAssert(bzf)) {
-      for (size_t i = 0; i < 8; ++i) {
+      for (size_t i = 0; i < numLengths; ++i) {
         SizedLength  sizedLength;
         if (! UnitAssert(sizedLength.BZRead(bzf) == sizedLengths[i].second)) {
           break;
@@ -187,15 +223,24 @@ static void TestBZ2IO()
 //----------------------------------------------------------------------------
 static void TestGZIO()
 {
-  static pair<SizedLength,int>  sizedLengths[8] = {
-    {0,2}, {255,2},
-    {256,3}, {65535,3},
-    {65536,5}, {4294967295,5},
-    {4294967296,9}, {0xFFFFFFFFFFFFFFFFull,9}
+  //  SizedLength values and the number of bytes we expect to write/read
+  //  for each of the values, including the size byte.
+  static const pair<SizedLength,int>  sizedLengths[] = {
+    {0x0,               2}, {0xFF,               2}, // 1 byte  + 1 size byte
+    {0x100,             3}, {0xFFFF,             3}, // 2 bytes + 1 size byte
+    {0x10000,           4}, {0xFFFFFF,           4}, // 3 bytes + 1 size byte
+    {0x1000000,         5}, {0xFFFFFFFF,         5}, // 4 bytes + 1 size byte
+    {0x100000000,       6}, {0xFFFFFFFFFF,       6}, // 5 bytes + 1 size byte
+    {0x10000000000,     7}, {0xFFFFFFFFFFFF,     7}, // 6 bytes + 1 size byte
+    {0x1000000000000,   8}, {0xFFFFFFFFFFFFFF,   8}, // 7 bytes + 1 size byte
+    {0x100000000000000, 9}, {0xFFFFFFFFFFFFFFFF, 9}  // 8 bytes + 1 size byte
   };
+  static const size_t numLengths =
+    sizeof(sizedLengths)/sizeof(sizedLengths[0]);
+  
   gzFile  gzf = gzopen("/tmp/SizedLengthTestGZIO", "wb");
   if (UnitAssert(gzf)) {
-    for (size_t i = 0; i < 8; ++i) {
+    for (size_t i = 0; i < numLengths; ++i) {
       if (! UnitAssert(sizedLengths[i].first.Write(gzf)
                        == sizedLengths[i].second)) {
         break;
@@ -204,7 +249,7 @@ static void TestGZIO()
     gzclose(gzf);
     gzf = gzopen("/tmp/SizedLengthTestGZIO", "rb");
     if (UnitAssert(gzf)) {
-      for (size_t i = 0; i < 8; ++i) {
+      for (size_t i = 0; i < numLengths; ++i) {
         SizedLength  sizedLength;
         if (! UnitAssert(sizedLength.Read(gzf)
                          == sizedLengths[i].second)) {

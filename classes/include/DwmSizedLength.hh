@@ -36,7 +36,7 @@
 //---------------------------------------------------------------------------
 //!  \file DwmSizedLength.hh
 //!  \author Daniel W. McRobb
-//!  \brief NOT YET DOCUMENTED
+//!  \brief Dwm::SizedLength class declaration
 //---------------------------------------------------------------------------
 
 #ifndef _DWMSIZEDLENGTH_HH_
@@ -53,8 +53,10 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  A simple class to encode a length (up to 64 bits) in a variable-sized
   //!  format on the wire.  On the wire, a single 'size' byte precedes the
-  //!  value, indicating the on-the-wire length of the value (1, 2, 4 or 8
-  //!  bytes).
+  //!  value, indicating the on-the-wire length of the value (1 to 8 bytes).
+  //!  We only use the lower 3 bits of the 'size' byte, since we can map
+  //!  [0-7] -> [1-8] (there's no such thing as a length field of 0 bytes).
+  //!  This leaves us 5 bits for any future usage.
   //--------------------------------------------------------------------------
   class SizedLength
   {
