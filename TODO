@@ -3,3 +3,12 @@ Note that I intend to start using it for length-encoded
 stuff in the near future (especially strings and STL
 containers).  This will invalidate data I have on disk,
 but I can live with that (I think).
+
+Look at what will be affected by moving to SizedLength()
+for string and STL containers.  What will be adversely affected
+in my home?  mcblockd, sitetrafficd, sitehealthd, etc.
+
+Look at splitting the library apart.  I'd like a separate
+libDwmIO library focused on I/O, a separate libDwmSyslog
+for SysLogger, and probably a separate libDwmUnitAssert.
+Then what do I do with the rest?
