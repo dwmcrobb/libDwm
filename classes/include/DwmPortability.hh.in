@@ -38,66 +38,64 @@
 //!  \brief A configure target for dealing with OS differences.
 //---------------------------------------------------------------------------
 
-#undef HAVE_CFBYTE_ORDER_H
 #undef HAVE_BYTESWAP_H
 #undef HAVE_ENDIAN_H
+#undef HAVE_SYS_ENDIAN_H
 
-//---------------------------------------------------------------------------
-//  Deal with lack of be64toh() and htobe64() on OS X and Linux
-//---------------------------------------------------------------------------
-#ifdef HAVE_CFBYTE_ORDER_H
-  //  define be64toh() and htobe64() for OS X
-  #include <CoreFoundation/CFByteOrder.h>
-  #ifndef be64toh
-    #define be64toh(x)  OSSwapBigToHostInt64((x))
-  #endif
-  #ifndef htobe64
-    #define htobe64(x)  OSSwapHostToBigInt64((x))
-  #endif
-  #ifndef be32toh
-    #define be32toh(x)  OSSwapBigToHostInt32(x)
-  #endif
-  #ifndef htobe32
-    #define htobe32(x)  OSSwapHostToBigInt32(x)
-  #endif
-  #ifndef be16toh
-    #define be16toh(x)  OSSwapBigToHostInt16(x)
-  #endif
-  #ifndef htobe16
-    #define htobe16(x)  OSSwapHostToBigInt16(x)
-  #endif
-#else
-  #ifdef HAVE_BYTESWAP_H
-    extern "C" {
-      #include <byteswap.h>
-    }
-    #ifdef HAVE_ENDIAN_H
-      extern "C" {
-        #include <endian.h>
-      }
-    #endif
-    #ifndef be64toh
-      #if __BYTE_ORDER == __LITTLE_ENDIAN
-        #define be64toh(x)  bswap_64((x))
-      #else
-        #define be64toh(x)  (x)
-      #endif
-    #endif
-    #ifndef htobe64
-      #if __BYTE_ORDER == __LITTLE_ENDIAN
-        #define htobe64(x)  bswap_64((x))
-      #else
-        #define htobe64(x)  (x)
-      #endif
-    #endif
-  #endif
+#ifdef HAVE_SYS_ENDIAN_H
+  extern "C" {
+    #include <sys/endian.h>
+  }
+#endif
 
-  #ifndef be64toh
-    #if defined(__OpenBSD__)
-      #define be64toh(x)  betoh64((x))
-    #endif
-  #endif
+#if HAVE_ENDIAN_H
+  extern "C" {
+    #include <endian.h>
+  }
+#endif
 
+#if HAVE_BYTESWAP_H
+  extern "C" {
+    #include <byteswap.h>
+  }
+#endif
+
+//  Linux has bswap_16()/bswap_32()/bswap_64() instead of
+//  bswap16()/bswap32()/bswap64()
+#ifndef bswap16
+  #ifdef bswap_16
+    #define bswap16(x)  bswap_16((x))
+  #endif
+#endif
+#ifndef bswap32
+  #ifdef bswap_32
+    #define bswap32(x)  bswap_32((x))
+  #endif
+#endif
+#ifndef bswap64
+  #ifdef bswap_64
+    #define bswap64(x)  bswap_64((x))
+  #endif
+#endif
+
+// little-endian to/from big-endian
+#ifndef le16tobe
+  #define le16tobe(x) bswap16((x))
+#endif
+#ifndef le32tobe
+  #define le32tobe(x) bswap32((x))
+#endif
+#ifndef le64tobe
+  #define le64tobe(x) bswap64((x))
+#endif
+#ifndef be16tole
+  #define be16tole(x) bswap16((x))
+#endif
+#ifndef be32tole
+  #define be32tole(x) bswap32((x))
+#endif
+#ifndef be64tole
+  #define be64tole(x) bswap64((x))
 #endif
 
 #undef HAVE_CPP0X
