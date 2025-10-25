@@ -161,6 +161,32 @@ namespace Dwm {
       }
       return false;
     }
+
+    //------------------------------------------------------------------------
+    //!  "no_endian" annotation type.
+    //------------------------------------------------------------------------
+    typedef struct {} no_endian_t;
+    inline constexpr auto  no_endian = no_endian_t();
+
+    //------------------------------------------------------------------------
+    //!  True if the given reflection @c info has an annotation of the
+    //!  form [[=Dwm::no_endian]].
+    //------------------------------------------------------------------------
+    template <std::meta::info info>
+    concept HasNoEndianAnnotation =
+      Concepts::has_annotation_type<info,no_endian_t>();
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    template <std::meta::info info>
+    consteval bool NoEndian()
+    {
+      if constexpr (HasNoEndianAnnotation<info>) {
+        return true;
+      }
+      return false;
+    }
     
     //------------------------------------------------------------------------
     //!  Returns true if we should deny the given type @c DeclType (whose
