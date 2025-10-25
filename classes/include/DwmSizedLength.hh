@@ -48,6 +48,7 @@ extern "C" {
   #include <zlib.h>
 }
 
+#include <bit>
 #include <cstdint>
 #include <cstdio>
 #include <vector>
