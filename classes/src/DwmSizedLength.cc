@@ -39,9 +39,13 @@
 //!  \brief Dwm::SizedLength class implementation
 //---------------------------------------------------------------------------
 
+#include <bit>
 #include <cassert>
 
-#include "DwmSizedLength.hh"
+#include "DwmDescriptorIO.hh"
+#include "DwmFileIO.hh"
+#include "DwmBZ2IO.hh"
+#include "DwmGZIO.hh"
 
 namespace Dwm {
 
@@ -57,31 +61,31 @@ namespace Dwm {
   static_assert(IsBZ2Writable<SizedLength>);
 
   //--------------------------------------------------------------------------
-  //!  Array of number of bytes we need to represent a given value.
-  //--------------------------------------------------------------------------
-  static constexpr std::array<std::pair<uint64_t,uint8_t>,7>
-  sk_sizeThresholds {{
-      { 0xFF,             1 },
-      { 0xFFFF,           2 },
-      { 0xFFFFFF,         3 },
-      { 0xFFFFFFFF,       4 },
-      { 0xFFFFFFFFFF,     5 },
-      { 0xFFFFFFFFFFFF,   6 },
-      { 0xFFFFFFFFFFFFFF, 7 }
-    }};
-
-  //--------------------------------------------------------------------------
   //!  Returns the number of bytes we need to represent our _length field
   //!  on the wire.
   //--------------------------------------------------------------------------
   uint8_t SizedLength::SizeFromLength() const
   {
+    //------------------------------------------------------------------------
+    //!  Array of number of bytes we need to represent a given value.
+    //------------------------------------------------------------------------
+    static constexpr std::array<std::pair<uint64_t,uint8_t>,7>
+      sk_sizeThresholds {{
+        { 0xFF,             1 },
+        { 0xFFFF,           2 },
+        { 0xFFFFFF,         3 },
+        { 0xFFFFFFFF,       4 },
+        { 0xFFFFFFFFFF,     5 },
+        { 0xFFFFFFFFFFFF,   6 },
+        { 0xFFFFFFFFFFFFFF, 7 }
+      }};
+    
     uint8_t  rc = 8;
     auto it = std::find_if(sk_sizeThresholds.cbegin(),
                            sk_sizeThresholds.cend(),
                            [this]
                            (const std::pair<uint64_t,uint8_t> & thresh)
-                           { return (_length <= thresh.first); });
+                           { return (this->_length <= thresh.first); });
     if (it != sk_sizeThresholds.cend()) {
       rc = it->second;
     }
@@ -95,10 +99,15 @@ namespace Dwm {
   static constexpr uint8_t  k_sizeMask = 0x07;
 
   //--------------------------------------------------------------------------
+  //!  Bit used to indicate endianness.
+  //--------------------------------------------------------------------------
+  static constexpr uint8_t  k_bigEndianMask = 0x80;
+  
+  //--------------------------------------------------------------------------
   //!  Translate a size (1 to 8) to the on-the-wire representation.  Without
   //!  the sanity checks and masking, this is just s-1.
   //--------------------------------------------------------------------------
-  static uint8_t SizeToWire(uint8_t s)
+  static inline uint8_t SizeToWire(uint8_t s)
   {
     assert((s <= (k_sizeMask + 1)) && (s > 0));
     if ((s <= (k_sizeMask + 1)) && (s > 0)) {
@@ -106,248 +115,249 @@ namespace Dwm {
     }
     return 0;
   }
-  
+
   //--------------------------------------------------------------------------
-  //!  Translate the on-the-wire size encoding to a size.
+  //!  
   //--------------------------------------------------------------------------
-  static uint8_t SizeFromWire(uint8_t s)
+  static inline uint8_t EncodedStartByte(uint8_t sz)
   {
-    return (s & k_sizeMask) + 1;
-  };
-  
-  //--------------------------------------------------------------------------
-  //  We write the size field and the first MSB of our data in one shot
-  //  since our data must be at least one byte.  We then write the
-  //  rmeaining bytes of our data (if any).
-  //--------------------------------------------------------------------------
-  std::ostream & SizedLength::Write(std::ostream & os) const
-  {
-    if (os) {
-      auto  buf = MakeWriteVector();
-      os.write((caddr_t)(buf.data()), buf.size());
+    sz = SizeToWire(sz);
+    if constexpr (std::endian::native == std::endian::big) {
+      sz |= k_bigEndianMask;
     }
-    return os;
+    return sz;
   }
 
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  std::istream & SizedLength::Read(std::istream & is)
-  {
-    _length = 0;
-    uint8_t  buf[2];
-    if (is.read((caddr_t)buf, sizeof(buf))) {
-      uint8_t  sz = SizeFromWire(buf[0]);
-      caddr_t  p = ((caddr_t)(&_length)) + sizeof(_length) - sz;
-      *p = buf[1];
-      if ((1 < sz) && (sizeof(_length) >= sz)) {
-        is.read(++p, sz - 1);
-      }
-    }
-    if (is) {
-      _length = BE2Host(_length);
-    }
-    return is;
-  }
-
-  //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
-  size_t SizedLength::Write(FILE *f) const
-  {
-    ssize_t  rc = 0;
-    if (f) {
-      auto  buf = MakeWriteVector();
-      rc = fwrite(buf.data(), buf.size(), 1, f);
-    }
-    return rc;
-  }
-  
-  //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
-  size_t SizedLength::Read(FILE *f)
-  {
-    size_t  rc = 0;
-    _length = 0;
-    uint8_t  buf[2];
-    if (fread((caddr_t)buf, sizeof(buf), 1, f)) {
-      uint8_t  sz = SizeFromWire(buf[0]);
-      caddr_t  p = ((caddr_t)(&_length)) + sizeof(_length) - sz;
-      *p = buf[1];
-      if ((1 < sz) && (sizeof(_length) >= sz)) {
-        rc = fread(++p, sz - 1, 1, f);
-      }
-      else {
-        rc = 1;
-      }
-    }
-    if (rc) {
-      _length = BE2Host(_length);
-    }
-    return rc;
-  }
-
-  //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
-  ssize_t SizedLength::Write(int fd) const
-  {
-    ssize_t  rc = -1;
-    if (0 <= fd) {
-      const uint8_t   sz = SizeFromLength();
-      const uint64_t  val = Host2BE(_length);
-      const caddr_t   p = ((caddr_t)(&val)) + sizeof(val) - sz;
-      const uint8_t   wsz = SizeToWire(sz);
-
-      // cheaper than building a vector: no heap allocation
-      const struct iovec  iovs[2] = { { (void *)&wsz, 1 }, { p, sz } };
-      if (::writev(fd, iovs, 2) == (sz + 1)) {
-        rc = sz + 1;
-      }
-    }
-    return rc;
-  }
-  
-  //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
-  ssize_t SizedLength::Read(int fd)
-  {
-    ssize_t  rc = -1;
-    _length = 0;
-    if (0 <= fd) {
-      uint8_t  buf[2];
-      if (::read(fd, buf, sizeof(buf)) == sizeof(buf)) {
-        rc = sizeof(buf);
-        uint8_t  sz = SizeFromWire(buf[0]);
-        caddr_t  p = ((caddr_t)(&_length)) + sizeof(_length) - sz;
-        *p = buf[1];
-        if ((1 < sz) && (sizeof(_length) >= sz)) {
-          if (::read(fd, ++p, sz - 1) == (sz - 1)) {
-            rc += (sz - 1);
-          }
-          else {
-            rc = -1;
-          }
-        }
-      }
-    }
-    if (rc > 0) {
-      _length = BE2Host(_length);
-    }
-    return rc;
-  }
-
-  //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
-  std::vector<uint8_t> SizedLength::MakeWriteVector() const
+  std::vector<uint8_t> SizedLength::MakeNativeEndianWriteVector() const
   {
     std::vector<uint8_t>  vec;
 
     //  The maximum length we need is 9 bytes (1 for size, 8 for data)
     vec.reserve(9);
 
-    //  First, add the encoded size byte.
+    //  First, add the encoded size and endian byte.
     uint8_t   sz = SizeFromLength();
-    vec.push_back(SizeToWire(sz));
+    vec.push_back(EncodedStartByte(sz));
     
-    //  Then our data.  Note that val is in big endian order, hence
-    //  the setting of the pointer to the offset where the first
-    //  MSB is located.
-    uint64_t  val = Host2BE(_length);
-    caddr_t   p = ((caddr_t)(&val)) + sizeof(val) - sz;                       
+    //  Then our data.
+    caddr_t  p = (caddr_t)(&_length);
+    if constexpr (std::endian::native == std::endian::big) {
+      p += sizeof(_length) - sz;
+    }
     for (size_t i = 0; i < sz; ++i) {
       vec.push_back(*p++);
-    }                                                                         
+    }
     return vec;
   }
-    
+  
+  //--------------------------------------------------------------------------
+  std::ostream & SizedLength::NWrite(std::ostream & os) const
+  {
+    auto  buf = MakeNativeEndianWriteVector();
+    os.write((caddr_t)(buf.data()), buf.size());
+    return os;
+  }
+
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  int SizedLength::BZWrite(BZFILE *bzf) const
+  SizedLength::TwoBytesProcessed::TwoBytesProcessed(const uint8_t buf[2],
+                                                    uint64_t *value)
+  {
+    static constexpr std::endian  encodings[2] = {
+      std::endian::little,
+      std::endian::big
+    };
+    encoding = encodings[buf[0] >> 7];
+    sz       = (buf[0] & k_sizeMask) + 1;
+    sp       = (caddr_t)value;
+    if (std::endian::big == encoding) {
+      sp += sizeof(*value) - sz;
+    }
+    *sp++    = buf[1];
+  }
+
+  //--------------------------------------------------------------------------
+  std::istream & SizedLength::Read(std::istream & is)
+  {
+    _length = 0;
+    uint8_t  buf[2];
+    if (is.read((caddr_t)buf, sizeof(buf))) {
+      TwoBytesProcessed  twoBP(buf, &_length);
+      if (1 < twoBP.sz) {
+        is.read(twoBP.sp, twoBP.sz - 1);
+      }
+      if (is) {
+        if (std::endian::native != twoBP.encoding) {
+          _length = bswap64(_length);
+        }
+      }
+    }
+    return is;
+  }
+
+  //--------------------------------------------------------------------------
+  size_t SizedLength::NWrite(FILE *f) const
+  {
+    size_t  rc = 0;
+    if (f) {
+      auto  buf = MakeNativeEndianWriteVector();
+      rc = fwrite((caddr_t)(buf.data()), buf.size(), 1, f);
+    }
+    return rc;
+  }
+
+  //--------------------------------------------------------------------------
+  size_t SizedLength::Read(FILE *f)
+  {
+    _length = 0;
+    
+    size_t       rc = 0;
+    uint8_t      buf[2];
+    if (fread((caddr_t)buf, sizeof(buf), 1, f)) {
+      TwoBytesProcessed  twoBP(buf, &_length);
+      if (1 < twoBP.sz) {
+        rc = fread(twoBP.sp, twoBP.sz - 1, 1, f);
+      }
+      else {
+        rc = 1;
+      }
+      if (rc) {
+        if (std::endian::native != twoBP.encoding) {
+          _length = bswap64(_length);
+        }
+      }
+    }
+    
+    return rc;
+  }
+  
+  //--------------------------------------------------------------------------
+  ssize_t SizedLength::NWrite(int fd) const
+  {
+    ssize_t  rc = -1;
+    if (0 <= fd) {
+      auto  buf = MakeNativeEndianWriteVector();
+      if (::write(fd, buf.data(), buf.size()) == buf.size()) {
+        rc = buf.size();
+      }
+    }
+    return rc;
+  }
+
+  //--------------------------------------------------------------------------
+  ssize_t SizedLength::Read(int fd)
+  {
+    _length = 0;
+    ssize_t  rc = -1;
+    if (0 <= fd) {
+      uint8_t  buf[2];
+      if (::read(fd, buf, sizeof(buf)) == sizeof(buf)) {
+        rc = sizeof(buf);
+        TwoBytesProcessed  twoBP(buf, &_length);
+        if (1 < twoBP.sz) {
+          if (::read(fd, twoBP.sp, twoBP.sz - 1) == (twoBP.sz - 1)) {
+            rc += twoBP.sz - 1;
+          }
+          else {
+            rc = -1;
+          }
+        }
+        if (rc > 0) {
+          if (std::endian::native != twoBP.encoding) {
+            _length = bswap64(_length);
+          }
+        }
+      }
+    }
+    return rc;
+  }
+  
+  //--------------------------------------------------------------------------
+  int SizedLength::NBZWrite(BZFILE *bzf) const
   {
     int  rc = -1;
     if (bzf) {
-      auto  buf = MakeWriteVector();
+      auto  buf = MakeNativeEndianWriteVector();
       if (BZ2_bzwrite(bzf, buf.data(), buf.size()) == buf.size()) {
         rc = buf.size();
       }
     }
     return rc;
   }
-  
+
+  //--------------------------------------------------------------------------
+  //!  
   //--------------------------------------------------------------------------
   int SizedLength::BZRead(BZFILE *bzf)
   {
-    int  rc = -1;
     _length = 0;
+    int   rc = -1;
     if (bzf) {
       uint8_t  buf[2];
       if (BZ2_bzread(bzf, buf, sizeof(buf)) == sizeof(buf)) {
         rc = sizeof(buf);
-        uint8_t  sz = SizeFromWire(buf[0]);
-        caddr_t  p = ((caddr_t)(&_length)) + sizeof(_length) - sz;
-        *p = buf[1];
-        if ((1 < sz) && (sizeof(_length) >= sz)) {
-          if (BZ2_bzread(bzf, ++p, sz - 1) == (sz - 1)) {
-            rc += (sz - 1);
+        TwoBytesProcessed  twoBP(buf, &_length);
+        if (1 < twoBP.sz) {
+          if (BZ2_bzread(bzf, twoBP.sp, twoBP.sz - 1) == (twoBP.sz - 1)) {
+            rc += (twoBP.sz - 1);
           }
           else {
             rc = -1;
           }
         }
+        if (rc > 0) {
+          if (std::endian::native != twoBP.encoding) {
+            _length = BE2Host(_length);
+          }
+        }
       }
-    }
-    if (rc > 0) {
-      _length = BE2Host(_length);
     }
     return rc;
   }
-
+  
   //--------------------------------------------------------------------------
-  int SizedLength::Write(gzFile gzf) const
+  int SizedLength::NWrite(gzFile gzf) const
   {
     int  rc = -1;
     if (gzf) {
-      auto  buf = MakeWriteVector();
+      auto  buf = MakeNativeEndianWriteVector();
       if (gzwrite(gzf, buf.data(), buf.size()) == buf.size()) {
         rc = buf.size();
       }
     }
     return rc;
   }
-  
-  //--------------------------------------------------------------------------
-  //!  
+
   //--------------------------------------------------------------------------
   int SizedLength::Read(gzFile gzf)
   {
-    int  rc = -1;
     _length = 0;
+    int          rc = -1;
     if (gzf) {
       uint8_t  buf[2];
       if (gzread(gzf, buf, sizeof(buf)) == sizeof(buf)) {
         rc = sizeof(buf);
-        uint8_t  sz = SizeFromWire(buf[0]);
-        caddr_t  p = ((caddr_t)(&_length)) + sizeof(_length) - sz;
-        *p = buf[1];
-        if ((1 < sz) && (sizeof(_length) >= sz)) {
-          if (gzread(gzf, ++p, sz - 1) == (sz - 1)) {
-            rc += (sz - 1);
+        TwoBytesProcessed  twoBP(buf, &_length);
+        if (1 < twoBP.sz) {
+          if (gzread(gzf, twoBP.sp, twoBP.sz - 1) == (twoBP.sz - 1)) {
+            rc += (twoBP.sz - 1);
           }
           else {
             rc = -1;
           }
         }
+        if (rc > 0) {
+          if (std::endian::native != twoBP.encoding) {
+            _length = BE2Host(_length);
+          }
+        }
       }
-    }
-    if (rc > 0) {
-      _length = BE2Host(_length);
     }
     return rc;
   }
-
+  
 }  // namespace Dwm

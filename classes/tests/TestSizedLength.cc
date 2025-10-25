@@ -43,44 +43,101 @@ extern "C" {
   #include <fcntl.h>
 }
 
+#include <numeric>
+#include <random>
 #include <sstream>
 
+#include "DwmEndianness.hh"
 #include "DwmSizedLength.hh"
 #include "DwmUnitAssert.hh"
 
 using namespace std;
 using namespace Dwm;
 
+//  SizedLength values and the number of bytes we expect to write/read
+//  for each of the values, including the size byte.
+static const pair<SizedLength,ssize_t>  k_sizedLengths[] = {
+  {0x0,               2}, {0xFF,               2},
+  {0x1,               2}, {0x80,               2},
+  {0x100,             3}, {0xFFFF,             3},
+  {0x101,             3}, {0x8000,             3},
+  {0x8001,            3}, {0xABCD,             3},
+  {0x10000,           4}, {0xFFFFFF,           4},
+  {0x10001,           4}, {0x800000,           4},
+  {0x1000000,         5}, {0xFFFFFFFF,         5},
+  {0x1000001,         5}, {0x80000000,         5},
+  {0x100000000,       6}, {0xFFFFFFFFFF,       6},
+  {0x100000001,       6}, {0x8000000000,       6},
+  {0x10000000000,     7}, {0xFFFFFFFFFFFF,     7},
+  {0x10000000001,     7}, {0x800000000000,     7},
+  {0x1000000000000,   8}, {0xFFFFFFFFFFFFFF,   8},
+  {0x1000000000001,   8}, {0x80000000000000,   8},
+  {0x100000000000000, 9}, {0xFFFFFFFFFFFFFFFF, 9},
+  {0x100000000000001, 9}, {0x8000000000000000, 9}    
+};
+static const size_t  k_numLengths =
+  sizeof(k_sizedLengths)/sizeof(k_sizedLengths[0]);
+
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
 static void TestStreamIO()
 {
-  static const SizedLength  sizedLengths[] = {
-    0x0,               0x1F,               0xFF,                 // 1 byte
-    0x100,             0xAAAA,             0xFFFF,               // 2 bytes
-    0x10000,           0xABCDEF,           0xFFFFFF,             // 3 bytes
-    0x1000000,         0xF00DCAFE,         0xFFFFFFFF,           // 4 bytes
-    0x100000000,       0xBEEFDEADC1,       0xFFFFFFFFFF,         // 5 bytes
-    0x10000000000,     0xF00DFADEBEEF,     0xFFFFFFFFFFFF,       // 6 bytes
-    0x1000000000000,   0xCAFEBEEFDEADC0,   0xFFFFFFFFFFFFFF,     // 7 bytes
-    0x100000000000000, 0xDEADBEEFCAFEF00D, 0xFFFFFFFFFFFFFFFF    // 8 bytes
-  };
-  static const size_t  numLengths =
-    sizeof(sizedLengths)/sizeof(sizedLengths[0]);
-  
   stringstream  ss;
-  for (size_t i = 0; i < numLengths; ++i) {
-    if (! UnitAssert(sizedLengths[i].Write(ss))) {
+  for (size_t i = 0; i < k_numLengths; ++i) {
+    if (! UnitAssert(k_sizedLengths[i].first.Write(ss))) {
       break;
     }
   }
-  for (size_t i = 0; i < numLengths; ++i) {
+  for (size_t i = 0; i < k_numLengths; ++i) {
     SizedLength  sizedLength;
     if (! UnitAssert(sizedLength.Read(ss))) {
       break;
     }
-    UnitAssert(sizedLength == sizedLengths[i]);
+    UnitAssert(sizedLength == k_sizedLengths[i].first);
+  }
+
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestRandomStreamIO(size_t numIterations)
+{
+  std::random_device  rnd;
+  std::mt19937  gen(rnd());
+  std::uniform_int_distribution<uint64_t>  distrib(0,0xFFFFFFFFFFFFFFFFull);
+  stringstream  ss;
+  for (size_t i = 0; i < numIterations; ++i) {
+    SizedLength  slw = distrib(gen);
+    if (UnitAssert(slw.Write(ss))) {
+      SizedLength  slr;
+      if (UnitAssert(slr.Read(ss))) {
+        UnitAssert(slr == slw);
+      }
+    }
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestNStreamIO()
+{
+  stringstream  ss;
+  for (size_t i = 0; i < k_numLengths; ++i) {
+    if (! UnitAssert(k_sizedLengths[i].first.NWrite(ss))) {
+      break;
+    }
+  }
+  for (size_t i = 0; i < k_numLengths; ++i) {
+    SizedLength  sizedLength;
+    if (! UnitAssert(sizedLength.NRead(ss))) {
+      break;
+    }
+    UnitAssert(sizedLength == k_sizedLengths[i].first);
   }
   return;
 }
@@ -90,35 +147,22 @@ static void TestStreamIO()
 //----------------------------------------------------------------------------
 static void TestFileIO()
 {
-  static const SizedLength  sizedLengths[] = {
-    0x0,               0xFF,                 // 1 byte
-    0x100,             0xFFFF,               // 2 bytes
-    0x10000,           0xFFFFFF,             // 3 bytes
-    0x1000000,         0xFFFFFFFF,           // 4 bytes
-    0x100000000,       0xFFFFFFFFFF,         // 5 bytes
-    0x10000000000,     0xFFFFFFFFFFFF,       // 6 bytes
-    0x1000000000000,   0xFFFFFFFFFFFFFF,     // 7 bytes
-    0x100000000000000, 0xFFFFFFFFFFFFFFFF    // 8 bytes
-  };
-  static const size_t  numLengths =
-    sizeof(sizedLengths)/sizeof(sizedLengths[0]);
-  
   FILE *f = fopen("/tmp/SizedLengthTestFileIO","w");
   if (UnitAssert(f)) {
-    for (size_t i = 0; i < numLengths; ++i) {
-      if (! UnitAssert(sizedLengths[i].Write(f))) {
+    for (size_t i = 0; i < k_numLengths; ++i) {
+      if (! UnitAssert(k_sizedLengths[i].first.Write(f))) {
         break;
       }
     }
     fclose(f);
     f = fopen("/tmp/SizedLengthTestFileIO","r");
     if (UnitAssert(f)) {
-      for (size_t i = 0; i < numLengths; ++i) {
+      for (size_t i = 0; i < k_numLengths; ++i) {
         SizedLength  sizedLength;
         if (! UnitAssert(sizedLength.Read(f))) {
           break;
         }
-        UnitAssert(sizedLength == sizedLengths[i]);
+        UnitAssert(sizedLength == k_sizedLengths[i].first);
       }
       fclose(f);
     }
@@ -130,43 +174,110 @@ static void TestFileIO()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void TestRandomFileIO(size_t numIterations)
+{
+  FILE *f = fopen("/tmp/SizedLengthTestRandomFileIO","w");
+  if (UnitAssert(f)) {
+    std::random_device  rnd;
+    std::mt19937  gen(rnd());
+    std::uniform_int_distribution<uint64_t>  distrib(0,0xFFFFFFFFFFFFFFFFull);
+    std::vector<SizedLength>  slvec;
+    for (size_t i = 0; i < numIterations; ++i) {
+      SizedLength  slw = distrib(gen);
+      slvec.push_back(slw);
+    }
+    for (const auto & sl : slvec) {
+      if (! UnitAssert(sl.Write(f))) {
+        break;
+      }
+    }
+    fclose(f);
+    f = fopen("/tmp/SizedLengthTestRandomFileIO","r");
+    if (UnitAssert(f)) {
+      for (size_t i = 0; i < slvec.size(); ++i) {
+        SizedLength  slr;
+        if (! UnitAssert(slr.Read(f))) {
+          break;
+        }
+        UnitAssert(slr == slvec[i]);
+      }
+      fclose(f);
+    }
+    std::remove("/tmp/SizedLengthTestRandomFileIO");
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestNFileIO()
+{
+  FILE *f = fopen("/tmp/SizedLengthTestNFileIO","w");
+  if (UnitAssert(f)) {
+    for (size_t i = 0; i < k_numLengths; ++i) {
+      if (! UnitAssert(k_sizedLengths[i].first.NWrite(f))) {
+        break;
+      }
+    }
+    fclose(f);
+    f = fopen("/tmp/SizedLengthTestNFileIO","r");
+    if (UnitAssert(f)) {
+      for (size_t i = 0; i < k_numLengths; ++i) {
+        SizedLength  sizedLength;
+        if (! UnitAssert(sizedLength.NRead(f))) {
+          break;
+        }
+        UnitAssert(sizedLength == k_sizedLengths[i].first);
+      }
+      fclose(f);
+    }
+    std::remove("/tmp/SizedLengthTestNFileIO");
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static void TestDescriptorIO()
 {
   //  SizedLength values and the number of bytes we expect to write/read
   //  for each of the values, including the size byte.
-  static const pair<SizedLength,ssize_t>  sizedLengths[] = {
-    {0x0,               2}, {0xFF,              2},
-    {0x100,             3}, {0xFFFF,            3},
-    {0x10000,           4}, {0xFFFFFF,          4},
-    {0x1000000,         5}, {0xFFFFFFFF,        5},
-    {0x100000000,       6}, {0xFFFFFFFFFF,      6},
-    {0x10000000000,     7}, {0xFFFFFFFFFFFF,    7},
-    {0x1000000000000,   8}, {0xFFFFFFFFFFFFFF,  8},
-    {0x100000000000000, 9}, {0xFFFFFFFFFFFFFFFF,9}
-  };
-  static const size_t  numLengths =
-    sizeof(sizedLengths)/sizeof(sizedLengths[0]);
-  
   int fd = open("/tmp/SizedLengthTestDescriptorIO",
                 O_WRONLY|O_CREAT|O_TRUNC,0644);
   if (UnitAssert(0 <= fd)) {
-    for (size_t i = 0; i < numLengths; ++i) {
-      if (! UnitAssert(sizedLengths[i].first.Write(fd)
-                       == sizedLengths[i].second)) {
+    uint64_t  totalBytesWritten = 0, totalBytesRead = 0;
+    for (size_t i = 0; i < k_numLengths; ++i) {
+      uint64_t  bytesWritten = k_sizedLengths[i].first.Write(fd);
+      if (! UnitAssert(bytesWritten == k_sizedLengths[i].second)) {
+        // did not write expected number of bytes
         break;
       }
+      totalBytesWritten += bytesWritten;
     }
     close(fd);
+    uint64_t  expectedTotalBytes =
+      std::accumulate(k_sizedLengths, &k_sizedLengths[k_numLengths],
+                      (uint64_t)0,
+                      [] (auto && a, auto l) { return a + l.second; });
+    UnitAssert(totalBytesWritten == expectedTotalBytes);
+    
     fd = open("/tmp/SizedLengthTestDescriptorIO",O_RDONLY);
     if (UnitAssert(0 <= fd)) {
-      for (size_t i = 0; i < numLengths; ++i) {
+      for (size_t i = 0; i < k_numLengths; ++i) {
         SizedLength  sizedLength;
-        if (! UnitAssert(sizedLength.Read(fd) == sizedLengths[i].second)) {
+        uint64_t  bytesRead = sizedLength.Read(fd);
+        if (! UnitAssert(bytesRead == k_sizedLengths[i].second)) {
+          // did not read expected number of bytes
           break;
         }
-        UnitAssert(sizedLength == sizedLengths[i].first);
+        totalBytesRead += bytesRead;
+        UnitAssert(sizedLength == k_sizedLengths[i].first);
       }
       close(fd);
+      UnitAssert(totalBytesRead == expectedTotalBytes);
+      UnitAssert(totalBytesRead == totalBytesWritten);
     }
     std::remove("/tmp/SizedLengthTestDescriptorIO");
   }
@@ -176,42 +287,136 @@ static void TestDescriptorIO()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
-static void TestBZ2IO()
+static void TestRandomDescriptorIO(size_t numIterations)
 {
   //  SizedLength values and the number of bytes we expect to write/read
   //  for each of the values, including the size byte.
-  static const pair<SizedLength,int>  sizedLengths[] = {
-    {0x00,              2}, {0xFF,              2},
-    {0x100,             3}, {0xFFFF,            3},
-    {0x10000,           4}, {0xFFFFFF,          4},
-    {0x1000000,         5}, {0xFFFFFFFF,        5},
-    {0x100000000,       6}, {0xFFFFFFFFFF,      6},
-    {0x10000000000,     7}, {0xFFFFFFFFFFFF,    7},
-    {0x1000000000000,   8}, {0xFFFFFFFFFFFFFF,  8},
-    {0x100000000000000, 9}, {0xFFFFFFFFFFFFFFFF,9}
-  };
-  static const size_t numLengths =
-    sizeof(sizedLengths)/sizeof(sizedLengths[0]);
-  
-  BZFILE  *bzf = BZ2_bzopen("/tmp/SizedLengthTestBZ2IO", "wb");
-  if (UnitAssert(bzf)) {
-    for (size_t i = 0; i < numLengths; ++i) {
-      if (! UnitAssert(sizedLengths[i].first.BZWrite(bzf)
-                       == sizedLengths[i].second)) {
+  int fd = open("/tmp/SizedLengthTestDescriptorIO",
+                O_WRONLY|O_CREAT|O_TRUNC,0644);
+  if (UnitAssert(0 <= fd)) {
+    std::random_device  rnd;
+    std::mt19937  gen(rnd());
+    std::uniform_int_distribution<uint64_t>  distrib(0,0xFFFFFFFFFFFFFFFFull);
+    std::vector<SizedLength>  slvec;
+    for (size_t i = 0; i < numIterations; ++i) {
+      SizedLength  slw = distrib(gen);
+      slvec.push_back(slw);
+    }
+
+    uint64_t  totalBytesWritten = 0, totalBytesRead = 0;
+    for (const auto & sl : slvec) {
+      ssize_t  bytesWritten = sl.Write(fd);
+      if (UnitAssert(bytesWritten > 0)) {
+        totalBytesWritten += bytesWritten;
+      }
+      else {
         break;
       }
     }
-    BZ2_bzclose(bzf);
-    bzf = BZ2_bzopen("/tmp/SizedLengthTestBZ2IO", "rb");
-    if (UnitAssert(bzf)) {
-      for (size_t i = 0; i < numLengths; ++i) {
+    close(fd);
+    fd = open("/tmp/SizedLengthTestDescriptorIO",O_RDONLY);
+    if (UnitAssert(0 <= fd)) {
+      for (size_t i = 0; i < slvec.size(); ++i) {
         SizedLength  sizedLength;
-        if (! UnitAssert(sizedLength.BZRead(bzf) == sizedLengths[i].second)) {
+        ssize_t  bytesRead = sizedLength.Read(fd);
+        if (! UnitAssert(bytesRead > 0)) {
+          // did not read expected number of bytes
           break;
         }
-        UnitAssert(sizedLength == sizedLengths[i].first);
+        totalBytesRead += bytesRead;
+        UnitAssert(sizedLength == slvec[i]);
+      }
+      close(fd);
+      UnitAssert(totalBytesRead == totalBytesWritten);
+    }
+    std::remove("/tmp/SizedLengthTestDescriptorIO");
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestNDescriptorIO()
+{
+  int fd = open("/tmp/SizedLengthTestNDescriptorIO",
+                O_WRONLY|O_CREAT|O_TRUNC,0644);
+  if (UnitAssert(0 <= fd)) {
+    uint64_t  totalBytesWritten = 0, totalBytesRead = 0;
+    for (size_t i = 0; i < k_numLengths; ++i) {
+      uint64_t  bytesWritten = k_sizedLengths[i].first.NWrite(fd);
+      if (! UnitAssert(bytesWritten == k_sizedLengths[i].second)) {
+        // did not write expected number of bytes
+        break;
+      }
+      totalBytesWritten += bytesWritten;
+    }
+    close(fd);
+    uint64_t  expectedTotalBytes =
+      std::accumulate(k_sizedLengths, &k_sizedLengths[k_numLengths],
+                      (uint64_t)0,
+                      [] (auto && a, auto l) { return a + l.second; });
+    UnitAssert(totalBytesWritten == expectedTotalBytes);
+    
+    fd = open("/tmp/SizedLengthTestNDescriptorIO",O_RDONLY);
+    if (UnitAssert(0 <= fd)) {
+      for (size_t i = 0; i < k_numLengths; ++i) {
+        SizedLength  sizedLength;
+        uint64_t  bytesRead = sizedLength.NRead(fd);
+        if (! UnitAssert(bytesRead == k_sizedLengths[i].second)) {
+          // did not read expected number of bytes
+          break;
+        }
+        UnitAssert(sizedLength == k_sizedLengths[i].first);
+        totalBytesRead += bytesRead;
+      }
+      close(fd);
+      UnitAssert(totalBytesRead == expectedTotalBytes);
+      UnitAssert(totalBytesRead == totalBytesWritten);
+    }
+    std::remove("/tmp/SizedLengthTestNDescriptorIO");
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestBZ2IO()
+{
+  BZFILE  *bzf = BZ2_bzopen("/tmp/SizedLengthTestBZ2IO", "wb");
+  if (UnitAssert(bzf)) {
+    uint64_t  totalBytesWritten = 0, totalBytesRead = 0;
+    for (size_t i = 0; i < k_numLengths; ++i) {
+      uint64_t  bytesWritten = k_sizedLengths[i].first.BZWrite(bzf);
+      if (! UnitAssert(bytesWritten == k_sizedLengths[i].second)) {
+        //  did not write expected number of bytes
+        break;
+      }
+      totalBytesWritten += bytesWritten;
+    }
+    BZ2_bzclose(bzf);
+    uint64_t  expectedTotalBytes =
+      std::accumulate(k_sizedLengths, &k_sizedLengths[k_numLengths],
+                      (uint64_t)0,
+                      [] (auto && a, auto l) { return a + l.second; });
+    UnitAssert(totalBytesWritten == expectedTotalBytes);
+    
+    bzf = BZ2_bzopen("/tmp/SizedLengthTestBZ2IO", "rb");
+    if (UnitAssert(bzf)) {
+      for (size_t i = 0; i < k_numLengths; ++i) {
+        SizedLength  sizedLength;
+        uint64_t  bytesRead = sizedLength.BZRead(bzf);
+        if (! UnitAssert(bytesRead == k_sizedLengths[i].second)) {
+          // did not read expected number of bytes
+          break;
+        }
+        UnitAssert(sizedLength == k_sizedLengths[i].first);
+        totalBytesRead += bytesRead;
       }
       BZ2_bzclose(bzf);
+      UnitAssert(totalBytesRead == expectedTotalBytes);
+      UnitAssert(totalBytesRead == totalBytesWritten);
     }
     std::remove("/tmp/SizedLengthTestBZ2IO");
   }
@@ -221,45 +426,131 @@ static void TestBZ2IO()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
-static void TestGZIO()
+static void TestNBZ2IO()
 {
-  //  SizedLength values and the number of bytes we expect to write/read
-  //  for each of the values, including the size byte.
-  static const pair<SizedLength,int>  sizedLengths[] = {
-    {0x0,               2}, {0xFF,               2}, // 1 byte  + 1 size byte
-    {0x100,             3}, {0xFFFF,             3}, // 2 bytes + 1 size byte
-    {0x10000,           4}, {0xFFFFFF,           4}, // 3 bytes + 1 size byte
-    {0x1000000,         5}, {0xFFFFFFFF,         5}, // 4 bytes + 1 size byte
-    {0x100000000,       6}, {0xFFFFFFFFFF,       6}, // 5 bytes + 1 size byte
-    {0x10000000000,     7}, {0xFFFFFFFFFFFF,     7}, // 6 bytes + 1 size byte
-    {0x1000000000000,   8}, {0xFFFFFFFFFFFFFF,   8}, // 7 bytes + 1 size byte
-    {0x100000000000000, 9}, {0xFFFFFFFFFFFFFFFF, 9}  // 8 bytes + 1 size byte
-  };
-  static const size_t numLengths =
-    sizeof(sizedLengths)/sizeof(sizedLengths[0]);
-  
-  gzFile  gzf = gzopen("/tmp/SizedLengthTestGZIO", "wb");
-  if (UnitAssert(gzf)) {
-    for (size_t i = 0; i < numLengths; ++i) {
-      if (! UnitAssert(sizedLengths[i].first.Write(gzf)
-                       == sizedLengths[i].second)) {
+  BZFILE  *bzf = BZ2_bzopen("/tmp/SizedLengthTestNBZ2IO", "wb");
+  if (UnitAssert(bzf)) {
+    uint64_t  totalBytesWritten = 0, totalBytesRead = 0;
+    
+    for (size_t i = 0; i < k_numLengths; ++i) {
+      int  bytesWritten = k_sizedLengths[i].first.NBZWrite(bzf);
+      if (! UnitAssert(bytesWritten == k_sizedLengths[i].second)) {
         break;
       }
+      totalBytesWritten += bytesWritten;
     }
-    gzclose(gzf);
-    gzf = gzopen("/tmp/SizedLengthTestGZIO", "rb");
-    if (UnitAssert(gzf)) {
-      for (size_t i = 0; i < numLengths; ++i) {
+    BZ2_bzclose(bzf);
+    const uint64_t  expectedTotalBytes =
+      std::accumulate(k_sizedLengths, &k_sizedLengths[k_numLengths],
+                      (uint64_t)0,
+                      [] (auto && a, auto l) { return a + l.second; });
+    UnitAssert(expectedTotalBytes == totalBytesWritten);
+
+    bzf = BZ2_bzopen("/tmp/SizedLengthTestNBZ2IO", "rb");
+    if (UnitAssert(bzf)) {
+      for (size_t i = 0; i < k_numLengths; ++i) {
         SizedLength  sizedLength;
-        if (! UnitAssert(sizedLength.Read(gzf)
-                         == sizedLengths[i].second)) {
+        int  bytesRead = sizedLength.NBZRead(bzf);
+        if (! UnitAssert(bytesRead == k_sizedLengths[i].second)) {
+          // did not read expected number of bytes
           break;
         }
-        UnitAssert(sizedLength == sizedLengths[i].first);
+        totalBytesRead += bytesRead;
+        UnitAssert(sizedLength == k_sizedLengths[i].first);
+      }
+      BZ2_bzclose(bzf);
+      UnitAssert(expectedTotalBytes == totalBytesRead);
+      UnitAssert(totalBytesRead == totalBytesWritten);
+    }
+    std::remove("/tmp/SizedLengthTestNBZ2IO");
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestGZIO()
+{
+  gzFile  gzf = gzopen("/tmp/SizedLengthTestGZIO", "wb");
+  if (UnitAssert(gzf)) {
+    uint64_t  totalBytesWritten = 0, totalBytesRead = 0;
+    for (size_t i = 0; i < k_numLengths; ++i) {
+      uint64_t  bytesWritten = k_sizedLengths[i].first.Write(gzf);
+      if (! UnitAssert(bytesWritten == k_sizedLengths[i].second)) {
+        //  did not write expected number of bytes
+        break;
+      }
+      totalBytesWritten += bytesWritten;
+    }
+    gzclose(gzf);
+    uint64_t  expectedTotalBytes =
+      std::accumulate(k_sizedLengths, &k_sizedLengths[k_numLengths],
+                      (uint64_t)0,
+                      [] (auto && a, auto l) { return a + l.second; });
+    UnitAssert(totalBytesWritten == expectedTotalBytes);
+
+    gzf = gzopen("/tmp/SizedLengthTestGZIO", "rb");
+    if (UnitAssert(gzf)) {
+      for (size_t i = 0; i < k_numLengths; ++i) {
+        SizedLength  sizedLength;
+        uint64_t  bytesRead = sizedLength.Read(gzf);
+        if (! UnitAssert(bytesRead == k_sizedLengths[i].second)) {
+          //  did not read expected number of bytes
+          break;
+        }
+        totalBytesRead += bytesRead;
+        UnitAssert(sizedLength == k_sizedLengths[i].first);
       }
       gzclose(gzf);
+      UnitAssert(totalBytesRead == expectedTotalBytes);
+      UnitAssert(totalBytesRead == totalBytesWritten);
     }
     std::remove("/tmp/SizedLengthTestGZIO");
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestNGZIO()
+{
+  gzFile  gzf = gzopen("/tmp/SizedLengthTestNGZIO", "wb");
+  if (UnitAssert(gzf)) {
+    uint64_t  totalBytesWritten = 0, totalBytesRead = 0;
+    for (size_t i = 0; i < k_numLengths; ++i) {
+      uint64_t  bytesWritten = k_sizedLengths[i].first.NWrite(gzf);
+      if (! UnitAssert(bytesWritten == k_sizedLengths[i].second)) {
+        // did not write expected number of bytes
+        break;
+      }
+      totalBytesWritten += bytesWritten;
+    }
+    gzclose(gzf);
+    uint64_t  expectedTotalBytes =
+      std::accumulate(k_sizedLengths, &k_sizedLengths[k_numLengths],
+                      (uint64_t)0,
+                      [] (auto && a, auto l) { return a + l.second; });
+    UnitAssert(totalBytesWritten == expectedTotalBytes);
+    
+    gzf = gzopen("/tmp/SizedLengthTestNGZIO", "rb");
+    if (UnitAssert(gzf)) {
+      for (size_t i = 0; i < k_numLengths; ++i) {
+        SizedLength  sizedLength;
+        uint64_t  bytesRead = sizedLength.NRead(gzf);
+        if (! UnitAssert(bytesRead == k_sizedLengths[i].second)) {
+          //  did not read expected number of bytes
+          break;
+        }
+        totalBytesRead += bytesRead;
+        UnitAssert(sizedLength == k_sizedLengths[i].first);
+      }
+      gzclose(gzf);
+      UnitAssert(totalBytesRead == expectedTotalBytes);
+      UnitAssert(totalBytesRead == totalBytesWritten);
+    }
+    std::remove("/tmp/SizedLengthTestNGZIO");
   }
   return;
 }
@@ -270,10 +561,18 @@ static void TestGZIO()
 int main(int argc, char *argv[])
 {
   TestStreamIO();
+  TestRandomStreamIO(512);
+  TestNStreamIO();
   TestFileIO();
+  TestRandomFileIO(512);
+  TestNFileIO();
   TestDescriptorIO();
+  TestRandomDescriptorIO(512);
+  TestNDescriptorIO();
   TestBZ2IO();
+  TestNBZ2IO();
   TestGZIO();
+  TestNGZIO();
   
   if (Assertions::Total().Failed()) {
     Assertions::Print(cerr, true);

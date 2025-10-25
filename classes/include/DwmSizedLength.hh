@@ -42,11 +42,15 @@
 #ifndef _DWMSIZEDLENGTH_HH_
 #define _DWMSIZEDLENGTH_HH_
 
-#include "DwmBZ2IO.hh"
-#include "DwmDescriptorIO.hh"
-#include "DwmFileIO.hh"
-#include "DwmGZIO.hh"
-#include "DwmStreamIO.hh"
+extern "C" {
+  #include <sys/types.h>
+  #include <bzlib.h>
+  #include <zlib.h>
+}
+
+#include <cstdint>
+#include <cstdio>
+#include <vector>
 
 namespace Dwm {
 
@@ -90,58 +94,118 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Writes the length to @c os.  Returns @c os.
     //------------------------------------------------------------------------
-    std::ostream & Write(std::ostream & os) const;
-    
+    inline std::ostream & Write(std::ostream & os) const
+    { return NWrite(os); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    std::ostream & NWrite(std::ostream & os) const;
+
     //------------------------------------------------------------------------
     //!  Reads the length from @c is.  Returns @c is.
     //------------------------------------------------------------------------
     std::istream & Read(std::istream & is);
 
     //------------------------------------------------------------------------
+    //!  Reads the length from @c is.  Returns @c is.
+    //------------------------------------------------------------------------
+    inline std::istream & NRead(std::istream & is)
+    { return Read(is); }
+    
+    //------------------------------------------------------------------------
     //!  Writes the length to @c f.  Returns 1 on success, 0 on failure.
     //------------------------------------------------------------------------
-    size_t Write(FILE *f) const;
+    inline size_t Write(FILE *f) const
+    { return NWrite(f); }
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    size_t NWrite(FILE *f) const;
+    
     //------------------------------------------------------------------------
     //!  Reads the length from @c f.  Returns 1 on success, 0 on failure.
     //------------------------------------------------------------------------
     size_t Read(FILE *f);
 
     //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    inline size_t NRead(FILE *f)
+    { return Read(f); }
+    
+    //------------------------------------------------------------------------
     //!  Writes the length to @c fd.  Returns the number of bytes written
     //!  on success, -1 on failure.
     //------------------------------------------------------------------------
-    ssize_t Write(int fd) const;
+    inline ssize_t Write(int fd) const
+    { return NWrite(fd); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    ssize_t NWrite(int fd) const;
 
     //------------------------------------------------------------------------
     //!  Reads the length from @c fd.  Returns the number of bytes read on
     //!  success, -1 on failure.
     //------------------------------------------------------------------------
     ssize_t Read(int fd);
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    inline ssize_t NRead(int fd)
+    { return Read(fd); }
     
     //------------------------------------------------------------------------
     //!  Writes the length to @c bzf.  Returns the number of bytes written
     //!  on success, -1 on failure.
     //------------------------------------------------------------------------
-    int BZWrite(BZFILE *bzf) const;
+    inline int BZWrite(BZFILE *bzf) const
+    { return NBZWrite(bzf); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    int NBZWrite(BZFILE *bzf) const;
 
     //------------------------------------------------------------------------
     //!  Reads the length from @c bzf.  Returns the number of bytes read on
     //!  success, -1 on failure.
     //------------------------------------------------------------------------
     int BZRead(BZFILE *bzf);
-    
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    inline int NBZRead(BZFILE *bzf)
+    { return BZRead(bzf); }
+
     //------------------------------------------------------------------------
     //!  Writes the length to @c gzf.  Returns the number of bytes written
     //!  on success, -1 on failure.
     //------------------------------------------------------------------------
-    int Write(gzFile gzf) const;
+    inline int Write(gzFile gzf) const
+    { return NWrite(gzf); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    int NWrite(gzFile gzf) const;
 
     //------------------------------------------------------------------------
     //!  Reads the length from @c gzf.  Returns the number of bytes read on
     //!  success, -1 on failure.
     //------------------------------------------------------------------------
     int Read(gzFile gzf);
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    inline int NRead(gzFile gzf)
+    { return Read(gzf); }
     
     //------------------------------------------------------------------------
     //!  Returns the size of the type we'll need to use when writing the
@@ -153,6 +217,22 @@ namespace Dwm {
     uint64_t  _length;
 
     std::vector<uint8_t> MakeWriteVector() const;
+    std::vector<uint8_t> MakeNativeEndianWriteVector() const;
+    std::istream & Read(std::istream & is, bool bigEndianOnWire);
+    size_t Read(FILE *f, bool bigEndianOnWire);
+    ssize_t Read(int fd, bool bigEndianOnWire);
+    int BZRead(BZFILE *bzf, bool bigEndianOnWire);
+    int Read(gzFile gzf, bool bigEndianOnWire);
+
+    struct TwoBytesProcessed
+    {
+      TwoBytesProcessed(const uint8_t buf[2], uint64_t *value);
+
+      std::endian  encoding;
+      uint8_t      sz;
+      caddr_t      sp;
+    };
+
   };
   
 }  // namespace Dwm
