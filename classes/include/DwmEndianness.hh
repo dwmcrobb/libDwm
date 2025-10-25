@@ -99,7 +99,53 @@ namespace Dwm {
     auto  h2be = [&] (auto & f) -> void { f = Host2BE(f); };
     return ( h2be(args), ...);
   }
+
+  //--------------------------------------------------------------------------
+  //!  Returns the host endian conversion of the little endian @c t.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  requires IsEndianSensitiveInteger<T>
+  [[nodiscard]] inline auto LE2Host(T t) -> T
+  {
+    if constexpr (sizeof(t) == 2)      { return le16toh(t); }
+    else if constexpr (sizeof(t) == 4) { return le32toh(t); }
+    else if constexpr (sizeof(t) == 8) { return le64toh(t); }
+  }
   
+  //--------------------------------------------------------------------------
+  //!  Returns the little endian conversion of the host endian @c t.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  requires IsEndianSensitiveInteger<T>
+  [[nodiscard]] inline auto Host2LE(T t) -> T
+  {
+    if constexpr (sizeof(t) == 2)      { return htole16(t); }
+    else if constexpr (sizeof(t) == 4) { return htole32(t); }
+    else if constexpr (sizeof(t) == 8) { return htole64(t); }
+  }
+
+  //--------------------------------------------------------------------------
+  //!  Converts all @c args from little endian to host endian, in place.
+  //--------------------------------------------------------------------------
+  template <typename ...Args>
+  requires (IsEndianSensitiveInteger<Args> and ...)
+  void LE2Host(Args & ...args)
+  {
+    auto  le2h = [&] (auto & f) -> void { f = LE2Host(f); };
+    return ( le2h(args), ...);
+  }
+
+  //--------------------------------------------------------------------------
+  //!  Converts all @c args from host endian to little endian, in place.
+  //--------------------------------------------------------------------------
+  template <typename ...Args>
+  requires (IsEndianSensitiveInteger<Args> and ...)
+  void Host2LE(Args & ...args)
+  {
+    auto  h2le = [&] (auto & f) -> void { f = Host2LE(f); };
+    return ( h2le(args), ...);
+  }
+
 }  // namespace Dwm
 
 #endif  // _DWMENDIANNESS_HH_
