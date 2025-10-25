@@ -41,6 +41,7 @@
 
 extern "C" {
   #include <fcntl.h>
+  #include <unistd.h>
 }
 
 #include <numeric>
@@ -256,7 +257,7 @@ static void TestDescriptorIO()
       }
       totalBytesWritten += bytesWritten;
     }
-    close(fd);
+    ::close(fd);
     uint64_t  expectedTotalBytes =
       std::accumulate(k_sizedLengths, &k_sizedLengths[k_numLengths],
                       (uint64_t)0,
@@ -275,7 +276,7 @@ static void TestDescriptorIO()
         totalBytesRead += bytesRead;
         UnitAssert(sizedLength == k_sizedLengths[i].first);
       }
-      close(fd);
+      ::close(fd);
       UnitAssert(totalBytesRead == expectedTotalBytes);
       UnitAssert(totalBytesRead == totalBytesWritten);
     }
@@ -313,7 +314,7 @@ static void TestRandomDescriptorIO(size_t numIterations)
         break;
       }
     }
-    close(fd);
+    ::close(fd);
     fd = open("/tmp/SizedLengthTestDescriptorIO",O_RDONLY);
     if (UnitAssert(0 <= fd)) {
       for (size_t i = 0; i < slvec.size(); ++i) {
@@ -326,7 +327,7 @@ static void TestRandomDescriptorIO(size_t numIterations)
         totalBytesRead += bytesRead;
         UnitAssert(sizedLength == slvec[i]);
       }
-      close(fd);
+      ::close(fd);
       UnitAssert(totalBytesRead == totalBytesWritten);
     }
     std::remove("/tmp/SizedLengthTestDescriptorIO");
@@ -351,7 +352,7 @@ static void TestNDescriptorIO()
       }
       totalBytesWritten += bytesWritten;
     }
-    close(fd);
+    ::close(fd);
     uint64_t  expectedTotalBytes =
       std::accumulate(k_sizedLengths, &k_sizedLengths[k_numLengths],
                       (uint64_t)0,
@@ -370,7 +371,7 @@ static void TestNDescriptorIO()
         UnitAssert(sizedLength == k_sizedLengths[i].first);
         totalBytesRead += bytesRead;
       }
-      close(fd);
+      ::close(fd);
       UnitAssert(totalBytesRead == expectedTotalBytes);
       UnitAssert(totalBytesRead == totalBytesWritten);
     }
