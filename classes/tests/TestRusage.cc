@@ -201,7 +201,7 @@ static void TestRusageDescriptorIO()
       close(fd);
       UnitAssert(rusage2 == rusage);
     }
-    //    std::remove(filename.str().c_str());
+    std::remove(filename.str().c_str());
   }
   return;
 }
