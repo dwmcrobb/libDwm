@@ -1784,7 +1784,7 @@ namespace Dwm {
             FSyslog(LOG_DEBUG, "Writing {}.{} of type '{}'",
                     TypeName<decltype(v)>(), std::meta::identifier_of(mem),
                     std::meta::display_string_of(std::meta::type_of(mem)));
-            if constexpr (HasNoEndianAnnotation<mem>()) {
+            if constexpr (io_detail::HasNoEndianAnnotation<mem>) {
               WriteN(os, v.[:mem:]);
             }
             else {
@@ -1826,11 +1826,12 @@ namespace Dwm {
             FSyslog(LOG_DEBUG, "Reading {}.{} of type '{}'",
                     TypeName<decltype(v)>(), std::meta::identifier_of(mem),
                     std::meta::display_string_of(std::meta::type_of(mem)));
-            if constexpr (HasNoEndianAnnotation<mem>()) {
+            if constexpr (io_detail::HasNoEndianAnnotation<mem>) {
               if (! ReadN(is, v.[:mem:])) { break; }
             }
             else {
               if (! Read(is, v.[:mem:])) { break; }
+            }
           }
           else {
             is.setstate(std::ios_base::failbit);
