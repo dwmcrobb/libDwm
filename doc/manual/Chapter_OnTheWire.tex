@@ -72,7 +72,7 @@
 
 \subsection{\ttfamily double}
 \noindent
-\begin{tikzpicture}[node distance=-\pgflinewidth]                                                                   
+\begin{tikzpicture}[node distance=-\pgflinewidth]
   \node[short] (u64b1) {};
   \node[short,right=of u64b1] (u64b2) {};
   \node[short,right=of u64b2] (u64b3) {};
@@ -82,10 +82,55 @@
   \node[short,right=of u64b6] (u64b7) {};
   \node[short,right=of u64b7] (u64b8) {};
   \draw[decorate,decoration={brace,raise=2pt,amplitude=1em}] (u64b1.north west) -- node[above=1.1em] {8 bytes, RFC4506} (u64b8.north east);
-\end{tikzpicture}                                                                                                            
+\end{tikzpicture}
 
+\subsection{\ttfamily Dwm::SizedLength}
+\noindent\begin{tikzpicture}[node distance=-\pgflinewidth]
+\node[nineTall,align=center,text centered,,fill=blue!10] (ES) {\Large{\ttfamily ES}};
+\node[nineTall,right=of ES] (data1) {\ttfamily data[0]};
+\node[dotdot,right=of data1,text width=.6667\textwidth,align=center,text centered] (dots1) {\linebreak \Large{...}};
+\node[nineTall,right=of dots1] (data2) {\ttfamily data[size]};
+\end{tikzpicture}
+
+\subsubsection{ES (endian, size) byte}
+
+\SizedLengthExample{{},{},{},{},{},{},{},{}}{}{ES byte}
+
+\subsubsection{Examples}
+\SizedLengthExample{1,{},{},{},{},0,0,0}{0xAA}{One byte value \texttt{0xAA}, big-endian.}
+
+\SizedLengthExample{0,{},{},{},{},0,0,0}{0xAA}{One byte value \texttt{0xAA}, little-endian.}
+
+\SizedLengthExample{1,{},{},{},{},0,0,1}{0xAA,0xBB}{Two byte value \texttt{0xAABB}, big-endian.}
+
+\SizedLengthExample{0,{},{},{},{},0,0,1}{0xBB,0xAA}{Two byte value \texttt{0xAABB}, little-endian.}
+
+\SizedLengthExample{1,{},{},{},{},0,1,0}{0xAA,0xBB,0xCC}{Three byte value \texttt{0xAABBCC}, big-endian.}
+
+\SizedLengthExample{0,{},{},{},{},0,1,0}{0xCC,0xBB,0xAA}{Three byte value \texttt{0xAABBCC}, little-endian.}
+
+\SizedLengthExample{1,{},{},{},{},0,1,1}{0xAA,0xBB,0xCC,0xDD}{Four byte value \texttt{0xAABBCCDD}, big-endian.}
+
+\SizedLengthExample{0,{},{},{},{},0,1,1}{0xDD,0xCC,0xBB,0xAA}{Four byte value \texttt{0xAABBCCDD}, little-endian.}
+
+\SizedLengthExample{1,{},{},{},{},1,0,0}{0xAA,0xBB,0xCC,0xDD,0xEE}{Five byte value \texttt{0xAABBCCDDEE}, big-endian.}
+
+\SizedLengthExample{0,{},{},{},{},1,0,0}{0xEE,0xDD,0xCC,0xBB,0xAA}{Five byte value \texttt{0xAABBCCDDEE}, big-endian.}
+
+\SizedLengthExample{1,{},{},{},{},1,0,1}{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF}{Six byte value \texttt{0xAABBCCDDEEFF}, big-endian.}
+
+\SizedLengthExample{0,{},{},{},{},1,0,1}{0xFF,0xEE,0xDD,0xCC,0xBB,0xAA}{Six byte value \texttt{0xAABBCCDDEEFF}, little-endian.}
+
+\SizedLengthExample{1,{},{},{},{},1,1,0}{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF,0x99}{Seven byte value \texttt{0xAABBCCDDEEFF99}, big-endian.}
+
+\SizedLengthExample{0,{},{},{},{},1,1,0}{0x99,0xFF,0xEE,0xDD,0xCC,0xBB,0xAA}{Seven byte value \texttt{0xAABBCCDDEEFF99}, little-endian.}
+
+\SizedLengthExample{1,{},{},{},{},1,1,1}{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF,0x99,0x88}{Eight byte value \texttt{0xAABBCCDDEEFF9988}, big-endian.}
+
+\SizedLengthExample{0,{},{},{},{},1,1,1}{0x88,0x99,0xFF,0xEE,0xDD,0xCC,0xBB,0xAA}{Eight byte value \texttt{0xAABBCCDDEEFF9988}, big-endian.}
+    
 \subsection{\ttfamily std::string}
-\msbencoding{s[0]}{s[length-1]}{bytes}
+\LengthEncodedData{uint64\_t}{\texttt{s[0] ... s[length-1]}}{\texttt{std::string} encoding}
 
 \subsection{\ttfamily std::pair<T1,T2>}
 \noindent%
@@ -95,16 +140,17 @@
 \end{tikzpicture}
 
 \subsection{\ttfamily std::vector<T>}
-\msbencoding{T}{T}{entries}
+\LengthEncodedData{uint64\_t}{\texttt{$T_0$  ...  $T_{length-1}$}}{\texttt{std::vector<T>} encoding}
 
 \subsection{\ttfamily std::deque<T>}
-\msbencoding{T}{T}{entries}
+\LengthEncodedData{uint64\_t}{\texttt{$T_0$  ...  $T_{length-1}$}}{\texttt{std::deque<T>} encoding}
 
 \subsection{\ttfamily std::list<T>}
-\msbencoding{T}{T}{entries}
+\LengthEncodedData{uint64\_t}{\texttt{$T_0$  ...  $T_{length-1}$}}{\texttt{std::list<T>} encoding}
 
 \subsection{\ttfamily std::map<Key,Value>}
-\msbencoding{std::pair<Key,Value>}{std::pair<Key,Value>}{entries}
+\LengthEncodedData{uint64\_t}{\texttt{std::pair<Key,Value>$_0$  ...  std::pair<Key,Value>$_{length-1}$}}{\texttt{std::map<Key,Value>} encoding}
+% \msbencoding{std::pair<Key,Value>}{std::pair<Key,Value>}{entries}
 
 \subsection{\ttfamily std::multimap<Key,Value>}
 \msbencoding{std::pair<Key,Value>}{std::pair<Key,Value>}{entries}

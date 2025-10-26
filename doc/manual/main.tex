@@ -1,5 +1,6 @@
 \PassOptionsToPackage{table}{xcolor}
 \documentclass[letterpaper,openany]{book}
+\usepackage{capt-of}
 \usepackage{enumitem}
 \usepackage[en-US,showzone]{datetime2}
 \usepackage{fvextra}
@@ -14,7 +15,7 @@
 \usepackage{titlesec}
 \usepackage{titletoc}
 \usepackage{tikz}
-\usetikzlibrary{calc,positioning,shapes,decorations.pathreplacing}
+\usetikzlibrary{calc,chains,positioning,shapes,decorations.pathreplacing}
 \usepackage[T1]{fontenc}
 \usepackage[table]{xcolor}
 \usepackage[scaled]{beramono}
@@ -74,7 +75,12 @@
 \tikzset{
 short/.style={draw,text height=3pt,text depth=20pt,
   text width=7pt,align=center,fill=blue!10},
+shortTall/.style={draw,text height=1pt,text depth=36pt,inner sep=1pt,
+  text width=.013888\textwidth, align=center,fill=blue!10},
 long/.style={short,fill=green!10,text width=(\textwidth-64pt)/3},
+nineTall/.style={long,fill=green!10,text width=(\textwidth)/9,
+  align=center,text centered,text depth=20pt,minimum height=36pt,
+  text height=18pt},
 dotdot/.style={fill=white,minimum width=(\textwidth-96pt)/3},
 eightByteEmpty/.style={draw,fill=blue!10,text depth=20pt,text width=96pt,align=center},
 fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text width=48pt,align=center,text centered}}
@@ -130,6 +136,74 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
 \newcommand{\conceptfuncsig}[1]{{\color{darkblue}\bfseries\ttfamily #1}}
 \newcommand{\conceptfsigpar}[1]{\vspace{.5ex}\begin{itemize}[noitemsep,nolistsep]\item[]\conceptfuncsig{#1}\end{itemize}}
 
+\newcommand{\SizedLengthExample}[3]{
+\centering
+\noindent\begin{tikzpicture}[
+    start chain = A going right,
+    node distance = 0pt, % Ensure no gap between bit nodes
+    bit node/.style = {draw, minimum height=20pt, minimum width=\textwidth/72, text width=\textwidth/72, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A},
+    byte node/.style = {draw, minimum height=20pt, minimum width=\dimexpr\textwidth/9\relax, text width=\dimexpr\textwidth/8\relax, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A}
+  ]
+  \def\mybitstring{\texttt{1},{},{},{},{},0,1,0}
+  \def\mybytestring{0xAA,0xBB,0xCC}
+  % Draw the bit nodes and indices
+  \foreach \bit [count=\i] in {#1} {
+    % \ifnum\bit=1 \def\bitcolor{black!20} \else \def\bitcolor{white} \fi
+    \numtestTF{ 1 < \i < 6 }
+              { \node[bit node, fill=black!20] (bit-\i) {};
+                \node[below=0mm of bit-\i, font=\tiny] {\i}; }
+              { \node[bit node, fill=white,font=\small] (bit-\i) {\bit};
+                \node[below=0mm of bit-\i, font=\tiny] {\i}; }
+  }
+  
+  % Add overbrace for a specific section
+  \draw [decorate, decoration={brace, amplitude=5pt}] (bit-1.north west) -- (bit-1.north east) 
+  node [above=5pt, midway, font=\footnotesize] {Endian};
+  
+  % Add overbrace for the rest of the bits
+  \draw [decorate, decoration={brace, amplitude=5pt}] (bit-6.north west) -- (bit-8.north east) 
+  node [above=5pt, midway, font=\footnotesize] {Size};
+
+  % Add label for the ES byte
+  \draw [decorate, decoration={brace, mirror, amplitude=0pt}] (bit-1.south west) -- (bit-8.south east)  
+  node [below=7pt, midway, font=\footnotesize] {ES byte};
+
+  % Draw the byte nodes and indices
+  \foreach \byte [count=\i] in {#2} {
+    % \ifnum\bit=1 \def\bitcolor{black!20} \else \def\bitcolor{white} \fi
+    \node[byte node, fill=white] (byte-\i) {\byte};
+    \node[below=0mm of byte-\i, font=\tiny] {\i};
+  }
+\end{tikzpicture}
+\captionof{figure}{#3}
+}
+
+\newcommand{\LengthEncodedData}[3]{
+\centering
+\noindent\begin{tikzpicture}[
+    start chain = A going right,
+    node distance = 0pt, % Ensure no gap between bit nodes
+    length node/.style = {draw, minimum height=20pt, minimum width=\textwidth/9, text width=\textwidth/9, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A},
+    data node/.style = {draw, minimum height=20pt, minimum width=8\textwidth/9, text width=8\textwidth/9, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A}
+  ]
+  % Draw the length node
+  \node[length node, fill=white] (length) {#1};
+
+  % draw the data node
+  \node[data node, fill=white] (data) {#2};
+
+% Add overbrace for the length
+  \draw [decorate, decoration={brace, amplitude=10pt}] (length.north west) -- (length.north east) 
+  node [above=10pt, midway, font=\small] {length};
+  
+  % Add overbrace for the data
+  \draw [decorate, decoration={brace, amplitude=10pt}] (data.north west) -- (data.north east) 
+  node [above=10pt, midway, font=\small] {data};
+
+\end{tikzpicture}
+\captionof{figure}{#3}
+}
+
 \DefineVerbatimEnvironment{fnverb}{Verbatim}{
   fontfamily=\ttdefault,
   fontshape=\updefault,
@@ -149,6 +223,13 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
     pdfpagemode=FullScreen,
 }
 
+\ExplSyntaxOn
+\NewExpandableDocumentCommand{\numtestTF}{mmm}
+ {% #1 = possibly complex test, #2 = true text, #3 = false text
+  \int_compare:nTF {#1} {#2} {#3}
+ }
+\ExplSyntaxOff
+
 \begin{document}
 \include{TitlePage.tex}
 %% \begin{spacing}{0.0}
@@ -162,6 +243,7 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
 \include{Chapter_Design.tex}
 \include{Chapter_Examples.tex}
 \include{Chapter_PrimaryIOClasses.tex}
+\include{Chapter_OtherIOClasses.tex}
 \include{Chapter_DirectDataTypes.tex}
 \include{Chapter_std_Type_Templates.tex}
 \include{Chapter_Concepts.tex}
