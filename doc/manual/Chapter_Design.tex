@@ -2,8 +2,13 @@
 
 \section{A primary I/O class for each source/sink type}
 The library divides I/O functionality into a primary I/O class
-for a given category of sources/sinks.
+for a given type of source and sink.  For example,
+\hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}} provides
+functions for \texttt{std::istream} sources and \texttt{std::ostream}
+sinks.  Table~\ref{table:PrimaryClassSourceSinkType} lists the primary
+I/O classes and their associated source and sink type.
 
+\begin{table}[H]
 \begin{tabular}{llll}
   \textbf{Primary I/O class} & \textbf{Source type} & \textbf{Sink type} & \textbf{Description} \\ \hline
   \hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}} & \texttt{std::istream \&} & \texttt{std::ostream \&} & references to C++ iostreams \\
@@ -12,6 +17,9 @@ for a given category of sources/sinks.
   \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \texttt{BZFILE *} & \texttt{BZFILE *} & \texttt{BZFILE} created with \texttt{BZ2\_bzopen()}\\
   \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \texttt{gzFile} & \texttt{gzFile} & \texttt{gzFile} created with \texttt{gzopen()} \\
 \end{tabular}
+\caption{Primary I/O class source and sink types}
+\label{table:PrimaryClassSourceSinkType}
+\end{table}
 
 Each of the primary I/O classes provides a set of static functions and
 function templates to read and write data.
@@ -26,7 +34,6 @@ and multi-object variadic interfaces (\texttt{VariadicReadFunc} and
 just call to the single-object interfaces for each object.
 
 \begin{table}[H]
-\label{table:ConceptualInterfaceGeneric}
 \begin{tabular}{l}
   \textbf{Read/write functions (conceptual)} \\ \hline
   \makecell[l]{\texttt{template <typename T>}\\ \texttt{static \textit{\color{red1}ReadReturnType} \& \color{darkblue}{\textit{ReadFunc}}(\textit{\color{green1}SourceType} {\color{green1}source}, T \& t);}} \\
@@ -35,14 +42,13 @@ just call to the single-object interfaces for each object.
   \makecell[l]{\texttt{template <typename... Args>}\\ \texttt{static \textit{\color{red1}WriteReturnType} \textit{\color{darkblue}VariadicWriteFunc}(\textit{\color{green1}SinkType} {\color{green1}sink}, const Args \& ...args);}} \\
 \end{tabular}
 \caption{Conceptual read/write functions in all primary I/O classes}
+\label{table:ConceptualInterfaceGeneric}
 \end{table}
 
 Table~\ref{table:ConceptualInterfaceMapping} maps the generic conceptual
 interface to each of the primary I/O classes.
 
 \begin{table}[H]
-  \caption{Conceptual interface mapping to the primary I/O classes}
-  \label{table:ConceptualInterfaceMapping}
 \begin{tabular}{l|l|l|l|l|l}
   & \multicolumn{5}{c}{\texttt{Dwm} I/O class} \\
   & \texttt{StreamIO} & \texttt{FileIO} & \texttt{DescriptorIO} & \texttt{BZ2IO} & \texttt{GZIO} \\ \hline
@@ -55,16 +61,32 @@ interface to each of the primary I/O classes.
   \texttt{\textit{\color{red1}WriteReturnType}} & \texttt{\color{red1}std::ostream \&} & \texttt{\color{red1}size\_t} & \texttt{\color{red1}ssize\_t} & \texttt{\color{red1}int} & \texttt{\color{red1}int} \\
   \texttt{\textit{\color{green1}SinkType}} & \texttt{\color{green1}std::ostream \&} & \texttt{\color{green1}FILE *} & \texttt{\color{green1}int} & \texttt{\color{green1}BZFILE *} & \texttt{\color{green1}gzFile} \\
 \end{tabular}
+\caption{Conceptual interface mapping to the primary I/O classes}
+\label{table:ConceptualInterfaceMapping}
 \end{table}
 
 \section{Categories of interface overloads in actual implementation}
-\subsection{Regular functions for directly supported types}
-\texttt{read} and \texttt{write} of directly supported types is done
-with regular function overloads.
+There are three categories of overloads in the implementation:
+\begin{itemize}[noitemsep,nolistsep]
+\item Regular functions for directly supported types
+\item Function templates for STL containers and other standard class
+  templates
+\item Function templates for types that meet the conceptual requirements
+  of a given \hyperref[]{primary I/ class}
+\end{itemize}
 
-\subsection{Function templates for STL container and other standard class templates}
-Overloaded function templates are used to read and write types instantiated
-via standard class templates, where the parameter types of the standard
+\subsection{Regular functions for directly supported types}
+Reading and writing of directly supported types is done with regular
+function overloads.  For example, this function from
+\hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}}
+to write a \texttt{uint32\_t} value:
+\begin{verbatim}
+  static std::ostream & Write(std::ostream & os, uint32_t value);
+\end{verbatim}
+
+\subsection{Function templates for STL containers and other standard class templates}
+Overloaded function templates are used to read and write instantiations of
+standard class templates, where the parameter types of the standard
 class templates are either directly supported types, types that meet
 the conceptual requirements of a readable and writable class, or instances
 of supported standard templates using any of the aforementioned types in
@@ -81,6 +103,13 @@ types:
   std::map<uint32_t,std::vector<std::map<uint8_t,std::string>>>
 \end{verbatim}
 
+An example of one such function template from
+\hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}}:
+
+\begin{verbatim}
+    template <typename valueT, size_t N>
+    static std::istream & Read(std::istream & is, std::array<valueT, N> & a)
+\end{verbatim}
 
 \subsection{Function templates for types that meet the conceptual requirements of a given primary I/O class}
 Overloaded function templates with concept requirements are used to read
@@ -88,9 +117,14 @@ and write types that meet the concept requirements.  The concepts required
 for each primary I/O class are listed in
 table~\ref{table:PrimaryIOClassConcepts}.
 
+An example of one such function template from
+\hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}}:
+
+\begin{ttfamily}
+  static std::ostream \& Write(std::ostream \& os, const \hyperlink{concept:HasStreamWrite}{HasStreamWrite} auto \& t)
+\end{ttfamily}
+
 \begin{table}[H]
-\caption{Primary I/O class concepts for user-defined types}
-\label{table:PrimaryIOClassConcepts}
 \begin{tabular}{lll}
   \textbf{\texttt{Dwm} I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
   \hyperref[section:DwmStreamIOClass]{\texttt{StreamIO}} & \hyperlink{concept:HasStreamRead}{\texttt{Dwm::HasStreamRead<T>}} & \hyperlink{concept:HasStreamWrite}{\texttt{Dwm::HasStreamWrite<T>}} \\
@@ -99,10 +133,15 @@ table~\ref{table:PrimaryIOClassConcepts}.
   \hyperref[section:DwmBZ2IOClass]{\texttt{BZ2IO}} & \hyperlink{concept:HasBZRead}{\texttt{Dwm::HasBZRead<T>}} & \hyperlink{concept:HasBZWrite}{\texttt{Dwm::HasBZWrite<T>}} \\
   \hyperref[section:DwmGZIOClass]{\texttt{GZIO}} & \hyperlink{concept:DwmHasGZRead}{\texttt{Dwm::HasGZRead<T>}} & \hyperlink{concept:DwmHasGZWrite}{\texttt{Dwm::HasGZWrite<T>}} \\
 \end{tabular}
+\caption{Primary I/O class concepts for user-defined types}
+\label{table:PrimaryIOClassConcepts}
 \end{table}
 
 \section{\texttt{Dwm::StreamIO} read/write functions}
 \subsection{\texttt{Dwm::StreamIO} conceptual read/write functions}
+Table ~\ref{table:StreamIOConceptualReadWriteFuncs} lists the conceptual
+read and write member functions in \texttt{Dwm::StreamIO}.
+\begin{table}[H]
 \begin{tabular}{ll}
   \textbf{Primary I/O class} & \textbf{Read/write functions (conceptual)} \\ \hline
   \multirow{4}{*}{\hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}}} & \makecell[l]{\texttt{template <typename T>}\\ \texttt{static std::istream \& Read(std::istream \& is, T \& t);}} \\ \cline{2-2}
@@ -110,6 +149,9 @@ table~\ref{table:PrimaryIOClassConcepts}.
   & \makecell[l]{\texttt{template <typename... Args>}\\ \texttt{static std::istream \& ReadV(std::istream \& is, Args \& ...args);}} \\ \cline{2-2}
   & \makecell[l]{\texttt{template <typename... Args>}\\ \texttt{static std::ostream \& WriteV(std::ostream \& os, const Args \& ...args);}} \\ \hline
 \end{tabular}
+\caption{Conceptual read and write member functions in \texttt{Dwm::StreamIO}}
+\label{table:StreamIOConceptualReadWriteFuncs}
+\end{table}
 
 \begin{minipage}{\textwidth}
 Conceptually...

@@ -84,17 +84,26 @@
   \draw[decorate,decoration={brace,raise=2pt,amplitude=1em}] (u64b1.north west) -- node[above=1.1em] {8 bytes, RFC4506} (u64b8.north east);
 \end{tikzpicture}
 
-\subsection{\ttfamily Dwm::SizedLength}
-\noindent\begin{tikzpicture}[node distance=-\pgflinewidth]
-\node[nineTall,align=center,text centered,,fill=blue!10] (ES) {\Large{\ttfamily ES}};
-\node[nineTall,right=of ES] (data1) {\ttfamily data[0]};
-\node[dotdot,right=of data1,text width=.6667\textwidth,align=center,text centered] (dots1) {\linebreak \Large{...}};
-\node[nineTall,right=of dots1] (data2) {\ttfamily data[size]};
-\end{tikzpicture}
+\subsection{\texttt{Dwm::SizedLength} encoding}\label{encoding:DwmSizedLength}
 
-\subsubsection{ES (endian, size) byte}
+\LengthEncodedData{uint8\_t}{\texttt{value}}{\texttt{Dwm::SizedLength} encoding}{Encoding byte}
 
-\SizedLengthExample{{},{},{},{},{},{},{},{}}{}{ES byte}
+\subsubsection{Encoding byte}
+
+\SizedLengthExample{{},{},{},{},{},{},{},{}}{}{Encoding byte}
+
+The encoding byte uses 4 of the available 8 bits.  The \texttt{Endian} bit
+indicates endiannness (0 = little endian, 1 = big endian) of the value that
+follows the encoding byte.  The \texttt{Size} bits indicate the length of
+the value (in bytes) following the encoding byte, minus 1:
+
+  $length\ of\ \texttt{value} = \texttt{Size} + 1$
+
+The remaining bits in the encoding byte are unused.
+
+The \texttt{value} of a \texttt{Dwm::SizedLength} is always written in
+native byte order (typically little-endian).  The read member functions
+of \texttt{Dwm::SizedLength} will convert endianness if needed.
 
 \subsubsection{Examples}
 \SizedLengthExample{1,{},{},{},{},0,0,0}{0xAA}{One byte value \texttt{0xAA}, big-endian.}
@@ -115,7 +124,7 @@
 
 \SizedLengthExample{1,{},{},{},{},1,0,0}{0xAA,0xBB,0xCC,0xDD,0xEE}{Five byte value \texttt{0xAABBCCDDEE}, big-endian.}
 
-\SizedLengthExample{0,{},{},{},{},1,0,0}{0xEE,0xDD,0xCC,0xBB,0xAA}{Five byte value \texttt{0xAABBCCDDEE}, big-endian.}
+\SizedLengthExample{0,{},{},{},{},1,0,0}{0xEE,0xDD,0xCC,0xBB,0xAA}{Five byte value \texttt{0xAABBCCDDEE}, little-endian.}
 
 \SizedLengthExample{1,{},{},{},{},1,0,1}{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF}{Six byte value \texttt{0xAABBCCDDEEFF}, big-endian.}
 
@@ -127,48 +136,83 @@
 
 \SizedLengthExample{1,{},{},{},{},1,1,1}{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF,0x99,0x88}{Eight byte value \texttt{0xAABBCCDDEEFF9988}, big-endian.}
 
-\SizedLengthExample{0,{},{},{},{},1,1,1}{0x88,0x99,0xFF,0xEE,0xDD,0xCC,0xBB,0xAA}{Eight byte value \texttt{0xAABBCCDDEEFF9988}, big-endian.}
+\SizedLengthExample{0,{},{},{},{},1,1,1}{0x88,0x99,0xFF,0xEE,0xDD,0xCC,0xBB,0xAA}{Eight byte value \texttt{0xAABBCCDDEEFF9988}, little-endian.}
     
-\subsection{\ttfamily std::string}
-\LengthEncodedData{uint64\_t}{\texttt{s[0] ... s[length-1]}}{\texttt{std::string} encoding}
+\subsection{\texttt{std::string} encoding}
+\texttt{std::string} is encoded with a 64-bit length field and then
+the characters in the string.
 
-\subsection{\ttfamily std::pair<T1,T2>}
-\noindent%
-\begin{tikzpicture}[node distance=-\pgflinewidth]
-  \node[long] (first) {\linebreak\ttfamily T1};
-  \node[long,right=of first] (second) {\linebreak\ttfamily T2};
-\end{tikzpicture}
+\LengthEncodedData{uint64\_t}{\texttt{s[0] ... s[length-1]}}{\texttt{std::string} encoding}{length}
 
-\subsection{\ttfamily std::vector<T>}
-\LengthEncodedData{uint64\_t}{\texttt{$T_0$  ...  $T_{length-1}$}}{\texttt{std::vector<T>} encoding}
+\dwmNote{The \texttt{length} field is likely to be changed to use
+  \texttt{Dwm::SizedLength} in the future.}
 
-\subsection{\ttfamily std::deque<T>}
-\LengthEncodedData{uint64\_t}{\texttt{$T_0$  ...  $T_{length-1}$}}{\texttt{std::deque<T>} encoding}
+\subsection{\texttt{std::optional<T>} encoding}\label{encoding:stdOptional}
+A \texttt{std::optional<T>} is encoded with a single byte to indicate whether
+or not the value is present, then the value if present.
 
-\subsection{\ttfamily std::list<T>}
-\LengthEncodedData{uint64\_t}{\texttt{$T_0$  ...  $T_{length-1}$}}{\texttt{std::list<T>} encoding}
+\LengthEncodedData{uint8\_t}{\texttt{T}}{\texttt{std::optional<T>} encoding}{value present?}
 
-\subsection{\ttfamily std::map<Key,Value>}
-\LengthEncodedData{uint64\_t}{\texttt{std::pair<Key,Value>$_0$  ...  std::pair<Key,Value>$_{length-1}$}}{\texttt{std::map<Key,Value>} encoding}
-% \msbencoding{std::pair<Key,Value>}{std::pair<Key,Value>}{entries}
+\subsection{\texttt{std::pair<class FirstType, class SecondType>} encoding}\label{encoding:stdPair}
+The encoding of a \texttt{std::pair} is as you'd expect: the first value
+followed by the second value.
 
-\subsection{\ttfamily std::multimap<Key,Value>}
-\msbencoding{std::pair<Key,Value>}{std::pair<Key,Value>}{entries}
+\StdPairData{FirstType}{SecondType}{\texttt{std::pair<class FirstType, class SecondType>} encoding}
 
-\subsection{\ttfamily std::unordered\_map<Key,Value>}
-\msbencoding{std::pair<Key,Value>}{std::pair<Key,Value>}{entries}
+\subsection{\texttt{std::vector<class T>} encoding}\label{encoding:stdVector}
+A \texttt{std::vector} is encoded with a 64-bit \texttt{length} field
+followed by \texttt{length} elements of the \texttt{vector}.
 
-\subsection{\ttfamily std::unordered\_multimap<Key,Value>}
-\msbencoding{std::pair<Key,Value>}{std::pair<Key,Value>}{entries}
+\LengthEncodedData{uint64\_t}{\texttt{$T_0$  ...  $T_{length-1}$}}{\texttt{std::vector<T>} encoding}{length}
 
-\subsection{\ttfamily std::set<T>}
-\msbencoding{T}{T}{entries}
+\dwmNote{The \texttt{length} field is likely to be changed to use
+\texttt{Dwm::SizedLength} encoding in the future.}
 
-\subsection{\ttfamily std::multiset<T>}
-\msbencoding{T}{T}{entries}
+\subsection{\texttt{std::deque<T>} encoding}\label{encoding:stdDeque}
+A \texttt{std::deque} is encoded with a 64-bit \texttt{length} field
+followed by \texttt{length} elements of the \texttt{deque}.
 
-\subsection{\ttfamily std::unordered\_set<T>}
-\msbencoding{T}{T}{entries}
+\LengthEncodedData{uint64\_t}{\texttt{$T_0$  ...  $T_{length-1}$}}{\texttt{std::deque<T>} encoding}{length}
 
-\subsection{\ttfamily std::unordered\_multiset<T>}
-\msbencoding{T}{T}{entries}
+\dwmNote{The \texttt{length} field is likely to be changed to use
+  \texttt{Dwm::SizedLength} in the future.}
+
+\subsection{\texttt{std::list<T>} encoding}\label{encoding:stdList}
+A \texttt{std::list} is encoded with a 64-bit \texttt{length} field
+followed by \texttt{length} elements of the \texttt{list}.
+\LengthEncodedData{uint64\_t}{\texttt{$T_0$  ...  $T_{length-1}$}}{\texttt{std::list<T>} encoding}{length}
+\dwmNote{The \texttt{length} field is likely to be changed to use
+  \texttt{Dwm::SizedLength} in the future.}
+
+\subsection{\texttt{std::map<class KeyType, class ValueType>} encoding}\label{encoding:stdMap}
+A \texttt{std::map} is encoded with a 64-bit \texttt{length} field
+followed by \texttt{length} pairs of (\texttt{KeyType},\texttt{ValueType})
+elements of the \texttt{map}.
+
+\LengthEncodedData{uint64\_t}{\texttt{std::pair<KeyType,ValueType>$_0$  ...  std::pair<KeyType,ValueType>$_{length-1}$}}{\texttt{std::map<KeyType,ValueType>} encoding}{length}
+\dwmNote{The \texttt{length} field is likely to be changed to use
+  \texttt{Dwm::SizedLength} in the future.}
+
+\subsection{\texttt{std::multimap<class KeyType, class ValueType>} encoding}\label{encoding:stdMultimap}
+\LengthEncodedData{uint64\_t}{\texttt{std::pair<KeyType,ValueType>$_0$  ...  std::pair<KeyType,ValueType>$_{length-1}$}}{\texttt{std::multimap<KeyType,ValueType>} encoding}{length}
+\dwmNote{The \texttt{length} field is likely to be changed to use
+  \texttt{Dwm::SizedLength} in the future.}
+
+\subsection{\texttt{std::unordered\_map<class KeyType, class ValueType>} encoding}\label{encoding:stdUnorderedMap}
+\LengthEncodedData{uint64\_t}{\texttt{std::pair<KeyType,ValueType>$_0$  ...  std::pair<KeyType,ValueType>$_{length-1}$}}{\texttt{std::unordered\_map<KeyType,ValueType>} encoding}{length}
+
+\subsection{\texttt{std::unordered\_multimap<class KeyType, class ValueType>} encoding}\label{encoding:stdUnorderedMultimap}
+\LengthEncodedData{uint64\_t}{\texttt{std::pair<Key,Value>$_0$  ...  std::pair<Key,Value>$_{length-1}$}}{\texttt{std::unordered\_multimap<Key,Value>} encoding}{length}
+
+\subsection{\texttt{std::set<class T>} encoding}\label{encoding:stdSet}
+\LengthEncodedData{uint64\_t}{\texttt{T$_0$  ...  T$_{length-1}$}}{\texttt{std::set<T>} encoding}{length}
+
+
+\subsection{\texttt{std::multiset<class T>} encoding}\label{encoding:stdMultiset}
+\LengthEncodedData{uint64\_t}{\texttt{T$_0$  ...  T$_{length-1}$}}{\texttt{std::multiset<T>} encoding}{length}
+
+\subsection{\texttt{std::unordered\_set<class T>} encoding}\label{encoding:stdUnorderedSet}
+\LengthEncodedData{uint64\_t}{\texttt{T$_0$  ...  T$_{length-1}$}}{\texttt{std::unordered\_set<T>} encoding}{length}
+
+\subsection{\texttt{std::unordered\_multiset<class T>} encoding}\label{encoding:stdUnorderedMultiset}
+\LengthEncodedData{uint64\_t}{\texttt{T$_0$  ...  T$_{length-1}$}}{\texttt{std::unordered\_multiset<T>} encoding}{length}

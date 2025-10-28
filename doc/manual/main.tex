@@ -5,6 +5,7 @@
 \usepackage[en-US,showzone]{datetime2}
 \usepackage{fvextra}
 \usepackage{float}
+\usepackage{mdframed}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{listings}
@@ -57,7 +58,7 @@
 \titlecontents{subsubsection}   % Affects subsubsections
 [1em]                    % Left indentation
 {}                       % Space before entry
-{\bfseries}              % Font for numbered subsubsections
+{\bfseries\contentslabel{1em}}              % Font for numbered subsubsections
 {}                       % Font for unnumbered subsubsections
 {\titlerule*[1pc]{.}\contentspage}    % Dot leaders
 {}          
@@ -137,7 +138,7 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
 \newcommand{\conceptfsigpar}[1]{\vspace{.5ex}\begin{itemize}[noitemsep,nolistsep]\item[]\conceptfuncsig{#1}\end{itemize}}
 
 \newcommand{\SizedLengthExample}[3]{
-\centering
+\begin{center}
 \noindent\begin{tikzpicture}[
     start chain = A going right,
     node distance = 0pt, % Ensure no gap between bit nodes
@@ -164,9 +165,9 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
   \draw [decorate, decoration={brace, amplitude=5pt}] (bit-6.north west) -- (bit-8.north east) 
   node [above=5pt, midway, font=\footnotesize] {Size};
 
-  % Add label for the ES byte
+  % Add label for the Encoding byte
   \draw [decorate, decoration={brace, mirror, amplitude=0pt}] (bit-1.south west) -- (bit-8.south east)  
-  node [below=7pt, midway, font=\footnotesize] {ES byte};
+  node [below=7pt, midway, font=\footnotesize] {Encoding byte};
 
   % Draw the byte nodes and indices
   \foreach \byte [count=\i] in {#2} {
@@ -176,10 +177,11 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
   }
 \end{tikzpicture}
 \captionof{figure}{#3}
+\end{center}
 }
 
-\newcommand{\LengthEncodedData}[3]{
-\centering
+\newcommand{\LengthEncodedData}[4]{
+\begin{center}
 \noindent\begin{tikzpicture}[
     start chain = A going right,
     node distance = 0pt, % Ensure no gap between bit nodes
@@ -192,16 +194,36 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
   % draw the data node
   \node[data node, fill=white] (data) {#2};
 
-% Add overbrace for the length
+% Add overbrace labelled with #4
   \draw [decorate, decoration={brace, amplitude=10pt}] (length.north west) -- (length.north east) 
-  node [above=10pt, midway, font=\small] {length};
+  node [above=10pt, midway, font=\small] (ob1) {#4};
   
   % Add overbrace for the data
   \draw [decorate, decoration={brace, amplitude=10pt}] (data.north west) -- (data.north east) 
-  node [above=10pt, midway, font=\small] {data};
+  node [above=10pt, midway, font=\small] (ob2) {data};
 
-\end{tikzpicture}
+\end{tikzpicture}\indent
 \captionof{figure}{#3}
+\end{center}
+}
+
+\newcommand{\StdPairData}[3]{
+\begin{center}
+\noindent\begin{tikzpicture}[
+    start chain = A going right,
+    node distance = 0pt, % Ensure no gap between bit nodes
+    first node/.style = {draw, minimum height=20pt, minimum width=\textwidth/2, text width=\textwidth/2, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A},
+    second node/.style = {draw, minimum height=20pt, minimum width=\textwidth/2, text width=\textwidth/2, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A}
+  ]
+  % Draw the first node
+  \node[first node, fill=white] (length) {#1};
+
+  % draw the second node
+  \node[second node, fill=white] (data) {#2};
+
+\end{tikzpicture}\indent
+\captionof{figure}{#3}
+\end{center}
 }
 
 \DefineVerbatimEnvironment{fnverb}{Verbatim}{
@@ -230,12 +252,20 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
  }
 \ExplSyntaxOff
 
+\newcommand{\dwmNote}[1]{
+  \begin{mdframed}[backgroundcolor=blue!10]
+  \textbf{NOTE:} #1
+  \end{mdframed}
+}
+
 \begin{document}
 \include{TitlePage.tex}
 %% \begin{spacing}{0.0}
 \begingroup
 \renewcommand{\baselinestretch}{1.0}
 \tableofcontents
+\listoffigures
+\listoftables
 \endgroup
 %% \end{spacing}
 

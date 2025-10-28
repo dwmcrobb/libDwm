@@ -1,0 +1,70 @@
+\chapter{Other I/O classes, functions and function templates}
+
+\section{\texttt{Dwm::SizedLength}}
+\texttt{Dwm::SizedLength} represents a \texttt{uint64\_t} value, but
+on the wire is encoded as an encoding byte followed by a variable
+length (1 to 8) sequence of bytes containing the value.  It is a
+typical space/time tradeoff: it requires more time to read or write,
+but saves space on the wire and storage for some common use cases.
+
+Common use cases generally revolve around \texttt{std::size\_t} values
+representing the length of a \texttt{std::string}, the number of elements
+in an STL container (\texttt{vector}, \texttt{map}, et. al.), or the
+return of the \texttt{sizeof} operator.  On a 64-bit platform, you may
+need to accomodate 64-bit length values, but find that all of your values
+are less than $2^{32}$.  Or less than 256.  These are scenarios where
+\texttt{Dwm::SizedLength} may be useful if the space/time tradeoff is
+desired.
+
+See \hyperref[encoding:DwmSizedLength]{\texttt{Dwm::SizedLength} on-the-wire
+encoding} for details on the encoding format.
+
+\section{\texttt{Dwm::IOUtils}}
+
+\section{Endian conversions}
+\subsection{\texttt{template <typename T>\\
+    concept IsEndianSensitiveInteger}}
+True if \texttt{std::is\_integral\_v<T>} and \texttt{sizeof(T)} is 2,
+4 or 8.
+
+Examples:
+\begin{itemize}[noitemsep,nolistsep]
+\item[] \texttt{IsEndianSensitiveInteger<uint64\_t>} $\rightarrow$ \texttt{true}
+\item[] \texttt{IsEndianSensitiveInteger<uint32\_t>} $\rightarrow$ \texttt{true}
+\item[] \texttt{IsEndianSensitiveInteger<uint16\_t>} $\rightarrow$ \texttt{true}
+\item[] \texttt{IsEndianSensitiveInteger<uint8\_t>} $\rightarrow$ \texttt{false}
+\item[] \texttt{IsEndianSensitiveInteger<char>} $\rightarrow$ \texttt{false}
+\item[] \texttt{IsEndianSensitiveInteger<float>} $\rightarrow$ \texttt{false}
+\end{itemize}
+
+\subsection{\texttt{template <typename T>\\
+    requires IsEndianSensitiveInteger<T>\\
+    inline auto BE2Host(T t) $\rightarrow$ T}}
+Returns a \texttt{T} holding the value of \texttt{t} converted from
+big endian (MSB first) byte order to host byte order.  Example:
+\begin{verbatim}
+  uint16_t  x = 0xFF00;
+  uint16_t  y = Dwm::BE2Host(x);
+  // on a little endian machine, y == 0x00FF
+  assert(0x00FF == y);
+\end{verbatim}
+
+\subsection{\texttt{template <typename T>\\
+    requires IsEndianSensitiveInteger<T>\\
+    inline auto Host2BE(T t) $\rightarrow$ T}}
+Returns a \texttt{T} holding the value of \texttt{t} converted from
+host byte order to big-endian (MSB first) byte order.  Example:
+\begin{verbatim}
+  uint32_t  x = 0xAABBCCDD;
+  uint32_t  y = Dwm::Host2BE(x);
+  // on a little endian machine, y == 0xDDCCBBAA
+  assert(0xDDCCBBAA == y);
+\end{verbatim}
+
+\subsection{\texttt{template <typename ...Args>\\
+    requires (IsEndianSensitiveInteger<Args> and ...)\\
+    void BE2Host(Args \& ...args)}}
+
+\subsection{\texttt{template <typename ...Args>\\
+    requires (IsEndianSensitiveInteger<Args> and ...)\\
+    void Host2BE(Args \& ...args)}}

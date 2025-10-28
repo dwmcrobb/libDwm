@@ -51,6 +51,10 @@ primary I/O class.
   \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<T>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<T>}} \\
   \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<T>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<T>}} \\
 \end{tabular}
+\vspace{1ex}
+
+See \hyperref[encoding:stdDeque]{\texttt{std::deque<class T>} encoding} for
+encoding detail.
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -68,6 +72,10 @@ primary I/O class.
   \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<T>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<T>}} \\
   \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<T>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<T>}} \\
 \end{tabular}
+\vspace{1ex}
+
+See \hyperref[encoding:stdList]{\texttt{std::list<class T>} encoding} for
+encoding detail.
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -75,6 +83,7 @@ primary I/O class.
 We can stream any instances of {\ttfamily std::map<KeyType,MappedTypeT>}
 where {\ttfamily KeyType} and {\ttfamily MappedType} satisfy the read and
 write requirements of the desired primary I/O class.
+\vspace{1ex}
 
 \begin{tabular}{lll}
 \textbf{primary I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
@@ -89,6 +98,10 @@ write requirements of the desired primary I/O class.
 \multirow{2}{*}{\hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<KeyType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<KeyType>}} \\
  & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<MappedType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<MappedType>}} \\
 \end{tabular}
+\vspace{1ex}
+
+See \hyperref[encoding:stdMap]{\texttt{std::map<class KeyType,%
+ class MappedType>} encoding} for encoding detail.
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -111,6 +124,10 @@ and write requirements of the desired primary I/O class.
 \multirow{2}{*}{\hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<KeyType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<KeyType>}} \\
  & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<MappedType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<MappedType>}} \\
 \end{tabular}
+\vspace{1ex}
+
+See \hyperref[encoding:stdMultimap]{\texttt{std::multimap<class KeyType,%
+ class MappedType>} encoding} for encoding detail.
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -128,6 +145,10 @@ primary I/O class.
   \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<T>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<T>}} \\
   \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<T>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<T>}} \\
 \end{tabular}
+\vspace{1ex}
+
+See \hyperref[encoding:stdOptional]{\texttt{std::optional<T>} encoding} for
+encoding details.
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -150,6 +171,10 @@ and write concepts of the desired primary I/O class.
 \multirow{2}{*}{\hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<FirstType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<FirstType>}} \\
  & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<SecondType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<SecondType>}} \\
 \end{tabular}
+\vspace{1ex}
+
+See \hyperref[encoding:stdPair]{\texttt{std::pair<class FirstType, class FirstType>} encoding} for
+encoding details.
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -167,6 +192,10 @@ primary I/O class.
   \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<T>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<T>}} \\
   \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<T>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<T>}} \\
 \end{tabular}
+\vspace{1ex}
+
+See \hyperref[encoding:stdSet]{\texttt{std::set<class T>} encoding} for
+encoding details.
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -184,6 +213,9 @@ primary I/O class.
   \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<T>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<T>}} \\
   \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<T>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<T>}} \\
 \end{tabular}
+\vspace{1ex}
+
+See \hyperref[encoding:stdMultiset]{\texttt{std::multiset<class T>} encoding} for encoding detail.
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -218,6 +250,9 @@ and write requirements of the desired primary I/O class.
 \multirow{2}{*}{\hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<KeyType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<KeyType>}} \\
  & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<MappedType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<MappedType>}} \\
 \end{tabular}
+\vspace{1ex}
+
+See \hyperref[encoding:stdUnorderedMap]{\texttt{std::unordered\_map<class class KeyType, class MappedType>} encoding} for encoding detail.
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -241,6 +276,9 @@ and write requirements of the desired primary I/O class.
 \multirow{2}{*}{\hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<KeyType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<KeyType>}} \\
  & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<MappedType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<MappedType>}} \\
 \end{tabular}
+\vspace{1ex}
+
+See \hyperref[encoding:stdUnorderedMultimap]{\texttt{std::unordered\_multimap<class KeyType, class MappedType>} encoding} for encoding detail.
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -258,6 +296,9 @@ primary I/O class.
   \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<T>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<T>}} \\
   \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<T>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<T>}} \\
 \end{tabular}
+\vspace{1ex}
+
+See \hyperref[encoding:stdUnorderedSet]{\texttt{std::unordered\_set<class T>} encoding} for encoding detail.
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -275,6 +316,9 @@ primary I/O class.
   \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<T>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<T>}} \\
   \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<T>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<T>}} \\
 \end{tabular}
+\vspace{1ex}
+
+See \hyperref[encoding:stdUnorderedMultiset]{\texttt{std::unordered\_multiset<class T>} encoding} for encoding detail.
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -292,4 +336,8 @@ primary I/O class.
   \hyperref[section:DwmBZ2IOClass]{\texttt{Dwm::BZ2IO}} & \hyperref[concept:DwmIsBZ2Readable]{\texttt{Dwm::IsBZ2Readable<T>}} & \hyperref[concept:DwmIsBZ2Writable]{\texttt{Dwm::IsBZ2Writable<T>}} \\
   \hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<T>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<T>}} \\
 \end{tabular}
+\vspace{1ex}
+
+See \hyperref[encoding:stdVector]{\texttt{std::vector<class T>} encoding} for
+encoding detail.
 \end{minipage}
