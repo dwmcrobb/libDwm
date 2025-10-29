@@ -84,13 +84,13 @@
   \draw[decorate,decoration={brace,raise=2pt,amplitude=1em}] (u64b1.north west) -- node[above=1.1em] {8 bytes, RFC4506} (u64b8.north east);
 \end{tikzpicture}
 
-\subsection{\texttt{Dwm::SizedLength} encoding}\label{encoding:DwmSizedLength}
+\subsection{\texttt{Dwm::EncodedU64} encoding}\label{encoding:DwmEncodedU64}
 
-\LengthEncodedData{uint8\_t}{\texttt{value}}{\texttt{Dwm::SizedLength} encoding}{Encoding byte}
+\LengthEncodedData{uint8\_t}{\texttt{value}}{\texttt{Dwm::EncodedU64} encoding}{Encoding byte}
 
 \subsubsection{Encoding byte}
 
-\SizedLengthExample{{},{},{},{},{},{},{},{}}{}{Encoding byte}
+\EncodedEightByteUnsignedExample{{},{},{},{},{},{},{},{}}{}{Encoding byte}
 
 The encoding byte uses 4 of the available 8 bits.  The \texttt{Endian} bit
 indicates endiannness (0 = little endian, 1 = big endian) of the value that
@@ -101,43 +101,48 @@ the value (in bytes) following the encoding byte, minus 1:
 
 The remaining bits in the encoding byte are unused.
 
-The \texttt{value} of a \texttt{Dwm::SizedLength} is always written in
+The \texttt{value} of a \texttt{Dwm::EncodedU64} is always written in
 native byte order (typically little-endian).  The read member functions
-of \texttt{Dwm::SizedLength} will convert endianness if needed.
+of \texttt{Dwm::EncodedU64} will convert endianness if needed.
 
 \subsubsection{Examples}
-\SizedLengthExample{1,{},{},{},{},0,0,0}{0xAA}{One byte value \texttt{0xAA}, big-endian.}
+\EncodedEightByteUnsignedExample{1,{},{},{},{},0,0,0}{0xAA}{One byte value \texttt{0xAA}, big-endian.}
 
-\SizedLengthExample{0,{},{},{},{},0,0,0}{0xAA}{One byte value \texttt{0xAA}, little-endian.}
+\EncodedEightByteUnsignedExample{0,{},{},{},{},0,0,0}{0xAA}{One byte value \texttt{0xAA}, little-endian.}
 
-\SizedLengthExample{1,{},{},{},{},0,0,1}{0xAA,0xBB}{Two byte value \texttt{0xAABB}, big-endian.}
+\EncodedEightByteUnsignedExample{1,{},{},{},{},0,0,1}{0xAA,0xBB}{Two byte value \texttt{0xAABB}, big-endian.}
 
-\SizedLengthExample{0,{},{},{},{},0,0,1}{0xBB,0xAA}{Two byte value \texttt{0xAABB}, little-endian.}
+\EncodedEightByteUnsignedExample{0,{},{},{},{},0,0,1}{0xBB,0xAA}{Two byte value \texttt{0xAABB}, little-endian.}
 
-\SizedLengthExample{1,{},{},{},{},0,1,0}{0xAA,0xBB,0xCC}{Three byte value \texttt{0xAABBCC}, big-endian.}
+\EncodedEightByteUnsignedExample{1,{},{},{},{},0,1,0}{0xAA,0xBB,0xCC}{Three byte value \texttt{0xAABBCC}, big-endian.}
 
-\SizedLengthExample{0,{},{},{},{},0,1,0}{0xCC,0xBB,0xAA}{Three byte value \texttt{0xAABBCC}, little-endian.}
+\EncodedEightByteUnsignedExample{0,{},{},{},{},0,1,0}{0xCC,0xBB,0xAA}{Three byte value \texttt{0xAABBCC}, little-endian.}
 
-\SizedLengthExample{1,{},{},{},{},0,1,1}{0xAA,0xBB,0xCC,0xDD}{Four byte value \texttt{0xAABBCCDD}, big-endian.}
+\EncodedEightByteUnsignedExample{1,{},{},{},{},0,1,1}{0xAA,0xBB,0xCC,0xDD}{Four byte value \texttt{0xAABBCCDD}, big-endian.}
 
-\SizedLengthExample{0,{},{},{},{},0,1,1}{0xDD,0xCC,0xBB,0xAA}{Four byte value \texttt{0xAABBCCDD}, little-endian.}
+\EncodedEightByteUnsignedExample{0,{},{},{},{},0,1,1}{0xDD,0xCC,0xBB,0xAA}{Four byte value \texttt{0xAABBCCDD}, little-endian.}
 
-\SizedLengthExample{1,{},{},{},{},1,0,0}{0xAA,0xBB,0xCC,0xDD,0xEE}{Five byte value \texttt{0xAABBCCDDEE}, big-endian.}
+\EncodedEightByteUnsignedExample{1,{},{},{},{},1,0,0}{0xAA,0xBB,0xCC,0xDD,0xEE}{Five byte value \texttt{0xAABBCCDDEE}, big-endian.}
 
-\SizedLengthExample{0,{},{},{},{},1,0,0}{0xEE,0xDD,0xCC,0xBB,0xAA}{Five byte value \texttt{0xAABBCCDDEE}, little-endian.}
+\EncodedEightByteUnsignedExample{0,{},{},{},{},1,0,0}{0xEE,0xDD,0xCC,0xBB,0xAA}{Five byte value \texttt{0xAABBCCDDEE}, little-endian.}
 
-\SizedLengthExample{1,{},{},{},{},1,0,1}{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF}{Six byte value \texttt{0xAABBCCDDEEFF}, big-endian.}
+\EncodedEightByteUnsignedExample{1,{},{},{},{},1,0,1}{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF}{Six byte value \texttt{0xAABBCCDDEEFF}, big-endian.}
 
-\SizedLengthExample{0,{},{},{},{},1,0,1}{0xFF,0xEE,0xDD,0xCC,0xBB,0xAA}{Six byte value \texttt{0xAABBCCDDEEFF}, little-endian.}
+\EncodedEightByteUnsignedExample{0,{},{},{},{},1,0,1}{0xFF,0xEE,0xDD,0xCC,0xBB,0xAA}{Six byte value \texttt{0xAABBCCDDEEFF}, little-endian.}
 
-\SizedLengthExample{1,{},{},{},{},1,1,0}{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF,0x99}{Seven byte value \texttt{0xAABBCCDDEEFF99}, big-endian.}
+\EncodedEightByteUnsignedExample{1,{},{},{},{},1,1,0}{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF,0x99}{Seven byte value \texttt{0xAABBCCDDEEFF99}, big-endian.}
 
-\SizedLengthExample{0,{},{},{},{},1,1,0}{0x99,0xFF,0xEE,0xDD,0xCC,0xBB,0xAA}{Seven byte value \texttt{0xAABBCCDDEEFF99}, little-endian.}
+\EncodedEightByteUnsignedExample{0,{},{},{},{},1,1,0}{0x99,0xFF,0xEE,0xDD,0xCC,0xBB,0xAA}{Seven byte value \texttt{0xAABBCCDDEEFF99}, little-endian.}
 
-\SizedLengthExample{1,{},{},{},{},1,1,1}{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF,0x99,0x88}{Eight byte value \texttt{0xAABBCCDDEEFF9988}, big-endian.}
+\EncodedEightByteUnsignedExample{1,{},{},{},{},1,1,1}{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF,0x99,0x88}{Eight byte value \texttt{0xAABBCCDDEEFF9988}, big-endian.}
 
-\SizedLengthExample{0,{},{},{},{},1,1,1}{0x88,0x99,0xFF,0xEE,0xDD,0xCC,0xBB,0xAA}{Eight byte value \texttt{0xAABBCCDDEEFF9988}, little-endian.}
-    
+\EncodedEightByteUnsignedExample{0,{},{},{},{},1,1,1}{0x88,0x99,0xFF,0xEE,0xDD,0xCC,0xBB,0xAA}{Eight byte value \texttt{0xAABBCCDDEEFF9988}, little-endian.}
+
+\subsection{\texttt{Dwm::EncodedS64} encoding}
+\subsubsection{Encoding byte}
+
+\EncodedEightByteSignedExample{{},{},{},{},{},{},{},{}}{}{Encoding byte}
+  
 \subsection{\texttt{std::string} encoding}
 \texttt{std::string} is encoded with a 64-bit length field and then
 the characters in the string.
@@ -145,7 +150,7 @@ the characters in the string.
 \LengthEncodedData{uint64\_t}{\texttt{s[0] ... s[length-1]}}{\texttt{std::string} encoding}{length}
 
 \dwmNote{The \texttt{length} field is likely to be changed to use
-  \texttt{Dwm::SizedLength} in the future.}
+  \texttt{Dwm::EncodedU64} in the future.}
 
 \subsection{\texttt{std::optional<T>} encoding}\label{encoding:stdOptional}
 A \texttt{std::optional<T>} is encoded with a single byte to indicate whether
@@ -166,7 +171,7 @@ followed by \texttt{length} elements of the \texttt{vector}.
 \LengthEncodedData{uint64\_t}{\texttt{$T_0$  ...  $T_{length-1}$}}{\texttt{std::vector<T>} encoding}{length}
 
 \dwmNote{The \texttt{length} field is likely to be changed to use
-\texttt{Dwm::SizedLength} encoding in the future.}
+\texttt{Dwm::EncodedU64} encoding in the future.}
 
 \subsection{\texttt{std::deque<T>} encoding}\label{encoding:stdDeque}
 A \texttt{std::deque} is encoded with a 64-bit \texttt{length} field
@@ -175,14 +180,14 @@ followed by \texttt{length} elements of the \texttt{deque}.
 \LengthEncodedData{uint64\_t}{\texttt{$T_0$  ...  $T_{length-1}$}}{\texttt{std::deque<T>} encoding}{length}
 
 \dwmNote{The \texttt{length} field is likely to be changed to use
-  \texttt{Dwm::SizedLength} in the future.}
+  \texttt{Dwm::EncodedU64} in the future.}
 
 \subsection{\texttt{std::list<T>} encoding}\label{encoding:stdList}
 A \texttt{std::list} is encoded with a 64-bit \texttt{length} field
 followed by \texttt{length} elements of the \texttt{list}.
 \LengthEncodedData{uint64\_t}{\texttt{$T_0$  ...  $T_{length-1}$}}{\texttt{std::list<T>} encoding}{length}
 \dwmNote{The \texttt{length} field is likely to be changed to use
-  \texttt{Dwm::SizedLength} in the future.}
+  \texttt{Dwm::EncodedU64} in the future.}
 
 \subsection{\texttt{std::map<class KeyType, class ValueType>} encoding}\label{encoding:stdMap}
 A \texttt{std::map} is encoded with a 64-bit \texttt{length} field
@@ -191,12 +196,12 @@ elements of the \texttt{map}.
 
 \LengthEncodedData{uint64\_t}{\texttt{std::pair<KeyType,ValueType>$_0$  ...  std::pair<KeyType,ValueType>$_{length-1}$}}{\texttt{std::map<KeyType,ValueType>} encoding}{length}
 \dwmNote{The \texttt{length} field is likely to be changed to use
-  \texttt{Dwm::SizedLength} in the future.}
+  \texttt{Dwm::EncodedU64} in the future.}
 
 \subsection{\texttt{std::multimap<class KeyType, class ValueType>} encoding}\label{encoding:stdMultimap}
 \LengthEncodedData{uint64\_t}{\texttt{std::pair<KeyType,ValueType>$_0$  ...  std::pair<KeyType,ValueType>$_{length-1}$}}{\texttt{std::multimap<KeyType,ValueType>} encoding}{length}
 \dwmNote{The \texttt{length} field is likely to be changed to use
-  \texttt{Dwm::SizedLength} in the future.}
+  \texttt{Dwm::EncodedU64} in the future.}
 
 \subsection{\texttt{std::unordered\_map<class KeyType, class ValueType>} encoding}\label{encoding:stdUnorderedMap}
 \LengthEncodedData{uint64\_t}{\texttt{std::pair<KeyType,ValueType>$_0$  ...  std::pair<KeyType,ValueType>$_{length-1}$}}{\texttt{std::unordered\_map<KeyType,ValueType>} encoding}{length}

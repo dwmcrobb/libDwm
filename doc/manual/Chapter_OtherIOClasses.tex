@@ -1,7 +1,23 @@
-\chapter{Other I/O classes, functions and function templates}
+\chapter{Other I/O classes, functions and templates}
 
-\section{\texttt{Dwm::SizedLength}}
-\texttt{Dwm::SizedLength} represents a \texttt{uint64\_t} value, but
+\section{\texttt{Dwm::EncodedUnsigned<T>}}
+
+\subsection{\texttt{Dwm::EncodedU64}}
+
+\subsection{\texttt{Dwm::EncodedU32}}
+
+\subsection{\texttt{Dwm::EncodedU16}}
+
+\section{\texttt{Dwm::EncodedSigned<T>}}
+
+\subsection{\texttt{Dwm::EncodedS64}}
+
+\subsection{\texttt{Dwm::EncodedS32}}
+
+\subsection{\texttt{Dwm::EncodedS16}}
+
+\section{\texttt{Dwm::EncodedU64}}
+\texttt{Dwm::EncodedU64} represents a \texttt{uint64\_t} value, but
 on the wire is encoded as an encoding byte followed by a variable
 length (1 to 8) sequence of bytes containing the value.  It is a
 typical space/time tradeoff: it requires more time to read or write,
@@ -13,10 +29,10 @@ in an STL container (\texttt{vector}, \texttt{map}, et. al.), or the
 return of the \texttt{sizeof} operator.  On a 64-bit platform, you may
 need to accomodate 64-bit length values, but find that all of your values
 are less than $2^{32}$.  Or less than 256.  These are scenarios where
-\texttt{Dwm::SizedLength} may be useful if the space/time tradeoff is
+\texttt{Dwm::EncodedU64} may be useful if the space/time tradeoff is
 desired.
 
-See \hyperref[encoding:DwmSizedLength]{\texttt{Dwm::SizedLength} on-the-wire
+See \hyperref[encoding:DwmEncodedU64]{\texttt{Dwm::EncodedU64} on-the-wire
 encoding} for details on the encoding format.
 
 \section{\texttt{Dwm::IOUtils}}
