@@ -1,0 +1,409 @@
+\usepackage{capt-of}
+\usepackage{enumitem}
+\usepackage[en-US,showzone]{datetime2}
+\usepackage{fvextra}
+\usepackage{float}
+\usepackage{mdframed}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage{tabularx}
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{tikz}
+\usetikzlibrary{calc,chains,positioning,shapes,decorations.pathreplacing}
+\usepackage[T1]{fontenc}
+\usepackage[table]{xcolor}
+\usepackage[scaled]{beramono}
+
+% \renewcommand{\ttdefault}{beramono}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+\titleformat{\chapter}[display]
+            {\normalfont\huge\bfseries}
+            {\chaptertitlename~\thechapter}{20pt}{\Huge}
+
+\titlespacing*{\section}{0pt}{1ex}{.1ex}
+\titlespacing*{\chapter}{0pt}{1ex}{.1ex}
+\titlespacing*{\subsection}{0pt}{1ex}{1ex}
+\titlespacing*{\subsubsection}{0pt}{1ex}{1ex}
+
+\titlecontents{chapter}   % Affects chapters
+[0em]                    % Left indentation
+{}                       % Space before entry
+{\bfseries\contentslabel{2.3em}}  % Font for numbered chapters
+{}                       % Font for unnumbered chapters
+{\titlerule*[1pc]{.}\contentspage}    % Dot leaders
+{}          % Page number
+\titlecontents{section}   % Affects sections
+[1em]                    % Left indentation
+{}                       % Space before entry
+{\bfseries\contentslabel{2.3em}}  % Font for numbered sections
+{}                       % Font for unnumbered sections
+{\titlerule*[1pc]{.}\contentspage}    % Dot leaders
+{}          % Page number
+\titlecontents{subsection}   % Affects subsections
+[2.5em]                    % Left indentation
+{}                       % Space before entry
+{\contentslabel{3.3em}}         % Font for numbered subsections
+{}                       % Font for unnumbered subsections
+{\titlerule*[1pc]{.}\contentspage}    % Dot leaders
+{}          % Page number
+\titlecontents{subsubsection}   % Affects subsubsections
+[1em]                    % Left indentation
+{}                       % Space before entry
+{\bfseries\contentslabel{1em}}              % Font for numbered subsubsections
+{}                       % Font for unnumbered subsubsections
+{\titlerule*[1pc]{.}\contentspage}    % Dot leaders
+{}          
+
+\textwidth=6.5in
+\textheight=9.0in
+\oddsidemargin=-0.25in
+\evensidemargin=-0.25in
+\topmargin=-0.25in
+\parskip=1em
+\parindent=0in
+\itemsep=.1ex
+
+% the styles for short and long nodes
+\tikzset{
+short/.style={draw,text height=3pt,text depth=20pt,
+  text width=7pt,align=center,fill=blue!10},
+shortTall/.style={draw,text height=1pt,text depth=36pt,inner sep=1pt,
+  text width=.013888\textwidth, align=center,fill=blue!10},
+long/.style={short,fill=green!10,text width=(\textwidth-64pt)/3},
+nineTall/.style={long,fill=green!10,text width=(\textwidth)/9,
+  align=center,text centered,text depth=20pt,minimum height=36pt,
+  text height=18pt},
+dotdot/.style={fill=white,minimum width=(\textwidth-96pt)/3},
+eightByteEmpty/.style={draw,fill=blue!10,text depth=20pt,text width=96pt,align=center},
+fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text width=48pt,align=center,text centered}}
+
+\makeatletter
+    \let\pgf@decorate@@brace@brace@code@old\pgf@decorate@@brace@brace@code
+    \def\pgf@decorate@@brace@brace@code{
+        \ifdim\pgfdecoratedremainingdistance<4\pgfdecorationsegmentamplitude
+            \pgftransformxscale{\pgfdecoratedremainingdistance/4\pgfdecorationsegmentamplitude}
+            \pgfdecoratedremainingdistance=4\pgfdecorationsegmentamplitude
+        \fi
+        \pgf@decorate@@brace@brace@code@old
+    }
+    \makeatother
+
+% Using Courier font
+% \renewcommand{\ttdefault}{pcr}
+
+\definecolor{dwmOrange}{RGB}{255,127,42}
+\definecolor{codegray}{rgb}{0.7,0.7,0.7}
+\definecolor{codeblue}{rgb}{0.2,0.2,1.0}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.7}
+\definecolor{green1}{RGB}{0,160,0}
+\definecolor{red1}{RGB}{160,0,0}
+\definecolor{numberbg}{rgb}{0.9,0.9,0.2}
+\definecolor{numbercolor}{rgb}{0.2,0.2,1.0}
+\colorlet{mynumberbg}{numberbg!20}
+\colorlet{mynumbercolor}{numbercolor!40}
+
+\lstdefinestyle{mystyle}%
+{basicstyle=\ttfamily,
+ keywordstyle=\ttfamily\color{black},
+ identifierstyle=\ttfamily\color{black},
+ morekeywords={std::string, cout, cin, vector, map, assert},
+ keepspaces=true,
+ showspaces=false,                
+ showstringspaces=false,
+% numberstyle=\sffamily\small\color{codegray},
+ numbers=left,                    
+ numbersep=1em,
+ frame=l,
+ framesep=2em,
+ framexleftmargin=.8em,
+ fillcolor=\color{mynumberbg},
+ rulecolor=\color{mynumberbg},
+ numberstyle=\sffamily\small\color{mynumbercolor}
+}
+
+\lstset{language=C++,
+  style=mystyle
+}
+
+\newcommand{\conceptfuncsig}[1]{{\color{darkblue}\bfseries\ttfamily #1}}
+\newcommand{\conceptfsigpar}[1]{\vspace{.5ex}\begin{itemize}[noitemsep,nolistsep]\item[]\conceptfuncsig{#1}\end{itemize}}
+
+\newcounter{lastbyte}
+
+\newcommand{\EncodedEightByteUnsignedExample}[3]{
+\begin{center}
+\noindent\begin{tikzpicture}[
+    start chain = A going right,
+    node distance = 0pt, % Ensure no gap between bit nodes
+    bit node/.style = {draw, minimum height=20pt, minimum width=\textwidth/72, text width=\textwidth/72, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A},
+    byte node/.style = {draw, minimum height=20pt, minimum width=\dimexpr\textwidth/9\relax, text width=\dimexpr\textwidth/8\relax, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A}
+  ]
+  % Draw the bit nodes and indices
+  \foreach \bit [count=\i] in {#1} {
+    \numtestTF{ 1 < \i < 6 }
+              { \node[bit node, fill=black!20] (bit-\i) {};
+                \node[below=0mm of bit-\i, font=\tiny] {\i}; }
+              { \node[bit node, fill=white,font=\small] (bit-\i) {\bit};
+                \node[below=0mm of bit-\i, font=\tiny] {\i}; }
+  }
+  
+  % Add overbrace for a specific section
+  \draw [decorate, decoration={brace, amplitude=5pt}] (bit-1.north west) -- (bit-1.north east) 
+  node [above=1ex, midway, rotate=270, anchor=east, yshift=.5pt, font=\scriptsize] {endian};
+  
+  % Add overbrace for the rest of the bits
+  \draw [decorate, decoration={brace, amplitude=5pt}] (bit-6.north west) -- (bit-8.north east) 
+  node [above=5pt, midway, font=\scriptsize] {size};
+
+  % Add label for the Encoding byte
+  \draw [decorate, decoration={brace, mirror, amplitude=0pt}] (bit-1.south west) -- (bit-8.south east)  
+  node [below=7pt, midway, font=\scriptsize] {encoding byte};
+
+  % Draw the byte nodes and indices
+  \setcounter{lastbyte}{0}
+  \foreach \byte [count=\i] in {#2} {
+    \node[byte node, fill=white] (byte-\i) {\byte};
+    \node[below=0mm of byte-\i, font=\tiny] {\i};
+    \stepcounter{lastbyte}
+  }
+  % and a label for the byte nodes
+  \ifnum \value{lastbyte} > 0
+    \draw [decorate, decoration={brace, amplitude=5pt}] (byte-1.north west) -- (byte-\thelastbyte.north east)
+    node [above=5pt, midway, font=\scriptsize] {value};
+  \fi
+\end{tikzpicture}
+\captionof{figure}{#3}
+\end{center}
+}
+
+\newcommand{\EncodedEightByteSignedExample}[3]{
+\begin{center}
+\noindent\begin{tikzpicture}[
+    start chain = A going right,
+    node distance = 0pt, % Ensure no gap between bit nodes
+    bit node/.style = {draw, minimum height=20pt, minimum width=\textwidth/72, text width=\textwidth/72, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A},
+    byte node/.style = {draw, minimum height=20pt, minimum width=\dimexpr\textwidth/9\relax, text width=\dimexpr\textwidth/8\relax, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A}
+  ]
+  \def\mybitstring{\texttt{1},{},{},{},{},0,1,0}
+  \def\mybytestring{0xAA,0xBB,0xCC}
+  % Draw the bit nodes and indices
+  \foreach \bit [count=\i] in {#1} {
+    \numtestTF{ 2 < \i < 6 }
+              { \node[bit node, fill=black!20] (bit-\i) {};
+                \node[below=0mm of bit-\i, font=\tiny] {\i}; }
+              { \node[bit node, fill=white,font=\small] (bit-\i) {\bit};
+                \node[below=0mm of bit-\i, font=\tiny] {\i}; }
+  }
+  
+  % Add overbrace for specific sections
+  \draw [decorate, decoration={brace, amplitude=5pt}] (bit-1.north west) -- (bit-1.north east) 
+  node [above=1ex, midway, rotate=270, anchor=east, yshift=.5pt, font=\scriptsize] {endian};
+  \draw [decorate, decoration={brace, amplitude=5pt}] (bit-2.north west) -- (bit-2.north east) 
+  node [above=1ex, midway, rotate=270, anchor=east, yshift=.5pt, font=\scriptsize] {sign};
+  
+  % Add overbrace for the rest of the bits
+  \draw [decorate, decoration={brace, amplitude=5pt}] (bit-6.north west) -- (bit-8.north east) 
+  node [above=5pt, midway, font=\footnotesize] {size};
+
+  % Add label for the Encoding byte
+  \draw [decorate, decoration={brace, mirror, amplitude=0pt}] (bit-1.south west) -- (bit-8.south east)  
+  node [below=7pt, midway, font=\footnotesize] {encoding byte};
+
+  % Draw the byte nodes and indices
+  \setcounter{lastbyte}{0}
+  \foreach \byte [count=\i] in {#2} {
+    \node[byte node, fill=white] (byte-\i) {\byte};
+    \node[below=0mm of byte-\i, font=\tiny] {\i};
+    \stepcounter{lastbyte}
+  }
+  % and a label for the byte nodes
+  \ifnum \value{lastbyte} > 0
+    \draw [decorate, decoration={brace, amplitude=5pt}] (byte-1.north west) -- (byte-\thelastbyte.north east)
+    node [above=5pt, midway, font=\scriptsize] {value};
+  \fi
+\end{tikzpicture}
+\captionof{figure}{#3}
+\end{center}
+}
+
+\newcommand{\EncodedFourByteSignedExample}[3]{
+\begin{center}
+\noindent\begin{tikzpicture}[
+    start chain = A going right,
+    node distance = 0pt, % Ensure no gap between bit nodes
+    bit node/.style = {draw, minimum height=20pt, minimum width=\textwidth/72, text width=\textwidth/72, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A},
+    byte node/.style = {draw, minimum height=20pt, minimum width=\dimexpr\textwidth/9\relax, text width=\dimexpr\textwidth/8\relax, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A}
+  ]
+  % Draw the bit nodes and indices
+  \foreach \bit [count=\i] in {#1} {
+    \numtestTF{ 2 < \i < 7 }
+              { \node[bit node, fill=black!20] (bit-\i) {};
+                \node[below=0mm of bit-\i, font=\tiny] {\i}; }
+              { \node[bit node, fill=white,font=\small] (bit-\i) {\bit};
+                \node[below=0mm of bit-\i, font=\tiny] {\i}; }
+  }
+  
+  % Add overbrace for specific sections
+  \draw [decorate, decoration={brace, amplitude=5pt}] (bit-1.north west) -- (bit-1.north east) 
+  node [above=1ex, midway, rotate=270, anchor=east, yshift=.5pt, font=\scriptsize] {endian};
+  \draw [decorate, decoration={brace, amplitude=5pt}] (bit-2.north west) -- (bit-2.north east) 
+  node [above=1ex, midway, rotate=270, anchor=east, yshift=.5pt, font=\scriptsize] {sign};
+  
+  % Add overbrace for the rest of the bits
+  \draw [decorate, decoration={brace, amplitude=5pt}] (bit-7.north west) -- (bit-8.north east) 
+  node [above=5pt, midway, font=\footnotesize] {size};
+
+  % Add label for the encoding byte
+  \draw [decorate, decoration={brace, mirror, amplitude=0pt}] (bit-1.south west) -- (bit-8.south east)  
+  node [below=7pt, midway, font=\footnotesize] {encoding byte};
+
+  % Draw the byte nodes and indices
+  \setcounter{lastbyte}{0}
+  \foreach \byte [count=\i] in {#2} {
+    \node[byte node, fill=white] (byte-\i) {\byte};
+    \node[below=0mm of byte-\i, font=\tiny] {\i};
+    \stepcounter{lastbyte}
+  }
+  % and a label for the byte nodes
+  \ifnum \value{lastbyte} > 0
+    \draw [decorate, decoration={brace, amplitude=5pt}] (byte-1.north west) -- (byte-\thelastbyte.north east)
+    node [above=5pt, midway, font=\scriptsize] {value};
+  \fi  
+\end{tikzpicture}
+\captionof{figure}{#3}
+\end{center}
+}
+
+\newcommand{\EncodedTwoByteSignedExample}[3]{
+\begin{center}
+\noindent\begin{tikzpicture}[
+    start chain = A going right,
+    node distance = 0pt, % Ensure no gap between bit nodes
+    bit node/.style = {draw, minimum height=20pt, minimum width=\textwidth/72, text width=\textwidth/72, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A},
+    byte node/.style = {draw, minimum height=20pt, minimum width=\dimexpr\textwidth/9\relax, text width=\dimexpr\textwidth/8\relax, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A}
+  ]
+  % Draw the bit nodes and indices
+  \foreach \bit [count=\i] in {#1} {
+    \numtestTF{ 2 < \i < 8 }
+              { \node[bit node, fill=black!20] (bit-\i) {};
+                \node[below=0mm of bit-\i, font=\tiny] {\i}; }
+              { \node[bit node, fill=white,font=\small] (bit-\i) {\bit};
+                \node[below=0mm of bit-\i, font=\tiny] {\i}; }
+  }
+  
+  % Add overbrace for specific sections
+  \draw [decorate, decoration={brace, amplitude=5pt}] (bit-1.north west) -- (bit-1.north east) 
+  node [above=1ex, midway, rotate=270, anchor=east, yshift=.5pt, font=\scriptsize] {endian};
+  \draw [decorate, decoration={brace, amplitude=5pt}] (bit-2.north west) -- (bit-2.north east) 
+  node [above=1ex, midway, rotate=270, anchor=east, yshift=.5pt, font=\scriptsize] {sign};
+  
+  % Add overbrace for the rest of the bits
+  \draw [decorate, decoration={brace, amplitude=5pt}] (bit-8.north west) -- (bit-8.north east) 
+  node [above=5pt, midway, font=\footnotesize] {size};
+
+  % Add label for the encoding byte
+  \draw [decorate, decoration={brace, mirror, amplitude=0pt}] (bit-1.south west) -- (bit-8.south east)  
+  node [below=7pt, midway, font=\footnotesize] {encoding byte};
+
+  % Draw the byte nodes and indices
+  \setcounter{lastbyte}{0}
+  \foreach \byte [count=\i] in {#2} {
+    \node[byte node, fill=white] (byte-\i) {\byte};
+    \node[below=0mm of byte-\i, font=\tiny] {\i};
+    \stepcounter{lastbyte}
+  }
+  % and a label for the byte nodes
+  \ifnum \value{lastbyte} > 0
+    \draw [decorate, decoration={brace, amplitude=5pt}] (byte-1.north west) -- (byte-\thelastbyte.north east)
+    node [above=5pt, midway, font=\scriptsize] {value};
+  \fi  
+\end{tikzpicture}
+\captionof{figure}{#3}
+\end{center}
+}
+
+\newcommand{\LengthEncodedData}[4]{
+\begin{center}
+\noindent\begin{tikzpicture}[
+    start chain = A going right,
+    node distance = 0pt, % Ensure no gap between bit nodes
+    length node/.style = {draw, minimum height=20pt, minimum width=\textwidth/9, text width=\textwidth/9, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A},
+    data node/.style = {draw, minimum height=20pt, minimum width=8\textwidth/9, text width=8\textwidth/9, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A}
+  ]
+  % Draw the length node
+  \node[length node, fill=white] (length) {#1};
+
+  % draw the data node
+  \node[data node, fill=white] (data) {#2};
+
+% Add overbrace labelled with #4
+  \draw [decorate, decoration={brace, amplitude=10pt}] (length.north west) -- (length.north east) 
+  node [above=10pt, midway, font=\small] (ob1) {#4};
+  
+  % Add overbrace for the data
+  \draw [decorate, decoration={brace, amplitude=10pt}] (data.north west) -- (data.north east) 
+  node [above=10pt, midway, font=\small] (ob2) {data};
+
+\end{tikzpicture}\indent
+\captionof{figure}{#3}
+\end{center}
+}
+
+\newcommand{\StdPairData}[3]{
+\begin{center}
+\noindent\begin{tikzpicture}[
+    start chain = A going right,
+    node distance = 0pt, % Ensure no gap between bit nodes
+    first node/.style = {draw, minimum height=20pt, minimum width=\textwidth/2, text width=\textwidth/2, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A},
+    second node/.style = {draw, minimum height=20pt, minimum width=\textwidth/2, text width=\textwidth/2, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A}
+  ]
+  % Draw the first node
+  \node[first node, fill=white] (length) {#1};
+
+  % draw the second node
+  \node[second node, fill=white] (data) {#2};
+
+\end{tikzpicture}\indent
+\captionof{figure}{#3}
+\end{center}
+}
+
+\DefineVerbatimEnvironment{fnverb}{Verbatim}{
+  fontfamily=\ttdefault,
+  fontshape=\updefault,
+  fontseries=bx,
+  breaklines,
+  breakanywhere,
+  breaksymbolleft=,
+  breakindent=0pt
+}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,    
+    urlcolor=cyan,
+    pdftitle={libDwm I/O},
+    pdfpagemode=FullScreen,
+}
+
+\ExplSyntaxOn
+\NewExpandableDocumentCommand{\numtestTF}{mmm}
+ {% #1 = possibly complex test, #2 = true text, #3 = false text
+  \int_compare:nTF {#1} {#2} {#3}
+ }
+\ExplSyntaxOff
+
+\newcommand{\dwmNote}[1]{
+  \begin{mdframed}[backgroundcolor=blue!10]
+  \textbf{NOTE:} #1
+  \end{mdframed}
+}
+
