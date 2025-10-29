@@ -15,6 +15,12 @@ TestDescriptorIO
 TestDescriptorNativeIO
 TestDiff
 TestDirectoryEntry
+TestEncodedSigned16
+TestEncodedSigned32
+TestEncodedSigned64
+TestEncodedUnsigned16
+TestEncodedUnsigned32
+TestEncodedUnsigned64
 TestFileIO
 TestFileLogger
 TestGZIO

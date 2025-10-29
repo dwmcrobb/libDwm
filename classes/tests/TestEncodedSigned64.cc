@@ -60,22 +60,28 @@ using EncodedS64 = EncodedSigned<int64_t>;
 //  EncodedS64 values and the number of bytes we expect to write/read
 //  for each of the values, including the size byte.
 static const pair<EncodedS64,ssize_t>  k_sizedLengths[] = {
-  {0,                       2}, {1,                      2},
-  {-128,                    2}, {127,                    2},
-  {-255,                    2}, {255,                    2},
-  {-32768,                  3}, {32767,                  3},
-  {-65535,                  3}, {65535,                  3},
-  {-8388608,                4}, {8388607,                4},
-  {-2147483648,             5}, {2147483647,             5},
-  {-4294967295,             5}, {4294967295,             5},
-  {-549755813888ll,         6}, {549755813887ll,         6},
-  {-1099511627775ll,        6}, {1099511627775ll,        6},
-  {-140737488355328ll,      7}, {140737488355327ll,      7},
-  {-281474976710655ll,      7}, {281474976710656ll,      7},
-  {-36028797018963968ll,    8}, {36028797018963967ll,    8},
-  {-72057594037927935ll,    8}, {72057594037927936ll,    8},
-  {-9223372036854775807ll,  9}, {9223372036854775807ll,  9},
-  {-18446744073709551615ll, 9}, {18446744073709551615ll, 9}
+  {0,                                             2},
+  {1,                                             2},
+  {-1,                                            2},
+  {std::numeric_limits<int8_t>::min(),            2},
+  {std::numeric_limits<int8_t>::max(),            2},
+  {std::numeric_limits<uint8_t>::max(),           2},
+  {std::numeric_limits<int16_t>::min(),           3},
+  {std::numeric_limits<int16_t>::max(),           3},
+  {std::numeric_limits<uint16_t>::max(),          3},
+  {std::numeric_limits<int32_t>::min()/0x100,     4},
+  {std::numeric_limits<int32_t>::max()/0x100,     4},
+  {std::numeric_limits<int32_t>::min(),           5},
+  {std::numeric_limits<int32_t>::max(),           5},
+  {std::numeric_limits<uint32_t>::max(),          5},
+  {std::numeric_limits<int64_t>::min()/0x1000000, 6},
+  {std::numeric_limits<int64_t>::max()/0x1000000, 6},
+  {std::numeric_limits<int64_t>::min()/0x10000,   7},
+  {std::numeric_limits<int64_t>::max()/0x10000,   7},
+  {std::numeric_limits<int64_t>::min()/0x100,     8},
+  {std::numeric_limits<int64_t>::max()/0x100,     8},
+  {std::numeric_limits<int64_t>::min(),           9},
+  {std::numeric_limits<int64_t>::max(),           9}
 };
 static const size_t  k_numLengths =
   sizeof(k_sizedLengths)/sizeof(k_sizedLengths[0]);
@@ -581,10 +587,8 @@ int main(int argc, char *argv[])
   TestNDescriptorIO();
   TestBZ2IO();
   TestNBZ2IO();
-#if 0
   TestGZIO();
   TestNGZIO();
-#endif
   
   if (Assertions::Total().Failed()) {
     Assertions::Print(cerr, true);

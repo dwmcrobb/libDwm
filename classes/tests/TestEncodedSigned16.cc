@@ -55,11 +55,11 @@ extern "C" {
 using namespace std;
 using namespace Dwm;
 
-using EncodedS32 = EncodedSigned<int32_t>;
+using EncodedS16 = EncodedSigned<int16_t>;
 
-//  EncodedS32 values and the number of bytes we expect to write/read
+//  EncodedS16 values and the number of bytes we expect to write/read
 //  for each of the values, including the size byte.
-static const pair<EncodedS32,ssize_t>  k_sizedLengths[] = {
+static const pair<EncodedS16,ssize_t>  k_sizedLengths[] = {
   {0,                                             2},
   {1,                                             2},
   {-1,                                            2},
@@ -67,12 +67,7 @@ static const pair<EncodedS32,ssize_t>  k_sizedLengths[] = {
   {std::numeric_limits<int8_t>::max(),            2},
   {std::numeric_limits<uint8_t>::max(),           2},
   {std::numeric_limits<int16_t>::min(),           3},
-  {std::numeric_limits<int16_t>::max(),           3},
-  {std::numeric_limits<uint16_t>::max(),          3},
-  {std::numeric_limits<int32_t>::min()/0x100,     4},
-  {std::numeric_limits<int32_t>::max()/0x100,     4},
-  {std::numeric_limits<int32_t>::min(),           5},
-  {std::numeric_limits<int32_t>::max(),           5}
+  {std::numeric_limits<int16_t>::max(),           3}
 };
 static const size_t  k_numLengths =
   sizeof(k_sizedLengths)/sizeof(k_sizedLengths[0]);
@@ -89,7 +84,7 @@ static void TestStreamIO()
     }
   }
   for (size_t i = 0; i < k_numLengths; ++i) {
-    EncodedS32  sizedLength;
+    EncodedS16  sizedLength;
     if (! UnitAssert(sizedLength.Read(ss))) {
       break;
     }
@@ -112,9 +107,9 @@ static void TestRandomStreamIO(size_t numIterations)
   std::uniform_int_distribution<int32_t>  distrib(-0x80000000,0x7FFFFFFF);
   stringstream  ss;
   for (size_t i = 0; i < numIterations; ++i) {
-    EncodedS32  slw = distrib(gen);
+    EncodedS16  slw = distrib(gen);
     if (UnitAssert(slw.Write(ss))) {
-      EncodedS32  slr;
+      EncodedS16  slr;
       if (UnitAssert(slr.Read(ss))) {
         UnitAssert(slr == slw);
       }
@@ -135,7 +130,7 @@ static void TestNStreamIO()
     }
   }
   for (size_t i = 0; i < k_numLengths; ++i) {
-    EncodedS32  sizedLength;
+    EncodedS16  sizedLength;
     if (! UnitAssert(sizedLength.NRead(ss))) {
       break;
     }
@@ -149,7 +144,7 @@ static void TestNStreamIO()
 //----------------------------------------------------------------------------
 static void TestFileIO()
 {
-  FILE *f = fopen("/tmp/EncodedS32TestFileIO","w");
+  FILE *f = fopen("/tmp/EncodedS16TestFileIO","w");
   if (UnitAssert(f)) {
     for (size_t i = 0; i < k_numLengths; ++i) {
       if (! UnitAssert(k_sizedLengths[i].first.Write(f))) {
@@ -157,10 +152,10 @@ static void TestFileIO()
       }
     }
     fclose(f);
-    f = fopen("/tmp/EncodedS32TestFileIO","r");
+    f = fopen("/tmp/EncodedS16TestFileIO","r");
     if (UnitAssert(f)) {
       for (size_t i = 0; i < k_numLengths; ++i) {
-        EncodedS32  sizedLength;
+        EncodedS16  sizedLength;
         if (! UnitAssert(sizedLength.Read(f))) {
           break;
         }
@@ -168,7 +163,7 @@ static void TestFileIO()
       }
       fclose(f);
     }
-    std::remove("/tmp/EncodedS32TestFileIO");
+    std::remove("/tmp/EncodedS16TestFileIO");
   }
   return;
 }
@@ -178,15 +173,15 @@ static void TestFileIO()
 //----------------------------------------------------------------------------
 static void TestRandomFileIO(size_t numIterations)
 {
-  FILE *f = fopen("/tmp/EncodedS32TestRandomFileIO","w");
+  FILE *f = fopen("/tmp/EncodedS16TestRandomFileIO","w");
   if (UnitAssert(f)) {
     std::random_device  rnd;
     std::mt19937  gen(rnd());
     std::uniform_int_distribution<int32_t>
       distrib(-0x80000000ll,0x7FFFFFFFll);
-    std::vector<EncodedS32>  slvec;
+    std::vector<EncodedS16>  slvec;
     for (size_t i = 0; i < numIterations; ++i) {
-      EncodedS32  slw = distrib(gen);
+      EncodedS16  slw = distrib(gen);
       slvec.push_back(slw);
     }
     for (const auto & sl : slvec) {
@@ -195,10 +190,10 @@ static void TestRandomFileIO(size_t numIterations)
       }
     }
     fclose(f);
-    f = fopen("/tmp/EncodedS32TestRandomFileIO","r");
+    f = fopen("/tmp/EncodedS16TestRandomFileIO","r");
     if (UnitAssert(f)) {
       for (size_t i = 0; i < slvec.size(); ++i) {
-        EncodedS32  slr;
+        EncodedS16  slr;
         if (! UnitAssert(slr.Read(f))) {
           break;
         }
@@ -206,7 +201,7 @@ static void TestRandomFileIO(size_t numIterations)
       }
       fclose(f);
     }
-    std::remove("/tmp/EncodedS32TestRandomFileIO");
+    std::remove("/tmp/EncodedS16TestRandomFileIO");
   }
   return;
 }
@@ -216,7 +211,7 @@ static void TestRandomFileIO(size_t numIterations)
 //----------------------------------------------------------------------------
 static void TestNFileIO()
 {
-  FILE *f = fopen("/tmp/EncodedS32TestNFileIO","w");
+  FILE *f = fopen("/tmp/EncodedS16TestNFileIO","w");
   if (UnitAssert(f)) {
     for (size_t i = 0; i < k_numLengths; ++i) {
       if (! UnitAssert(k_sizedLengths[i].first.NWrite(f))) {
@@ -224,10 +219,10 @@ static void TestNFileIO()
       }
     }
     fclose(f);
-    f = fopen("/tmp/EncodedS32TestNFileIO","r");
+    f = fopen("/tmp/EncodedS16TestNFileIO","r");
     if (UnitAssert(f)) {
       for (size_t i = 0; i < k_numLengths; ++i) {
-        EncodedS32  sizedLength;
+        EncodedS16  sizedLength;
         if (! UnitAssert(sizedLength.NRead(f))) {
           break;
         }
@@ -235,7 +230,7 @@ static void TestNFileIO()
       }
       fclose(f);
     }
-    std::remove("/tmp/EncodedS32TestNFileIO");
+    std::remove("/tmp/EncodedS16TestNFileIO");
   }
   return;
 }
@@ -245,9 +240,9 @@ static void TestNFileIO()
 //----------------------------------------------------------------------------
 static void TestDescriptorIO()
 {
-  //  EncodedS32 values and the number of bytes we expect to write/read
+  //  EncodedS16 values and the number of bytes we expect to write/read
   //  for each of the values, including the size byte.
-  int fd = open("/tmp/EncodedS32TestDescriptorIO",
+  int fd = open("/tmp/EncodedS16TestDescriptorIO",
                 O_WRONLY|O_CREAT|O_TRUNC,0644);
   if (UnitAssert(0 <= fd)) {
     uint64_t  totalBytesWritten = 0, totalBytesRead = 0;
@@ -268,10 +263,10 @@ static void TestDescriptorIO()
                       [] (auto && a, auto l) { return a + l.second; });
     UnitAssert(totalBytesWritten == expectedTotalBytes);
     
-    fd = open("/tmp/EncodedS32TestDescriptorIO",O_RDONLY);
+    fd = open("/tmp/EncodedS16TestDescriptorIO",O_RDONLY);
     if (UnitAssert(0 <= fd)) {
       for (size_t i = 0; i < k_numLengths; ++i) {
-        EncodedS32  sizedLength;
+        EncodedS16  sizedLength;
         uint64_t  bytesRead = sizedLength.Read(fd);
         if (! UnitAssert(bytesRead == k_sizedLengths[i].second)) {
           // did not read expected number of bytes
@@ -284,7 +279,7 @@ static void TestDescriptorIO()
       UnitAssert(totalBytesRead == expectedTotalBytes);
       UnitAssert(totalBytesRead == totalBytesWritten);
     }
-    std::remove("/tmp/EncodedS32TestDescriptorIO");
+    std::remove("/tmp/EncodedS16TestDescriptorIO");
   }
   return;
 }
@@ -294,17 +289,17 @@ static void TestDescriptorIO()
 //----------------------------------------------------------------------------
 static void TestRandomDescriptorIO(size_t numIterations)
 {
-  //  EncodedS32 values and the number of bytes we expect to write/read
+  //  EncodedS16 values and the number of bytes we expect to write/read
   //  for each of the values, including the size byte.
-  int fd = open("/tmp/EncodedS32TestDescriptorIO",
+  int fd = open("/tmp/EncodedS16TestDescriptorIO",
                 O_WRONLY|O_CREAT|O_TRUNC,0644);
   if (UnitAssert(0 <= fd)) {
     std::random_device  rnd;
     std::mt19937  gen(rnd());
     std::uniform_int_distribution<uint64_t>  distrib(0,0xFFFFFFFFFFFFFFFFull);
-    std::vector<EncodedS32>  slvec;
+    std::vector<EncodedS16>  slvec;
     for (size_t i = 0; i < numIterations; ++i) {
-      EncodedS32  slw = distrib(gen);
+      EncodedS16  slw = distrib(gen);
       slvec.push_back(slw);
     }
 
@@ -319,10 +314,10 @@ static void TestRandomDescriptorIO(size_t numIterations)
       }
     }
     ::close(fd);
-    fd = open("/tmp/EncodedS32TestDescriptorIO",O_RDONLY);
+    fd = open("/tmp/EncodedS16TestDescriptorIO",O_RDONLY);
     if (UnitAssert(0 <= fd)) {
       for (size_t i = 0; i < slvec.size(); ++i) {
-        EncodedS32  sizedLength;
+        EncodedS16  sizedLength;
         ssize_t  bytesRead = sizedLength.Read(fd);
         if (! UnitAssert(bytesRead > 0)) {
           // did not read expected number of bytes
@@ -334,7 +329,7 @@ static void TestRandomDescriptorIO(size_t numIterations)
       ::close(fd);
       UnitAssert(totalBytesRead == totalBytesWritten);
     }
-    std::remove("/tmp/EncodedS32TestDescriptorIO");
+    std::remove("/tmp/EncodedS16TestDescriptorIO");
   }
   return;
 }
@@ -344,7 +339,7 @@ static void TestRandomDescriptorIO(size_t numIterations)
 //----------------------------------------------------------------------------
 static void TestNDescriptorIO()
 {
-  int fd = open("/tmp/EncodedS32TestNDescriptorIO",
+  int fd = open("/tmp/EncodedS16TestNDescriptorIO",
                 O_WRONLY|O_CREAT|O_TRUNC,0644);
   if (UnitAssert(0 <= fd)) {
     uint64_t  totalBytesWritten = 0, totalBytesRead = 0;
@@ -363,10 +358,10 @@ static void TestNDescriptorIO()
                       [] (auto && a, auto l) { return a + l.second; });
     UnitAssert(totalBytesWritten == expectedTotalBytes);
     
-    fd = open("/tmp/EncodedS32TestNDescriptorIO",O_RDONLY);
+    fd = open("/tmp/EncodedS16TestNDescriptorIO",O_RDONLY);
     if (UnitAssert(0 <= fd)) {
       for (size_t i = 0; i < k_numLengths; ++i) {
-        EncodedS32  sizedLength;
+        EncodedS16  sizedLength;
         uint64_t  bytesRead = sizedLength.NRead(fd);
         if (! UnitAssert(bytesRead == k_sizedLengths[i].second)) {
           // did not read expected number of bytes
@@ -379,7 +374,7 @@ static void TestNDescriptorIO()
       UnitAssert(totalBytesRead == expectedTotalBytes);
       UnitAssert(totalBytesRead == totalBytesWritten);
     }
-    std::remove("/tmp/EncodedS32TestNDescriptorIO");
+    std::remove("/tmp/EncodedS16TestNDescriptorIO");
   }
   return;
 }
@@ -389,7 +384,7 @@ static void TestNDescriptorIO()
 //----------------------------------------------------------------------------
 static void TestBZ2IO()
 {
-  BZFILE  *bzf = BZ2_bzopen("/tmp/EncodedS32TestBZ2IO", "wb");
+  BZFILE  *bzf = BZ2_bzopen("/tmp/EncodedS16TestBZ2IO", "wb");
   if (UnitAssert(bzf)) {
     uint64_t  totalBytesWritten = 0, totalBytesRead = 0;
     for (size_t i = 0; i < k_numLengths; ++i) {
@@ -407,10 +402,10 @@ static void TestBZ2IO()
                       [] (auto && a, auto l) { return a + l.second; });
     UnitAssert(totalBytesWritten == expectedTotalBytes);
     
-    bzf = BZ2_bzopen("/tmp/EncodedS32TestBZ2IO", "rb");
+    bzf = BZ2_bzopen("/tmp/EncodedS16TestBZ2IO", "rb");
     if (UnitAssert(bzf)) {
       for (size_t i = 0; i < k_numLengths; ++i) {
-        EncodedS32  sizedLength;
+        EncodedS16  sizedLength;
         uint64_t  bytesRead = sizedLength.BZRead(bzf);
         if (! UnitAssert(bytesRead == k_sizedLengths[i].second)) {
           // did not read expected number of bytes
@@ -423,7 +418,7 @@ static void TestBZ2IO()
       UnitAssert(totalBytesRead == expectedTotalBytes);
       UnitAssert(totalBytesRead == totalBytesWritten);
     }
-    std::remove("/tmp/EncodedS32TestBZ2IO");
+    std::remove("/tmp/EncodedS16TestBZ2IO");
   }
   return;
 }
@@ -433,7 +428,7 @@ static void TestBZ2IO()
 //----------------------------------------------------------------------------
 static void TestNBZ2IO()
 {
-  BZFILE  *bzf = BZ2_bzopen("/tmp/EncodedS32TestNBZ2IO", "wb");
+  BZFILE  *bzf = BZ2_bzopen("/tmp/EncodedS16TestNBZ2IO", "wb");
   if (UnitAssert(bzf)) {
     uint64_t  totalBytesWritten = 0, totalBytesRead = 0;
     
@@ -451,10 +446,10 @@ static void TestNBZ2IO()
                       [] (auto && a, auto l) { return a + l.second; });
     UnitAssert(expectedTotalBytes == totalBytesWritten);
 
-    bzf = BZ2_bzopen("/tmp/EncodedS32TestNBZ2IO", "rb");
+    bzf = BZ2_bzopen("/tmp/EncodedS16TestNBZ2IO", "rb");
     if (UnitAssert(bzf)) {
       for (size_t i = 0; i < k_numLengths; ++i) {
-        EncodedS32  sizedLength;
+        EncodedS16  sizedLength;
         int  bytesRead = sizedLength.NBZRead(bzf);
         if (! UnitAssert(bytesRead == k_sizedLengths[i].second)) {
           // did not read expected number of bytes
@@ -467,7 +462,7 @@ static void TestNBZ2IO()
       UnitAssert(expectedTotalBytes == totalBytesRead);
       UnitAssert(totalBytesRead == totalBytesWritten);
     }
-    std::remove("/tmp/EncodedS32TestNBZ2IO");
+    std::remove("/tmp/EncodedS16TestNBZ2IO");
   }
   return;
 }
@@ -477,7 +472,7 @@ static void TestNBZ2IO()
 //----------------------------------------------------------------------------
 static void TestGZIO()
 {
-  gzFile  gzf = gzopen("/tmp/EncodedS32TestGZIO", "wb");
+  gzFile  gzf = gzopen("/tmp/EncodedS16TestGZIO", "wb");
   if (UnitAssert(gzf)) {
     uint64_t  totalBytesWritten = 0, totalBytesRead = 0;
     for (size_t i = 0; i < k_numLengths; ++i) {
@@ -495,10 +490,10 @@ static void TestGZIO()
                       [] (auto && a, auto l) { return a + l.second; });
     UnitAssert(totalBytesWritten == expectedTotalBytes);
 
-    gzf = gzopen("/tmp/EncodedS32TestGZIO", "rb");
+    gzf = gzopen("/tmp/EncodedS16TestGZIO", "rb");
     if (UnitAssert(gzf)) {
       for (size_t i = 0; i < k_numLengths; ++i) {
-        EncodedS32  sizedLength;
+        EncodedS16  sizedLength;
         uint64_t  bytesRead = sizedLength.Read(gzf);
         if (! UnitAssert(bytesRead == k_sizedLengths[i].second)) {
           //  did not read expected number of bytes
@@ -511,7 +506,7 @@ static void TestGZIO()
       UnitAssert(totalBytesRead == expectedTotalBytes);
       UnitAssert(totalBytesRead == totalBytesWritten);
     }
-    std::remove("/tmp/EncodedS32TestGZIO");
+    std::remove("/tmp/EncodedS16TestGZIO");
   }
   return;
 }
@@ -521,7 +516,7 @@ static void TestGZIO()
 //----------------------------------------------------------------------------
 static void TestNGZIO()
 {
-  gzFile  gzf = gzopen("/tmp/EncodedS32TestNGZIO", "wb");
+  gzFile  gzf = gzopen("/tmp/EncodedS16TestNGZIO", "wb");
   if (UnitAssert(gzf)) {
     uint64_t  totalBytesWritten = 0, totalBytesRead = 0;
     for (size_t i = 0; i < k_numLengths; ++i) {
@@ -539,10 +534,10 @@ static void TestNGZIO()
                       [] (auto && a, auto l) { return a + l.second; });
     UnitAssert(totalBytesWritten == expectedTotalBytes);
     
-    gzf = gzopen("/tmp/EncodedS32TestNGZIO", "rb");
+    gzf = gzopen("/tmp/EncodedS16TestNGZIO", "rb");
     if (UnitAssert(gzf)) {
       for (size_t i = 0; i < k_numLengths; ++i) {
-        EncodedS32  sizedLength;
+        EncodedS16  sizedLength;
         uint64_t  bytesRead = sizedLength.NRead(gzf);
         if (! UnitAssert(bytesRead == k_sizedLengths[i].second)) {
           //  did not read expected number of bytes
@@ -555,7 +550,7 @@ static void TestNGZIO()
       UnitAssert(totalBytesRead == expectedTotalBytes);
       UnitAssert(totalBytesRead == totalBytesWritten);
     }
-    std::remove("/tmp/EncodedS32TestNGZIO");
+    std::remove("/tmp/EncodedS16TestNGZIO");
   }
   return;
 }
