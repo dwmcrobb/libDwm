@@ -43,6 +43,7 @@
 #define _DWMENDIANNESS_HH_
 
 #include "DwmPortability.hh"
+#include "DwmConcepts.hh"
 
 namespace Dwm {
 
@@ -146,6 +147,18 @@ namespace Dwm {
     return ( h2le(args), ...);
   }
 
+  //--------------------------------------------------------------------------
+  //!  Returns a T whose value is @c t with all bytes reversed.
+  //--------------------------------------------------------------------------
+  template <typename T>
+  requires IsEndianSensitiveInteger<T>
+  [[nodiscard]] inline auto Bswap(T t) -> T
+  {
+    if constexpr (sizeof(t) == 2)      { return bswap16(t); }
+    else if constexpr (sizeof(t) == 4) { return bswap32(t); }
+    else if constexpr (sizeof(t) == 8) { return bswap64(t); }
+  }
+  
 }  // namespace Dwm
 
 #endif  // _DWMENDIANNESS_HH_
