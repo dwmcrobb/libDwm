@@ -44,6 +44,7 @@
 
 extern "C" {
   #include <sys/types.h>
+  #include <unistd.h>
   #include <bzlib.h>
   #include <zlib.h>
 }
