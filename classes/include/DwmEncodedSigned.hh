@@ -48,6 +48,7 @@ extern "C" {
   #include <zlib.h>
 }
 
+#include <algorithm>
 #include <bit>
 #include <cassert>
 #include <cstdint>
