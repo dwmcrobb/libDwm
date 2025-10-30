@@ -50,6 +50,7 @@ extern "C" {
 #include <cstdlib>
 
 #include "DwmBZ2IO.hh"
+#include "DwmEncodedUnsigned.hh"
 #include "DwmPortability.hh"
 #include "DwmXDRUtils.hh"
 
@@ -260,6 +261,28 @@ namespace Dwm {
       }
     }
     return(rc);
+  }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  int BZ2IO::BZWrite(BZFILE *bzf, std::string_view v)
+  {
+    int  rc = -1;
+    if (bzf) {
+      EncodedU64  len = v.size();
+      int  bytesWritten = len.BZWrite(bzf);
+      if (bytesWritten > 1) {
+        rc = bytesWritten;
+        if (BZ2_bzwrite(bzf, (void *)v.data(), v.size()) == v.size()) {
+          rc += bytesWritten;
+        }
+        else {
+          rc = -1;
+        }
+      }
+    }
+    return rc;
   }
   
   //------------------------------------------------------------------------
