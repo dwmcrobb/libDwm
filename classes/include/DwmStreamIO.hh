@@ -413,14 +413,14 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Reads string @c s from @c is.  Returns @c is.
     //!  Strings are length:value encoded, where the length is a 64 bit
-    //!  unsigned integer in network byte order (MSB first).
+    //!  unsigned integer encoded in an EncodedU64.
     //------------------------------------------------------------------------
     static std::istream & Read(std::istream & is, std::string & s);
 
     //------------------------------------------------------------------------
     //!  Reads string @c s from @c is.  Returns @c is.
     //!  Strings are length:value encoded, where the length is a 64 bit
-    //!  unsigned integer in native byte order.
+    //!  unsigned integer encoded in an EncodedU64.
     //------------------------------------------------------------------------
     static std::istream & NRead(std::istream & is, std::string & s);
     
@@ -441,14 +441,15 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Writes @c v to @c os.  Returns @c os.
     //!  string_view objects are length:value encoded, where the length is
-    //!  a 64 bit unsigned integer in network byte order (MSB first).
+    //!  encoded in an EncodedU64.
     //------------------------------------------------------------------------
-    static std::ostream & Write(std::ostream & os, std::string_view v);
+    static inline std::ostream & Write(std::ostream & os, std::string_view v)
+    { return NWrite(os, v); }
 
     //------------------------------------------------------------------------
     //!  Writes @c v to @c os.  Returns @c os.
     //!  string_view objects are length:value encoded, where the length is
-    //!  a 64 bit unsigned integer in native byte order.
+    //!  encoded in an EncodedU64.
     //------------------------------------------------------------------------
     static std::ostream & NWrite(std::ostream & os, std::string_view v);
     
