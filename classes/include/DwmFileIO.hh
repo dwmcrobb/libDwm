@@ -260,6 +260,11 @@ namespace Dwm {
     static size_t Write(FILE * f, const std::string & s);
 
     //------------------------------------------------------------------------
+    //!  Writes @c v to @c f.  Returns 1 on success, 0 on failure.
+    //------------------------------------------------------------------------
+    static size_t Write(FILE * f, std::string_view v);
+    
+    //------------------------------------------------------------------------
     //!  Reads @c t from @c f, where @c t is an enumerated type.  Returns 1
     //!  on success, 0 on failure.  Note this is risky for enumerated types
     //!  whose underlying type is not of fixed size.

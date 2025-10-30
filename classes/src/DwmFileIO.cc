@@ -43,6 +43,7 @@
 #include <cassert>
 
 #include "DwmSysLogger.hh"
+#include "DwmEncodedUnsigned.hh"
 #include "DwmFileIO.hh"
 #include "DwmPortability.hh"
 #include "DwmXDRUtils.hh"
@@ -241,7 +242,22 @@ namespace Dwm {
     }
     return(rc);
   }
-  
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  size_t FileIO::Write(FILE * f, std::string_view v)
+  {
+    size_t  rc = 0;
+    if (f) {
+      EncodedU64  len = v.size();
+      if (Write(f, len)) {
+        rc = fwrite(v.data(), len, 1, f);
+      }
+    }
+    return rc;
+  }
+
   //------------------------------------------------------------------------
   //!  
   //------------------------------------------------------------------------
