@@ -49,6 +49,7 @@ extern "C" {
 #include <cassert>
 
 #include "DwmGZIO.hh"
+#include "DwmEncodedUnsigned.hh"
 #include "DwmPortability.hh"
 #include "DwmXDRUtils.hh"
 
@@ -222,6 +223,28 @@ namespace Dwm {
       }
     }
     return(rc);
+  }
+
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  int GZIO::Write(gzFile gzf, std::string_view v)
+  {
+    int  rc = -1;
+    if (gzf) {
+      EncodedU64  len = v.size();
+      int  bytesWritten = len.Write(gzf);
+      if (bytesWritten > 1) {
+        rc = bytesWritten;
+        if (gzwrite(gzf, (void *)v.data(), v.size()) == v.size()) {
+          rc += v.size();
+        }
+        else {
+          rc = -1;
+        }
+      }
+    }
+    return rc;
   }
   
   //------------------------------------------------------------------------

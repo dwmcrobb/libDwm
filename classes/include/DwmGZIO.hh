@@ -283,6 +283,14 @@ namespace Dwm {
     static int Write(gzFile gzf, const std::string & s);
 
     //------------------------------------------------------------------------
+    //!  Writes @c v to @c gzf.  Returns the number of bytes written on
+    //!  success, -1 on failure.  Note that an EncodedU64 is written first,
+    //!  holding the length of the string.  Hence, on success this will
+    //!  always return a value of 2 or greater.
+    //------------------------------------------------------------------------
+    static int Write(gzFile gzf, std::string_view v);
+
+    //------------------------------------------------------------------------
     //!  Reads \c t from \c gzf, where \c t is an enumerated type.  Returns
     //!  the number of bytes read on success, -1 on failure.  Note this
     //!  should only be used with enumerated types whose underlying type is
