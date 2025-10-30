@@ -531,9 +531,9 @@ namespace Dwm {
     
     //------------------------------------------------------------------------
     //!  Writes @c v to @c fd.  Returns the number of bytes written on
-    //!  success, -1 on failure.  Note that a 64-bit value is written first,
-    //!  holding the length of the string.  Hence, on success this will
-    //!  always return a value of 8 or greater.
+    //!  success, -1 on failure.  Note that an EncodedU64 is written first,
+    //!  holding the size of the string_view.  Hence, on success this will
+    //!  always return a value of 2 or greater.
     //------------------------------------------------------------------------
     static ssize_t Write(int fd, std::string_view v);
     
