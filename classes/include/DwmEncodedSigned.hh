@@ -401,8 +401,8 @@ namespace Dwm {
     { return Read(gzf); }
     
     //------------------------------------------------------------------------
-    //!  Returns the size of the type we'll need to use when writing the
-    //!  value, in bytes (1, 2, 4 or 8).
+    //!  Returns the number of bytes we'll write for the current value
+    //!  (not including the encoding byte).
     //------------------------------------------------------------------------
     uint8_t SizeFromValue() const
     {
