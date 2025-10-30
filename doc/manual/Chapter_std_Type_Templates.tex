@@ -79,12 +79,13 @@ encoding detail.
 \end{minipage}
 
 \begin{minipage}{\textwidth}
-\section{\ttfamily std::map<class KeyType, class MappedType>}
+\section{\ttfamily std::map<KeyType,MappedType>}
 We can stream any instances of {\ttfamily std::map<KeyType,MappedTypeT>}
 where {\ttfamily KeyType} and {\ttfamily MappedType} satisfy the read and
 write requirements of the desired primary I/O class.
 \vspace{1ex}
 
+\begin{small}
 \begin{tabular}{lll}
 \textbf{primary I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
 \multirow{2}{*}{\hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}}} & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<KeyType>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<KeyType>}} \\
@@ -98,6 +99,7 @@ write requirements of the desired primary I/O class.
 \multirow{2}{*}{\hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<KeyType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<KeyType>}} \\
  & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<MappedType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<MappedType>}} \\
 \end{tabular}
+\end{small}
 \vspace{1ex}
 
 See \hyperref[encoding:stdMap]{\texttt{std::map<class KeyType,%
@@ -105,12 +107,13 @@ See \hyperref[encoding:stdMap]{\texttt{std::map<class KeyType,%
 \end{minipage}
 
 \begin{minipage}{\textwidth}
-\section{\ttfamily std::multimap<class KeyType, class MappedType>}
-We can stream any instances of {\ttfamily std::multimap<KeyType,MappedTypeT>}
+\section{\ttfamily std::multimap<KeyType,MappedType>}
+We can stream any instances of {\ttfamily std::multimap<KeyType,MappedType>}
 where {\ttfamily KeyType} and {\ttfamily MappedType} satisfy the read
 and write requirements of the desired primary I/O class.
 \vspace{1ex}
 
+\begin{small}
 \begin{tabular}{lll}
 \textbf{primary I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
 \multirow{2}{*}{\hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}}} & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<KeyType>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<KeyType>}} \\
@@ -124,6 +127,7 @@ and write requirements of the desired primary I/O class.
 \multirow{2}{*}{\hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<KeyType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<KeyType>}} \\
  & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<MappedType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<MappedType>}} \\
 \end{tabular}
+\end{small}
 \vspace{1ex}
 
 See \hyperref[encoding:stdMultimap]{\texttt{std::multimap<class KeyType,%
@@ -158,6 +162,7 @@ where \texttt{FirstType} and \texttt{SecondType} satisfy the read
 and write concepts of the desired primary I/O class.
 \vspace{1ex}
 
+\begin{small}
 \begin{tabular}{lll}
 \textbf{primary I/O class} & \textbf{Read concept} & \textbf{Write concept} \\ \hline
 \multirow{2}{*}{\hyperref[section:DwmStreamIOClass]{\texttt{Dwm::StreamIO}}} & \hyperref[concept:DwmIsStreamReadable]{\texttt{Dwm::IsStreamReadable<FirstType>}} & \hyperref[concept:DwmIsStreamWritable]{\texttt{Dwm::IsStreamWritable<FirstType>}} \\
@@ -171,6 +176,7 @@ and write concepts of the desired primary I/O class.
 \multirow{2}{*}{\hyperref[section:DwmGZIOClass]{\texttt{Dwm::GZIO}}} & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<FirstType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<FirstType>}} \\
  & \hyperref[concept:DwmIsGZReadable]{\texttt{Dwm::IsGZReadable<SecondType>}} & \hyperref[concept:DwmIsGZWritable]{\texttt{Dwm::IsGZWritable<SecondType>}} \\
 \end{tabular}
+\end{small}
 \vspace{1ex}
 
 See \hyperref[encoding:stdPair]{\texttt{std::pair<class FirstType, class FirstType>} encoding} for

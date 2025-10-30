@@ -1,22 +1,24 @@
 \chapter{Other I/O classes, functions and templates}
 
-\section{\texttt{Dwm::EncodedUnsigned<T>}}
+\section{\texttt{Dwm::EncodedUnsigned<T>}}\label{classtmpl:EncodedUnsigned}
+\begin{minipage}{\linewidth}
+\texttt{Dwm::EncodedUnsigned<T>} is a class template for encoding
+and decoding unsigned integers of 16, 32 and 64 bits.  The class
+template automatically handles endian conversions as needed when
+when writing and reading values of these types.
+\vspace{1ex}
 
-\subsection{\texttt{Dwm::EncodedU64}}
+Three class template instantiations are provided:
+\vspace{1ex}
 
-\subsection{\texttt{Dwm::EncodedU32}}
+\begin{itemize}[noitemsep,nolistsep]
+\item[] \hyperref[class:EncodedU64]{\texttt{Dwm::EncodedU64}} $\rightarrow$ \texttt{Dwm::EncodedUnsigned<uint64\_t>}
+\item[] \hyperref[class:EncodedU32]{\texttt{Dwm::EncodedU32}} $\rightarrow$ \texttt{Dwm::EncodedUnsigned<uint32\_t>}
+\item[] \hyperref[class:EncodedU16]{\texttt{Dwm::EncodedU16}} $\rightarrow$ \texttt{Dwm::EncodedUnsigned<uint16\_t>}
+\end{itemize}
+\end{minipage}
 
-\subsection{\texttt{Dwm::EncodedU16}}
-
-\section{\texttt{Dwm::EncodedSigned<T>}}
-
-\subsection{\texttt{Dwm::EncodedS64}}
-
-\subsection{\texttt{Dwm::EncodedS32}}
-
-\subsection{\texttt{Dwm::EncodedS16}}
-
-\section{\texttt{Dwm::EncodedU64}}
+\subsection{\texttt{Dwm::EncodedU64}}\label{class:EncodedU64}
 \texttt{Dwm::EncodedU64} represents a \texttt{uint64\_t} value, but
 on the wire is encoded as an encoding byte followed by a variable
 length (1 to 8) sequence of bytes containing the value.  It is a
@@ -32,14 +34,101 @@ are less than $2^{32}$.  Or less than 256.  These are scenarios where
 \texttt{Dwm::EncodedU64} may be useful if the space/time tradeoff is
 desired.
 
-See \hyperref[encoding:DwmEncodedU64]{\texttt{Dwm::EncodedU64} on-the-wire
-encoding} for details on the encoding format.
+See \hyperref[encoding:DwmEncodedU64]{\texttt{Dwm::EncodedU64}
+ encoding} for details on the encoding format.
+
+\subsection{\texttt{Dwm::EncodedU32}}\label{class:EncodedU32}
+\texttt{Dwm::EncodedU32} represents a \texttt{uint32\_t} value, but
+on the wire is encoded as an encoding byte followed by a variable
+length (1 to 4) sequence of bytes containing the value.  It is a
+typical space/time tradeoff: it requires more time to read or write,
+but may save space on the wire and storage for some common use cases
+and also automatically handles endian conversion when reading and
+writing.
+
+See \hyperref[encoding:DwmEncodedU32]{\texttt{Dwm::EncodedU32}
+ encoding} for details on the encoding format.
+
+\subsection{\texttt{Dwm::EncodedU16}}\label{class:EncodedU16}
+\texttt{Dwm::EncodedU16} represents a \texttt{uint16\_t} value, but
+on the wire is encoded as an encoding byte followed by a variable
+length (1 to 2) sequence of bytes containing the value.
+
+Unlike \hyperref[class:EncodedU32]{\texttt{Dwm::EncodedU32}} and
+\hyperref[class:EncodedU64]{\texttt{Dwm::EncodedU64}}, no bandwidth
+is saved versus using \texttt{uint16\_t}: at least 2 bytes are
+always written or read (1 byte for encoding and at least 1 byte
+for the value).  The only reason to use this class versus
+\texttt{uint16\_t} when reading and writing \texttt{uint16\_t}
+values is the automatic endian convrsion handling.
+
+See \hyperref[encoding:DwmEncodedU16]{\texttt{Dwm::EncodedU16}
+ encoding} for details on the encoding format.
+
+\section{\texttt{Dwm::EncodedSigned<T>}}\label{classtmpl:EncodedSigned}
+\texttt{Dwm::EncodedSigned<T>} is a class template for encoding
+and decoding signed integers of 16, 32 and 64 bits.  The class
+template automatically handles endian conversions as needed when
+when writing and reading values of these types.
+\vspace{1ex}
+
+Three class template instantiations are provided:
+\vspace{1ex}
+
+\begin{itemize}[noitemsep,nolistsep]
+\item[] \hyperref[class:EncodedS64]{\texttt{Dwm::EncodedS64}} $\rightarrow$ \texttt{Dwm::EncodedSigned<int64\_t>}
+\item[] \hyperref[class:EncodedS32]{\texttt{Dwm::EncodedS32}} $\rightarrow$ \texttt{Dwm::EncodedSigned<int32\_t>}
+\item[] \hyperref[class:EncodedS16]{\texttt{Dwm::EncodedS16}} $\rightarrow$ \texttt{Dwm::EncodedSigned<int16\_t>}
+\end{itemize}
+
+\subsection{\texttt{Dwm::EncodedS64}}\label{class:EncodedS64}
+\texttt{Dwm::EncodedS64} represents an \texttt{int64\_t} value, but
+on the wire is encoded as an encoding byte followed by a variable
+length (1 to 8) sequence of bytes containing the value.  It is a
+typical space/time tradeoff: it requires more time to read or write,
+but saves space on the wire and storage for some common use cases.
+It also automatically handles endian conversion when reading and
+writing.
+
+See \hyperref[encoding:DwmEncodedS64]{\texttt{Dwm::EncodedS64}
+ encoding} for details on the encoding format.
+
+\subsection{\texttt{Dwm::EncodedS32}}\label{class:EncodedS32}
+\texttt{Dwm::EncodedS32} represents an \texttt{int32\_t} value, but
+on the wire is encoded as an encoding byte followed by a variable
+length (1 to 4) sequence of bytes containing the value.  It is a
+typical space/time tradeoff: it requires more time to read or write,
+but may save space on the wire and storage for some common use cases
+and also automatically handles endian conversion when reading and
+writing.
+
+See \hyperref[encoding:DwmEncodedS32]{\texttt{Dwm::EncodedS32}
+ encoding} for details on the encoding format.
+
+\subsection{\texttt{Dwm::EncodedS16}}\label{class:EncodedS16}
+\texttt{Dwm::EncodedS16} represents an \texttt{int16\_t} value, but on
+the wire is encoded as an encoding byte followed by a variable length
+(1 to 2) sequence of bytes containing the value.  It automatically
+handles endian conversion when reading and writing.  Writes are always
+done in native endian format.  Reads will automatically convert to
+native endian format.
+
+Unlike \hyperref[class:EncodedS32]{\texttt{Dwm::EncodedS32}} and
+\hyperref[class:EncodedS64]{\texttt{Dwm::EncodedS64}}, no bandwidth
+is saved versus using \texttt{int16\_t}: at least 2 bytes are
+always written or read (1 byte for encoding and at least 1 byte
+for the value).  The only reason to use this class versus
+\texttt{int16\_t} when reading and writing \texttt{int16\_t}
+values is the automatic endian convrsion handling.
+
+See \hyperref[encoding:DwmEncodedS16]{\texttt{Dwm::EncodedS16}
+ encoding} for details on the encoding format.
+
 
 \section{\texttt{Dwm::IOUtils}}
 
 \section{Endian conversions}
-\subsection{\texttt{template <typename T>\\
-    concept IsEndianSensitiveInteger}}
+\subsection{\texttt{template <typename T>\newline concept IsEndianSensitiveInteger}}
 True if \texttt{std::is\_integral\_v<T>} and \texttt{sizeof(T)} is 2,
 4 or 8.
 

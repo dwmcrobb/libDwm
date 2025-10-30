@@ -35,13 +35,13 @@
 
 \section{On-the-wire formats, network byte order (MSB first)}
 
-\subsection{16 bit integral types ({\ttfamily int16\_t}, {\ttfamily uint16\_t})}
+\subsection{16 bit integral type ({\ttfamily int16\_t}, {\ttfamily uint16\_t}) encoding}
 \noindent\begin{tikzpicture}[node distance=-\pgflinewidth]                                                                   
 \node[short] (u16msb) {\rotatebox{270}{\ttfamily MSB}};
 \node[short,right=of u16msb] (u16lsb) {\rotatebox{270}{\ttfamily LSB}};
 \end{tikzpicture}                                                                                                            
 
-\subsection{32 bit integral types ({\ttfamily int32\_t}, {\ttfamily uint32\_t})}
+\subsection{32 bit integral type ({\ttfamily int32\_t}, {\ttfamily uint32\_t}) encoding}
 \noindent\begin{tikzpicture}[node distance=-\pgflinewidth]                                                                   
 \node[short] (u32b1) {\rotatebox{270}{\ttfamily MSB}};
 \node[short,right=of u32b1] (u32b2) {};
@@ -49,7 +49,7 @@
 \node[short,right=of u32b3] (u32b4) {\rotatebox{270}{\ttfamily LSB}};
 \end{tikzpicture}                                                                                                            
 
-\subsection{64 bit integral types ({\ttfamily int64\_t}, {\ttfamily uint64\_t})}
+\subsection{64 bit integral type ({\ttfamily int64\_t}, {\ttfamily uint64\_t}) encoding}
 \noindent\begin{tikzpicture}[node distance=-\pgflinewidth]                                                                   
 \node[short] (u64b1) {\rotatebox{270}{\ttfamily MSB}};
 \node[short,right=of u64b1] (u64b2) {};
@@ -61,7 +61,7 @@
 \node[short,right=of u64b7] (u64b8) {\rotatebox{270}{\ttfamily LSB}};
 \end{tikzpicture}                                                                                                            
 
-\subsection{\ttfamily float}
+\subsection{\texttt{float} encoding}
 \noindent\begin{tikzpicture}[node distance=-\pgflinewidth]                                                                   
 \node[short] (u32b1) {};
 \node[short,right=of u32b1] (u32b2) {};
@@ -70,7 +70,7 @@
   \draw[decorate,decoration={brace,raise=2pt,amplitude=1em}] (u32b1.north west) -- node[above=1.1em] {4 bytes, RFC4506} (u32b4.north east);
 \end{tikzpicture}                                                                                                            
 
-\subsection{\ttfamily double}
+\subsection{\texttt{double} encoding}
 \noindent
 \begin{tikzpicture}[node distance=-\pgflinewidth]
   \node[short] (u64b1) {};
@@ -84,79 +84,375 @@
   \draw[decorate,decoration={brace,raise=2pt,amplitude=1em}] (u64b1.north west) -- node[above=1.1em] {8 bytes, RFC4506} (u64b8.north east);
 \end{tikzpicture}
 
-\subsection{\texttt{Dwm::EncodedU64} encoding}\label{encoding:DwmEncodedU64}
+\section{Encoded integral classes}
 
-\LengthEncodedData{uint8\_t}{\texttt{value}}{\texttt{Dwm::EncodedU64} encoding}{Encoding byte}
+\subsection{\texttt{Dwm::EncodedU64} encoding}\label{encoding:DwmEncodedU64}
+\hyperref[class:EncodedU64]{\texttt{Dwm::EncodedU64}} is encoded with
+an encoding byte followed by one to eight bytes representing an
+unsigned 64-bit integer value.
+
+\EncodedEightByteUnsignedOverview{{},{},{},{},{},{},{},{}}{value (\texttt{size}+1 bytes)}{$byte_0$}{$byte_{size}$}{Dwm::EncodedU64 encoding}
 
 \subsubsection{Encoding byte}
 
-\EncodedEightByteUnsignedExample{{},{},{},{},{},{},{},{}}{}{Encoding byte}
+% \EncodedEightByteUnsignedExample{{},{},{},{},{},{},{},{}}{}{Encoding byte}
 
-The encoding byte uses 4 of the available 8 bits.  The \texttt{Endian} bit
-indicates endiannness (0 = little endian, 1 = big endian) of the value that
-follows the encoding byte.  The \texttt{Size} bits indicate the length of
-the value (in bytes) following the encoding byte, minus 1:
+Four of the eight bits of the encoding byte are utilized.
+Table~\ref{table:EncodedU64EndianBit} shows the meaning of the
+\texttt{endian} bit.
 
-  $length\ of\ \texttt{value} = \texttt{Size} + 1$
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{endian} & \textbf{description} \\ \hline
+  0 & \texttt{value} is in little-endian format \\ \hline
+  1 & \texttt{value} is in big-endian format \\
+\end{tabular}
+\caption{Meaning of endian bit in \texttt{Dwm::EncodedU64} encoding byte}
+\label{table:EncodedU64EndianBit}
+\end{center}
+\end{table}
+
+The \texttt{size} bits indicate the length of the value (in bytes)
+following the encoding byte, minus 1:
+
+  $length\ of\ \texttt{value} = \texttt{size} + 1$
+
+Table~\ref{table:EncodedU64SizeBits} shows the translation from
+\texttt{size} to/from the length of the value.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{r|l|l|l|l|l|l|l|l}
+  \textbf{\texttt{size}} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+  \textbf{length of value (bytes)} & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+\end{tabular}
+\end{center}
+\caption{meaning of size bits in \texttt{Dwm::EncodedU64} encoding byte}
+\label{table:EncodedU64SizeBits}
+\end{table}
 
 The remaining bits in the encoding byte are unused.
 
-The \texttt{value} of a \texttt{Dwm::EncodedU64} is always written in
-native byte order (typically little-endian).  The read member functions
-of \texttt{Dwm::EncodedU64} will convert endianness if needed.
+The \texttt{value} of a
+\hyperref[class:EncodedU64]{\texttt{Dwm::EncodedU64}} is always
+written in native byte order (typically little-endian).  The read
+member functions of
+\hyperref[class:EncodedU64]{\texttt{Dwm::EncodedU64}} will convert
+endianness if needed.
 
 \subsubsection{Examples}
-\EncodedEightByteUnsignedExample{1,{},{},{},{},0,0,0}{0xAA}{One byte value \texttt{0xAA}, big-endian.}
+\begin{minipage}{\textwidth}
+\EncodedEightByteUnsignedExample{1,{},{},{},{},0,0,0}{0xAA}{\texttt{Dwm::EncodedU64} example: value \texttt{0xAA}, big-endian.}
+\end{minipage}
 
-\EncodedEightByteUnsignedExample{0,{},{},{},{},0,0,0}{0xAA}{One byte value \texttt{0xAA}, little-endian.}
+\begin{minipage}{\textwidth}
+\EncodedEightByteUnsignedExample{0,{},{},{},{},0,0,0}{0xAA}{\texttt{Dwm::EncodedU64} example: value \texttt{0xAA}, little-endian.}
+\end{minipage}
 
-\EncodedEightByteUnsignedExample{1,{},{},{},{},0,0,1}{0xAA,0xBB}{Two byte value \texttt{0xAABB}, big-endian.}
+\begin{minipage}{\textwidth}
+\EncodedEightByteUnsignedExample{1,{},{},{},{},0,0,1}{0xAA,0xBB}{\texttt{Dwm::EncodedU64} example: value \texttt{0xAABB}, big-endian.}
+\end{minipage}
 
-\EncodedEightByteUnsignedExample{0,{},{},{},{},0,0,1}{0xBB,0xAA}{Two byte value \texttt{0xAABB}, little-endian.}
+\begin{minipage}{\textwidth}
+\EncodedEightByteUnsignedExample{0,{},{},{},{},0,0,1}{0xBB,0xAA}{\texttt{Dwm::EncodedU64} example: value \texttt{0xAABB}, little-endian.}
+\end{minipage}
 
-\EncodedEightByteUnsignedExample{1,{},{},{},{},0,1,0}{0xAA,0xBB,0xCC}{Three byte value \texttt{0xAABBCC}, big-endian.}
+\begin{minipage}{\textwidth}
+\EncodedEightByteUnsignedExample{1,{},{},{},{},0,1,0}{0xAA,0xBB,0xCC}{\texttt{Dwm::EncodedU64} example: value \texttt{0xAABBCC}, big-endian.}
+\end{minipage}
 
-\EncodedEightByteUnsignedExample{0,{},{},{},{},0,1,0}{0xCC,0xBB,0xAA}{Three byte value \texttt{0xAABBCC}, little-endian.}
+\begin{minipage}{\textwidth}
+\EncodedEightByteUnsignedExample{0,{},{},{},{},0,1,0}{0xCC,0xBB,0xAA}{\texttt{Dwm::EncodedU64} example: value \texttt{0xAABBCC}, little-endian.}
+\end{minipage}
 
-\EncodedEightByteUnsignedExample{1,{},{},{},{},0,1,1}{0xAA,0xBB,0xCC,0xDD}{Four byte value \texttt{0xAABBCCDD}, big-endian.}
+\begin{minipage}{\textwidth}
+\EncodedEightByteUnsignedExample{1,{},{},{},{},0,1,1}{0xAA,0xBB,0xCC,0xDD}{\texttt{Dwm::EncodedU64} example: value \texttt{0xAABBCCDD}, big-endian.}
+\end{minipage}
 
-\EncodedEightByteUnsignedExample{0,{},{},{},{},0,1,1}{0xDD,0xCC,0xBB,0xAA}{Four byte value \texttt{0xAABBCCDD}, little-endian.}
+\begin{minipage}{\textwidth}
+\EncodedEightByteUnsignedExample{0,{},{},{},{},0,1,1}{0xDD,0xCC,0xBB,0xAA}{\texttt{Dwm::EncodedU64} example: value \texttt{0xAABBCCDD}, little-endian.}
+\end{minipage}
 
-\EncodedEightByteUnsignedExample{1,{},{},{},{},1,0,0}{0xAA,0xBB,0xCC,0xDD,0xEE}{Five byte value \texttt{0xAABBCCDDEE}, big-endian.}
+\begin{minipage}{\textwidth}
+\EncodedEightByteUnsignedExample{1,{},{},{},{},1,0,0}{0xAA,0xBB,0xCC,0xDD,0xEE}{\texttt{Dwm::EncodedU64} example: value \texttt{0xAABBCCDDEE}, big-endian.}
+\end{minipage}
 
-\EncodedEightByteUnsignedExample{0,{},{},{},{},1,0,0}{0xEE,0xDD,0xCC,0xBB,0xAA}{Five byte value \texttt{0xAABBCCDDEE}, little-endian.}
+\begin{minipage}{\textwidth}
+\EncodedEightByteUnsignedExample{0,{},{},{},{},1,0,0}{0xEE,0xDD,0xCC,0xBB,0xAA}{\texttt{Dwm::EncodedU64} example: value \texttt{0xAABBCCDDEE}, little-endian.}
+\end{minipage}
 
-\EncodedEightByteUnsignedExample{1,{},{},{},{},1,0,1}{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF}{Six byte value \texttt{0xAABBCCDDEEFF}, big-endian.}
+\begin{minipage}{\textwidth}
+\EncodedEightByteUnsignedExample{1,{},{},{},{},1,0,1}{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF}{\texttt{Dwm::EncodedU64} example: value \texttt{0xAABBCCDDEEFF}, big-endian.}
+\end{minipage}
 
-\EncodedEightByteUnsignedExample{0,{},{},{},{},1,0,1}{0xFF,0xEE,0xDD,0xCC,0xBB,0xAA}{Six byte value \texttt{0xAABBCCDDEEFF}, little-endian.}
+\begin{minipage}{\textwidth}
+\EncodedEightByteUnsignedExample{0,{},{},{},{},1,0,1}{0xFF,0xEE,0xDD,0xCC,0xBB,0xAA}{\texttt{Dwm::EncodedU64} example: value \texttt{0xAABBCCDDEEFF}, little-endian.}
+\end{minipage}
 
-\EncodedEightByteUnsignedExample{1,{},{},{},{},1,1,0}{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF,0x99}{Seven byte value \texttt{0xAABBCCDDEEFF99}, big-endian.}
+\begin{minipage}{\textwidth}
+\EncodedEightByteUnsignedExample{1,{},{},{},{},1,1,0}{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF,0x99}{\texttt{Dwm::EncodedU64} example: value \texttt{0xAABBCCDDEEFF99}, big-endian.}
+\end{minipage}
 
-\EncodedEightByteUnsignedExample{0,{},{},{},{},1,1,0}{0x99,0xFF,0xEE,0xDD,0xCC,0xBB,0xAA}{Seven byte value \texttt{0xAABBCCDDEEFF99}, little-endian.}
+\begin{minipage}{\textwidth}
+\EncodedEightByteUnsignedExample{0,{},{},{},{},1,1,0}{0x99,0xFF,0xEE,0xDD,0xCC,0xBB,0xAA}{\texttt{Dwm::EncodedU64} example: value \texttt{0xAABBCCDDEEFF99}, little-endian.}
+\end{minipage}
 
-\EncodedEightByteUnsignedExample{1,{},{},{},{},1,1,1}{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF,0x99,0x88}{Eight byte value \texttt{0xAABBCCDDEEFF9988}, big-endian.}
+\begin{minipage}{\textwidth}
+\EncodedEightByteUnsignedExample{1,{},{},{},{},1,1,1}{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF,0x99,0x88}{\texttt{Dwm::EncodedU64} example: value \texttt{0xAABBCCDDEEFF9988}, big-endian.}
+\end{minipage}
 
-\EncodedEightByteUnsignedExample{0,{},{},{},{},1,1,1}{0x88,0x99,0xFF,0xEE,0xDD,0xCC,0xBB,0xAA}{Eight byte value \texttt{0xAABBCCDDEEFF9988}, little-endian.}
+\begin{minipage}{\textwidth}
+\EncodedEightByteUnsignedExample{0,{},{},{},{},1,1,1}{0x88,0x99,0xFF,0xEE,0xDD,0xCC,0xBB,0xAA}{\texttt{Dwm::EncodedU64} example: value \texttt{0xAABBCCDDEEFF9988}, little-endian.}
+\end{minipage}
 
-\subsection{\texttt{Dwm::EncodedS64} encoding}
+\subsection{\texttt{Dwm::EncodedU32} encoding}\label{encoding:DwmEncodedU32}
+\hyperref[class:EncodedU32]{\texttt{Dwm::EncodedU32}} is encoded with
+an encoding byte followed by one to four bytes representing an
+unsigned 32-bit integer value.
+
+\EncodedFourByteUnsignedOverview{{},{},{},{},{},{},{},{}}{value (\texttt{size}+1 bytes)}{$byte_0$}{$byte_{size}$}{Dwm::EncodedU32 encoding}
+
 \subsubsection{Encoding byte}
 
-\EncodedEightByteSignedExample{{},{},{},{},{},{},{},{}}{}{Encoding byte}
-  
+% \EncodedFourByteUnsignedExample{{},{},{},{},{},{},{},{}}{}{Encoding byte}
+Three of the available eight bits of the encoding byte are utilized: one
+for endianness and two for size.
+
+The meaning of the \texttt{endian} bit is shown in
+table~\ref{table:EncodedU32EndianBit}.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{endian} & \textbf{description} \\ \hline
+  0 & \texttt{value} is in little-endian format \\ \hline
+  1 & \texttt{value} is in big-endian format \\
+\end{tabular}
+\caption{Meaning of endian bit in \texttt{Dwm::EncodedU32} encoding byte}
+\label{table:EncodedU32EndianBit}
+\end{center}
+\end{table}
+
+The \texttt{size} bits indicate the length of the value (in bytes)
+following the encoding byte, minus 1:
+
+  $length\ of\ \texttt{value} = \texttt{size} + 1$
+
+Table~\ref{table:EncodedU32SizeBits} shows the translation from \texttt{size}
+to/from the length of the value.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{r|l|l|l|l}
+  \textbf{\texttt{size}} & 0 & 1 & 2 & 3 \\
+  \textbf{length of value (bytes)} & 1 & 2 & 3 & 4 \\
+\end{tabular}
+\end{center}
+\caption{meaning of size bits in \texttt{Dwm::EncodedU32} encoding byte}
+\label{table:EncodedU32SizeBits}
+\end{table}
+
+\subsubsection{Examples}
+
+\EncodedFourByteUnsignedExample{1,{},{},{},{},{},0,0}{0xFF}{one byte big-endian value 255}
+
+\EncodedFourByteUnsignedExample{0,{},{},{},{},{},0,0}{0xFF}{one byte little-endian value 255}
+
+\EncodedFourByteUnsignedExample{1,{},{},{},{},{},0,1}{0xFF,0xEE}{two byte big-endian value 65,518}
+
+\EncodedFourByteUnsignedExample{1,{},{},{},{},{},1,0}{0xFF,0xEE,0xDD}{three byte big-endian value 16,772,829}
+
+\EncodedFourByteUnsignedExample{1,{},{},{},{},{},1,1}{0x7F,0xEE,0xDD,0xCC}{four byte big-endian value 86,554,432}
+
+\EncodedFourByteUnsignedExample{0,{},{},{},{},{},1,1}{0xCC,0xDD,0xEE,0x7F}{four byte little-endian value 86,554,432}
+
+\subsection{\texttt{Dwm::EncodedU16} encoding}\label{encoding:DwmEncodedU16}
+
+\EncodedTwoByteUnsignedOverview{{},{},{},{},{},{},{},{}}{value (\texttt{size}+1 bytes)}{$byte_0$}{$byte_{size}$}{Dwm::EncodedU16 encoding}
+
+\subsubsection{Encoding byte}
+
+\EncodedTwoByteUnsignedExample{{},{},{},{},{},{},{},{}}{}{Encoding byte}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{endian} & \textbf{description} \\ \hline
+  0 & \texttt{value} is in little-endian format \\ \hline
+  1 & \texttt{value} is in big-endian format \\
+\end{tabular}
+\caption{Meaning of endian bit in encoding byte}
+\end{center}
+\end{table}
+
+The \texttt{size} bits indicate the length of the value (in bytes)
+following the encoding byte, minus 1:
+
+  $length\ of\ \texttt{value} = \texttt{size} + 1$
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{r|l|l}
+  \textbf{\texttt{size}} & 0 & 1 \\
+  \textbf{length of value (bytes)} & 1 & 2 \\
+\end{tabular}
+\end{center}
+\caption{meaning of size bits in encoding byte}
+\end{table}
+
+\subsubsection{Examples}
+
+\EncodedTwoByteUnsignedExample{1,{},{},{},{},{},0,0}{0xFF}{one byte big-endian value 255}
+
+\EncodedTwoByteUnsignedExample{0,{},{},{},{},{},0,0}{0xFF}{one byte little-endian value 255}
+
+\EncodedTwoByteUnsignedExample{1,{},{},{},{},{},0,1}{0xFF,0xEE}{two byte big-endian value 65,518}
+
+\subsection{\texttt{Dwm::EncodedS64} encoding}\label{encoding:DwmEncodedS64}
+
+\hyperref[class:EncodedS64]{\texttt{Dwm::EncodedS64}} is encoded with
+an encoding byte followed by one to eight bytes representing a
+signed 64-bit integer value.
+
+\EncodedEightByteSignedOverview{{},{},{},{},{},{},{},{}}{value (\texttt{size}+1 bytes)}{$byte_0$}{$byte_{size}$}{Dwm::EncodedS64 encoding}
+
+\subsubsection{Encoding byte}
+
+Five of the available bits in the encoding byte are utilized: one for
+endianness, one for sign and three to indicate the number of value
+bytes following the encoding byte.
+
+% \EncodedEightByteSignedExample{{},{},{},{},{},{},{},{}}{}{Encoding byte}
+
+  Table
+~\ref{table:EncodedS64EndianBit} shows the meaning of the
+\texttt{endian} bit.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{endian} & \textbf{description} \\ \hline
+  0 & \texttt{value} is in little-endian format \\ \hline
+  1 & \texttt{value} is in big-endian format \\
+\end{tabular}
+\caption{Meaning of endian bit in \texttt{Dwm::EncodedS64} encoding byte}
+\label{table:EncodedS64EndianBit}
+\end{center}
+\end{table}
+
+Table ~\ref{table:EncodedS64SignBit} shows the meaning of the
+\texttt{sign} bit.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{sign} & \textbf{description} \\ \hline
+  0 & \texttt{value} is positive \\ \hline
+  1 & \texttt{value} is negative \\
+\end{tabular}
+\caption{Meaning of sign bit in \texttt{Dwm::EncodedS64} encoding byte}
+\label{table:EncodedS64SignBit}
+\end{center}
+\end{table}
+
+The \texttt{size} bits indicate the length of the value (in bytes)
+following the encoding byte, minus 1:
+
+  $length\ of\ \texttt{value} = \texttt{size} + 1$
+
+Table ~\ref{table:EncodedS64SizeBits} shows the translation from \texttt{size}
+to/from the length of the value.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{r|l|l|l|l|l|l|l|l}
+  \textbf{\texttt{size}} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+  \textbf{length of value (bytes)} & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+\end{tabular}
+\end{center}
+\caption{meaning of size bits in \texttt{Dwm::EncodedS64} encoding byte}
+\label{table:EncodedS64SizeBits}
+\end{table}
+
+The remaining bits in the encoding byte are unused.
+
+\subsubsection{Examples}
+
+\EncodedEightByteSignedExample{1,1,{},{},{},0,0,0}{0xFF}{one byte big-endian value -255}
+
+\EncodedEightByteSignedExample{0,1,{},{},{},0,0,0}{0xFF}{one byte little-endian value -255}
+
+\EncodedEightByteSignedExample{1,1,{},{},{},0,0,1}{0xFF,0xEE}{two byte big-endian value -65,518}
+
+\EncodedEightByteSignedExample{1,1,{},{},{},0,1,0}{0xFF,0xEE,0xDD}{three byte big-endian value -16,772,829}
+
+\EncodedEightByteSignedExample{1,1,{},{},{},0,1,1}{0xFF,0xEE,0xDD,0xCC}{four byte big-endian value -4,293,844,428}
+
+\EncodedEightByteSignedExample{0,1,{},{},{},0,1,1}{0xCC,0xDD,0xEE,0xFF}{four byte little-endian value -4,293,844,428}
+
+\EncodedEightByteSignedExample{1,1,{},{},{},1,0,0}{0xFF,0xEE,0xDD,0xCC,0xBB}{five byte big-endian value -1,099,224,173,755}
+
+\EncodedEightByteSignedExample{0,1,{},{},{},1,0,0}{0xBB,0xCC,0xDD,0xEE,0xFF}{five byte little-endian value -1,099,224,173,755}
+
+\EncodedEightByteSignedExample{1,1,{},{},{},1,0,1}{0xFF,0xEE,0xDD,0xCC,0xBB,0xAA}{six byte big-endian value -281,401,388,481,450}
+
+\EncodedEightByteSignedExample{0,1,{},{},{},1,0,1}{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF}{six byte little-endian value -281,401,388,481,450}
+
+\EncodedEightByteSignedExample{1,1,{},{},{},1,1,0}{0xFF,0xEE,0xDD,0xCC,0xBB,0xAA,0x99}{seven byte big-endian value -72,038,755,451,251,353}
+
+\EncodedEightByteSignedExample{0,1,{},{},{},1,1,0}{0x99,0xAA,0xBB,0xCC,0xDD,0xEE,0xFF}{seven byte little-endian value -72,038,755,451,251,353}
+
+\EncodedEightByteSignedExample{1,1,{},{},{},1,1,1}{0xFF,0xEE,0xDD,0xCC,0xBB,0xAA,0x99,0x88}{eight byte big-endian value -18,441,921,395,520,346,504}
+
+\EncodedEightByteSignedExample{0,1,{},{},{},1,1,1}{0x88,0x99,0xAA,0xBB,0xCC,0xDD,0xEE,0xFF}{eight byte little-endian value -18,441,921,395,520,346,504}
+
+\subsection{\texttt{Dwm::EncodedS32} encoding}\label{encoding:DwmEncodedS32}
+\subsubsection{Encoding byte}
+
+\EncodedFourByteSignedExample{{},{},{},{},{},{},{},{}}{}{Encoding byte}
+
+\subsubsection{Examples}
+
+\EncodedFourByteSignedExample{1,1,{},{},{},{},0,0}{0xFF}{one byte big-endian value -255}
+
+\EncodedFourByteSignedExample{0,1,{},{},{},{},0,0}{0xFF}{one byte little-endian value -255}
+
+\EncodedFourByteSignedExample{1,1,{},{},{},{},0,1}{0xFF,0xEE}{two byte big-endian value -65,518}
+
+\EncodedFourByteSignedExample{1,1,{},{},{},{},1,0}{0xFF,0xEE,0xDD}{three byte big-endian value -16,772,829}
+
+\EncodedFourByteSignedExample{1,1,{},{},{},{},1,1}{0x7F,0xEE,0xDD,0xCC}{four byte big-endian value -86,554,432}
+
+\EncodedFourByteSignedExample{0,1,{},{},{},{},1,1}{0xCC,0xDD,0xEE,0x7F}{four byte little-endian value -86,554,432}
+
+\subsection{\texttt{Dwm::EncodedS16} encoding}\label{encoding:DwmEncodedS16}
+
+\subsubsection{Encoding byte}
+
+\EncodedTwoByteSignedExample{{},{},{},{},{},{},{},{}}{}{Encoding byte}
+
+\subsubsection{Examples}
+
+\EncodedTwoByteSignedExample{1,1,{},{},{},{},{},0}{0xFF}{one byte big-endian value -255}
+
+\EncodedTwoByteSignedExample{0,1,{},{},{},{},{},0}{0xFF}{one byte little-endian value -255}
+
+\EncodedTwoByteSignedExample{1,1,{},{},{},{},{},1}{0x7F,0xEE}{two byte big-endian value -32,750}
+
+\EncodedTwoByteSignedExample{1,1,{},{},{},{},{},1}{0xEE,0x7F}{two byte little-endian value -32,750}
+
 \subsection{\texttt{std::string} encoding}
-\texttt{std::string} is encoded with a 64-bit length field and then
+\texttt{std::string} is encoded with a length field and then
 the characters in the string.
 
-\LengthEncodedData{uint64\_t}{\texttt{s[0] ... s[length-1]}}{\texttt{std::string} encoding}{length}
-
-\dwmNote{The \texttt{length} field is likely to be changed to use
-  \texttt{Dwm::EncodedU64} in the future.}
+\LengthEncodedData{\hyperref[encoding:DwmEncodedU64]{\small{EncodedU64}}}{\texttt{s[0]}}{\texttt{s[length-1]}}{\texttt{std::string} encoding}{length}
 
 \subsection{\texttt{std::optional<T>} encoding}\label{encoding:stdOptional}
 A \texttt{std::optional<T>} is encoded with a single byte to indicate whether
 or not the value is present, then the value if present.
 
-\LengthEncodedData{uint8\_t}{\texttt{T}}{\texttt{std::optional<T>} encoding}{value present?}
+% \LengthEncodedData{uint8\_t}{\texttt{T}}{\texttt{std::optional<T>} encoding}{value present?}
 
 \subsection{\texttt{std::pair<class FirstType, class SecondType>} encoding}\label{encoding:stdPair}
 The encoding of a \texttt{std::pair} is as you'd expect: the first value
@@ -168,7 +464,7 @@ followed by the second value.
 A \texttt{std::vector} is encoded with a 64-bit \texttt{length} field
 followed by \texttt{length} elements of the \texttt{vector}.
 
-\LengthEncodedData{uint64\_t}{\texttt{$T_0$  ...  $T_{length-1}$}}{\texttt{std::vector<T>} encoding}{length}
+\LengthEncodedData{uint64\_t}{\texttt{$T_0$}}{\texttt{$T_{length-1}$}}{\texttt{std::vector<T>} encoding}{length}
 
 \dwmNote{The \texttt{length} field is likely to be changed to use
 \texttt{Dwm::EncodedU64} encoding in the future.}
@@ -177,7 +473,7 @@ followed by \texttt{length} elements of the \texttt{vector}.
 A \texttt{std::deque} is encoded with a 64-bit \texttt{length} field
 followed by \texttt{length} elements of the \texttt{deque}.
 
-\LengthEncodedData{uint64\_t}{\texttt{$T_0$  ...  $T_{length-1}$}}{\texttt{std::deque<T>} encoding}{length}
+\LengthEncodedData{uint64\_t}{\texttt{$T_0$}}{\texttt{$T_{length-1}$}}{\texttt{std::deque<T>} encoding}{length}
 
 \dwmNote{The \texttt{length} field is likely to be changed to use
   \texttt{Dwm::EncodedU64} in the future.}
@@ -185,39 +481,41 @@ followed by \texttt{length} elements of the \texttt{deque}.
 \subsection{\texttt{std::list<T>} encoding}\label{encoding:stdList}
 A \texttt{std::list} is encoded with a 64-bit \texttt{length} field
 followed by \texttt{length} elements of the \texttt{list}.
-\LengthEncodedData{uint64\_t}{\texttt{$T_0$  ...  $T_{length-1}$}}{\texttt{std::list<T>} encoding}{length}
+\LengthEncodedData{uint64\_t}{\texttt{$T_0$}}{\texttt{$T_{length-1}$}}{\texttt{std::list<T>} encoding}{length}
 \dwmNote{The \texttt{length} field is likely to be changed to use
   \texttt{Dwm::EncodedU64} in the future.}
 
-\subsection{\texttt{std::map<class KeyType, class ValueType>} encoding}\label{encoding:stdMap}
+\subsection{\texttt{std::map<class Key,class Value>} encoding}\label{encoding:stdMap}
 A \texttt{std::map} is encoded with a 64-bit \texttt{length} field
-followed by \texttt{length} pairs of (\texttt{KeyType},\texttt{ValueType})
+followed by \texttt{length} pairs of (\texttt{Key},\texttt{Value})
 elements of the \texttt{map}.
 
-\LengthEncodedData{uint64\_t}{\texttt{std::pair<KeyType,ValueType>$_0$  ...  std::pair<KeyType,ValueType>$_{length-1}$}}{\texttt{std::map<KeyType,ValueType>} encoding}{length}
+\LengthEncodedData{uint64\_t}{\texttt{std::pair<Key,Value>$_0$}}{\texttt{std::pair<Key,Value>$_{length-1}$}}{\texttt{std::map<Key,Value>} encoding}{length}
 \dwmNote{The \texttt{length} field is likely to be changed to use
   \texttt{Dwm::EncodedU64} in the future.}
 
-\subsection{\texttt{std::multimap<class KeyType, class ValueType>} encoding}\label{encoding:stdMultimap}
-\LengthEncodedData{uint64\_t}{\texttt{std::pair<KeyType,ValueType>$_0$  ...  std::pair<KeyType,ValueType>$_{length-1}$}}{\texttt{std::multimap<KeyType,ValueType>} encoding}{length}
+\subsection{\texttt{std::multimap<class Key,class Value>} encoding}\label{encoding:stdMultimap}
+\LengthEncodedData{uint64\_t}{\texttt{std::pair<Key,Value>$_0$}}{\texttt{std::pair<Key,Value>$_{length-1}$}}{\texttt{std::multimap<Key,Value>} encoding}{length}
 \dwmNote{The \texttt{length} field is likely to be changed to use
   \texttt{Dwm::EncodedU64} in the future.}
 
-\subsection{\texttt{std::unordered\_map<class KeyType, class ValueType>} encoding}\label{encoding:stdUnorderedMap}
-\LengthEncodedData{uint64\_t}{\texttt{std::pair<KeyType,ValueType>$_0$  ...  std::pair<KeyType,ValueType>$_{length-1}$}}{\texttt{std::unordered\_map<KeyType,ValueType>} encoding}{length}
+\subsection{\texttt{std::unordered\_map<class Key,class Value>} encoding}\label{encoding:stdUnorderedMap}
+\LengthEncodedData{uint64\_t}{\texttt{std::pair<Key,Value>$_0$}}{\texttt{std::pair<Key,Value>$_{length-1}$}}{\texttt{std::unordered\_map<Key,Value>} encoding}{length}
 
-\subsection{\texttt{std::unordered\_multimap<class KeyType, class ValueType>} encoding}\label{encoding:stdUnorderedMultimap}
-\LengthEncodedData{uint64\_t}{\texttt{std::pair<Key,Value>$_0$  ...  std::pair<Key,Value>$_{length-1}$}}{\texttt{std::unordered\_multimap<Key,Value>} encoding}{length}
+\subsection{\texttt{std::unordered\_multimap<class Key,class Value>} encoding}\label{encoding:stdUnorderedMultimap}
+\LengthEncodedData{uint64\_t}{\texttt{std::pair<Key,Value>$_0$}}{\texttt{std::pair<Key,Value>$_{length-1}$}}{\texttt{std::unordered\_multimap<Key,Value>} encoding}{length}
 
 \subsection{\texttt{std::set<class T>} encoding}\label{encoding:stdSet}
-\LengthEncodedData{uint64\_t}{\texttt{T$_0$  ...  T$_{length-1}$}}{\texttt{std::set<T>} encoding}{length}
+\LengthEncodedData{uint64\_t}{\texttt{T$_0$}}{\texttt{T$_{length-1}$}}{\texttt{std::set<T>} encoding}{length}
 
 
 \subsection{\texttt{std::multiset<class T>} encoding}\label{encoding:stdMultiset}
-\LengthEncodedData{uint64\_t}{\texttt{T$_0$  ...  T$_{length-1}$}}{\texttt{std::multiset<T>} encoding}{length}
+\LengthEncodedData{uint64\_t}{\texttt{T$_0$}}{\texttt{T$_{length-1}$}}{\texttt{std::multiset<T>} encoding}{length}
 
 \subsection{\texttt{std::unordered\_set<class T>} encoding}\label{encoding:stdUnorderedSet}
-\LengthEncodedData{uint64\_t}{\texttt{T$_0$  ...  T$_{length-1}$}}{\texttt{std::unordered\_set<T>} encoding}{length}
+
+\LengthEncodedData{uint64\_t}{\texttt{T$_0$}}{\texttt{T$_{length-1}$}}{\texttt{std::unordered\_set<T>} encoding}{length}
 
 \subsection{\texttt{std::unordered\_multiset<class T>} encoding}\label{encoding:stdUnorderedMultiset}
-\LengthEncodedData{uint64\_t}{\texttt{T$_0$  ...  T$_{length-1}$}}{\texttt{std::unordered\_multiset<T>} encoding}{length}
+
+\LengthEncodedData{uint64\_t}{\texttt{T$_0$}}{\texttt{T$_{length-1}$}}{\texttt{std::unordered\_multiset<T>} encoding}{length}

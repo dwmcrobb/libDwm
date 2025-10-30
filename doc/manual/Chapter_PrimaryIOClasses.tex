@@ -324,8 +324,8 @@ The actual implementation uses many function and function template
 overloads for \texttt{Read()} and \texttt{Write()}.  It can't
 automatically read and write any type \texttt{T}; a data type must
 either be directly supported or meet the requirements of
-\hyperlink{concept:HasGZRead}{\ttfamily Dwm::HasGZRead}                 
-and \hyperlink{concept:HasGZWrite}{\ttfamily Dwm::HasGZWrite}.
+\hyperlink{concept:DwmHasGZRead}{\ttfamily Dwm::HasGZRead}                 
+and \hyperlink{concept:DwmHasGZWrite}{\ttfamily Dwm::HasGZWrite}.
 \vspace{1ex}
 
 \subsection{Using {\ttfamily Dwm::GZIO} with user defined types}
@@ -340,8 +340,8 @@ instances of the user defined type:
 \end{itemize}
 \vspace{1ex}
 
-See the \hyperlink{concept:HasGZRead}{\ttfamily Dwm::HasGZRead}
-and \hyperlink{concept:HasGZWrite}{\ttfamily Dwm::HasGZWrite}
+See the \hyperlink{concept:DwmHasGZRead}{\ttfamily Dwm::HasGZRead}
+and \hyperlink{concept:DwmHasGZWrite}{\ttfamily Dwm::HasGZWrite}
 concepts for the expected semantics of these members.
 \end{minipage}
 
