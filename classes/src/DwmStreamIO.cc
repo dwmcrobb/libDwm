@@ -46,6 +46,7 @@
 #include "DwmSysLogger.hh"
 #include "DwmStreamIO.hh"
 #include "DwmPortability.hh"
+#include "DwmEncodedUnsigned.hh"
 #include "DwmXDRUtils.hh"
 
 namespace Dwm {
@@ -165,17 +166,7 @@ namespace Dwm {
   //!  
   //------------------------------------------------------------------------
   std::ostream & StreamIO::Write(std::ostream & os, const std::string & s)
-  {
-    if (os) {
-      uint64_t  len = s.size();
-      if (Write(os, len)) {
-        if (len > 0) {
-          os.write(s.c_str(), len);
-        }
-      }
-    }
-    return(os);
-  }
+  { return NWrite(os, s); }
 
   //------------------------------------------------------------------------
   //!  
@@ -183,8 +174,8 @@ namespace Dwm {
   std::ostream & StreamIO::NWrite(std::ostream & os, const std::string & s)
   {
     if (os) {
-      uint64_t  len = s.size();
-      if (NWrite(os, len)) {
+      EncodedU64  len = s.size();
+      if (len.Write(os)) {
         if (len > 0) {
           os.write(s.c_str(), len);
         }
@@ -196,26 +187,12 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
-  std::ostream & StreamIO::Write(std::ostream & os, std::string_view v)
-  {
-    uint64_t  len = v.size();
-    if (Write(os, len)) {
-      if (len > 0) {
-        os.write(v.data(), len);
-      }
-    }
-    return os;
-  }
-
-  //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
   std::ostream & StreamIO::NWrite(std::ostream & os, std::string_view v)
   {
-    uint64_t  len = v.size();
+    EncodedU64  len = v.size();
     if (NWrite(os, len)) {
       if (len > 0) {
-        os.write(v.data(), len);
+        os.write(v.data(), v.size());
       }
     }
     return os;
@@ -352,8 +329,8 @@ namespace Dwm {
   {
     s.clear();
     if (is) {
-      uint64_t  len;
-      if (StreamIO::Read(is, len)) {
+      EncodedU64  len = 0;
+      if (len.Read(is)) {
         if (len > 0) {
           try {
             s.resize(len);
@@ -379,31 +356,7 @@ namespace Dwm {
   //!  
   //--------------------------------------------------------------------------
   std::istream & StreamIO::NRead(std::istream & is, std::string & s)
-  {
-    s.clear();
-    if (is) {
-      uint64_t  len;
-      if (StreamIO::NRead(is, len)) {
-        if (len > 0) {
-          try {
-            s.resize(len);
-            if (! is.read(s.data(), len)) {
-              s.clear();
-            }
-          }
-          catch (const std::exception & ex) {
-            Syslog(LOG_ERR, "Exception: %s", ex.what());
-            is.setstate(std::ios_base::failbit);
-          }
-          catch (...) {
-            Syslog(LOG_ERR, "Exception");
-            is.setstate(std::ios_base::failbit);
-          }
-        }
-      }
-    }
-    return(is);
-  }
+  { return Read(is, s); }
   
 
 }  // namespace Dwm
