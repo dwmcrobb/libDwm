@@ -377,10 +377,10 @@ namespace Dwm {
     { return Read(gzf); }
     
     //------------------------------------------------------------------------
-    //!  Returns the size of the type we'll need to use when writing the
-    //!  value, in bytes (1, 2, 4 or 8).
+    //!  Returns the number of bytes of value we'll write when writing the
+    //!  current value.
     //------------------------------------------------------------------------
-    uint8_t SizeFromLength() const
+    uint8_t SizeFromValue() const
     {
       //----------------------------------------------------------------------
       //!  Array of number of bytes we need to represent a given value.
@@ -460,7 +460,7 @@ namespace Dwm {
       vec.reserve(1 + sizeof(_value));
       
       //  First, add the encoded size and endian byte.
-      uint8_t   sz = SizeFromLength();
+      uint8_t   sz = SizeFromValue();
       vec.push_back(EncodedStartByte(sz));
       
       //  Then our data.
