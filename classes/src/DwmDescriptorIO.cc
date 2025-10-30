@@ -49,6 +49,7 @@ extern "C" {
 
 #include "DwmSysLogger.hh"
 #include "DwmDescriptorIO.hh"
+#include "DwmEncodedUnsigned.hh"
 #include "DwmPortability.hh"
 #include "DwmXDRUtils.hh"
 
@@ -188,12 +189,13 @@ namespace Dwm {
   {
     ssize_t  rc = -1;
     if (fd >= 0) {
-      uint64_t  len = v.size();
-      if (Write(fd, len) == sizeof(len)) {
-        rc = sizeof(len);
+      EncodedU64  len = v.size();
+      ssize_t  bytesWritten = len.Write(fd);
+      if (bytesWritten > 1) {
+        rc = bytesWritten;
         if (len > 0) {
-          if (Write(fd, (const void *)v.data(), len) == len) {
-            rc += len;
+          if (::write(fd, (const void *)v.data(), v.size()) == v.size()) {
+            rc += v.size();
           }
           else {
             rc = -1;
