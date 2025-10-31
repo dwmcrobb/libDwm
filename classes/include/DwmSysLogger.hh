@@ -53,6 +53,26 @@ extern "C" {
 #include <source_location>
 #include <string>
 
+#if 1
+
+#if defined(__cpp_lib_format)
+#  if (__cpp_lib_format >= 202110L)
+#    if __has_include(<format>)
+#       include <format>
+#       define DWM_HAVE_STD_FORMAT
+#    endif
+#  endif
+#endif
+
+#ifndef DWM_HAVE_STD_FORMAT
+#  if __has_include(<fmt/format.h>)
+#    include <fmt/format.h>
+#    define DWM_HAVE_LIBFMT
+#  endif
+#endif
+
+#else
+
 #include "DwmPortability.hh"
 
 #if (defined DWM_HAVE_STD_FORMAT)
@@ -61,6 +81,8 @@ extern "C" {
   #if (defined DWM_HAVE_LIBFMT)
     #include <fmt/format.h>
   #endif
+#endif
+
 #endif
 
 namespace Dwm {
