@@ -213,9 +213,9 @@ namespace Dwm {
     int  rc = -1;
     
     if (gzf) {
-      int64_t  len = s.length();
-      if (Write(gzf, len) == sizeof(len)) {
-        rc = sizeof(len);
+      EncodedU64  len = s.size();
+      if (Write(gzf, len) == len.StreamedLength()) {
+        rc = len.StreamedLength();
         if (gzwrite(gzf, (void *)s.c_str(), len) == len)
           rc += len;
         else
@@ -417,9 +417,10 @@ namespace Dwm {
     s.clear();
     
     if (gzf) {
-      int64_t  len;
-      if (Read(gzf, len) == sizeof(len)) {
-        rc = sizeof(len);
+      EncodedU64  len;
+      int  bytesRead = Read(gzf, len);
+      if (1 < bytesRead) {
+        rc = bytesRead;
         if (len > 0) {
           try {
             s.resize(len);
