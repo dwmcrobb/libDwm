@@ -54,6 +54,7 @@
 #include <optional>
 #include <set>
 #include <string>
+#include <string_view>
 #include <tuple>
 #include <type_traits>
 #include <unordered_map>
@@ -61,6 +62,7 @@
 #include <variant>
 #include <vector>
 
+#include "DwmEncodedUnsigned.hh"
 #include "DwmPortability.hh"
 #include "DwmStreamedLengthCapable.hh"
 
@@ -164,7 +166,18 @@ namespace Dwm {
     //------------------------------------------------------------------------
     static uint64_t StreamedLength(const std::string & s)
     {
-      return(sizeof(uint64_t) + s.size());
+      EncodedU64  enclen = s.size();
+      return(enclen.StreamedLength() + s.size());
+    }
+
+    //------------------------------------------------------------------------
+    //!  Returns the number of bytes that should be written if we call Write()
+    //!  for a string_view.
+    //------------------------------------------------------------------------
+    static uint64_t StreamedLength(std::string_view v)
+    {
+      EncodedU64  enclen = v.size();
+      return(enclen.StreamedLength() + (uint64_t)enclen);
     }
 
     //------------------------------------------------------------------------
