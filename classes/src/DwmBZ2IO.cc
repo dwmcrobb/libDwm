@@ -251,10 +251,10 @@ namespace Dwm {
     int  rc = -1;
     
     if (bzf) {
-      int64_t  len = s.length();
-      if (BZWrite(bzf,len) == sizeof(len)) {
-        rc = sizeof(len);
-        if (BZ2_bzwrite(bzf,(void *)s.c_str(),len) == len)
+      EncodedU64  len = s.length();
+      if (BZWrite(bzf,len) == len.StreamedLength()) {
+        rc = len.StreamedLength();
+        if (BZ2_bzwrite(bzf,(void *)s.data(), len) == len)
           rc += len;
         else
           rc = -1;
@@ -494,19 +494,27 @@ namespace Dwm {
   {
     int  rc = -1;
     if (bzf) {
-      int64_t  len;
-      if (BZRead(bzf,len) == sizeof(len)) {
-        rc = sizeof(len);
-        char  *buf = (char *)calloc(1,len);
-        if (buf) {
-          if (BZ2_bzread(bzf,(void *)buf,len) == len) {
+      EncodedU64  len;
+      int  bytesRead = len.BZRead(bzf);
+      if (1 < bytesRead) {
+        rc = bytesRead;
+        try {
+          s.resize(len);
+          if (BZ2_bzread(bzf, (void *)s.data(), len) == len) {
             rc += len;
-            s.assign(buf,len);
           }
           else {
+            s.clear();
             rc = -1;
           }
-          free(buf);
+        }
+        catch (const std::exception & ex) {
+          Syslog(LOG_ERR, "Exception: %s", ex.what());
+          rc = -1;
+        }
+        catch (...) {
+          Syslog(LOG_ERR, "Exception");
+          rc = -1;
         }
       }
     }
