@@ -177,7 +177,7 @@ namespace Dwm {
       EncodedU64  len = s.size();
       if (len.Write(os)) {
         if (len > 0) {
-          os.write(s.c_str(), len);
+          os.write(s.data(), len);
         }
       }
     }
