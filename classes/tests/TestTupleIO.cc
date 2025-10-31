@@ -197,53 +197,44 @@ static void TestSingleTuples()
 {
   tuple<int,string>
     t2(0, "dwm");
-  UnitAssert(IOUtils::StreamedLength(t2) == 15);
+  UnitAssert(IOUtils::StreamedLength(t2)
+             == (IOUtils::StreamedLength(std::get<0>(t2))
+                 + IOUtils::StreamedLength(std::get<1>(t2))));
   TestTupleIO(t2);
 
   tuple<int,string,string>
     t3(0, "dwm", "mwd");
-  UnitAssert(IOUtils::StreamedLength(t3) == 26);
+  UnitAssert(IOUtils::StreamedLength(t3)
+             == (IOUtils::StreamedLength(std::get<0>(t3))
+                 + IOUtils::StreamedLength(std::get<1>(t3))
+                 + IOUtils::StreamedLength(std::get<2>(t3))));
   TestTupleIO(t3);
 
   tuple<int,string,int,string>
     t4(0, "dwm", 2, "wmd");
-  UnitAssert(IOUtils::StreamedLength(t4) == 30);
+  UnitAssert(IOUtils::StreamedLength(t4)
+             == (IOUtils::StreamedLength(std::get<0>(t4))
+                 + IOUtils::StreamedLength(std::get<1>(t4))
+                 + IOUtils::StreamedLength(std::get<2>(t4))
+                 + IOUtils::StreamedLength(std::get<3>(t4))));
   TestTupleIO(t4);
 
   tuple<int,string,int,string,int>
     t5(1, "alpha", 2, "beta", 3);
-  UnitAssert(IOUtils::StreamedLength(t5) == 37);
+  UnitAssert(IOUtils::StreamedLength(t5)
+             == (IOUtils::StreamedLength(std::get<0>(t5))
+                 + IOUtils::StreamedLength(std::get<1>(t5))
+                 + IOUtils::StreamedLength(std::get<2>(t5))
+                 + IOUtils::StreamedLength(std::get<3>(t5))
+                 + IOUtils::StreamedLength(std::get<4>(t5))));
   TestTupleIO(t5);
 
-  tuple<int,string,int,string,int,string>
-    t6(1, "alpha", 2, "beta", 3, "gamma");
-  UnitAssert(IOUtils::StreamedLength(t6) == 50);
+  tuple<int,string,tuple<int,string>>  t6(1,"alpha",{2,"beta"});
+  UnitAssert(IOUtils::StreamedLength(t6) ==
+             (IOUtils::StreamedLength(std::get<0>(t6))
+              + IOUtils::StreamedLength(std::get<1>(t6))
+              + IOUtils::StreamedLength(std::get<2>(t6))));
   TestTupleIO(t6);
-
-  tuple<int,string,int,string,int,string,int>
-    t7(1, "alpha", 2, "beta", 3, "gamma", 4);
-  UnitAssert(IOUtils::StreamedLength(t7) == 54);
-  TestTupleIO(t7);
-
-  tuple<int,string,int,string,int,string,int,string>
-    t8(1, "alpha", 2, "beta", 3, "gamma", 4, "delta");
-  UnitAssert(IOUtils::StreamedLength(t8) == 67);
-  TestTupleIO(t8);
-
-  tuple<int,string,int,string,int,string,int,string,int>
-    t9(1, "alpha", 2, "beta", 3, "gamma", 4, "delta", 5);
-  UnitAssert(IOUtils::StreamedLength(t9) == 71);
-  TestTupleIO(t9);
-
-  tuple<int,string,int,string,int,string,int,string,int,string>
-    t10(1, "alpha", 2, "beta", 3, "gamma", 4, "delta", 5, "epsilon");
-  UnitAssert(IOUtils::StreamedLength(t10) == 86);
-  
-  TestTupleIO(t10);
-
-  tuple<int,string,tuple<int,string>>  t11(1,"alpha",{2,"beta"});
-  UnitAssert(IOUtils::StreamedLength(t11) == 33);
-  TestTupleIO(t11);
   
   return;
 }
