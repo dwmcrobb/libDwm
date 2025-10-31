@@ -36,11 +36,20 @@
 //---------------------------------------------------------------------------
 //!  \file DwmEndianness.hh
 //!  \author Daniel W. McRobb
-//!  \brief Endian conversions: host to/fron big endian
+//!  \brief Endian conversions: host to/from big and little endian
 //---------------------------------------------------------------------------
 
 #ifndef _DWMENDIANNESS_HH_
 #define _DWMENDIANNESS_HH_
+
+#if defined(__cpp_lib_byteswap)
+#  if (__cpp_lib_byteswap >= 202110L)
+#    if __has_include(<bit>)
+#      include <bit>
+#      define DWM_HAVE_STD_BYTESWAP
+#    endif
+#  endif
+#endif
 
 #include "DwmPortability.hh"
 #include "DwmConcepts.hh"
@@ -62,9 +71,16 @@ namespace Dwm {
   requires IsEndianSensitiveInteger<T>
   [[nodiscard]] inline auto BE2Host(T t) -> T
   {
+#if defined(DWM_HAVE_STD_BYTESWAP)
+    if constexpr (std::endian::native != std::endian::big) {
+      return std::byteswap(t);
+    }
+    return t;
+#else
     if constexpr (sizeof(t) == 2)      { return be16toh(t); }
     else if constexpr (sizeof(t) == 4) { return be32toh(t); }
     else if constexpr (sizeof(t) == 8) { return be64toh(t); }
+#endif
   }
   
   //--------------------------------------------------------------------------
@@ -74,9 +90,16 @@ namespace Dwm {
   requires IsEndianSensitiveInteger<T>
   [[nodiscard]] inline auto Host2BE(T t) -> T
   {
+#if defined(DWM_HAVE_STD_BYTESWAP)
+    if constexpr (std::endian::native != std::endian::big) {
+      return std::byteswap(t);
+    }
+    return t;
+#else
     if constexpr (sizeof(t) == 2)      { return htobe16(t); }
     else if constexpr (sizeof(t) == 4) { return htobe32(t); }
     else if constexpr (sizeof(t) == 8) { return htobe64(t); }
+#endif
   }
 
   //--------------------------------------------------------------------------
@@ -108,9 +131,16 @@ namespace Dwm {
   requires IsEndianSensitiveInteger<T>
   [[nodiscard]] inline auto LE2Host(T t) -> T
   {
+#if defined(DWM_HAVE_STD_BYTESWAP)
+    if constexpr (std::endian::native != std::endian::little) {
+      return std::byteswap(t);
+    }
+    return t;
+#else
     if constexpr (sizeof(t) == 2)      { return le16toh(t); }
     else if constexpr (sizeof(t) == 4) { return le32toh(t); }
     else if constexpr (sizeof(t) == 8) { return le64toh(t); }
+#endif
   }
   
   //--------------------------------------------------------------------------
@@ -120,9 +150,16 @@ namespace Dwm {
   requires IsEndianSensitiveInteger<T>
   [[nodiscard]] inline auto Host2LE(T t) -> T
   {
+#if defined(DWM_HAVE_STD_BYTESWAP)
+    if constexpr (std::endian::native != std::endian::little) {
+      return std::byteswap(t);
+    }
+    return t;
+#else
     if constexpr (sizeof(t) == 2)      { return htole16(t); }
     else if constexpr (sizeof(t) == 4) { return htole32(t); }
     else if constexpr (sizeof(t) == 8) { return htole64(t); }
+#endif
   }
 
   //--------------------------------------------------------------------------
@@ -154,9 +191,13 @@ namespace Dwm {
   requires IsEndianSensitiveInteger<T>
   [[nodiscard]] inline auto Bswap(T t) -> T
   {
+#if defined(DWM_HAVE_STD_BYTESWAP)
+    return std::byteswap(t);
+#else
     if constexpr (sizeof(t) == 2)      { return bswap16(t); }
     else if constexpr (sizeof(t) == 4) { return bswap32(t); }
     else if constexpr (sizeof(t) == 8) { return bswap64(t); }
+#endif
   }
   
 }  // namespace Dwm
