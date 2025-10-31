@@ -141,22 +141,7 @@ namespace Dwm {
   //------------------------------------------------------------------------
   ssize_t DescriptorIO::Write(int fd, const std::string & s)
   {
-    ssize_t  rc = -1;
-    if (fd >= 0) {
-      uint64_t  len = s.size();
-      if (Write(fd,len) == sizeof(len)) {
-        rc = sizeof(len);
-        if (len > 0) {
-          if (Write(fd, (const void *)s.c_str(), len) == len) {
-            rc += len;
-          }
-          else {
-            rc = -1;
-          }
-        }
-      }
-    }
-    return(rc);
+    return NWrite(fd, s);
   }
 
   //--------------------------------------------------------------------------
@@ -166,9 +151,10 @@ namespace Dwm {
   {
     ssize_t  rc = -1;
     if (fd >= 0) {
-      uint64_t  len = s.size();
-      if (NWrite(fd,len) == sizeof(len)) {
-        rc = sizeof(len);
+      EncodedU64  len = s.size();
+      ssize_t  bytesWritten = Write(fd, len);
+      if (1 < bytesWritten) {
+        rc = bytesWritten;
         if (len > 0) {
           if (Write(fd, (const void *)s.c_str(), len) == len) {
             rc += len;
@@ -295,9 +281,10 @@ namespace Dwm {
     s.clear();
     ssize_t  rc = -1;
     if (fd >= 0) {
-      uint64_t  len;
-      if (Read(fd, len) == sizeof(len)) {
-        rc = sizeof(len);
+      EncodedU64  len;
+      ssize_t  bytesRead = Read(fd, len);
+      if (1 < bytesRead) {
+        rc = bytesRead;
         if (len > 0) {
           try {
             s.resize(len);
@@ -329,38 +316,9 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   ssize_t DescriptorIO::NRead(int fd, std::string & s)
   {
-    s.clear();
-    ssize_t  rc = -1;
-    if (fd >= 0) {
-      uint64_t  len;
-      if (NRead(fd, len) == sizeof(len)) {
-        rc = sizeof(len);
-        if (len > 0) {
-          try {
-            s.resize(len);
-            ssize_t  bytesRead = Read(fd, s.data(), len);
-            if (bytesRead == len) {
-              rc += len;
-            }
-            else {
-              s.clear();
-              rc = -1;
-            }
-          }
-          catch (const std::exception & ex) {
-            Syslog(LOG_ERR, "Exception: %s", ex.what());
-            rc = -1;
-          }
-          catch (...) {
-            Syslog(LOG_ERR, "Exception");
-            rc = -1;
-          }
-        }
-      }
-    }
-    return(rc);
+    return Read(fd, s);
   }
-  
+
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
