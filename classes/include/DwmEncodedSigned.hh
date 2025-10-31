@@ -462,8 +462,20 @@ namespace Dwm {
     //------------------------------------------------------------------------
     static constexpr uint8_t  k_bigEndianMask = 0x80;
 
-    static constexpr uint8_t  k_negMask = 0x40;
+    //------------------------------------------------------------------------
+    //!  Bit used to indicate value's sign (negative or positive).
+    //------------------------------------------------------------------------
+    static constexpr uint8_t  k_signMask = 0x40;
+
+    //------------------------------------------------------------------------
+    //!  Unused bits mask.
+    //------------------------------------------------------------------------
+    static constexpr uint8_t  k_unusedMask =
+      ~(k_sizeMask|k_bigEndianMask|k_signMask);
     
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
     struct TwoBytesProcessed
     {
       //----------------------------------------------------------------------
@@ -477,7 +489,7 @@ namespace Dwm {
         };
         encoding = encodings[buf[0] >> 7];
         sz       = (buf[0] & k_sizeMask) + 1;
-        isNegative = (buf[0] & k_negMask) ? true : false;
+        isNegative = (buf[0] & k_signMask) ? true : false;
         sp       = (caddr_t)value;
         if (std::endian::big == encoding) {
           sp += sizeof(*value) - sz;
@@ -530,7 +542,7 @@ namespace Dwm {
         sz |= k_bigEndianMask;
       }
       if (_value < 0) {
-        sz |= k_negMask;
+        sz |= k_signMask;
       }
       return sz;
     }
