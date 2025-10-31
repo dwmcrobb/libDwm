@@ -439,6 +439,14 @@ namespace Dwm {
       }
       return rc;
     }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    uint64_t StreamedLength() const
+    {
+      return (1 + SizeFromValue());  // encoding byte plus value data
+    }
     
   private:
     T  _value;
