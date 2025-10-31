@@ -118,8 +118,8 @@ following the encoding byte, minus 1:
 
   $length\ of\ \texttt{value} = \texttt{size} + 1$
 
-Table~\ref{table:EncodedU64SizeBits} shows the translation from
-\texttt{size} to/from the length of the value.
+Table~\ref{table:EncodedU64SizeBits} shows the translations between
+\texttt{size} and the length of the value.
 
 \begin{table}[H]
 \begin{center}
@@ -239,8 +239,8 @@ following the encoding byte, minus 1:
 
   $length\ of\ \texttt{value} = \texttt{size} + 1$
 
-Table~\ref{table:EncodedU32SizeBits} shows the translation from \texttt{size}
-to/from the length of the value.
+Table~\ref{table:EncodedU32SizeBits} shows the translations between
+\texttt{size} and the length of the value.
 
 \begin{table}[H]
 \begin{center}
@@ -252,6 +252,13 @@ to/from the length of the value.
 \caption{meaning of size bits in \texttt{Dwm::EncodedU32} encoding byte}
 \label{table:EncodedU32SizeBits}
 \end{table}
+
+The \texttt{value} of a
+\hyperref[class:EncodedU32]{\texttt{Dwm::EncodedU32}} is always
+written in native byte order (typically little-endian). The read
+member functions of
+\hyperref[class:EncodedU32]{\texttt{Dwm::EncodedU32}} will convert
+endianness if needed.
 
 \subsubsection{Examples}
 
@@ -268,13 +275,19 @@ to/from the length of the value.
 \EncodedFourByteUnsignedExample{0,{},{},{},{},{},1,1}{0xCC,0xDD,0xEE,0x7F}{four byte little-endian value 86,554,432}
 
 \subsection{\texttt{Dwm::EncodedU16} encoding}\label{encoding:DwmEncodedU16}
+\hyperref[class:EncodedU16]{\texttt{Dwm::EncodedU16}} is encoded with
+an encoding byte followed by one or two bytes representing an
+unsigned 16-bit integer value.
 
 \EncodedTwoByteUnsignedOverview{{},{},{},{},{},{},{},{}}{value (\texttt{size}+1 bytes)}{$byte_0$}{$byte_{size}$}{Dwm::EncodedU16 encoding}
 
 \subsubsection{Encoding byte}
+Two of the eight bits of the encoding byte are utilized: one for
+endianness and one for size.
 
-\EncodedTwoByteUnsignedExample{{},{},{},{},{},{},{},{}}{}{Encoding byte}
-
+% \EncodedTwoByteUnsignedExample{{},{},{},{},{},{},{},{}}{}{Encoding byte}
+Table~\ref{table:EncodedU16EndianBit} shows the meaning of the \texttt{endian}
+bit.
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{ll}
@@ -282,14 +295,18 @@ to/from the length of the value.
   0 & \texttt{value} is in little-endian format \\ \hline
   1 & \texttt{value} is in big-endian format \\
 \end{tabular}
-\caption{Meaning of endian bit in encoding byte}
+\caption{Meaning of endian bit in \texttt{Dwm::EncodedU16} encoding byte}
+\label{table:EncodedU16EndianBit}
 \end{center}
 \end{table}
 
-The \texttt{size} bits indicate the length of the value (in bytes)
+The \texttt{size} bit indicates the length of the value (in bytes)
 following the encoding byte, minus 1:
 
   $length\ of\ \texttt{value} = \texttt{size} + 1$
+
+Table~\ref{table:Encodedu16SizeBit} shows the translation between
+\texttt{size} and the length of the \texttt{value}.
 
 \begin{table}[H]
 \begin{center}
@@ -299,7 +316,15 @@ following the encoding byte, minus 1:
 \end{tabular}
 \end{center}
 \caption{meaning of size bits in encoding byte}
+\label{table:Encodedu16SizeBit}
 \end{table}
+
+The \texttt{value} of a
+\hyperref[class:EncodedU16]{\texttt{Dwm::EncodedU16}} is always
+written in native byte order (typically little-endian). The read
+member functions of
+\hyperref[class:EncodedU16]{\texttt{Dwm::EncodedU16}} will convert
+endianness if needed.
 
 \subsubsection{Examples}
 
@@ -361,8 +386,8 @@ following the encoding byte, minus 1:
 
   $length\ of\ \texttt{value} = \texttt{size} + 1$
 
-Table ~\ref{table:EncodedS64SizeBits} shows the translation from \texttt{size}
-to/from the length of the value.
+Table ~\ref{table:EncodedS64SizeBits} shows the translations between
+\texttt{size} and the length of the value.
 
 \begin{table}[H]
 \begin{center}
@@ -376,6 +401,13 @@ to/from the length of the value.
 \end{table}
 
 The remaining bits in the encoding byte are unused.
+
+The \texttt{value} of a
+\hyperref[class:EncodedS64]{\texttt{Dwm::EncodedS64}} is always
+written in native byte order (typically little-endian).  The read
+member functions of
+\hyperref[class:EncodedS64]{\texttt{Dwm::EncodedS64}} will convert
+endianness if needed.
 
 \subsubsection{Examples}
 
@@ -408,9 +440,76 @@ The remaining bits in the encoding byte are unused.
 \EncodedEightByteSignedExample{0,1,{},{},{},1,1,1}{0x88,0x99,0xAA,0xBB,0xCC,0xDD,0xEE,0xFF}{eight byte little-endian value -18,441,921,395,520,346,504}
 
 \subsection{\texttt{Dwm::EncodedS32} encoding}\label{encoding:DwmEncodedS32}
+\hyperref[class:EncodedS32]{\texttt{Dwm::EncodedS32}} is encoded with
+an encoding byte followed by one to four bytes representing a
+signed 32-bit integer value.
+
+\EncodedFourByteSignedOverview{{},{},{},{},{},{},{},{}}{value (\texttt{size}+1 bytes)}{$byte_0$}{$byte_{size}$}{Dwm::EncodedS32 encoding}
+
 \subsubsection{Encoding byte}
 
-\EncodedFourByteSignedExample{{},{},{},{},{},{},{},{}}{}{Encoding byte}
+Four of the available bits in the encoding byte are utilized: one for
+endianness, one for sign and two to indicate the number of value
+bytes following the encoding byte.
+
+  Table
+~\ref{table:EncodedS32EndianBit} shows the meaning of the
+\texttt{endian} bit.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{endian} & \textbf{description} \\ \hline
+  0 & \texttt{value} is in little-endian format \\ \hline
+  1 & \texttt{value} is in big-endian format \\
+\end{tabular}
+\caption{Meaning of endian bit in \texttt{Dwm::EncodedS32} encoding byte}
+\label{table:EncodedS32EndianBit}
+\end{center}
+\end{table}
+
+Table ~\ref{table:EncodedS32SignBit} shows the meaning of the
+\texttt{sign} bit.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{sign} & \textbf{description} \\ \hline
+  0 & \texttt{value} is positive \\ \hline
+  1 & \texttt{value} is negative \\
+\end{tabular}
+\caption{Meaning of sign bit in \texttt{Dwm::EncodedS32} encoding byte}
+\label{table:EncodedS32SignBit}
+\end{center}
+\end{table}
+
+The \texttt{size} bits indicate the length of the value (in bytes)
+following the encoding byte, minus 1:
+
+  $length\ of\ \texttt{value} = \texttt{size} + 1$
+
+Table ~\ref{table:EncodedS32SizeBits} shows the translations between
+\texttt{size} and the length of the value.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{r|l|l|l|l}
+  \textbf{\texttt{size}} & 0 & 1 & 2 & 3 \\
+  \textbf{length of value (bytes)} & 1 & 2 & 3 & 4  \\
+\end{tabular}
+\end{center}
+\caption{meaning of size bits in \texttt{Dwm::EncodedS32} encoding byte}
+\label{table:EncodedS32SizeBits}
+\end{table}
+
+The remaining bits in the encoding byte are unused.
+
+The \texttt{value} of a
+\hyperref[class:EncodedS32]{\texttt{Dwm::EncodedS32}} is always
+written in native byte order (typically little-endian).  The read
+member functions of
+\hyperref[class:EncodedS32]{\texttt{Dwm::EncodedS32}} will convert
+endianness if needed.
 
 \subsubsection{Examples}
 
@@ -427,10 +526,75 @@ The remaining bits in the encoding byte are unused.
 \EncodedFourByteSignedExample{0,1,{},{},{},{},1,1}{0xCC,0xDD,0xEE,0x7F}{four byte little-endian value -86,554,432}
 
 \subsection{\texttt{Dwm::EncodedS16} encoding}\label{encoding:DwmEncodedS16}
+\hyperref[class:EncodedS16]{\texttt{Dwm::EncodedS16}} is encoded with
+an encoding byte followed by one or two bytes representing a
+signed 16-bit integer value.
+
+\EncodedTwoByteSignedOverview{{},{},{},{},{},{},{},{}}{value (\texttt{size}+1 bytes)}{$byte_0$}{$byte_{size}$}{Dwm::EncodedS16 encoding}
 
 \subsubsection{Encoding byte}
+Four of the available bits in the encoding byte are utilized: one for
+endianness, one for sign and two to indicate the number of value
+bytes following the encoding byte.
 
-\EncodedTwoByteSignedExample{{},{},{},{},{},{},{},{}}{}{Encoding byte}
+  Table
+~\ref{table:EncodedS16EndianBit} shows the meaning of the
+\texttt{endian} bit.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{endian} & \textbf{description} \\ \hline
+  0 & \texttt{value} is in little-endian format \\ \hline
+  1 & \texttt{value} is in big-endian format \\
+\end{tabular}
+\caption{Meaning of endian bit in \texttt{Dwm::EncodedS16} encoding byte}
+\label{table:EncodedS16EndianBit}
+\end{center}
+\end{table}
+
+Table ~\ref{table:EncodedS16SignBit} shows the meaning of the
+\texttt{sign} bit.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{sign} & \textbf{description} \\ \hline
+  0 & \texttt{value} is positive \\ \hline
+  1 & \texttt{value} is negative \\
+\end{tabular}
+\caption{Meaning of sign bit in \texttt{Dwm::EncodedS16} encoding byte}
+\label{table:EncodedS16SignBit}
+\end{center}
+\end{table}
+
+The \texttt{size} bits indicate the length of the value (in bytes)
+following the encoding byte, minus 1:
+
+  $length\ of\ \texttt{value} = \texttt{size} + 1$
+
+Table ~\ref{table:EncodedS16SizeBits} shows the translations between
+\texttt{size} and the length of the value.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{r|l|l}
+  \textbf{\texttt{size}} & 0 & 1 \\
+  \textbf{length of value (bytes)} & 1 & 2  \\
+\end{tabular}
+\end{center}
+\caption{meaning of size bits in \texttt{Dwm::EncodedS16} encoding byte}
+\label{table:EncodedS16SizeBits}
+\end{table}
+
+The remaining bits in the encoding byte are unused.
+
+The \texttt{value} of a
+\hyperref[class:EncodedS16]{\texttt{Dwm::EncodedS16}} is always
+written in native byte order (typically little-endian).  The read
+member functions of
+\hyperref[class:EncodedS16]{\texttt{Dwm::EncodedS16}} will convert
+endianness if needed.
 
 \subsubsection{Examples}
 
@@ -442,9 +606,11 @@ The remaining bits in the encoding byte are unused.
 
 \EncodedTwoByteSignedExample{1,1,{},{},{},{},{},1}{0xEE,0x7F}{two byte little-endian value -32,750}
 
+\section{Encoding of \texttt{std} classes and class templates}
+
 \subsection{\texttt{std::string} encoding}
 \texttt{std::string} is encoded with a length field and then
-the characters in the string.
+the characters in the \texttt{string}.
 
 \LengthEncodedData{\hyperref[encoding:DwmEncodedU64]{\small{EncodedU64}}}{\texttt{s[0]}}{\texttt{s[length-1]}}{\texttt{std::string} encoding}{length}
 
@@ -454,13 +620,36 @@ or not the value is present, then the value if present.
 
 % \LengthEncodedData{uint8\_t}{\texttt{T}}{\texttt{std::optional<T>} encoding}{value present?}
 
-\subsection{\texttt{std::pair<class FirstType, class SecondType>} encoding}\label{encoding:stdPair}
+\subsection{\texttt{std::string\_view} encoding}
+\texttt{std::string} is encoded with a length field and then
+the characters in the \texttt{string\_view} data.
+
+\LengthEncodedData{\hyperref[encoding:DwmEncodedU64]{\small{EncodedU64}}}{\texttt{data[0]}}{\texttt{data[length-1]}}{\texttt{std::string\_view} encoding}{length}
+
+\dwmNote{\texttt{string\_view} is encoded in the same manner as
+  \texttt{string}.  We can't read a \texttt{string\_view}
+  from a source, we can only write it to a sink; it's \texttt{const}.
+  But using the same encoding as \texttt{string} allows us to use
+  \texttt{Dwm::StreamIO} to write data to a \texttt{stringstream}
+  and then write a view of the \texttt{stringstream} to our sink.
+  On the read side, we can read the data as a \texttt{string},
+  move the \texttt{string} into a \texttt{istringstream} and
+  then read the data from the \texttt{istringstream}.  This
+  allows a library user to reduce the number of \texttt{::write()} and
+  \texttt{::read()} system calls when using
+  \texttt{Dwm::DescriptorIO}.}
+  
+\subsection{\texttt{std::optional<T>} encoding}\label{encoding:stdOptional}
+A \texttt{std::optional<T>} is encoded with a single byte to indicate whether
+or not the value is present, then the value if present.
+
+\subsection{\texttt{std::pair<FirstType,SecondType>} encoding}\label{encoding:stdPair}
 The encoding of a \texttt{std::pair} is as you'd expect: the first value
 followed by the second value.
 
-\StdPairData{FirstType}{SecondType}{\texttt{std::pair<class FirstType, class SecondType>} encoding}
+\StdPairData{FirstType}{SecondType}{\texttt{std::pair<FirstType,SecondType>} encoding}
 
-\subsection{\texttt{std::vector<class T>} encoding}\label{encoding:stdVector}
+\subsection{\texttt{std::vector<T>} encoding}\label{encoding:stdVector}
 A \texttt{std::vector} is encoded with a 64-bit \texttt{length} field
 followed by \texttt{length} elements of the \texttt{vector}.
 
@@ -485,7 +674,7 @@ followed by \texttt{length} elements of the \texttt{list}.
 \dwmNote{The \texttt{length} field is likely to be changed to use
   \texttt{Dwm::EncodedU64} in the future.}
 
-\subsection{\texttt{std::map<class Key,class Value>} encoding}\label{encoding:stdMap}
+\subsection{\texttt{std::map<Key,Value>} encoding}\label{encoding:stdMap}
 A \texttt{std::map} is encoded with a 64-bit \texttt{length} field
 followed by \texttt{length} pairs of (\texttt{Key},\texttt{Value})
 elements of the \texttt{map}.
@@ -494,28 +683,28 @@ elements of the \texttt{map}.
 \dwmNote{The \texttt{length} field is likely to be changed to use
   \texttt{Dwm::EncodedU64} in the future.}
 
-\subsection{\texttt{std::multimap<class Key,class Value>} encoding}\label{encoding:stdMultimap}
+\subsection{\texttt{std::multimap<Key,Value>} encoding}\label{encoding:stdMultimap}
 \LengthEncodedData{uint64\_t}{\texttt{std::pair<Key,Value>$_0$}}{\texttt{std::pair<Key,Value>$_{length-1}$}}{\texttt{std::multimap<Key,Value>} encoding}{length}
 \dwmNote{The \texttt{length} field is likely to be changed to use
   \texttt{Dwm::EncodedU64} in the future.}
 
-\subsection{\texttt{std::unordered\_map<class Key,class Value>} encoding}\label{encoding:stdUnorderedMap}
+\subsection{\texttt{std::unordered\_map<Key,Value>} encoding}\label{encoding:stdUnorderedMap}
 \LengthEncodedData{uint64\_t}{\texttt{std::pair<Key,Value>$_0$}}{\texttt{std::pair<Key,Value>$_{length-1}$}}{\texttt{std::unordered\_map<Key,Value>} encoding}{length}
 
-\subsection{\texttt{std::unordered\_multimap<class Key,class Value>} encoding}\label{encoding:stdUnorderedMultimap}
+\subsection{\texttt{std::unordered\_multimap<Key,Value>} encoding}\label{encoding:stdUnorderedMultimap}
 \LengthEncodedData{uint64\_t}{\texttt{std::pair<Key,Value>$_0$}}{\texttt{std::pair<Key,Value>$_{length-1}$}}{\texttt{std::unordered\_multimap<Key,Value>} encoding}{length}
 
-\subsection{\texttt{std::set<class T>} encoding}\label{encoding:stdSet}
+\subsection{\texttt{std::set<T>} encoding}\label{encoding:stdSet}
 \LengthEncodedData{uint64\_t}{\texttt{T$_0$}}{\texttt{T$_{length-1}$}}{\texttt{std::set<T>} encoding}{length}
 
 
-\subsection{\texttt{std::multiset<class T>} encoding}\label{encoding:stdMultiset}
+\subsection{\texttt{std::multiset<T>} encoding}\label{encoding:stdMultiset}
 \LengthEncodedData{uint64\_t}{\texttt{T$_0$}}{\texttt{T$_{length-1}$}}{\texttt{std::multiset<T>} encoding}{length}
 
-\subsection{\texttt{std::unordered\_set<class T>} encoding}\label{encoding:stdUnorderedSet}
+\subsection{\texttt{std::unordered\_set<T>} encoding}\label{encoding:stdUnorderedSet}
 
 \LengthEncodedData{uint64\_t}{\texttt{T$_0$}}{\texttt{T$_{length-1}$}}{\texttt{std::unordered\_set<T>} encoding}{length}
 
-\subsection{\texttt{std::unordered\_multiset<class T>} encoding}\label{encoding:stdUnorderedMultiset}
+\subsection{\texttt{std::unordered\_multiset<T>} encoding}\label{encoding:stdUnorderedMultiset}
 
 \LengthEncodedData{uint64\_t}{\texttt{T$_0$}}{\texttt{T$_{length-1}$}}{\texttt{std::unordered\_multiset<T>} encoding}{length}

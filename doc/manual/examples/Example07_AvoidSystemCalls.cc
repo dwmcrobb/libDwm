@@ -1,5 +1,5 @@
 extern "C" {
-#include <fcntl.h>   // for open()
+  #include <fcntl.h>   // for open()
 }
 
 #include <sstream>
@@ -9,6 +9,8 @@ extern "C" {
 #include "DwmStreamIO.hh"
 #include "DwmEncodedUnsigned.hh"
 #include "DwmEncodedSigned.hh"
+
+using Dwm::StreamIO, Dwm::DescriptorIO, Dwm::IOUtils, Dwm::EncodedU64;
 
 //----------------------------------------------------------------------------
 class C 
@@ -25,9 +27,9 @@ public:
   //--------------------------------------------------------------------------
   std::ostream & Write(std::ostream & os) const
   {
-    Dwm::EncodedU64  len = Dwm::IOUtils::StreamedLengthV(_u32, _u16, _s, _u8);
-    if (Dwm::StreamIO::Write(os, len)) {
-      Dwm::StreamIO::WriteV(os, _u32, _u16, _s, _u8);
+    EncodedU64  len = IOUtils::StreamedLengthV(_u32, _u16, _s, _u8);
+    if (StreamIO::Write(os, len)) {
+      StreamIO::WriteV(os, _u32, _u16, _s, _u8);
     }
     return os;
   }
@@ -36,9 +38,11 @@ public:
   std::istream & Read(std::istream & is)
   {
     std::string  s;
-    if (Dwm::StreamIO::Read(is, s)) {
+    if (StreamIO::Read(is, s)) {
+      assert(! s.empty());
       std::istringstream  iss(std::move(s));
-      Dwm::StreamIO::ReadV(iss, _u32, _u16, _s, _u8);
+      assert(s.empty());
+      StreamIO::ReadV(iss, _u32, _u16, _s, _u8);
     }
     return is;
   }
@@ -63,10 +67,10 @@ public:
     ssize_t  rc = -1;
     if (0 <= fd) {
       std::string  s;
-      ssize_t  bytesRead = Dwm::DescriptorIO::Read(fd, s);
+      ssize_t  bytesRead = DescriptorIO::Read(fd, s);
       if (bytesRead > 0) {
         std::istringstream  iss(std::move(s));
-        if (Dwm::StreamIO::ReadV(iss, _u32, _u16, _s, _u8)) {
+        if (StreamIO::ReadV(iss, _u32, _u16, _s, _u8)) {
           rc = bytesRead;
         }
       }
@@ -88,20 +92,20 @@ int main(int argc, char *argv[])
 {
   const C  c1(0xFF00FF00, 0xBEEF, "hello!", 0xAC);
   std::stringstream  ss;
-  assert(Dwm::StreamIO::Write(ss, c1));
+  assert(StreamIO::Write(ss, c1));
   C  c2(0,0,"",0);
-  assert(Dwm::StreamIO::Read(ss, c2));
+  assert(StreamIO::Read(ss, c2));
   assert(c1 == c2);
 
 #if 1
   int fd = ::open("/tmp/Example07_test", O_CREAT|O_WRONLY, 0644);
   assert(0 <= fd);
-  assert(Dwm::DescriptorIO::Write(fd, c1) > 0);
+  assert(DescriptorIO::Write(fd, c1) > 0);
   close(fd);
   fd = open("/tmp/Example07_test", O_RDONLY);
   assert(0 <= fd);
   C  c3(0,0,"",0);
-  assert(Dwm::DescriptorIO::Read(fd, c3));
+  assert(DescriptorIO::Read(fd, c3));
   close(fd);
   assert(c1 == c3);
   std::remove("/tmp/Example07_test");

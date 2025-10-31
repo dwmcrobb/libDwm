@@ -401,6 +401,48 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
 \end{center}
 }
 
+\newcommand{\EncodedFourByteSignedOverview}[5]{
+\begin{center}
+\noindent\begin{tikzpicture}[
+    start chain = A going right,
+    node distance = 0pt, % Ensure no gap between bit nodes
+    bit node/.style = {draw, minimum height=20pt, minimum width=(\textwidth-40pt)/72, text width=(\textwidth-40pt)/72, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A},
+    data node/.style = {draw, minimum height=20pt, minimum width=\dimexpr(8\textwidth-40pt)/9\relax, text width=\dimexpr(8\textwidth-40pt)/9\relax, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A}
+  ]
+  % Draw the bit nodes and indices
+  \foreach \bit [count=\i] in {#1} {
+    \numtestTF{ 2 < \i < 7 }
+              { \node[bit node, fill=black!20] (bit-\i) {};
+                \node[below=0mm of bit-\i, font=\tiny] {\i}; }
+              { \node[bit node, fill=white,font=\small] (bit-\i) {\bit};
+                \node[below=0mm of bit-\i, font=\tiny] {\i}; }
+  }
+  
+  % Add overbraces for specific sections
+  \draw [decorate, decoration={brace, amplitude=5pt}] (bit-1.north west) -- (bit-1.north east) 
+  node [above=1ex, midway, rotate=270, anchor=east, yshift=.5pt, font=\scriptsize] {endian};
+  \draw [decorate, decoration={brace, amplitude=5pt}] (bit-2.north west) -- (bit-2.north east) 
+  node [above=1ex, midway, rotate=270, anchor=east, yshift=.5pt, font=\scriptsize] {sign};
+  
+  % Add overbrace for the rest of the bits
+  \draw [decorate, decoration={brace, amplitude=5pt}] (bit-7.north west) -- (bit-8.north east) 
+  node [above=1ex, midway, rotate=270, anchor=east, yshift=.5pt, font=\scriptsize] {size};
+
+  % Add label for the Encoding byte
+  \draw [decorate, decoration={brace, mirror, amplitude=0pt}] (bit-1.south west) -- (bit-8.south east)  
+  node [below=7pt, midway, font=\scriptsize] {encoding byte};
+
+  % Draw the data node
+  \node[data node, fill=white] (data) {\hspace{1em} {} #3\hfill ...\hfill #4 \hspace{1em} { }};
+
+  % Add overbrace for the data
+  \draw [decorate, decoration={brace, amplitude=10pt}] (data.north west) -- (data.north east) 
+  node [above=10pt, midway, font=\small] (ob2) {#2};
+\end{tikzpicture}
+\captionof{figure}{#5}
+\end{center}
+}
+
 \newcommand{\EncodedFourByteSignedExample}[3]{
 \begin{center}
 \noindent\begin{tikzpicture}[
@@ -446,6 +488,48 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
   \fi  
 \end{tikzpicture}
 \captionof{figure}{#3}
+\end{center}
+}
+
+\newcommand{\EncodedTwoByteSignedOverview}[5]{
+\begin{center}
+\noindent\begin{tikzpicture}[
+    start chain = A going right,
+    node distance = 0pt, % Ensure no gap between bit nodes
+    bit node/.style = {draw, minimum height=20pt, minimum width=(\textwidth-40pt)/72, text width=(\textwidth-40pt)/72, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A},
+    data node/.style = {draw, minimum height=20pt, minimum width=\dimexpr(8\textwidth-40pt)/9\relax, text width=\dimexpr(8\textwidth-40pt)/9\relax, align=center, font=\ttfamily, inner sep=0pt, outer sep=0pt, on chain=A}
+  ]
+  % Draw the bit nodes and indices
+  \foreach \bit [count=\i] in {#1} {
+    \numtestTF{ 2 < \i < 8 }
+              { \node[bit node, fill=black!20] (bit-\i) {};
+                \node[below=0mm of bit-\i, font=\tiny] {\i}; }
+              { \node[bit node, fill=white,font=\small] (bit-\i) {\bit};
+                \node[below=0mm of bit-\i, font=\tiny] {\i}; }
+  }
+  
+  % Add overbraces for specific sections
+  \draw [decorate, decoration={brace, amplitude=5pt}] (bit-1.north west) -- (bit-1.north east) 
+  node [above=1ex, midway, rotate=270, anchor=east, yshift=.5pt, font=\scriptsize] {endian};
+  \draw [decorate, decoration={brace, amplitude=5pt}] (bit-2.north west) -- (bit-2.north east) 
+  node [above=1ex, midway, rotate=270, anchor=east, yshift=.5pt, font=\scriptsize] {sign};
+  
+  % Add overbrace for the rest of the bits
+  \draw [decorate, decoration={brace, amplitude=5pt}] (bit-8.north west) -- (bit-8.north east) 
+  node [above=1ex, midway, rotate=270, anchor=east, yshift=.5pt, font=\scriptsize] {size};
+
+  % Add label for the Encoding byte
+  \draw [decorate, decoration={brace, mirror, amplitude=0pt}] (bit-1.south west) -- (bit-8.south east)  
+  node [below=7pt, midway, font=\scriptsize] {encoding byte};
+
+  % Draw the data node
+  \node[data node, fill=white] (data) {\hspace{1em} {} #3\hfill ...\hfill #4 \hspace{1em} { }};
+
+  % Add overbrace for the data
+  \draw [decorate, decoration={brace, amplitude=10pt}] (data.north west) -- (data.north east) 
+  node [above=10pt, midway, font=\small] (ob2) {#2};
+\end{tikzpicture}
+\captionof{figure}{#5}
 \end{center}
 }
 
@@ -658,6 +742,12 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
 \newcommand{\dwmNote}[1]{
   \begin{mdframed}[backgroundcolor=blue!10]
   \textbf{NOTE:} #1
+  \end{mdframed}
+}
+
+\newcommand{\dwmTodo}[1]{
+  \begin{mdframed}[backgroundcolor=red!10]
+  \textbf{TODO:} #1
   \end{mdframed}
 }
 

@@ -142,9 +142,11 @@ Examples:
 \item[] \texttt{IsEndianSensitiveInteger<float>} $\rightarrow$ \texttt{false}
 \end{itemize}
 
-\subsection{\texttt{template <typename T>\\
-    requires IsEndianSensitiveInteger<T>\\
-    inline auto BE2Host(T t) $\rightarrow$ T}}
+\subsection{\texttt{BE2Host}}
+\texttt{template <typename T>\\
+requires IsEndianSensitiveInteger<T>\\
+inline auto BE2Host(T t) $\rightarrow$ T}
+
 Returns a \texttt{T} holding the value of \texttt{t} converted from
 big endian (MSB first) byte order to host byte order.  Example:
 \begin{verbatim}
@@ -154,9 +156,16 @@ big endian (MSB first) byte order to host byte order.  Example:
   assert(0x00FF == y);
 \end{verbatim}
 
-\subsection{\texttt{template <typename T>\\
-    requires IsEndianSensitiveInteger<T>\\
-    inline auto Host2BE(T t) $\rightarrow$ T}}
+\texttt{template <typename ...Args>\\
+requires (IsEndianSensitiveInteger<Args> and ...)\\
+void BE2Host(Args \& ...args)}
+\dwmTodo{Document BE2Host variadic}
+
+\subsection{\texttt{Host2BE}}
+\texttt{template <typename T>\\
+requires IsEndianSensitiveInteger<T>\\
+inline auto Host2BE(T t) $\rightarrow$ T}
+
 Returns a \texttt{T} holding the value of \texttt{t} converted from
 host byte order to big-endian (MSB first) byte order.  Example:
 \begin{verbatim}
@@ -166,10 +175,10 @@ host byte order to big-endian (MSB first) byte order.  Example:
   assert(0xDDCCBBAA == y);
 \end{verbatim}
 
-\subsection{\texttt{template <typename ...Args>\\
-    requires (IsEndianSensitiveInteger<Args> and ...)\\
-    void BE2Host(Args \& ...args)}}
+\texttt{template <typename ...Args>\\
+requires (IsEndianSensitiveInteger<Args> and ...)\\
+void Host2BE(Args \& ...args)}
+\dwmTodo{Document Host2BE variadic}
 
-\subsection{\texttt{template <typename ...Args>\\
-    requires (IsEndianSensitiveInteger<Args> and ...)\\
-    void Host2BE(Args \& ...args)}}
+\subsection{\texttt{Bswap}}
+\dwmTodo{Document Bswap}
