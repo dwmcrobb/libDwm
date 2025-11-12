@@ -475,9 +475,9 @@ define(DWM_GIT_TAG,[
     GIT_TAG="${gittag}"
     GIT_VERSION=`echo "${gittag}" | awk -F '-' '{print $NF}'`
   else
-    fakevers=`date +%Y%m%d`
-    GIT_TAG="[$1]-0.0.${fakevers}"
-    GIT_VERSION="0.0.${fakevers}"
+    fakevers=`date +%Y.%m.%d`
+    GIT_TAG="[$1]-${fakevers}"
+    GIT_VERSION="${fakevers}"
   fi
   AC_SUBST(GIT_TAG)
   AC_SUBST(GIT_VERSION)
