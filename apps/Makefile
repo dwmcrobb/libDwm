@@ -7,7 +7,6 @@ $(dwm_my apps.subdirs := $(dwm_subdirs $(appsDir)))
 $(dwm_include $(abspath $(appsDir)/dwmcflags/Makefile))
 $(dwm_include $(abspath $(appsDir)/dwmnet/Makefile))
 $(dwm_include $(abspath $(appsDir)/dwmspath/Makefile))
-$(dwm_include $(abspath $(appsDir)/dwmwhat/Makefile))
 
 $(dwm_myns apps)
 $(dwm_my apps := $(dwm_rgxreplace \ ,|,$(my apps.subdirs)))
