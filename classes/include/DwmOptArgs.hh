@@ -48,6 +48,7 @@
 #include <vector>
 
 #include "DwmStringUtils.hh"
+#include "DwmLibDwmVersion.hh"
 
 namespace Dwm {
 
