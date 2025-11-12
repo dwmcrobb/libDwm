@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmDirectoryEntry.cc 10621 $
-// @(#) $Id: TestDwmDirectoryEntry.cc 10621 2020-05-02 21:51:49Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2011, 2023, 2024
 //  All rights reserved.
@@ -44,14 +43,11 @@
 #include <memory>
 #include <string>
 
-#include "DwmSvnTag.hh"
 #include "DwmUnitAssert.hh"
 #include "DwmDirectoryEntry.hh"
 
 using namespace std;
 using Dwm::DirectoryEntry;
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmDirectoryEntry.cc 10621 $");
 
 static string  g_myDir;
 

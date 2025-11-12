@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestXDRUtils.cc 10964 $
-// @(#) $Id: TestXDRUtils.cc 10964 2020-08-24 07:08:29Z dwm $
+// @(#) $DwmPath:$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2020
 //  All rights reserved.
@@ -40,11 +39,8 @@
 //!  \brief NOT YET DOCUMENTED
 //---------------------------------------------------------------------------
 
-#include "DwmSvnTag.hh"
 #include "DwmUnitAssert.hh"
 #include "DwmXDRUtils.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestXDRUtils.cc 10964 $");
 
 //----------------------------------------------------------------------------
 //!  

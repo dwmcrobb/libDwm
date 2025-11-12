@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestGetAddrInfo.cc 9947 $
-// @(#) $Id: TestGetAddrInfo.cc 9947 2018-01-06 09:24:28Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2018
 //  All rights reserved.
@@ -40,10 +39,7 @@
 //---------------------------------------------------------------------------
 
 #include "DwmGetAddrInfo.hh"
-#include "DwmSvnTag.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestGetAddrInfo.cc 9947 $");
 
 using namespace std;
 using namespace Dwm;

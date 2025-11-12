@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestProcessTable.cc 11087 $
-// @(#) $Id: TestProcessTable.cc 11087 2020-09-07 09:58:37Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2006-2007
 //  All rights reserved.
@@ -49,7 +48,6 @@ extern "C" {
 #include <iostream>
 #include <sstream>
 
-#include "DwmSvnTag.hh"
 #include "DwmBZ2IO.hh"
 #include "DwmGZIO.hh"
 #include "DwmIOUtils.hh"
@@ -57,8 +55,6 @@ extern "C" {
 #include "DwmProcessTable.hh"
 #include "DwmEngFormat.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestProcessTable.cc 11087 $");
 
 using namespace std;
 using namespace Dwm;

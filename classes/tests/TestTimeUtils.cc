@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestTimeUtils.cc 11160 $
-// @(#) $Id: TestTimeUtils.cc 11160 2020-09-08 04:53:52Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2018, 2020
 //  All rights reserved.

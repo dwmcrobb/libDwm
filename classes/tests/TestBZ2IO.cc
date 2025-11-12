@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmBZ2IO.cc 11071 $
-// @(#) $Id: TestDwmBZ2IO.cc 11071 2020-09-05 15:20:31Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2004-2007, 2016, 2024
 //  All rights reserved.
@@ -50,15 +49,12 @@ extern "C" {
 #include <cstdio>
 #include <fstream>
 
-#include "DwmSvnTag.hh"
 #include "DwmIpv4Prefix.hh"
 #include "DwmBZ2IO.hh"
 #include "DwmUnitAssert.hh"
 
 using namespace std;
 using namespace Dwm;
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmBZ2IO.cc 11071 $");
 
 static const char      k_charVal   = 'a';
 static const uint8_t   k_ucharVal  = 0xF0;

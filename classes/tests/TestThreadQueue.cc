@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestThreadQueue.cc 11256 $
-// @(#) $Id: TestThreadQueue.cc 11256 2020-11-15 22:52:10Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2016
 //  All rights reserved.
@@ -47,13 +46,10 @@ extern "C" {
 #include <vector>
 
 #include "DwmOptArgs.hh"
-#include "DwmSvnTag.hh"
 #include "DwmSysLogger.hh"
 #include "DwmTimeValue64.hh"
 #include "DwmUnitAssert.hh"
 #include "DwmThreadQueue.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestThreadQueue.cc 11256 $");
 
 using namespace std;
 using namespace Dwm;

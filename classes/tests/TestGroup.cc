@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestGroup.cc 11086 $
-// @(#) $Id: TestGroup.cc 11086 2020-09-06 06:17:20Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2016
 //  All rights reserved.
@@ -47,10 +46,7 @@ extern "C" {
 
 #include "DwmGroup.hh"
 #include "DwmPassword.hh"
-#include "DwmSvnTag.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestGroup.cc 11086 $");
 
 using namespace std;
 

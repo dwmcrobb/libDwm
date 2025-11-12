@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestEngFormat.cc 8389 $
-// @(#) $Id: TestEngFormat.cc 8389 2016-04-17 04:31:36Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2005-2007
 //  All rights reserved.
@@ -40,11 +39,8 @@
 
 #include <sstream>
 
-#include "DwmSvnTag.hh"
 #include "DwmEngFormat.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestEngFormat.cc 8389 $");
 
 using namespace Dwm;
 

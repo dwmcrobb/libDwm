@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestVariantIO.cc 11087 $
-// @(#) $Id: TestVariantIO.cc 11087 2020-09-07 09:58:37Z dwm $
+// @(#) $DwmPath:$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2020
 //  All rights reserved.
@@ -43,13 +42,10 @@
 #include <sstream>
 
 #include "DwmStreamIO.hh"
-#include "DwmSvnTag.hh"
 #include "DwmUnitAssert.hh"
 
 using namespace std;
 using namespace Dwm;
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestVariantIO.cc 11087 $");
 
 //----------------------------------------------------------------------------
 //!  

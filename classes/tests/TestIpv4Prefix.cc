@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestIpv4Prefix.cc 9284 $
-// @(#) $Id: TestIpv4Prefix.cc 9284 2017-04-28 17:17:27Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2005-2007, 2016
 //  All rights reserved.
@@ -53,10 +52,7 @@ static const char storeFile[] = "/tmp/Ipv4Prefix.store";
 #include <vector>
 
 #include "DwmIpv4Prefix.hh"
-#include "DwmSvnTag.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestIpv4Prefix.cc 9284 $");
 
 using namespace std;
 using namespace Dwm;

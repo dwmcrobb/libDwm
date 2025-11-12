@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmPassword.cc 8389 $
-// @(#) $Id: TestDwmPassword.cc 8389 2016-04-17 04:31:36Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2006
 //  All rights reserved.
@@ -46,11 +45,8 @@ extern "C" {
 #include <cstdlib>
 #include <iostream>
 
-#include "DwmSvnTag.hh"
 #include "DwmPassword.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmPassword.cc 8389 $");
 
 using namespace std;
 

@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmRusage.cc 9014 $
-// @(#) $Id: TestDwmRusage.cc 9014 2017-04-11 09:53:02Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2006-2007, 2016
 //  All rights reserved.
@@ -52,14 +51,11 @@ extern "C" {
 #include "DwmDescriptorIO.hh"
 #include "DwmFileIO.hh"
 #include "DwmGZIO.hh"
-#include "DwmSvnTag.hh"
 #include "DwmOptArgs.hh"
 #include "DwmPassword.hh"
 #include "DwmRusage.hh"
 #include "DwmSysLogger.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmRusage.cc 9014 $");
 
 using namespace std;
 using Dwm::Assertions;

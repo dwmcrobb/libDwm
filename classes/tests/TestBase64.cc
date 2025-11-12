@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestBase64.cc 9945 $
-// @(#) $Id: TestBase64.cc 9945 2018-01-06 08:30:43Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2018
 //  All rights reserved.
@@ -50,7 +49,6 @@ extern "C" {
 #include <cstdlib>
 #include <sstream>
 
-#include "DwmSvnTag.hh"
 #include "DwmBase64.hh"
 #include "DwmUnitAssert.hh"
 

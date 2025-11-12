@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $Name:$
-// @(#) $Id: TestTimeInterval64.cc 9101 2017-04-14 20:37:59Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2017
 //  All rights reserved.
@@ -45,11 +44,8 @@ extern "C" {
 
 #include <fstream>
 
-#include "DwmSvnTag.hh"
 #include "DwmTimeInterval64.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestTimeInterval64.cc 9101 $");
 
 using namespace std;
 using namespace Dwm;

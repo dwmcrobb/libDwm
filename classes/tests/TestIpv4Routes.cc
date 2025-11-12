@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestIpv4Routes.cc 8389 $
-// @(#) $Id: TestIpv4Routes.cc 8389 2016-04-17 04:31:36Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2005-2007, 2016, 2024
 //  All rights reserved.
@@ -57,11 +56,8 @@ extern "C" {
 #include "DwmIpv4Routes.hh"
 #include "DwmOperators.hh"
 #include "DwmOptArgs.hh"
-#include "DwmSvnTag.hh"
 #include "DwmTimeValue.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestIpv4Routes.cc 8389 $");
 
 using namespace std;
 using namespace Dwm;

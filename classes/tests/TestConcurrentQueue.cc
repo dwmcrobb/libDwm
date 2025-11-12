@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestConcurrentQueue.cc 8389 $
-// @(#) $Id: TestConcurrentQueue.cc 8389 2016-04-17 04:31:36Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2016
 //  All rights reserved.
@@ -43,9 +42,6 @@
 
 #include "DwmConcurrentQueue.hh"
 #include "DwmUnitAssert.hh"
-#include "DwmSvnTag.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestConcurrentQueue.cc 8389 $");
 
 #define NUM_ENTRIES_PER_CPU_TO_TEST  5000000
 

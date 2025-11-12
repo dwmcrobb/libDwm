@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmFileLogger.cc 10863 $
-// @(#) $Id: TestDwmFileLogger.cc 10863 2020-07-27 08:54:08Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2018
 //  All rights reserved.

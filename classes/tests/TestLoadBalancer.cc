@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmLoadBalancer.cc 10170 $
-// @(#) $Id: TestDwmLoadBalancer.cc 10170 2018-07-23 10:06:25Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2016
 //  All rights reserved.
@@ -48,11 +47,8 @@ extern "C" {
 
 #include "DwmLoadBalancer.hh"
 #include "DwmOptArgs.hh"
-#include "DwmSvnTag.hh"
 #include "DwmTimeValue.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmLoadBalancer.cc 10170 $");
 
 //----------------------------------------------------------------------------
 //!  

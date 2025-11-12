@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestUnorderedMapIO.cc 11087 $
-// @(#) $Id: TestUnorderedMapIO.cc 11087 2020-09-07 09:58:37Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2005-2007, 2020
 //  All rights reserved.
@@ -59,10 +58,7 @@ using std::unordered_map;
 #include "DwmGZIO.hh"
 #include "DwmStreamIO.hh"
 #include "DwmOperators.hh"
-#include "DwmSvnTag.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestUnorderedMapIO.cc 11087 $");
 
 using namespace std;
 using namespace Dwm;

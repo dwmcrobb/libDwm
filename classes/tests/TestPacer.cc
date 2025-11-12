@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmPacer.cc 8389 $
-// @(#) $Id: TestDwmPacer.cc 8389 2016-04-17 04:31:36Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2006-2007
 //  All rights reserved.
@@ -41,12 +40,9 @@
 
 #include <iostream>
 
-#include "DwmSvnTag.hh"
 #include "DwmPacer.hh"
 #include "DwmOptArgs.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmPacer.cc 8389 $");
 
 using namespace std;
 using Dwm::OptArgs;

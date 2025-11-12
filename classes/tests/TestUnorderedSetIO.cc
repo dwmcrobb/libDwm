@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestUnorderedSetIO.cc 11087 $
-// @(#) $Id: TestUnorderedSetIO.cc 11087 2020-09-07 09:58:37Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2005-2007, 2020
 //  All rights reserved.
@@ -60,15 +59,12 @@ using std::unordered_set;
 #include "DwmGZIO.hh"
 #include "DwmStreamIO.hh"
 #include "DwmOperators.hh"
-#include "DwmSvnTag.hh"
 #include "DwmUnitAssert.hh"
 
 using namespace std;
 using namespace Dwm;
 
 #define STOREFILE "/tmp/DwmTestUnorderedSetIO.store"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestUnorderedSetIO.cc 11087 $");
 
 //----------------------------------------------------------------------------
 //!  

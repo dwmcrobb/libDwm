@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmLocalInterfaces.cc 9020 $
-// @(#) $Id: TestDwmLocalInterfaces.cc 9020 2017-04-11 20:28:41Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2006-2007
 //  All rights reserved.
@@ -47,12 +46,9 @@ extern "C" {
 #include <iostream>
 #include <vector>
 
-#include "DwmSvnTag.hh"
 #include "DwmLocalInterfaces.hh"
 #include "DwmOptArgs.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmLocalInterfaces.cc 9020 $");
 
 using namespace std;
 using namespace Dwm;

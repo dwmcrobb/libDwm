@@ -1,5 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmDiff.cc 10284 $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2020
 //  All rights reserved.
@@ -42,11 +42,8 @@
 #include <set>
 #include <vector>
 
-#include "DwmSvnTag.hh"
 #include "DwmUnitAssert.hh"
 #include "DwmDiff.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmDiff.cc 10284 $");
 
 using namespace std;
 

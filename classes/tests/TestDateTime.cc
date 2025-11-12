@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmDateTime.cc 9013 $
-// @(#) $Id: TestDwmDateTime.cc 9013 2017-04-11 09:27:40Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2005-2007
 //  All rights reserved.
@@ -43,10 +42,7 @@
 #include <iostream>
 
 #include "DwmDateTime.hh"
-#include "DwmSvnTag.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmDateTime.cc 9013 $");
 
 using namespace std;
 using namespace Dwm;

@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestValueRange.cc 8389 $
-// @(#) $Id: TestValueRange.cc 8389 2016-04-17 04:31:36Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2007
 //  All rights reserved.
@@ -42,14 +41,11 @@
 #include <cstdlib>
 #include <string>
 
-#include "DwmSvnTag.hh"
 #include "DwmUnitAssert.hh"
 #include "DwmValueRange.hh"
 
 using namespace std;
 using Dwm::ValueRange;
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestValueRange.cc 8389 $");
 
 //----------------------------------------------------------------------------
 //!  

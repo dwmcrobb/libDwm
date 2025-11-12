@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestIpv4Address.cc 8939 $
-// @(#) $Id: TestIpv4Address.cc 8939 2017-03-31 04:02:30Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2005-2007, 2016
 //  All rights reserved.

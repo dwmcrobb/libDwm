@@ -1,6 +1,5 @@
 //===========================================================================
 // @(#) $DwmPath:$
-// @(#) $Id:$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2024
 //  All rights reserved.
@@ -52,13 +51,10 @@ extern "C" {
 #include "DwmFileIO.hh"
 #include "DwmGZIO.hh"
 #include "DwmStreamIO.hh"
-#include "DwmSvnTag.hh"
 #include "DwmUnitAssert.hh"
 
 using namespace std;
 using namespace Dwm;
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestVariantIO.cc 11087 $");
 
 enum BasicEnum {
   e_basicEnum0   = 0,

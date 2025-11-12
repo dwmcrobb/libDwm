@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmDataLog.cc 8389 $
-// @(#) $Id: TestDwmDataLog.cc 8389 2016-04-17 04:31:36Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2008, 2016
 //  All rights reserved.
@@ -45,11 +44,8 @@
 #include <string>
 
 #include "DwmDataLog.hh"
-#include "DwmSvnTag.hh"
 #include "DwmUnitAssert.hh"
 #include "DwmSysLogger.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmDataLog.cc 8389 $");
 
 using namespace std;
 using namespace Dwm;

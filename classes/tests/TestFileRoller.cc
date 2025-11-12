@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestFileRoller.cc 8389 $
-// @(#) $Id: TestFileRoller.cc 8389 2016-04-17 04:31:36Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2006-2007, 2016
 //  All rights reserved.
@@ -48,11 +47,8 @@ extern "C" {
 #include <cstdio>
 #include <sstream>
 
-#include "DwmSvnTag.hh"
 #include "DwmFileRoller.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestFileRoller.cc 8389 $");
 
 using namespace std;
 using namespace Dwm;

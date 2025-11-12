@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestMplsLabelStack.cc 8389 $
-// @(#) $Id: TestMplsLabelStack.cc 8389 2016-04-17 04:31:36Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2007
 //  All rights reserved.
@@ -49,12 +48,9 @@ extern "C" {
 #include <fstream>
 #include <sstream>
 
-#include "DwmSvnTag.hh"
 #include "DwmMplsLabelStack.hh"
 #include "DwmSysLogger.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestMplsLabelStack.cc 8389 $");
 
 using namespace std;
 using namespace Dwm;

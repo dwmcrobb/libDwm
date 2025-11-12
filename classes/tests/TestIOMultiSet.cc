@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestIOMultiSet.cc 11087 $
-// @(#) $Id: TestIOMultiSet.cc 11087 2020-09-07 09:58:37Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2005-2007, 2016, 2020
 //  All rights reserved.
@@ -53,10 +52,7 @@ extern "C" {
 #include "DwmDescriptorIO.hh"
 #include "DwmFileIO.hh"
 #include "DwmStreamIO.hh"
-#include "DwmSvnTag.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestIOMultiSet.cc 11087 $");
 
 using namespace std;
 using namespace Dwm;

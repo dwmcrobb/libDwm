@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestIpv6Prefix.cc 11305 $
-// @(#) $Id: TestIpv6Prefix.cc 11305 2020-11-25 21:27:11Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2005-2007
 //  All rights reserved.
@@ -52,10 +51,7 @@ static const char storeFile[] = "/tmp/Ipv6Prefix.store";
 #include <vector>
 
 #include "DwmIpv6Prefix.hh"
-#include "DwmSvnTag.hh"
 #include "DwmUnitAssert.hh"
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestIpv6Prefix.cc 11305 $");
 
 using namespace std;
 using namespace Dwm;

@@ -1,6 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmSignal.cc 8389 $
-// @(#) $Id: TestDwmSignal.cc 8389 2016-04-17 04:31:36Z dwm $
+// @(#) $DwmPath$
 //===========================================================================
 //  Copyright (c) Daniel W. McRobb 2007
 //  All rights reserved.
@@ -48,13 +47,10 @@ extern "C" {
 #include <string>
 
 #include "DwmSignal.hh"
-#include "DwmSvnTag.hh"
 #include "DwmUnitAssert.hh"
 
 using namespace std;
 using namespace Dwm;
-
-static const Dwm::SvnTag svntag("@(#) $DwmPath: dwm/libDwm/trunk/tests/TestDwmSignal.cc 8389 $");
 
 static uint32_t  g_handler1Calls = 0;
 static uint32_t  g_handler2Calls = 0;
