@@ -54,6 +54,7 @@ namespace Dwm {
   //!  
   //--------------------------------------------------------------------------
   template <typename T>
+  requires IsEndianSensitiveInteger<T>
   class NoEndian
   {
   public:
@@ -75,7 +76,7 @@ namespace Dwm {
     //!  Assign from the given @c value.
     //------------------------------------------------------------------------
     NoEndian & operator = (T value)
-    { _length = length; return *this; }
+    { _value = value; return *this; }
     
     //------------------------------------------------------------------------
     //!  Return the value.
@@ -99,13 +100,29 @@ namespace Dwm {
     //!  Writes the value to @c f.  Returns 1 on success, 0 on failure.
     //------------------------------------------------------------------------
     size_t Write(FILE *f) const
-    { return FileIO::NWrite(f, _value); }
+    {
+      size_t  rc = 0;
+      if (f) {
+        if (fwrite((const void *)_value, sizeof(_value), 1, f)) {
+          rc = 1;
+        }
+      }
+      return rc;
+    }
 
     //------------------------------------------------------------------------
     //!  Reads the value from @c f.  Returns 1 on success, 0 on failure.
     //------------------------------------------------------------------------
     size_t Read(FILE *f)
-    { return FileIO::NRead(f, _value); }
+    {
+      size_t  rc = 0;
+      if (f) {
+        if (fread((void *)_value, sizeof(_value), 1, f)) {
+          rc = 1;
+        }
+      }
+      return rc;
+    }
 
     //------------------------------------------------------------------------
     //!  Writes the value to @c fd.  Returns the number of bytes written
@@ -129,7 +146,7 @@ namespace Dwm {
     {
       int  rc = -1;
       if (bzf) {
-        if (BZ2_bzwrite(bzf, (const void *)&_value, sizeof(_value))
+        if (BZ2_bzwrite(bzf, (void *)&_value, sizeof(_value))
             == sizeof(_value)) {
           rc = sizeof(_value);
         }
