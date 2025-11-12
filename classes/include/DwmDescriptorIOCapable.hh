@@ -50,6 +50,8 @@ extern "C" {
 
 #include <cstddef>
 
+#include "DwmLibDwmVersion.hh"
+
 namespace Dwm {
 
   //--------------------------------------------------------------------------
