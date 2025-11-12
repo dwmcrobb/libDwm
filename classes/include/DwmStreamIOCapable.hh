@@ -46,6 +46,8 @@
 
 #include <iostream>
 
+#include "DwmLibDwmVersion.hh"
+
 namespace Dwm {
 
   //--------------------------------------------------------------------------
@@ -119,7 +121,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   template <typename T>
   struct HasStreamNWrite_t { static constexpr bool value = HasStreamNWrite<T>; };
-  
+
   //--------------------------------------------------------------------------
   //!  This class defines an interface for classes that can read their
   //!  contents from an istream.
