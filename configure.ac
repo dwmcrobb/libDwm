@@ -145,6 +145,5 @@ AC_SUBST(DWM_PKG_STATUS)
 
 AC_CONFIG_FILES([Makefile.vars packaging/libDwm.pc packaging/fbsd_manifest
                  packaging/debcontrol doc/Doxyfile
-		 classes/src/DwmPackageInfo.cc
 		 classes/include/DwmLibDwmVersion.hh])
 AC_OUTPUT

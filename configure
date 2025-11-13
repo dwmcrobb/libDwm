@@ -5718,7 +5718,7 @@ fi
 DWM_PKG_STATUS=`./getvers.sh -S`
 
 
-ac_config_files="$ac_config_files Makefile.vars packaging/libDwm.pc packaging/fbsd_manifest packaging/debcontrol doc/Doxyfile classes/src/DwmPackageInfo.cc classes/include/DwmLibDwmVersion.hh"
+ac_config_files="$ac_config_files Makefile.vars packaging/libDwm.pc packaging/fbsd_manifest packaging/debcontrol doc/Doxyfile classes/include/DwmLibDwmVersion.hh"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -6414,7 +6414,6 @@ do
     "packaging/fbsd_manifest") CONFIG_FILES="$CONFIG_FILES packaging/fbsd_manifest" ;;
     "packaging/debcontrol") CONFIG_FILES="$CONFIG_FILES packaging/debcontrol" ;;
     "doc/Doxyfile") CONFIG_FILES="$CONFIG_FILES doc/Doxyfile" ;;
-    "classes/src/DwmPackageInfo.cc") CONFIG_FILES="$CONFIG_FILES classes/src/DwmPackageInfo.cc" ;;
     "classes/include/DwmLibDwmVersion.hh") CONFIG_FILES="$CONFIG_FILES classes/include/DwmLibDwmVersion.hh" ;;
 
   *) as_fn_error $? "invalid argument: '$ac_config_target'" "$LINENO" 5;;
