@@ -7,7 +7,7 @@ $(my mydir := $(abspath $(dir $(myfile))))
 $(dwm_include_once $(abspath $(my mydir)/../../classes/src/Makefile))
 
 $(my CxxFlags    := ${CXXFLAGS} ${PTHREADCXXFLAGS})
-$(my Incs        := -I$(abspath $(my mydir)/../../classes/include))
+$(my Incs        := -I$(abspath $(my mydir)/../../classes/include) ${EXTINCS})
 $(my Lib         := $(abspath $(my mydir)/../../classes/lib/libDwm.la))
 $(my Link        := ${LIBTOOL} --quiet --mode=link --tag=CXX ${CXX})
 $(my ObjNames    := dwmcflags.o)
