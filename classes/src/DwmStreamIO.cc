@@ -48,6 +48,7 @@
 #include "DwmPortability.hh"
 #include "DwmEncodedUnsigned.hh"
 #include "DwmXDRUtils.hh"
+#include "DwmLibDwmVersion.hh"
 
 namespace Dwm {
 
