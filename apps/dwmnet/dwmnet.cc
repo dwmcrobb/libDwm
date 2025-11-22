@@ -45,6 +45,7 @@
 #include "DwmIpv4Prefix.hh"
 #include "DwmIpv4Routes.hh"
 #include "DwmOptArgs.hh"
+#include "DwmLibDwmVersion.hh"
 
 using namespace std;
 using namespace Dwm;
