@@ -56,7 +56,7 @@ DWM_CHECK_PKG(nlohmann_json,[exit 1])
 DWM_CHECK_PKG(libxxhash,[exit 1])
 DWM_CHECK_PKG(libtirpc)
 DWM_CHECK_PKG(libpcap)
-DWM_CHECK_PKG(libDwmPkg,[exit 1])
+DWM_CHECK_PKG(dwmwhat,[exit 1])
 
 DWM_CHECK_STD_FORMAT
 if [[ ${DWM_HAVE_STD_FORMAT} -eq 0 ]]; then
@@ -140,8 +140,8 @@ AC_ARG_ENABLE([docs],[AS_HELP_STRING([--enable-docs],[build documentation])],
 	      [BUILD_DOCS="yes"], [])
 AC_SUBST(BUILD_DOCS)
 
-DWM_PKG_STATUS=`./getvers.sh -S`
-AC_SUBST(DWM_PKG_STATUS)
+DWM_WHAT_STATUS=`./getvers.sh -S`
+AC_SUBST(DWM_WHAT_STATUS)
 
 AC_CONFIG_FILES([Makefile.vars packaging/libDwm.pc packaging/fbsd_manifest
                  packaging/debcontrol doc/Doxyfile
