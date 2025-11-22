@@ -47,6 +47,7 @@
 #include <iostream>
 
 #include "DwmOptArgs.hh"
+#include "DwmLibDwmVersion.hh"
 
 using namespace std;
 
