@@ -45,6 +45,8 @@
 #include <unordered_set>
 #include <vector>
 
+#include "DwmLibDwmVersion.hh"
+
 using namespace std;
 
 //----------------------------------------------------------------------------
