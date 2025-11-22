@@ -46,8 +46,6 @@
 
 #include <iostream>
 
-#include "DwmLibDwmVersion.hh"
-
 namespace Dwm {
 
   //--------------------------------------------------------------------------

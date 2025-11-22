@@ -48,8 +48,6 @@
 
 #include <boost/asio.hpp>
 
-#include "DwmLibDwmVersion.hh"
-
 namespace Dwm {
 
   //--------------------------------------------------------------------------

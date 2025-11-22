@@ -42,16 +42,16 @@
 #ifndef _DWMLIBDWMVERSION_HH_
 #define _DWMLIBDWMVERSION_HH_
 
-#include "DwmPkgInfo.hh"
+#include "DwmWhatInfo.hh"
 
 namespace Dwm {
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
   namespace libDwm {
-    inline constexpr const Dwm::Pkg::Info __attribute__((used))
-    info(DWM_PKG_TYPE_LIB, @DWM_PKG_STATUS@, "libDwm", "@DWM_VERSION@",
-         "Daniel McRobb " DWM_PKG_SYM_GHOST, "mcplex.net");
+    inline constexpr const Dwm::What::Info __attribute__((used))
+    info(DWM_WHAT_TYPE_LIB, @DWM_WHAT_STATUS@, "libDwm", "@DWM_VERSION@",
+         "Daniel McRobb " DWM_WHAT_SYM_GHOST, "mcplex.net");
   }
 
 }  // namespace Dwm
