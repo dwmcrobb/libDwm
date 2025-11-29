@@ -79,10 +79,14 @@ DwmGetTag() {
 
 DwmGetTag libDwm
 
-args=`getopt svS $*`
+args=`getopt isvS $*`
 set -- $args
 for i; do
     case "$i" in
+	-i)
+	    echo "${DWM_TAG}" | tr '.-' '_'
+	    exit 0
+	    break;;
 	-s)
 	    echo "${SHARED_LIB_VERSION}"
 	    exit 0

@@ -42,7 +42,7 @@
 #ifndef _DWMLIBDWMVERSION_HH_
 #define _DWMLIBDWMVERSION_HH_
 
-#include "DwmWhatInfo.hh"
+#include "DwmWhatVersion.hh"
 
 namespace Dwm {
   //--------------------------------------------------------------------------
@@ -50,8 +50,10 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   namespace libDwm {
     inline constexpr const Dwm::What::Info __attribute__((used))
-    info(DWM_WHAT_TYPE_LIB, @DWM_WHAT_STATUS@, "libDwm", "@DWM_VERSION@",
-         "Daniel McRobb " DWM_WHAT_SYM_GHOST, "mcplex.net");
+    @DWM_WHAT_INSTANCE@(DWM_WHAT_TYPE_LIB, @DWM_WHAT_STATUS@, "libDwm",
+                        "@DWM_VERSION@",
+                        "Daniel McRobb 2000-2025 " DWM_WHAT_SYM_GHOST,
+                        "mcplex.net");
   }
 
 }  // namespace Dwm
