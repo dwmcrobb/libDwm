@@ -1,3 +1,8 @@
+2025-11-30  dwm  <dwm@nomnom.mcplex.net>
+
+	* classes/include/DwmPortability.hh.in: I don't need DWM_HAVE_LIBFMT
+	here.
+
 2025-10-08  Daniel McRobb  <dwm@thrip.mcplex.net>
 
 	* classes/include/DwmTimeInterval.hh, classes/src/DwmTimeInterval.cc:
