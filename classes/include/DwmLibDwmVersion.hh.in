@@ -52,7 +52,7 @@ namespace Dwm {
     inline constexpr const Dwm::What::Info __attribute__((used))
     @DWM_WHAT_INSTANCE@(DWM_WHAT_TYPE_LIB, @DWM_WHAT_STATUS@, "libDwm",
                         "@DWM_VERSION@",
-                        "Daniel McRobb 2000-2025 " DWM_WHAT_SYM_GHOST,
+                        DWM_WHAT_SYM_COPYRIGHT " Daniel McRobb 2000-2025 " DWM_WHAT_SYM_GHOST,
                         "mcplex.net");
   }
 
