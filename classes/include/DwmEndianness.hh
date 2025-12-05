@@ -42,10 +42,10 @@
 #ifndef _DWMENDIANNESS_HH_
 #define _DWMENDIANNESS_HH_
 
-#if defined(__cpp_lib_byteswap)
-#  if (__cpp_lib_byteswap >= 202110L)
-#    if __has_include(<bit>)
-#      include <bit>
+#if __has_include(<bit>)
+#  include <bit>
+#  if defined(__cpp_lib_byteswap)
+#    if (__cpp_lib_byteswap >= 202110L)
 #      define DWM_HAVE_STD_BYTESWAP
 #    endif
 #  endif
@@ -80,6 +80,8 @@ namespace Dwm {
     if constexpr (sizeof(t) == 2)      { return be16toh(t); }
     else if constexpr (sizeof(t) == 4) { return be32toh(t); }
     else if constexpr (sizeof(t) == 8) { return be64toh(t); }
+    else                               { return t;          }
+    #warning "did not find std::byteswap"
 #endif
   }
   
@@ -99,6 +101,7 @@ namespace Dwm {
     if constexpr (sizeof(t) == 2)      { return htobe16(t); }
     else if constexpr (sizeof(t) == 4) { return htobe32(t); }
     else if constexpr (sizeof(t) == 8) { return htobe64(t); }
+    else                               { return t;          }
 #endif
   }
 
@@ -140,6 +143,7 @@ namespace Dwm {
     if constexpr (sizeof(t) == 2)      { return le16toh(t); }
     else if constexpr (sizeof(t) == 4) { return le32toh(t); }
     else if constexpr (sizeof(t) == 8) { return le64toh(t); }
+    else                               { return t;          }
 #endif
   }
   
@@ -159,6 +163,7 @@ namespace Dwm {
     if constexpr (sizeof(t) == 2)      { return htole16(t); }
     else if constexpr (sizeof(t) == 4) { return htole32(t); }
     else if constexpr (sizeof(t) == 8) { return htole64(t); }
+    else                               { return t;          }
 #endif
   }
 
