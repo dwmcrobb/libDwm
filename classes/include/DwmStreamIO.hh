@@ -212,150 +212,48 @@ namespace Dwm {
     //------------------------------------------------------------------------
     static inline std::ostream & NWrite(std::ostream & os, bool b)
     { return Write(os, b); }
-    
+
     //------------------------------------------------------------------------
-    //!  Reads @c val from @c is, in network byte order (MSB first).
-    //!  Returns @c is.
+    //!  Reads @c val from @c is, in network byte order (MSB first).  Returns
+    //!  @c is.
     //------------------------------------------------------------------------
-    static std::istream & Read(std::istream & is, int16_t & val);
+    template <typename T>
+    requires IsEndianSensitiveInteger<T>
+    static inline std::istream & Read(std::istream & is, T & val)
+    {
+      if (is.read((caddr_t)&val, sizeof(val)))
+      {
+        val = BE2Host(val);
+      }
+      return is;
+    }
 
     //------------------------------------------------------------------------
     //!  Reads @c val from @c is, in native byte order.  Returns @c is.
     //------------------------------------------------------------------------
-    static inline std::istream & NRead(std::istream & is, int16_t & val)
-    { return is.read((caddr_t)&val, sizeof(val)); }
-    
-    //------------------------------------------------------------------------
-    //!  Writes @c val to @c os, in network byte order (MSB first).
-    //!  Returns @c os.
-    //------------------------------------------------------------------------
-    static std::ostream & Write(std::ostream & os, int16_t val);
-
-    //------------------------------------------------------------------------
-    //!  Writes @c val to @c os, in native byte order.  Returns @c os.
-    //------------------------------------------------------------------------
-    static inline std::ostream & NWrite(std::ostream & os, int16_t val)
-    { return os.write((caddr_t)&val, sizeof(val)); }
-    
-    //------------------------------------------------------------------------
-    //!  Reads @c val from @c is, in network byte order (MSB first).
-    //!  Returns @c is.
-    //------------------------------------------------------------------------
-    static std::istream & Read(std::istream & is, uint16_t & val);
-
-    //------------------------------------------------------------------------
-    //!  Reads @c val from @c is, in native byte order.  Returns @c is.
-    //------------------------------------------------------------------------
-    static inline std::istream & NRead(std::istream & is, uint16_t & val)
-    { return is.read((caddr_t)&val, sizeof(val)); }
-    
-    //------------------------------------------------------------------------
-    //!  Writes @c val to @c os, in network byte order (MSB first).
-    //!  Returns @c os.
-    //------------------------------------------------------------------------
-    static std::ostream & Write(std::ostream & os, uint16_t val);
-
-    //------------------------------------------------------------------------
-    //!  Writes @c val to @c os, in native byte order.  Returns @c os.
-    //------------------------------------------------------------------------
-    static inline std::ostream & NWrite(std::ostream & os, uint16_t val)
-    { return os.write((caddr_t)&val, sizeof(val)); }
-    
-    //------------------------------------------------------------------------
-    //!  Reads @c val from @c is, in network byte order (MSB first).
-    //!  Returns @c is.
-    //------------------------------------------------------------------------
-    static std::istream & Read(std::istream & is, int32_t & val);
-
-    //------------------------------------------------------------------------
-    //!  Reads @c val from @c is, in native byte order.  Returns @c is.
-    //------------------------------------------------------------------------
-    static inline std::istream & NRead(std::istream & is, int32_t & val)
-    { return is.read((caddr_t)&val, sizeof(val)); }
-    
-    //------------------------------------------------------------------------
-    //!  Writes @c val to @c os, in network byte order (MSB first).
-    //!  Returns @c os.
-    //------------------------------------------------------------------------
-    static std::ostream & Write(std::ostream & os, int32_t val);
-
-    //------------------------------------------------------------------------
-    //!  Writes @c val to @c os, in native byte order.  Returns @c os.
-    //------------------------------------------------------------------------
-    static inline std::ostream & NWrite(std::ostream & os, int32_t val)
-    { return os.write((caddr_t)&val, sizeof(val)); }
-    
-    //------------------------------------------------------------------------
-    //!  Reads @c val from @c is, in network byte order (MSB first).
-    //!  Returns @c is.
-    //------------------------------------------------------------------------
-    static std::istream & Read(std::istream & is, uint32_t & val);
-
-    //------------------------------------------------------------------------
-    //!  Reads @c val from @c is, in native byte order.  Returns @c is.
-    //------------------------------------------------------------------------
-    static inline std::istream & NRead(std::istream & is, uint32_t & val)
-    { return is.read((caddr_t)&val, sizeof(val)); }
-    
-    //------------------------------------------------------------------------
-    //!  Writes @c val to @c os, in network byte order (MSB first).
-    //!  Returns @c os.
-    //------------------------------------------------------------------------
-    static std::ostream & Write(std::ostream & os, uint32_t val);
-
-    //------------------------------------------------------------------------
-    //!  Writes @c val to @c os, in native byte order.  Returns @c os.
-    //------------------------------------------------------------------------
-    static inline std::ostream & NWrite(std::ostream & os, uint32_t val)
-    { return os.write((caddr_t)&val, sizeof(val)); }
-    
-    //------------------------------------------------------------------------
-    //!  Reads @c val from @c is, in network byte order (MSB first).
-    //!  Returns @c is.
-    //------------------------------------------------------------------------
-    static std::istream & Read(std::istream & is, int64_t & val);
-
-    //------------------------------------------------------------------------
-    //!  Reads @c val from @c is, in native byte order.  Returns @c is.
-    //------------------------------------------------------------------------
-    static inline std::istream & NRead(std::istream & is, int64_t & val)
-    { return is.read((caddr_t)&val, sizeof(val)); }
-    
-    //------------------------------------------------------------------------
-    //!  Writes @c val to @c os, in network byte order (MSB first).
-    //!  Returns @c os.
-    //------------------------------------------------------------------------
-    static std::ostream & Write(std::ostream & os, const int64_t & val);
-
-    //------------------------------------------------------------------------
-    //!  Writes @c val to @c os, in native byte order.  Returns @c os.
-    //------------------------------------------------------------------------
-    static inline std::ostream & NWrite(std::ostream & os, const int64_t & val)
-    { return os.write((caddr_t)&val, sizeof(val)); }
-    
-    //------------------------------------------------------------------------
-    //!  Reads @c val from @c is, in network byte order (MSB first).
-    //!  Returns @c is.
-    //------------------------------------------------------------------------
-    static std::istream & Read(std::istream & is, uint64_t & val);
-
-    //------------------------------------------------------------------------
-    //!  Reads @c val from @c is, in native byte order.  Returns @c is.
-    //------------------------------------------------------------------------
-    static inline std::istream & NRead(std::istream & is, uint64_t & val)
+    template <typename T>
+    requires IsEndianSensitiveInteger<T>
+    static inline std::istream & NRead(std::istream & is, T & val)
     { return is.read((caddr_t)&val, sizeof(val)); }
 
     //------------------------------------------------------------------------
-    //!  Writes @c val to @c os, in network byte order (MSB first).
-    //!  Returns @c os.
+    //!  Writes @c val to @c os in network byte order (NSB first).  Returns
+    //!  @c os.
     //------------------------------------------------------------------------
-    static std::ostream & Write(std::ostream & os, const uint64_t & val);
+    template <typename T>
+    requires IsEndianSensitiveInteger<T>
+    static inline std::ostream & Write(std::ostream & os, const T & val)
+    {
+      T  v = Host2BE(val);
+      return os.write((caddr_t)&v, sizeof(v));
+    }
 
     //------------------------------------------------------------------------
-    //!  Writes @c val to @c os, in native byte order.  Returns @c os.
+    //!  Writes @c val to @c os in native byte order.  Returns @c os.
     //------------------------------------------------------------------------
-    static inline std::ostream & NWrite(std::ostream & os,
-                                        const uint64_t & val)
+    template <typename T>
+    requires IsEndianSensitiveInteger<T>
+    static inline std::ostream & NWrite(std::ostream & os, const T & val)
     { return os.write((caddr_t)&val, sizeof(val)); }
     
     //------------------------------------------------------------------------
