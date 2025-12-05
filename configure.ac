@@ -45,8 +45,8 @@ echo "host_os ${host_os}"
 
 DWM_REQUIRES_DWMPKG(dwmgmk,0.0.0)
 
-dnl  Check for C++20
-DWM_CHECK_CPLUSPLUS_20
+dnl  Check for C++23
+DWM_CHECK_CPLUSPLUS_23
 
 dnl  Check for packages with pkg-config.  These will set PKG_REQ_PKGS to a
 dnl  comma-separated list appropriate for the 'Required:' field in our
