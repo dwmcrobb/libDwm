@@ -70,7 +70,7 @@
 %}
 
 m_wkdy (Sun|Mon|Tue|Wed|Thu|Fri|Sat)
-m_mon  (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dev)
+m_mon  (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
 m_mday ([1-9]|1[0-9]|2[0-9]|3[01])
 m_tod  ([01][0-9]|2[0-3])[:]([0-5][0-9])[:]([0-5][0-9])
 
