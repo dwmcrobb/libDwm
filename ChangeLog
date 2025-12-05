@@ -1,5 +1,8 @@
 2025-12-04  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* classes/src/DwmStreamIO.hh: Use std::array instead of raw
+	pointer for XDRUtils::Encode.
+
 	* classes/include/DwmEndianness.hh: warn when we don't find
 	std::byteswap.
 
@@ -20,7 +23,7 @@
 2025-12-01  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* tagged as libDwm-0.9.61
-	
+
 	* classes/include/DwmSysLogger.hh: Tweak detection of std::format
 	to account for oddity on FreeBSD 13.3-STABLE.
 
