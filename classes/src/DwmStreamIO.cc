@@ -67,10 +67,9 @@ namespace Dwm {
   std::ostream & StreamIO::Write(std::ostream & os, float val)
   {
     if (os) {
-      char     *buf = 0;
-      uint32_t  rc = XDRUtils::Encode(val, &buf);
-      os.write(buf, rc);
-      free(buf);
+      std::array<char,4>  buf;
+      uint32_t  rc = XDRUtils::Encode(val, buf);
+      os.write(buf.data(), buf.size());
     }
                 
     return(os);
@@ -82,10 +81,9 @@ namespace Dwm {
   std::ostream & StreamIO::Write(std::ostream & os, const double & val)
   {
     if (os) {
-      char     *buf = 0;
-      uint32_t  rc = XDRUtils::Encode(val, &buf);
-      os.write(buf, rc);
-      free(buf);
+      std::array<char,8>  buf;
+      uint32_t  rc = XDRUtils::Encode(val, buf);
+      os.write(buf.data(), buf.size());
     }
 
     return(os);
