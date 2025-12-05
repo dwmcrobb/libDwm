@@ -1,5 +1,8 @@
 2025-12-04  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* classes/include/DwmEndianness.hh: warn when we don't find
+	std::byteswap.
+
 	* classes/include/DwmStreamIO.hh, classes/src/DwmStreamIO.cc:
 	Change read and write functions for multibyte integrals into
 	function templates, reducing the amount of code I need to
