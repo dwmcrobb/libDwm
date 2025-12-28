@@ -182,6 +182,18 @@ namespace Dwm {
 
     //------------------------------------------------------------------------
     //!  Returns the number of bytes that should be written if we call Write()
+    //!  for an enumerated type.  Only reliable if the underlying type is
+    //!  a fixed-width type.
+    //------------------------------------------------------------------------
+    template <typename T>
+    static uint64_t StreamedLength(const T & t)
+      requires std::is_enum_v<T>
+    {
+      return sizeof(std::underlying_type_t<T>);
+    }
+    
+    //------------------------------------------------------------------------
+    //!  Returns the number of bytes that should be written if we call Write()
     //!  for a pair<_firstT, _secondT>
     //------------------------------------------------------------------------
     template <typename _firstT, typename _secondT>
