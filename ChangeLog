@@ -1,5 +1,10 @@
 2025-12-28  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* tagged as libDwm-0.9.63
+
+	* classes/include/DwmEncodedUnsigned.hh: Added flag for chunked
+	data.  Might be removed later, it's an experiment.
+
 	* classes/include/DwmThreadQueue.hh: Fix locking for condition
 	variable signalling.
 
