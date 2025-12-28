@@ -94,7 +94,7 @@ namespace Dwm {
     //!  Construct from the given @c value.
     //------------------------------------------------------------------------
     EncodedUnsigned(T value)
-        : _value(value)
+        : _value(value), _chunkedData(false)
     {}
 
     //------------------------------------------------------------------------
@@ -422,8 +422,9 @@ namespace Dwm {
     }
     
   private:
-    T  _value;
-
+    T     _value;
+    bool  _chunkedData;
+    
     //------------------------------------------------------------------------
     //!  We only use the lower bits of the first byte of our encoding to
     //!  represent our 'size' field.
@@ -435,10 +436,13 @@ namespace Dwm {
     //------------------------------------------------------------------------
     static constexpr uint8_t  k_bigEndianMask = 0x80;
 
+    static constexpr uint8_t  k_chunkedDataMask = 0x40;
+    
     //------------------------------------------------------------------------
     //!  Unused bits mask.
     //------------------------------------------------------------------------
-    static constexpr uint8_t  k_unusedMask = ~(k_sizeMask|k_bigEndianMask);
+    static constexpr uint8_t  k_unusedMask =
+      ~(k_sizeMask|k_bigEndianMask|k_chunkedDataMask);
     
     //------------------------------------------------------------------------
     //!  
@@ -455,6 +459,7 @@ namespace Dwm {
           std::endian::big
         };
         encoding = encodings[buf[0] >> 7];
+        chunkedData = (buf[0] & k_chunkedDataMask) ? true : false;
         sz       = (buf[0] & k_sizeMask) + 1;
         sp       = (caddr_t)value;
         if (std::endian::big == encoding) {
@@ -463,9 +468,10 @@ namespace Dwm {
         *sp++    = buf[1];
       }
       
-      std::endian  encoding;
-      uint8_t      sz;
       caddr_t      sp;
+      std::endian  encoding;
+      bool         chunkedData;
+      uint8_t      sz;
     };
 
     //------------------------------------------------------------------------
