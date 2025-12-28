@@ -1,3 +1,8 @@
+2025-12-28  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* classes/include/DwmIOUtils.hh: Added StreamedLength() for
+	enumerated types.
+
 2025-12-14  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* classes/include/DwmStreamIO.hh: Use EncodedU64 for container
