@@ -1,5 +1,8 @@
 2025-12-28  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* classes/include/DwmThreadQueue.hh: Fix locking for condition
+	variable signalling.
+
 	* classes/include/DwmIOUtils.hh: Added StreamedLength() for
 	enumerated types.
 

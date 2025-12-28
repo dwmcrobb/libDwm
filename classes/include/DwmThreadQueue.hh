@@ -1,7 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath$
-//===========================================================================
-//  Copyright (c) Daniel W. McRobb 2000-2007, 2016
+//  Copyright (c) Daniel W. McRobb 2000-2007, 2016, 2025
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -71,11 +69,8 @@ namespace Dwm {
       //!  Constructor
       //----------------------------------------------------------------------
       Queue()
-          : _maxLength(0), _queue(), _mutex(), _signalled(false),
-            _lock(_mutex), _cv()
-      {
-        _lock.unlock();
-      }
+          : _maxLength(0), _queue(), _mutex(), _signalled(false), _cv()
+      { }
     
       //----------------------------------------------------------------------
       //!  Destructor
@@ -231,10 +226,9 @@ namespace Dwm {
       //----------------------------------------------------------------------
       bool ConditionWait()
       {
-        Lock();
-        _cv.wait(_lock, [&] { return _signalled.load(); });
+        std::unique_lock  lck(_mutex);
+        _cv.wait(lck, [&] { return _signalled.load(); });
         _signalled = false;
-        Unlock();
         return true;
       }
      
@@ -247,14 +241,13 @@ namespace Dwm {
       bool ConditionTimedWait(const std::chrono::duration<Rep,Period> & timeToWait)
       {
         bool rc = false;
-        Lock();
-        if (_cv.wait_for(_lock, timeToWait,
+        std::unique_lock  lck(_mutex);
+        if (_cv.wait_for(lck, timeToWait,
                          [&] { return _signalled.load(); })) {
           rc = true;
         }
         _signalled = false;
-        Unlock();
-        return(rc);
+        return rc;
       }
      
       //----------------------------------------------------------------------
@@ -306,10 +299,9 @@ namespace Dwm {
       bool WaitForNotEmpty()
       {
         bool  rc = false;
-        Lock();
-        _cv.wait(_lock, [&] { return (! _queue.empty()); });
+        std::unique_lock  lck(_mutex);
+        _cv.wait(lck, [&] { return (! _queue.empty()); });
         rc = true;
-        Unlock();
         return(rc);
       }
      
@@ -321,18 +313,17 @@ namespace Dwm {
       bool TimedWaitForNotEmpty(const std::chrono::duration<Rep, Period> & timeToWait)
       {
         bool rc = false;
-        Lock();
+        std::unique_lock  lck(_mutex);
         if (! _queue.empty()) {
           rc = true;
         }
         else {
-          if (_cv.wait_for(_lock, timeToWait,
+          if (_cv.wait_for(lck, timeToWait,
                            [&] { return _signalled.load(); })) {
             rc = (! _queue.empty());
           }
         }
         _signalled = false;
-        Unlock();
         return(rc);
       }
      
@@ -394,31 +385,11 @@ namespace Dwm {
       }
       
     protected:
-      uint32_t                      _maxLength;
-      std::deque<_ValueType>        _queue;
-      mutable std::mutex            _mutex;
-      std::atomic<bool>             _signalled;
-      std::unique_lock<std::mutex>  _lock;
-      std::condition_variable       _cv;
-     
-      //----------------------------------------------------------------------
-      //!  
-      //----------------------------------------------------------------------
-      void Lock()
-      {
-        _lock.lock();
-        return;
-      }
-     
-      //----------------------------------------------------------------------
-      //!  
-      //----------------------------------------------------------------------
-      void Unlock()
-      {
-        _lock.unlock();
-        return;
-      }
-     
+      uint32_t                 _maxLength;
+      std::deque<_ValueType>   _queue;
+      mutable std::mutex       _mutex;
+      std::atomic<bool>        _signalled;
+      std::condition_variable  _cv;
     };
 
 
