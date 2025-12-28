@@ -60,6 +60,7 @@
 #include "DwmVariantFromIndex.hh"
 #include "DwmEndianness.hh"
 #include "DwmSizedLength.hh"
+#include "DwmEncodedUnsigned.hh"
 
 namespace Dwm {
 
@@ -617,8 +618,8 @@ namespace Dwm {
       static_assert(std::is_default_constructible_v<typename T::value_type>);
       c.clear();
       if (is) {
-        uint64_t  numEntries;
-        // SizedLength  numEntries = 0;
+        EncodedU64  numEntries = 0;
+        // uint64_t  numEntries;
         if (Read(is, numEntries)) {
           for (uint64_t i = 0; i < numEntries; ++i) {
             typename T::value_type  val;
@@ -646,8 +647,8 @@ namespace Dwm {
       static_assert(std::is_default_constructible_v<typename T::value_type>);
       c.clear();
       if (is) {
-        uint64_t  numEntries;
-        // SizedLength  numEntries = 0;
+        EncodedU64  numEntries = 0;
+        // uint64_t  numEntries;
         if (NRead(is, numEntries)) {
           for (uint64_t i = 0; i < numEntries; ++i) {
             typename T::value_type  val;
@@ -672,8 +673,8 @@ namespace Dwm {
     static std::ostream & Write(std::ostream & os, const T & c)
     {
       if (os) {
-        uint64_t  numEntries = c.size();
-        // SizedLength  numEntries = c.size();
+        EncodedU64  numEntries = c.size();
+        // uint64_t  numEntries = c.size();
         if (Write(os, numEntries)) {
           if (numEntries) {
             for (auto it = c.cbegin(); it != c.end(); ++it) {
@@ -698,8 +699,8 @@ namespace Dwm {
     static std::ostream & NWrite(std::ostream & os, const T & c)
     {
       if (os) {
-        uint64_t  numEntries = c.size();
-        // SizedLength  numEntries = c.size();
+        EncodedU64  numEntries = c.size();
+        // uint64_t  numEntries = c.size();
         if (NWrite(os, numEntries)) {
           if (numEntries) {
             for (auto it = c.cbegin(); it != c.end(); ++it) {
@@ -721,7 +722,8 @@ namespace Dwm {
                                std::vector<bool, _Alloc> & v)
     {
       v.clear();
-      uint64_t  numEntries;
+      EncodedU64  numEntries = 0;
+      // uint64_t  numEntries;
       if (Read(is, numEntries)) {
         try {
           v.resize(numEntries);
@@ -754,7 +756,8 @@ namespace Dwm {
                                 std::vector<bool, _Alloc> & v)
     {
       v.clear();
-      uint64_t  numEntries;
+      EncodedU64  numEntries = 0;
+      // uint64_t  numEntries;
       if (NRead(is, numEntries)) {
         try {
           v.resize(numEntries);
@@ -786,7 +789,8 @@ namespace Dwm {
     static std::ostream & Write(std::ostream & os,
                                const std::vector<bool, _Alloc> & v)
     {
-      uint64_t  numEntries = v.size();
+      EncodedU64  numEntries = v.size();
+      // uint64_t  numEntries = v.size();
       if (Write(os, numEntries)) {
         for (bool entry : v) {
           if (! Write(os, entry)) {
@@ -806,8 +810,8 @@ namespace Dwm {
     static std::ostream & Write(std::ostream & os,
                                 const std::vector<T, _Alloc> & v)
     {
-      uint64_t  numEntries = v.size();
-      // SizedLength  numEntries = v.size();
+      EncodedU64  numEntries = v.size();
+      // uint64_t  numEntries = v.size();
       if (Write(os, numEntries)) {
         os.write((caddr_t)v.data(), v.size());
       }
@@ -883,8 +887,8 @@ namespace Dwm {
     static std::ostream & NWrite(std::ostream & os,
                                  const std::vector<T, _Alloc> & v)
     {
-      uint64_t  len = v.size();
-      // SizedLength  len = v.size();
+      EncodedU64  len = v.size();
+      // uint64_t  len = v.size();
       if (NWrite(os, len)) {
         if (len) {
           os.write(v.data(), len);
@@ -902,8 +906,8 @@ namespace Dwm {
                                std::vector<T, _Alloc> & v)
     {
       v.clear();
-      uint64_t  len = 0;
-      // SizedLength  len = 0;
+      EncodedU64  len = 0;
+      // uint64_t  len = 0;
       if (Read(is, len)) {
         if (len) {
           try {
@@ -936,8 +940,8 @@ namespace Dwm {
                                std::vector<T, _Alloc> & v)
     {
       v.clear();
-      uint64_t  len = 0;
-      // SizedLength  len = 0;
+      EncodedU64  len = 0;
+      // uint64_t  len = 0;
       if (Read(is, len)) {
         if (len) {
           try {
@@ -970,8 +974,8 @@ namespace Dwm {
                                std::vector<T, _Alloc> & v)
     {
       v.clear();
-      uint64_t  len = 0;
-      // SizedLength  len = 0;
+      EncodedU64  len = 0;
+      // uint64_t  len = 0;
       if (Read(is, len)) {
         if (len) {
           try {
@@ -1037,8 +1041,8 @@ namespace Dwm {
     static std::ostream & NWrite(std::ostream & os,
                                  const std::vector<T, _Alloc> & v)
     {
-      uint64_t  len = v.size();
-      // SizedLength  len = v.size();
+      EncodedU64  len = v.size();
+      // uint64_t  len = v.size();
       if (NWrite(os, len)) {
         if (len) {
           os.write((caddr_t)v.data(), len * sizeof(T));
@@ -1099,7 +1103,6 @@ namespace Dwm {
                                std::variant<Ts...> & v)
     {
       uint64_t  index = 0;
-      // SizedLength  index = 0;
       if (Read(is, index)) {
         if (index < std::variant_size_v<std::variant<Ts...>>) {
           v = VariantFromIndex<Ts...>(index);
@@ -1120,7 +1123,6 @@ namespace Dwm {
                                 std::variant<Ts...> & v)
     {
       uint64_t  index = 0;
-      // SizedLength  index = 0;
       if (NRead(is, index)) {
         if (index < std::variant_size_v<std::variant<Ts...>>) {
           v = VariantFromIndex<Ts...>(index);
@@ -1141,7 +1143,6 @@ namespace Dwm {
                                 const std::variant<Ts...> & v)
     {
       uint64_t  index = v.index();
-      // SizedLength  index = v.index();
       if (Write(os, index)) {
         std::visit([&os] (const auto & arg) { Write(os, arg); }, v);
       }
@@ -1156,7 +1157,6 @@ namespace Dwm {
                                  const std::variant<Ts...> & v)
     {
       uint64_t  index = v.index();
-      // SizedLength  index = v.index();
       if (NWrite(os, index)) {
         std::visit([&os] (const auto & arg) { NWrite(os, arg); }, v);
       }
@@ -1924,8 +1924,8 @@ namespace Dwm {
       if (! m.empty())
         m.clear();
       if (is) {
-        uint64_t  numEntries;
-        // SizedLength  numEntries;
+        EncodedU64  numEntries = 0;
+        // uint64_t  numEntries;
         if (Read(is, numEntries)) {
           for (uint64_t i = 0; i < numEntries; ++i) {
             typename _containerT::key_type  key;
@@ -1957,8 +1957,8 @@ namespace Dwm {
       if (! m.empty())
         m.clear();
       if (is) {
-        uint64_t  numEntries;
-        // SizedLength  numEntries = 0;
+        EncodedU64  numEntries = 0;
+        // uint64_t  numEntries;
         if (NRead(is, numEntries)) {
           for (uint64_t i = 0; i < numEntries; ++i) {
             typename _containerT::key_type  key;
