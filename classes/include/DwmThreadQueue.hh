@@ -71,7 +71,7 @@ namespace Dwm {
       Queue()
           : _maxLength(0), _queue(), _mutex(), _signalled(false), _cv()
       { }
-    
+
       //----------------------------------------------------------------------
       //!  Destructor
       //----------------------------------------------------------------------
@@ -338,6 +338,15 @@ namespace Dwm {
       //----------------------------------------------------------------------
       //!  
       //----------------------------------------------------------------------
+      void Clear()
+      {
+        std::lock_guard<std::mutex>  lk(_mutex);
+        _queue.clear();
+      }
+      
+      //----------------------------------------------------------------------
+      //!  
+      //----------------------------------------------------------------------
       void RandomShuffle()
       {
         std::lock_guard<std::mutex>  lk(_mutex);
@@ -351,21 +360,31 @@ namespace Dwm {
       //!  elements are copied.  Hence if there are no entries in the queue,
       //!  @c c will be empty on return.
       //----------------------------------------------------------------------
-      uint32_t Copy(std::deque<_ValueType> & c)
+      uint32_t Copy(std::deque<_ValueType> & c) const
       {
         uint32_t  rc = 0;
         if (! c.empty())
           c.clear();
        
         std::lock_guard<std::mutex>  lk(_mutex);
-        typename std::deque<_ValueType>::iterator  iter = _queue.begin();
-        for ( ; iter != _queue.end(); ++iter) {
+        auto  iter = _queue.cbegin();
+        for ( ; iter != _queue.cend(); ++iter) {
           c.push_back(*iter);
           ++rc;
         }
         return(rc);
       }
 
+      //----------------------------------------------------------------------
+      //!  
+      //----------------------------------------------------------------------
+      size_t Copy(Queue & q) const
+      {
+        std::scoped_lock  lck(q._mutex, _mutex);
+        q._queue = _queue;
+        return q._queue.size();
+      }
+      
       //----------------------------------------------------------------------
       //!  This member is a simple optimization for fetching the contents
       //!  of the queue.  It swaps the encapsulated queue with @c c, then
@@ -382,6 +401,16 @@ namespace Dwm {
           _queue.clear();
         }
         return(c.size());
+      }
+
+      //----------------------------------------------------------------------
+      //!  
+      //----------------------------------------------------------------------
+      size_t Swap(Queue & q)
+      {
+        std::scoped_lock  lck(q._mutex, _mutex);
+        _queue.swap(q._queue);
+        return q._queue.size();
       }
       
     protected:

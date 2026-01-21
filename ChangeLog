@@ -1,3 +1,10 @@
+2026-01-21  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* tagged as libDwm-0.9.64
+
+	* classes/include/DwmThreadQueue.hh: Fixed constness of Copy().
+	Added higher-level versions of Copy() and Swap().
+
 2025-12-28  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* tagged as libDwm-0.9.63
