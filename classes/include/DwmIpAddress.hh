@@ -226,6 +226,48 @@ namespace Dwm {
   
 }  // namespace Dwm
 
+#if __has_include(<format>)                                                                             
+namespace std {
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  template <>
+  struct formatter<Dwm::IpAddress> 
+  {
+    constexpr auto parse(format_parse_context & ctx) 
+    { return ctx.begin(); }
+    
+    auto format(const Dwm::IpAddress & addr, format_context & ctx) const
+    {
+      return format_to(ctx.out(), "{}", (string)addr);
+    }
+  };
+}
+
+#else
+
+#  if __has_include(<fmt/format.h>)
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+template <>
+struct fmt::formatter<Dwm::IpAddress> 
+{
+  constexpr auto parse(fmt::format_parse_context & ctx) 
+  { return ctx.begin(); }
+
+  template <typename FormatContext>
+  auto format(const Dwm::IpAddress & addr, FormatContext & ctx) 
+  {
+    return fmt::format_to(ctx.out(), "{}", (std::string)addr);
+  }
+};
+
+#  endif
+
+#endif  // if __has_include(<format>)
+
 #endif  // _DWMIPADDRESS_HH_
 
 //---------------------------- emacs settings -----------------------------
