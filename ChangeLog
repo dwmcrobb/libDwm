@@ -1,5 +1,7 @@
 2026-01-22  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* tagged as libDwm-0.9.65
+
 	* classes/include/DwmIpAddress.hh: Added formatters for
 	std::format and libfmt.
 
