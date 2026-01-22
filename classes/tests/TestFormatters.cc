@@ -132,7 +132,7 @@ void TestIpv6()
   sockaddr_in6  sockAddr_1;
   sockAddr_1.sin6_addr = ip6_1;
   sockAddr_1.sin6_port = htons(4321);
-  UnitAssert(std::format("{}", sockAddr_1) == "4444:8001:9500:172::1|4321");
+  UnitAssert(fmt::format("{}", sockAddr_1) == "4444:8001:9500:172::1|4321");
 
   Dwm::Ipv6Prefix  pfx_1("4444:8002:5:2::2/64");
   UnitAssert(fmt::format("{}", pfx_1) == "4444:8002:5:2::/64");
