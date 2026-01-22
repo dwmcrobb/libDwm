@@ -71,6 +71,23 @@ namespace std {
   };
 
   //--------------------------------------------------------------------------
+  //!  sockaddr_in6
+  //--------------------------------------------------------------------------
+  template <>
+  struct formatter<sockaddr_in6> 
+  {
+    constexpr auto parse(format_parse_context & ctx) 
+    { return ctx.begin(); }
+    
+    auto format(const sockaddr_in6 & addr, format_context & ctx) const
+    {
+      return format_to(ctx.out(), "{}|{}",
+                       Dwm::Ipv6Address(addr.sin6_addr),
+                       ntohs(addr.sin6_port));
+    }
+  };
+  
+  //--------------------------------------------------------------------------
   //!  sockaddr_un
   //--------------------------------------------------------------------------
   template <>
@@ -136,6 +153,24 @@ struct fmt::formatter<sockaddr_in>
     return fmt::format_to(ctx.out(), "{}:{}",
                           Dwm::Ipv4Address(addr.sin_addr.s_addr),
                           ntohs(addr.sin_port));
+  }
+};
+
+//----------------------------------------------------------------------------
+//!  sockaddr_in6
+//----------------------------------------------------------------------------
+template <>
+struct fmt::formatter<sockaddr_in6>
+{
+  constexpr auto parse(fmt::format_parse_context & ctx) 
+  { return ctx.begin(); }
+
+  template <typename FormatContext>
+  auto format(const sockaddr_in6 & addr, FormatContext & ctx) 
+  {
+    return fmt::format_to(ctx.out(), "{}|{}",
+                          Dwm::Ipv6Address(addr.sin6_addr),
+                          ntohs(addr.sin6_port));
   }
 };
 

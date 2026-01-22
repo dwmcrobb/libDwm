@@ -40,6 +40,7 @@
 //---------------------------------------------------------------------------
 
 #include "DwmIpv4Prefix.hh"
+#include "DwmIpv6Prefix.hh"
 #include "DwmFormatters.hh"
 #include "DwmUnitAssert.hh"
 
@@ -65,6 +66,28 @@ void TestIpv4()
   Dwm::Ipv4Prefix  pfx_1("192.168.0.0/16");
   UnitAssert(std::format("{}", pfx_1) == "192.168.0.0/16");
   
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+void TestIpv6()
+{
+  Dwm::Ipv6Address  ip6_1("4444:8001:9500:172::1");
+  UnitAssert(std::format("{}", ip6_1) == "4444:8001:9500:172::1");
+
+  in6_addr  in_1 = ip6_1;
+  UnitAssert(std::format("{}", in_1) == "4444:8001:9500:172::1");
+
+  sockaddr_in6  sockAddr_1;
+  sockAddr_1.sin6_addr = ip6_1;
+  sockAddr_1.sin6_port = htons(4321);
+  UnitAssert(std::format("{}", sockAddr_1) == "4444:8001:9500:172::1|4321");
+
+  Dwm::Ipv6Prefix  pfx_1("4444:8002:5:2::2/64");
+  UnitAssert(std::format("{}", pfx_1) == "4444:8002:5:2::/64");
+
   return;
 }
 
@@ -95,6 +118,28 @@ void TestIpv4()
   return;
 }
 
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+void TestIpv6()
+{
+  Dwm::Ipv6Address  ip6_1("4444:8001:9500:172::1");
+  UnitAssert(fmt::format("{}", ip6_1) == "4444:8001:9500:172::1");
+
+  in6_addr  in_1 = ip6_1;
+  UnitAssert(fmt::format("{}", in_1) == "4444:8001:9500:172::1");
+
+  sockaddr_in6  sockAddr_1;
+  sockAddr_1.sin6_addr = ip6_1;
+  sockAddr_1.sin6_port = htons(4321);
+  UnitAssert(std::format("{}", sockAddr_1) == "4444:8001:9500:172::1|4321");
+
+  Dwm::Ipv6Prefix  pfx_1("4444:8002:5:2::2/64");
+  UnitAssert(fmt::format("{}", pfx_1) == "4444:8002:5:2::/64");
+  
+  return;
+}
+
 #  endif  // __has_include(<fmt/format.h>)
 
 #endif  // __has_include(<format>)
@@ -105,6 +150,7 @@ void TestIpv4()
 int main(int argc, char *argv[])
 {
   TestIpv4();
+  TestIpv6();
   
   if (Dwm::Assertions::Total().Failed() > 0) {
     Dwm::Assertions::Print(std::cerr, true);

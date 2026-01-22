@@ -1,3 +1,8 @@
+2026-01-22  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* classes/include/DwmFormatters.hh, classes/tests/TestFormatters.cc:
+	Added formatters for sockaddr_in6.
+
 2026-01-22  Daniel W. McRobb  <dwm@kiva.mcplex.net>
 
 	* classes/include/DwmFormatters.hh,
