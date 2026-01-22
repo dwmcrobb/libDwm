@@ -338,6 +338,45 @@ namespace Dwm {
 
 }  // namespace Dwm
 
+#if __has_include(<format>)
+
+namespace std {
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  template <>
+  struct formatter<Dwm::Ipv6Prefix>
+  {
+    constexpr auto parse(format_parse_context & ctx) 
+    { return ctx.begin(); }
+    
+    auto format(const Dwm::Ipv6Prefix & pfx, format_context & ctx) const
+    { return format_to(ctx.out(), "{}", pfx.ToString()); }
+  };
+}
+
+#else
+
+#  if __has_include(<fmt/format.h>)
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+template <>
+struct fmt::formatter<Dwm::Ipv6Prefix> 
+{
+  constexpr auto parse(fmt::format_parse_context & ctx)
+  { return ctx.begin(); }
+
+  template <typename FormatContext>
+  auto format(const Dwm::Ipv6Prefix & pfx, FormatContext & ctx) 
+  { return fmt::format_to(ctx.out(), "{}", pfx.ToString()); }
+};
+
+#  endif  // if __has_include(<fmt/format.h>)
+
+#endif  // if __has_include(<format>)
+
 #endif  // _DWMIPV6PREFIX_HH_
 
 //---------------------------- emacs settings -----------------------------
