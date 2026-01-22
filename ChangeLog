@@ -1,3 +1,9 @@
+2026-01-22  Daniel W. McRobb  <dwm@kiva.mcplex.net>
+
+	* classes/include/DwmFormatters.hh,
+	  classes/tests/TestFormatters.cc:
+	Add formatters for common system types (sockaddr_in, et. al.).
+
 2026-01-22  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* tagged as libDwm-0.9.65

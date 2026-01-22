@@ -23,6 +23,7 @@ TestEncodedUnsigned32
 TestEncodedUnsigned64
 TestFileIO
 TestFileLogger
+TestFormatters
 TestGZIO
 TestIO
 TestIOConcepts
@@ -81,6 +82,7 @@ TestLocker
 TestMacAddress
 TestMplsLabel
 TestMplsLabelStack
+TestNoEndian
 TestPatricia
 TestProcessTable
 TestPthreadMutex
