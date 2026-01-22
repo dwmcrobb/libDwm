@@ -1,5 +1,7 @@
 2026-01-22  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* tagged as libDwm-0.9.66
+
 	* classes/include/DwmFormatters.hh, classes/tests/TestFormatters.cc:
 	Added formatters for sockaddr_in6.
 
