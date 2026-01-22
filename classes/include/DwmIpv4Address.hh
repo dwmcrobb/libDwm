@@ -52,6 +52,14 @@ extern "C" {
 #include <string>
 #include <boost/asio.hpp>
 
+#if __has_include(<format>)
+#  include <format>
+#else
+#  if __has_include(<fmt/format.h>)
+#    include <fmt/format.h>
+#  endif
+#endif
+
 namespace Dwm {
 
   using ipv4addr_t = uint32_t;
@@ -426,6 +434,48 @@ struct std::hash<Dwm::Ipv4Address>
   inline std::size_t operator () (const Dwm::Ipv4Address & a) const noexcept
   { return a.Raw(); }
 };
+
+#if __has_include(<format>)                                                                             
+namespace std {
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  template <>
+  struct formatter<Dwm::Ipv4Address> 
+  {
+    constexpr auto parse(format_parse_context & ctx) 
+    { return ctx.begin(); }
+    
+    auto format(const Dwm::Ipv4Address & addr, format_context & ctx) const
+    {
+      return format_to(ctx.out(), "{}", (string)addr);
+    }
+  };
+}
+
+#else
+
+#  if __has_include(<fmt/format.h>)
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+template <>
+struct fmt::formatter<Dwm::Ipv4Address> 
+{
+  constexpr auto parse(fmt::format_parse_context & ctx) 
+  { return ctx.begin(); }
+
+  template <typename FormatContext>
+  auto format(const Dwm::Ipv4Address & addr, FormatContext & ctx) 
+  {
+    return fmt::format_to(ctx.out(), "{}", (std::string)addr);
+  }
+};
+
+#  endif
+
+#endif  // if __has_include(<format>)
 
 #endif  // _DWMIPV4ADDRESS_HH_
 
