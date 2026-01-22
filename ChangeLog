@@ -1,5 +1,8 @@
 2026-01-22  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* classes/include/DwmIpv6Address.hh: Added formatters for
+	std::format and libfmt.
+
 	* classes/include/DwmIpv4Prefix.hh: Added formatters for
 	std::format and libfmt.
 

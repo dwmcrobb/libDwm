@@ -50,6 +50,14 @@ extern "C" {
 #include <cstdint>
 #include <string>
 
+#if __has_include(<format>)
+#  include <format>
+#else
+#  if __has_include(<fmt/format.h>)
+#    include <fmt/format.h>
+#  endif
+#endif
+
 #define XXH_INLINE_ALL
 #include <xxhash.h>
 
@@ -330,6 +338,48 @@ namespace Dwm {
   };
 
 }  // namespace Dwm
+
+#if __has_include(<format>)                                                                             
+namespace std {
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  template <>
+  struct formatter<Dwm::Ipv6Address> 
+  {
+    constexpr auto parse(format_parse_context & ctx) 
+    { return ctx.begin(); }
+    
+    auto format(const Dwm::Ipv6Address & addr, format_context & ctx) const
+    {
+      return format_to(ctx.out(), "{}", (string)addr);
+    }
+  };
+}
+
+#else
+
+#  if __has_include(<fmt/format.h>)
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+template <>
+struct fmt::formatter<Dwm::Ipv6Address> 
+{
+  constexpr auto parse(fmt::format_parse_context & ctx) 
+  { return ctx.begin(); }
+
+  template <typename FormatContext>
+  auto format(const Dwm::Ipv6Address & addr, FormatContext & ctx) 
+  {
+    return fmt::format_to(ctx.out(), "{}", (std::string)addr);
+  }
+};
+
+#  endif
+
+#endif  // if __has_include(<format>)
 
 #endif  // _DWMIPV6ADDRESS_HH_
 
