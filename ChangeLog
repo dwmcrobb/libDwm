@@ -1,3 +1,8 @@
+2026-03-12  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* classes/include/DwmIpv6Address.hh: Add explicitly defaulted copy
+	constructor.
+
 2026-03-11  Daniel W. McRobb  <dwm@www.mcplex.net>
 
 	* tagged as libDwm-0.9.68
