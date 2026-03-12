@@ -41,6 +41,8 @@
     #include <string.h>
   }
 
+  #include <array>
+  
   #include "DwmCgi.hh"
 
   using namespace std;
@@ -149,33 +151,32 @@ namespace Dwm {
   {
     LoadUrlEncodingMap();
     LoadHtmlEncodingMap();
-    
-    char  *env = getenv("REQUEST_METHOD");
 
-    if (env)
-      (this->EnvValues())[string("REQUEST_METHOD")] = env;
-    
-    if ((env = getenv("AUTH_TYPE")))
-      (this->EnvValues())[string("AUTH_TYPE")] = env;
-    if ((env = getenv("REMOTE_USER")))
-      (this->EnvValues())[string("REMOTE_USER")] = env;
-    if ((env = getenv("REMOTE_ADDR")))
-      (this->EnvValues())[string("REMOTE_ADDR")] = env;
-    if ((env = getenv("REMOTE_HOST")))
-      (this->EnvValues())[string("REMOTE_HOST")] = env;
-    if ((env = getenv("SERVER_PROTOCOL")))
-      (this->EnvValues())[string("SERVER_PROTOCOL")] = env;
-    if ((env = getenv("SERVER_PORT")))
-      (this->EnvValues())[string("SERVER_PORT")] = env;
-    if ((env = getenv("CONTENT_TYPE")))
-      (this->EnvValues())[string("CONTENT_TYPE")] = env;
-    if ((env = getenv("CONTENT_LENGTH")))
-      (this->EnvValues())[string("CONTENT_LENGTH")] = env;
-    if ((env = getenv("HTTP_ACCEPT")))
-      (this->EnvValues())[string("HTTP_ACCEPT")] = env;
-    if ((env = getenv("HTTP_COOKIE")))
-      (this->EnvValues())[string("HTTP_COOKIE")] = env;
-    
+    constexpr std::array<const char *,17> k_envvars = {
+      "AUTH_TYPE",
+      "CONTENT_LENGTH",
+      "CONTENT_TYPE",
+      "HTTP_ACCEPT",
+      "HTTP_COOKIE",
+      "PATH_INFO",
+      "PATH_TRANSLATED",
+      "REMOTE_ADDR",
+      "REMOTE_HOST",
+      "REMOTE_IDENT",
+      "REMOTE_USER",
+      "REQUEST_METHOD",
+      "SCRIPT_NAME",
+      "SERVER_ADDR",
+      "SERVER_NAME",
+      "SERVER_PORT",
+      "SERVER_PROTOCOL"
+    };
+    for (auto & envvar : k_envvars) {
+      char  *envval = getenv(envvar);
+      if (envval) {
+        _envValues[envval] = envval;
+      }
+    }
     GetQueryString(*this);
   }
   
