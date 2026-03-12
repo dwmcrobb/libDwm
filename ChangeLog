@@ -1,6 +1,6 @@
 2026-03-11  Daniel W. McRobb  <dwm@www.mcplex.net>
 
-	* tagged as libDwm-0.9.67
+	* tagged as libDwm-0.9.68
 
 	* classes/src/DwmCgiLex.lex: Fix typo in constructor.
 
