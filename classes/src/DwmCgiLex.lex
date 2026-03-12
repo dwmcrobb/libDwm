@@ -174,7 +174,7 @@ namespace Dwm {
     for (auto & envvar : k_envvars) {
       char  *envval = getenv(envvar);
       if (envval) {
-        _envValues[envval] = envval;
+        _envValues[envvar] = envval;
       }
     }
     GetQueryString(*this);
