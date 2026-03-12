@@ -2,6 +2,10 @@
 
 	* tagged as libDwm-0.9.67
 
+	* classes/src/DwmCgiLex.lex: Fix typo in constructor.
+
+	* tagged as libDwm-0.9.67
+
 	* classes/src/DwmCgiLex.lex: Tweak initialization of environment
 	variable map, and add a few environment variables.
 
