@@ -487,8 +487,8 @@ namespace Dwm {
     template <typename _containerT>
     static uint64_t ContainerStreamedLength(const _containerT & c)
     {
-      uint64_t  rc = sizeof(uint64_t);  // for size()
-
+      EncodedU64  enclen = c.size();
+      uint64_t    rc = enclen.StreamedLength();
       rc += StreamedLength<typename _containerT::const_iterator>(c.begin(), 
                                                                  c.end());
       return(rc);
