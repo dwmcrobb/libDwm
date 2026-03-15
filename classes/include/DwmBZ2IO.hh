@@ -1219,9 +1219,9 @@ namespace Dwm {
         c.clear();
       int  rc = -1;
       if (bzf) {
-        uint64_t  numEntries;
-        int  bytesRead = BZRead(bzf, numEntries);
-        if (bytesRead == sizeof(numEntries)) {
+        EncodedU64  numEntries;
+        int  bytesRead = numEntries.BZRead(bzf);
+        if (bytesRead > 0) {
           rc = bytesRead;
           for (uint64_t i = 0; i < numEntries; ++i) {
             typename _containerT::value_type  val;
@@ -1250,9 +1250,9 @@ namespace Dwm {
     {
       int  rc = -1;
       if (bzf) {
-        uint64_t  numEntries = c.size();
-        uint64_t  bytesWritten = BZWrite(bzf, numEntries);
-        if (bytesWritten == sizeof(numEntries)) {
+        EncodedU64  numEntries = c.size();
+        uint64_t    bytesWritten = numEntries.BZWrite(bzf);
+        if (bytesWritten == numEntries.StreamedLength()) {
           rc = bytesWritten;
           if (numEntries) {
             bytesWritten = 
@@ -1281,9 +1281,9 @@ namespace Dwm {
       if (! m.empty())
         m.clear();
       if (bzf) {
-        uint64_t  numEntries;
-        int  bytesRead = BZRead(bzf, numEntries);
-        if (bytesRead == sizeof(numEntries)) {
+        EncodedU64  numEntries;
+        int  bytesRead = numEntries.BZRead(bzf);
+        if (bytesRead > 0) {
           rc = bytesRead;
           for (uint64_t i = 0; i < numEntries; ++i) {
             typename _containerT::key_type  key;
