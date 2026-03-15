@@ -1,3 +1,12 @@
+2026-03-14  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* classes/include/DwmIOUtils.hh: Update ContainerStreamedLength()
+	to match the fact that we now use EncodedU64 to encode the number
+	of entries in a container.
+
+	* classes/include/DwmBZ2IO.hh, classes/include/DwmDescriptorIO.hh:
+	Use EncodedU64 for number of entries in container.
+
 2026-03-12  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* classes/include/DwmIpv6Address.hh: Add explicitly defaulted copy
