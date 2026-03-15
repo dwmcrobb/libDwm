@@ -2854,9 +2854,9 @@ namespace Dwm {
         c.clear();
       ssize_t  rc = -1;
       if (fd >= 0) {
-        uint64_t  numEntries;
-        ssize_t   bytesRead = Read(fd, numEntries);
-        if (bytesRead == sizeof(numEntries)) {
+        EncodedU64  numEntries;
+        ssize_t     bytesRead = numEntries.Read(fd);
+        if (bytesRead > 0) {
           rc = bytesRead;
           for (uint64_t i = 0; i < numEntries; ++i) {
             typename _containerT::value_type  val;
@@ -2887,9 +2887,9 @@ namespace Dwm {
         c.clear();
       ssize_t  rc = -1;
       if (fd >= 0) {
-        uint64_t  numEntries;
-        ssize_t   bytesRead = NRead(fd, numEntries);
-        if (bytesRead == sizeof(numEntries)) {
+        EncodedU64  numEntries;
+        ssize_t     bytesRead = numEntries.NRead(fd);
+        if (bytesRead > 0) {
           rc = bytesRead;
           for (uint64_t i = 0; i < numEntries; ++i) {
             typename _containerT::value_type  val;
@@ -2918,9 +2918,9 @@ namespace Dwm {
     {
       ssize_t  rc = -1;
       if (fd >= 0) {
-        uint64_t  numEntries = c.size();
-        uint64_t  bytesWritten = Write(fd, numEntries);
-        if (bytesWritten == sizeof(numEntries)) {
+        EncodedU64  numEntries = c.size();
+        uint64_t    bytesWritten = numEntries.Write(fd);
+        if (bytesWritten == numEntries.StreamedLength()) {
           rc = bytesWritten;
           if (numEntries) {
             bytesWritten = 
@@ -2947,9 +2947,9 @@ namespace Dwm {
     {
       ssize_t  rc = -1;
       if (fd >= 0) {
-        uint64_t  numEntries = c.size();
-        uint64_t  bytesWritten = NWrite(fd, numEntries);
-        if (bytesWritten == sizeof(numEntries)) {
+        EncodedU64  numEntries = c.size();
+        uint64_t    bytesWritten = numEntries.NWrite(fd);
+        if (bytesWritten == numEntries.StreamedLength()) {
           rc = bytesWritten;
           if (numEntries) {
             bytesWritten = 
@@ -2978,9 +2978,9 @@ namespace Dwm {
       if (! m.empty())
         m.clear();
       if (fd >= 0) {
-        uint64_t  numEntries;
-        ssize_t   bytesRead = Read(fd, numEntries);
-        if (bytesRead == sizeof(numEntries)) {
+        EncodedU64  numEntries;
+        ssize_t     bytesRead = numEntries.Read(fd);
+        if (bytesRead > 0) {
           rc = bytesRead;
           for (uint64_t i = 0; i < numEntries; ++i) {
             typename _containerT::key_type  key;
@@ -3021,9 +3021,9 @@ namespace Dwm {
       if (! m.empty())
         m.clear();
       if (fd >= 0) {
-        uint64_t  numEntries;
-        ssize_t   bytesRead = NRead(fd, numEntries);
-        if (bytesRead == sizeof(numEntries)) {
+        EncodedU64  numEntries;
+        ssize_t     bytesRead = numEntries.NRead(fd);
+        if (bytesRead > 0) {
           rc = bytesRead;
           for (uint64_t i = 0; i < numEntries; ++i) {
             typename _containerT::key_type  key;
