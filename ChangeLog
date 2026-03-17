@@ -1,3 +1,9 @@
+2026-03-17  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* classes/include/DwmEncodedUnsigned.hh: Despite the fact that
+	we're not using it yet, initialize _chunkedData to false when
+	reading.
+
 2026-03-14  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* classes/include/DwmIOUtils.hh: Update ContainerStreamedLength()
