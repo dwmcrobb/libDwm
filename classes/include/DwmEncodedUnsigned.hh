@@ -1,7 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath$
-//===========================================================================
-//  Copyright (c) Daniel W. McRobb 2025
+//  Copyright (c) Daniel W. McRobb 2025, 2026
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -101,7 +99,7 @@ namespace Dwm {
     //!  Assign from the given @c value.
     //------------------------------------------------------------------------
     EncodedUnsigned & operator = (T value)
-    { _value = value; return *this; }
+    { _value = value; _chunkedData = false; return *this; }
     
     //------------------------------------------------------------------------
     //!  Return the value as a T value.
@@ -131,6 +129,7 @@ namespace Dwm {
     std::istream & Read(std::istream & is)
     {
       _value = 0;
+      _chunkedData = false;
       uint8_t  buf[2];
       if (is.read((caddr_t)buf, sizeof(buf))) {
         TwoBytesProcessed  twoBP(buf, &_value);
@@ -177,6 +176,7 @@ namespace Dwm {
     size_t Read(FILE *f)
     {
       _value = 0;
+      _chunkedData = false;
       size_t       rc = 0;
       uint8_t      buf[2];
       if (fread((caddr_t)buf, sizeof(buf), 1, f)) {
@@ -231,6 +231,7 @@ namespace Dwm {
     ssize_t Read(int fd)
     {
       _value = 0;
+      _chunkedData = false;
       ssize_t  rc = -1;
       if (0 <= fd) {
         uint8_t  buf[2];
@@ -290,6 +291,7 @@ namespace Dwm {
     int BZRead(BZFILE *bzf)
     {
       _value = 0;
+      _chunkedData = false;
       int   rc = -1;
       if (bzf) {
         uint8_t  buf[2];
@@ -349,7 +351,8 @@ namespace Dwm {
     int Read(gzFile gzf)
     {
       _value = 0;
-      int          rc = -1;
+      _chunkedData = false;
+      int  rc = -1;
       if (gzf) {
         uint8_t  buf[2];
         if (gzread(gzf, buf, sizeof(buf)) == sizeof(buf)) {
