@@ -374,8 +374,8 @@ namespace Dwm {
     {
       size_t  rc = 0;
       if (f) {
-        uint64_t  numEntries = c.size();
-        if (Write(f, numEntries)) {
+        EncodedU64  numEntries = c.size();
+        if (numEntries.Write(f)) {
           if (numEntries) {
             rc = Write<typename T::const_iterator>(f, c.cbegin(), c.cend());
           }
@@ -401,8 +401,8 @@ namespace Dwm {
       c.clear();
       size_t  rc = 0;
       if (f) {
-        uint64_t  numEntries;
-        if (Read(f, numEntries)) {
+        EncodedU64  numEntries;
+        if (numEntries.Read(f)) {
           uint64_t  i = 0;
           for ( ; i < numEntries; ++i) {
             typename T::value_type  val;
@@ -939,8 +939,8 @@ namespace Dwm {
       if (! m.empty())
         m.clear();
       if (f) {
-        uint64_t  numEntries;
-        if (Read(f, numEntries)) {
+        EncodedU64  numEntries;
+        if (numEntries.Read(f)) {
           uint64_t i = 0;
           for ( ; i < numEntries; ++i) {
             typename _containerT::key_type  key;
