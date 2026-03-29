@@ -437,10 +437,10 @@ define(DWM_ADD_BOOST_DIRS,[
     DWM_ADD_IF_NOT_PRESENT(EXTINCS,[-I${BOOSTDIR}/include],[ ])
     DWM_ADD_IF_NOT_PRESENT(EXTLIBS,[-L${BOOSTDIR}/lib],[ ])
   fi
-  if [[ -f ${BOOSTDIR}/lib/libboost_system-mt.dylib ]]; then
-    EXTLIBS="${EXTLIBS} -lboost_iostreams-mt -lboost_system-mt"
+  if [[ -f ${BOOSTDIR}/lib/libboost_iostreams-mt.dylib ]]; then
+    EXTLIBS="${EXTLIBS} -lboost_iostreams-mt"
   else
-    EXTLIBS="${EXTLIBS}	-lboost_iostreams -lboost_system"
+    EXTLIBS="${EXTLIBS}	-lboost_iostreams"
   fi
 ])
 
