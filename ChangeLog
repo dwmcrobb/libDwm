@@ -1,3 +1,8 @@
+2026-03-30  Daniel McRobb  <dwm@thrip.mcplex.net>
+
+	* packaging/debcontrol.in: Set Multi-Arch to 'same'.  Only affects
+	debian packaging.
+
 2026-03-29  Daniel McRobb  <dwm@toto.mcplex.net>
 
 	* tagged as libDwm-0.9.71
