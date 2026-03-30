@@ -7,6 +7,7 @@ Homepage: http://www.mcplex.net
 Package: libDwm
 Version: @TAGVERSION@
 Architecture: @DEBARCH@
+Multi-Arch: same
 Description: Miscellaneous C++ classes and programs.
   Dwm::IO is the main thrust of the package.  It also includes a simple unit
   testing framework, a replacement for 'what' named "dwmwhat" and some
