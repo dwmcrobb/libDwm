@@ -67,6 +67,7 @@ TestIpv4IcmpTimeExceeded
 TestIpv4PacketHeader
 TestIpv4Prefix
 TestIpv4PrefixMap
+TestIpv4PrefixPatricia
 TestIpv4Routes
 TestIpv4TcpHeader
 TestIpv4TcpPacket
