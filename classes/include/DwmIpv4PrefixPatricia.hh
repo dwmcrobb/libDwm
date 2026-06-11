@@ -43,6 +43,9 @@
 //!  when a new prefix diverges from an existing prefix at a bit position
 //!  within the shorter of their mask lengths, creating a branching node
 //!  that captures the shared common prefix.
+//!
+//!  6/11/2026: I get roughly 8.7 million lookups/second on an AMD
+//!  Threadripper 3960X with a ValueType of std::string.
 //---------------------------------------------------------------------------
 
 #ifndef _DWMIPV4PREFIXPATRICIA_HH_
