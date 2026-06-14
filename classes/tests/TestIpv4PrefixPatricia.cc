@@ -37,6 +37,7 @@
 //!  @brief NOT YET DOCUMENTED
 //---------------------------------------------------------------------------
 
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 
@@ -89,16 +90,18 @@ void TestWithString()
     pair<Ipv4Prefix, const string *>     match;
     const uint8_t                        numIterations = 10;
     uint64_t                             numFound = 0;
-    if (g_performanceTests) {
-      Dwm::TimeValue  startTime(true);
-      for (uint8_t i = 0; i < numIterations; ++i) {
-        for (ipVecIter = ipVec.begin(); 
-             ipVecIter != ipVec.end(); ++ipVecIter) {
-          numFound += r.LongestMatch(*ipVecIter).has_value() ? 1 : 0;
-        }
+
+    Dwm::TimeValue  startTime(true);
+    for (uint8_t i = 0; i < numIterations; ++i) {
+      for (ipVecIter = ipVec.begin(); 
+           ipVecIter != ipVec.end(); ++ipVecIter) {
+        numFound += r.LongestMatch(*ipVecIter).has_value() ? 1 : 0;
       }
+    }
+    UnitAssert(numFound == ipVec.size() * numIterations);
+    
+    if (g_performanceTests) {
       Dwm::TimeValue endTime(true);
-      UnitAssert(numFound == ipVec.size() * numIterations);
       endTime -= startTime;
       uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
       uint64_t  lookupsPerSec = (ipVec.size() * 1000000ULL * numIterations) / usecs;
