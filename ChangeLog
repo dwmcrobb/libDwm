@@ -1,8 +1,17 @@
+2026-06-26  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* include/DwmEtcProtocols.hh
+	* src/DwmEtcProtocolsLex.lex
+	* src/DwmEtcProtocolsParse.y
+	* tests/TestEtcProtocols.cc
+	Quick implementation of class to encapsulate the contents of
+	/etc/protocols
+
 2026-06-11  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* classes/include/DwmIpv4PrefixPatricia.hh
 	* classes/tests/TestIpv4PrefixPatricia.cc
-	Being back class template to store values keyed by IPv4 prefix,
+	Bring back class template to store values keyed by IPv4 prefix,
 	using a Patricia trie.  Still needs work.
 	
 2026-03-30  Daniel McRobb  <dwm@thrip.mcplex.net>

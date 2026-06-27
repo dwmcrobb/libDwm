@@ -34,7 +34,7 @@
 //---------------------------------------------------------------------------
 //!  @file TestEtcProtocols.hh
 //!  @author Daniel W. McRobb
-//!  @brief NOT YET DOCUMENTED
+//!  @brief Dwm::EtcProtocols unit tests
 //---------------------------------------------------------------------------
 
 #include "DwmEtcProtocols.hh"

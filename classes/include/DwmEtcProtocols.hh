@@ -34,7 +34,7 @@
 //---------------------------------------------------------------------------
 //!  @file DwmEtcProtocols.hh
 //!  @author Daniel W. McRobb
-//!  @brief NOT YET DOCUMENTED
+//!  @brief Dwm::EtcProtocols class definition
 //---------------------------------------------------------------------------
 
 #ifndef _DWMETCPROTOCOLS_HH_
@@ -90,29 +90,61 @@ namespace Dwm {
           : _name(name), _number(number), _aliases()
       {}
       
+      //----------------------------------------------------------------------
+      //!  Copy assignment
+      //----------------------------------------------------------------------
       Entry & operator = (const Entry &) = default;
+
+      //----------------------------------------------------------------------
+      //!  Move assignment
+      //----------------------------------------------------------------------
       Entry & operator = (Entry &&) = default;
+      
+      //----------------------------------------------------------------------
+      //!  Destructor
+      //----------------------------------------------------------------------
       ~Entry() = default;
       
+      //----------------------------------------------------------------------
+      //!  Returns the official protocol name.
+      //----------------------------------------------------------------------
       const std::string & Name() const
       { return _name; }
       
+      //----------------------------------------------------------------------
+      //!  Sets and returns the official protocol name.
+      //----------------------------------------------------------------------
       const std::string & Name(const std::string & name)
       { return _name = name; }
       
+      //----------------------------------------------------------------------
+      //!  Returns the protocol aliases.
+      //----------------------------------------------------------------------
       const std::vector<std::string> & Aliases() const
       { return _aliases; }
       
+      //----------------------------------------------------------------------
+      //!  Sets and returns the protocol aliases.
+      //----------------------------------------------------------------------
       const std::vector<std::string> &
       Aliases(const std::vector<std::string> & aliases)
       { return _aliases = aliases; }
       
+      //----------------------------------------------------------------------
+      //!  Returns the protocol number.
+      //----------------------------------------------------------------------
       int Number() const
       { return _number; }
       
+      //----------------------------------------------------------------------
+      //!  Sets and returns the protocol number.
+      //----------------------------------------------------------------------
       int Number(int number)
       { return _number = number; }
 
+      //----------------------------------------------------------------------
+      //!  Equality operator
+      //----------------------------------------------------------------------
       bool operator == (const Entry &) const = default;
       
     private:
@@ -121,13 +153,33 @@ namespace Dwm {
       int                       _number;
     };
 
+    //------------------------------------------------------------------------
+    //!  Construct by parsing the contents of the file at the given @c path.
+    //------------------------------------------------------------------------
     EtcProtocols(const std::string & path = "/etc/protocols");
+
+    //------------------------------------------------------------------------
+    //!  Destructor
+    //------------------------------------------------------------------------
     ~EtcProtocols() = default;
 
+    //------------------------------------------------------------------------
+    //!  Returns the number of entries.
+    //------------------------------------------------------------------------
     size_t NumEntries() const
     { return _entries.size(); }
 
+    //------------------------------------------------------------------------
+    //!  Searches for the entry with the given @c name (which may match the
+    //!  protocol's official name or one of its aliases).  Returns a populated
+    //!  optional if a match is found, else returns an empty optional.
+    //------------------------------------------------------------------------
     std::optional<Entry> GetEntry(const std::string & name) const;
+    
+    //------------------------------------------------------------------------
+    //!  Searches for the entry with the given @c number.  Returns a populated
+    //!  optional if a match is found, else returns an empty optional.
+    //------------------------------------------------------------------------
     std::optional<Entry> GetEntry(int num) const;
     
   private:
