@@ -74,6 +74,8 @@
 
 %{
   //--------------------------------------------------------------------------
+  #include <mutex>
+    
   static std::vector<Dwm::EtcProtocols::Entry>  *g_entries = nullptr;
 %}
 
@@ -142,15 +144,14 @@ ProtocolAlias: PROTOALIAS
 
 namespace Dwm {
 
+  static std::mutex  g_entriesMtx;
+    
   //--------------------------------------------------------------------------
   EtcProtocols::EtcProtocols(const std::string & path)
   {
+    std::lock_guard  lck(g_entriesMtx);
     etcprotosin = fopen(path.c_str(), "r");
     if (etcprotosin) {
-      std::lock_guard  lck(_mtx);
-      _entries.clear();
-      _byname.clear();
-      _bynum.clear();
       g_entries = &_entries;
       etcprotosparse();
       for (const auto & entry : _entries) {
@@ -188,7 +189,6 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   void EtcProtocols::AddEntry(const EtcProtocols::Entry & entry)
   {
-      // std::lock_guard  lck(_mtx);
     _entries.push_back(entry);
     return;
   }

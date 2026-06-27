@@ -40,7 +40,6 @@
 #ifndef _DWMETCPROTOCOLS_HH_
 #define _DWMETCPROTOCOLS_HH_
 
-#include <mutex>
 #include <optional>
 #include <string>
 #include <unordered_map>
@@ -166,8 +165,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Returns the number of entries.
     //------------------------------------------------------------------------
-    size_t NumEntries() const
-    { return _entries.size(); }
+    size_t NumEntries() const  { return _entries.size(); }
 
     //------------------------------------------------------------------------
     //!  Searches for the entry with the given @c name (which may match the
@@ -183,7 +181,6 @@ namespace Dwm {
     std::optional<Entry> GetEntry(int num) const;
     
   private:
-    std::mutex                                     _mtx;
     std::vector<Entry>                             _entries;
     std::unordered_map<std::string,const Entry *>  _byname;
     std::unordered_map<int,const Entry *>          _bynum;
