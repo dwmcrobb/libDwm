@@ -21,6 +21,7 @@ TestEncodedSigned64
 TestEncodedUnsigned16
 TestEncodedUnsigned32
 TestEncodedUnsigned64
+TestEtcProtocols
 TestFileIO
 TestFileLogger
 TestFormatters
