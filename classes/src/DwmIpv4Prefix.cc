@@ -296,15 +296,11 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   bool Ipv4Prefix::Contains(const Ipv4Prefix & prefix) const
   {
-    bool  rc = false;
-    if (prefix._data[4] >= _data[4]) {
-      if ((prefix.Network().Raw() & this->Netmask().Raw()) == this->Network().Raw()) {
-        rc = true;
-      }
-    }
-    return(rc);
+    return ((prefix._data[4] >= _data[4])
+            && ((prefix.Network().Raw() & this->Netmask().Raw())
+                == this->Network().Raw()));
   }
-
+  
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
