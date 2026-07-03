@@ -2,6 +2,9 @@ DwmCgiLex.cc
 DwmEtcProtocolsLex.cc
 DwmEtcProtocolsParse.cc
 DwmEtcProtocolsParse.hh
+DwmEtcServicesLex.cc
+DwmEtcServicesParse.cc
+DwmEtcServicesParse.hh
 DwmExecutorLex.cc
 DwmPackageInfo.cc
 DwmProcessTableLex.cc
