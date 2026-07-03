@@ -44,8 +44,15 @@
 //!  within the shorter of their mask lengths, creating a branching node
 //!  that captures the shared common prefix.
 //!
-//!  6/11/2026: I get roughly 8.7 million lookups/second on an AMD
-//!  Threadripper 3960X with a ValueType of std::string.
+//!  6/11/2026 - some performance numbers using a ValueType of std::string,
+//!  using the 901,114 prefixes in ../tests/IPV4_prefixes.20210123:
+//!
+//!    - roughly 10.6 million lookups/second on a Mac Studio M1 Ultra.
+//!    - roughly 8.7 million lookups/second on an AMD Threadripper 3960X.
+//!    - roughly 7.2 million lookups/second on a Xeon E3-1270 V2 @ 3.50GHz.
+//!    - roughly 5.1 million lookups/second on an i5-2405S @ 2.50GHz.
+//!    - roughly 4.7 million lookups/second on a Xeon L5640 @ 2.27GHz.
+//!    - roughly 2.54 million lookups/second on a Raspberry Pi 4B.
 //---------------------------------------------------------------------------
 
 #ifndef _DWMIPV4PREFIXPATRICIA_HH_
@@ -93,7 +100,7 @@ namespace Dwm {
     {}
 
     //----------------------------------------------------------------------
-    //!  Destructor.  Frees all nodes.
+    //!  Destructor.  Deletes all nodes.
     //----------------------------------------------------------------------
     ~Ipv4PrefixPatricia()
     { clear(_root); }
@@ -171,19 +178,19 @@ namespace Dwm {
     std::optional<std::pair<Ipv4Prefix,ValueType>>
     LongestMatch(const Ipv4Prefix & prefix) const
     {
-      Node * node = _root;
+      const Node  *node = _root;
       std::optional<std::pair<Ipv4Prefix,ValueType>>  result;
 
       while (node) {
-        if (prefixMatches(node->_prefix, prefix)) {
+        if (node->_prefix.Contains(prefix)) {
           if (node->_hasValue) {
             result = std::make_pair(node->_prefix, node->_value);
           }
           if (node->_prefix.MaskLength() >= prefix.MaskLength()) {
             break;
           }
-          uint8_t  bit = bitOf(prefix, node->_prefix.MaskLength());
-          node = node->_child[bit];
+          uint8_t  b = prefix.Bit(node->_prefix.MaskLength());
+          node = node->_child[b];
         }
         else {
           break;
@@ -216,6 +223,18 @@ namespace Dwm {
     size_t Size() const
     { return _size; }
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    friend std::ostream &
+    operator << (std::ostream & os, const Ipv4PrefixPatricia & pat)
+    {
+      if (pat._root) {
+        os << *(pat._root);
+      }
+      return os;
+    }
+    
   private:
     //----------------------------------------------------------------------
     //!  Internal trie node.
@@ -231,20 +250,36 @@ namespace Dwm {
       Ipv4Prefix  _prefix;
       ValueType   _value;
       bool        _hasValue;
-      Node *      _child[2];
+      Node       *_child[2];
 
+      //----------------------------------------------------------------------
       Node(const Ipv4Prefix & p, const ValueType & v, bool hv = true)
           : _prefix(p), _value(v), _hasValue(hv), _child{nullptr, nullptr}
       {}
+      
+      //----------------------------------------------------------------------
+      friend std::ostream & operator << (std::ostream & os, const Node & node)
+      {
+        if (node._hasValue) {
+          os << node._prefix << ' ' << node._value << '\n';
+        }
+        if (node._child[0]) {
+          os << *(node._child[0]);
+        }
+        if (node._child[1]) {
+          os << *(node._child[1]);
+        }
+        return os;
+      }
     };
 
     Node *  _root;
     size_t  _size;
 
     //----------------------------------------------------------------------
-    //!  Recursively clear (delete) all nodes in the subtree.
+    //!  Recursively delete all nodes under @c n and @c n itself.
     //----------------------------------------------------------------------
-    void clear(Node * n)
+    void clear(Node *n)
     {
       if (n) {
         clear(n->_child[0]);
@@ -257,10 +292,10 @@ namespace Dwm {
     //----------------------------------------------------------------------
     //!  Recursively deep-copy a subtree.
     //----------------------------------------------------------------------
-    Node * copyNode(Node * n)
+    Node *copyNode(Node *n)
     {
       if (! n)  return nullptr;
-      Node * c = new Node(n->_prefix, n->_value, n->_hasValue);
+      Node *c = new Node(n->_prefix, n->_value, n->_hasValue);
       ++_size;
       c->_child[0] = copyNode(n->_child[0]);
       c->_child[1] = copyNode(n->_child[1]);
@@ -282,7 +317,7 @@ namespace Dwm {
     //!       common prefix, and place both the existing node and the
     //!       new node as its children (node splitting).
     //!----------------------------------------------------------------------
-    Node *addNode(Node * node, const Ipv4Prefix & prefix,
+    Node *addNode(Node *node, const Ipv4Prefix & prefix,
                   const ValueType & value)
     {
       if (! node) {
@@ -302,14 +337,14 @@ namespace Dwm {
         }
 
         if (prefix.MaskLength() > node->_prefix.MaskLength()) {
-          uint8_t bit = bitOf(prefix, node->_prefix.MaskLength());
+          uint8_t bit = prefix.Bit(node->_prefix.MaskLength());
           node->_child[bit] = addNode(node->_child[bit], prefix, value);
           return node;
         }
         else {
           ++_size;
-          Node * parent = new Node(prefix, value);
-          uint8_t bit   = bitOf(node->_prefix, prefix.MaskLength());
+          Node     *parent = new Node(prefix, value);
+          uint8_t   bit   = node->_prefix.Bit(prefix.MaskLength());
           parent->_child[bit] = node;
           return parent;
         }
@@ -320,10 +355,10 @@ namespace Dwm {
       // existing node and the new node become its two children.
       Ipv4Prefix common(Ipv4Address(node->_prefix.NetworkRaw()), diffBit);
       ++_size;
-      Node * branch = new Node(common, ValueType{}, false);
+      Node  *branch = new Node(common, ValueType{}, false);
 
-      uint8_t bitForExisting = bitOf(node->_prefix, diffBit);
-      uint8_t bitForNew      = bitOf(prefix, diffBit);
+      uint8_t bitForExisting = node->_prefix.Bit(diffBit);
+      uint8_t bitForNew      = prefix.Bit(diffBit);
 
       ++_size;
       branch->_child[bitForExisting] = node;
@@ -339,22 +374,23 @@ namespace Dwm {
     //!  deleted; if it has no value and exactly one child it is
     //!  bypassed (path compression maintained).
     //!----------------------------------------------------------------------
-    Node * removeNode(Node * node, const Ipv4Prefix & prefix,
-                      bool & removed)
+    Node *removeNode(Node *node, const Ipv4Prefix & prefix, bool & removed)
     {
-      if (! node)  return nullptr;
-
-      if (node->_hasValue && node->_prefix == prefix) {
-        removed        = true;
+      if (! node) {
+        return nullptr;
+      }
+      
+      if ((node->_hasValue) && (node->_prefix == prefix)) {
+        removed         = true;
         node->_hasValue = false;
 
-        if (! node->_child[0] && ! node->_child[1]) {
+        if ((! node->_child[0]) && (! node->_child[1])) {
           delete node;
           --_size;
           return nullptr;
         }
-        if (! node->_child[0] || ! node->_child[1]) {
-          Node * kid = node->_child[0] ? node->_child[0] : node->_child[1];
+        if ((! node->_child[0]) || (! node->_child[1])) {
+          Node  *kid = node->_child[0] ? node->_child[0] : node->_child[1];
           delete node;
           --_size;
           return kid;
@@ -366,22 +402,22 @@ namespace Dwm {
         return node;
       }
 
-      uint8_t bit = bitOf(prefix, node->_prefix.MaskLength());
-      Node * child = node->_child[bit];
+      uint8_t   bit = prefix.Bit(node->_prefix.MaskLength());
+      Node     *child = node->_child[bit];
 
-      if (child && prefixMatches(child->_prefix, prefix)) {
+      if (child && child->_prefix.Contains(prefix)) {
         node->_child[bit] = removeNode(child, prefix, removed);
       }
 
       if (removed) {
         if (! node->_hasValue) {
-          if (! node->_child[0] && ! node->_child[1]) {
+          if ((! node->_child[0]) && (! node->_child[1])) {
             delete node;
             --_size;
             return nullptr;
           }
-          if (! node->_child[0] || ! node->_child[1]) {
-            Node * kid = node->_child[0] ? node->_child[0] : node->_child[1];
+          if ((! node->_child[0]) || (! node->_child[1])) {
+            Node  *kid = node->_child[0] ? node->_child[0] : node->_child[1];
             delete node;
             --_size;
             return kid;
@@ -392,15 +428,6 @@ namespace Dwm {
     }
 
     //----------------------------------------------------------------------
-    //!  Extract bit position @c i (0 = MSB of the address, 31 = LSB)
-    //!  from an Ipv4Prefix.
-    //----------------------------------------------------------------------
-    static bool bitOf(const Ipv4Prefix & p, uint8_t i)
-    {
-      return (ntohl(p.NetworkRaw()) >> (31 - i)) & 1;
-    }
-
-    //----------------------------------------------------------------------
     //!  Return the bit index (0 = MSB) of the first bit where two
     //!  prefixes differ, considering only the first @c maxBits bits.
     //!  Returns -1 if they are identical within that range.
@@ -408,32 +435,18 @@ namespace Dwm {
     static int firstDiffBit(const Ipv4Prefix & a, const Ipv4Prefix & b,
                             uint8_t maxBits)
     {
-      if (maxBits == 0)  return -1;
-      uint32_t aH = ntohl(a.NetworkRaw());
-      uint32_t bH = ntohl(b.NetworkRaw());
-      uint32_t x  = aH ^ bH;
-      if (x == 0)  return -1;
-      int msbPos  = 31 - __builtin_clz(x);
-      int ipBit   = 31 - msbPos;
+      if (0 == maxBits) {
+        return -1;
+      }
+      uint32_t  aH = ntohl(a.NetworkRaw());
+      uint32_t  bH = ntohl(b.NetworkRaw());
+      uint32_t  x  = aH ^ bH;
+      if (0 == x) {
+        return -1;
+      }
+      int  msbPos  = 31 - __builtin_clz(x);
+      int  ipBit   = 31 - msbPos;
       return (ipBit < maxBits) ? ipBit : -1;
-    }
-
-    //----------------------------------------------------------------------
-    //!  Return true if @c prefix is a prefix of @c query, i.e. all
-    //!  bits of @c prefix (up to its mask length) match the
-    //!  corresponding bits of @c query.
-    //----------------------------------------------------------------------
-    static bool prefixMatches(const Ipv4Prefix & prefix,
-                              const Ipv4Prefix & query)
-    {
-      uint8_t  mLen = prefix.MaskLength();
-      if (mLen == 0)  return true;
-      uint32_t pRaw = ntohl(prefix.NetworkRaw());
-      uint32_t qRaw = ntohl(query.NetworkRaw());
-      uint32_t mask;
-      if (mLen >= 32)  mask = 0xFFFFFFFF;
-      else             mask = ~((1u << (32 - mLen)) - 1);
-      return ((pRaw & mask) == (qRaw & mask));
     }
   };
 
