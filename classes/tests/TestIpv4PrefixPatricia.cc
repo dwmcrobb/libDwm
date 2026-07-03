@@ -72,6 +72,7 @@ static void SetMyDir(const char *argv0)
 void TestWithString()
 {
   Ipv4PrefixPatricia<string>  r;
+  vector<Ipv4Prefix>   pfxVec;
   vector<Ipv4Address>  ipVec;
   ifstream is(g_myDir + "/IPV4_prefixes.20210123");
   if (is) {
@@ -81,6 +82,7 @@ void TestWithString()
       Ipv4Prefix  pfx(buf);
       r.Add(pfx, buf);
       ipVec.push_back(pfx.Network());
+      pfxVec.push_back(pfx);
       memset(buf,0,512);
     }
     is.close();
@@ -99,6 +101,8 @@ void TestWithString()
       }
     }
     UnitAssert(numFound == ipVec.size() * numIterations);
+
+    // std::cout << r;
     
     if (g_performanceTests) {
       Dwm::TimeValue endTime(true);
@@ -109,6 +113,15 @@ void TestWithString()
            << " string lookups/sec" << endl;
     }
 
+    // std::cerr << "r.Size(): " << r.Size() << '\n';
+    for (auto pfxVecIter = pfxVec.begin(); pfxVecIter != pfxVec.end();
+         ++pfxVecIter) {
+      UnitAssert(r.Remove(*pfxVecIter));
+    }
+    UnitAssert(0 == r.Size());
+    
+    // std::cerr << "r.Size(): " << r.Size() << '\n';
+    
 #if 0
     //  check sorting by value into a vector
     vector<pair<Ipv4Prefix,string> >  sortedVec;
