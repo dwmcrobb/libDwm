@@ -116,17 +116,19 @@ namespace Dwm {
     //!  Returns the network portion of the prefix.
     //------------------------------------------------------------------------
     inline Ipv4Address Network() const
-    {
-      return(*(ipv4addr_t *)this->_data);
-    }
+    { return(*(ipv4addr_t *)this->_data); }
 
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
     inline ipv4addr_t NetworkRaw() const
-    {
-      return(((ipv4addr_t *)this->_data)[0]);
-    }
+    { return(((ipv4addr_t *)this->_data)[0]); }
+
+    //------------------------------------------------------------------------
+    //!  Returns the bit at position @c b (0 = MSB, 31 = LSB).
+    //------------------------------------------------------------------------
+    inline bool Bit(uint8_t b) const
+    { return (ntohl(NetworkRaw()) >> (31 - b)) & 1; }
     
     //------------------------------------------------------------------------
     //!  Returns the netmask portion of the prefix.
