@@ -149,6 +149,109 @@ void TestWithString()
 }
 
 //----------------------------------------------------------------------------
+//!  Test iterator and const_iterator
+//----------------------------------------------------------------------------
+void TestIterators()
+{
+  Ipv4PrefixPatricia<string>  trie;
+
+  // Empty trie: begin == end
+  UnitAssert(trie.begin() == trie.end());
+  UnitAssert(trie.cbegin() == trie.cend());
+
+  // Insert some prefixes in non-sorted order
+  trie.Add(Ipv4Prefix("10.0.0.0/8"),    "10.0.0.0/8");
+  trie.Add(Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16");
+  trie.Add(Ipv4Prefix("172.16.0.0/12"),  "172.16.0.0/12");
+  trie.Add(Ipv4Prefix("10.1.0.0/16"),    "10.1.0.0/16");
+  trie.Add(Ipv4Prefix("10.1.1.0/24"),    "10.1.1.0/24");
+
+  // Collect all entries via iterator
+  vector<Ipv4Prefix>  prefixes;
+  vector<string>      values;
+  for (auto it = trie.begin(); it != trie.end(); ++it) {
+    prefixes.push_back(it->first);
+    values.push_back(it->second);
+  }
+
+  // Should have 5 entries
+  UnitAssert(prefixes.size() == 5);
+
+  // Verify traversal produces sorted output
+  for (size_t i = 1; i < prefixes.size(); ++i) {
+    UnitAssert(prefixes[i - 1] < prefixes[i]);
+  }
+
+  // Verify values match keys
+  for (size_t i = 0; i < prefixes.size(); ++i) {
+    UnitAssert(values[i] == prefixes[i].ToString());
+  }
+
+  // Test const_iterator
+  const Ipv4PrefixPatricia<string> & ctrie = trie;
+  vector<Ipv4Prefix>  cprefixes;
+  for (auto it = ctrie.cbegin(); it != ctrie.cend(); ++it) {
+    cprefixes.push_back(it->first);
+  }
+  UnitAssert(cprefixes.size() == 5);
+  UnitAssert(cprefixes == prefixes);
+
+  // Test const_iterator construction from iterator
+  Ipv4PrefixPatricia<string>::const_iterator  cit = trie.begin();
+  UnitAssert(cit != trie.cend());
+  UnitAssert(cit->first == prefixes[0]);
+
+  // Test range-for with const
+  size_t count = 0;
+  for (const auto & [pfx, val] : ctrie) {
+    (void)pfx;
+    (void)val;
+    ++count;
+  }
+  UnitAssert(count == 5);
+
+  // Test value modification through iterator
+  trie.Add(Ipv4Prefix("1.2.3.0/24"), "original");
+  for (auto it = trie.begin(); it != trie.end(); ++it) {
+    if (it->first.ToString() == "1.2.3.0/24") {
+      it->second = "modified";
+      break;
+    }
+  }
+  auto match = trie.LongestMatch(Ipv4Prefix("1.2.3.4/24"));
+  UnitAssert(match.has_value());
+  UnitAssert(match->second == "modified");
+
+  // Test post-increment
+  auto it = trie.begin();
+  auto it2 = it++;
+  // After post-increment, it2 should be at first element, it at second
+  UnitAssert(it2->first < it->first);
+  // Advance it again and verify ordering
+  ++it;
+  UnitAssert(it2->first < it->first);
+
+  // Test removal during iteration (iterate, collect, then remove)
+  vector<Ipv4Prefix>  toRemove;
+  for (auto it = trie.begin(); it != trie.end(); ++it) {
+    if (it->first.MaskLength() == 24) {
+      toRemove.push_back(it->first);
+    }
+  }
+  for (const auto & pfx : toRemove) {
+    UnitAssert(trie.Remove(pfx));
+  }
+
+  // After removing /24 entries, should have fewer
+  count = 0;
+  for (auto it = trie.begin(); it != trie.end(); ++it) {
+    (void)it;
+    ++count;
+  }
+  UnitAssert(count == 4);  // 5 - 1 (/24 removed, 10.1.1.0/24 was /24)
+}
+
+//----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
@@ -162,6 +265,7 @@ int main(int argc, char *argv[])
 
   //  simple performance tests
   TestWithString();
+  TestIterators();
   
   if (Assertions::Total().Failed()) {
     Assertions::Print(cerr, true);

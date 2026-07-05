@@ -32,7 +32,7 @@
 //===========================================================================
 
 //---------------------------------------------------------------------------
-//!  \file DwmIpv4PrefixPatricia2.hh
+//!  \file DwmIpv4PrefixPatricia.hh
 //!  \author Daniel W. McRobb
 //!  \brief Dwm::Ipv4PrefixPatricia class template definition
 //!
@@ -60,8 +60,10 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <iterator>
 #include <optional>
 #include <utility>
+#include <vector>
 
 #include "DwmIpv4Prefix.hh"
 
@@ -82,16 +84,64 @@ namespace Dwm {
   //!  prefix but diverges at a later bit position (within the shorter
   //!  of the two mask lengths), a new branching node is created.  This
   //!  branching node stores the common prefix (which is shorter than
-  //!  either original) and has no value of its own.  The existing node
-  //!  and the new node become its two children, arranged according to
-  //!  the value of the diverging bit.
+  //!  either original) and has no value of its own.
   //!
   //!  @tparam ValueType  The type of the value associated with each prefix.
   //--------------------------------------------------------------------------
   template <typename ValueType>
   class Ipv4PrefixPatricia
   {
+    //----------------------------------------------------------------------
+    //!  Internal trie node.
+    //!
+    //!  Each node stores a pair of (prefix, value), a flag indicating
+    //!  whether a value is present, and two child pointers for the
+    //!  0-bit and 1-bit branches.  The prefix stored at a node is
+    //!  always at least as long as the prefix of its parent (or
+    //!  strictly longer for value-holding leaf nodes).
+    //!
+    //!  The pair uses const Key to match std::map semantics, preventing
+    //!  modification of the key through iterator access.
+    //----------------------------------------------------------------------
+    struct Node
+    {
+      std::pair<const Ipv4Prefix, ValueType>  _pair;
+      bool                                    _hasValue;
+      Node                                   *_child[2];
+
+      //----------------------------------------------------------------------
+      Node(const Ipv4Prefix & p, const ValueType & v, bool hv = true)
+          : _pair{p, v}, _hasValue(hv), _child{nullptr, nullptr}
+      {}
+
+      //----------------------------------------------------------------------
+      friend std::ostream & operator << (std::ostream & os, const Node & node)
+      {
+        if (node._hasValue) {
+          os << node._pair.first << ' ' << node._pair.second << '\n';
+        }
+        if (node._child[0]) {
+          os << *(node._child[0]);
+        }
+        if (node._child[1]) {
+          os << *(node._child[1]);
+        }
+        return os;
+      }
+    };
+
   public:
+    // Type aliases matching std::map convention
+    using key_type        = Ipv4Prefix;
+    using mapped_type     = ValueType;
+    using value_type      = std::pair<const Ipv4Prefix, ValueType>;
+    using size_type       = std::size_t;
+    using difference_type = std::ptrdiff_t;
+
+    // Forward declarations for iterator types
+    class iterator;
+    class const_iterator;
+
     //----------------------------------------------------------------------
     //!  Default constructor.  Creates an empty trie.
     //----------------------------------------------------------------------
@@ -182,14 +232,14 @@ namespace Dwm {
       std::optional<std::pair<Ipv4Prefix,ValueType>>  result;
 
       while (node) {
-        if (node->_prefix.Contains(prefix)) {
+        if (node->_pair.first.Contains(prefix)) {
           if (node->_hasValue) {
-            result = std::make_pair(node->_prefix, node->_value);
+            result = std::make_pair(node->_pair.first, node->_pair.second);
           }
-          if (node->_prefix.MaskLength() >= prefix.MaskLength()) {
+          if (node->_pair.first.MaskLength() >= prefix.MaskLength()) {
             break;
           }
-          uint8_t  b = prefix.Bit(node->_prefix.MaskLength());
+          uint8_t  b = prefix.Bit(node->_pair.first.MaskLength());
           node = node->_child[b];
         }
         else {
@@ -223,6 +273,36 @@ namespace Dwm {
     size_t Size() const
     { return _size; }
 
+    //----------------------------------------------------------------------
+    //!  Return an iterator to the first value-holding node.
+    //!  Traversal visits nodes in pre-order (current, left, right),
+    //!  producing prefixes sorted by network address.
+    //----------------------------------------------------------------------
+    iterator begin()
+    { return iterator(_root); }
+
+    //----------------------------------------------------------------------
+    //!  Return the past-the-end iterator.
+    //----------------------------------------------------------------------
+    iterator end()
+    { return iterator{}; }
+
+    //----------------------------------------------------------------------
+    //!  Return a const_iterator to the first value-holding node.
+    //----------------------------------------------------------------------
+    const_iterator begin() const
+    { return const_iterator(_root); }
+
+    //----------------------------------------------------------------------
+    //!  Return the past-the-end const_iterator.
+    //----------------------------------------------------------------------
+    const_iterator end() const
+    { return const_iterator{}; }
+
+    //----------------------------------------------------------------------
+    const_iterator cbegin() const { return begin(); }
+    const_iterator cend() const   { return end(); }
+
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
@@ -234,45 +314,221 @@ namespace Dwm {
       }
       return os;
     }
-    
-  private:
-    //----------------------------------------------------------------------
-    //!  Internal trie node.
-    //!
-    //!  Each node stores a prefix (the key), an optional value, and
-    //!  two child pointers for the 0-bit and 1-bit branches.  The
-    //!  prefix stored at a node is always at least as long as the
-    //!  prefix of its parent (or strictly longer for value-holding
-    //!  leaf nodes).
-    //----------------------------------------------------------------------
-    struct Node
-    {
-      Ipv4Prefix  _prefix;
-      ValueType   _value;
-      bool        _hasValue;
-      Node       *_child[2];
 
-      //----------------------------------------------------------------------
-      Node(const Ipv4Prefix & p, const ValueType & v, bool hv = true)
-          : _prefix(p), _value(v), _hasValue(hv), _child{nullptr, nullptr}
-      {}
-      
-      //----------------------------------------------------------------------
-      friend std::ostream & operator << (std::ostream & os, const Node & node)
+    //----------------------------------------------------------------------
+    //!  Forward iterator over value-holding nodes in pre-order traversal
+    //!  (current, left, right), which produces sorted-by-address output
+    //!  for a Patricia trie.  Models std::forward_iterator.  Dereferences
+    //!  to a reference to std::pair<const Ipv4Prefix, ValueType>, matching
+    //!  std::map semantics.
+    //----------------------------------------------------------------------
+    class iterator
+    {
+    public:
+      using iterator_category = std::forward_iterator_tag;
+      using value_type        = std::pair<const Ipv4Prefix, ValueType>;
+      using difference_type   = std::ptrdiff_t;
+      using reference         = value_type &;
+      using pointer           = value_type *;
+
+      iterator() = default;
+
+      //------------------------------------------------------------------
+      reference operator*()
+      { return _current->_pair; }
+
+      //------------------------------------------------------------------
+      pointer operator->()
+      { return &(_current->_pair); }
+
+      //------------------------------------------------------------------
+      iterator &operator++()
       {
-        if (node._hasValue) {
-          os << node._prefix << ' ' << node._value << '\n';
+        _advance();
+        return *this;
+      }
+
+      //------------------------------------------------------------------
+      iterator operator++(int)
+      {
+        iterator tmp = *this;
+        _advance();
+        return tmp;
+      }
+
+      //------------------------------------------------------------------
+      bool operator==(const iterator & other) const
+      { return _current == other._current; }
+
+      //------------------------------------------------------------------
+      bool operator!=(const iterator & other) const
+      { return !(*this == other); }
+
+    private:
+      Node               *_current   = nullptr;
+      Node               *_root      = nullptr;
+      std::vector<Node *> _stack;
+
+      friend class Ipv4PrefixPatricia;
+      friend class const_iterator;
+
+      explicit iterator(Node * root)
+          : _root(root)
+      {
+        if (root) {
+          _stack.push_back(root);
+          _advance();
         }
-        if (node._child[0]) {
-          os << *(node._child[0]);
+      }
+
+      //! Advance to the next value-holding node using pre-order traversal
+      //! (current, left, right), which produces sorted-by-address output
+      //! for a Patricia trie.
+      void _advance()
+      {
+        // Push children of current node onto stack (right first, then left,
+        // so that left is popped first)
+        if (_current) {
+          if (_current->_child[1]) {
+            _stack.push_back(_current->_child[1]);
+          }
+          if (_current->_child[0]) {
+            _stack.push_back(_current->_child[0]);
+          }
         }
-        if (node._child[1]) {
-          os << *(node._child[1]);
+        _current = nullptr;
+
+        // Pop until we find a value-holding node
+        while (!_stack.empty()) {
+          Node *node = _stack.back();
+          _stack.pop_back();
+          if (node->_hasValue) {
+            _current = node;
+            return;
+          }
+          // Expand non-value node: push children (right first, then left)
+          if (node->_child[1]) {
+            _stack.push_back(node->_child[1]);
+          }
+          if (node->_child[0]) {
+            _stack.push_back(node->_child[0]);
+          }
         }
-        return os;
       }
     };
 
+    //----------------------------------------------------------------------
+    //!  Const forward iterator over value-holding nodes in pre-order
+    //!  traversal (current, left, right), which produces sorted-by-address
+    //!  output for a Patricia trie.  Models std::forward_iterator.
+    //!  Dereferences to a const reference to std::pair<const Ipv4Prefix,
+    //!  ValueType>.
+    //----------------------------------------------------------------------
+    class const_iterator
+    {
+    public:
+      using iterator_category = std::forward_iterator_tag;
+      using value_type        = std::pair<const Ipv4Prefix, ValueType>;
+      using difference_type   = std::ptrdiff_t;
+      using reference         = const value_type &;
+      using pointer           = const value_type *;
+
+      const_iterator() = default;
+
+      //! Allow construction from a mutable iterator.
+      const_iterator(const iterator & it)
+          : _current(it._current), _root(it._root)
+      {
+        // Copy the traversal stack, converting Node* to const Node*
+        for (Node *p : it._stack) {
+          _stack.push_back(p);
+        }
+      }
+
+      //------------------------------------------------------------------
+      reference operator*() const
+      { return _current->_pair; }
+
+      //------------------------------------------------------------------
+      pointer operator->() const
+      { return &(_current->_pair); }
+
+      //------------------------------------------------------------------
+      const_iterator &operator++()
+      {
+        _advance();
+        return *this;
+      }
+
+      //------------------------------------------------------------------
+      const_iterator operator++(int)
+      {
+        const_iterator tmp = *this;
+        _advance();
+        return tmp;
+      }
+
+      //------------------------------------------------------------------
+      bool operator==(const const_iterator & other) const
+      { return _current == other._current; }
+
+      //------------------------------------------------------------------
+      bool operator!=(const const_iterator & other) const
+      { return !(*this == other); }
+
+    private:
+      const Node                *_current = nullptr;
+      const Node                *_root    = nullptr;
+      std::vector<const Node *>  _stack;
+
+      friend class Ipv4PrefixPatricia;
+
+      explicit const_iterator(const Node * root)
+          : _root(root)
+      {
+        if (root) {
+          _stack.push_back(root);
+          _advance();
+        }
+      }
+
+      //! Advance to the next value-holding node using pre-order traversal
+      //! (current, left, right), which produces sorted-by-address output
+      //! for a Patricia trie.
+      void _advance()
+      {
+        // Push children of current node onto stack (right first, then left,
+        // so that left is popped first)
+        if (_current) {
+          if (_current->_child[1]) {
+            _stack.push_back(_current->_child[1]);
+          }
+          if (_current->_child[0]) {
+            _stack.push_back(_current->_child[0]);
+          }
+        }
+        _current = nullptr;
+
+        // Pop until we find a value-holding node
+        while (!_stack.empty()) {
+          const Node *node = _stack.back();
+          _stack.pop_back();
+          if (node->_hasValue) {
+            _current = node;
+            return;
+          }
+          // Expand non-value node: push children (right first, then left)
+          if (node->_child[1]) {
+            _stack.push_back(node->_child[1]);
+          }
+          if (node->_child[0]) {
+            _stack.push_back(node->_child[0]);
+          }
+        }
+      }
+    };
+
+  private:
     Node *  _root;
     size_t  _size;
 
@@ -295,7 +551,7 @@ namespace Dwm {
     Node *copyNode(Node *n)
     {
       if (! n)  return nullptr;
-      Node *c = new Node(n->_prefix, n->_value, n->_hasValue);
+      Node *c = new Node(n->_pair.first, n->_pair.second, n->_hasValue);
       ++_size;
       c->_child[0] = copyNode(n->_child[0]);
       c->_child[1] = copyNode(n->_child[1]);
@@ -325,26 +581,26 @@ namespace Dwm {
         return new Node(prefix, value);
       }
 
-      int diffBit = firstDiffBit(node->_prefix, prefix,
-                                 std::min(node->_prefix.MaskLength(),
+      int diffBit = firstDiffBit(node->_pair.first, prefix,
+                                 std::min(node->_pair.first.MaskLength(),
                                           prefix.MaskLength()));
 
       if (diffBit < 0) {
-        if (node->_prefix == prefix) {
-          node->_value    = value;
-          node->_hasValue = true;
+        if (node->_pair.first == prefix) {
+          node->_pair.second = value;
+          node->_hasValue    = true;
           return node;
         }
 
-        if (prefix.MaskLength() > node->_prefix.MaskLength()) {
-          uint8_t bit = prefix.Bit(node->_prefix.MaskLength());
+        if (prefix.MaskLength() > node->_pair.first.MaskLength()) {
+          uint8_t bit = prefix.Bit(node->_pair.first.MaskLength());
           node->_child[bit] = addNode(node->_child[bit], prefix, value);
           return node;
         }
         else {
           ++_size;
           Node     *parent = new Node(prefix, value);
-          uint8_t   bit   = node->_prefix.Bit(prefix.MaskLength());
+          uint8_t   bit   = node->_pair.first.Bit(prefix.MaskLength());
           parent->_child[bit] = node;
           return parent;
         }
@@ -353,11 +609,11 @@ namespace Dwm {
       // Prefixes diverge at diffBit.  Create a branching node that
       // holds the common prefix (mask length = diffBit).  The
       // existing node and the new node become its two children.
-      Ipv4Prefix common(Ipv4Address(node->_prefix.NetworkRaw()), diffBit);
+      Ipv4Prefix common(Ipv4Address(node->_pair.first.NetworkRaw()), diffBit);
       ++_size;
       Node  *branch = new Node(common, ValueType{}, false);
 
-      uint8_t bitForExisting = node->_prefix.Bit(diffBit);
+      uint8_t bitForExisting = node->_pair.first.Bit(diffBit);
       uint8_t bitForNew      = prefix.Bit(diffBit);
 
       ++_size;
@@ -380,7 +636,7 @@ namespace Dwm {
         return nullptr;
       }
       
-      if ((node->_hasValue) && (node->_prefix == prefix)) {
+      if ((node->_hasValue) && (node->_pair.first == prefix)) {
         removed         = true;
         node->_hasValue = false;
 
@@ -398,14 +654,14 @@ namespace Dwm {
         return node;
       }
 
-      if (prefix.MaskLength() <= node->_prefix.MaskLength()) {
+      if (prefix.MaskLength() <= node->_pair.first.MaskLength()) {
         return node;
       }
 
-      uint8_t   bit = prefix.Bit(node->_prefix.MaskLength());
+      uint8_t   bit = prefix.Bit(node->_pair.first.MaskLength());
       Node     *child = node->_child[bit];
 
-      if (child && child->_prefix.Contains(prefix)) {
+      if (child && child->_pair.first.Contains(prefix)) {
         node->_child[bit] = removeNode(child, prefix, removed);
       }
 
