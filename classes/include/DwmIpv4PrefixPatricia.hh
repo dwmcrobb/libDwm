@@ -267,6 +267,32 @@ namespace Dwm {
       return removed;
     }
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    iterator erase(iterator it)
+    {
+      iterator  rc = it;
+      if (rc != end()) {
+        ++rc;
+        Remove(it._current->_pair.first);
+      }
+      return rc;
+    }
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    iterator erase(const_iterator it)
+    {
+      const_iterator  rc = it;
+      if (rc != cend()) {
+        ++rc;
+        Remove(it._current->_pair.first);
+      }
+      return rc;
+    }
+    
     //----------------------------------------------------------------------
     //!  Returns the total number of nodes in the trie.
     //----------------------------------------------------------------------
@@ -334,11 +360,11 @@ namespace Dwm {
       iterator() = default;
 
       //------------------------------------------------------------------
-      reference operator*()
+      reference operator * ()
       { return _current->_pair; }
 
       //------------------------------------------------------------------
-      pointer operator->()
+      pointer operator -> ()
       { return &(_current->_pair); }
 
       //------------------------------------------------------------------

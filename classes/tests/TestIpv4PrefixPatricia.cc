@@ -160,7 +160,7 @@ void TestIterators()
   UnitAssert(trie.cbegin() == trie.cend());
 
   // Insert some prefixes in non-sorted order
-  trie.Add(Ipv4Prefix("10.0.0.0/8"),    "10.0.0.0/8");
+  trie.Add(Ipv4Prefix("10.0.0.0/8"),     "10.0.0.0/8");
   trie.Add(Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16");
   trie.Add(Ipv4Prefix("172.16.0.0/12"),  "172.16.0.0/12");
   trie.Add(Ipv4Prefix("10.1.0.0/16"),    "10.1.0.0/16");
@@ -252,6 +252,32 @@ void TestIterators()
 }
 
 //----------------------------------------------------------------------------
+static void TestErase()
+{
+  Ipv4PrefixPatricia<string>  trie;
+
+  // Empty trie: begin == end
+  UnitAssert(trie.begin() == trie.end());
+  UnitAssert(trie.cbegin() == trie.cend());
+
+  // Insert some prefixes in non-sorted order
+  trie.Add(Ipv4Prefix("10.0.0.0/8"),     "10.0.0.0/8");
+  trie.Add(Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16");
+  trie.Add(Ipv4Prefix("172.16.0.0/12"),  "172.16.0.0/12");
+  trie.Add(Ipv4Prefix("10.1.0.0/16"),    "10.1.0.0/16");
+  trie.Add(Ipv4Prefix("10.1.1.0/24"),    "10.1.1.0/24");
+
+  auto it = trie.begin();
+  do {
+    it = trie.erase(it);
+  } while (it != trie.end());
+  UnitAssert(trie.Size() == 0);
+  std::cerr << "trie.Size(): " << trie.Size() << '\n';
+  
+  return;
+}
+
+//----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
@@ -265,7 +291,9 @@ int main(int argc, char *argv[])
 
   //  simple performance tests
   TestWithString();
+
   TestIterators();
+  TestErase();
   
   if (Assertions::Total().Failed()) {
     Assertions::Print(cerr, true);
