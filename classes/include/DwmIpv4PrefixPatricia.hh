@@ -321,6 +321,33 @@ namespace Dwm {
     }
 
     //----------------------------------------------------------------------
+    //!  Find the node whose key exactly matches @c key.
+    //!  Returns a const_iterator to the matching node, or end() if not found.
+    //----------------------------------------------------------------------
+    const_iterator find(const Ipv4Prefix & key) const
+    {
+      const Node  *node = _root;
+
+      while (node) {
+        if (node->_pair.first == key) {
+          if (node->_hasValue) {
+            return const_iterator(_root, node);
+          }
+          // Exact prefix match but no value: not a stored entry
+          break;
+        }
+        if (node->_pair.first.Contains(key)) {
+          uint8_t  b = key.Bit(node->_pair.first.MaskLength());
+          node = node->_child[b];
+        }
+        else {
+          break;
+        }
+      }
+      return end();
+    }
+
+    //----------------------------------------------------------------------
     //!  Returns the total number of nodes in the trie.
     //----------------------------------------------------------------------
     size_t Size() const
@@ -550,6 +577,12 @@ namespace Dwm {
           _advance();
         }
       }
+
+      //! Construct a const_iterator pointing directly to @c currentNode.
+      //! Used internally by find().
+      const_iterator(const Node * root, const Node * currentNode)
+          : _current(currentNode), _root(root)
+      {}
 
       //! Advance to the next value-holding node using pre-order traversal
       //! (current, left, right), which produces sorted-by-address output

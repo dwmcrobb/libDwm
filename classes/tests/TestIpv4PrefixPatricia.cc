@@ -307,6 +307,22 @@ void TestFind()
     UnitAssert(match.has_value());
     UnitAssert(match->second == "modified");
   }
+
+  // Test const find on a const reference
+  const Ipv4PrefixPatricia<string> & ctrie = trie;
+  {
+    auto it = ctrie.find(Ipv4Prefix("10.0.0.0/8"));
+    UnitAssert(it != ctrie.end());
+    UnitAssert(it->first == Ipv4Prefix("10.0.0.0/8"));
+    UnitAssert(it->second == "10.0.0.0/8");
+  }
+  {
+    auto it = ctrie.find(Ipv4Prefix("10.1.1.0/24"));
+    UnitAssert(it != ctrie.end());
+    UnitAssert(it->first == Ipv4Prefix("10.1.1.0/24"));
+  }
+  // Non-existing prefix on const trie
+  UnitAssert(ctrie.find(Ipv4Prefix("8.8.8.0/24")) == ctrie.end());
 }
 
 //----------------------------------------------------------------------------
