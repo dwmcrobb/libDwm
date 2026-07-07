@@ -252,6 +252,64 @@ void TestIterators()
 }
 
 //----------------------------------------------------------------------------
+//!  Test find() — exact-match lookup returning an iterator
+//----------------------------------------------------------------------------
+void TestFind()
+{
+  Ipv4PrefixPatricia<string>  trie;
+
+  // Empty trie: find returns end
+  UnitAssert(trie.find(Ipv4Prefix("10.0.0.0/8")) == trie.end());
+
+  // Insert prefixes
+  trie.Add(Ipv4Prefix("10.0.0.0/8"),     "10.0.0.0/8");
+  trie.Add(Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16");
+  trie.Add(Ipv4Prefix("172.16.0.0/12"),  "172.16.0.0/12");
+  trie.Add(Ipv4Prefix("10.1.0.0/16"),    "10.1.0.0/16");
+  trie.Add(Ipv4Prefix("10.1.1.0/24"),    "10.1.1.0/24");
+
+  // find existing prefixes
+  {
+    auto it = trie.find(Ipv4Prefix("10.0.0.0/8"));
+    UnitAssert(it != trie.end());
+    UnitAssert(it->first == Ipv4Prefix("10.0.0.0/8"));
+    UnitAssert(it->second == "10.0.0.0/8");
+  }
+  {
+    auto it = trie.find(Ipv4Prefix("10.1.1.0/24"));
+    UnitAssert(it != trie.end());
+    UnitAssert(it->first == Ipv4Prefix("10.1.1.0/24"));
+    UnitAssert(it->second == "10.1.1.0/24");
+  }
+  {
+    auto it = trie.find(Ipv4Prefix("192.168.0.0/16"));
+    UnitAssert(it != trie.end());
+    UnitAssert(it->first == Ipv4Prefix("192.168.0.0/16"));
+  }
+
+  // find non-existing prefix
+  UnitAssert(trie.find(Ipv4Prefix("8.8.8.0/24")) == trie.end());
+
+  // find a prefix that is contained by a stored prefix (no exact match)
+  // 10.1.1.128/25 is inside 10.1.1.0/24 but not stored
+  UnitAssert(trie.find(Ipv4Prefix("10.1.1.128/25")) == trie.end());
+
+  // find a shorter prefix that is not stored
+  // 10.1.0.0/16 is stored but 10.1.0.0/17 is not
+  UnitAssert(trie.find(Ipv4Prefix("10.1.0.0/17")) == trie.end());
+
+  // Use iterator to modify value
+  {
+    auto it = trie.find(Ipv4Prefix("10.1.0.0/16"));
+    UnitAssert(it != trie.end());
+    it->second = "modified";
+    auto match = trie.LongestMatch(Ipv4Prefix("10.1.5.5/24"));
+    UnitAssert(match.has_value());
+    UnitAssert(match->second == "modified");
+  }
+}
+
+//----------------------------------------------------------------------------
 static void TestErase()
 {
   Ipv4PrefixPatricia<string>  trie;
@@ -293,6 +351,7 @@ int main(int argc, char *argv[])
   TestWithString();
 
   TestIterators();
+  TestFind();
   TestErase();
   
   if (Assertions::Total().Failed()) {
