@@ -322,7 +322,8 @@ namespace Dwm {
 
     //----------------------------------------------------------------------
     //!  Find the node whose key exactly matches @c key.
-    //!  Returns a const_iterator to the matching node, or end() if not found.
+    //!  Returns a const_iterator to the matching node, or end() if not
+    //!  found.
     //----------------------------------------------------------------------
     const_iterator find(const Ipv4Prefix & key) const
     {
