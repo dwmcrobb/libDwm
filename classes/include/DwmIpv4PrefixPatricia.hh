@@ -145,6 +145,9 @@ namespace Dwm {
     class iterator;
     class const_iterator;
 
+    using reverse_iterator = std::reverse_iterator<iterator>;
+    using const_reverse_iterator = std::reverse_iterator<const_iterator>;
+
     //----------------------------------------------------------------------
     //!  Default constructor.  Creates an empty trie.
     //----------------------------------------------------------------------
@@ -390,6 +393,13 @@ namespace Dwm {
     const_iterator cbegin() const { return begin(); }
     const_iterator cend() const   { return end(); }
 
+    reverse_iterator rbegin() { return reverse_iterator(end()); }
+    reverse_iterator rend() { return reverse_iterator(begin()); }
+    const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
+    const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
+    const_reverse_iterator crbegin() const { return const_reverse_iterator(cend()); }
+    const_reverse_iterator crend() const { return const_reverse_iterator(cbegin()); }
+
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
@@ -421,11 +431,11 @@ namespace Dwm {
       iterator() = default;
 
       //------------------------------------------------------------------
-      reference operator * ()
+      reference operator * () const
       { return _current->_pair; }
 
       //------------------------------------------------------------------
-      pointer operator -> ()
+      pointer operator -> () const
       { return &(_current->_pair); }
 
       //------------------------------------------------------------------

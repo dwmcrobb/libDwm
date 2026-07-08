@@ -352,6 +352,59 @@ static void TestErase()
 }
 
 //----------------------------------------------------------------------------
+//!  Test reverse iterators
+//----------------------------------------------------------------------------
+void TestReverseIterators()
+{
+  Ipv4PrefixPatricia<string>  trie;
+
+  // Empty trie: rbegin == rend
+  UnitAssert(trie.rbegin() == trie.rend());
+  UnitAssert(trie.crbegin() == trie.crend());
+
+  // Insert some prefixes
+  trie.Add(Ipv4Prefix("10.0.0.0/8"),     "10.0.0.0/8");
+  trie.Add(Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16");
+  trie.Add(Ipv4Prefix("172.16.0.0/12"),  "172.16.0.0/12");
+  trie.Add(Ipv4Prefix("10.1.0.0/16"),    "10.1.0.0/16");
+  trie.Add(Ipv4Prefix("10.1.1.0/24"),    "10.1.1.0/24");
+
+  // Collect sorted prefixes (forward)
+  vector<Ipv4Prefix>  prefixes;
+  for (auto it = trie.begin(); it != trie.end(); ++it) {
+    prefixes.push_back(it->first);
+  }
+
+  // Test reverse traversal
+  vector<Ipv4Prefix>  revPrefixes;
+  for (auto rit = trie.rbegin(); rit != trie.rend(); ++rit) {
+    revPrefixes.push_back(rit->first);
+  }
+
+  UnitAssert(revPrefixes.size() == 5);
+  for (size_t i = 0; i < prefixes.size(); ++i) {
+    UnitAssert(revPrefixes[i] == prefixes[prefixes.size() - 1 - i]);
+  }
+
+  // Test const_reverse_iterator
+  const Ipv4PrefixPatricia<string> & ctrie = trie;
+  vector<Ipv4Prefix>  crevPrefixes;
+  for (auto rit = ctrie.crbegin(); rit != ctrie.crend(); ++rit) {
+    crevPrefixes.push_back(rit->first);
+  }
+  UnitAssert(crevPrefixes.size() == 5);
+  UnitAssert(crevPrefixes == revPrefixes);
+
+  // Test rbegin() and rend() on const trie
+  auto rbeginConst = ctrie.rbegin();
+  auto rendConst = ctrie.rend();
+  UnitAssert(rbeginConst != rendConst);
+  UnitAssert(rbeginConst->first == prefixes.back());
+  --rendConst;
+  UnitAssert(rendConst->first == prefixes.front());
+}
+
+//----------------------------------------------------------------------------
 //!  Test bidirectional iterators
 //----------------------------------------------------------------------------
 void TestBidirectionalIterators()
@@ -415,6 +468,7 @@ int main(int argc, char *argv[])
 
   TestIterators();
   TestBidirectionalIterators();
+  TestReverseIterators();
   TestFind();
   TestErase();
   
