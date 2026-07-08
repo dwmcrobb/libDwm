@@ -108,10 +108,13 @@ namespace Dwm {
       std::pair<const Ipv4Prefix, ValueType>  _pair;
       bool                                    _hasValue;
       Node                                   *_child[2];
+      Node                                   *_parent;
 
       //----------------------------------------------------------------------
-      Node(const Ipv4Prefix & p, const ValueType & v, bool hv = true)
-          : _pair{p, v}, _hasValue(hv), _child{nullptr, nullptr}
+      Node(const Ipv4Prefix & p, const ValueType & v, bool hv = true,
+           Node *parent = nullptr)
+          : _pair{p, v}, _hasValue(hv), _child{nullptr, nullptr},
+            _parent(parent)
       {}
 
       //----------------------------------------------------------------------
@@ -264,6 +267,9 @@ namespace Dwm {
     {
       bool  removed = false;
       _root = removeNode(_root, prefix, removed);
+      if (_root) {
+        _root->_parent = nullptr;
+      }
       return removed;
     }
 
@@ -366,7 +372,7 @@ namespace Dwm {
     //!  Return the past-the-end iterator.
     //----------------------------------------------------------------------
     iterator end()
-    { return iterator{}; }
+    { return iterator(_root, nullptr); }
 
     //----------------------------------------------------------------------
     //!  Return a const_iterator to the first value-holding node.
@@ -378,7 +384,7 @@ namespace Dwm {
     //!  Return the past-the-end const_iterator.
     //----------------------------------------------------------------------
     const_iterator end() const
-    { return const_iterator{}; }
+    { return const_iterator(_root, nullptr); }
 
     //----------------------------------------------------------------------
     const_iterator cbegin() const { return begin(); }
@@ -406,7 +412,7 @@ namespace Dwm {
     class iterator
     {
     public:
-      using iterator_category = std::forward_iterator_tag;
+      using iterator_category = std::bidirectional_iterator_tag;
       using value_type        = std::pair<const Ipv4Prefix, ValueType>;
       using difference_type   = std::ptrdiff_t;
       using reference         = value_type &;
@@ -423,207 +429,402 @@ namespace Dwm {
       { return &(_current->_pair); }
 
       //------------------------------------------------------------------
-      iterator &operator++()
+      iterator & operator ++ ()
       {
-        _advance();
+        _current = _findSuccessor(_current);
         return *this;
       }
 
       //------------------------------------------------------------------
-      iterator operator++(int)
+      iterator operator ++ (int)
       {
         iterator tmp = *this;
-        _advance();
+        ++(*this);
         return tmp;
       }
 
       //------------------------------------------------------------------
-      bool operator==(const iterator & other) const
+      iterator & operator -- ()
+      {
+        if (_current == nullptr) {
+          _current = _findLastValueNode(_root);
+        } else {
+          _current = _findPredecessor(_current);
+        }
+        return *this;
+      }
+
+      //------------------------------------------------------------------
+      iterator operator -- (int)
+      {
+        iterator tmp = *this;
+        --(*this);
+        return tmp;
+      }
+
+      //------------------------------------------------------------------
+      bool operator == (const iterator & other) const
       { return _current == other._current; }
 
       //------------------------------------------------------------------
-      bool operator!=(const iterator & other) const
+      bool operator != (const iterator & other) const
       { return !(*this == other); }
 
     private:
       Node               *_current   = nullptr;
       Node               *_root      = nullptr;
-      std::vector<Node *> _stack;
 
       friend class Ipv4PrefixPatricia;
       friend class const_iterator;
 
-      explicit iterator(Node * root)
+      explicit iterator(Node *root)
           : _root(root)
       {
         if (root) {
-          _stack.push_back(root);
-          _advance();
+          _current = _findFirstValueNode(root);
         }
       }
 
+      //----------------------------------------------------------------------
       //! Construct an iterator pointing directly to @c currentNode.
       //! Used internally by find().
-      iterator(Node * root, Node * currentNode)
+      //----------------------------------------------------------------------
+      iterator(Node *root, Node *currentNode)
           : _current(currentNode), _root(root)
       {}
 
-      //! Advance to the next value-holding node using pre-order traversal
-      //! (current, left, right), which produces sorted-by-address output
-      //! for a Patricia trie.
-      void _advance()
+      //----------------------------------------------------------------------
+      //! Find the first value-holding node in the subtree rooted at @c n.
+      //----------------------------------------------------------------------
+      Node *_findFirstValueNode(Node *n)
       {
-        // Push children of current node onto stack (right first, then left,
-        // so that left is popped first)
-        if (_current) {
-          if (_current->_child[1]) {
-            _stack.push_back(_current->_child[1]);
-          }
-          if (_current->_child[0]) {
-            _stack.push_back(_current->_child[0]);
+        if (! n) {
+          return nullptr;
+        }
+        if (n->_hasValue) {
+          return n;
+        }
+        if (n->_child[0]) {
+          Node  *res = _findFirstValueNode(n->_child[0]);
+          if (res) {
+            return res;
           }
         }
-        _current = nullptr;
+        if (n->_child[1]) {
+          Node  *res = _findFirstValueNode(n->_child[1]);
+          if (res) {
+            return res;
+          }
+        }
+        return nullptr;
+      }
 
-        // Pop until we find a value-holding node
-        while (!_stack.empty()) {
-          Node *node = _stack.back();
-          _stack.pop_back();
-          if (node->_hasValue) {
-            _current = node;
-            return;
+      //----------------------------------------------------------------------
+      //! Find the pre-order successor of the given node.
+      //----------------------------------------------------------------------
+      Node *_findSuccessor(Node *n)
+      {
+        if (! n) {
+          return nullptr;
+        }
+        if (n->_child[0]) {
+          Node  *res = _findFirstValueNode(n->_child[0]);
+          if (res) {
+            return res;
           }
-          // Expand non-value node: push children (right first, then left)
-          if (node->_child[1]) {
-            _stack.push_back(node->_child[1]);
+        }
+        if (n->_child[1]) {
+          Node  *res = _findFirstValueNode(n->_child[1]);
+          if (res) {
+            return res;
           }
-          if (node->_child[0]) {
-            _stack.push_back(node->_child[0]);
+        }
+        Node  *curr = n;
+        while (curr->_parent) {
+          Node  *p = curr->_parent;
+          if (p->_child[0] == curr) {
+            if (p->_child[1]) {
+              Node  *res = _findFirstValueNode(p->_child[1]);
+              if (res) {
+                return res;
+              }
+            }
           }
+          curr = p;
+        }
+        return nullptr;
+      }
+
+      //----------------------------------------------------------------------
+      //! Find the pre-order predecessor of the given node.
+      //----------------------------------------------------------------------
+      Node *_findPredecessor(Node *n)
+      {
+        if (! n) {
+          return nullptr;
+        }
+        Node  *p = n->_parent;
+        if (! p) {
+          return nullptr;
+        }
+
+        if (p->_child[1] == n) {
+          Node  *left = p->_child[0];
+          if (left) {
+            return _findLastValueNode(left);
+          }
+          if (p->_hasValue) return p;
+          return _findPredecessor(p);
+        }
+        else {
+          if (p->_hasValue) return p;
+          return _findPredecessor(p);
         }
       }
+
+      //----------------------------------------------------------------------
+      //! Find the rightmost value-holding node in the subtree rooted at @c n.
+      //----------------------------------------------------------------------
+      Node *_findLastValueNode(Node *n)
+      {
+        if (! n) {
+          return nullptr;
+        }
+        Node  *last = _findLastValueNode(n->_child[1]);
+        if (last) {
+          return last;
+        }
+        last = _findLastValueNode(n->_child[0]);
+        if (last) {
+          return last;
+        }
+        if (n->_hasValue) {
+          return n;
+        }
+        return nullptr;
+      }
+
     };
 
-    //----------------------------------------------------------------------
-    //!  Const forward iterator over value-holding nodes in pre-order
-    //!  traversal (current, left, right), which produces sorted-by-address
-    //!  output for a Patricia trie.  Models std::forward_iterator.
-    //!  Dereferences to a const reference to std::pair<const Ipv4Prefix,
-    //!  ValueType>.
-    //----------------------------------------------------------------------
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
     class const_iterator
     {
     public:
-      using iterator_category = std::forward_iterator_tag;
+      using iterator_category = std::bidirectional_iterator_tag;
       using value_type        = std::pair<const Ipv4Prefix, ValueType>;
       using difference_type   = std::ptrdiff_t;
       using reference         = const value_type &;
       using pointer           = const value_type *;
 
+      //----------------------------------------------------------------------
+      //!  
+      //----------------------------------------------------------------------
       const_iterator() = default;
 
+      //----------------------------------------------------------------------
       //! Allow construction from a mutable iterator.
+      //----------------------------------------------------------------------
       const_iterator(const iterator & it)
           : _current(it._current), _root(it._root)
-      {
-        // Copy the traversal stack, converting Node* to const Node*
-        for (Node *p : it._stack) {
-          _stack.push_back(p);
-        }
-      }
+      {}
 
       //------------------------------------------------------------------
-      reference operator*() const
+      reference operator * () const
       { return _current->_pair; }
 
       //------------------------------------------------------------------
-      pointer operator->() const
+      pointer operator -> () const
       { return &(_current->_pair); }
 
       //------------------------------------------------------------------
-      const_iterator &operator++()
+      const_iterator & operator ++ ()
       {
-        _advance();
+        _current = _findSuccessor(_current);
         return *this;
       }
 
       //------------------------------------------------------------------
-      const_iterator operator++(int)
+      const_iterator operator ++ (int)
       {
         const_iterator tmp = *this;
-        _advance();
+        ++(*this);
         return tmp;
       }
 
       //------------------------------------------------------------------
-      bool operator==(const const_iterator & other) const
+      const_iterator & operator -- ()
+      {
+        if (_current == nullptr) {
+          _current = _findLastValueNode(_root);
+        } else {
+          _current = _findPredecessor(_current);
+        }
+        return *this;
+      }
+
+      //------------------------------------------------------------------
+      const_iterator operator -- (int)
+      {
+        const_iterator tmp = *this;
+        --(*this);
+        return tmp;
+      }
+
+      //------------------------------------------------------------------
+      bool operator == (const const_iterator & other) const
       { return _current == other._current; }
 
       //------------------------------------------------------------------
-      bool operator!=(const const_iterator & other) const
+      bool operator != (const const_iterator & other) const
       { return !(*this == other); }
 
     private:
       const Node                *_current = nullptr;
       const Node                *_root    = nullptr;
-      std::vector<const Node *>  _stack;
 
       friend class Ipv4PrefixPatricia;
 
-      explicit const_iterator(const Node * root)
+      //----------------------------------------------------------------------
+      //!  
+      //----------------------------------------------------------------------
+      explicit const_iterator(const Node *root)
           : _root(root)
       {
         if (root) {
-          _stack.push_back(root);
-          _advance();
+          _current = _findFirstValueNode(root);
         }
       }
 
+      //----------------------------------------------------------------------
       //! Construct a const_iterator pointing directly to @c currentNode.
       //! Used internally by find().
-      const_iterator(const Node * root, const Node * currentNode)
+      //----------------------------------------------------------------------
+      const_iterator(const Node *root, const Node *currentNode)
           : _current(currentNode), _root(root)
       {}
 
-      //! Advance to the next value-holding node using pre-order traversal
-      //! (current, left, right), which produces sorted-by-address output
-      //! for a Patricia trie.
-      void _advance()
+      //----------------------------------------------------------------------
+      //! Find the first value-holding node in the subtree rooted at @c n.
+      //----------------------------------------------------------------------
+      const Node *_findFirstValueNode(const Node *n)
       {
-        // Push children of current node onto stack (right first, then left,
-        // so that left is popped first)
-        if (_current) {
-          if (_current->_child[1]) {
-            _stack.push_back(_current->_child[1]);
-          }
-          if (_current->_child[0]) {
-            _stack.push_back(_current->_child[0]);
+        if (! n) {
+          return nullptr;
+        }
+        if (n->_hasValue) {
+          return n;
+        }
+        if (n->_child[0]) {
+          const Node  *res = _findFirstValueNode(n->_child[0]);
+          if (res) {
+            return res;
           }
         }
-        _current = nullptr;
+        if (n->_child[1]) {
+          const Node *res = _findFirstValueNode(n->_child[1]);
+          if (res) {
+            return res;
+          }
+        }
+        return nullptr;
+      }
 
-        // Pop until we find a value-holding node
-        while (!_stack.empty()) {
-          const Node *node = _stack.back();
-          _stack.pop_back();
-          if (node->_hasValue) {
-            _current = node;
-            return;
+      //----------------------------------------------------------------------
+      //! Find the pre-order successor of the given node.
+      //----------------------------------------------------------------------
+      const Node *_findSuccessor(const Node *n)
+      {
+        if (! n) {
+          return nullptr;
+        }
+        if (n->_child[0]) {
+          const Node  *res = _findFirstValueNode(n->_child[0]);
+          if (res) {
+            return res;
           }
-          // Expand non-value node: push children (right first, then left)
-          if (node->_child[1]) {
-            _stack.push_back(node->_child[1]);
+        }
+        if (n->_child[1]) {
+          const Node *res = _findFirstValueNode(n->_child[1]);
+          if (res) {
+            return res;
           }
-          if (node->_child[0]) {
-            _stack.push_back(node->_child[0]);
+        }
+        const Node  *curr = n;
+        while (curr->_parent) {
+          const Node  *p = curr->_parent;
+          if (p->_child[0] == curr) {
+            if (p->_child[1]) {
+              const Node  *res = _findFirstValueNode(p->_child[1]);
+              if (res) {
+                return res;
+              }
+            }
           }
+          curr = p;
+        }
+        return nullptr;
+      }
+
+      //----------------------------------------------------------------------
+      //! Find the pre-order predecessor of the given node.
+      //----------------------------------------------------------------------
+      const Node *_findPredecessor(const Node *n)
+      {
+        if (! n) {
+          return nullptr;
+        }
+        const Node * p = n->_parent;
+        if (! p) {
+          return nullptr;
+        }
+
+        if (p->_child[1] == n) {
+          const Node  *left = p->_child[0];
+          if (left) {
+            return _findLastValueNode(left);
+          }
+          if (p->_hasValue) {
+            return p;
+          }
+          return _findPredecessor(p);
+        }
+        else {
+          if (p->_hasValue) {
+            return p;
+          }
+          return _findPredecessor(p);
         }
       }
+
+      //----------------------------------------------------------------------
+      //! Find the rightmost value-holding node in the subtree rooted at @c n.
+      //----------------------------------------------------------------------
+      const Node *_findLastValueNode(const Node *n)
+      {
+        if (! n) {
+          return nullptr;
+        }
+        const Node  *last = _findLastValueNode(n->_child[1]);
+        if (last) {
+          return last;
+        }
+        last = _findLastValueNode(n->_child[0]);
+        if (last) {
+          return last;
+        }
+        if (n->_hasValue) {
+          return n;
+        }
+        return nullptr;
+      }
+
     };
 
   private:
-    Node *  _root;
-    size_t  _size;
+    Node    *_root;
+    size_t   _size;
 
     //----------------------------------------------------------------------
     //!  Recursively delete all nodes under @c n and @c n itself.
@@ -643,8 +844,10 @@ namespace Dwm {
     //----------------------------------------------------------------------
     Node *copyNode(Node *n)
     {
-      if (! n)  return nullptr;
-      Node *c = new Node(n->_pair.first, n->_pair.second, n->_hasValue);
+      if (! n) {
+        return nullptr;
+      }
+      Node  *c = new Node(n->_pair.first, n->_pair.second, n->_hasValue);
       ++_size;
       c->_child[0] = copyNode(n->_child[0]);
       c->_child[1] = copyNode(n->_child[1]);
@@ -667,11 +870,11 @@ namespace Dwm {
     //!       new node as its children (node splitting).
     //!----------------------------------------------------------------------
     Node *addNode(Node *node, const Ipv4Prefix & prefix,
-                  const ValueType & value)
+                  const ValueType & value, Node * parent = nullptr)
     {
       if (! node) {
         ++_size;
-        return new Node(prefix, value);
+        return new Node(prefix, value, true, parent);
       }
 
       int diffBit = firstDiffBit(node->_pair.first, prefix,
@@ -687,15 +890,16 @@ namespace Dwm {
 
         if (prefix.MaskLength() > node->_pair.first.MaskLength()) {
           uint8_t bit = prefix.Bit(node->_pair.first.MaskLength());
-          node->_child[bit] = addNode(node->_child[bit], prefix, value);
+          node->_child[bit] = addNode(node->_child[bit], prefix, value, node);
           return node;
         }
         else {
           ++_size;
-          Node     *parent = new Node(prefix, value);
+          Node     *parentNode = new Node(prefix, value, true, parent);
           uint8_t   bit   = node->_pair.first.Bit(prefix.MaskLength());
-          parent->_child[bit] = node;
-          return parent;
+          parentNode->_child[bit] = node;
+          node->_parent = parentNode;
+          return parentNode;
         }
       }
 
@@ -704,14 +908,15 @@ namespace Dwm {
       // existing node and the new node become its two children.
       Ipv4Prefix common(Ipv4Address(node->_pair.first.NetworkRaw()), diffBit);
       ++_size;
-      Node  *branch = new Node(common, ValueType{}, false);
+      Node  *branch = new Node(common, ValueType{}, false, parent);
 
       uint8_t bitForExisting = node->_pair.first.Bit(diffBit);
       uint8_t bitForNew      = prefix.Bit(diffBit);
 
       ++_size;
       branch->_child[bitForExisting] = node;
-      branch->_child[bitForNew]      = new Node(prefix, value);
+      node->_parent = branch;
+      branch->_child[bitForNew]      = new Node(prefix, value, true, branch);
       return branch;
     }
 
@@ -756,6 +961,9 @@ namespace Dwm {
 
       if (child && child->_pair.first.Contains(prefix)) {
         node->_child[bit] = removeNode(child, prefix, removed);
+        if (node->_child[bit]) {
+          node->_child[bit]->_parent = node;
+        }
       }
 
       if (removed) {

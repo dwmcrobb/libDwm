@@ -352,6 +352,45 @@ static void TestErase()
 }
 
 //----------------------------------------------------------------------------
+//!  Test bidirectional iterators
+//----------------------------------------------------------------------------
+void TestBidirectionalIterators()
+{
+  Ipv4PrefixPatricia<string>  trie;
+
+  // Insert some prefixes
+  trie.Add(Ipv4Prefix("10.0.0.0/8"),     "10.0.0.0/8");
+  trie.Add(Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16");
+  trie.Add(Ipv4Prefix("172.16.0.0/12"),  "172.16.0.0/12");
+  trie.Add(Ipv4Prefix("10.1.0.0/16"),    "10.1.0.0/16");
+  trie.Add(Ipv4Prefix("10.1.1.0/24"),    "10.1.1.0/24");
+
+  // Collect sorted prefixes
+  vector<Ipv4Prefix>  prefixes;
+  for (auto it = trie.begin(); it != trie.end(); ++it) {
+    prefixes.push_back(it->first);
+  }
+
+  // Test forward traversal
+  auto it = trie.begin();
+  for (size_t i = 0; i < prefixes.size(); ++i) {
+    UnitAssert(it->first == prefixes[i]);
+    ++it;
+  }
+  UnitAssert(it == trie.end());
+
+  // Test backward traversal
+  it = trie.begin();
+  auto rit = trie.end();
+  while (rit != it) {
+    --rit;
+    UnitAssert(rit->first == prefixes.back());
+    prefixes.pop_back();
+  }
+  UnitAssert(prefixes.empty());
+}
+
+//----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
@@ -367,6 +406,7 @@ int main(int argc, char *argv[])
   TestWithString();
 
   TestIterators();
+  TestBidirectionalIterators();
   TestFind();
   TestErase();
   
