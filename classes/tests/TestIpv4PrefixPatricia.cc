@@ -379,6 +379,14 @@ void TestBidirectionalIterators()
   }
   UnitAssert(it == trie.end());
 
+  it = trie.find(prefixes[2]);
+  ++it;
+  UnitAssert(it->first == prefixes[3]);
+  --it;
+  UnitAssert(it->first == prefixes[2]);
+  --it;
+  UnitAssert(it->first == prefixes[1]);
+  
   // Test backward traversal
   it = trie.begin();
   auto rit = trie.end();
