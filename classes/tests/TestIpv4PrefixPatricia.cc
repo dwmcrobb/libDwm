@@ -84,6 +84,7 @@ static void TestFindLongest()
       memset(buf,0,512);
     }
     is.close();
+    UnitAssert(pfxVec.size() == r.size());
     for (const auto & pfx : pfxVec) {
       auto  it = r.find_longest(pfx);
       if (UnitAssert(it != r.end())) {
@@ -117,6 +118,14 @@ static void TestFindMatches()
     UnitAssert(std::find_if(matches.begin(), matches.end(),
                             [] (const auto & p) 
                             { return p.first == Ipv4Prefix("10.0.0.0/8"); })
+               != matches.end());
+    UnitAssert(std::find_if(matches.begin(), matches.end(),
+                            [] (const auto & p) 
+                            { return p.first == Ipv4Prefix("10.1.0.0/16"); })
+               != matches.end());
+    UnitAssert(std::find_if(matches.begin(), matches.end(),
+                            [] (const auto & p) 
+                            { return p.first == Ipv4Prefix("10.1.1.0/24"); })
                != matches.end());
   }
   return;
@@ -187,6 +196,7 @@ void TestIterators()
   }
 
   // Should have 5 entries
+  UnitAssert(trie.size() == 5);
   UnitAssert(prefixes.size() == 5);
 
   // Verify traversal produces sorted output
@@ -354,13 +364,15 @@ static void TestErase()
   trie.Add(Ipv4Prefix("172.16.0.0/12"),  "172.16.0.0/12");
   trie.Add(Ipv4Prefix("10.1.0.0/16"),    "10.1.0.0/16");
   trie.Add(Ipv4Prefix("10.1.1.0/24"),    "10.1.1.0/24");
+  UnitAssert(trie.size() == 5);
 
-  auto it = trie.begin();
+  auto  it = trie.begin();
+  auto  sz = trie.size();
   do {
     it = trie.erase(it);
+    UnitAssert(--sz == trie.size());
   } while (it != trie.end());
-  UnitAssert(trie.Size() == 0);
-  std::cerr << "trie.Size(): " << trie.Size() << '\n';
+  UnitAssert(trie.size() == 0);
   
   return;
 }
