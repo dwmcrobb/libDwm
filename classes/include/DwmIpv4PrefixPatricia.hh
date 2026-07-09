@@ -217,6 +217,7 @@ namespace Dwm {
     void Add(const Ipv4Prefix & prefix, const ValueType & value)
     { _root = addNode(_root, prefix, value); }
 
+#if 0
     //----------------------------------------------------------------------
     //!  Find the longest stored prefix that matches the given prefix.
     //!
@@ -254,7 +255,8 @@ namespace Dwm {
       }
       return result;
     }
-
+#endif
+    
     //----------------------------------------------------------------------
     //!  Remove a prefix from the trie.
     //!
@@ -300,6 +302,14 @@ namespace Dwm {
         Remove(it._current->_pair.first);
       }
       return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    size_type erase(const Ipv4Prefix & pfx)
+    {
+      return (Remove(pfx) ? 1 : 0);
     }
     
     //----------------------------------------------------------------------
@@ -387,6 +397,32 @@ namespace Dwm {
     //------------------------------------------------------------------------
     const_iterator find_longest(const Ipv4Prefix & pfx) const
     { return const_iterator(find_longest(pfx)); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool find_matches(const Ipv4Prefix & pfx,
+                      std::vector<value_type> & matches) const
+    {
+      matches.clear();
+      auto      *node = _root;
+      while (node) {
+        if (node->_pair.first.Contains(pfx)) {
+          if (node->_hasValue) {
+            matches.push_back(node->_pair);
+          }
+          if (node->_pair.first.MaskLength() >= pfx.MaskLength()) {
+            break;
+          }
+          uint8_t  b = pfx.Bit(node->_pair.first.MaskLength());
+          node = node->_child[b];
+        }
+        else {
+          break;
+        }
+      }
+      return (! matches.empty());
+    }
     
     //----------------------------------------------------------------------
     //!  Returns the total number of nodes in the trie.
@@ -422,14 +458,45 @@ namespace Dwm {
 
     //----------------------------------------------------------------------
     const_iterator cbegin() const { return begin(); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
     const_iterator cend() const   { return end(); }
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
     reverse_iterator rbegin() { return reverse_iterator(end()); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
     reverse_iterator rend() { return reverse_iterator(begin()); }
-    const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
-    const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
-    const_reverse_iterator crbegin() const { return const_reverse_iterator(cend()); }
-    const_reverse_iterator crend() const { return const_reverse_iterator(cbegin()); }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    const_reverse_iterator rbegin() const
+    { return const_reverse_iterator(end()); }
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    const_reverse_iterator rend() const
+    { return const_reverse_iterator(begin()); }
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    const_reverse_iterator crbegin() const
+    { return const_reverse_iterator(cend()); }
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    const_reverse_iterator crend() const
+    { return const_reverse_iterator(cbegin()); }
 
     //------------------------------------------------------------------------
     //!  
@@ -948,8 +1015,8 @@ namespace Dwm {
       // holds the common prefix (mask length = diffBit).  The
       // existing node and the new node become its two children.
       Ipv4Prefix common(Ipv4Address(node->_pair.first.NetworkRaw()), diffBit);
-      ++_size;
       Node  *branch = new Node(common, ValueType{}, false, parent);
+      ++_size;
 
       uint8_t bitForExisting = node->_pair.first.Bit(diffBit);
       uint8_t bitForNew      = prefix.Bit(diffBit);
