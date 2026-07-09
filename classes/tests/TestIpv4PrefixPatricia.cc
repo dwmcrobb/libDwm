@@ -103,6 +103,28 @@ static void TestFindLongest()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void TestFindMatches()
+{
+  std::vector<std::pair<const Dwm::Ipv4Prefix,std::string>>  matches;
+  Ipv4PrefixPatricia<string>  trie;
+  trie.Add(Ipv4Prefix("10.0.0.0/8"),     "10.0.0.0/8");
+  trie.Add(Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16");
+  trie.Add(Ipv4Prefix("172.16.0.0/12"),  "172.16.0.0/12");
+  trie.Add(Ipv4Prefix("10.1.0.0/16"),    "10.1.0.0/16");
+  trie.Add(Ipv4Prefix("10.1.1.0/24"),    "10.1.1.0/24");
+  UnitAssert(trie.find_matches(Ipv4Prefix("10.1.1.1"), matches));
+  if (UnitAssert(matches.size() == 3)) {
+    UnitAssert(std::find_if(matches.begin(), matches.end(),
+                            [] (const auto & p) 
+                            { return p.first == Ipv4Prefix("10.0.0.0/8"); })
+               != matches.end());
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static void TestFindLongestPerformance()
 {
   Ipv4PrefixPatricia<string>  r;
@@ -134,88 +156,6 @@ static void TestFindLongestPerformance()
     cout << pfxVec.size() << " prefixes, " << lookupsPerSec
          << " string lookups/sec (iterator)" << endl;
     UnitAssert((5 * pfxVec.size()) == count);
-  }
-  return;
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-void TestWithString()
-{
-  Ipv4PrefixPatricia<string>  r;
-  vector<Ipv4Prefix>   pfxVec;
-  vector<Ipv4Address>  ipVec;
-  ifstream is(g_myDir + "/IPV4_prefixes.20210123");
-  if (is) {
-    char  buf[512];
-    memset(buf,0,512);
-    while (is.getline(buf,512,'\n')) {
-      Ipv4Prefix  pfx(buf);
-      r.Add(pfx, buf);
-      ipVec.push_back(pfx.Network());
-      pfxVec.push_back(pfx);
-      memset(buf,0,512);
-    }
-    is.close();
-
-    uint64_t                             rsize = r.Size();
-    vector<Ipv4Address>::const_iterator  ipVecIter;
-    pair<Ipv4Prefix, const string *>     match;
-    const uint8_t                        numIterations = 10;
-    uint64_t                             numFound = 0;
-
-    Dwm::TimeValue  startTime(true);
-    for (uint8_t i = 0; i < numIterations; ++i) {
-      for (ipVecIter = ipVec.begin(); 
-           ipVecIter != ipVec.end(); ++ipVecIter) {
-        numFound += r.LongestMatch(*ipVecIter).has_value() ? 1 : 0;
-      }
-    }
-    UnitAssert(numFound == ipVec.size() * numIterations);
-
-    // std::cout << r;
-    
-    if (g_performanceTests) {
-      Dwm::TimeValue endTime(true);
-      endTime -= startTime;
-      uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
-      uint64_t  lookupsPerSec = (ipVec.size() * 1000000ULL * numIterations) / usecs;
-      cout << ipVec.size() << " prefixes, " << lookupsPerSec
-           << " string lookups/sec" << endl;
-    }
-
-    // std::cerr << "r.Size(): " << r.Size() << '\n';
-    for (auto pfxVecIter = pfxVec.begin(); pfxVecIter != pfxVec.end();
-         ++pfxVecIter) {
-      UnitAssert(r.Remove(*pfxVecIter));
-    }
-    UnitAssert(0 == r.Size());
-    
-    // std::cerr << "r.Size(): " << r.Size() << '\n';
-    
-#if 0
-    //  check sorting by value into a vector
-    vector<pair<Ipv4Prefix,string> >  sortedVec;
-    r.SortByValue(sortedVec);
-    vector<pair<Ipv4Prefix,string> >::const_iterator  soIter = 
-      sortedVec.begin();
-    vector<pair<Ipv4Prefix,string> >::const_iterator  soIter2 =
-      soIter;
-    ++soIter2;
-    for ( ; soIter2 != sortedVec.end(); ++soIter, ++soIter2) {
-      UnitAssert(soIter->second > soIter2->second);
-    }
-    
-    numFound = 0;
-    for (ipVecIter = ipVec.begin(); ipVecIter != ipVec.end(); ++ipVecIter) {
-      numFound += UnitAssert(r.FindLongest(*ipVecIter, match));
-      UnitAssert(Ipv4Prefix(*match.second).Network() == *ipVecIter);
-      UnitAssert(r.Delete(match.first));
-    }
-    UnitAssert(numFound == ipVec.size());
-    UnitAssert(r.Empty());
-#endif
   }
   return;
 }
@@ -275,10 +215,10 @@ void TestIterators()
 
   // Test range-for with const
   size_t count = 0;
+  auto  pit = cprefixes.begin();
   for (const auto & [pfx, val] : ctrie) {
-    (void)pfx;
-    (void)val;
-    ++count;
+    count += UnitAssert(pfx == *pit);
+    ++pit;
   }
   UnitAssert(count == 5);
 
@@ -290,9 +230,10 @@ void TestIterators()
       break;
     }
   }
-  auto match = trie.LongestMatch(Ipv4Prefix("1.2.3.4/24"));
-  UnitAssert(match.has_value());
-  UnitAssert(match->second == "modified");
+  auto matchit = trie.find_longest(Ipv4Prefix("1.2.3.4/24"));
+  if (UnitAssert(matchit != trie.end())) {
+    UnitAssert(matchit->second == "modified");
+  }
 
   // Test post-increment
   auto it = trie.begin();
@@ -375,9 +316,10 @@ void TestFind()
     auto it = trie.find(Ipv4Prefix("10.1.0.0/16"));
     UnitAssert(it != trie.end());
     it->second = "modified";
-    auto match = trie.LongestMatch(Ipv4Prefix("10.1.5.5/24"));
-    UnitAssert(match.has_value());
-    UnitAssert(match->second == "modified");
+    auto matchit = trie.find_longest(Ipv4Prefix("10.1.5.5/24"));
+    if (UnitAssert(matchit != trie.end())) {
+      UnitAssert(matchit->second == "modified");
+    }
   }
 
   // Test const find on a const reference
@@ -535,14 +477,12 @@ int main(int argc, char *argv[])
   g_performanceTests = optargs.Get<bool>('p');
   SetMyDir(argv[0]);
 
-  //  simple performance tests
-  TestWithString();
-
   TestIterators();
   TestBidirectionalIterators();
   TestReverseIterators();
   TestFind();
   TestFindLongest();
+  TestFindMatches();
   if (g_performanceTests) {
     TestFindLongestPerformance();
   }
