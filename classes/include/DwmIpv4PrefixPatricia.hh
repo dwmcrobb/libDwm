@@ -357,6 +357,37 @@ namespace Dwm {
       return end();
     }
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    iterator find_longest(const Ipv4Prefix & pfx)
+    {
+      auto      *node = _root;
+      iterator   it = end();
+      while (node) {
+        if (node->_pair.first.Contains(pfx)) {
+          if (node->_hasValue) {
+            it = iterator(_root, node);
+          }
+          if (node->_pair.first.MaskLength() >= pfx.MaskLength()) {
+            break;
+          }
+          uint8_t  b = pfx.Bit(node->_pair.first.MaskLength());
+          node = node->_child[b];
+        }
+        else {
+          break;
+        }
+      }
+      return it;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    const_iterator find_longest(const Ipv4Prefix & pfx) const
+    { return const_iterator(find_longest(pfx)); }
+    
     //----------------------------------------------------------------------
     //!  Returns the total number of nodes in the trie.
     //----------------------------------------------------------------------

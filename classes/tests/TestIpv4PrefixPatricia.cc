@@ -69,6 +69,78 @@ static void SetMyDir(const char *argv0)
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void TestFindLongest()
+{
+  Ipv4PrefixPatricia<string>  r;
+  vector<Ipv4Prefix>   pfxVec;
+  ifstream is(g_myDir + "/IPV4_prefixes.20210123");
+  if (UnitAssert(is)) {
+    char  buf[512];
+    memset(buf,0,512);
+    while (is.getline(buf,512,'\n')) {
+      Ipv4Prefix  pfx(buf);
+      r.Add(pfx, buf);
+      pfxVec.push_back(pfx);
+      memset(buf,0,512);
+    }
+    is.close();
+    for (const auto & pfx : pfxVec) {
+      auto  it = r.find_longest(pfx);
+      if (UnitAssert(it != r.end())) {
+        UnitAssert(it->first == pfx);
+        UnitAssert(it->second == pfx.ToString());
+      }
+      Ipv4PrefixPatricia<string>::const_iterator cit = r.find_longest(pfx);
+      if (UnitAssert(cit != r.end())) {
+        UnitAssert(cit->first == pfx);
+        UnitAssert(cit->second == pfx.ToString());
+      }
+    }
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestFindLongestPerformance()
+{
+  Ipv4PrefixPatricia<string>  r;
+  vector<Ipv4Prefix>   pfxVec;
+  ifstream is(g_myDir + "/IPV4_prefixes.20210123");
+  if (UnitAssert(is)) {
+    char  buf[512];
+    memset(buf,0,512);
+    while (is.getline(buf,512,'\n')) {
+      Ipv4Prefix  pfx(buf);
+      r.Add(pfx, buf);
+      pfxVec.push_back(pfx);
+      memset(buf,0,512);
+    }
+    is.close();
+
+    size_t  count = 0;
+    Dwm::TimeValue  startTime(true);
+    for (int i = 0; i < 5; ++i) {
+      for (const auto & pfx : pfxVec) {
+        auto  it = r.find_longest(pfx);
+        count += (it != r.end() ? 1 : 0);
+      }
+    }
+    Dwm::TimeValue  endTime(true);
+    endTime -= startTime;
+    uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
+    uint64_t  lookupsPerSec = (pfxVec.size() * 1000000ULL * 5) / usecs;
+    cout << pfxVec.size() << " prefixes, " << lookupsPerSec
+         << " string lookups/sec (iterator)" << endl;
+    UnitAssert((5 * pfxVec.size()) == count);
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 void TestWithString()
 {
   Ipv4PrefixPatricia<string>  r;
@@ -470,6 +542,10 @@ int main(int argc, char *argv[])
   TestBidirectionalIterators();
   TestReverseIterators();
   TestFind();
+  TestFindLongest();
+  if (g_performanceTests) {
+    TestFindLongestPerformance();
+  }
   TestErase();
   
   if (Assertions::Total().Failed()) {
