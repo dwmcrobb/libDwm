@@ -427,7 +427,7 @@ namespace Dwm {
     //----------------------------------------------------------------------
     //!  Returns the total number of nodes in the trie.
     //----------------------------------------------------------------------
-    size_t Size() const
+    size_t size() const
     { return _size; }
 
     //----------------------------------------------------------------------
@@ -942,8 +942,10 @@ namespace Dwm {
       if (n) {
         clear(n->_child[0]);
         clear(n->_child[1]);
+        if (n->_hasValue) {
+          --_size;
+        }
         delete n;
-        --_size;
       }
     }
 
@@ -956,7 +958,9 @@ namespace Dwm {
         return nullptr;
       }
       Node  *c = new Node(n->_pair.first, n->_pair.second, n->_hasValue);
-      ++_size;
+      if (n->_hasValue) {
+        ++_size;
+      }
       c->_child[0] = copyNode(n->_child[0]);
       c->_child[1] = copyNode(n->_child[1]);
       return c;
@@ -991,6 +995,9 @@ namespace Dwm {
 
       if (diffBit < 0) {
         if (node->_pair.first == prefix) {
+          if (!node->_hasValue) {
+            ++_size;
+          }
           node->_pair.second = value;
           node->_hasValue    = true;
           return node;
@@ -1016,7 +1023,6 @@ namespace Dwm {
       // existing node and the new node become its two children.
       Ipv4Prefix common(Ipv4Address(node->_pair.first.NetworkRaw()), diffBit);
       Node  *branch = new Node(common, ValueType{}, false, parent);
-      ++_size;
 
       uint8_t bitForExisting = node->_pair.first.Bit(diffBit);
       uint8_t bitForNew      = prefix.Bit(diffBit);
@@ -1045,16 +1051,15 @@ namespace Dwm {
       if ((node->_hasValue) && (node->_pair.first == prefix)) {
         removed         = true;
         node->_hasValue = false;
+        --_size;
 
         if ((! node->_child[0]) && (! node->_child[1])) {
           delete node;
-          --_size;
           return nullptr;
         }
         if ((! node->_child[0]) || (! node->_child[1])) {
           Node  *kid = node->_child[0] ? node->_child[0] : node->_child[1];
           delete node;
-          --_size;
           return kid;
         }
         return node;
@@ -1078,13 +1083,11 @@ namespace Dwm {
         if (! node->_hasValue) {
           if ((! node->_child[0]) && (! node->_child[1])) {
             delete node;
-            --_size;
             return nullptr;
           }
           if ((! node->_child[0]) || (! node->_child[1])) {
             Node  *kid = node->_child[0] ? node->_child[0] : node->_child[1];
             delete node;
-            --_size;
             return kid;
           }
         }
