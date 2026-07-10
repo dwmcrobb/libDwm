@@ -134,17 +134,20 @@ namespace Dwm {
     };
 
   public:
-    // Type aliases matching std::map convention
+    //------------------------------------------------------------------------
+    //!  Type aliases matching std::map convention
+    //------------------------------------------------------------------------
     using key_type        = Ipv4Prefix;
     using mapped_type     = ValueType;
     using value_type      = std::pair<const Ipv4Prefix, ValueType>;
     using size_type       = std::size_t;
     using difference_type = std::ptrdiff_t;
 
-    // Forward declarations for iterator types
+    //------------------------------------------------------------------------
+    //!  Forward declarations for iterator types
+    //------------------------------------------------------------------------
     class iterator;
     class const_iterator;
-
     using reverse_iterator = std::reverse_iterator<iterator>;
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
@@ -206,23 +209,6 @@ namespace Dwm {
       return *this;
     }
 
-#if 0
-    //----------------------------------------------------------------------
-    //!  Add a prefix with its associated value to the trie.
-    //!
-    //!  If the prefix already exists, its value is updated.
-    //!
-    //!  @param prefix  The Ipv4Prefix key to insert.
-    //!  @param value   The value to associate with the prefix.
-    //----------------------------------------------------------------------
-    void Add(const Ipv4Prefix & prefix, const ValueType & value)
-    {
-      Node * result = nullptr;
-      bool inserted = false;
-      _root = addNode(_root, prefix, value, &result, &inserted, true, nullptr);
-    }
-#endif
-    
     //----------------------------------------------------------------------
     //!  Insert a new element into the trie.
     //!
@@ -230,7 +216,7 @@ namespace Dwm {
     //!
     //!  @param value  The pair of prefix and value to insert.
     //!  @return  A pair containing an iterator to the element and a boolean
-    //!           indicating whether the insertion took place.
+    //!           indicating whether an insertion took place.
     //----------------------------------------------------------------------
     std::pair<iterator, bool> insert(const value_type & value)
     {
@@ -395,9 +381,21 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
+    iterator find_longest(const Ipv4Address & addr)
+    { return find_longest(Ipv4Prefix(addr, 32)); }
+      
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
     const_iterator find_longest(const Ipv4Prefix & pfx) const
     { return const_iterator(find_longest(pfx)); }
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    const_iterator find_longest(const Ipv4Address & addr) const
+    { return find_longest(Ipv4Prefix(addr, 32)); }
+    
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
@@ -423,6 +421,13 @@ namespace Dwm {
       }
       return (! matches.empty());
     }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    bool find_matches(const Ipv4Address & addr,
+                      std::vector<value_type> & matches) const
+    { return find_matches(Ipv4Prefix(addr, 32)); }
     
     //----------------------------------------------------------------------
     //!  Returns the total number of nodes in the trie.
