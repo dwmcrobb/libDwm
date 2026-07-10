@@ -79,7 +79,7 @@ static void TestFindLongest()
     memset(buf,0,512);
     while (is.getline(buf,512,'\n')) {
       Ipv4Prefix  pfx(buf);
-      r.Add(pfx, buf);
+      r[pfx] = buf;
       pfxVec.push_back(pfx);
       memset(buf,0,512);
     }
@@ -108,11 +108,11 @@ static void TestFindMatches()
 {
   std::vector<std::pair<const Dwm::Ipv4Prefix,std::string>>  matches;
   Ipv4PrefixPatricia<string>  trie;
-  trie.Add(Ipv4Prefix("10.0.0.0/8"),     "10.0.0.0/8");
-  trie.Add(Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16");
-  trie.Add(Ipv4Prefix("172.16.0.0/12"),  "172.16.0.0/12");
-  trie.Add(Ipv4Prefix("10.1.0.0/16"),    "10.1.0.0/16");
-  trie.Add(Ipv4Prefix("10.1.1.0/24"),    "10.1.1.0/24");
+  trie.insert({Ipv4Prefix("10.0.0.0/8"), "10.0.0.0/8"});
+  trie.insert({Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16"});
+  trie.insert({Ipv4Prefix("172.16.0.0/12"), "172.16.0.0/12"});
+  trie.insert({Ipv4Prefix("10.1.0.0/16"), "10.1.0.0/16"});
+  trie.insert({Ipv4Prefix("10.1.1.0/24"), "10.1.1.0/24"});
   UnitAssert(trie.find_matches(Ipv4Prefix("10.1.1.1"), matches));
   if (UnitAssert(matches.size() == 3)) {
     UnitAssert(std::find_if(matches.begin(), matches.end(),
@@ -144,7 +144,7 @@ static void TestFindLongestPerformance()
     memset(buf,0,512);
     while (is.getline(buf,512,'\n')) {
       Ipv4Prefix  pfx(buf);
-      r.Add(pfx, buf);
+      r.insert({pfx, buf});
       pfxVec.push_back(pfx);
       memset(buf,0,512);
     }
@@ -181,11 +181,11 @@ void TestIterators()
   UnitAssert(trie.cbegin() == trie.cend());
 
   // Insert some prefixes in non-sorted order
-  trie.Add(Ipv4Prefix("10.0.0.0/8"),     "10.0.0.0/8");
-  trie.Add(Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16");
-  trie.Add(Ipv4Prefix("172.16.0.0/12"),  "172.16.0.0/12");
-  trie.Add(Ipv4Prefix("10.1.0.0/16"),    "10.1.0.0/16");
-  trie.Add(Ipv4Prefix("10.1.1.0/24"),    "10.1.1.0/24");
+  trie.insert({Ipv4Prefix("10.0.0.0/8"), "10.0.0.0/8"});
+  trie.insert({Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16"});
+  trie.insert({Ipv4Prefix("172.16.0.0/12"), "172.16.0.0/12"});
+  trie.insert({Ipv4Prefix("10.1.0.0/16"), "10.1.0.0/16"});
+  trie.insert({Ipv4Prefix("10.1.1.0/24"), "10.1.1.0/24"});
 
   // Collect all entries via iterator
   vector<Ipv4Prefix>  prefixes;
@@ -233,7 +233,7 @@ void TestIterators()
   UnitAssert(count == 5);
 
   // Test value modification through iterator
-  trie.Add(Ipv4Prefix("1.2.3.0/24"), "original");
+  trie.insert({Ipv4Prefix("1.2.3.0/24"), "original"});
   for (auto it = trie.begin(); it != trie.end(); ++it) {
     if (it->first.ToString() == "1.2.3.0/24") {
       it->second = "modified";
@@ -285,11 +285,11 @@ void TestFind()
   UnitAssert(trie.find(Ipv4Prefix("10.0.0.0/8")) == trie.end());
 
   // Insert prefixes
-  trie.Add(Ipv4Prefix("10.0.0.0/8"),     "10.0.0.0/8");
-  trie.Add(Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16");
-  trie.Add(Ipv4Prefix("172.16.0.0/12"),  "172.16.0.0/12");
-  trie.Add(Ipv4Prefix("10.1.0.0/16"),    "10.1.0.0/16");
-  trie.Add(Ipv4Prefix("10.1.1.0/24"),    "10.1.1.0/24");
+  trie.insert({Ipv4Prefix("10.0.0.0/8"), "10.0.0.0/8"});
+  trie.insert({Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16"});
+  trie.insert({Ipv4Prefix("172.16.0.0/12"), "172.16.0.0/12"});
+  trie.insert({Ipv4Prefix("10.1.0.0/16"), "10.1.0.0/16"});
+  trie.insert({Ipv4Prefix("10.1.1.0/24"), "10.1.1.0/24"});
 
   // find existing prefixes
   {
@@ -359,11 +359,11 @@ static void TestErase()
   UnitAssert(trie.cbegin() == trie.cend());
 
   // Insert some prefixes in non-sorted order
-  trie.Add(Ipv4Prefix("10.0.0.0/8"),     "10.0.0.0/8");
-  trie.Add(Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16");
-  trie.Add(Ipv4Prefix("172.16.0.0/12"),  "172.16.0.0/12");
-  trie.Add(Ipv4Prefix("10.1.0.0/16"),    "10.1.0.0/16");
-  trie.Add(Ipv4Prefix("10.1.1.0/24"),    "10.1.1.0/24");
+  trie.insert({Ipv4Prefix("10.0.0.0/8"), "10.0.0.0/8"});
+  trie.insert({Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16"});
+  trie.insert({Ipv4Prefix("172.16.0.0/12"), "172.16.0.0/12"});
+  trie.insert({Ipv4Prefix("10.1.0.0/16"), "10.1.0.0/16"});
+  trie.insert({Ipv4Prefix("10.1.1.0/24"), "10.1.1.0/24"});
   UnitAssert(trie.size() == 5);
 
   auto  it = trie.begin();
@@ -378,6 +378,82 @@ static void TestErase()
 }
 
 //----------------------------------------------------------------------------
+//!  Test insert()
+//----------------------------------------------------------------------------
+void TestInsert()
+{
+  Ipv4PrefixPatricia<string>  trie;
+
+  // Test insert new element
+  Ipv4Prefix  pfx1("10.0.0.0/8");
+  auto res1 = trie.insert({pfx1, "value1"});
+  UnitAssert(res1.second == true);
+  UnitAssert(res1.first->first == pfx1);
+  UnitAssert(res1.first->second == "value1");
+  UnitAssert(trie.size() == 1);
+
+  // Test insert existing element (should fail)
+  auto res2 = trie.insert({pfx1, "value2"});
+  UnitAssert(res2.second == false);
+  UnitAssert(res2.first->first == pfx1);
+  UnitAssert(res2.first->second == "value1"); // Value should NOT be updated
+  UnitAssert(trie.size() == 1);
+
+  // Test insert another element
+  Ipv4Prefix  pfx2("192.168.0.0/16");
+  auto res3 = trie.insert({pfx2, "value2"});
+  UnitAssert(res3.second == true);
+  UnitAssert(res3.first->first == pfx2);
+  UnitAssert(trie.size() == 2);
+}
+
+//----------------------------------------------------------------------------
+//!  Test operator[]
+//----------------------------------------------------------------------------
+void TestOperatorSquareBrackets()
+{
+  Ipv4PrefixPatricia<string>  trie;
+
+  // Test insertion of new element via operator[]
+  Ipv4Prefix  pfx1("10.0.0.0/8");
+  trie[pfx1] = "value1";
+  UnitAssert(trie.size() == 1);
+  UnitAssert(trie.find(pfx1)->second == "value1");
+
+  // Test updating existing element via operator[]
+  trie[pfx1] = "updated1";
+  UnitAssert(trie.size() == 1);
+  UnitAssert(trie.find(pfx1)->second == "updated1");
+
+  // Test default construction via operator[]
+  Ipv4Prefix  pfx2("192.168.0.0/16");
+  string  val2 = trie[pfx2]; // Should create pfx2 with default string ("")
+  UnitAssert(trie.size() == 2);
+  UnitAssert(val2 == "");
+  UnitAssert(trie.find(pfx2)->second == "");
+
+  // Test with more complex setup
+  Ipv4Prefix  pfx3("172.16.0.0/12");
+  trie[pfx3] = "value3";
+  UnitAssert(trie.size() == 3);
+
+  // Verify all are present
+  UnitAssert(trie[pfx1] == "updated1");
+  UnitAssert(trie[pfx2] == "");
+  UnitAssert(trie[pfx3] == "value3");
+
+  // Test with another type (int)
+  Ipv4PrefixPatricia<int>  trieInt;
+  Ipv4Prefix  pfx4("1.1.1.0/24");
+  int val4 = trieInt[pfx4]; // default int (0)
+  UnitAssert(val4 == 0);
+  UnitAssert(trieInt.size() == 1);
+  
+  trieInt[pfx4] = 42;
+  UnitAssert(trieInt[pfx4] == 42);
+}
+
+//----------------------------------------------------------------------------
 //!  Test reverse iterators
 //----------------------------------------------------------------------------
 void TestReverseIterators()
@@ -389,11 +465,11 @@ void TestReverseIterators()
   UnitAssert(trie.crbegin() == trie.crend());
 
   // Insert some prefixes
-  trie.Add(Ipv4Prefix("10.0.0.0/8"),     "10.0.0.0/8");
-  trie.Add(Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16");
-  trie.Add(Ipv4Prefix("172.16.0.0/12"),  "172.16.0.0/12");
-  trie.Add(Ipv4Prefix("10.1.0.0/16"),    "10.1.0.0/16");
-  trie.Add(Ipv4Prefix("10.1.1.0/24"),    "10.1.1.0/24");
+  trie.insert({Ipv4Prefix("10.0.0.0/8"), "10.0.0.0/8"});
+  trie.insert({Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16"});
+  trie.insert({Ipv4Prefix("172.16.0.0/12"), "172.16.0.0/12"});
+  trie.insert({Ipv4Prefix("10.1.0.0/16"), "10.1.0.0/16"});
+  trie.insert({Ipv4Prefix("10.1.1.0/24"), "10.1.1.0/24"});
 
   // Collect sorted prefixes (forward)
   vector<Ipv4Prefix>  prefixes;
@@ -438,11 +514,11 @@ void TestBidirectionalIterators()
   Ipv4PrefixPatricia<string>  trie;
 
   // Insert some prefixes
-  trie.Add(Ipv4Prefix("10.0.0.0/8"),     "10.0.0.0/8");
-  trie.Add(Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16");
-  trie.Add(Ipv4Prefix("172.16.0.0/12"),  "172.16.0.0/12");
-  trie.Add(Ipv4Prefix("10.1.0.0/16"),    "10.1.0.0/16");
-  trie.Add(Ipv4Prefix("10.1.1.0/24"),    "10.1.1.0/24");
+  trie.insert({Ipv4Prefix("10.0.0.0/8"), "10.0.0.0/8"});
+  trie.insert({Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16"});
+  trie.insert({Ipv4Prefix("172.16.0.0/12"), "172.16.0.0/12"});
+  trie.insert({Ipv4Prefix("10.1.0.0/16"), "10.1.0.0/16"});
+  trie.insert({Ipv4Prefix("10.1.1.0/24"), "10.1.1.0/24"});
 
   // Collect sorted prefixes
   vector<Ipv4Prefix>  prefixes;
@@ -492,6 +568,8 @@ int main(int argc, char *argv[])
   TestIterators();
   TestBidirectionalIterators();
   TestReverseIterators();
+  TestInsert();
+  TestOperatorSquareBrackets();
   TestFind();
   TestFindLongest();
   TestFindMatches();

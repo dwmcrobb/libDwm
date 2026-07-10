@@ -206,6 +206,7 @@ namespace Dwm {
       return *this;
     }
 
+#if 0
     //----------------------------------------------------------------------
     //!  Add a prefix with its associated value to the trie.
     //!
@@ -215,48 +216,47 @@ namespace Dwm {
     //!  @param value   The value to associate with the prefix.
     //----------------------------------------------------------------------
     void Add(const Ipv4Prefix & prefix, const ValueType & value)
-    { _root = addNode(_root, prefix, value); }
-
-#if 0
-    //----------------------------------------------------------------------
-    //!  Find the longest stored prefix that matches the given prefix.
-    //!
-    //!  Traverses the trie by following the bits of @c prefix.  At each
-    //!  node the stored prefix is verified against the query (necessary
-    //!  because path compression can cause a descent into a node whose
-    //!  full stored prefix does not actually match the query).  The
-    //!  deepest (longest mask length) matching node with a value is
-    //!  returned.
-    //!
-    //!  @param prefix  The Ipv4Prefix to search for.
-    //!  @return  std::optional containing the longest matching prefix
-    //!           and its value, or std::nullopt if no match exists.
-    //----------------------------------------------------------------------
-    std::optional<std::pair<Ipv4Prefix,ValueType>>
-    LongestMatch(const Ipv4Prefix & prefix) const
     {
-      const Node  *node = _root;
-      std::optional<std::pair<Ipv4Prefix,ValueType>>  result;
-
-      while (node) {
-        if (node->_pair.first.Contains(prefix)) {
-          if (node->_hasValue) {
-            result = std::make_pair(node->_pair.first, node->_pair.second);
-          }
-          if (node->_pair.first.MaskLength() >= prefix.MaskLength()) {
-            break;
-          }
-          uint8_t  b = prefix.Bit(node->_pair.first.MaskLength());
-          node = node->_child[b];
-        }
-        else {
-          break;
-        }
-      }
-      return result;
+      Node * result = nullptr;
+      bool inserted = false;
+      _root = addNode(_root, prefix, value, &result, &inserted, true, nullptr);
     }
 #endif
     
+    //----------------------------------------------------------------------
+    //!  Insert a new element into the trie.
+    //!
+    //!  If the prefix already exists, no insertion takes place.
+    //!
+    //!  @param value  The pair of prefix and value to insert.
+    //!  @return  A pair containing an iterator to the element and a boolean
+    //!           indicating whether the insertion took place.
+    //----------------------------------------------------------------------
+    std::pair<iterator, bool> insert(const value_type & value)
+    {
+      Node * result = nullptr;
+      bool inserted = false;
+      _root = addNode(_root, value.first, value.second, &result, &inserted,
+                      false, nullptr);
+      return { iterator(_root, result), inserted };
+    }
+
+    //----------------------------------------------------------------------
+    //!  Access the value associated with @c key.  If the key does not exist,
+    //!  it is inserted with a default-constructed value.
+    //!
+    //!  @param key  The Ipv4Prefix to look up.
+    //!  @return  A reference to the value associated with the key.
+    //----------------------------------------------------------------------
+    ValueType & operator [] (const Ipv4Prefix & key)
+    {
+      Node * result = nullptr;
+      bool inserted = false;
+      _root = addNode(_root, key, ValueType{}, &result, &inserted, false,
+                      nullptr);
+      return result->_pair.second;
+    }
+
     //----------------------------------------------------------------------
     //!  Remove a prefix from the trie.
     //!
@@ -971,7 +971,7 @@ namespace Dwm {
     //!
     //!  Cases handled:
     //!    1. Empty subtree -> create a new leaf.
-    //!    2. Exact prefix match -> update the value.
+    //!    2. Exact prefix match -> update the value (if updateExisting is true).
     //!    3. New prefix is longer (extends an existing prefix) ->
     //!       recurse into the appropriate child.
     //!    4. New prefix is shorter (existing node extends beyond it) ->
@@ -982,11 +982,16 @@ namespace Dwm {
     //!       new node as its children (node splitting).
     //!----------------------------------------------------------------------
     Node *addNode(Node *node, const Ipv4Prefix & prefix,
-                  const ValueType & value, Node * parent = nullptr)
+                  const ValueType & value,
+                  Node ** resultNode, bool * inserted, bool updateExisting,
+                  Node * parent = nullptr)
     {
       if (! node) {
+        *inserted = true;
+        Node * newNode = new Node(prefix, value, true, parent);
+        *resultNode = newNode;
         ++_size;
-        return new Node(prefix, value, true, parent);
+        return newNode;
       }
 
       int diffBit = firstDiffBit(node->_pair.first, prefix,
@@ -995,25 +1000,40 @@ namespace Dwm {
 
       if (diffBit < 0) {
         if (node->_pair.first == prefix) {
-          if (!node->_hasValue) {
-            ++_size;
+          if (node->_hasValue) {
+            *inserted = false;
+            *resultNode = node;
+            if (updateExisting) {
+              node->_pair.second = value;
+            }
+            return node;
           }
-          node->_pair.second = value;
-          node->_hasValue    = true;
-          return node;
+          else {
+            // Node exists but has no value (branching node)
+            *inserted = true;
+            node->_pair.second = value;
+            node->_hasValue = true;
+            *resultNode = node;
+            ++_size;
+            return node;
+          }
         }
 
         if (prefix.MaskLength() > node->_pair.first.MaskLength()) {
           uint8_t bit = prefix.Bit(node->_pair.first.MaskLength());
-          node->_child[bit] = addNode(node->_child[bit], prefix, value, node);
+          node->_child[bit] = addNode(node->_child[bit], prefix, value,
+                                      resultNode, inserted, updateExisting,
+                                      node);
           return node;
         }
         else {
-          ++_size;
+          *inserted = true;
           Node     *parentNode = new Node(prefix, value, true, parent);
+          *resultNode = parentNode;
           uint8_t   bit   = node->_pair.first.Bit(prefix.MaskLength());
           parentNode->_child[bit] = node;
           node->_parent = parentNode;
+          ++_size;
           return parentNode;
         }
       }
@@ -1027,10 +1047,13 @@ namespace Dwm {
       uint8_t bitForExisting = node->_pair.first.Bit(diffBit);
       uint8_t bitForNew      = prefix.Bit(diffBit);
 
+      *inserted = true;
+      Node * newLeaf = new Node(prefix, value, true, branch);
+      *resultNode = newLeaf;
       ++_size;
       branch->_child[bitForExisting] = node;
       node->_parent = branch;
-      branch->_child[bitForNew]      = new Node(prefix, value, true, branch);
+      branch->_child[bitForNew]      = newLeaf;
       return branch;
     }
 
