@@ -37,6 +37,8 @@
 //!  @brief Dwm::EtcProtocols unit tests
 //---------------------------------------------------------------------------
 
+#include <algorithm>
+
 #include "DwmEtcProtocols.hh"
 #include "DwmUnitAssert.hh"
 
