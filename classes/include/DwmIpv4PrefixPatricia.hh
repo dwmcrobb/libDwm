@@ -47,7 +47,7 @@
 //!  6/11/2026 - some performance numbers using a ValueType of std::string,
 //!  using the 901,114 prefixes in ../tests/IPV4_prefixes.20210123:
 //!
-//!    - roughly 10.6 million lookups/second on a Mac Studio M1 Ultra.
+//!    - roughly 10 million lookups/second on a Mac Studio M1 Ultra.
 //!    - roughly 8.7 million lookups/second on an AMD Threadripper 3960X.
 //!    - roughly 7.2 million lookups/second on a Xeon E3-1270 V2 @ 3.50GHz.
 //!    - roughly 5.1 million lookups/second on an i5-2405S @ 2.50GHz.
@@ -59,6 +59,7 @@
 #define _DWMIPV4PREFIXPATRICIA_HH_
 
 #include <algorithm>
+#include <array>
 #include <cstdint>
 #include <iterator>
 #include <optional>
@@ -105,18 +106,23 @@ namespace Dwm {
     //----------------------------------------------------------------------
     struct Node
     {
-      std::pair<const Ipv4Prefix, ValueType>  _pair;
-      bool                                    _hasValue;
-      Node                                   *_child[2];
-      Node                                   *_parent;
+      std::pair<const Ipv4Prefix, ValueType>   _pair;
+      std::array<Node *, 2>                    _child;
+      Node                                    *_parent;
+      bool                                     _hasValue;
 
       //----------------------------------------------------------------------
-      Node(const Ipv4Prefix & p, const ValueType & v, bool hv = true,
-           Node *parent = nullptr)
-          : _pair{p, v}, _hasValue(hv), _child{nullptr, nullptr},
-            _parent(parent)
+      //!  Construct from the given @c prefix, @c value, @c hasValue and
+      //!  @c parent.
+      //----------------------------------------------------------------------
+      Node(const Ipv4Prefix & prefix, const ValueType & value,
+           bool hasValue = true, Node *parent = nullptr)
+          : _pair{prefix, value}, _hasValue(hasValue),
+            _child{nullptr, nullptr}, _parent(parent)
       {}
 
+      //----------------------------------------------------------------------
+      //!  ostream output operator
       //----------------------------------------------------------------------
       friend std::ostream & operator << (std::ostream & os, const Node & node)
       {
@@ -135,7 +141,7 @@ namespace Dwm {
 
   public:
     //------------------------------------------------------------------------
-    //!  Type aliases matching std::map convention
+    //!  Type aliases matching std::map convention.
     //------------------------------------------------------------------------
     using key_type        = Ipv4Prefix;
     using mapped_type     = ValueType;
@@ -144,7 +150,7 @@ namespace Dwm {
     using difference_type = std::ptrdiff_t;
 
     //------------------------------------------------------------------------
-    //!  Forward declarations for iterator types
+    //!  Forward declarations for iterator types.
     //------------------------------------------------------------------------
     class iterator;
     class const_iterator;
@@ -210,9 +216,11 @@ namespace Dwm {
     }
 
     //----------------------------------------------------------------------
-    //!  Insert a new element into the trie.
+    //!  Insert a new element into the trie.  This is modeled after standard
+    //!  associative container insertion.
     //!
-    //!  If the prefix already exists, no insertion takes place.
+    //!  If the prefix already exists in the trie, no insertion takes place
+    //!  and the node remains unmodified.
     //!
     //!  @param value  The pair of prefix and value to insert.
     //!  @return  A pair containing an iterator to the element and a boolean
@@ -220,9 +228,9 @@ namespace Dwm {
     //----------------------------------------------------------------------
     std::pair<iterator, bool> insert(const value_type & value)
     {
-      Node * result = nullptr;
-      bool inserted = false;
-      _root = addNode(_root, value.first, value.second, &result, &inserted,
+      Node  *result = nullptr;
+      bool   inserted = false;
+      _root = addNode(_root, value.first, value.second, result, inserted,
                       false, nullptr);
       return { iterator(_root, result), inserted };
     }
@@ -236,9 +244,9 @@ namespace Dwm {
     //----------------------------------------------------------------------
     ValueType & operator [] (const Ipv4Prefix & key)
     {
-      Node * result = nullptr;
-      bool inserted = false;
-      _root = addNode(_root, key, ValueType{}, &result, &inserted, false,
+      Node  *result = nullptr;
+      bool   inserted = false;
+      _root = addNode(_root, key, ValueType{}, result, inserted, false,
                       nullptr);
       return result->_pair.second;
     }
@@ -265,7 +273,8 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Erases the node at @c it and returns an iterator referencing the
+    //!  next node in the trie.
     //------------------------------------------------------------------------
     iterator erase(iterator it)
     {
@@ -278,7 +287,8 @@ namespace Dwm {
     }
     
     //------------------------------------------------------------------------
-    //!  
+    //!  Erases the node at @c it and returns an iterator referencing the
+    //!  next node in the trie.
     //------------------------------------------------------------------------
     iterator erase(const_iterator it)
     {
@@ -291,7 +301,8 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Erases the node for prefix @c pfx in the trie and returns 1 if a node
+    //!  was removed, 0 if @c pfx was not found in the trie.
     //------------------------------------------------------------------------
     size_type erase(const Ipv4Prefix & pfx)
     {
@@ -326,24 +337,23 @@ namespace Dwm {
     }
 
     //----------------------------------------------------------------------
-    //!  Find the node whose key exactly matches @c key.
-    //!  Returns a const_iterator to the matching node, or end() if not
-    //!  found.
+    //!  Find the node whose prefix exactly matches @c pfx.  Returns a
+    //!  const_iterator to the matching node, or end() if not found.
     //----------------------------------------------------------------------
-    const_iterator find(const Ipv4Prefix & key) const
+    const_iterator find(const Ipv4Prefix & pfx) const
     {
       const Node  *node = _root;
 
       while (node) {
-        if (node->_pair.first == key) {
+        if (node->_pair.first == pfx) {
           if (node->_hasValue) {
             return const_iterator(_root, node);
           }
           // Exact prefix match but no value: not a stored entry
           break;
         }
-        if (node->_pair.first.Contains(key)) {
-          uint8_t  b = key.Bit(node->_pair.first.MaskLength());
+        if (node->_pair.first.Contains(pfx)) {
+          uint8_t  b = pfx.Bit(node->_pair.first.MaskLength());
           node = node->_child[b];
         }
         else {
@@ -354,7 +364,8 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Finds the node with the longest match to the given prefix @c pfx.
+    //!  Returns end() if no match is found.
     //------------------------------------------------------------------------
     iterator find_longest(const Ipv4Prefix & pfx)
     {
@@ -379,25 +390,29 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Finds the node with the longest match to the given address @c addr.
+    //!  Returns end() if no match is found.
     //------------------------------------------------------------------------
     iterator find_longest(const Ipv4Address & addr)
     { return find_longest(Ipv4Prefix(addr, 32)); }
       
     //------------------------------------------------------------------------
-    //!  
+    //!  Finds the node with the longest match to the given prefix @c pfx.
+    //!  Returns end() if no match is found.
     //------------------------------------------------------------------------
     const_iterator find_longest(const Ipv4Prefix & pfx) const
     { return const_iterator(find_longest(pfx)); }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Finds the node with the longest match to the given address @c addr.
+    //!  Returns end() if no match is found.
     //------------------------------------------------------------------------
     const_iterator find_longest(const Ipv4Address & addr) const
     { return find_longest(Ipv4Prefix(addr, 32)); }
     
     //------------------------------------------------------------------------
-    //!  
+    //!  Finds all nodes that match prefix @c pfx, placing them in @c matches.
+    //!  Returns true if matches were found, else returns false.
     //------------------------------------------------------------------------
     bool find_matches(const Ipv4Prefix & pfx,
                       std::vector<value_type> & matches) const
@@ -423,7 +438,8 @@ namespace Dwm {
     }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Finds all nodes that match address @c addr, placing them in
+    //!  @c matches.  Returns true if matches were found, else returns false.
     //------------------------------------------------------------------------
     bool find_matches(const Ipv4Address & addr,
                       std::vector<value_type> & matches) const
@@ -462,49 +478,57 @@ namespace Dwm {
     { return const_iterator(_root, nullptr); }
 
     //----------------------------------------------------------------------
+    //!  Returns a const_iterator for the first value-holding node.
+    //------------------------------------------------------------------------
     const_iterator cbegin() const { return begin(); }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Return the past-the-end const_iterator.
     //------------------------------------------------------------------------
     const_iterator cend() const   { return end(); }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Returns a reverse_iterator to the first value-holding element of the
+    //!  reversed trie.
     //------------------------------------------------------------------------
     reverse_iterator rbegin() { return reverse_iterator(end()); }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Returns a reverse_iterator to the element following the last
+    //!  value-holding element of the reversed trie.
     //------------------------------------------------------------------------
     reverse_iterator rend() { return reverse_iterator(begin()); }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Returns a const_reverse_iterator to the first value-holding element
+    //!  of the reversed trie.
     //------------------------------------------------------------------------
     const_reverse_iterator rbegin() const
     { return const_reverse_iterator(end()); }
     
     //------------------------------------------------------------------------
-    //!  
+    //!  Returns a const_reverse_iterator to the element following the last
+    //!  value-holding element of the reversed trie.
     //------------------------------------------------------------------------
     const_reverse_iterator rend() const
     { return const_reverse_iterator(begin()); }
     
     //------------------------------------------------------------------------
-    //!  
+    //!  Returns a const_reverse_iterator to the first value-holding element
+    //!  of the reversed trie.
     //------------------------------------------------------------------------
     const_reverse_iterator crbegin() const
     { return const_reverse_iterator(cend()); }
     
     //------------------------------------------------------------------------
-    //!  
+    //!  Returns a const_reverse_iterator to the element following the last
+    //!  value-holding element of the reversed trie.
     //------------------------------------------------------------------------
     const_reverse_iterator crend() const
     { return const_reverse_iterator(cbegin()); }
 
     //------------------------------------------------------------------------
-    //!  
+    //!  ostream output operator
     //------------------------------------------------------------------------
     friend std::ostream &
     operator << (std::ostream & os, const Ipv4PrefixPatricia & pat)
@@ -590,6 +614,9 @@ namespace Dwm {
       friend class Ipv4PrefixPatricia;
       friend class const_iterator;
 
+      //----------------------------------------------------------------------
+      //!  
+      //----------------------------------------------------------------------
       explicit iterator(Node *root)
           : _root(root)
       {
@@ -720,7 +747,11 @@ namespace Dwm {
     };
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Forward const_iterator over value-holding nodes in pre-order
+    //!  traversal (current, left, right), which produces sorted-by-address
+    //!  output for a Patricia trie.  Models std::forward_iterator.
+    //!  Dereferences to a reference to std::pair<const Ipv4Prefix, ValueType>,
+    //!  matching std::map semantics.
     //------------------------------------------------------------------------
     class const_iterator
     {
@@ -976,7 +1007,8 @@ namespace Dwm {
     //!
     //!  Cases handled:
     //!    1. Empty subtree -> create a new leaf.
-    //!    2. Exact prefix match -> update the value (if updateExisting is true).
+    //!    2. Exact prefix match -> update the value (if updateExisting is
+    //!       true).
     //!    3. New prefix is longer (extends an existing prefix) ->
     //!       recurse into the appropriate child.
     //!    4. New prefix is shorter (existing node extends beyond it) ->
@@ -988,13 +1020,13 @@ namespace Dwm {
     //!----------------------------------------------------------------------
     Node *addNode(Node *node, const Ipv4Prefix & prefix,
                   const ValueType & value,
-                  Node ** resultNode, bool * inserted, bool updateExisting,
-                  Node * parent = nullptr)
+                  Node * & resultNode, bool & inserted, bool updateExisting,
+                  Node *parent = nullptr)
     {
       if (! node) {
-        *inserted = true;
+        inserted = true;
         Node * newNode = new Node(prefix, value, true, parent);
-        *resultNode = newNode;
+        resultNode = newNode;
         ++_size;
         return newNode;
       }
@@ -1006,8 +1038,8 @@ namespace Dwm {
       if (diffBit < 0) {
         if (node->_pair.first == prefix) {
           if (node->_hasValue) {
-            *inserted = false;
-            *resultNode = node;
+            inserted = false;
+            resultNode = node;
             if (updateExisting) {
               node->_pair.second = value;
             }
@@ -1015,10 +1047,10 @@ namespace Dwm {
           }
           else {
             // Node exists but has no value (branching node)
-            *inserted = true;
+            inserted = true;
             node->_pair.second = value;
             node->_hasValue = true;
-            *resultNode = node;
+            resultNode = node;
             ++_size;
             return node;
           }
@@ -1032,9 +1064,9 @@ namespace Dwm {
           return node;
         }
         else {
-          *inserted = true;
+          inserted = true;
           Node     *parentNode = new Node(prefix, value, true, parent);
-          *resultNode = parentNode;
+          resultNode = parentNode;
           uint8_t   bit   = node->_pair.first.Bit(prefix.MaskLength());
           parentNode->_child[bit] = node;
           node->_parent = parentNode;
@@ -1052,13 +1084,13 @@ namespace Dwm {
       uint8_t bitForExisting = node->_pair.first.Bit(diffBit);
       uint8_t bitForNew      = prefix.Bit(diffBit);
 
-      *inserted = true;
+      inserted = true;
       Node * newLeaf = new Node(prefix, value, true, branch);
-      *resultNode = newLeaf;
+      resultNode = newLeaf;
       ++_size;
       branch->_child[bitForExisting] = node;
       node->_parent = branch;
-      branch->_child[bitForNew]      = newLeaf;
+      branch->_child[bitForNew] = newLeaf;
       return branch;
     }
 
@@ -1077,7 +1109,7 @@ namespace Dwm {
       }
       
       if ((node->_hasValue) && (node->_pair.first == prefix)) {
-        removed         = true;
+        removed = true;
         node->_hasValue = false;
         --_size;
 
