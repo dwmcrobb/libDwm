@@ -107,7 +107,7 @@ namespace Dwm {
     struct Node
     {
       std::pair<const Ipv4Prefix, ValueType>   _pair;
-      std::array<Node *, 2>                    _child;
+      std::array<Node *, 2>                    _children;
       Node                                    *_parent;
       bool                                     _hasValue;
 
@@ -118,7 +118,7 @@ namespace Dwm {
       Node(const Ipv4Prefix & prefix, const ValueType & value,
            bool hasValue = true, Node *parent = nullptr)
           : _pair{prefix, value}, _hasValue(hasValue),
-            _child{nullptr, nullptr}, _parent(parent)
+            _children{nullptr, nullptr}, _parent(parent)
       {}
 
       //----------------------------------------------------------------------
@@ -129,11 +129,11 @@ namespace Dwm {
         if (node._hasValue) {
           os << node._pair.first << ' ' << node._pair.second << '\n';
         }
-        if (node._child[0]) {
-          os << *(node._child[0]);
+        if (node._children[0]) {
+          os << *(node._children[0]);
         }
-        if (node._child[1]) {
-          os << *(node._child[1]);
+        if (node._children[1]) {
+          os << *(node._children[1]);
         }
         return os;
       }
@@ -327,7 +327,7 @@ namespace Dwm {
         }
         if (node->_pair.first.Contains(key)) {
           uint8_t  b = key.Bit(node->_pair.first.MaskLength());
-          node = node->_child[b];
+          node = node->_children[b];
         }
         else {
           break;
@@ -354,7 +354,7 @@ namespace Dwm {
         }
         if (node->_pair.first.Contains(pfx)) {
           uint8_t  b = pfx.Bit(node->_pair.first.MaskLength());
-          node = node->_child[b];
+          node = node->_children[b];
         }
         else {
           break;
@@ -380,7 +380,7 @@ namespace Dwm {
             break;
           }
           uint8_t  b = pfx.Bit(node->_pair.first.MaskLength());
-          node = node->_child[b];
+          node = node->_children[b];
         }
         else {
           break;
@@ -428,7 +428,7 @@ namespace Dwm {
             break;
           }
           uint8_t  b = pfx.Bit(node->_pair.first.MaskLength());
-          node = node->_child[b];
+          node = node->_children[b];
         }
         else {
           break;
@@ -644,14 +644,14 @@ namespace Dwm {
         if (n->_hasValue) {
           return n;
         }
-        if (n->_child[0]) {
-          Node  *res = _findFirstValueNode(n->_child[0]);
+        if (n->_children[0]) {
+          Node  *res = _findFirstValueNode(n->_children[0]);
           if (res) {
             return res;
           }
         }
-        if (n->_child[1]) {
-          Node  *res = _findFirstValueNode(n->_child[1]);
+        if (n->_children[1]) {
+          Node  *res = _findFirstValueNode(n->_children[1]);
           if (res) {
             return res;
           }
@@ -667,14 +667,14 @@ namespace Dwm {
         if (! n) {
           return nullptr;
         }
-        if (n->_child[0]) {
-          Node  *res = _findFirstValueNode(n->_child[0]);
+        if (n->_children[0]) {
+          Node  *res = _findFirstValueNode(n->_children[0]);
           if (res) {
             return res;
           }
         }
-        if (n->_child[1]) {
-          Node  *res = _findFirstValueNode(n->_child[1]);
+        if (n->_children[1]) {
+          Node  *res = _findFirstValueNode(n->_children[1]);
           if (res) {
             return res;
           }
@@ -682,9 +682,9 @@ namespace Dwm {
         Node  *curr = n;
         while (curr->_parent) {
           Node  *p = curr->_parent;
-          if (p->_child[0] == curr) {
-            if (p->_child[1]) {
-              Node  *res = _findFirstValueNode(p->_child[1]);
+          if (p->_children[0] == curr) {
+            if (p->_children[1]) {
+              Node  *res = _findFirstValueNode(p->_children[1]);
               if (res) {
                 return res;
               }
@@ -708,8 +708,8 @@ namespace Dwm {
           return nullptr;
         }
 
-        if (p->_child[1] == n) {
-          Node  *left = p->_child[0];
+        if (p->_children[1] == n) {
+          Node  *left = p->_children[0];
           if (left) {
             return _findLastValueNode(left);
           }
@@ -730,11 +730,11 @@ namespace Dwm {
         if (! n) {
           return nullptr;
         }
-        Node  *last = _findLastValueNode(n->_child[1]);
+        Node  *last = _findLastValueNode(n->_children[1]);
         if (last) {
           return last;
         }
-        last = _findLastValueNode(n->_child[0]);
+        last = _findLastValueNode(n->_children[0]);
         if (last) {
           return last;
         }
@@ -860,14 +860,14 @@ namespace Dwm {
         if (n->_hasValue) {
           return n;
         }
-        if (n->_child[0]) {
-          const Node  *res = _findFirstValueNode(n->_child[0]);
+        if (n->_children[0]) {
+          const Node  *res = _findFirstValueNode(n->_children[0]);
           if (res) {
             return res;
           }
         }
-        if (n->_child[1]) {
-          const Node *res = _findFirstValueNode(n->_child[1]);
+        if (n->_children[1]) {
+          const Node *res = _findFirstValueNode(n->_children[1]);
           if (res) {
             return res;
           }
@@ -883,14 +883,14 @@ namespace Dwm {
         if (! n) {
           return nullptr;
         }
-        if (n->_child[0]) {
-          const Node  *res = _findFirstValueNode(n->_child[0]);
+        if (n->_children[0]) {
+          const Node  *res = _findFirstValueNode(n->_children[0]);
           if (res) {
             return res;
           }
         }
-        if (n->_child[1]) {
-          const Node *res = _findFirstValueNode(n->_child[1]);
+        if (n->_children[1]) {
+          const Node *res = _findFirstValueNode(n->_children[1]);
           if (res) {
             return res;
           }
@@ -898,9 +898,9 @@ namespace Dwm {
         const Node  *curr = n;
         while (curr->_parent) {
           const Node  *p = curr->_parent;
-          if (p->_child[0] == curr) {
-            if (p->_child[1]) {
-              const Node  *res = _findFirstValueNode(p->_child[1]);
+          if (p->_children[0] == curr) {
+            if (p->_children[1]) {
+              const Node  *res = _findFirstValueNode(p->_children[1]);
               if (res) {
                 return res;
               }
@@ -924,8 +924,8 @@ namespace Dwm {
           return nullptr;
         }
 
-        if (p->_child[1] == n) {
-          const Node  *left = p->_child[0];
+        if (p->_children[1] == n) {
+          const Node  *left = p->_children[0];
           if (left) {
             return _findLastValueNode(left);
           }
@@ -950,11 +950,11 @@ namespace Dwm {
         if (! n) {
           return nullptr;
         }
-        const Node  *last = _findLastValueNode(n->_child[1]);
+        const Node  *last = _findLastValueNode(n->_children[1]);
         if (last) {
           return last;
         }
-        last = _findLastValueNode(n->_child[0]);
+        last = _findLastValueNode(n->_children[0]);
         if (last) {
           return last;
         }
@@ -976,8 +976,8 @@ namespace Dwm {
     void clear(Node *n)
     {
       if (n) {
-        clear(n->_child[0]);
-        clear(n->_child[1]);
+        clear(n->_children[0]);
+        clear(n->_children[1]);
         if (n->_hasValue) {
           --_size;
         }
@@ -997,8 +997,8 @@ namespace Dwm {
       if (n->_hasValue) {
         ++_size;
       }
-      c->_child[0] = copyNode(n->_child[0]);
-      c->_child[1] = copyNode(n->_child[1]);
+      c->_children[0] = copyNode(n->_children[0]);
+      c->_children[1] = copyNode(n->_children[1]);
       return c;
     }
 
@@ -1058,7 +1058,7 @@ namespace Dwm {
 
         if (prefix.MaskLength() > node->_pair.first.MaskLength()) {
           uint8_t bit = prefix.Bit(node->_pair.first.MaskLength());
-          node->_child[bit] = addNode(node->_child[bit], prefix, value,
+          node->_children[bit] = addNode(node->_children[bit], prefix, value,
                                       resultNode, inserted, updateExisting,
                                       node);
           return node;
@@ -1068,7 +1068,7 @@ namespace Dwm {
           Node     *parentNode = new Node(prefix, value, true, parent);
           resultNode = parentNode;
           uint8_t   bit   = node->_pair.first.Bit(prefix.MaskLength());
-          parentNode->_child[bit] = node;
+          parentNode->_children[bit] = node;
           node->_parent = parentNode;
           ++_size;
           return parentNode;
@@ -1088,9 +1088,9 @@ namespace Dwm {
       Node * newLeaf = new Node(prefix, value, true, branch);
       resultNode = newLeaf;
       ++_size;
-      branch->_child[bitForExisting] = node;
+      branch->_children[bitForExisting] = node;
       node->_parent = branch;
-      branch->_child[bitForNew] = newLeaf;
+      branch->_children[bitForNew] = newLeaf;
       return branch;
     }
 
@@ -1113,12 +1113,13 @@ namespace Dwm {
         node->_hasValue = false;
         --_size;
 
-        if ((! node->_child[0]) && (! node->_child[1])) {
+        if ((! node->_children[0]) && (! node->_children[1])) {
           delete node;
           return nullptr;
         }
-        if ((! node->_child[0]) || (! node->_child[1])) {
-          Node  *kid = node->_child[0] ? node->_child[0] : node->_child[1];
+        if ((! node->_children[0]) || (! node->_children[1])) {
+          Node  *kid =
+            node->_children[0] ? node->_children[0] : node->_children[1];
           delete node;
           return kid;
         }
@@ -1130,23 +1131,24 @@ namespace Dwm {
       }
 
       uint8_t   bit = prefix.Bit(node->_pair.first.MaskLength());
-      Node     *child = node->_child[bit];
+      Node     *child = node->_children[bit];
 
       if (child && child->_pair.first.Contains(prefix)) {
-        node->_child[bit] = removeNode(child, prefix, removed);
-        if (node->_child[bit]) {
-          node->_child[bit]->_parent = node;
+        node->_children[bit] = removeNode(child, prefix, removed);
+        if (node->_children[bit]) {
+          node->_children[bit]->_parent = node;
         }
       }
 
       if (removed) {
         if (! node->_hasValue) {
-          if ((! node->_child[0]) && (! node->_child[1])) {
+          if ((! node->_children[0]) && (! node->_children[1])) {
             delete node;
             return nullptr;
           }
-          if ((! node->_child[0]) || (! node->_child[1])) {
-            Node  *kid = node->_child[0] ? node->_child[0] : node->_child[1];
+          if ((! node->_children[0]) || (! node->_children[1])) {
+            Node  *kid = node->_children[0]
+              ? node->_children[0] : node->_children[1];
             delete node;
             return kid;
           }
