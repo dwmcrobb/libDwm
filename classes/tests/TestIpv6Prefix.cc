@@ -76,6 +76,29 @@ void TestNetmask()
   Ipv6Address  host("4444:8001:5:2::2");
   UnitAssert(prefix2.Contains(host));
   UnitAssert(! prefix1.Contains(host));
+
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+void TestContains()
+{
+  Ipv6Prefix  wide1("4444:8003:5:2::/64");
+
+  Ipv6Prefix  narrow1("4444:8003:5:2:1::/80");
+  UnitAssert(wide1.Contains(narrow1));
+  UnitAssert(! narrow1.Contains(wide1));
+
+  Ipv6Prefix  narrow2("4444:8003:5:3::/64");
+  UnitAssert(! wide1.Contains(narrow2));
+  UnitAssert(! narrow2.Contains(wide1));
+
+  Ipv6Address  addr1("4444:8003:5:2:1::3");
+  UnitAssert(wide1.Contains(addr1));
+  UnitAssert(narrow1.Contains(addr1));
+  UnitAssert(! narrow2.Contains(addr1));
   
   return;
 }
@@ -311,6 +334,7 @@ static void TestBit()
 int main(int argc, char *argv[])
 {
   TestNetmask();
+  TestContains();
   TestOperators();
   TestIO();
   TestStringConstructor();
