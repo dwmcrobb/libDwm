@@ -1,3 +1,16 @@
+2026-07-13  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* classes/include/DwmIpv6PrefixPatricia.hh
+	* classes/tests/TestIpv6PrefixPatricia.cc Added
+	Dwm::Ipv6PrefixPatricia class template.  It's slowish (about 2.7
+	million lookups/second on Mac Studio M1 Ultra), but it works.
+
+2026-07-03  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* classes/include/DwmIpv4Prefix.hh: Added Bit() member.
+	* classes/src/DwmIpv4Prefix.cc: Simplified Contains(const Ipv4Prefix &)
+	a bit.
+
 2026-06-26  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* include/DwmEtcProtocols.hh
@@ -13,7 +26,7 @@
 	* classes/tests/TestIpv4PrefixPatricia.cc
 	Bring back class template to store values keyed by IPv4 prefix,
 	using a Patricia trie.  Still needs work.
-	
+
 2026-03-30  Daniel McRobb  <dwm@thrip.mcplex.net>
 
 	* tagged as libDwm-0.9.72
