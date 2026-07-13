@@ -265,6 +265,16 @@ namespace Dwm {
   }
 
   //--------------------------------------------------------------------------
+  bool Ipv6Prefix::Contains(const Ipv6Prefix & prefix) const
+  {
+    if (_length <= prefix._length) {
+      Ipv6Address  a = prefix.Network();
+      return ((a & Netmask()) == this->Network());
+    }
+    return false;
+  }
+    
+  //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
   ssize_t Ipv6Prefix::Read(int fd)
