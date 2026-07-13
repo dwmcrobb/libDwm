@@ -295,7 +295,7 @@ namespace Dwm {
       if (b >= _length) {
         return 0;
       }
-      return (0 != (_addr.s6_addr[(b & 0x7F) / 8] & (0x80 >> (b % 8))));
+      return (0 != (_addr.s6_addr[(b & 0x7F) >> 3] & (0x80 >> (b & 0x7))));
     }
     
   private:
