@@ -79,6 +79,7 @@ TestIpv6Address
 TestIpv6AddrMap
 TestIpv6Prefix
 TestIpv6PrefixMap
+TestIpv6PrefixPatricia
 TestIpv6Routes
 TestLLCAT
 TestLocker
