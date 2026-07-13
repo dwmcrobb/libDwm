@@ -79,7 +79,7 @@ static void SetMyDir(const char *argv0)
 static bool GetEntries(vector<Ipv6Prefix> & entries)
 {
   entries.clear();
-  ifstream is(g_myDir + "/IPV6_prefixes.20210122");
+  ifstream is(g_myDir + "/IPV6_prefixes.20260709");
   if (UnitAssert(is)) {
     char  buf[512];
     memset(buf, 0, 512);
