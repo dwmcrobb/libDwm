@@ -1167,6 +1167,33 @@ namespace Dwm {
       if (0 == maxBits) {
         return -1;
       }
+      const uint64_t  *ap = (const uint64_t *)(a.In6Addr().s6_addr);
+      uint64_t  AH = be64toh(*ap++);
+      const uint64_t  *bp = (const uint64_t *)(b.In6Addr().s6_addr);
+      uint64_t  BH = be64toh(*bp++);
+      uint64_t  XH = AH ^ BH;
+      int  ipBit = std::countl_zero(XH);
+      if (ipBit < 64) {
+        return (ipBit < maxBits) ? ipBit : -1;
+      }
+      AH = be64toh(*ap);
+      XH = AH ^ (be64toh(*bp));
+      ipBit = std::countl_zero(XH);
+      if (ipBit < 64) {
+        return ((ipBit+64) < maxBits) ? ipBit + 64 : -1;
+      }
+      return -1;
+    }
+#else
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    static int firstDiffBit(const Ipv6Prefix & a, const Ipv6Prefix & b,
+                            uint8_t maxBits)
+    {
+      if (0 == maxBits) {
+        return -1;
+      }
       const uint64_t  *p = (const uint64_t *)(a.In6Addr().s6_addr);
       unsigned __int128  AH = (unsigned __int128)be64toh(*p++) << 64;
       AH = AH | (unsigned __int128)be64toh(*p);
@@ -1179,11 +1206,12 @@ namespace Dwm {
       if (0 == x) {
         return -1;
       }
-      int  msbPos = 127 - __builtin_clzg(x);
-      int  ipBit = 127 - msbPos;
+      int  ipBit = __builtin_clzg(x);
       return (ipBit < maxBits) ? ipBit : -1;
     }
-#else    
+#endif
+    
+#if 0    
     //----------------------------------------------------------------------
     //!  Return the bit index (0 = MSB) of the first bit where two
     //!  prefixes differ, considering only the first @c maxBits bits.
