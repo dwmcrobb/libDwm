@@ -219,12 +219,102 @@ static void TestStringConstructor()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void TestBit()
+{
+  const Ipv6Prefix  pfx("4444:8002:5:2::/64");
+  UnitAssert(! pfx.Bit(0));
+  UnitAssert(pfx.Bit(1));
+  UnitAssert(! pfx.Bit(2));
+  UnitAssert(! pfx.Bit(3));
+  
+  UnitAssert(! pfx.Bit(4));
+  UnitAssert(pfx.Bit(5));
+  UnitAssert(! pfx.Bit(6));
+  UnitAssert(! pfx.Bit(7));
+
+  UnitAssert(! pfx.Bit(8));
+  UnitAssert(pfx.Bit(9));
+  UnitAssert(! pfx.Bit(10));
+  UnitAssert(! pfx.Bit(11));
+  
+  UnitAssert(! pfx.Bit(12));
+  UnitAssert(pfx.Bit(13));
+  UnitAssert(! pfx.Bit(14));
+  UnitAssert(! pfx.Bit(15));
+
+  UnitAssert(pfx.Bit(16));
+  UnitAssert(! pfx.Bit(17));
+  UnitAssert(! pfx.Bit(18));
+  UnitAssert(! pfx.Bit(19));
+
+  UnitAssert(! pfx.Bit(20));
+  UnitAssert(! pfx.Bit(21));
+  UnitAssert(! pfx.Bit(22));
+  UnitAssert(! pfx.Bit(23));
+
+  UnitAssert(! pfx.Bit(24));
+  UnitAssert(! pfx.Bit(25));
+  UnitAssert(! pfx.Bit(26));
+  UnitAssert(! pfx.Bit(27));
+
+  UnitAssert(! pfx.Bit(28));
+  UnitAssert(! pfx.Bit(29));
+  UnitAssert(pfx.Bit(30));
+  UnitAssert(! pfx.Bit(31));
+
+  UnitAssert(! pfx.Bit(32));
+  UnitAssert(! pfx.Bit(33));
+  UnitAssert(! pfx.Bit(34));
+  UnitAssert(! pfx.Bit(35));
+
+  UnitAssert(! pfx.Bit(36));
+  UnitAssert(! pfx.Bit(37));
+  UnitAssert(! pfx.Bit(38));
+  UnitAssert(! pfx.Bit(39));
+  
+  UnitAssert(! pfx.Bit(40));
+  UnitAssert(! pfx.Bit(41));
+  UnitAssert(! pfx.Bit(42));
+  UnitAssert(! pfx.Bit(43));
+
+  UnitAssert(! pfx.Bit(44));
+  UnitAssert(pfx.Bit(45));
+  UnitAssert(! pfx.Bit(46));
+  UnitAssert(pfx.Bit(47));
+  
+  UnitAssert(! pfx.Bit(48));
+  UnitAssert(! pfx.Bit(49));
+  UnitAssert(! pfx.Bit(50));
+  UnitAssert(! pfx.Bit(51));
+
+  UnitAssert(! pfx.Bit(52));
+  UnitAssert(! pfx.Bit(53));
+  UnitAssert(! pfx.Bit(54));
+  UnitAssert(! pfx.Bit(55));
+
+  UnitAssert(! pfx.Bit(56));
+  UnitAssert(! pfx.Bit(57));
+  UnitAssert(! pfx.Bit(58));
+  UnitAssert(! pfx.Bit(59));
+
+  UnitAssert(! pfx.Bit(60));
+  UnitAssert(! pfx.Bit(61));
+  UnitAssert(pfx.Bit(62));
+  UnitAssert(! pfx.Bit(63));
+
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
   TestNetmask();
   TestOperators();
   TestIO();
   TestStringConstructor();
+  TestBit();
   
   if (Assertions::Total().Failed()) {
     Assertions::Print(cerr, true);

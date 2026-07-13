@@ -280,7 +280,18 @@ namespace Dwm {
     {
       return XXH32(_addr.s6_addr, (_length + 7) >> 3, 0);
       // return XXH3_64bits(_addr.s6_addr, 16);
-  }
+    }
+
+    //------------------------------------------------------------------------
+    //!  Returns the bit at position @c b (0 = MSB, 127 = LSB).
+    //------------------------------------------------------------------------
+    inline bool Bit(uint8_t b) const
+    {
+      if (b >= _length) {
+        return 0;
+      }
+      return (0 != (_addr.s6_addr[(b & 0x7F) / 8] & (0x80 >> (b % 8))));
+    }
     
   private:
     alignas(8) struct in6_addr  _addr;
