@@ -130,6 +130,11 @@ namespace Dwm {
     //!  Returns true if \c addr falls within the prefix.
     //------------------------------------------------------------------------
     bool Contains(const Ipv6Address & addr) const;
+
+    //------------------------------------------------------------------------
+    //!  Returns true if @c prefix is a subnet of @c this.
+    //------------------------------------------------------------------------
+    bool Contains(const Ipv6Prefix & prefix) const;
     
     //------------------------------------------------------------------------
     //!  Reads the prefix from a file descriptor.
