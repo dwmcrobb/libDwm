@@ -1157,6 +1157,33 @@ namespace Dwm {
       return node;
     }
 
+#if 1
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    static int firstDiffBit(const Ipv6Prefix & a, const Ipv6Prefix & b,
+                            uint8_t maxBits)
+    {
+      if (0 == maxBits) {
+        return -1;
+      }
+      const uint64_t  *p = (const uint64_t *)(a.In6Addr().s6_addr);
+      unsigned __int128  AH = (unsigned __int128)be64toh(*p++) << 64;
+      AH = AH | (unsigned __int128)be64toh(*p);
+
+      p = (const uint64_t *)(b.In6Addr().s6_addr);
+      unsigned __int128  BH = (unsigned __int128)be64toh(*p++) << 64;
+      BH = BH | (unsigned __int128)be64toh(*p);
+
+      unsigned __int128  x = AH ^ BH;
+      if (0 == x) {
+        return -1;
+      }
+      int  msbPos = 127 - __builtin_clzg(x);
+      int  ipBit = 127 - msbPos;
+      return (ipBit < maxBits) ? ipBit : -1;
+    }
+#else    
     //----------------------------------------------------------------------
     //!  Return the bit index (0 = MSB) of the first bit where two
     //!  prefixes differ, considering only the first @c maxBits bits.
@@ -1172,6 +1199,7 @@ namespace Dwm {
       }
       return -1;
     }
+#endif
   };
 
 }  // namespace Dwm
