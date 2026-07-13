@@ -89,10 +89,7 @@ static void TestFindLongest()
       auto  it = r.find_longest(pfx);
       if (UnitAssert(it != r.end())) {
         UnitAssert(it->first == pfx);
-        if (! UnitAssert(it->second == pfx.ToString())) {
-          cerr << "it->second: " << it->second << " pfx.ToString(): "
-               << pfx.ToString() << '\n';
-        }
+        UnitAssert(it->second == pfx.ToString());
       }
       Ipv6PrefixPatricia<string>::const_iterator cit = r.find_longest(pfx);
       if (UnitAssert(cit != r.end())) {
@@ -109,30 +106,29 @@ static void TestFindLongest()
 //----------------------------------------------------------------------------
 static void TestFindMatches()
 {
-#if 0
   std::vector<std::pair<const Dwm::Ipv6Prefix,std::string>>  matches;
   Ipv6PrefixPatricia<string>  trie;
-  trie.insert({Ipv4Prefix("10.0.0.0/8"), "10.0.0.0/8"});
-  trie.insert({Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16"});
-  trie.insert({Ipv4Prefix("172.16.0.0/12"), "172.16.0.0/12"});
-  trie.insert({Ipv4Prefix("10.1.0.0/16"), "10.1.0.0/16"});
-  trie.insert({Ipv4Prefix("10.1.1.0/24"), "10.1.1.0/24"});
-  UnitAssert(trie.find_matches(Ipv4Prefix("10.1.1.1"), matches));
+  trie.insert({Ipv6Prefix("0a0a::/16"), "0a0a::/16"});
+  trie.insert({Ipv6Prefix("c0c0:a8a8::/32"), "c0c0:a8a8::/32"});
+  trie.insert({Ipv6Prefix("acac:1000::/24"), "acac:1000::/24"});
+  trie.insert({Ipv6Prefix("0a0a:0101::/32"), "0a0a:0101::/32"});
+  trie.insert({Ipv6Prefix("0a0a:0101:0101::/48"), "0a0a:0101:0101::/48"});
+
+  UnitAssert(trie.find_matches(Ipv6Prefix("0a0a:0101:0101:0101::/64"), matches));
   if (UnitAssert(matches.size() == 3)) {
     UnitAssert(std::find_if(matches.begin(), matches.end(),
                             [] (const auto & p) 
-                            { return p.first == Ipv4Prefix("10.0.0.0/8"); })
+                            { return p.first == Ipv6Prefix("0a0a::/16"); })
                != matches.end());
     UnitAssert(std::find_if(matches.begin(), matches.end(),
                             [] (const auto & p) 
-                            { return p.first == Ipv4Prefix("10.1.0.0/16"); })
+                            { return p.first == Ipv6Prefix("0a0a:0101::/32"); })
                != matches.end());
     UnitAssert(std::find_if(matches.begin(), matches.end(),
                             [] (const auto & p) 
-                            { return p.first == Ipv4Prefix("10.1.1.0/24"); })
+                            { return p.first == Ipv6Prefix("0a0a:0101:0101::/48"); })
                != matches.end());
   }
-#endif
   return;
 }
 
@@ -179,22 +175,21 @@ static void TestFindLongestPerformance()
 //----------------------------------------------------------------------------
 void TestIterators()
 {
-#if 0
-  Ipv4PrefixPatricia<string>  trie;
+  Ipv6PrefixPatricia<string>  trie;
 
   // Empty trie: begin == end
   UnitAssert(trie.begin() == trie.end());
   UnitAssert(trie.cbegin() == trie.cend());
 
-  // Insert some prefixes in non-sorted order
-  trie.insert({Ipv4Prefix("10.0.0.0/8"), "10.0.0.0/8"});
-  trie.insert({Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16"});
-  trie.insert({Ipv4Prefix("172.16.0.0/12"), "172.16.0.0/12"});
-  trie.insert({Ipv4Prefix("10.1.0.0/16"), "10.1.0.0/16"});
-  trie.insert({Ipv4Prefix("10.1.1.0/24"), "10.1.1.0/24"});
+  // Insert some prefixes
+  trie.insert({Ipv6Prefix("a0a::/16"), "a0a::/16"});
+  trie.insert({Ipv6Prefix("c0c0:a8a8::/32"), "c0c0:a8a8::/32"});
+  trie.insert({Ipv6Prefix("acac:1000::/24"), "acac:1000::/24"});
+  trie.insert({Ipv6Prefix("a0a:101::/32"), "a0a:101::/32"});
+  trie.insert({Ipv6Prefix("a0a:101:101::/48"), "a0a:101:101::/48"});
 
   // Collect all entries via iterator
-  vector<Ipv4Prefix>  prefixes;
+  vector<Ipv6Prefix>  prefixes;
   vector<string>      values;
   for (auto it = trie.begin(); it != trie.end(); ++it) {
     prefixes.push_back(it->first);
@@ -212,12 +207,16 @@ void TestIterators()
 
   // Verify values match keys
   for (size_t i = 0; i < prefixes.size(); ++i) {
-    UnitAssert(values[i] == prefixes[i].ToString());
+    if (! UnitAssert(values[i] == prefixes[i].ToString())) {
+      std::cerr << "values[" << i << "]: " << values[i]
+                << " prefixes[" << i << "].ToString(): "
+                << prefixes[i].ToString() << '\n';
+    }
   }
 
   // Test const_iterator
-  const Ipv4PrefixPatricia<string> & ctrie = trie;
-  vector<Ipv4Prefix>  cprefixes;
+  const Ipv6PrefixPatricia<string> & ctrie = trie;
+  vector<Ipv6Prefix>  cprefixes;
   for (auto it = ctrie.cbegin(); it != ctrie.cend(); ++it) {
     cprefixes.push_back(it->first);
   }
@@ -225,7 +224,7 @@ void TestIterators()
   UnitAssert(cprefixes == prefixes);
 
   // Test const_iterator construction from iterator
-  Ipv4PrefixPatricia<string>::const_iterator  cit = trie.begin();
+  Ipv6PrefixPatricia<string>::const_iterator  cit = trie.begin();
   UnitAssert(cit != trie.cend());
   UnitAssert(cit->first == prefixes[0]);
 
@@ -239,14 +238,14 @@ void TestIterators()
   UnitAssert(count == 5);
 
   // Test value modification through iterator
-  trie.insert({Ipv4Prefix("1.2.3.0/24"), "original"});
+  trie.insert({Ipv6Prefix("101:202:303::/48"), "original"});
   for (auto it = trie.begin(); it != trie.end(); ++it) {
-    if (it->first.ToString() == "1.2.3.0/24") {
+    if (it->first.ToString() == "101:202:303::/48") {
       it->second = "modified";
       break;
     }
   }
-  auto matchit = trie.find_longest(Ipv4Prefix("1.2.3.4/24"));
+  auto matchit = trie.find_longest(Ipv6Prefix("101:202:303::/48"));
   if (UnitAssert(matchit != trie.end())) {
     UnitAssert(matchit->second == "modified");
   }
@@ -261,9 +260,9 @@ void TestIterators()
   UnitAssert(it2->first < it->first);
 
   // Test removal during iteration (iterate, collect, then remove)
-  vector<Ipv4Prefix>  toRemove;
+  vector<Ipv6Prefix>  toRemove;
   for (auto it = trie.begin(); it != trie.end(); ++it) {
-    if (it->first.MaskLength() == 24) {
+    if (it->first.MaskLength() == 48) {
       toRemove.push_back(it->first);
     }
   }
@@ -271,14 +270,13 @@ void TestIterators()
     UnitAssert(trie.Remove(pfx));
   }
 
-  // After removing /24 entries, should have fewer
+  // After removing /48 entries, should have fewer
   count = 0;
   for (auto it = trie.begin(); it != trie.end(); ++it) {
     (void)it;
     ++count;
   }
-  UnitAssert(count == 4);  // 5 - 1 (/24 removed, 10.1.1.0/24 was /24)
-#endif
+  UnitAssert(count == 4);  // 5 - 1 (0a0a:0101:0101::/48 removed)
 }
 
 //----------------------------------------------------------------------------
@@ -286,94 +284,89 @@ void TestIterators()
 //----------------------------------------------------------------------------
 void TestFind()
 {
-#if 0
   Ipv6PrefixPatricia<string>  trie;
 
   // Empty trie: find returns end
-  UnitAssert(trie.find(Ipv4Prefix("10.0.0.0/8")) == trie.end());
+  UnitAssert(trie.find(Ipv6Prefix("a0a::/16")) == trie.end());
 
   // Insert prefixes
-  trie.insert({Ipv4Prefix("10.0.0.0/8"), "10.0.0.0/8"});
-  trie.insert({Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16"});
-  trie.insert({Ipv4Prefix("172.16.0.0/12"), "172.16.0.0/12"});
-  trie.insert({Ipv4Prefix("10.1.0.0/16"), "10.1.0.0/16"});
-  trie.insert({Ipv4Prefix("10.1.1.0/24"), "10.1.1.0/24"});
+  trie.insert({Ipv6Prefix("a0a::/16"), "a0a::/16"});
+  trie.insert({Ipv6Prefix("c0c0:a8a8::/32"), "c0c0:a8a8::/32"});
+  trie.insert({Ipv6Prefix("acac:1000::/24"), "acac:1000::/24"});
+  trie.insert({Ipv6Prefix("a0a:101::/32"), "a0a:101::/32"});
+  trie.insert({Ipv6Prefix("a0a:101:101::/48"), "a0a:101:101::/48"});
 
   // find existing prefixes
   {
-    auto it = trie.find(Ipv4Prefix("10.0.0.0/8"));
+    auto it = trie.find(Ipv6Prefix("a0a::/16"));
     UnitAssert(it != trie.end());
-    UnitAssert(it->first == Ipv4Prefix("10.0.0.0/8"));
-    UnitAssert(it->second == "10.0.0.0/8");
+    UnitAssert(it->first == Ipv6Prefix("a0a::/16"));
+    UnitAssert(it->second == "a0a::/16");
   }
   {
-    auto it = trie.find(Ipv4Prefix("10.1.1.0/24"));
+    auto it = trie.find(Ipv6Prefix("a0a:101:101::/48"));
     UnitAssert(it != trie.end());
-    UnitAssert(it->first == Ipv4Prefix("10.1.1.0/24"));
-    UnitAssert(it->second == "10.1.1.0/24");
+    UnitAssert(it->first == Ipv6Prefix("a0a:101:101::/48"));
+    UnitAssert(it->second == "a0a:101:101::/48");
   }
   {
-    auto it = trie.find(Ipv4Prefix("192.168.0.0/16"));
+    auto it = trie.find(Ipv6Prefix("c0c0:a8a8::/32"));
     UnitAssert(it != trie.end());
-    UnitAssert(it->first == Ipv4Prefix("192.168.0.0/16"));
+    UnitAssert(it->first == Ipv6Prefix("c0c0:a8a8::/32"));
   }
 
   // find non-existing prefix
-  UnitAssert(trie.find(Ipv4Prefix("8.8.8.0/24")) == trie.end());
+  UnitAssert(trie.find(Ipv6Prefix("0808:0808::/48")) == trie.end());
 
   // find a prefix that is contained by a stored prefix (no exact match)
-  // 10.1.1.128/25 is inside 10.1.1.0/24 but not stored
-  UnitAssert(trie.find(Ipv4Prefix("10.1.1.128/25")) == trie.end());
+  UnitAssert(trie.find(Ipv6Prefix("a0a:101:101:8080/50")) == trie.end());
 
   // find a shorter prefix that is not stored
-  // 10.1.0.0/16 is stored but 10.1.0.0/17 is not
-  UnitAssert(trie.find(Ipv4Prefix("10.1.0.0/17")) == trie.end());
+  UnitAssert(trie.find(Ipv6Prefix("a0a:101::/34")) == trie.end());
 
   // Use iterator to modify value
   {
-    auto it = trie.find(Ipv4Prefix("10.1.0.0/16"));
+    auto it = trie.find(Ipv6Prefix("a0a:101::/32"));
     UnitAssert(it != trie.end());
     it->second = "modified";
-    auto matchit = trie.find_longest(Ipv4Prefix("10.1.5.5/24"));
+    auto matchit = trie.find_longest(Ipv6Prefix("a0a:101:505:505::/48"));
     if (UnitAssert(matchit != trie.end())) {
       UnitAssert(matchit->second == "modified");
     }
   }
 
   // Test const find on a const reference
-  const Ipv4PrefixPatricia<string> & ctrie = trie;
+  const Ipv6PrefixPatricia<string> & ctrie = trie;
   {
-    auto it = ctrie.find(Ipv4Prefix("10.0.0.0/8"));
+    auto it = ctrie.find(Ipv6Prefix("a0a::/16"));
     UnitAssert(it != ctrie.end());
-    UnitAssert(it->first == Ipv4Prefix("10.0.0.0/8"));
-    UnitAssert(it->second == "10.0.0.0/8");
+    UnitAssert(it->first == Ipv6Prefix("a0a::/16"));
+    UnitAssert(it->second == "a0a::/16");
   }
   {
-    auto it = ctrie.find(Ipv4Prefix("10.1.1.0/24"));
+    auto it = ctrie.find(Ipv6Prefix("a0a:101:101::/48"));
     UnitAssert(it != ctrie.end());
-    UnitAssert(it->first == Ipv4Prefix("10.1.1.0/24"));
+    UnitAssert(it->first == Ipv6Prefix("a0a:101:101::/48"));
   }
   // Non-existing prefix on const trie
-  UnitAssert(ctrie.find(Ipv4Prefix("8.8.8.0/24")) == ctrie.end());
-#endif
+  UnitAssert(ctrie.find(Ipv6Prefix("808:808::/48")) == ctrie.end());
 }
 
 //----------------------------------------------------------------------------
 static void TestErase()
 {
-#if 0
-  Ipv4PrefixPatricia<string>  trie;
+  Ipv6PrefixPatricia<string>  trie;
 
   // Empty trie: begin == end
   UnitAssert(trie.begin() == trie.end());
   UnitAssert(trie.cbegin() == trie.cend());
 
   // Insert some prefixes in non-sorted order
-  trie.insert({Ipv4Prefix("10.0.0.0/8"), "10.0.0.0/8"});
-  trie.insert({Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16"});
-  trie.insert({Ipv4Prefix("172.16.0.0/12"), "172.16.0.0/12"});
-  trie.insert({Ipv4Prefix("10.1.0.0/16"), "10.1.0.0/16"});
-  trie.insert({Ipv4Prefix("10.1.1.0/24"), "10.1.1.0/24"});
+  trie.insert({Ipv6Prefix("a0a::/16"), "a0a::/16"});
+  trie.insert({Ipv6Prefix("c0c0:a8a8::/32"), "c0c0:a8a8::/32"});
+  trie.insert({Ipv6Prefix("acac:1000::/24"), "acac:1000::/24"});
+  trie.insert({Ipv6Prefix("a0a:101::/32"), "a0a:101::/32"});
+  trie.insert({Ipv6Prefix("a0a:101:101::/48"), "a0a:101:101::/48"});
   UnitAssert(trie.size() == 5);
 
   auto  it = trie.begin();
@@ -383,7 +376,7 @@ static void TestErase()
     UnitAssert(--sz == trie.size());
   } while (it != trie.end());
   UnitAssert(trie.size() == 0);
-#endif
+
   return;
 }
 
@@ -392,11 +385,10 @@ static void TestErase()
 //----------------------------------------------------------------------------
 void TestInsert()
 {
-#if 0
-  Ipv4PrefixPatricia<string>  trie;
+  Ipv6PrefixPatricia<string>  trie;
 
   // Test insert new element
-  Ipv4Prefix  pfx1("10.0.0.0/8");
+  Ipv6Prefix  pfx1("a0a::/16");
   auto res1 = trie.insert({pfx1, "value1"});
   UnitAssert(res1.second == true);
   UnitAssert(res1.first->first == pfx1);
@@ -411,12 +403,11 @@ void TestInsert()
   UnitAssert(trie.size() == 1);
 
   // Test insert another element
-  Ipv4Prefix  pfx2("192.168.0.0/16");
+  Ipv6Prefix  pfx2("c0c0:a8a8::/32");
   auto res3 = trie.insert({pfx2, "value2"});
   UnitAssert(res3.second == true);
   UnitAssert(res3.first->first == pfx2);
   UnitAssert(trie.size() == 2);
-#endif
 }
 
 //----------------------------------------------------------------------------
@@ -424,11 +415,10 @@ void TestInsert()
 //----------------------------------------------------------------------------
 void TestOperatorSquareBrackets()
 {
-#if 0
-  Ipv4PrefixPatricia<string>  trie;
+  Ipv6PrefixPatricia<string>  trie;
 
   // Test insertion of new element via operator[]
-  Ipv4Prefix  pfx1("10.0.0.0/8");
+  Ipv6Prefix  pfx1("a0a::/16");
   trie[pfx1] = "value1";
   UnitAssert(trie.size() == 1);
   UnitAssert(trie.find(pfx1)->second == "value1");
@@ -439,14 +429,14 @@ void TestOperatorSquareBrackets()
   UnitAssert(trie.find(pfx1)->second == "updated1");
 
   // Test default construction via operator[]
-  Ipv4Prefix  pfx2("192.168.0.0/16");
+  Ipv6Prefix  pfx2("c0c0:a8a8::/32");
   string  val2 = trie[pfx2]; // Should create pfx2 with default string ("")
   UnitAssert(trie.size() == 2);
   UnitAssert(val2 == "");
   UnitAssert(trie.find(pfx2)->second == "");
 
   // Test with more complex setup
-  Ipv4Prefix  pfx3("172.16.0.0/12");
+  Ipv6Prefix  pfx3("acac:1000::/24");
   trie[pfx3] = "value3";
   UnitAssert(trie.size() == 3);
 
@@ -456,15 +446,14 @@ void TestOperatorSquareBrackets()
   UnitAssert(trie[pfx3] == "value3");
 
   // Test with another type (int)
-  Ipv4PrefixPatricia<int>  trieInt;
-  Ipv4Prefix  pfx4("1.1.1.0/24");
+  Ipv6PrefixPatricia<int>  trieInt;
+  Ipv6Prefix  pfx4("101:101:101::/48");
   int val4 = trieInt[pfx4]; // default int (0)
   UnitAssert(val4 == 0);
   UnitAssert(trieInt.size() == 1);
   
   trieInt[pfx4] = 42;
   UnitAssert(trieInt[pfx4] == 42);
-#endif
 }
 
 //----------------------------------------------------------------------------
@@ -472,28 +461,27 @@ void TestOperatorSquareBrackets()
 //----------------------------------------------------------------------------
 void TestReverseIterators()
 {
-#if 0
-  Ipv4PrefixPatricia<string>  trie;
+  Ipv6PrefixPatricia<string>  trie;
 
   // Empty trie: rbegin == rend
   UnitAssert(trie.rbegin() == trie.rend());
   UnitAssert(trie.crbegin() == trie.crend());
 
   // Insert some prefixes
-  trie.insert({Ipv4Prefix("10.0.0.0/8"), "10.0.0.0/8"});
-  trie.insert({Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16"});
-  trie.insert({Ipv4Prefix("172.16.0.0/12"), "172.16.0.0/12"});
-  trie.insert({Ipv4Prefix("10.1.0.0/16"), "10.1.0.0/16"});
-  trie.insert({Ipv4Prefix("10.1.1.0/24"), "10.1.1.0/24"});
+  trie.insert({Ipv6Prefix("a0a::/16"), "a0a::/16"});
+  trie.insert({Ipv6Prefix("c0c0:a8a8::/32"), "c0c0:a8a8::/32"});
+  trie.insert({Ipv6Prefix("acac:1000::/24"), "acac:1000::/24"});
+  trie.insert({Ipv6Prefix("a0a:101::/32"), "a0a:101::/32"});
+  trie.insert({Ipv6Prefix("a0a:101:101::/48"), "a0a:101:101::/48"});
 
   // Collect sorted prefixes (forward)
-  vector<Ipv4Prefix>  prefixes;
+  vector<Ipv6Prefix>  prefixes;
   for (auto it = trie.begin(); it != trie.end(); ++it) {
     prefixes.push_back(it->first);
   }
 
   // Test reverse traversal
-  vector<Ipv4Prefix>  revPrefixes;
+  vector<Ipv6Prefix>  revPrefixes;
   for (auto rit = trie.rbegin(); rit != trie.rend(); ++rit) {
     revPrefixes.push_back(rit->first);
   }
@@ -504,8 +492,8 @@ void TestReverseIterators()
   }
 
   // Test const_reverse_iterator
-  const Ipv4PrefixPatricia<string> & ctrie = trie;
-  vector<Ipv4Prefix>  crevPrefixes;
+  const Ipv6PrefixPatricia<string> & ctrie = trie;
+  vector<Ipv6Prefix>  crevPrefixes;
   for (auto rit = ctrie.crbegin(); rit != ctrie.crend(); ++rit) {
     crevPrefixes.push_back(rit->first);
   }
@@ -519,7 +507,6 @@ void TestReverseIterators()
   UnitAssert(rbeginConst->first == prefixes.back());
   --rendConst;
   UnitAssert(rendConst->first == prefixes.front());
-#endif
 }
 
 //----------------------------------------------------------------------------
@@ -527,18 +514,17 @@ void TestReverseIterators()
 //----------------------------------------------------------------------------
 void TestBidirectionalIterators()
 {
-#if 0
-  Ipv4PrefixPatricia<string>  trie;
+  Ipv6PrefixPatricia<string>  trie;
 
   // Insert some prefixes
-  trie.insert({Ipv4Prefix("10.0.0.0/8"), "10.0.0.0/8"});
-  trie.insert({Ipv4Prefix("192.168.0.0/16"), "192.168.0.0/16"});
-  trie.insert({Ipv4Prefix("172.16.0.0/12"), "172.16.0.0/12"});
-  trie.insert({Ipv4Prefix("10.1.0.0/16"), "10.1.0.0/16"});
-  trie.insert({Ipv4Prefix("10.1.1.0/24"), "10.1.1.0/24"});
+  trie.insert({Ipv6Prefix("a0a::/16"), "a0a::/16"});
+  trie.insert({Ipv6Prefix("c0c0:a8a8::/32"), "c0c0:a8a8::/32"});
+  trie.insert({Ipv6Prefix("acac:1000::/24"), "acac:1000::/24"});
+  trie.insert({Ipv6Prefix("a0a:101::/32"), "a0a:101::/32"});
+  trie.insert({Ipv6Prefix("a0a:101:101::/48"), "a0a:101:101::/48"});
 
   // Collect sorted prefixes
-  vector<Ipv4Prefix>  prefixes;
+  vector<Ipv6Prefix>  prefixes;
   for (auto it = trie.begin(); it != trie.end(); ++it) {
     prefixes.push_back(it->first);
   }
@@ -568,7 +554,6 @@ void TestBidirectionalIterators()
     prefixes.pop_back();
   }
   UnitAssert(prefixes.empty());
-#endif
 }
 
 //----------------------------------------------------------------------------
