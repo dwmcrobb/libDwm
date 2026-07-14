@@ -1165,17 +1165,8 @@ namespace Dwm {
     static int firstDiffBit(const Ipv4Prefix & a, const Ipv4Prefix & b,
                             uint8_t maxBits)
     {
-      if (0 == maxBits) {
-        return -1;
-      }
-      uint32_t  aH = ntohl(a.NetworkRaw());
-      uint32_t  bH = ntohl(b.NetworkRaw());
-      uint32_t  x  = aH ^ bH;
-      if (0 == x) {
-        return -1;
-      }
-      int  msbPos  = 31 - __builtin_clz(x);
-      int  ipBit   = 31 - msbPos;
+      uint32_t  x  = ntohl(a.NetworkRaw()) ^ ntohl(b.NetworkRaw());
+      int  ipBit = std::countl_zero(x);
       return (ipBit < maxBits) ? ipBit : -1;
     }
   };
