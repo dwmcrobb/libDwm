@@ -49,6 +49,9 @@ extern "C" {
   #include <string.h>      // for memset()/memcpy()
   #include <unistd.h>      // for read()/write()
 }
+#if __ARM_NEON
+  #include <arm_neon.h>
+#endif
 
 #include <cassert>
 
@@ -123,6 +126,18 @@ namespace Dwm {
     return(memcmp(_addr.s6_addr,addr._addr.s6_addr,sizeof(_addr.s6_addr)) == 0);
   }
 
+#if __ARM_NEON
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  Ipv6Address & Ipv6Address::operator &= (const Ipv6Address & netmask)
+  {
+    uint8x16_t  addrv = vld1q_u8(_addr.s6_addr);
+    uint8x16_t  msk = vld1q_u8(netmask._addr.s6_addr);
+    vst1q_u8(_addr.s6_addr, vandq_u8(addrv, msk));
+    return(*this);
+  }
+#else
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
@@ -132,7 +147,21 @@ namespace Dwm {
       _addr.s6_addr[i] &= netmask._addr.s6_addr[i];
     return(*this);
   }
+#endif
 
+#if __ARM_NEON
+  //--------------------------------------------------------------------------
+  //!  
+  //--------------------------------------------------------------------------
+  Ipv6Address Ipv6Address::operator & (const Ipv6Address & netmask) const
+  {
+    Ipv6Address  rc(*this);
+    uint8x16_t  addrv = vld1q_u8(rc._addr.s6_addr);
+    uint8x16_t  msk = vld1q_u8(netmask._addr.s6_addr);
+    vst1q_u8(rc._addr.s6_addr, vandq_u8(addrv, msk));
+    return rc;
+  }
+#else
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
@@ -143,7 +172,8 @@ namespace Dwm {
       rc._addr.s6_addr[i] &= netmask._addr.s6_addr[i];
     return(rc);
   }
-
+#endif
+  
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
