@@ -337,7 +337,7 @@ namespace Dwm {
     }
     
   private:
-    alignas(8) struct in6_addr  _addr;
+    alignas(16) struct in6_addr  _addr;
   };
 
 }  // namespace Dwm
