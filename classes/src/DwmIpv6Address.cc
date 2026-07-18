@@ -54,6 +54,8 @@ extern "C" {
 #endif
 
 #include <cassert>
+#include <eve/wide.hpp>
+#include <eve/module/core.hpp>
 
 #include "DwmASIO.hh"
 #include "DwmIpv6Address.hh"
@@ -127,8 +129,7 @@ namespace Dwm {
   }
 
 #if __ARM_NEON
-  //--------------------------------------------------------------------------
-  //!  
+  
   //--------------------------------------------------------------------------
   Ipv6Address & Ipv6Address::operator &= (const Ipv6Address & netmask)
   {
@@ -137,9 +138,26 @@ namespace Dwm {
     vst1q_u8(_addr.s6_addr, vandq_u8(addrv, msk));
     return(*this);
   }
-#else
+
+#elif __SSE2__
+  
   //--------------------------------------------------------------------------
-  //!  
+  Ipv6Address & Ipv6Address::operator &= (const Ipv6Address & netmask)
+  {
+#if 0
+    __m128i  addrv = _mm_loadu_si128((__m128i *)_addr.s6_addr);
+    __m128i  msk = _mm_loadu_si128((const __m128i *)netmask._addr.s6_addr);
+    _mm_storeu_si128((__m128i *)_addr.s6_addr, _mm_and_si128(addrv, msk));
+#else
+    eve::wide<uint8_t,eve::fixed<16>>  addrv(&(_addr.s6_addr[0]));
+    eve::wide<uint8_t,eve::fixed<16>>  mask(&(netmask._addr.s6_addr[0]));
+    eve::store(addrv & mask, &(_addr.s6_addr[0]));
+#endif
+    return(*this);
+  }
+
+#else
+
   //--------------------------------------------------------------------------
   Ipv6Address & Ipv6Address::operator &= (const Ipv6Address & netmask)
   {
@@ -147,11 +165,11 @@ namespace Dwm {
       _addr.s6_addr[i] &= netmask._addr.s6_addr[i];
     return(*this);
   }
+
 #endif
 
 #if __ARM_NEON
-  //--------------------------------------------------------------------------
-  //!  
+
   //--------------------------------------------------------------------------
   Ipv6Address Ipv6Address::operator & (const Ipv6Address & netmask) const
   {
@@ -161,9 +179,27 @@ namespace Dwm {
     vst1q_u8(rc._addr.s6_addr, vandq_u8(addrv, msk));
     return rc;
   }
-#else
+
+#elif __SSE2__
+
   //--------------------------------------------------------------------------
-  //!  
+  Ipv6Address Ipv6Address::operator & (const Ipv6Address & netmask) const
+  {
+    Ipv6Address  rc(*this);
+#if 0
+    __m128i  addrv = _mm_loadu_si128((__m128i *)rc._addr.s6_addr);
+    __m128i  msk = _mm_loadu_si128((__m128i *)netmask._addr.s6_addr);
+    _mm_storeu_si128((__m128i *)rc._addr.s6_addr, _mm_and_si128(addrv, msk));
+#else
+    eve::wide<uint8_t,eve::fixed<16>>  addrv(&(rc._addr.s6_addr[0]));
+    eve::wide<uint8_t,eve::fixed<16>>  msk(&(netmask._addr.s6_addr[0]));
+    eve::store(addrv & msk, &(rc._addr.s6_addr[0]));
+#endif
+    return rc;
+  }
+
+#else
+
   //--------------------------------------------------------------------------
   Ipv6Address Ipv6Address::operator & (const Ipv6Address & netmask) const
   {
@@ -172,6 +208,7 @@ namespace Dwm {
       rc._addr.s6_addr[i] &= netmask._addr.s6_addr[i];
     return(rc);
   }
+
 #endif
   
   //--------------------------------------------------------------------------
