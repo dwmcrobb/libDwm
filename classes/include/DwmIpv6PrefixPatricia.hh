@@ -51,7 +51,7 @@
 //!    - roughly 5.8 million lookups/second on an AMD Threadripper 3960X.
 //!    - roughly 4.3 million lookups/second on a Xeon E3-1270 V2 @ 3.50GHz.
 //!    - roughly ??? million lookups/second on an i5-2405S @ 2.50GHz.
-//!    - roughly ??? million lookups/second on a Xeon L5640 @ 2.27GHz.
+//!    - roughly 2.7 million lookups/second on a Xeon L5640 @ 2.27GHz.
 //!    - roughly 1.3 million lookups/second on a Raspberry Pi 4B.
 //---------------------------------------------------------------------------
 
