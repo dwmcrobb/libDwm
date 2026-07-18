@@ -299,8 +299,8 @@ namespace Dwm {
     }
     
   private:
-    alignas(8) struct in6_addr  _addr;
-    uint8_t                     _length;
+    alignas(16) struct in6_addr  _addr;
+    uint8_t                      _length;
 
     //------------------------------------------------------------------------
     //!  
