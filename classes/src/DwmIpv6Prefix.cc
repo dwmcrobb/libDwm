@@ -51,6 +51,9 @@ extern "C" {
 #if __ARM_NEON
   #include <arm_neon.h>
 #endif
+#include <eve/wide.hpp>
+#include <eve/module/core.hpp>
+
 #include "DwmASIO.hh"
 #include "DwmIpv6Prefix.hh"
 
@@ -75,7 +78,7 @@ namespace Dwm {
     return;
   }
 
-#if __ARM_NEON
+#if __ARM_NEON || __SSE2__
 
   //--------------------------------------------------------------------------
   static std::array<std::array<uint8_t,16>,129> sg_masks  {{
@@ -218,6 +221,10 @@ namespace Dwm {
     { 0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff }
   }};
 
+#endif
+
+#if __ARM_NEON
+  
   //--------------------------------------------------------------------------
   static inline void MaskBits(struct in6_addr & addr, uint8_t numBits)
   {
@@ -229,6 +236,27 @@ namespace Dwm {
     return;
   }
 
+#elif __SSE2__
+
+  //--------------------------------------------------------------------------
+  static inline void MaskBits(struct in6_addr & addr, uint8_t numBits)
+  {
+    if ((numBits <= 128)) {
+      eve::wide<uint8_t,eve::fixed<16>>  av(&(addr.s6_addr[0]));
+      eve::wide<uint8_t,eve::fixed<16>>  mv(sg_masks[numBits].data());
+      eve::wide<uint8_t,eve::fixed<16>>  masked = (av & mv);
+      eve::store(masked, &(addr.s6_addr[0]));
+      
+#if 0
+      __m128i  addrv = _mm_lddqu_si128((__m128i *)addr.s6_addr);
+      __m128i  msk =
+        _mm_lddqu_si128((const __m128i *)sg_masks[numBits].data());
+      _mm_storeu_si128((__m128i *)addr.s6_addr, _mm_and_si128(addrv, msk));
+#endif
+    }
+    return;
+  }
+  
 #else
   
   //--------------------------------------------------------------------------
@@ -379,9 +407,7 @@ namespace Dwm {
           rc = true;
     return(rc);
   }
-  
-  //--------------------------------------------------------------------------
-  //!  
+
   //--------------------------------------------------------------------------
   bool Ipv6Prefix::operator == (const Ipv6Prefix & prefix) const
   {
@@ -415,20 +441,45 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   bool Ipv6Prefix::Contains(const Ipv6Address & addr) const
   {
-    Ipv6Address  a = addr & Netmask();
+#if 1
+    eve::wide<uint8_t,eve::fixed<16>>  a(&(_addr.s6_addr[0]));
+    eve::wide<uint8_t,eve::fixed<16>>  b(&(addr.In6Addr().s6_addr[0]));
+    b ^= a;
+    std::optional<std::size_t>  fnd = eve::first_true(b != 0);
+    if (fnd.has_value()) {
+      return (((*fnd * 8) + std::countl_zero(b.get(*fnd))) >= _length);
+    }
+    return true;
+#else
+    Ipv6Address  a = addr;
+    a &= Netmask();
     if (a == this->Network())
       return(true);
     else
       return(false);
+#endif
   }
 
   //--------------------------------------------------------------------------
   bool Ipv6Prefix::Contains(const Ipv6Prefix & prefix) const
   {
+#if 1
     if (_length <= prefix._length) {
-      Ipv6Address  a = prefix.Network();
-      return ((a & Netmask()) == this->Network());
+      eve::wide<uint8_t,eve::fixed<16>>  a(&(_addr.s6_addr[0]));
+      eve::wide<uint8_t,eve::fixed<16>>  b(&(prefix._addr.s6_addr[0]));
+      b ^= a;
+      std::optional<std::size_t>  fnd = eve::first_true(b != 0);
+      if (fnd.has_value()) {
+        return (((*fnd * 8) + std::countl_zero(b.get(*fnd))) >= _length);
+      }
+      return true;
     }
+    
+#else
+    if (_length <= prefix._length) {
+      return ((prefix.Network() & this->Netmask()) == this->Network());
+    }
+#endif
     return false;
   }
     
