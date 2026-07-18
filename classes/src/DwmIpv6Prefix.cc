@@ -51,8 +51,11 @@ extern "C" {
 #if __ARM_NEON
   #include <arm_neon.h>
 #endif
-#include <eve/wide.hpp>
-#include <eve/module/core.hpp>
+
+#if __SSE2__ || __APPLE__
+  #include <eve/wide.hpp>
+  #include <eve/module/core.hpp>
+#endif
 
 #include "DwmASIO.hh"
 #include "DwmIpv6Prefix.hh"
@@ -246,13 +249,6 @@ namespace Dwm {
       eve::wide<uint8_t,eve::fixed<16>>  mv(sg_masks[numBits].data());
       eve::wide<uint8_t,eve::fixed<16>>  masked = (av & mv);
       eve::store(masked, &(addr.s6_addr[0]));
-      
-#if 0
-      __m128i  addrv = _mm_lddqu_si128((__m128i *)addr.s6_addr);
-      __m128i  msk =
-        _mm_lddqu_si128((const __m128i *)sg_masks[numBits].data());
-      _mm_storeu_si128((__m128i *)addr.s6_addr, _mm_and_si128(addrv, msk));
-#endif
     }
     return;
   }
@@ -441,13 +437,25 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   bool Ipv6Prefix::Contains(const Ipv6Address & addr) const
   {
-#if 1
+#if __SSE2__ || __APPLE__
     eve::wide<uint8_t,eve::fixed<16>>  a(&(_addr.s6_addr[0]));
     eve::wide<uint8_t,eve::fixed<16>>  b(&(addr.In6Addr().s6_addr[0]));
     b ^= a;
     std::optional<std::size_t>  fnd = eve::first_true(b != 0);
     if (fnd.has_value()) {
       return (((*fnd * 8) + std::countl_zero(b.get(*fnd))) >= _length);
+    }
+    return true;
+#elif __ARM_NEON
+    uint8x16_t  a = vld1q_u8(_addr.s6_addr);
+    uint8x16_t  b = vld1q_u8(addr.In6Addr().s6_addr);
+    uint8_t  v[16];
+    vst1q_u8(v, veorq_u8(a, b));
+    uint8_t  i = 0;
+    for ( ; (i < 16) && (! v[i]); ++i) {
+    }
+    if (i < 16) {
+      return ((i * 8) + std::countl_zero(v[i])) >= _length;
     }
     return true;
 #else
@@ -463,7 +471,7 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   bool Ipv6Prefix::Contains(const Ipv6Prefix & prefix) const
   {
-#if 1
+#if __SSE2__ || __APPLE__
     if (_length <= prefix._length) {
       eve::wide<uint8_t,eve::fixed<16>>  a(&(_addr.s6_addr[0]));
       eve::wide<uint8_t,eve::fixed<16>>  b(&(prefix._addr.s6_addr[0]));
@@ -474,6 +482,18 @@ namespace Dwm {
       }
       return true;
     }
+#elif __ARM_NEON
+    uint8x16_t  a = vld1q_u8(_addr.s6_addr);
+    uint8x16_t  b = vld1q_u8(prefix._addr.s6_addr);
+    uint8_t  v[16];
+    vst1q_u8(v, veorq_u8(a, b));
+    uint8_t  i = 0;
+    for ( ; (i < 16) && (! v[i]); ++i) {
+    }
+    if (i < 16) {
+      return ((i * 8) + std::countl_zero(v[i])) >= _length;
+    }
+    return true;
     
 #else
     if (_length <= prefix._length) {
