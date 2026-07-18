@@ -47,7 +47,7 @@
 //!  6/11/2026 - some performance numbers using a ValueType of std::string,
 //!  using the 901,114 prefixes in ../tests/IPV4_prefixes.20210123:
 //!
-//!    - roughly 4.0 million lookups/second on a Mac Studio M1 Ultra.
+//!    - roughly 5.9 million lookups/second on a Mac Studio M1 Ultra.
 //!    - roughly 5.8 million lookups/second on an AMD Threadripper 3960X.
 //!    - roughly ??? million lookups/second on a Xeon E3-1270 V2 @ 3.50GHz.
 //!    - roughly ??? million lookups/second on an i5-2405S @ 2.50GHz.
