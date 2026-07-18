@@ -65,8 +65,11 @@
 #include <optional>
 #include <utility>
 #include <vector>
-#include <eve/wide.hpp>
-#include <eve/module/core.hpp>
+
+#if __SSE2__ || __APPLE__
+  #include <eve/wide.hpp>
+  #include <eve/module/core.hpp>
+#endif
 
 #include "DwmIpv6Prefix.hh"
 
@@ -1159,7 +1162,7 @@ namespace Dwm {
       return node;
     }
 
-#if 1
+#if __SSE2__ || __APPLE__
     //------------------------------------------------------------------------
     static inline uint8_t firstOneBit(eve::wide<uint8_t,eve::fixed<16>> && x)
     {
