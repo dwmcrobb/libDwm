@@ -53,9 +53,13 @@ extern "C" {
   #include <arm_neon.h>
 #endif
 
+#include <algorithm>
 #include <cassert>
-#include <eve/wide.hpp>
-#include <eve/module/core.hpp>
+
+#if __SSE2__
+  #include <eve/wide.hpp>
+  #include <eve/module/core.hpp>
+#endif
 
 #include "DwmASIO.hh"
 #include "DwmIpv6Address.hh"
