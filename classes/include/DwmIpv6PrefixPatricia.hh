@@ -47,12 +47,12 @@
 //!  6/11/2026 - some performance numbers using a ValueType of std::string,
 //!  using the 901,114 prefixes in ../tests/IPV4_prefixes.20210123:
 //!
-//!    - roughly 10 million lookups/second on a Mac Studio M1 Ultra.
-//!    - roughly 8.7 million lookups/second on an AMD Threadripper 3960X.
-//!    - roughly 7.2 million lookups/second on a Xeon E3-1270 V2 @ 3.50GHz.
-//!    - roughly 5.1 million lookups/second on an i5-2405S @ 2.50GHz.
-//!    - roughly 4.7 million lookups/second on a Xeon L5640 @ 2.27GHz.
-//!    - roughly 2.54 million lookups/second on a Raspberry Pi 4B.
+//!    - roughly 4.0 million lookups/second on a Mac Studio M1 Ultra.
+//!    - roughly 5.8 million lookups/second on an AMD Threadripper 3960X.
+//!    - roughly ??? million lookups/second on a Xeon E3-1270 V2 @ 3.50GHz.
+//!    - roughly ??? million lookups/second on an i5-2405S @ 2.50GHz.
+//!    - roughly ??? million lookups/second on a Xeon L5640 @ 2.27GHz.
+//!    - roughly ??? million lookups/second on a Raspberry Pi 4B.
 //---------------------------------------------------------------------------
 
 #ifndef _DWMIPV6PREFIXPATRICIA_HH_
@@ -65,6 +65,8 @@
 #include <optional>
 #include <utility>
 #include <vector>
+#include <eve/wide.hpp>
+#include <eve/module/core.hpp>
 
 #include "DwmIpv6Prefix.hh"
 
@@ -1157,6 +1159,28 @@ namespace Dwm {
       return node;
     }
 
+#if 1
+    //------------------------------------------------------------------------
+    static inline uint8_t firstOneBit(eve::wide<uint8_t,eve::fixed<16>> && x)
+    {
+      std::optional<std::size_t>  fnd = eve::first_true(x != 0);
+      return fnd.has_value() ?
+        (*fnd * 8) + std::countl_zero(x.get(*fnd)) : 128;
+    }
+
+    //------------------------------------------------------------------------
+    static inline int firstDiffBit(const Dwm::Ipv6Prefix & a,
+                                   const Dwm::Ipv6Prefix & b,
+                                   uint8_t maxBits)
+    {
+      eve::wide<uint8_t,eve::fixed<16>>  av(&(a.In6Addr().s6_addr[0]));
+      eve::wide<uint8_t,eve::fixed<16>>  bv(&(b.In6Addr().s6_addr[0]));
+      auto  ipBit = firstOneBit(av ^ bv);
+      return (ipBit < maxBits) ? ipBit : -1;
+    }
+
+#else
+    
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
@@ -1179,6 +1203,7 @@ namespace Dwm {
       }
       return -1;
     }
+#endif
   };
 
 }  // namespace Dwm
