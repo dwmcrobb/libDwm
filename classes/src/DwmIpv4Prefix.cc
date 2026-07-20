@@ -380,7 +380,11 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   bool Ipv4Prefix::Contains(const Ipv4Prefix & prefix) const
   {
-#if 1
+#if __APPLE__
+    return ((prefix._data[4] >= _data[4])
+            && ((prefix.Network().Raw() & this->Netmask().Raw())
+                == this->Network().Raw()));
+#else
     if (prefix._data[4] >= _data[4]) {
       uint8_t  i = 0, x;
       for ( ; i < 4; ++i) {
@@ -394,11 +398,6 @@ namespace Dwm {
       }
       return true;
     }
-    
-#else
-    return ((prefix._data[4] >= _data[4])
-            && ((prefix.Network().Raw() & this->Netmask().Raw())
-                == this->Network().Raw()));
 #endif
   }
   
