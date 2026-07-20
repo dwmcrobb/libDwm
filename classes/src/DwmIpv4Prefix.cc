@@ -380,9 +380,26 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   bool Ipv4Prefix::Contains(const Ipv4Prefix & prefix) const
   {
+#if 1
+    if (prefix._data[4] >= _data[4]) {
+      uint8_t  i = 0, x;
+      for ( ; i < 4; ++i) {
+        x = _data[i] ^ prefix._data[i];
+        if (x) {
+          break;
+        }
+      }
+      if (i < 4) {
+        return ((i * 8) + std::countl_zero(x) >= _data[4]);
+      }
+      return true;
+    }
+    
+#else
     return ((prefix._data[4] >= _data[4])
             && ((prefix.Network().Raw() & this->Netmask().Raw())
                 == this->Network().Raw()));
+#endif
   }
   
   //--------------------------------------------------------------------------
