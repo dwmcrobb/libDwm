@@ -48,7 +48,7 @@
 //!  using the 901,114 prefixes in ../tests/IPV4_prefixes.20210123:
 //!
 //!    - roughly 10 million lookups/second on a Mac Studio M1 Ultra.
-//!    - roughly 8.7 million lookups/second on an AMD Threadripper 3960X.
+//!    - roughly 9.1 million lookups/second on an AMD Threadripper 3960X.
 //!    - roughly 7.2 million lookups/second on a Xeon E3-1270 V2 @ 3.50GHz.
 //!    - roughly 5.1 million lookups/second on an i5-2405S @ 2.50GHz.
 //!    - roughly 4.7 million lookups/second on a Xeon L5640 @ 2.27GHz.
