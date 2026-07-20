@@ -173,9 +173,65 @@ namespace Dwm {
     }
     return Ipv4Address(htonl(lastAddrRaw));
   }
-  
+
   //--------------------------------------------------------------------------
-  //  
+  static constexpr std::array<std::array<uint8_t,4>,33>  sg_masks {
+    {
+      {0, 0, 0, 0 },
+
+      {0x80, 0, 0, 0},
+      {0xc0, 0, 0, 0},
+      {0xe0, 0, 0, 0},
+      {0xf0, 0, 0, 0},
+      {0xf8, 0, 0, 0},
+      {0xfc, 0, 0, 0},
+      {0xfe, 0, 0, 0},
+      {0xff, 0, 0, 0},
+      
+      {0xff, 0x80, 0, 0},
+      {0xff, 0xc0, 0, 0},
+      {0xff, 0xe0, 0, 0},
+      {0xff, 0xf0, 0, 0},
+      {0xff, 0xf8, 0, 0},
+      {0xff, 0xfc, 0, 0},
+      {0xff, 0xfe, 0, 0},
+      {0xff, 0xff, 0, 0},
+
+      {0xff, 0xff, 0x80, 0},
+      {0xff, 0xff, 0xc0, 0},
+      {0xff, 0xff, 0xe0, 0},
+      {0xff, 0xff, 0xf0, 0},
+      {0xff, 0xff, 0xf8, 0},
+      {0xff, 0xff, 0xfc, 0},
+      {0xff, 0xff, 0xfe, 0},
+      {0xff, 0xff, 0xff, 0},
+
+      {0xff, 0xff, 0xff, 0x80},
+      {0xff, 0xff, 0xff, 0xc0},
+      {0xff, 0xff, 0xff, 0xe0},
+      {0xff, 0xff, 0xff, 0xf0},
+      {0xff, 0xff, 0xff, 0xf8},
+      {0xff, 0xff, 0xff, 0xfc},
+      {0xff, 0xff, 0xff, 0xfe},
+      {0xff, 0xff, 0xff, 0xff}
+    }
+  };
+
+#if 1
+  //--------------------------------------------------------------------------
+  bool Ipv4Prefix::Set(const Ipv4Address & network, uint8_t maskLength)
+  {
+    if (maskLength > 32)
+      return(false);
+
+    *(ipv4addr_t *)this->_data =
+      network.Raw() & *(ipv4addr_t *)(sg_masks[maskLength].data());
+    this->_data[4] = maskLength;
+    return(true);
+  }
+
+#else
+
   //--------------------------------------------------------------------------
   bool Ipv4Prefix::Set(const Ipv4Address & network, uint8_t maskLength)
   {
@@ -199,9 +255,10 @@ namespace Dwm {
     
     return(true);
   }
+#endif
 
-  //--------------------------------------------------------------------------
-  //!  
+#if 1
+
   //--------------------------------------------------------------------------
   void Ipv4Prefix::Set(const Ipv4Address & network,
                        const Ipv4Address & netmask)
@@ -224,7 +281,34 @@ namespace Dwm {
     memcpy(this->_data, &net, sizeof(net));
     this->_data[4] = maskLen;
   }
-    
+
+#else
+  
+  //--------------------------------------------------------------------------
+  void Ipv4Prefix::Set(const Ipv4Address & network,
+                       const Ipv4Address & netmask)
+  {
+    ipv4addr_t  mask = ntohl(netmask.Raw());
+    ipv4addr_t  net = network.Raw();
+    int8_t      maskLen = 32;
+    while (maskLen > 0) {
+      if ((mask >> (32 - maskLen)) & 0x1) {
+        break;
+      }
+      --maskLen;
+    }
+    int8_t  remainingBits = maskLen;
+    while (remainingBits > 0) {
+      assert((mask >> (32 - remainingBits)) & 0x1);
+      --remainingBits;
+    }
+    net &= htonl(mask);
+    memcpy(this->_data, &net, sizeof(net));
+    this->_data[4] = maskLen;
+  }
+
+#endif
+  
   //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
