@@ -471,8 +471,10 @@ namespace Dwm {
   //--------------------------------------------------------------------------
   bool Ipv6Prefix::Contains(const Ipv6Prefix & prefix) const
   {
-#if __SSE2__ || __APPLE__
     if (_length <= prefix._length) {
+
+#if __SSE2__ || __APPLE__
+
       eve::wide<uint8_t,eve::fixed<16>>  a(&(_addr.s6_addr[0]));
       eve::wide<uint8_t,eve::fixed<16>>  b(&(prefix._addr.s6_addr[0]));
       b ^= a;
@@ -481,25 +483,30 @@ namespace Dwm {
         return (((*fnd * 8) + std::countl_zero(b.get(*fnd))) >= _length);
       }
       return true;
-    }
+      
 #elif __ARM_NEON
-    uint8x16_t  a = vld1q_u8(_addr.s6_addr);
-    uint8x16_t  b = vld1q_u8(prefix._addr.s6_addr);
-    uint8_t  v[16];
-    vst1q_u8(v, veorq_u8(a, b));
-    uint8_t  i = 0;
-    for ( ; (i < 16) && (! v[i]); ++i) {
-    }
-    if (i < 16) {
-      return ((i * 8) + std::countl_zero(v[i])) >= _length;
-    }
-    return true;
-    
+      
+      uint8x16_t  a = vld1q_u8(_addr.s6_addr);
+      uint8x16_t  b = vld1q_u8(prefix._addr.s6_addr);
+      uint8_t  v[16];
+      vst1q_u8(v, veorq_u8(a, b));
+      uint8_t  i = 0;
+      for ( ; (i < 16) && (! v[i]); ++i) {
+      }
+      if (i < 16) {
+        return ((i * 8) + std::countl_zero(v[i])) >= _length;
+      }
+      return true;
+      
 #else
-    if (_length <= prefix._length) {
-      return ((prefix.Network() & this->Netmask()) == this->Network());
-    }
+      
+      if (_length <= prefix._length) {
+        return ((prefix.Network() & this->Netmask()) == this->Network());
+      }
+      
 #endif
+      
+    }
     return false;
   }
     
