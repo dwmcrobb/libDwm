@@ -382,8 +382,8 @@ namespace Dwm {
   {
 #if __APPLE__ || __ARM_NEON
     return ((prefix._data[4] >= _data[4])
-            && ((prefix.Network().Raw() & this->Netmask().Raw())
-                == this->Network().Raw()));
+            && ((prefix.NetworkRaw() & this->Netmask().Raw())
+                == this->NetworkRaw()));
 #elif __SSE2__
     return ((prefix._data[4] >= _data[4])
             && (std::countl_zero(ntohl(prefix.NetworkRaw() ^ this->NetworkRaw()))
