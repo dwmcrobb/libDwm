@@ -139,6 +139,45 @@ namespace Dwm {
       }
     };
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    std::ostream & Write(std::ostream & os) const
+    {
+      EncodedU64  numEntries = _size;
+      if (numEntries.Write(os)) {
+        if (numEntries) {
+          for (const_iterator it = cbegin(); it != cend(); ++it) {
+            if (! StreamIO::Write(os, *it)) {
+              break;
+            }
+          }
+        }
+      }
+      return os;
+    }
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    std::istream & Read(std::istream & is)
+    {
+      clear();
+      EncodedU64  numEntries;
+      if (numEntries.Read(is)) {
+        std::pair<key_type, mapped_type>  entry;
+        for (uint64_t i = 0; i < numEntries; ++i) {
+          if (StreamIO::Read(is, entry)) {
+            insert(entry);
+          }
+          else {
+            break;
+          }
+        }
+      }
+      return is;
+    }
+    
   public:
     //------------------------------------------------------------------------
     //!  Type aliases matching std::map convention.
