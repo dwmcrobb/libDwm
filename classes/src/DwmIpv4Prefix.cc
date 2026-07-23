@@ -384,6 +384,10 @@ namespace Dwm {
     return ((prefix._data[4] >= _data[4])
             && ((prefix.Network().Raw() & this->Netmask().Raw())
                 == this->Network().Raw()));
+#elif __SSE2__
+    return ((prefix._data[4] >= _data[4])
+            && (std::countl_zero(ntohl(prefix.NetworkRaw() ^ this->NetworkRaw()))
+                >= _data[4]));
 #else
     if (prefix._data[4] >= _data[4]) {
       uint8_t  i = 0, x;
