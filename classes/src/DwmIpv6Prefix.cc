@@ -1,7 +1,5 @@
 //===========================================================================
-// @(#) $DwmPath$
-//===========================================================================
-//  Copyright (c) Daniel W. McRobb 2005-2007, 2020, 2023
+//  Copyright (c) Daniel W. McRobb 2005-2007, 2020, 2023, 2026
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
