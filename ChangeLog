@@ -1,3 +1,11 @@
+2026-07-25  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* classes/include/DwmIpv4PrefixPatricia.hh: Added I/O for iostreams,
+	descriptors and FILEs.
+	Improved performance of Ipv6PrefixPatricia by using SIMD in a few
+	places.  Now getting roughly 5.9 million lookups/sec on Mac Studio
+	M1 Ultra.
+
 2026-07-13  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* classes/include/DwmIpv6PrefixPatricia.hh

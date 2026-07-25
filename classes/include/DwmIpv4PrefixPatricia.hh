@@ -67,6 +67,8 @@
 #include <vector>
 
 #include "DwmIpv4Prefix.hh"
+#include "DwmDescriptorIO.hh"
+#include "DwmFileIO.hh"
 
 namespace Dwm {
 
@@ -176,6 +178,110 @@ namespace Dwm {
         }
       }
       return is;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    ssize_t Write(int fd) const
+    {
+      ssize_t  rc = -1;
+      EncodedU64  numEntries = _size;
+      ssize_t  bytesWritten = numEntries.Write(fd);
+      if (bytesWritten > 0) {
+        rc = bytesWritten;
+        if (numEntries) {
+          for (const_iterator it = cbegin(); it != cend(); ++it) {
+            bytesWritten = DescriptorIO::Write(fd, *it);
+            if (bytesWritten > 0) {
+              rc += bytesWritten;
+            }
+            else {
+              rc = -1;
+              break;
+            }
+          }
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    ssize_t Read(int fd)
+    {
+      ssize_t  rc = -1;
+      clear();
+      EncodedU64  numEntries;
+      ssize_t  bytesRead = numEntries.Read(fd);
+      if (bytesRead > 0) {
+        rc = bytesRead;
+        std::pair<key_type, mapped_type>  entry;
+        for (uint64_t i = 0; i < numEntries; ++i) {
+          bytesRead = DescriptorIO::Read(fd, entry);
+          if (bytesRead > 0) {
+            insert(entry);
+            rc += bytesRead;
+          }
+          else {
+            rc = -1;
+            break;
+          }
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    size_t Write(FILE *f) const
+    {
+      size_t  rc = 0;
+      if (f) {
+        EncodedU64  numEntries = _size;
+        if (numEntries.Write(f)) {
+          rc = 1;
+          if (numEntries) {
+            for (const_iterator it = cbegin(); it != cend(); ++it) {
+              if (! FileIO::Write(f, *it)) {
+                rc = 0;
+                break;
+              }
+            }
+          }
+        }
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    size_t Read(FILE *f)
+    {
+      size_t  rc = 0;
+      clear();
+      if (f) {
+        EncodedU64  numEntries;
+        if (numEntries.Read(f)) {
+          rc = 1;
+          if (numEntries) {
+            std::pair<key_type, mapped_type>  entry;
+            for (size_t i = 0; i < numEntries; ++i) {
+              if (FileIO::Read(f, entry)) {
+                insert(entry);
+              }
+              else {
+                rc = 0;
+                break;
+              }
+            }
+          }
+        }
+      }
+      return rc;
     }
     
   public:
