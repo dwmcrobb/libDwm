@@ -8,10 +8,15 @@ What do I need?
   - const_iterator type
   - cbegin(), cend()
   - size()
-  - For associative containers:
+  - For pair-associative containers:
     - key_type, mapped_type, value_type
+    - insert() and/or operator []
+  - For associative containers:
+    - key_type, value_type
+    - insert()
   - For sequence containers:
     - value_type
+    - insert() and/or push_back()
 
 ----------------------------------------------------------------------------
 Document the SizedLength() class in the latex documentation.
