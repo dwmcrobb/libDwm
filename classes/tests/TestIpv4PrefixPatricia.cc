@@ -556,6 +556,178 @@ void TestBidirectionalIterators()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+void TestStreamIO(const Ipv4PrefixPatricia<string> & trie)
+{
+  ofstream  os("./TestIpv4PrefixPatricia.out");
+  if (UnitAssert(os)) {
+    if (UnitAssert(trie.Write(os))) {
+      os.close();
+      ifstream  is("./TestIpv4PrefixPatricia.out");
+      if (UnitAssert(is)) {
+        Ipv4PrefixPatricia<string>  trie2;
+        if (UnitAssert(trie2.Read(is))) {
+          if (UnitAssert(trie.size() == trie2.size())) {
+            for (const auto & entry : trie) {
+              auto  it2 = trie2.find(entry.first);
+              if (UnitAssert(it2 != trie2.end())) {
+                UnitAssert(entry.second == it2->second);
+              }
+            }
+          }
+        }
+        is.close();
+      }
+    }
+    std::remove("./TestIpv4PrefixPatricia.out");
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+void TestDescriptorIO(const Ipv4PrefixPatricia<string> & trie)
+{
+  int  ofd = open("./TestIpv4PrefixPatricia.out", O_WRONLY|O_CREAT, 0644);
+  if (UnitAssert(trie.Write(ofd)) > 0) {
+    close(ofd);
+    int  ifd = open("./TestIpv4PrefixPatricia.out", O_RDONLY);
+    if (UnitAssert(0 <= ifd)) {
+      Ipv4PrefixPatricia<string>  trie2;
+      if (UnitAssert(trie2.Read(ifd))) {
+        if (UnitAssert(trie.size() == trie2.size())) {
+          for (const auto & entry : trie) {
+            auto  it2 = trie2.find(entry.first);
+            if (UnitAssert(it2 != trie2.end())) {
+              UnitAssert(entry.second == it2->second);
+            }
+          }
+        }                                                                    
+      }
+      close(ifd);
+    }
+    std::remove("./TestIpv4PrefixPatricia.out");
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestFileIO(const Ipv4PrefixPatricia<string> & trie)
+{
+  FILE  *f = fopen("./TestIpv4PrefixPatricia.out", "w");
+  if (UnitAssert(f)) {
+    UnitAssert(trie.Write(f) > 0);
+    fclose(f);
+    f = fopen("./TestIpv4PrefixPatricia.out", "r");
+    if (UnitAssert(f)) {
+      Ipv4PrefixPatricia<string>  trie2;
+      if (UnitAssert(trie2.Read(f) > 0)) {
+        if (UnitAssert(trie.size() == trie2.size())) {
+          for (const auto & entry : trie) {
+            auto  it2 = trie2.find(entry.first);
+            if (UnitAssert(it2 != trie2.end())) {
+              UnitAssert(entry.second == it2->second);
+            }
+          }
+        }
+      }
+      fclose(f);
+    }
+    std::remove("./TestIpv4PrefixPatricia.out");
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestGZIO(const Ipv4PrefixPatricia<string> & trie)
+{
+  gzFile  gzf = gzopen("./TestIpv4PrefixPatricia_out.gz", "wb");
+  if (UnitAssert(gzf)) {
+    UnitAssert(trie.Write(gzf) > 0);
+    gzclose(gzf);
+    gzf = gzopen("./TestIpv4PrefixPatricia_out.gz", "rb");
+    if (UnitAssert(gzf)) {
+      Ipv4PrefixPatricia<string>  trie2;
+      if (UnitAssert(trie2.Read(gzf) > 0)) {
+        if (UnitAssert(trie.size() == trie2.size())) {
+          for (const auto & entry : trie) {
+            auto  it2 = trie2.find(entry.first);
+            if (UnitAssert(it2 != trie2.end())) {
+              UnitAssert(entry.second == it2->second);
+            }
+          }
+        }
+      }
+      gzclose(gzf);
+    }
+    std::remove("./TestIpv4PrefixPatricia_out.gz");
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestBZ2IO(const Ipv4PrefixPatricia<string> & trie)
+{
+  BZFILE  *bzf = BZ2_bzopen("./TestIpv4PrefixPatricia_out.bz2", "wb");
+  if (UnitAssert(bzf)) {
+    UnitAssert(trie.BZWrite(bzf) > 0);
+    BZ2_bzclose(bzf);
+    bzf = BZ2_bzopen("./TestIpv4PrefixPatricia_out.bz2", "rb");
+    if (UnitAssert(bzf)) {
+      Ipv4PrefixPatricia<string>  trie2;
+      if (UnitAssert(trie2.BZRead(bzf)) > 0) {
+        if (UnitAssert(trie.size() == trie2.size())) {
+          for (const auto & entry : trie) {
+            auto  it2 = trie2.find(entry.first);
+            if (UnitAssert(it2 != trie2.end())) {
+              UnitAssert(entry.second == it2->second);
+            }
+          }
+        }
+      }
+      BZ2_bzclose(bzf);
+    }
+    std::remove("./TestIpv4PrefixPatricia_out.bz2");
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static pair<Ipv4Prefix,string> MakeTestEntry(const std::string & pfx)
+{
+  return pair<Ipv4Prefix,string>{Ipv4Prefix(pfx),pfx};
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+void TestIO()
+{
+  Ipv4PrefixPatricia<string>  trie;
+  trie.insert(MakeTestEntry("10.0.0.0/8"));
+  trie.insert(MakeTestEntry("192.168.0.0/16"));
+  trie.insert(MakeTestEntry("172.16.0.0/12"));
+  trie.insert(MakeTestEntry("10.1.0.0/16"));
+  trie.insert(MakeTestEntry("10.1.1.0/24"));
+  TestStreamIO(trie);
+  TestDescriptorIO(trie);
+  TestFileIO(trie);
+  TestGZIO(trie);
+  TestBZ2IO(trie);
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
   OptArgs  optargs;
@@ -577,6 +749,7 @@ int main(int argc, char *argv[])
     TestFindLongestPerformance();
   }
   TestErase();
+  TestIO();
   
   if (Assertions::Total().Failed()) {
     Assertions::Print(cerr, true);
