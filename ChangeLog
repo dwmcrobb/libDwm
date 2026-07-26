@@ -1,5 +1,8 @@
 2026-07-25  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* classes/tests/TestIpv4PrefixPatricia.cc: Added I/O tests for
+	streams, descriptors, FILEs, gzFiles and BZFILEs.
+
 	* classes/include/DwmIpv4PrefixPatricia.hh: Addez GZIO and BZ2IO
 	capability.  Added public clear() member.
 
