@@ -1,3 +1,19 @@
+I need to examine refactoring a bit such that I have a concept
+for a container being forward iterable, with a size() operator
+and elements that can be read or written.  This comes up due
+to the addition of Patricia trie class templates, which adds
+yet another pair associative container which currently has to
+have its own bespoke I/O members.
+What do I need?
+  - const_iterator type
+  - cbegin(), cend()
+  - size()
+  - For associative containers:
+    - key_type, mapped_type, value_type
+  - For sequence containers:
+    - value_type
+
+----------------------------------------------------------------------------
 Document the SizedLength() class in the latex documentation.
 Note that I intend to start using it for length-encoded
 stuff in the near future (especially strings and STL
