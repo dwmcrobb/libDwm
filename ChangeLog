@@ -1,5 +1,8 @@
 2026-07-25  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* classes/include/DwmIpv4PrefixPatricia.hh: Addez GZIO and BZ2IO
+	capability.  Added public clear() member.
+
 	* classes/include/DwmIpv4PrefixPatricia.hh: Added I/O for iostreams,
 	descriptors and FILEs.
 	Improved performance of Ipv6PrefixPatricia by using SIMD in a few
