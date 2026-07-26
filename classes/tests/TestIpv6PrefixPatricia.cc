@@ -559,6 +559,172 @@ void TestBidirectionalIterators()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void TestStreamIO(const Ipv6PrefixPatricia<string> & trie)
+{
+  ofstream  os("./TestIpv6PrefixPatricia.out");
+  if (UnitAssert(os)) {
+    if (UnitAssert(trie.Write(os))) {
+      os.close();
+      ifstream  is("./TestIpv6PrefixPatricia.out");
+      if (UnitAssert(is)) {
+        Ipv6PrefixPatricia<string>  trie2;
+        if (UnitAssert(trie2.Read(is))) {
+          if (UnitAssert(trie.size() == trie2.size())) {
+            for (const auto & entry : trie) {
+              auto  it2 = trie2.find(entry.first);
+              if (UnitAssert(it2 != trie2.end())) {
+                UnitAssert(entry.second == it2->second);
+              }
+            }
+          }
+        }
+        is.close();
+      }
+    }
+    std::remove("./TestIpv6PrefixPatricia.out");
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+void TestDescriptorIO(const Ipv6PrefixPatricia<string> & trie)
+{
+  int  ofd = open("./TestIpv6PrefixPatricia.out", O_WRONLY|O_CREAT, 0644);
+  if (UnitAssert(trie.Write(ofd)) > 0) {
+    close(ofd);
+    int  ifd = open("./TestIpv6PrefixPatricia.out", O_RDONLY);
+    if (UnitAssert(0 <= ifd)) {
+      Ipv6PrefixPatricia<string>  trie2;
+      if (UnitAssert(trie2.Read(ifd))) {
+        if (UnitAssert(trie.size() == trie2.size())) {
+          for (const auto & entry : trie) {
+            auto  it2 = trie2.find(entry.first);
+            if (UnitAssert(it2 != trie2.end())) {
+              UnitAssert(entry.second == it2->second);
+            }
+          }
+        }
+      }
+      close(ifd);
+    }
+    std::remove("./TestIpv6PrefixPatricia.out");
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestFileIO(const Ipv6PrefixPatricia<string> & trie)
+{
+  FILE  *f = fopen("./TestIpv6PrefixPatricia.out", "w");
+  if (UnitAssert(f)) {
+    UnitAssert(trie.Write(f) > 0);
+    fclose(f);
+    f = fopen("./TestIpv6PrefixPatricia.out", "r");
+    if (UnitAssert(f)) {
+      Ipv6PrefixPatricia<string>  trie2;
+      if (UnitAssert(trie2.Read(f) > 0)) {
+        if (UnitAssert(trie.size() == trie2.size())) {
+          for (const auto & entry : trie) {
+            auto  it2 = trie2.find(entry.first);
+            if (UnitAssert(it2 != trie2.end())) {
+              UnitAssert(entry.second == it2->second);
+            }
+          }
+        }
+      }
+      fclose(f);
+    }
+    std::remove("./TestIpv6PrefixPatricia.out");
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestGZIO(const Ipv6PrefixPatricia<string> & trie)
+{
+  gzFile  gzf = gzopen("./TestIpv6PrefixPatricia_out.gz", "wb");
+  if (UnitAssert(gzf)) {
+    UnitAssert(trie.Write(gzf) > 0);
+    gzclose(gzf);
+    gzf = gzopen("./TestIpv6PrefixPatricia_out.gz", "rb");
+    if (UnitAssert(gzf)) {
+      Ipv6PrefixPatricia<string>  trie2;
+      if (UnitAssert(trie2.Read(gzf) > 0)) {
+        if (UnitAssert(trie.size() == trie2.size())) {
+          for (const auto & entry : trie) {
+            auto  it2 = trie2.find(entry.first);
+            if (UnitAssert(it2 != trie2.end())) {
+              UnitAssert(entry.second == it2->second);
+            }
+          }
+        }
+      }
+      gzclose(gzf);
+    }
+    std::remove("./TestIpv6PrefixPatricia_out.gz");
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestBZ2IO(const Ipv6PrefixPatricia<string> & trie)
+{
+  BZFILE  *bzf = BZ2_bzopen("./TestIpv6PrefixPatricia_out.bz2", "wb");
+  if (UnitAssert(bzf)) {
+    UnitAssert(trie.BZWrite(bzf) > 0);
+    BZ2_bzclose(bzf);
+    bzf = BZ2_bzopen("./TestIpv6PrefixPatricia_out.bz2", "rb");
+    if (UnitAssert(bzf)) {
+      Ipv6PrefixPatricia<string>  trie2;
+      if (UnitAssert(trie2.BZRead(bzf)) > 0) {
+        if (UnitAssert(trie.size() == trie2.size())) {
+          for (const auto & entry : trie) {
+            auto  it2 = trie2.find(entry.first);
+            if (UnitAssert(it2 != trie2.end())) {
+              UnitAssert(entry.second == it2->second);
+            }
+          }
+        }
+      }
+      BZ2_bzclose(bzf);
+    }
+    std::remove("./TestIpv6PrefixPatricia_out.bz2");
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestIO()
+{
+  Ipv6PrefixPatricia<string>  trie;
+  trie.insert({Ipv6Prefix("a0a::/16"), "a0a::/16"});
+  trie.insert({Ipv6Prefix("c0c0:a8a8::/32"), "c0c0:a8a8::/32"});
+  trie.insert({Ipv6Prefix("acac:1000::/24"), "acac:1000::/24"});
+  trie.insert({Ipv6Prefix("a0a:101::/32"), "a0a:101::/32"});
+  trie.insert({Ipv6Prefix("a0a:101:101::/48"), "a0a:101:101::/48"});
+  
+  TestStreamIO(trie);
+  TestDescriptorIO(trie);
+  TestFileIO(trie);
+  TestGZIO(trie);
+  TestBZ2IO(trie);
+  
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
   OptArgs  optargs;
@@ -580,6 +746,7 @@ int main(int argc, char *argv[])
     TestFindLongestPerformance();
   }
   TestErase();
+  TestIO();
   
   if (Assertions::Total().Failed()) {
     Assertions::Print(cerr, true);
