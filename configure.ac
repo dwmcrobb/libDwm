@@ -52,6 +52,7 @@ dnl  Check for packages with pkg-config.  These will set PKG_REQ_PKGS to a
 dnl  comma-separated list appropriate for the 'Required:' field in our
 dnl  libDwm.pc file.  They will also set PC_PKGS to a space-separated list
 dnl  appropriate for pkg-config queries.
+DWM_CHECK_PKG(eve,[exit 1])
 DWM_CHECK_PKG(nlohmann_json,[exit 1])
 DWM_CHECK_PKG(libxxhash,[exit 1])
 DWM_CHECK_PKG(libtirpc)
