@@ -1,5 +1,9 @@
 2026-07-25  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
+	* configure, configure.ac: Now require the eve package, specifically
+	my fork which has pkg-config support and is installed as a native
+	package on macOS, FreeBSD and Debian-based Linux distributions.
+
 	* classes/tests/TestIpv4PrefixPatricia.cc: Added I/O tests for
 	streams, descriptors, FILEs, gzFiles and BZFILEs.
 

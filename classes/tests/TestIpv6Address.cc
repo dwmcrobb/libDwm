@@ -54,8 +54,26 @@ static const char storeFile[] = "/tmp/Ipv6Address.store";
 using namespace std;
 using namespace Dwm;
 
+//----------------------------------------------------------------------------
+void TestBitwiseAnd()
+{
+  Ipv6Address  addr1("4444:8002:5:2::2");
+  Ipv6Address  mask1("ffff::");
+  Ipv6Address  masked1 = addr1 & mask1;
+  UnitAssert(masked1 == Ipv6Address("4444::"));
+  Ipv6Address  addr2("8444:8002:5:2::1");
+  Ipv6Address  mask2("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff");
+  Ipv6Address  masked2 = addr2 & mask2;
+  UnitAssert(masked2 == Ipv6Address("8444:8002:5:2::1"));
+  
+  return;
+}
+
+//----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
+  TestBitwiseAnd();
+  
   Ipv6Address  addr1("4444:8002:5:2::2");
   Ipv6Address  addr2("4444:8001:9500:172::1");
 
