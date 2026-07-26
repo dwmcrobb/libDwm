@@ -1,3 +1,8 @@
+2026-07-26  Daniel McRobb  <dwm@thrip.mcplex.net>
+
+	* classes/include/DwmIpv6PrefixPatricia.hh: Added StreamIO,
+	DescriptorIO, FileIO, GZIO and BZ2IO functionality.
+
 2026-07-25  Daniel McRobb  <dwm@thrip.mcplex.net>
 
 	* classes/include/DwmIpv6PrefixPatricia.hh: Added public clear()
