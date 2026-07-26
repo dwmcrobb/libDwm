@@ -310,7 +310,7 @@ namespace Dwm {
     //!  conceptually readable, meaning each member of the pair has direct
     //!  support for reading by the library or has a member function to read
     //!  it from the source of interest.  For example, if we want to know if
-    //!  @c PairType can conceptually be read from a @c std::istream, @c W
+    //!  @c PairType can conceptually be read from a @c std::istream, @c R
     //!  would be @c Dwm::HasStreamRead_t.
     //------------------------------------------------------------------------
     template <typename PairType, template <typename> typename R>
