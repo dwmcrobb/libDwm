@@ -1,3 +1,8 @@
+2026-07-25  Daniel McRobb  <dwm@thrip.mcplex.net>
+
+	* classes/include/DwmIpv6PrefixPatricia.hh: Added public clear()
+	member.
+
 2026-07-25  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
 	* configure, configure.ac: Now require the eve package, specifically
