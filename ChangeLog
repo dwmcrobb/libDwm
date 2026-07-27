@@ -1,5 +1,11 @@
 2026-07-27  Daniel W. McRobb  <dwm@kiva.mcplex.net>
 
+	* tagged as libDwm-0.9.74
+
+	* classes/include/DwmIpv4PrefixPatricia.hh
+	* classes/include/DwmIpv4PrefixPatricia.hh
+	Added empty() member.
+
 	* tagged as libDwm-0.9.73
 
 2026-07-26  Daniel McRobb  <dwm@thrip.mcplex.net>
