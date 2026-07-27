@@ -1,3 +1,7 @@
+2026-07-27  Daniel W. McRobb  <dwm@kiva.mcplex.net>
+
+	* tagged as libDwm-0.9.73
+
 2026-07-26  Daniel McRobb  <dwm@thrip.mcplex.net>
 
 	* classes/include/DwmIpv6PrefixPatricia.hh: Added StreamIO,
