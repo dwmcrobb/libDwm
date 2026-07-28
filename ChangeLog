@@ -1,5 +1,10 @@
 2026-07-27  Daniel W. McRobb  <dwm@kiva.mcplex.net>
 
+	* tagged as libDwm-0.9.75
+
+	* classes/include/DwmIpv6PrefixPatricia.hh:
+	Fixed find_matches(const Ipv6Address &, std::vector<value_type> &)
+
 	* classes/include/DwmIpv4PrefixPatricia.hh:
 	Fixed find_matches(const Ipv4Address &, std::vector<value_type> &)
 
