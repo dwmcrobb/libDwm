@@ -462,7 +462,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     bool find_matches(const Ipv4Address & addr,
                       std::vector<value_type> & matches) const
-    { return find_matches(Ipv4Prefix(addr, 32)); }
+    { return find_matches(Ipv4Prefix(addr, 32), matches); }
     
     //----------------------------------------------------------------------
     //!  Returns the total number of nodes in the trie.
