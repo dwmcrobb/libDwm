@@ -41,6 +41,9 @@
 #include <fstream>
 #include <iostream>
 
+#include <boost/iostreams/filtering_streambuf.hpp>
+#include <boost/iostreams/filter/gzip.hpp>
+
 #include "DwmIpv4PrefixPatricia.hh"
 #include "DwmOptArgs.hh"
 #include "DwmTimeValue.hh"
@@ -69,32 +72,56 @@ static void SetMyDir(const char *argv0)
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static bool LoadRoutesToAS(vector<pair<Ipv4Prefix,string>> & pfxVec,
+                           Ipv4PrefixPatricia<string> & r,
+                           const std::string & path)
+{
+  using boost::iostreams::filtering_streambuf;
+  using boost::iostreams::gzip_decompressor;
+  using boost::iostreams::gzip_compressor;
+  
+  r.clear();
+  ifstream is(path, ios_base::in | ios_base::binary);
+  if (UnitAssert(is)) {
+    filtering_streambuf<boost::iostreams::input>  gzin;
+    gzin.push(gzip_decompressor());
+    gzin.push(is);
+    istream   gzis(&gzin);
+    string  pfxstr, asstr;
+    while (gzis >> pfxstr >> asstr) {
+      Ipv4Prefix  pfx(pfxstr);
+      r[pfx] = asstr;
+      pfxVec.push_back({pfx,asstr});
+    }
+    is.close();
+  }
+  return UnitAssert(! r.empty());
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 static void TestFindLongest()
 {
   Ipv4PrefixPatricia<string>  r;
-  vector<Ipv4Prefix>   pfxVec;
-  ifstream is(g_myDir + "/IPV4_prefixes.20210123");
-  if (UnitAssert(is)) {
-    char  buf[512];
-    memset(buf,0,512);
-    while (is.getline(buf,512,'\n')) {
-      Ipv4Prefix  pfx(buf);
-      r[pfx] = buf;
-      pfxVec.push_back(pfx);
-      memset(buf,0,512);
-    }
-    is.close();
+  vector<pair<Ipv4Prefix,string>>   pfxVec;
+
+  if (UnitAssert(LoadRoutesToAS(pfxVec, r,
+                                g_myDir + "/inputs/routes2as-20260724.gz"))) {
     UnitAssert(pfxVec.size() == r.size());
+    r.Aggregate();
+    // cerr << pfxVec.size() << " aggregated to " << r.size() << '\n';
     for (const auto & pfx : pfxVec) {
-      auto  it = r.find_longest(pfx);
+      auto  it = r.find_longest(pfx.first);
       if (UnitAssert(it != r.end())) {
-        UnitAssert(it->first == pfx);
-        UnitAssert(it->second == pfx.ToString());
+        UnitAssert(it->first.Contains(pfx.first));
+        UnitAssert(it->second == pfx.second);
       }
-      Ipv4PrefixPatricia<string>::const_iterator cit = r.find_longest(pfx);
+      Ipv4PrefixPatricia<string>::const_iterator cit
+        = r.find_longest(pfx.first);
       if (UnitAssert(cit != r.end())) {
-        UnitAssert(cit->first == pfx);
-        UnitAssert(cit->second == pfx.ToString());
+        UnitAssert(cit->first.Contains(pfx.first));
+        UnitAssert(cit->second == pfx.second);
       }
     }
   }
@@ -164,6 +191,36 @@ static void TestFindLongestPerformance()
     uint64_t  lookupsPerSec = (pfxVec.size() * 1000000ULL * 5) / usecs;
     cout << pfxVec.size() << " prefixes, " << lookupsPerSec
          << " string lookups/sec (iterator)" << endl;
+    UnitAssert((5 * pfxVec.size()) == count);
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+static void TestFindLongestAggregatedPerformance()
+{
+  Ipv4PrefixPatricia<string>       r;
+  vector<pair<Ipv4Prefix,string>>  pfxVec;
+
+  if (UnitAssert(LoadRoutesToAS(pfxVec, r,
+                                g_myDir + "/inputs/routes2as-20260724.gz"))) {
+    r.Aggregate();
+    size_t  count = 0;
+    Dwm::TimeValue  startTime(true);
+    for (int i = 0; i < 5; ++i) {
+      for (const auto & pfx : pfxVec) {
+        auto  it = r.find_longest(pfx.first);
+        count += (it != r.end() ? 1 : 0);
+      }
+    }
+    Dwm::TimeValue  endTime(true);
+    endTime -= startTime;
+    uint64_t  usecs = (endTime.Secs() * 1000000ULL) + endTime.Usecs();
+    uint64_t  lookupsPerSec = (pfxVec.size() * 1000000ULL * 5) / usecs;
+    cout << pfxVec.size() << " prefixes aggregated to " << r.size() << ", "
+         << lookupsPerSec << " string lookups/sec (iterator)" << endl;
     UnitAssert((5 * pfxVec.size()) == count);
   }
   return;
@@ -728,6 +785,35 @@ void TestIO()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+void TestAggregate()
+{
+  Ipv4PrefixPatricia<string>  trie;
+  trie[{"192.168.168/24"}] = "";
+  trie[{"192.168.169/24"}] = "";
+  trie.Aggregate();
+  if (UnitAssert(trie.size() == 1)) {
+    UnitAssert(trie.begin()->first == Ipv4Prefix("192.168.168/23"));
+  }
+  trie[{"10.1/16"}] = "";
+  trie[{"10.2/16"}] = "";
+  trie[{"10.3/16"}] = "";
+  trie.Aggregate();
+  if (UnitAssert(trie.size() == 3)) {
+    UnitAssert(trie.begin()->first == Ipv4Prefix("10.1/16"));
+    UnitAssert(trie.rbegin()->first == Ipv4Prefix("192.168.168/23"));
+  }
+  trie[{"10/8"}] = "";
+  trie.Aggregate();
+  if (UnitAssert(trie.size() == 2)) {
+    UnitAssert(trie.begin()->first == Ipv4Prefix("10/8"));
+    UnitAssert(trie.rbegin()->first == Ipv4Prefix("192.168.168/23"));
+  }
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
   OptArgs  optargs;
@@ -737,6 +823,7 @@ int main(int argc, char *argv[])
   g_performanceTests = optargs.Get<bool>('p');
   SetMyDir(argv[0]);
 
+  TestAggregate();
   TestIterators();
   TestBidirectionalIterators();
   TestReverseIterators();
@@ -747,6 +834,7 @@ int main(int argc, char *argv[])
   TestFindMatches();
   if (g_performanceTests) {
     TestFindLongestPerformance();
+    TestFindLongestAggregatedPerformance();
   }
   TestErase();
   TestIO();

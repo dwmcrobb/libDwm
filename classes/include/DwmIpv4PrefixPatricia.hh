@@ -62,6 +62,7 @@
 #include <array>
 #include <cstdint>
 #include <iterator>
+#include <list>
 #include <optional>
 #include <utility>
 #include <vector>
@@ -269,6 +270,28 @@ namespace Dwm {
     {
       clear(_root);
     }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    void Aggregate()
+    {
+      std::map<ValueType,std::list<Ipv4Prefix>>  m;
+      for (const_iterator it = begin(); it != end(); ++it) {
+        m[it->second].push_back(it->first);
+      }
+      uint64_t  count = 0;
+      for (auto & e : m) {
+        CombinePrefixes(e.second, e.first);
+      }
+      clear();
+      for (auto & e : m) {
+        for (const auto & p : e.second) {
+          insert({p,e.first});
+        }
+      }
+      return;
+    }
     
     //----------------------------------------------------------------------
     //!  Remove a prefix from the trie.
@@ -420,7 +443,26 @@ namespace Dwm {
     //!  Returns end() if no match is found.
     //------------------------------------------------------------------------
     const_iterator find_longest(const Ipv4Prefix & pfx) const
-    { return const_iterator(find_longest(pfx)); }
+    {
+      auto            *node = _root;
+      const_iterator   it = cend();
+      while (node) {
+        if (node->_pair.first.Contains(pfx)) {
+          if (node->_hasValue) {
+            it = const_iterator(_root, node);
+          }
+          if (node->_pair.first.MaskLength() >= pfx.MaskLength()) {
+            break;
+          }
+          uint8_t  b = pfx.Bit(node->_pair.first.MaskLength());
+          node = node->_children[b];
+        }
+        else {
+          break;
+        }
+      }
+      return it;
+    }
 
     //------------------------------------------------------------------------
     //!  Finds the node with the longest match to the given address @c addr.
@@ -456,6 +498,36 @@ namespace Dwm {
       return (! matches.empty());
     }
 
+    //------------------------------------------------------------------------
+    //!  Finds nodes that contain prefix @c pfx and have a wider netmask than
+    //!  @c pfx, placing them in @c matches.  Returns true if matches were
+    //!  found, else returns false.
+    //------------------------------------------------------------------------
+    bool find_wider(const Ipv4Prefix & pfx,
+                    std::vector<value_type> & matches) const
+    {
+      matches.clear();
+      auto      *node = _root;
+      while (node) {
+        if (node->_pair.first.Contains(pfx)) {
+          if (node->_pair.first.MaskLength() < pfx.MaskLength()) {
+            if (node->_hasValue) {
+              matches.push_back(node->_pair);
+            }
+          }
+          else {
+            break;
+          }
+          uint8_t  b = pfx.Bit(node->_pair.first.MaskLength());
+          node = node->_children[b];
+        }
+        else {
+          break;
+        }
+      }
+      return (! matches.empty());
+    }
+    
     //------------------------------------------------------------------------
     //!  Finds all nodes that match address @c addr, placing them in
     //!  @c matches.  Returns true if matches were found, else returns false.
@@ -801,22 +873,20 @@ namespace Dwm {
         EncodedU64  numEntries;
         ssize_t  bytesRead = numEntries.BZRead(bzf);
         if (bytesRead > 0) {
-        rc = bytesRead;
-        std::pair<key_type, mapped_type>  entry;
-        for (uint64_t i = 0; i < numEntries; ++i) {
-          bytesRead = BZ2IO::BZRead(bzf, entry);
-          if (bytesRead > 0) {
-            insert(entry);
-            rc += bytesRead;
-          }
-          else {
-            rc = -1;
-            break;
+          rc = bytesRead;
+          std::pair<key_type, mapped_type>  entry;
+          for (uint64_t i = 0; i < numEntries; ++i) {
+            bytesRead = BZ2IO::BZRead(bzf, entry);
+            if (bytesRead > 0) {
+              insert(entry);
+              rc += bytesRead;
+            }
+            else {
+              rc = -1;
+              break;
+            }
           }
         }
-      }
-      return rc;
-        
       }
       return rc;
     }
@@ -1255,7 +1325,7 @@ namespace Dwm {
     //----------------------------------------------------------------------
     //!  Recursively delete all nodes under @c n and @c n itself.
     //----------------------------------------------------------------------
-    void clear(Node *n)
+    void clear(Node * & n)
     {
       if (n) {
         clear(n->_children[0]);
@@ -1264,6 +1334,7 @@ namespace Dwm {
           --_size;
         }
         delete n;
+        n = nullptr;
       }
     }
 
@@ -1451,6 +1522,73 @@ namespace Dwm {
       int  ipBit = std::countl_zero(x);
       return (ipBit < maxBits) ? ipBit : -1;
     }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    void CombineAdjacents(std::list<Ipv4Prefix> & prefixes)
+    {
+      bool notDone = false;
+      do {
+        notDone = false;
+        for (auto it = prefixes.begin(); it != prefixes.end(); ++it) {
+          auto nit = it;  ++nit;
+          if (nit != prefixes.end()) {
+            Ipv4Prefix  pfx(*it);
+            if (! pfx.Bit(pfx.MaskLength() - 1)) {
+              //  Last bit is not set, so changing it to zero will yield the
+              //  same network.
+              if (pfx.MaskLength() == nit->MaskLength()) {
+                pfx.MaskLength(pfx.MaskLength() - 1);
+                if (pfx.Contains(*nit)) {
+                  if (find(pfx) == end()) {
+                    *it = pfx;
+                    prefixes.erase(nit);
+                    notDone = true;
+                  }
+                }
+              }
+            }
+          }
+        }
+      } while (notDone);
+      return;
+    }
+    
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    void CombinePrefixes(std::list<Ipv4Prefix> & prefixes,
+                         const mapped_type & mt)
+    {
+      prefixes.sort();
+      CombineAdjacents(prefixes);
+#if 1
+      for (auto it = prefixes.begin(); it != prefixes.end(); ++it) {
+        auto nit = it; ++nit;
+        while (nit != prefixes.end()) {
+          if (it->Contains(*nit)) {
+            std::vector<value_type>  matches;
+            find_wider(*nit, matches);
+            auto  widerit = std::find_if(matches.begin(), matches.end(),
+                                         [&] (const auto & match)
+                                         { return (match.second != mt); });
+            if (widerit == matches.end()) {
+              nit = prefixes.erase(nit);
+            }
+            else {
+              ++nit;
+            }
+          }
+          else {
+            ++nit;
+          }
+        }
+      }
+#endif
+      return;
+    }
+    
   };
 
 }  // namespace Dwm
