@@ -1,5 +1,7 @@
 2026-07-31  Daniel W. McRobb  <dwm@kiva.mcplex.net>
 
+	* tagged as libDwm-0.9.76
+
 	* classes/include/DwmIpv4PrefixPatricia.hh:
 	Added Aggregate() member to aggregate contents.  This is an
 	expensive operation, and requires that less-than and equality
