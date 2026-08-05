@@ -107,6 +107,15 @@ void TestOperators()
   UnitAssert(prefix2 < prefix1);
   UnitAssert(prefix1 == prefix3);
 
+  ++prefix1;
+  UnitAssert(prefix1 == Ipv4Prefix("192.168.169.0/24"));
+  prefix1 = Ipv4Prefix("10.0.255/24");
+  ++prefix1;
+  UnitAssert(prefix1 == Ipv4Prefix("10.1.0/24"));
+  prefix1 = Ipv4Prefix("10.0.0/22");
+  ++prefix1;
+  UnitAssert(prefix1 == Ipv4Prefix("10.0.4/22"));
+  
   Ipv4Address  host("192.168.168.1");
   Ipv4Address  netmask("255.255.255.0");
   Ipv4Address  host2 = host & netmask;
