@@ -440,29 +440,17 @@ namespace Dwm {
   }
 
   //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
   Ipv4Prefix & Ipv4Prefix::operator ++ ()
   {
-    Ipv4Address  lastAddr = LastAddress();
-    if (lastAddr != Ipv4Address(0xFFFFFFFF)) {
-      ++lastAddr;
-      Set(lastAddr, MaskLength());
-    }
+    Set(++LastAddress(), MaskLength());
     return *this;
   }
 
   //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
   Ipv4Prefix Ipv4Prefix::operator ++ (int)
   {
     Ipv4Prefix  rc(*this);
-    Ipv4Address  lastAddr = LastAddress();
-    if (lastAddr != Ipv4Address(0xFFFFFFFF)) {
-      ++lastAddr;
-      Set(lastAddr, MaskLength());
-    }
+    Set(++LastAddress(), MaskLength());
     return rc;
   }
 
