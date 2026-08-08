@@ -5,7 +5,8 @@
 	* classes/tests/TestIpv4Prefix.cc
 	Added LowerAdjacent() and UpperAdjacent(), and refactored
 	Adjacent() to use them.
-
+	Added Wider() members.
+	
 2026-07-31  Daniel W. McRobb  <dwm@kiva.mcplex.net>
 
 	* tagged as libDwm-0.9.76
