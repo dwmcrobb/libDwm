@@ -112,6 +112,8 @@ void TestOperators()
   prefix1 = Ipv4Prefix("10.0.255/24");
   ++prefix1;
   UnitAssert(prefix1 == Ipv4Prefix("10.1.0/24"));
+  --prefix1;
+  UnitAssert(prefix1 == Ipv4Prefix("10.0.255/24"));
   prefix1 = Ipv4Prefix("10.0.0/22");
   ++prefix1;
   UnitAssert(prefix1 == Ipv4Prefix("10.0.4/22"));
@@ -149,6 +151,21 @@ void TestOperators()
   UnitAssert(! combine.first);
   UnitAssert(combine.second == Ipv4Prefix("255.255.255.255/32"));
   
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+void TestAdjacents()
+{
+  Ipv4Prefix  prefix1("192.168.168.0/24");
+  UnitAssert(! prefix1.Adjacent(prefix1));
+  Ipv4Prefix  prefix2("192.168.169.0/24");
+  UnitAssert(prefix1.UpperAdjacent(prefix2));
+  UnitAssert(prefix2.LowerAdjacent(prefix1));
+  UnitAssert(prefix1.Adjacent(prefix2));
+  UnitAssert(! prefix1.LowerAdjacent(prefix2));
   return;
 }
 
@@ -254,6 +271,7 @@ int main(int argc, char *argv[])
 {
   TestNetmask();
   TestOperators();
+  TestAdjacents();
   TestRanges();
   TestIO();
 

@@ -244,9 +244,21 @@ namespace Dwm {
     bool Contains(const Ipv4Prefix & prefix) const;
 
     //------------------------------------------------------------------------
+    //!  Returns true if @c prefix is adjacent and less than this.
+    //------------------------------------------------------------------------
+    bool LowerAdjacent(Ipv4Prefix prefix) const;
+
+    //------------------------------------------------------------------------
+    //!  Returns true if @c prefix is adjacent and greater than this.
+    //------------------------------------------------------------------------
+    bool UpperAdjacent(Ipv4Prefix prefix) const;
+    
+    //------------------------------------------------------------------------
     //!  Returns true if the given @c prefix is adjacent.
     //------------------------------------------------------------------------
-    bool Adjacent(const Ipv4Prefix & prefix) const;
+    bool Adjacent(const Ipv4Prefix & prefix) const
+    { return (UpperAdjacent(prefix) || LowerAdjacent(prefix)); }
+      
 
     //------------------------------------------------------------------------
     //!  If the given @c prefix can be combined with this prefix to form a

@@ -404,14 +404,19 @@ namespace Dwm {
     }
 #endif
   }
-  
+
   //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
-  bool Ipv4Prefix::Adjacent(const Ipv4Prefix & prefix) const
+  bool Ipv4Prefix::LowerAdjacent(Ipv4Prefix prefix) const
   {
-    return ((++(Ipv4Address(LastAddress())) == prefix.FirstAddress())
-            || (FirstAddress() == ++(Ipv4Address(prefix.LastAddress()))));
+    Ipv4Address  addr{prefix.LastAddress()};
+    return (++addr == FirstAddress());
+  }
+
+  //--------------------------------------------------------------------------
+  bool Ipv4Prefix::UpperAdjacent(Ipv4Prefix prefix) const
+  {
+    Ipv4Address  addr{prefix.FirstAddress()};
+    return (--addr == LastAddress());
   }
 
   //--------------------------------------------------------------------------
