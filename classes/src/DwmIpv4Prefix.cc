@@ -473,8 +473,6 @@ namespace Dwm {
   }
 
   //--------------------------------------------------------------------------
-  //!  
-  //--------------------------------------------------------------------------
   Ipv4Prefix Ipv4Prefix::operator -- (int)
   {
     Ipv4Prefix  rc(*this);
@@ -485,9 +483,16 @@ namespace Dwm {
     }
     return rc;
   }
-  
+
   //--------------------------------------------------------------------------
-  //  
+  Ipv4Prefix Ipv4Prefix::Wider(uint8_t bits) const
+  {
+    if (MaskLength() > bits) {
+      return Ipv4Prefix(Network(), MaskLength() - bits);
+    }
+    return Ipv4Prefix(Ipv4Address(0), 0);
+  }
+
   //--------------------------------------------------------------------------
   ssize_t Ipv4Prefix::Read(int fd)
   {

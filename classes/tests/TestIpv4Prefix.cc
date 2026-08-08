@@ -97,6 +97,27 @@ void TestNetmask()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+void TestWiden()
+{
+  Ipv4Prefix  prefix1("192.168.168.0/24");
+  Ipv4Prefix  pfx;
+  uint8_t  i = 0;
+  for ( ; i < 24; ++i) {
+    pfx = prefix1.Wider(i);
+    UnitAssert(pfx.Contains(prefix1));
+  }
+  pfx = prefix1.Wider(i);
+  UnitAssert(pfx == Ipv4Prefix("0/0"));
+  pfx = pfx.Wider();
+  UnitAssert(pfx == Ipv4Prefix("0/0"));
+  pfx = prefix1.Wider(prefix1.MaskLength() + 1);
+  UnitAssert(pfx == Ipv4Prefix("0/0"));
+  return;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 void TestOperators()
 {
   Ipv4Prefix  prefix1("192.168.168.0/24");
@@ -272,6 +293,7 @@ int main(int argc, char *argv[])
   TestNetmask();
   TestOperators();
   TestAdjacents();
+  TestWiden();
   TestRanges();
   TestIO();
 

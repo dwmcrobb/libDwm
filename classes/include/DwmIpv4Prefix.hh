@@ -234,6 +234,21 @@ namespace Dwm {
     Ipv4Prefix operator -- (int);
 
     //------------------------------------------------------------------------
+    //!  Returns the prefix that is @c bits wider (i.e. has a netmask length
+    //!  that is @c bits less).  If @c bits is equal to or greater than
+    //!  our netmask length, will return 0.0.0.0/0.
+    //------------------------------------------------------------------------
+    Ipv4Prefix Wider(uint8_t bits) const;
+
+    //------------------------------------------------------------------------
+    //!  Returns the prefix that is 1 bit wider (i.e. has a netmask length
+    //!  that is 1 bit less).  If our netmask length is already 0, will
+    //!  return 0.0.0.0/0.
+    //------------------------------------------------------------------------
+    inline Ipv4Prefix Wider() const
+    { return Wider(1); }
+    
+    //------------------------------------------------------------------------
     //!  Returs true if \c address falls within the prefix.
     //------------------------------------------------------------------------
     bool Contains(const Ipv4Address & address) const;
