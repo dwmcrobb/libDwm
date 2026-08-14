@@ -10,7 +10,7 @@
 #
 # Format is "current:revision:age"
 
-SHARED_LIB_VERSION="4:2:0"
+SHARED_LIB_VERSION="5:3:0"
 
 RELEASE_NAME_FILE=`dirname $0`/latest_release
 RELEASE_NAME=`cat ${RELEASE_NAME_FILE}`
