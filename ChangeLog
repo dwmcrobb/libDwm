@@ -1,6 +1,10 @@
+2026-08-26  Daniel W. McRobb  <dwm@kiva.mcplex.net>
+
+	* tagged as libDwm-0.9.78
+
 2026-08-26  Daniel W. McRobb  <dwm@spark.mcplex.net>
 
-	* classes/include/DwmIpPrefix.hh: Added Family(), IsV4() and
+	* classes/include/DwmIpAddress.hh: Added Family(), IsV4() and
 	IsV6().
 
 2026-08-13  dwm  <dwm@ria.mcplex.net>
@@ -15,7 +19,7 @@
 	Added LowerAdjacent() and UpperAdjacent(), and refactored
 	Adjacent() to use them.
 	Added Wider() members.
-	
+
 2026-07-31  Daniel W. McRobb  <dwm@kiva.mcplex.net>
 
 	* tagged as libDwm-0.9.76
