@@ -112,7 +112,9 @@ void TestIncrement()
              == Ipv6Address("4444:8002:5:2:ffff:ffff:ffff:ffff"));
   ++prefix1;
   UnitAssert(Ipv6Prefix("4444:8002:5:3::/64") == prefix1);
-  
+
+  UnitAssert(prefix1++ == Ipv6Prefix("4444:8002:5:3::/64"));
+  UnitAssert(Ipv6Prefix("4444:8002:5:4::/64") == prefix1);
   return;
 }
 
