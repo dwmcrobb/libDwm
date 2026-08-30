@@ -134,6 +134,37 @@ namespace Dwm {
     //!  Mask operator.
     //------------------------------------------------------------------------
     Ipv6Address operator & (const Ipv6Address & netmask) const;
+
+    //------------------------------------------------------------------------
+    //!  Post-increment operator
+    //------------------------------------------------------------------------
+    inline Ipv6Address operator ++ (int)
+    {
+      Ipv6Address rc(*this);
+      for (size_t i = 15; i >= 0; --i) {
+        if (_addr.s6_addr[i] < 0xFF) {
+          ++_addr.s6_addr[i];
+          break;
+        }
+        ++_addr.s6_addr[i];
+      }
+      return rc;
+    }
+
+    //------------------------------------------------------------------------
+    //!  Pre-increment operator
+    //------------------------------------------------------------------------
+    inline Ipv6Address & operator ++ ()
+    {
+      for (size_t i = 15; i >= 0; --i) {
+        if (_addr.s6_addr[i] < 0xFF) {
+          ++_addr.s6_addr[i];
+          break;
+        }
+        ++_addr.s6_addr[i];
+      }
+      return *this;
+    }
     
     //------------------------------------------------------------------------
     //!  Returns true if the address is link-local.

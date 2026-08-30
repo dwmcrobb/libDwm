@@ -55,6 +55,22 @@ using namespace std;
 using namespace Dwm;
 
 //----------------------------------------------------------------------------
+void TestIncrement()
+{
+  Ipv6Address  addr1("4444:8002:5:2::2");
+  ++addr1;
+  UnitAssert(Ipv6Address("4444:8002:5:2::3") == addr1);
+  addr1 = Ipv6Address("4444:8002:5:2::ff");
+  ++addr1;
+  UnitAssert(Ipv6Address("4444:8002:5:2::100") == addr1);
+  addr1 = Ipv6Address("4444:8002:5:2::ffff:ffff");
+  ++addr1;
+  UnitAssert(Ipv6Address("4444:8002:5:2::1:0:0") == addr1);
+  
+  return;
+}
+
+//----------------------------------------------------------------------------
 void TestBitwiseAnd()
 {
   Ipv6Address  addr1("4444:8002:5:2::2");
@@ -73,6 +89,7 @@ void TestBitwiseAnd()
 int main(int argc, char *argv[])
 {
   TestBitwiseAnd();
+  TestIncrement();
   
   Ipv6Address  addr1("4444:8002:5:2::2");
   Ipv6Address  addr2("4444:8001:9500:172::1");
