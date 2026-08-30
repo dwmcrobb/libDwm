@@ -1,3 +1,16 @@
+2026-08-29  Daniel W. McRobb  <dwm@spark.mcplex.net>
+
+	* tagged as libDwm-0.9.79
+
+	* classes/include/DwmIpv6Prefix.hh
+	* classes/src/DwmIpv6Prefix.cc
+	* classes/tests/TestIpv6Prefix.cc
+	Added increment operators.
+
+	* classes/include/DwmIpv6Address.hh
+	* classes/tests/TestIpv6Address.cc
+	Added increment operators.
+
 2026-08-26  Daniel W. McRobb  <dwm@kiva.mcplex.net>
 
 	* tagged as libDwm-0.9.78
