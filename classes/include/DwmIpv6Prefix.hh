@@ -101,6 +101,16 @@ namespace Dwm {
     uint8_t MaskLength(uint8_t maskLen);
 
     //------------------------------------------------------------------------
+    //!  Returns the first IPv6 address in the prefix's range.
+    //------------------------------------------------------------------------
+    Ipv6Address FirstAddress() const;
+
+    //------------------------------------------------------------------------
+    //!  Returns the last IPv6 address in the prefix's range.
+    //------------------------------------------------------------------------
+    Ipv6Address LastAddress() const;
+    
+    //------------------------------------------------------------------------
     //!  Set the prefix using a network address and netmask length.  Returns
     //!  true on success, false on failure.
     //------------------------------------------------------------------------
@@ -125,6 +135,16 @@ namespace Dwm {
     //!  Not-equal-to operator.
     //------------------------------------------------------------------------
     bool operator != (const Ipv6Prefix & prefix) const;
+
+        //------------------------------------------------------------------------
+    //!  Pre-increment operator.
+    //------------------------------------------------------------------------
+    Ipv6Prefix & operator ++ ();
+
+    //------------------------------------------------------------------------
+    //!  Post-increment operator.
+    //------------------------------------------------------------------------
+    Ipv6Prefix operator ++ (int);
 
     //------------------------------------------------------------------------
     //!  Returns true if \c addr falls within the prefix.

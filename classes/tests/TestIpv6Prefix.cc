@@ -104,6 +104,19 @@ void TestContains()
 }
 
 //----------------------------------------------------------------------------
+void TestIncrement()
+{
+  Ipv6Prefix  prefix1("4444:8002:5:2::2/64");
+  UnitAssert(prefix1.FirstAddress() == Ipv6Address("4444:8002:5:2::"));
+  UnitAssert(prefix1.LastAddress()
+             == Ipv6Address("4444:8002:5:2:ffff:ffff:ffff:ffff"));
+  ++prefix1;
+  UnitAssert(Ipv6Prefix("4444:8002:5:3::/64") == prefix1);
+  
+  return;
+}
+
+//----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
 void TestOperators()
@@ -128,6 +141,8 @@ void TestOperators()
   host &= netmask;
   UnitAssert(host == Ipv6Address("4444:8001::"));
 
+  TestIncrement();
+  
   return;
 }
 

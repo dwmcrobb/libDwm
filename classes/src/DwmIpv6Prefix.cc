@@ -359,6 +359,28 @@ namespace Dwm {
   }
 
   //--------------------------------------------------------------------------
+  Ipv6Address Ipv6Prefix::FirstAddress() const
+  {
+    return Network();
+  }
+
+  //--------------------------------------------------------------------------
+  Ipv6Address Ipv6Prefix::LastAddress() const
+  {
+    in6_addr  in6Addr = _addr;
+    size_t    lowBits = 128 - _length, bytenum = 15;
+    while (lowBits >= 8) {
+      in6Addr.s6_addr[bytenum] = 0xFF;
+      --bytenum;
+      lowBits -= 8;
+    }
+    for (uint8_t bitnum = 0; bitnum < lowBits; ++bitnum) {
+      in6Addr.s6_addr[bytenum] |= (1 << bitnum);
+    }
+    return in6Addr;
+  }
+  
+  //--------------------------------------------------------------------------
   //!  
   //--------------------------------------------------------------------------
   bool Ipv6Prefix::Set(const Ipv6Address & network, uint8_t maskLength)
@@ -427,6 +449,21 @@ namespace Dwm {
         rc = true;
       }
     }
+    return rc;
+  }
+
+  //--------------------------------------------------------------------------
+  Ipv6Prefix & Ipv6Prefix::operator ++ ()
+  {
+    Set(++LastAddress(), MaskLength());
+    return *this;
+  }
+
+  //--------------------------------------------------------------------------
+  Ipv6Prefix Ipv6Prefix::operator ++ (int)
+  {
+    Ipv6Prefix  rc(*this);
+    Set(++LastAddress(), MaskLength());
     return rc;
   }
   
